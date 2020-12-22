@@ -1,0 +1,50 @@
+<div class="login-page">
+  <div class="container">
+    <div class="d-flex justify-content-center">
+      <div class="login-card">
+        <form (ngSubmit)="login()" [formGroup]="loginForm" novalidate class="pl-3">
+          <div class="alert col-sm-12" [hidden]="!error || isLoading">Username or password incorrect</div>
+          <div class="form-group login-input mb-4">
+            <input
+              type="text"
+              formControlName="username"
+              autocomplete="username"
+              class="form-control"
+              placeholder="Utilisateur"
+            />
+            <small
+              [hidden]="loginForm.controls.username.valid || loginForm.controls.username.untouched"
+              class="text-danger"
+            >
+            </small>
+          </div>
+
+          <div class="form-group password-input">
+            <input
+              type="password"
+              formControlName="password"
+              autocomplete="current-password"
+              required
+              class="form-control"
+              placeholder="Mot de passe"
+            />
+            <small
+              [hidden]="loginForm.controls.password.valid || loginForm.controls.password.untouched"
+              class="text-danger"
+            >
+            </small>
+            <div class="text-underline">Mot de passe oublié ?</div>
+          </div>
+          <button class="specific-button mt-5" type="submit" [disabled]="loginForm.invalid || isLoading">
+            <i class="fas fa-cog fa-spin" [hidden]="!isLoading"></i>
+            <span>Login</span>
+          </button>
+          <div class="row">
+            <div class="small-text mr-1">Vous n'avez pas de compte ?</div>
+            <div class="pink-text" [routerLink]="['/inscription']">créez-en-un !</div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
