@@ -1,67 +1,43 @@
-<div style="margin-top: -15px">
+<div class="container-fluid">
   <div class="bar"></div>
-
-  <div class="col-sm-12" style="padding-left: 84px; padding-right: 84px">
-    <div class="search-hero">
-      <div class="col-md-12" style="display: flex; justify-content: space-between">
-        <div style="margin-top: 7px">
-          <h1 class="title" style="align-self: center; margin-right: 20px; font-weight: bold">OEUVRES D'ARTS</h1>
-          <p style="margin-left: 5px">254 Oeuvres d'art</p>
-        </div>
-        <div *ngIf="mode === 'pictures'">
-          <button
-            type="button"
-            class="btn btn1 btn3"
-            (click)="changeMode1()"
-            style="border: 1px solid #407ca8; color: #407ca8"
-          >
-            <i style="font-size: 14px" class="zmdi zmdi-grid"></i>
-          </button>
-          <button
-            type="button"
-            class="btn btn1 btn3"
-            (click)="changeMode()"
-            style="border: 1px solid #407ca8; color: white; background-color: #407ca8"
-          >
-            <i style="font-size: 14px" class="zmdi zmdi-view-stream"></i>
-          </button>
-        </div>
-        <div *ngIf="mode === 'liste'">
-          <button
-            type="button"
-            class="btn btn1 btn3"
-            (click)="changeMode1()"
-            style="border: 1px solid #407ca8; color: white; background-color: #407ca8"
-          >
-            <i style="font-size: 14px" class="zmdi zmdi-grid"></i>
-          </button>
-          <button
-            type="button"
-            class="btn btn1 btn3"
-            (click)="changeMode()"
-            style="border: 1px solid #407ca8; color: #407ca8"
-          >
-            <i style="font-size: 14px" class="zmdi zmdi-view-stream"></i>
-          </button>
-        </div>
+  <div class="body">
+    <div class="title-bloc">
+      <div class="left-title-bloc">
+        <h1 class="title" style="">OEUVRES D'ARTS</h1>
+        <p>254 Oeuvres d'art</p>
+      </div>
+      <div class="picture-mode" *ngIf="mode === 'pictures'">
+        <button type="button" class="btn picture" (click)="changeMode1()">
+          <i class="zmdi zmdi-grid"></i>
+        </button>
+        <button type="button" class="btn list" (click)="changeMode()">
+          <i class="zmdi zmdi-view-stream"></i>
+        </button>
+      </div>
+      <div class="list-mode" *ngIf="mode === 'liste'">
+        <button type="button" class="btn" (click)="changeMode1()">
+          <i class="zmdi zmdi-grid"></i>
+        </button>
+        <button type="button" class="btn" (click)="changeMode()">
+          <i class="zmdi zmdi-view-stream"></i>
+        </button>
       </div>
     </div>
-    <div class="search-hero-1 row" style="padding: 0 0 10px 0; margin: 0">
-      <div class="col-md-3 col-sm-12" id="searchPanel" style="padding-left: 3.5%">
+    <div class="search-bloc">
+      <div class="col-md-3 col-sm-12 search-panel">
         <input
           class="form-control"
           type="text"
           name="search"
           autocomplete="off"
-          style="width: 80%; min-width: 180px; max-width: 300px; margin-top: 12px; height: 30px"
           (keyup)="search($event)"
           placeholder="Recherche"
         />
       </div>
-      <div class="col-md-6 col-sm-12" style="display: flex; justify-content: center">
-        <div style="margin-right: 15px; padding-top: 8px">
+      <div class="col-md-6 col-sm-12 characteristic-panel">
+        <div class="select-bloc">
           <ng-multiselect-dropdown
-            class="btn2"
+            class="characteristic-btn"
             [placeholder]="'Styles'"
             [settings]="dropdownSettings"
             [data]="styles"
@@ -71,65 +47,36 @@
             (onSelectAll)="onSelectAll()"
             (onDeSelectAll)="onDeselectAll()"
           >
-            <ng-template let-item="item" style="margin-bottom: -10px !important">
+            <ng-template let-item="item">
               <label>{{ item.titre }}</label>
             </ng-template>
           </ng-multiselect-dropdown>
         </div>
-        <div style="margin-right: 30px">
-          <button
-            class="btn btn2"
-            type="button"
-            style="color: #6e6d7a"
-            id="dropdownMenuButton1"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-            (click)="openTypes()"
-          >
-            Domaines
-          </button>
+        <div class="dropdown-list">
+          <button class="btn characteristic-btn" type="button" (click)="openTypes()">Domaines</button>
         </div>
       </div>
-      <div
-        class="col-md-3 col-sm-12"
-        id="filterButton"
-        style="display: flex; justify-content: flex-end; padding-right: 3%"
-      >
-        <button class="btn btn2" style="background-color: whitesmoke" (click)="openFilter()">
+      <div class="col-md-3 col-sm-12 filter-bloc">
+        <button class="btn characteristic-btn" (click)="openFilter()">
           <i class="zmdi zmdi-filter-list"></i> Filtres
         </button>
       </div>
     </div>
 
-    <div style="display: flex; justify-content: center; margin-top: 0 !important" *ngIf="openType" class="search-hero">
-      <button type="button" class="btn btn1 btn-secondary types">Architecture</button>
-      <button type="button" class="btn btn1 btn-secondary types">Sculpture</button>
-      <button type="button" class="btn btn1 btn-secondary types">Peinture</button>
-      <button type="button" class="btn btn1 btn-secondary types">Photographie</button>
+    <div class="category-list" *ngIf="openType">
+      <button type="button" class="btn btn-secondary types">Architecture</button>
+      <button type="button" class="btn btn-secondary types">Sculpture</button>
+      <button type="button" class="btn btn-secondary types">Peinture</button>
+      <button type="button" class="btn btn-secondary types">Photographie</button>
     </div>
-    <div
-      class="search-hero row"
-      style="
-        display: flex;
-        justify-content: space-between;
-        margin: 0;
-        padding: 20px 0 5px 0 !important;
-        height: 100% !important;
-      "
-      *ngIf="filter"
-    >
-      <div
-        class="col-xl-2 col-lg-4 col-sm-6"
-        style="min-width: 190px; margin-bottom: 10px; margin-left: -7px !important"
-      >
+    <div class="filter-list" *ngIf="filter">
+      <div class="col-xl-2 col-lg-4 col-sm-6 filter-list-bloc">
         <label for="exampleFormControlSelect1">Editeur ou fabricant</label>
         <select
           (change)="onChangeEditor($event.target.value)"
           class="form-control"
           placeholder="filtrer"
           id="exampleFormControlSelect1"
-          style="width: 100%"
         >
           <option>Tous les éditeurs</option>
           <option>Alexandros d'Antioche</option>
@@ -138,7 +85,7 @@
           <option>Léonard de Vinci</option>
         </select>
       </div>
-      <div class="col-xl-2 col-lg-4 col-sm-6" style="min-width: 190px; margin-bottom: 10px">
+      <div class="col-xl-2 col-lg-4 col-sm-6 filter-list-bloc">
         <label for="exampleFormControlSelect2">Nombre d’unités</label>
         <select class="form-control" id="exampleFormControlSelect2" (change)="onChangeUnits($event.target.value)">
           <option>Tous les nombres d'unités</option>
@@ -146,7 +93,7 @@
           <option>Portrait</option>
         </select>
       </div>
-      <div class="col-xl-2 col-lg-4 col-sm-6" style="min-width: 190px; margin-bottom: 10px">
+      <div class="col-xl-2 col-lg-4 col-sm-6 filter-list-bloc">
         <label for="exampleFormControlSelect3">Année de création</label>
         <select class="form-control" id="exampleFormControlSelect3" (change)="onChangeDate($event.target.value)">
           <option>Toute les années de création</option>
@@ -156,9 +103,9 @@
           <option>1830</option>
         </select>
       </div>
-      <div class="col-xl-2 col-lg-4 col-sm-6" style="min-width: 190px; margin-bottom: 10px">
-        <label for="exampleFormControlSelect2">Dimensions</label>
-        <select class="form-control" id="exampleFormControlSelect2" (change)="onChangeDimension($event.target.value)">
+      <div class="col-xl-2 col-lg-4 col-sm-6 filter-list-bloc">
+        <label for="exampleFormControlSelect4">Dimensions</label>
+        <select class="form-control" id="exampleFormControlSelect4" (change)="onChangeDimension($event.target.value)">
           <option>Toutes les dimensions</option>
 
           <option>69 × 57 cm</option>
@@ -168,12 +115,9 @@
           <option>194 cm (hauteur)</option>
         </select>
       </div>
-      <div
-        class="col-xl-2 col-lg-4 col-sm-6"
-        style="min-width: 190px; margin-bottom: 10px; margin-right: -15px !important"
-      >
-        <label for="exampleFormControlSelect2">Matières</label>
-        <select class="form-control" id="exampleFormControlSelect2" (change)="onChangeMatiere($event.target.value)">
+      <div class="col-xl-2 col-lg-4 col-sm-6 filter-list-bloc">
+        <label for="exampleFormControlSelect5">Matières</label>
+        <select class="form-control" id="exampleFormControlSelect5" (change)="onChangeMatiere($event.target.value)">
           <option>Toutes les matières</option>
           <option>Marbre</option>
           <option>Huile sur panneau de bois</option>
@@ -181,25 +125,14 @@
       </div>
     </div>
 
-    <div class="row" *ngIf="mode == 'liste'; else elseBlock" style="margin: 0; padding: 0">
-      <div
-        class="cadre col-md-12"
-        style="
-          display: flex;
-          justify-content: space-between;
-          padding-left: 35px;
-          flex-wrap: wrap;
-          background-color: white;
-          height: 100%;
-          padding-top: 10px;
-        "
-      >
-        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12" *ngFor="let items of oeuvreToShow">
-          <div class="flip" style="width: 95%">
-            <div class="front" [ngStyle]="{ 'background-image': 'url(' + items.image + ')' }" style="width: 100%">
+    <div class="picture-bloc-images" *ngIf="mode == 'liste'; else elseBlock">
+      <div class="cadre col-md-12">
+        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 items-bloc" *ngFor="let items of oeuvreToShow">
+          <div class="flip">
+            <div class="front" [ngStyle]="{ 'background-image': 'url(' + items.image + ')' }">
               <h1 class="text-shadow">{{ items.titre }}</h1>
             </div>
-            <div class="back" style="width: 100%">
+            <div class="back">
               <h2 class="titre">{{ items.titre }}</h2>
               <p class="description">{{ items.description }}</p>
               <button class="details" (click)="details()">Voir plus de détails</button>
@@ -209,48 +142,20 @@
       </div>
     </div>
     <ng-template class="col-sm-12" #elseBlock>
-      <div
-        id="oneColumn"
-        style="
-          padding-right: 1.7%;
-          display: flex;
-          justify-content: space-between;
-          flex-wrap: wrap;
-          background-color: white;
-          height: 100%;
-          padding-top: 10px;
-          padding-left: 4% !important;
-        "
-      >
-        <div
-          class="contenu col-lg-auto col-md-auto col-sm-12"
-          *ngFor="let items of oeuvreToShow"
-          style="margin-left: 40px; display: flex; justify-content: center"
-        >
+      <div class="list-bloc-images one-column">
+        <div class="content-bloc col-lg-auto col-md-auto col-sm-12" *ngFor="let items of oeuvreToShow">
           <div class="profile">
-            <div class="photo"><img src="{{ items.image }}" /></div>
+            <div class="photo"><img src="{{ items.image }}" alt="" /></div>
             <div class="content">
               <div class="text">
                 <h3>
                   {{ items.titre }}
-                  <i
-                    class="zmdi zmdi-star"
-                    *ngIf="items.status === 'notRecieved'"
-                    style="position: absolute; color: #c29d57; font-size: 14px; margin-left: 3px"
-                  ></i>
+                  <i class="zmdi zmdi-star" *ngIf="items.status === 'notRecieved'"></i>
                 </h3>
                 <h6>{{ items.description }}</h6>
                 <i
                   class="zmdi zmdi-alert-polygon"
                   *ngIf="items.vip === 'true'"
-                  style="
-                    z-index: 99;
-                    font-size: 25px;
-                    margin-left: 202px;
-                    margin-top: -62px;
-                    position: absolute;
-                    color: #be3d4d;
-                  "
                   ngbPopover="retard à la reception!"
                   triggers="mouseenter:mouseleave"
                   container="body"

@@ -8,6 +8,7 @@
 html,
 body {
   height: 100%;
+  background-color: #e6e6ea;
 }
 body {
   margin: 0;
@@ -16,6 +17,9 @@ body {
 * {
   font-family: RobotoCondensed, sans-serif;
 }
+
+/** scroll **/
+
 /* width */
 ::-webkit-scrollbar {
   width: 7px;
@@ -34,4 +38,9 @@ body {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #a9a9a9;
+}
+
+/**end scroll **/
+
+.container-fluid {
 }
