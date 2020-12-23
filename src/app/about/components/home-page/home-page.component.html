@@ -1,1 +1,173 @@
-hello
+<div class="container-fluid">
+  <div class="bar"></div>
+  <div class="body">
+    <div class="title-bloc">
+      <div class="left-title-bloc">
+        <h1 class="title" style="">OEUVRES D'ARTS</h1>
+        <p>254 Oeuvres d'art</p>
+      </div>
+      <div class="picture-mode" *ngIf="mode === 'pictures'">
+        <button type="button" class="btn picture" (click)="changeMode1()">
+          <i class="zmdi zmdi-grid"></i>
+        </button>
+        <button type="button" class="btn list" (click)="changeMode()">
+          <i class="zmdi zmdi-view-stream"></i>
+        </button>
+      </div>
+      <div class="list-mode" *ngIf="mode === 'liste'">
+        <button type="button" class="btn" (click)="changeMode1()">
+          <i class="zmdi zmdi-grid"></i>
+        </button>
+        <button type="button" class="btn" (click)="changeMode()">
+          <i class="zmdi zmdi-view-stream"></i>
+        </button>
+      </div>
+    </div>
+    <div class="search-bloc">
+      <div class="col-md-3 col-sm-12 search-panel">
+        <input
+          class="form-control"
+          type="text"
+          name="search"
+          autocomplete="off"
+          (keyup)="search($event)"
+          placeholder="Recherche"
+        />
+      </div>
+      <div class="col-md-6 col-sm-12 characteristic-panel">
+        <div class="select-bloc">
+          <ng-multiselect-dropdown
+            class="characteristic-btn"
+            [placeholder]="'Styles'"
+            [settings]="dropdownSettings"
+            [data]="styles"
+            [(ngModel)]="selectedItems"
+            (onSelect)="onItemSelect($event)"
+            (onDeSelect)="onDeselect($event)"
+            (onSelectAll)="onSelectAll()"
+            (onDeSelectAll)="onDeselectAll()"
+          >
+            <ng-template let-item="item">
+              <label>{{ item.titre }}</label>
+            </ng-template>
+          </ng-multiselect-dropdown>
+        </div>
+        <div class="dropdown-list">
+          <button class="btn characteristic-btn" type="button" (click)="openTypes()">Domaines</button>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-12 filter-bloc">
+        <button class="btn characteristic-btn" (click)="openFilter()">
+          <i class="zmdi zmdi-filter-list"></i> Filtres
+        </button>
+      </div>
+    </div>
+
+    <div class="category-list" *ngIf="openType">
+      <button type="button" class="btn btn-secondary types">Architecture</button>
+      <button type="button" class="btn btn-secondary types">Sculpture</button>
+      <button type="button" class="btn btn-secondary types">Peinture</button>
+      <button type="button" class="btn btn-secondary types">Photographie</button>
+    </div>
+    <div class="filter-list" *ngIf="filter">
+      <div class="col-xl-2 col-lg-4 col-sm-6 filter-list-bloc">
+        <label for="exampleFormControlSelect1">Editeur ou fabricant</label>
+        <select
+          (change)="onChangeEditor($event.target.value)"
+          class="form-control"
+          placeholder="filtrer"
+          id="exampleFormControlSelect1"
+        >
+          <option>Tous les éditeurs</option>
+          <option>Alexandros d'Antioche</option>
+          <option>Eugène Delacroix</option>
+          <option>Michel-Ange</option>
+          <option>Léonard de Vinci</option>
+        </select>
+      </div>
+      <div class="col-xl-2 col-lg-4 col-sm-6 filter-list-bloc">
+        <label for="exampleFormControlSelect2">Nombre d’unités</label>
+        <select class="form-control" id="exampleFormControlSelect2" (change)="onChangeUnits($event.target.value)">
+          <option>Tous les nombres d'unités</option>
+          <option>Paysage</option>
+          <option>Portrait</option>
+        </select>
+      </div>
+      <div class="col-xl-2 col-lg-4 col-sm-6 filter-list-bloc">
+        <label for="exampleFormControlSelect3">Année de création</label>
+        <select class="form-control" id="exampleFormControlSelect3" (change)="onChangeDate($event.target.value)">
+          <option>Toute les années de création</option>
+          <option>1479</option>
+          <option>1519</option>
+          <option>1651</option>
+          <option>1830</option>
+        </select>
+      </div>
+      <div class="col-xl-2 col-lg-4 col-sm-6 filter-list-bloc">
+        <label for="exampleFormControlSelect4">Dimensions</label>
+        <select class="form-control" id="exampleFormControlSelect4" (change)="onChangeDimension($event.target.value)">
+          <option>Toutes les dimensions</option>
+
+          <option>69 × 57 cm</option>
+          <option>77 × 53 cm</option>
+          <option>260 × 325 cm</option>
+          <option>199 × 122 cm</option>
+          <option>194 cm (hauteur)</option>
+        </select>
+      </div>
+      <div class="col-xl-2 col-lg-4 col-sm-6 filter-list-bloc">
+        <label for="exampleFormControlSelect5">Matières</label>
+        <select class="form-control" id="exampleFormControlSelect5" (change)="onChangeMatiere($event.target.value)">
+          <option>Toutes les matières</option>
+          <option>Marbre</option>
+          <option>Huile sur panneau de bois</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="picture-bloc-images" *ngIf="mode == 'liste'; else elseBlock">
+      <div class="cadre col-md-12">
+        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 items-bloc" *ngFor="let items of oeuvreToShow">
+          <div class="flip">
+            <div class="front" [ngStyle]="{ 'background-image': 'url(' + items.image + ')' }">
+              <h1 class="text-shadow">{{ items.titre }}</h1>
+            </div>
+            <div class="back">
+              <h2 class="titre">{{ items.titre }}</h2>
+              <p class="description">{{ items.description }}</p>
+              <button class="details" (click)="details()">Voir plus de détails</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template class="col-sm-12" #elseBlock>
+      <div class="list-bloc-images one-column">
+        <div class="content-bloc col-lg-auto col-md-auto col-sm-12" *ngFor="let items of oeuvreToShow">
+          <div class="profile">
+            <div class="photo"><img src="{{ items.image }}" alt="" /></div>
+            <div class="content">
+              <div class="text">
+                <h3>
+                  {{ items.titre }}
+                  <i class="zmdi zmdi-star" *ngIf="items.status === 'notRecieved'"></i>
+                </h3>
+                <h6>{{ items.description }}</h6>
+                <i
+                  class="zmdi zmdi-alert-polygon"
+                  *ngIf="items.vip === 'true'"
+                  ngbPopover="retard à la reception!"
+                  triggers="mouseenter:mouseleave"
+                  container="body"
+                ></i>
+              </div>
+              <div class="btn">
+                <span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>

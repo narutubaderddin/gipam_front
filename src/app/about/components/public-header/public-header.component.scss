@@ -1,0 +1,70 @@
+nav {
+  background-color: #407ca8;
+  padding-right: 0;
+  height: 50px;
+  .dropdown-toggle::after {
+    display: none;
+  }
+  i {
+    font-size: 15px;
+  }
+
+  .nav-list {
+    height: 50px;
+    ul {
+      height: 50px;
+      color: white;
+      li {
+        cursor: pointer;
+        line-height: 50px;
+        font-size: 15px;
+        text-transform: uppercase;
+        font-weight: bold;
+        padding-left: 20px;
+        padding-right: 20px;
+        border-left: 0.2rem solid;
+        i {
+          font-size: 35px;
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  font-weight: 400;
+  background-color: transparent;
+  border: 0;
+  font-size: 13px;
+}
+
+::ng-deep a:not([href]) {
+  color: inherit;
+  text-decoration: none;
+  background-color: #407ca8 !important;
+}
+
+a:hover {
+  font-size: 18px;
+}
+
+.doc {
+  background-color: #be3d4d !important;
+}
+
+.li {
+  background-color: #407ca8;
+}
+.rapport {
+  background-color: #5a4b5f !important;
+}
+.adm {
+  background-color: #1f2b50 !important;
+}
+.bt {
+  padding-right: 30px !important;
+  padding-left: 30px !important;
+}

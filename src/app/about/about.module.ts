@@ -5,10 +5,19 @@ import { AboutRoutingModule } from './about-routing.module';
 import { SharedModule } from '@shared';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomePageComponent } from '@app/about/components/home-page/home-page.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { PublicHeaderComponent } from '@app/about/components/public-header/public-header.component';
 
 @NgModule({
-  declarations: [HomePageComponent],
-  exports: [],
-  imports: [CommonModule, AboutRoutingModule, SharedModule, ReactiveFormsModule, FormsModule],
+  declarations: [HomePageComponent, PublicHeaderComponent],
+  exports: [PublicHeaderComponent],
+  imports: [
+    CommonModule,
+    AboutRoutingModule,
+    SharedModule,
+    ReactiveFormsModule,
+    FormsModule,
+    NgMultiSelectDropDownModule,
+  ],
 })
 export class AboutModule {}

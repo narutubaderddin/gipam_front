@@ -1,0 +1,23 @@
+.flag-icon-background {
+  background-size: contain;
+  background-position: 50%;
+  background-repeat: no-repeat;
+}
+
+.flag-icon {
+  @extend .flag-icon-background;
+  width: 27px;
+  height: 27px;
+  position: relative;
+  display: inline-block;
+}
+
+@mixin flag-icon($country) {
+  .flag-icon-#{$country} {
+    background-image: url("src/assets/images/flags/#{$country}.svg");
+  }
+}
+
+@include flag-icon("fr-FR");
+@include flag-icon("en-EN");
+@include flag-icon("it-IT");
