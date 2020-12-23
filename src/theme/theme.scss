@@ -2,3 +2,36 @@
  * Global application theme.
  * Framework overrides and customization goes here.
  */
+@import "theme-variables";
+@import "src/assets/css/mixins/mixins.scss";
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+}
+
+* {
+  font-family: RobotoCondensed, sans-serif;
+}
+/* width */
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f6f6f6;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #c2c2c2;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #a9a9a9;
+}
