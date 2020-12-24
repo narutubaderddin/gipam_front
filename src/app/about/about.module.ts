@@ -7,9 +7,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomePageComponent } from '@app/about/components/home-page/home-page.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { PublicHeaderComponent } from '@app/about/components/public-header/public-header.component';
+import { ItemDetailsComponent } from '@app/about/components/item-details/item-details.component';
+import { NgbCarouselModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-  declarations: [HomePageComponent, PublicHeaderComponent],
+  declarations: [HomePageComponent, PublicHeaderComponent, ItemDetailsComponent],
   exports: [PublicHeaderComponent],
   imports: [
     CommonModule,
@@ -18,6 +20,8 @@ import { PublicHeaderComponent } from '@app/about/components/public-header/publi
     ReactiveFormsModule,
     FormsModule,
     NgMultiSelectDropDownModule,
+    NgbCarouselModule,
+    NgbModule,
   ],
 })
 export class AboutModule {}
