@@ -16,7 +16,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { AboutComponent } from './about/about.component';
 import { AboutModule } from '@app/about/about.module';
-import { HomeComponent } from '@app/home/home.component';
 import { HomeModule } from '@app/home/home.module';
 
 @NgModule({

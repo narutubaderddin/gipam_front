@@ -252,7 +252,7 @@ export class HomePageComponent implements OnInit {
     }
   }
   details() {
-    this.router.navigate(['oneitem']);
+    this.router.navigate(['item-details']);
   }
   onChangeEditor(deviceValue: any) {
     this.oeuvreToShow = this.oeuvre.filter((oeuvre: any) => {
