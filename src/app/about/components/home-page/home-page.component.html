@@ -6,19 +6,11 @@
         <h1 class="title" style="">OEUVRES D'ARTS</h1>
         <p>254 Oeuvres d'art</p>
       </div>
-      <div class="picture-mode" *ngIf="mode === 'pictures'">
+      <div [ngClass]="{ 'picture-mode': mode === 'pictures', 'list-mode': mode === 'liste' }">
         <button type="button" class="btn picture" (click)="changeMode1()">
           <i class="zmdi zmdi-grid"></i>
         </button>
         <button type="button" class="btn list" (click)="changeMode()">
-          <i class="zmdi zmdi-view-stream"></i>
-        </button>
-      </div>
-      <div class="list-mode" *ngIf="mode === 'liste'">
-        <button type="button" class="btn" (click)="changeMode1()">
-          <i class="zmdi zmdi-grid"></i>
-        </button>
-        <button type="button" class="btn" (click)="changeMode()">
           <i class="zmdi zmdi-view-stream"></i>
         </button>
       </div>
