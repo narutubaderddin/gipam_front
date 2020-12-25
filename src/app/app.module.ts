@@ -17,7 +17,6 @@ import { LocalStorageModule } from 'angular-2-local-storage';
 import { AboutComponent } from './about/about.component';
 import { AboutModule } from '@app/about/about.module';
 import { HomeModule } from '@app/home/home.module';
-import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   imports: [
@@ -37,7 +36,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
     AuthModule,
     HomeModule,
     AboutModule,
-    NgSelectModule,
     AppRoutingModule, // must be imported as the last module as it contains the fallback route
   ],
   declarations: [AppComponent, AboutComponent],
