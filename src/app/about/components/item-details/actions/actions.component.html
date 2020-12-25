@@ -1,0 +1,13 @@
+<div class="add-search-bloc">
+  <div class="add-button">
+    <button (click)="addAction()" class="add-action"><i class="zmdi zmdi-plus"> Ajouter action</i></button>
+  </div>
+</div>
+<app-grid-wrapper
+  [columnDefs]="columnDefs"
+  [rowData]="actions"
+  [defaultColDef]="defaultColDef"
+  [frameworkComponents]="frameworkComponent"
+  (gridReady)="onGridReady($event)"
+>
+</app-grid-wrapper>

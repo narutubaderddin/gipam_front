@@ -1,0 +1,28 @@
+<div class="grid-container" (window:resize)="onWindowResize()">
+  <ag-grid-angular
+    #agGrid
+    style="height: 100%"
+    [headerHeight]="40"
+    [rowHeight]="35"
+    class="ag-theme-alpine"
+    [rowData]="rowData"
+    [defaultColDef]="defaultColDef"
+    [columnDefs]="columnDefs"
+    [tooltipShowDelay]="tooltipShowDelay"
+    [frameworkComponents]="frameworkComponents"
+    [animateRows]="true"
+    [pagination]="true"
+    [paginationPageSize]="10"
+    [groupSelectsChildren]="true"
+    [suppressRowClickSelection]="true"
+    [debug]="true"
+    [rowSelection]="rowSelection"
+    [enableRangeSelection]="true"
+    domLayout="autoHeight"
+    (modelUpdated)="onModelUpdated($event)"
+    (gridReady)="onGridReady($event)"
+    [overlayLoadingTemplate]="loadingTemplate"
+    [overlayNoRowsTemplate]="noRowsTemplate"
+  >
+  </ag-grid-angular>
+</div>

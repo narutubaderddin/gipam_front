@@ -1,0 +1,56 @@
+<div class="modal-content">
+  <div class="modal-title">Ajouter une action</div>
+  <div class="modal-body">
+    <form [formGroup]="actionForm" (submit)="onSubmit()">
+      <div class="form-group">
+        <label class="label">Date</label>
+        <input type="date" class="form-control" formControlName="date" />
+      </div>
+      <div class="form-group">
+        <label class="label"> Type d'action </label>
+        <select class="form-control" formControlName="actionType">
+          <option value="">--Choisissez un type d'action--</option>
+          <option value="1">Dépôt de plainte</option>
+          <option value="2">Enregistrement MGPAM</option>
+          <option value="3">Inventaire</option>
+          <option value="4">Mise en reserve</option>
+          <option value="5">Récolement</option>
+          <option value="6">Rendu</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="label"> Constat </label>
+        <select class="form-control" formControlName="observation">
+          <option value="">--Choisissez un constat--</option>
+          <option value="1">Non vu</option>
+          <option value="2">Vu</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="label"> Explication du constat</label>
+        <select class="form-control" formControlName="observationExplication">
+          <option value="">--Choisissez un explication du constat--</option>
+          <option value="1">Retrouvé</option>
+          <option value="2">Disparu</option>
+          <option value="3">A fait l'objet d'un dédommagement</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="label"> Etat de conservation </label>
+        <select class="form-control" formControlName="conservationStatus">
+          <option value="">--Choisissez un état de conservation--</option>
+          <option value="1">Bon</option>
+          <option value="2">Voir commentaire</option>
+        </select>
+      </div>
+      <div class="form-group" *ngIf="actionForm.get('conservationStatus').value == 2">
+        <label class="label"> Commentaire sur l'état de conservation</label>
+        <input type="text" class="form-control comment" formControlName="conservationComment" />
+      </div>
+      <div class="button-bloc d-flex justify-content-around">
+        <button class="delete-button" (click)="ngbActiveModal.close()">Annuler</button>
+        <button [disabled]="actionForm.invalid" class="submit-button">Ajouter</button>
+      </div>
+    </form>
+  </div>
+</div>

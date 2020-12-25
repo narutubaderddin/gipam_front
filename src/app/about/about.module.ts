@@ -9,10 +9,20 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { PublicHeaderComponent } from '@app/about/components/public-header/public-header.component';
 import { ItemDetailsComponent } from '@app/about/components/item-details/item-details.component';
 import { NgbCarouselModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ActionsComponent } from './components/item-details/actions/actions.component';
+import { AgGridModule } from 'ag-grid-angular';
+import { AddActionModalComponent } from './components/item-details/actions/add-action-modal/add-action-modal.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
-  declarations: [HomePageComponent, PublicHeaderComponent, ItemDetailsComponent],
-  exports: [PublicHeaderComponent],
+  declarations: [
+    HomePageComponent,
+    PublicHeaderComponent,
+    ItemDetailsComponent,
+    ActionsComponent,
+    AddActionModalComponent,
+  ],
+  exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
     CommonModule,
     AboutRoutingModule,
@@ -22,6 +32,8 @@ import { NgbCarouselModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NgMultiSelectDropDownModule,
     NgbCarouselModule,
     NgbModule,
+    AgGridModule.withComponents([]),
+    NgSelectModule,
   ],
 })
 export class AboutModule {}
