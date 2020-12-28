@@ -4,6 +4,7 @@ import { DatePipe } from '@angular/common';
 import { StatusRendererComponent } from '@shared/components/datatables/status-renderer/status-renderer.component';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { AddActionModalComponent } from '@app/about/components/item-details/actions/add-action-modal/add-action-modal.component';
+import { EditActionRendererComponent } from '@shared/components/datatables/edit-action-renderer/edit-action-renderer.component';
 
 @Component({
   selector: 'app-actions',
@@ -14,6 +15,7 @@ import { AddActionModalComponent } from '@app/about/components/item-details/acti
 export class ActionsComponent implements OnInit {
   frameworkComponent = {
     statusRenderer: StatusRendererComponent,
+    editActionRenderer: EditActionRendererComponent,
   };
   // @ts-ignore
   columnDefs: ColDef[] = [
@@ -27,11 +29,11 @@ export class ActionsComponent implements OnInit {
     },
     {
       headerName: 'Constat',
-      field: 'constat',
+      field: 'observation',
     },
     {
       headerName: 'Etat',
-      field: 'status',
+      field: 'conservationStatus',
       cellRenderer: 'statusRenderer',
       tooltipValueGetter: (value) => {
         if (value.data.status === 'Voir commentaire') {
@@ -42,6 +44,7 @@ export class ActionsComponent implements OnInit {
     {
       headerName: 'Action',
       flex: 0.5,
+      cellRenderer: 'editActionRenderer',
     },
   ];
 
@@ -49,23 +52,26 @@ export class ActionsComponent implements OnInit {
     {
       date: this.datePipe.transform(new Date(), 'dd/MM/yyyy'),
       actionType: 'Rendu',
-      constat: 'Vu',
-      status: 'Voir commentaire',
-      comment: 'Voilà un premier commentaire',
+      conservationStatus: 'Voir commentaire',
+      conservationComment: 'Voilà un premier commentaire',
+      observation: 'Vu',
+      observationExplication: 'Retrouvé',
     },
     {
       date: this.datePipe.transform(new Date(), 'dd/MM/yyyy'),
       actionType: 'Mise en reserve',
-      constat: 'Vu',
-      status: 'Voir commentaire',
-      comment: 'Voilà un deuxième commentaire',
+      conservationStatus: 'Voir commentaire',
+      conservationComment: 'Voilà un deuxième commentaire',
+      observation: 'Vu',
+      observationExplication: 'Retrouvé',
     },
     {
       date: this.datePipe.transform(new Date(), 'dd/MM/yyyy'),
       actionType: 'Inventaire',
-      constat: 'Vu',
-      status: 'Voir commentaire',
-      comment: 'Voilà un troisième commentaire',
+      conservationStatus: 'Voir commentaire',
+      conservationComment: 'Voilà un troisième commentaire',
+      observation: 'Vu',
+      observationExplication: 'Retrouvé',
     },
   ];
   defaultColDef = {

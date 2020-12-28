@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./comment-details-modal.component.scss'],
 })
 export class CommentDetailsModalComponent implements OnInit {
-  comment: string;
+  conservationComment: string;
   constructor() {}
 
   ngOnInit(): void {}

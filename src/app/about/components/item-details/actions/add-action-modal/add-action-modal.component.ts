@@ -9,7 +9,10 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class AddActionModalComponent implements OnInit {
   actionForm: FormGroup;
-  actionTypes = ['action1', 'action2'];
+  actionTypes = ['Dépôt de plainte', 'Enregistrement MGPAM', 'Inventaire', 'Mise en reserve', 'Récolement', 'Rendu'];
+  observations = ['Non vu', 'Vu'];
+  observationExplications = ['Retrouvé', 'Disparu', "A fait l'objet d'un dédommagement"];
+  conservationsStatus = ['Bon', 'Voir commentaire'];
 
   constructor(private fb: FormBuilder, public ngbActiveModal: NgbActiveModal) {}
 

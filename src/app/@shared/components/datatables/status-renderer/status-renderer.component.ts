@@ -10,16 +10,16 @@ import { CommentDetailsModalComponent } from '@shared/components/datatables/stat
   styleUrls: ['./status-renderer.component.scss'],
 })
 export class StatusRendererComponent implements ICellRendererAngularComp, OnInit {
-  status: string;
-  comment: string;
+  conservationStatus: string;
+  conservationComment: string;
 
   constructor(private modalService: NgbModal) {}
 
   ngOnInit(): void {}
 
   agInit(params: ICellRendererParams): void {
-    this.status = params.data.status;
-    this.comment = params.data.comment;
+    this.conservationStatus = params.data.conservationStatus;
+    this.conservationComment = params.data.conservationComment;
   }
 
   refresh(params: any): boolean {
@@ -32,6 +32,6 @@ export class StatusRendererComponent implements ICellRendererAngularComp, OnInit
       centered: true,
     };
     const modalRef = this.modalService.open(CommentDetailsModalComponent, ngbModalOptions);
-    modalRef.componentInstance.comment = this.comment;
+    modalRef.componentInstance.conservationComment = this.conservationComment;
   }
 }

@@ -12,6 +12,7 @@ import { NgbCarouselModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ActionsComponent } from './components/item-details/actions/actions.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { AddActionModalComponent } from './components/item-details/actions/add-action-modal/add-action-modal.component';
+import { EditActionModalComponent } from './components/item-details/actions/edit-action-modal/edit-action-modal.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { AddActionModalComponent } from './components/item-details/actions/add-a
     ItemDetailsComponent,
     ActionsComponent,
     AddActionModalComponent,
+    EditActionModalComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
