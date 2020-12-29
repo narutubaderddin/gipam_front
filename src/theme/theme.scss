@@ -42,5 +42,73 @@ body {
 
 /**end scroll **/
 
-.container-fluid {
+button {
+  border-radius: 3px;
+  border: 1px solid #124d77;
+  display: inline-block;
+  cursor: pointer;
+  color: #fff;
+  font-size: 13px;
+  padding: 6px 24px;
+  text-decoration: none;
+
+  &:active {
+    position: relative;
+    top: 1px;
+  }
+  &:focus {
+    outline: none;
+  }
+}
+
+/** modal **/
+.modal-content {
+  padding: 2px 3px;
+  border-radius: 10px;
+  .modal-title {
+    text-align: center;
+    padding: 10px 10px;
+    background-color: #1f2b50;
+    color: white;
+    border-bottom: 1px solid #c2c2c2;
+  }
+  .modal-body {
+    padding: 10px 5px;
+
+    form {
+      .form-group {
+        display: flex;
+        padding: 10px 10px 0 10px;
+        margin-bottom: 0;
+
+        label {
+          font-size: 12px;
+          color: #407ca8;
+          width: 100px;
+        }
+
+        input,
+        select {
+          border-color: #e4e4e4;
+          width: 100%;
+          height: 30px;
+          font-size: 12px;
+          border-radius: 4px;
+
+          &:focus {
+            box-shadow: none;
+          }
+        }
+        select {
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          background: transparent
+            url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>")
+            no-repeat;
+          background-position-x: 97%;
+          background-position-y: 2px;
+        }
+      }
+    }
+  }
 }

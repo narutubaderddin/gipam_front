@@ -1,0 +1,51 @@
+<div class="modal-content">
+  <div class="modal-title">Ajouter une action</div>
+  <div class="modal-body">
+    <form [formGroup]="actionForm" (submit)="onSubmit()">
+      <div class="form-group">
+        <label class="label">Date</label>
+        <input type="date" class="form-control" formControlName="date" />
+      </div>
+      <div class="form-group">
+        <label class="label"> Type d'action </label>
+        <select class="form-control" formControlName="actionType">
+          <option value="">--Choisissez un type d'action--</option>
+          <option *ngFor="let action of actionTypes" [value]="action">{{ action }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="label"> Constat </label>
+        <select class="form-control" formControlName="observation">
+          <option value="">--Choisissez un constat--</option>
+          <option *ngFor="let observation of observations" [value]="observation">{{ observation }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="label"> Explication du constat</label>
+        <select class="form-control" formControlName="observationExplication">
+          <option value="">--Choisissez un explication du constat--</option>
+          <option *ngFor="let observationExp of observationExplications" [value]="observationExp">
+            {{ observationExp }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="label"> Etat de conservation </label>
+        <select class="form-control" formControlName="conservationStatus">
+          <option value="">--Choisissez un état de conservation--</option>
+          <option *ngFor="let conservationStatus of conservationsStatus" [value]="conservationStatus">
+            {{ conservationStatus }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="label"> Commentaire sur l'état de conservation</label>
+        <input type="text" class="form-control comment" formControlName="conservationComment" />
+      </div>
+      <div class="button-bloc d-flex justify-content-around">
+        <button class="delete-button" (click)="ngbActiveModal.close()">Annuler</button>
+        <button [disabled]="actionForm.invalid" class="submit-button">Ajouter</button>
+      </div>
+    </form>
+  </div>
+</div>

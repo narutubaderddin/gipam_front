@@ -34,6 +34,8 @@
     "@fortawesome/fontawesome-free": "^5.14.0",
     "@ng-bootstrap/ng-bootstrap": "^7.0.0",
     "@ngx-translate/core": "^13.0.0",
+    "ag-grid-angular": "^24.1.0",
+    "ag-grid-community": "^24.1.0",
     "angular-2-local-storage": "^3.0.2",
     "bootstrap": "^4.5.2",
     "ng-multiselect-dropdown": "^0.3.1",

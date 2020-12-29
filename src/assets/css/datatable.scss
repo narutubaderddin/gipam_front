@@ -1,0 +1,111 @@
+@import "../../../node_modules/ag-grid-community/src/styles/ag-grid.scss";
+@import "../../../node_modules/ag-grid-community/src/styles/ag-theme-alpine/sass/ag-theme-alpine-mixin.scss";
+
+.ag-theme-alpine {
+  @include ag-theme-alpine();
+  text-align: center;
+
+  * {
+    box-sizing: border-box;
+    outline: none;
+    font-size: 12px;
+    text-align: start;
+    color: #939393;
+  }
+  .ag-header {
+    background-color: #1f2b50;
+  }
+  .ag-header-row {
+    font-weight: 700;
+    color: #181d1f;
+  }
+  .ag-header-cell-text {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: white;
+  }
+
+  .ag-row {
+    background-color: #fff;
+    color: #181d1f;
+    border: none 1px #dde2eb;
+  }
+  .ag-header-cell-label {
+    justify-content: start;
+  }
+  .ag-paging-panel {
+    border-top: 1px solid #babfc7;
+    color: #181d1f;
+  }
+  .dropdown-item {
+    color: #939393;
+  }
+  .ag-cell {
+    border: 1px solid transparent;
+    line-height: 33px;
+    padding-left: 10px;
+    padding-right: 17px;
+  }
+  .ag-cell-auto-height {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .ag-center-cols-container {
+    height: 40px;
+  }
+  .ag-standard-button {
+    color: #17498f;
+    border: #17498f 1px solid;
+    padding: 1px 3px;
+  }
+  .ag-root-wrapper {
+    border: none;
+    border-radius: 3px;
+  }
+  .ag-header-cell-resize::after {
+    width: 0;
+  }
+  .ag-ltr .ag-has-focus .ag-cell-focus:not(.ag-cell-range-selected) {
+    border: 1px solid white;
+    outline: white;
+  }
+  .ag-header-cell {
+    padding-left: 10px !important;
+  }
+  //checkbox
+  .ag-checkbox-input-wrapper {
+    box-shadow: none !important;
+    font-size: 13px;
+  }
+  .ag-checkbox-input-wrapper.ag-checked::after {
+    color: #1e90ff;
+  }
+  .ag-checkbox-input-wrapper::after {
+    color: #e8e8eb;
+  }
+  .ag-selection-checkbox {
+    margin-right: 17px;
+  }
+  .ag-checkbox-input-wrapper:active {
+    border-color: white;
+  }
+  //end checkbox
+  //scroll
+  .ag-body-horizontal-scroll-viewport {
+    overflow-x: hidden;
+  }
+  .ag-body-horizontal-scroll {
+    height: 0 !important;
+    min-height: 0 !important;
+  }
+  //end scroll
+  input:not([type]),
+  input,
+  textarea {
+    border-radius: 0;
+  }
+  .ag-picker-field-wrapper {
+    display: none !important;
+  }
+}
