@@ -1,0 +1,42 @@
+.button-bloc {
+  button {
+    display: inline-block;
+    cursor: pointer;
+    color: #fff;
+    font-size: 13px;
+    padding: 6px 24px;
+    text-decoration: none;
+    margin-top: 20px;
+    margin-bottom: 0;
+    width: 120px;
+    border-radius: 3px;
+
+    &:active {
+      position: relative;
+      top: 1px;
+    }
+  }
+
+  .submit-button {
+    box-shadow: inset 0 1px 0 0 #54a3f7;
+    background: #007dc1 linear-gradient(to bottom, #407ca8 5%, #0061a7 100%);
+    border: 1px solid #124d77;
+    text-shadow: 0 1px 0 #154682;
+
+    &:hover {
+      background: #0061a7 linear-gradient(to bottom, #0061a7 5%, #407ca8 100%);
+    }
+  }
+
+  .delete-button {
+    box-shadow: inset 0 1px 0 0 #fff;
+    background: #ededed linear-gradient(to bottom, #ededed 5%, #dfdfdf 100%);
+    border: 1px solid #dcdcdc;
+    color: #777;
+    text-shadow: 0 1px 0 #fff;
+
+    &:hover {
+      background: #dfdfdf linear-gradient(to bottom, #dfdfdf 5%, #ededed 100%);
+    }
+  }
+}
