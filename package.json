@@ -20,7 +20,6 @@
     "generate": "ng generate"
   },
   "dependencies": {
-    "@agm/core": "^1.1.0",
     "@angular/animations": "^10.1.4",
     "@angular/common": "^10.1.4",
     "@angular/compiler": "^10.1.4",

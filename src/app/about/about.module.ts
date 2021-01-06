@@ -38,8 +38,6 @@ import { MovementsService } from '@app/about/components/item-details/movements/m
     NgbModule,
     AgGridModule.withComponents([]),
   ],
-  providers: [
-    MovementsService
-  ]
+  providers: [MovementsService],
 })
 export class AboutModule {}

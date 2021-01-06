@@ -8,9 +8,8 @@ describe('ShowMovementDetailsRendererComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ShowMovementDetailsRendererComponent ]
-    })
-    .compileComponents();
+      declarations: [ShowMovementDetailsRendererComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

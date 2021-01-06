@@ -16,14 +16,14 @@ L.Marker.prototype.options.icon = L.icon({
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
   tooltipAnchor: [16, -28],
-  shadowSize: [41, 41]
+  shadowSize: [41, 41],
 });
 
 @Component({
   selector: 'app-movements',
   templateUrl: './movements.component.html',
   styleUrls: ['./movements.component.scss'],
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
 export class MovementsComponent implements AfterViewInit {
   map: any;
@@ -53,8 +53,8 @@ export class MovementsComponent implements AfterViewInit {
       flex: 0.5,
       cellRenderer: 'showMovementDetailsRenderer',
       tooltipValueGetter: () => {
-        return 'Voir plus de détails sur le mouvement'
-      }
+        return 'Voir plus de détails sur le mouvement';
+      },
     },
   ];
 
@@ -73,7 +73,7 @@ export class MovementsComponent implements AfterViewInit {
     },
     {
       date: this.datePipe.transform(new Date(), 'dd/MM/yyyy'),
-      movementType: 'Inscription à l\'inventaire',
+      movementType: "Inscription à l'inventaire",
       ministerSigle: 'MDI',
       directionSigle: 'CAB',
     },
@@ -88,7 +88,7 @@ export class MovementsComponent implements AfterViewInit {
   gridColumnApi: ColumnApi;
   gridReady = false;
 
-  constructor(private movementsService: MovementsService,private datePipe: DatePipe) {}
+  constructor(private movementsService: MovementsService, private datePipe: DatePipe) {}
 
   ngAfterViewInit(): void {
     this.initMap();
@@ -108,12 +108,10 @@ export class MovementsComponent implements AfterViewInit {
     });
     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 20,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     });
 
     tiles.addTo(this.map);
   }
-  addMovement() {
-
-  }
+  addMovement() {}
 }
