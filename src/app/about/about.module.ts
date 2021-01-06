@@ -13,6 +13,8 @@ import { ActionsComponent } from './components/item-details/actions/actions.comp
 import { AgGridModule } from 'ag-grid-angular';
 import { AddActionModalComponent } from './components/item-details/actions/add-action-modal/add-action-modal.component';
 import { EditActionModalComponent } from './components/item-details/actions/edit-action-modal/edit-action-modal.component';
+import { MovementsComponent } from './components/item-details/movements/movements.component';
+import { MovementsService } from '@app/about/components/item-details/movements/movements.service';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,7 @@ import { EditActionModalComponent } from './components/item-details/actions/edit
     ActionsComponent,
     AddActionModalComponent,
     EditActionModalComponent,
+    MovementsComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
@@ -35,5 +38,6 @@ import { EditActionModalComponent } from './components/item-details/actions/edit
     NgbModule,
     AgGridModule.withComponents([]),
   ],
+  providers: [MovementsService],
 })
 export class AboutModule {}

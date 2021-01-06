@@ -1,0 +1,41 @@
+.map-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 30px;
+  .map-frame {
+    height: 350px;
+  }
+  #map {
+    height: 100%;
+  }
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+    .vl {
+      border-left: 4px solid #e6e6ea;
+      height: 350px;
+      position: absolute;
+      left: 58.5%;
+      margin-left: -3px;
+      top: 52px;
+    }
+    h5 {
+      font-weight: bold;
+      color: #be3d4d;
+    }
+  }
+}
+
+@media (max-width: 450px) {
+  .content {
+    .map-frame {
+      margin-bottom: 20px;
+    }
+    .vl {
+      display: none;
+    }
+  }
+}

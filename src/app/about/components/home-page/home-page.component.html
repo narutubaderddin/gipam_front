@@ -119,7 +119,7 @@
 
     <div class="picture-bloc-images" *ngIf="mode == 'liste'; else elseBlock">
       <div class="cadre col-md-12">
-        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 items-bloc" *ngFor="let items of oeuvreToShow">
+        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 items-bloc" *ngFor="let items of oeuvreToShow">
           <div class="flip">
             <div class="front" [ngStyle]="{ 'background-image': 'url(' + items.image + ')' }">
               <h1 class="text-shadow">{{ items.titre }}</h1>
@@ -133,9 +133,9 @@
         </div>
       </div>
     </div>
-    <ng-template class="col-sm-12" #elseBlock>
+    <ng-template #elseBlock>
       <div class="list-bloc-images one-column">
-        <div class="content-bloc col-lg-auto col-md-auto col-sm-12" *ngFor="let items of oeuvreToShow">
+        <div class="content-bloc col-lg-auto col-md-auto col-sm-12 mt-1" *ngFor="let items of oeuvreToShow">
           <div class="profile">
             <div class="photo"><img src="{{ items.image }}" alt="" /></div>
             <div class="content">
