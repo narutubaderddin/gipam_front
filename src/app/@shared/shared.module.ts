@@ -9,6 +9,7 @@ import { StatusRendererComponent } from './components/datatables/status-renderer
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommentDetailsModalComponent } from './components/datatables/status-renderer/comment-details-modal/comment-details-modal.component';
 import { EditActionRendererComponent } from './components/datatables/edit-action-renderer/edit-action-renderer.component';
+import { ShowMovementDetailsRendererComponent } from './components/datatables/show-movement-details-renderer/show-movement-details-renderer.component';
 
 @NgModule({
   imports: [CommonModule, TranslateModule, AgGridModule.withComponents([]), NgbTooltipModule],
@@ -18,6 +19,7 @@ import { EditActionRendererComponent } from './components/datatables/edit-action
     StatusRendererComponent,
     CommentDetailsModalComponent,
     EditActionRendererComponent,
+    ShowMovementDetailsRendererComponent,
   ],
   exports: [LoaderComponent, GridWrapperComponent, CommentDetailsModalComponent],
 })

@@ -66,6 +66,7 @@ button {
   .firth-bloc {
     padding-top: 35px;
   }
+
   @media (max-width: 375px) {
     padding: 0 10px;
   }
@@ -310,6 +311,14 @@ li a i:hover {
 .firth-page-bloc {
   width: 90%;
   background-color: white;
+}
+
+.fifth-page-bloc {
+  height: 460px;
+  margin-bottom: 20px;
+  @media (max-width: 600px) {
+    height: 800px;
+  }
 }
 
 /** end firth bloc **/
