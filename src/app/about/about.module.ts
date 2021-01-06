@@ -15,6 +15,8 @@ import { AddActionModalComponent } from './components/item-details/actions/add-a
 import { EditActionModalComponent } from './components/item-details/actions/edit-action-modal/edit-action-modal.component';
 import { MovementsComponent } from './components/item-details/movements/movements.component';
 import { MovementsService } from '@app/about/components/item-details/movements/movements.service';
+import { TimelineComponent } from './components/item-details/timeline/timeline.component';
+import { ItemImagesComponent } from './components/item-details/item-images/item-images.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { MovementsService } from '@app/about/components/item-details/movements/m
     AddActionModalComponent,
     EditActionModalComponent,
     MovementsComponent,
+    TimelineComponent,
+    ItemImagesComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [

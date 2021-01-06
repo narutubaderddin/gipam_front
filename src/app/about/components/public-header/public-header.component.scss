@@ -11,6 +11,8 @@ nav {
 
   .nav-list {
     height: 50px;
+    margin-left: -20px;
+
     ul {
       height: 50px;
       color: white;
@@ -29,6 +31,9 @@ nav {
         }
       }
     }
+  }
+  @media (max-width: 786px) {
+    height: 60px;
   }
 }
 
