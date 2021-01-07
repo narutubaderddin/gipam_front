@@ -38,7 +38,7 @@ import { HomeModule } from '@app/home/home.module';
     AboutModule,
     AppRoutingModule, // must be imported as the last module as it contains the fallback route
   ],
-  declarations: [AppComponent, AboutComponent],
+  declarations: [AppComponent],
   providers: [],
   bootstrap: [AppComponent],
 })

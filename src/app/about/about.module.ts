@@ -17,9 +17,11 @@ import { MovementsComponent } from './components/item-details/movements/movement
 import { MovementsService } from '@app/about/components/item-details/movements/movements.service';
 import { TimelineComponent } from './components/item-details/timeline/timeline.component';
 import { ItemImagesComponent } from './components/item-details/item-images/item-images.component';
+import { AboutComponent } from '@app/about/about.component';
 
 @NgModule({
   declarations: [
+    AboutComponent,
     HomePageComponent,
     PublicHeaderComponent,
     ItemDetailsComponent,
