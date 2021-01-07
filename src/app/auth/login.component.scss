@@ -27,8 +27,8 @@ div {
     }
   }
   @media (max-width: 789px) {
-    p {
-      display: none;
+    .header-logo .footer-parag p {
+      width: 200px;
     }
   }
 }
