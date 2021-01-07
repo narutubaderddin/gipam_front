@@ -56,10 +56,38 @@
     </div>
 
     <div class="category-list" *ngIf="openType">
-      <button type="button" class="btn btn-secondary types">Architecture</button>
-      <button type="button" class="btn btn-secondary types">Sculpture</button>
-      <button type="button" class="btn btn-secondary types">Peinture</button>
-      <button type="button" class="btn btn-secondary types">Photographie</button>
+      <button
+        type="button"
+        class="btn types"
+        [ngClass]="selectedCategory === 1 ? 'first-cat' : 'btn-secondary'"
+        (click)="selectCategory(1)"
+      >
+        Architecture
+      </button>
+      <button
+        type="button"
+        class="btn types"
+        [ngClass]="selectedCategory === 2 ? 'second-cat' : 'btn-secondary'"
+        (click)="selectCategory(2)"
+      >
+        Sculpture
+      </button>
+      <button
+        type="button"
+        class="btn types"
+        [ngClass]="selectedCategory === 3 ? 'third-cat' : 'btn-secondary'"
+        (click)="selectCategory(3)"
+      >
+        Peinture
+      </button>
+      <button
+        type="button"
+        class="btn types"
+        [ngClass]="selectedCategory === 4 ? 'firth-cat' : 'btn-secondary'"
+        (click)="selectCategory(4)"
+      >
+        Photographie
+      </button>
     </div>
     <div class="filter-list" *ngIf="filter">
       <div class="col-xl-2 col-lg-4 col-sm-6 filter-list-bloc">

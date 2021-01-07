@@ -10,6 +10,7 @@ export class HomePageComponent implements OnInit {
   oeuvreToShow: any = [];
   dropdownSettings = {};
   selectedItems: any = [];
+  selectedCategory: number;
   oeuvre = [
     {
       id: 0,
@@ -293,6 +294,10 @@ export class HomePageComponent implements OnInit {
     if (this.oeuvreToShow.length === 0) {
       this.oeuvreToShow = this.oeuvre;
     }
+  }
+
+  selectCategory(n: number) {
+    this.selectedCategory = n;
   }
 
   onDeselect(event: any) {}
