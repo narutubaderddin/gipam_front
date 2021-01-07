@@ -1,47 +1,91 @@
 <div class="login-page">
+  <div class="header-logo">
+    <div>
+      <img src="assets/images/logo-fr.png" style="width: 100px; height: 60px" />
+    </div>
+    <div class="footer-parag">
+      <p>
+        Ministère de l’Économie, des Finances et de l’Industrie Direction des Personnels et de l’Adaptation à
+        l’Environnement professionnel
+      </p>
+    </div>
+  </div>
   <div class="container">
-    <div class="d-flex justify-content-center">
-      <div class="login-card">
-        <form (ngSubmit)="login()" [formGroup]="loginForm" novalidate class="pl-3">
-          <div class="alert col-sm-12" [hidden]="!error || isLoading">Username or password incorrect</div>
-          <div class="form-group login-input mb-4">
-            <input
-              type="text"
-              formControlName="username"
-              autocomplete="username"
-              class="form-control"
-              placeholder="Utilisateur"
-            />
-            <small
-              [hidden]="loginForm.controls.username.valid || loginForm.controls.username.untouched"
-              class="text-danger"
-            >
-            </small>
+    <div class="container-login d-flex justify-content-center flex-column">
+      <div class="form-login">
+        <div class="form-header">
+          <span class="title">Accéder à GIPAM</span>
+        </div>
+        <form (ngSubmit)="login()" [formGroup]="loginForm">
+          <div class="form-body">
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend d-flex justify-content-center">
+                  <img class="input-icon" src="assets/images/icons/user-mon-compte-01.svg" />
+                </div>
+                <input
+                  class="form-control"
+                  placeholder="Adresse email"
+                  aria-label="Adresse email"
+                  aria-describedby="basic-addon1"
+                  name="email"
+                  type="email"
+                  id="email-user"
+                  formControlName="username"
+                  autocomplete="username"
+                  required
+                  email
+                  [class.rempli]="loginForm.controls.username.value && loginForm.controls.username.value !== ''"
+                />
+              </div>
+              <p class="error-label" *ngIf="loginForm.controls.username.errors && loginForm.controls.username.touched">
+                <span *ngIf="loginForm.controls.username.errors.required">L'adresse email doit être renseignée</span>
+                <span *ngIf="loginForm.controls.username.errors.email && !loginForm.controls.username.errors.required"
+                  >Email non valide.</span
+                >
+              </p>
+            </div>
+            <div class="form-group">
+              <div
+                class="input-group"
+                [class.error]="loginForm.controls.password.invalid && loginForm.controls.password.touched"
+              >
+                <div class="input-group-prepend d-flex justify-content-center">
+                  <img class="input-icon" src="assets/images/icons/motDePasse.svg" />
+                </div>
+                <input
+                  class="form-control"
+                  placeholder="Mot de passe"
+                  aria-label="Mot de passe"
+                  aria-describedby="basic-addon2"
+                  name="password"
+                  type="password"
+                  id="pass-user"
+                  formControlName="password"
+                  autocomplete="current-password"
+                  required
+                  [class.rempli]="loginForm.controls.password.value && loginForm.controls.password.value !== ''"
+                />
+              </div>
+              <p class="error-label" *ngIf="loginForm.controls.password.errors && loginForm.controls.password.touched">
+                <br />
+                <span *ngIf="loginForm.controls.password.errors.required">Le mot de passe doit être renseigné</span>
+              </p>
+            </div>
           </div>
-
-          <div class="form-group password-input">
-            <input
-              type="password"
-              formControlName="password"
-              autocomplete="current-password"
-              required
-              class="form-control"
-              placeholder="Mot de passe"
-            />
-            <small
-              [hidden]="loginForm.controls.password.valid || loginForm.controls.password.untouched"
-              class="text-danger"
+          <div class="form-footer flex-column d-flex flex-md-row justify-content-between align-items-center">
+            <a class="lost-pass cursor-pointer" tabindex>Mot de passe oublié ?</a>
+            <button
+              *ngIf="!waitingForResponse"
+              type="submit"
+              class="btn btn-grey mt-4 mt-md-0"
+              [disabled]="!loginForm.valid"
             >
-            </small>
-            <div class="text-underline">Mot de passe oublié ?</div>
-          </div>
-          <button class="specific-button mt-5" type="submit" [disabled]="loginForm.invalid || isLoading">
-            <i class="fas fa-cog fa-spin" [hidden]="!isLoading"></i>
-            <span>Login</span>
-          </button>
-          <div class="row">
-            <div class="small-text mr-1">Vous n'avez pas de compte ?</div>
-            <div class="pink-text" [routerLink]="['/inscription']">créez-en-un !</div>
+              Connectez-vous
+            </button>
+            <ng-container *ngIf="waitingForResponse">
+              <div class="spinner mt-4 mt-md-0"></div>
+            </ng-container>
           </div>
         </form>
       </div>
