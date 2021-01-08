@@ -26,6 +26,11 @@ div {
       }
     }
   }
+  @media (max-width: 789px) {
+    .header-logo .footer-parag p {
+      width: 200px;
+    }
+  }
 }
 
 .container {
@@ -40,6 +45,12 @@ div {
     background-color: transparent;
     font-family: "BNPP Sans", serif;
     color: #dc3545;
+  }
+
+  @media (max-width: 1200px) {
+    width: auto;
+    padding-right: 0;
+    padding-left: 0;
   }
 }
 .form-login {
