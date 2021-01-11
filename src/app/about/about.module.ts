@@ -18,6 +18,7 @@ import { MovementsService } from '@app/about/components/item-details/movements/m
 import { TimelineComponent } from './components/item-details/timeline/timeline.component';
 import { ItemImagesComponent } from './components/item-details/item-images/item-images.component';
 import { AboutComponent } from '@app/about/about.component';
+import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { AboutComponent } from '@app/about/about.component';
     NgbCarouselModule,
     NgbModule,
     AgGridModule.withComponents([]),
+    AutocompleteLibModule,
   ],
   providers: [MovementsService],
 })
