@@ -38,6 +38,7 @@
     "ag-grid-angular": "^24.1.0",
     "ag-grid-community": "^24.1.0",
     "angular-2-local-storage": "^3.0.2",
+    "angular-ng-autocomplete": "^2.0.4",
     "bootstrap": "^4.5.2",
     "leaflet": "^1.7.1",
     "ng-multiselect-dropdown": "^0.3.1",

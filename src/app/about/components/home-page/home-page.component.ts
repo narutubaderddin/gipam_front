@@ -11,6 +11,7 @@ export class HomePageComponent implements OnInit {
   dropdownSettings = {};
   selectedItems: any = [];
   selectedCategory: number;
+  keyword = 'name';
   oeuvre = [
     {
       id: 0,
@@ -190,7 +191,27 @@ export class HomePageComponent implements OnInit {
     { id: 3, style: 'Tableau non classés' },
   ];
   mode = 'pictures';
+  domains = [
+    { name: 'Art graphique' },
+    { name: 'Horlogerie' },
+    { name: 'Luminaire' },
+    { name: 'Mobilier' },
+    { name: 'Object décoratif' },
+    { name: 'Peinture' },
+    { name: 'Sculpture' },
+    { name: 'Art textile' },
+    { name: 'Pièce de musée' },
+    { name: 'Art de la table' },
+    { name: 'Decor monumental' },
+    { name: 'Archeologie' },
+  ];
 
+  filters = [
+    {
+      name: 'Déposant',
+      list: ['Mobilier National', 'CNAP - Centre National des Arts Plastiques', 'Vladimir Jankovic'],
+    },
+  ];
   openType = false;
   filter = false;
   constructor(private router: Router) {}
@@ -301,4 +322,17 @@ export class HomePageComponent implements OnInit {
   }
 
   onDeselect(event: any) {}
+
+  selectEvent(item: any) {
+    // do something with selected item
+  }
+
+  onChangeSearch(val: string) {
+    // fetch remote data from here
+    // And reassign the 'data' which is binded to 'data' property.
+  }
+
+  onFocused(e: any) {
+    // do something when input is focused
+  }
 }

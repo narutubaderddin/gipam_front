@@ -6,7 +6,7 @@
         <div class="d-flex">
           <h1 class="title" style="">OEUVRES D'ARTS</h1>
           <div>
-            <i class="zmdi zmdi-plus"></i>
+            <i ngbTooltip="Ajouter une oeuvre" class="zmdi zmdi-plus"></i>
           </div>
         </div>
         <p>254 Oeuvres d'art</p>
@@ -61,38 +61,16 @@
     </div>
 
     <div class="category-list" *ngIf="openType">
-      <button
-        type="button"
-        class="btn types"
-        [ngClass]="selectedCategory === 1 ? 'first-cat' : 'btn-secondary'"
-        (click)="selectCategory(1)"
-      >
-        Architecture
-      </button>
-      <button
-        type="button"
-        class="btn types"
-        [ngClass]="selectedCategory === 2 ? 'second-cat' : 'btn-secondary'"
-        (click)="selectCategory(2)"
-      >
-        Sculpture
-      </button>
-      <button
-        type="button"
-        class="btn types"
-        [ngClass]="selectedCategory === 3 ? 'third-cat' : 'btn-secondary'"
-        (click)="selectCategory(3)"
-      >
-        Peinture
-      </button>
-      <button
-        type="button"
-        class="btn types"
-        [ngClass]="selectedCategory === 4 ? 'firth-cat' : 'btn-secondary'"
-        (click)="selectCategory(4)"
-      >
-        Photographie
-      </button>
+      <div class="mb-1" *ngFor="let domain of domains; let i = index">
+        <button
+          type="button"
+          class="btn types"
+          [ngClass]="selectedCategory === i ? 'selected-cat' : 'btn-secondary'"
+          (click)="selectCategory(i)"
+        >
+          {{ domain.name }}
+        </button>
+      </div>
     </div>
     <div class="filter-list" *ngIf="filter">
       <div class="col-xl-2 col-lg-4 col-sm-6 filter-list-bloc">
@@ -141,12 +119,26 @@
         </select>
       </div>
       <div class="col-xl-2 col-lg-4 col-sm-6 filter-list-bloc">
-        <label for="exampleFormControlSelect5">Matières</label>
-        <select class="form-control" id="exampleFormControlSelect5" (change)="onChangeMatiere($event.target.value)">
-          <option>Toutes les matières</option>
-          <option>Marbre</option>
-          <option>Huile sur panneau de bois</option>
-        </select>
+        <label for="exampleFormControlSelect5">Domaines</label>
+        <div>
+          <ng-autocomplete
+            placeholder="Domaines"
+            [data]="domains"
+            [searchKeyword]="keyword"
+            (selected)="selectEvent($event)"
+            (inputChanged)="onChangeSearch($event)"
+            (inputFocused)="onFocused($event)"
+            [itemTemplate]="itemTemplate"
+            [notFoundTemplate]="notFoundTemplate"
+          >
+          </ng-autocomplete>
+          <ng-template #itemTemplate let-item>
+            <a [innerHTML]="item.name"></a>
+          </ng-template>
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+        </div>
       </div>
     </div>
 
