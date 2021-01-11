@@ -3,7 +3,12 @@
   <div class="body">
     <div class="title-bloc">
       <div class="left-title-bloc">
-        <h1 class="title" style="">OEUVRES D'ARTS</h1>
+        <div class="d-flex">
+          <h1 class="title" style="">OEUVRES D'ARTS</h1>
+          <div>
+            <i class="zmdi zmdi-plus"></i>
+          </div>
+        </div>
         <p>254 Oeuvres d'art</p>
       </div>
       <div [ngClass]="{ 'picture-mode': mode === 'pictures', 'list-mode': mode === 'liste' }">
