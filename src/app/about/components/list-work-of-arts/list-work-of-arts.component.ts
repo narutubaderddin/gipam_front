@@ -416,7 +416,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     }
   }
 
-  search(event: any) {
+  search(event?: any) {
     if (event.target.value.length > 0) {
       this.oeuvreToShow = this.oeuvres.filter((x: any) =>
         x.titre.toUpperCase().includes(event.target.value.toUpperCase())
