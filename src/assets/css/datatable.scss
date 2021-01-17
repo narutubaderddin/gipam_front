@@ -12,8 +12,19 @@
     text-align: start;
     color: black;
   }
+
   .ag-header {
     background-color: #1f2b50;
+    .ag-icon {
+      color: white;
+    }
+  }
+  .ag-checkbox-input-wrapper {
+    background-color: transparent;
+  }
+  .custom-header-label {
+    color: white;
+    margin-right: 10px;
   }
   .ag-header-row {
     font-weight: 700;

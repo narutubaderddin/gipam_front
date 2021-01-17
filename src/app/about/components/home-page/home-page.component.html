@@ -3,21 +3,21 @@
   <div class="body">
     <div class="title-bloc">
       <div class="left-title-bloc">
-        <div class="d-flex">
-          <h1 class="title" style="">OEUVRES D'ARTS</h1>
-          <div>
-            <i ngbTooltip="Ajouter une oeuvre" class="zmdi zmdi-plus"></i>
-          </div>
-        </div>
+        <h1 class="title">OEUVRES D'ARTS</h1>
         <p>254 Oeuvres d'art</p>
       </div>
-      <div [ngClass]="{ 'picture-mode': mode === 'pictures', 'list-mode': mode === 'liste' }">
-        <button type="button" class="btn picture" (click)="changeMode1()">
-          <i class="zmdi zmdi-grid"></i>
-        </button>
-        <button type="button" class="btn list" (click)="changeMode()">
-          <i class="zmdi zmdi-view-stream"></i>
-        </button>
+      <div class="d-flex">
+        <div class="add-button">
+          <button (click)="addOeuvre()" class="add-action"><i class="zmdi zmdi-plus"> </i>Ajouter Oeuvre</button>
+        </div>
+        <div [ngClass]="{ 'picture-mode': mode === 'pictures', 'list-mode': mode === 'liste' }">
+          <button type="button" class="btn picture" (click)="changeMode1()">
+            <i class="zmdi zmdi-grid"></i>
+          </button>
+          <button type="button" class="btn list" (click)="changeMode()">
+            <i class="zmdi zmdi-view-stream"></i>
+          </button>
+        </div>
       </div>
     </div>
     <div class="search-bloc">
@@ -186,5 +186,8 @@
         </div>
       </div>
     </ng-template>
+  </div>
+  <div class="alert" (click)="openAlertModal()">
+    <i class="zmdi zmdi-notifications notif"><span class="num">2</span></i>
   </div>
 </div>

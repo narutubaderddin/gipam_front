@@ -1,0 +1,62 @@
+.custom-header-container {
+  .header {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    width: 100%;
+
+    .sort-column-actions {
+      display: flex;
+
+      & > span {
+        transition: all ease-in-out 200ms;
+      }
+    }
+  }
+
+  i {
+    font-size: 10px;
+    color: white;
+  }
+
+  .custom-header-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .custom-header-filter-icon {
+    opacity: 0.5;
+    transition: all ease-in-out 200ms;
+    cursor: pointer;
+
+    &.show {
+      opacity: 1;
+    }
+  }
+}
+
+::ng-deep .operators.dropdown-menu {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  &:focus,
+  &:active {
+    outline: transparent;
+    box-shadow: none;
+  }
+}

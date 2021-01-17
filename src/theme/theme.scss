@@ -128,3 +128,16 @@ button {
     margin-right: 10px;
   }
 }
+
+.search-panel {
+  padding-left: 3.5%;
+  input {
+    min-width: 140px;
+    max-width: 200px;
+    margin-top: 12px;
+    height: 30px;
+    &::placeholder {
+      font-size: 12px;
+    }
+  }
+}

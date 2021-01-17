@@ -29,6 +29,24 @@ nav {
           font-size: 35px;
           color: white;
         }
+        .notif {
+          position: relative;
+          display: block;
+          background-size: contain;
+          text-decoration: none;
+        }
+        .num {
+          position: absolute;
+          top: -4px;
+          right: -10px;
+          padding: 0px 6px;
+          border-radius: 50%;
+          background: #be3d4d;
+          color: white;
+          width: 20px;
+          height: 20px;
+          font-size: 18px;
+        }
       }
     }
   }

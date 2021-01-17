@@ -1,0 +1,101 @@
+h6 {
+  font-size: 14px;
+}
+.container-fluid {
+  .bar {
+    height: 50px;
+  }
+  .body {
+    background-color: white;
+    margin: 5px 70px;
+    padding: 20px 40px;
+    .add-export-bloc {
+      justify-content: space-between;
+      .add-bloc {
+        .add-button {
+          margin-right: 10px;
+        }
+      }
+      .export-bloc {
+        .excel {
+          width: 35px;
+          height: 32px;
+          cursor: pointer;
+        }
+      }
+    }
+    .filter-bloc {
+      justify-content: space-between;
+      .search-panel {
+        padding: 0;
+      }
+      .dropdown-container {
+        .drop-bloc {
+          margin-top: 11px;
+          button {
+            height: 30px;
+            border: 1px solid beige;
+            line-height: 0;
+            font-size: 12px;
+            &:focus,
+            &:active {
+              outline: none;
+              box-shadow: none;
+            }
+          }
+        }
+        i {
+          font-size: 20px;
+        }
+        .list::after {
+          display: none;
+        }
+        button:hover,
+        button:active,
+        button:focus {
+          background-color: #54a3f7;
+          color: white;
+        }
+      }
+    }
+  }
+}
+.columns-dropdown {
+  display: flex;
+  flex-wrap: wrap;
+  width: 300px;
+
+  .column-check {
+    border-bottom: solid #ccc 1px;
+    cursor: pointer;
+    transition: all ease-in-out 0.3s;
+
+    &:hover {
+      color: #fff;
+      background-color: rgba(36, 52, 61, 0.5);
+    }
+    input[type="radio"],
+    input[type="checkbox"] {
+      box-sizing: border-box;
+      padding: 0;
+      right: 0;
+      margin-right: 29px;
+      position: absolute;
+      margin-top: 6px;
+    }
+  }
+}
+.list-group-item {
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  i {
+    margin-right: 10px;
+  }
+  &:hover {
+    background-color: #a6a6a6;
+  }
+}
+.checkbox-container {
+  font-size: 14px;
+}

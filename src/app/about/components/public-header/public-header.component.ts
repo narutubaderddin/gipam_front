@@ -13,6 +13,9 @@ export class PublicHeaderComponent implements OnInit {
   ngOnInit(): void {}
 
   home() {
-    this.router.navigate(['accueil']);
+    this.router.navigate(['home-page']);
+  }
+  goToWorkOfArts() {
+    this.router.navigate(['work-of-arts-list']);
   }
 }

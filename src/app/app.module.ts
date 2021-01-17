@@ -14,7 +14,6 @@ import { ShellModule } from './shell/shell.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LocalStorageModule } from 'angular-2-local-storage';
-import { AboutComponent } from './about/about.component';
 import { AboutModule } from '@app/about/about.module';
 import { HomeModule } from '@app/home/home.module';
 
