@@ -1,5 +1,7 @@
+import { AlertModalComponent } from './../alert-modal/alert-modal.component';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-home-page',
@@ -20,7 +22,7 @@ export class HomePageComponent implements OnInit {
       description: 'Une statue en marbre représentantla déesse Aphrodite-C.',
       mots_descriptifs: 'mots_descriptifs',
       commentaire: 'commentaire',
-      image: 'assets/images/venus.jpg',
+      image: 'assets/images/573.jpg',
       vip: 'true',
       type: 'Sculpture',
       editeur: "Alexandros d'Antioche",
@@ -33,7 +35,7 @@ export class HomePageComponent implements OnInit {
       id: 1,
       titre: 'La Joconde',
       description: 'Le Portrait de Mona Lisa est celui de la Florentine Lisa Gherardini',
-      image: 'assets/images/joconde.jpg',
+      image: 'assets/images/1.jpg',
       vip: 'true',
       status: 'notRecieved',
       type: 'Peinture',
@@ -47,7 +49,7 @@ export class HomePageComponent implements OnInit {
       id: 2,
       titre: 'La Belle Ferronnière',
       description: 'Un tableau peint sur un panneau en bois de noyer',
-      image: 'assets/images/labelle.jpg',
+      image: 'assets/images/2.jpg',
       vip: 'false',
       status: 'recieved',
       type: 'Peinture',
@@ -61,7 +63,7 @@ export class HomePageComponent implements OnInit {
       id: 3,
       titre: 'La Liberté guidant le peuple',
       description: "Une huile sur toile d'Eugène Delacroix  ",
-      image: 'assets/images/liberte.jpg',
+      image: 'assets/images/4.jpg',
       vip: 'false',
       status: 'recieved',
       type: 'Sculpture',
@@ -75,7 +77,7 @@ export class HomePageComponent implements OnInit {
       id: 4,
       titre: 'ECOLE FRANCAISE VERS 1830,D’APRÈS PIERRE...',
       description: 'ECOLE FRANCAISE VERS 1830, D’APRÈS PIERRE...',
-      image: 'assets/images/ecole.png',
+      image: 'assets/images/25.jpg',
       vip: 'false',
       status: 'recieved',
       type: 'Peinture',
@@ -88,7 +90,7 @@ export class HomePageComponent implements OnInit {
       id: 5,
       titre: 'Victoire de Samothrace',
       description: "Un monument de sculpture grecque trouvé dans l'île de Samothrace.",
-      image: 'assets/images/samothrace.jpg',
+      image: 'assets/images/35.jpg',
       vip: 'false',
       status: 'notRecieved',
       type: 'Sculpture',
@@ -104,7 +106,7 @@ export class HomePageComponent implements OnInit {
       description: 'Une statue en marbre représentantla déesse Aphrodite-C.',
       mots_descriptifs: 'mots_descriptifs',
       commentaire: 'commentaire',
-      image: 'assets/images/esclave.jpg',
+      image: 'assets/images/162.JPG',
       vip: 'true',
       type: 'Sculpture',
       editeur: 'Michel-Ange',
@@ -118,7 +120,7 @@ export class HomePageComponent implements OnInit {
       id: 7,
       titre: 'La Vierge aux rochers',
       description: 'Considérée par les historiens comme la première des deux versions.',
-      image: 'assets/images/lavierge.jpg',
+      image: 'assets/images/0000.jpg',
       vip: 'false',
       status: 'recieved',
       type: 'Peinture',
@@ -132,7 +134,7 @@ export class HomePageComponent implements OnInit {
       id: 8,
       titre: 'Les Noces de Cana',
       description: "Une huile sur toile d'Eugène Delacroix  ",
-      image: 'assets/images/noce.jpg',
+      image: 'assets/images/304.jpg',
       vip: 'false',
       status: 'recieved',
       type: 'Peinture',
@@ -146,7 +148,7 @@ export class HomePageComponent implements OnInit {
       id: 9,
       titre: 'Victoire de Samothrace',
       description: "Un monument de sculpture grecque trouvé dans l'île de Samothrace.",
-      image: 'assets/images/samothrace.jpg',
+      image: 'assets/images/343 .jpg',
       vip: 'false',
       status: 'notRecieved',
       type: 'Sculpture',
@@ -160,7 +162,7 @@ export class HomePageComponent implements OnInit {
       id: 10,
       titre: "Vénus d'Arles",
       description: 'une sculpture en marbre dégagée en 1651',
-      image: 'assets/images/venusarles.jpg',
+      image: 'assets/images/365.jpg',
       vip: 'false',
       status: 'notRecieved',
       type: 'Sculpture',
@@ -174,7 +176,7 @@ export class HomePageComponent implements OnInit {
       id: 11,
       titre: 'Saint Jean-Baptiste',
       description: ' Peint sur une planche de noyer et mesure 69 × 57 cm',
-      image: 'assets/images/saint.jpg',
+      image: 'assets/images/12.jpg',
       vip: 'false',
       status: 'recieved',
       type: 'Peinture',
@@ -214,7 +216,7 @@ export class HomePageComponent implements OnInit {
   ];
   openType = false;
   filter = false;
-  constructor(private router: Router) {}
+  constructor(private router: Router, private modalService: NgbModal) {}
 
   ngOnInit() {
     this.oeuvreToShow = this.oeuvre;
@@ -334,5 +336,15 @@ export class HomePageComponent implements OnInit {
 
   onFocused(e: any) {
     // do something when input is focused
+  }
+
+  addOeuvre() {}
+
+  openAlertModal() {
+    const ngbModalOptions: NgbModalOptions = {
+      backdropClass: 'modal-container',
+      centered: true,
+    };
+    this.modalService.open(AlertModalComponent, ngbModalOptions);
   }
 }

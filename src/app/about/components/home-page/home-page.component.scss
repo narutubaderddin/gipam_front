@@ -34,18 +34,44 @@ a:not([href]) {
     }
   }
 }
-.zmdi-plus {
-  font-size: 20px;
-  border: 1px solid #407ca8;
-  border-radius: 25px;
-  width: 23px;
-  height: 23px;
-  padding-left: 4.3px;
-  background-color: #407ca8;
-  font-weight: 600;
-  margin-top: 3px;
-  padding-top: 1px;
+
+.add-button {
+  margin-top: 9px;
+  margin-right: 10px;
+}
+
+.alert {
+  position: fixed;
+  bottom: 0;
+  right: 10px;
+  width: 50px;
+  height: 50px;
+  background-color: #be3d4d;
+  color: white;
+  padding: 12px 14px;
   cursor: pointer;
+  .zmdi {
+    position: relative;
+    display: block;
+    background-size: contain;
+    text-decoration: none;
+    font-size: 25px;
+  }
+  .num {
+    position: absolute;
+    top: -4px;
+    right: -10px;
+    padding: 0px 6px;
+    border-radius: 50%;
+    background: brown;
+    color: white;
+    width: 20px;
+    height: 20px;
+    font-size: 18px;
+  }
+  &:hover {
+    box-shadow: 0 0 0.5rem #be3d4d;
+  }
 }
 
 .box i {
@@ -135,9 +161,9 @@ a:not([href]) {
     button {
       border: 1px solid #407ca8;
       color: #407ca8;
-      line-height: 0;
-      width: 27px;
-      padding-left: 7px;
+      line-height: 1.5;
+      width: 30px;
+      padding-left: 9px;
       margin-right: -3px;
       border-radius: 0;
       &:hover {
@@ -169,16 +195,7 @@ a:not([href]) {
       box-shadow: none;
     }
   }
-  .search-panel {
-    padding-left: 3.5%;
-    input {
-      width: 80%;
-      min-width: 140px;
-      max-width: 300px;
-      margin-top: 12px;
-      height: 30px;
-    }
-  }
+
   .characteristic-panel {
     display: flex;
     justify-content: center;

@@ -13,6 +13,9 @@
 
   <div class="collapse navbar-collapse nav-list" id="navbarSupportedContent">
     <ul class="navbar-nav ml-auto">
+      <li class="right-header list main_nav_list_item lis li bt doc" (click)="home()">
+        <a class="doc" translate> Accueil </a>
+      </li>
       <li class="right-header list main_nav_list_item lis li bt adm">
         <a class="adm" (click)="home()" translate> Administration </a>
       </li>
@@ -23,8 +26,13 @@
       <li class="right-header list main_nav_list_item lis doc bt">
         <a class="doc" (click)="home()" translate> Documents</a>
       </li>
-      <li class="right-header list main_nav_list_item lis bt od">
-        <a (click)="home()" translate> OEUVRES D'ART</a>
+      <li class="right-header list main_nav_list_item lis bt od" (click)="goToWorkOfArts()">
+        <a translate> OEUVRES D'ART</a>
+      </li>
+      <li class="right-header list main_nav_list_item li">
+        <div class="pt-2">
+          <i class="zmdi zmdi-notifications notif"><span class="num">2</span></i>
+        </div>
       </li>
       <li class="right-header list main_nav_list_item li">
         <div class="dropdown" style="box-shadow: none">

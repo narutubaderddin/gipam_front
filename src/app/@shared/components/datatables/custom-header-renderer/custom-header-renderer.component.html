@@ -1,0 +1,70 @@
+<div class="custom-header-container">
+  <ng-container *ngIf="!resetFilter; else reset">
+    <div class="header" ngbDropdown container="body" #dropdown="ngbDropdown" autoClose="outside">
+      <span class="custom-header-label">{{ params.displayName }}</span>
+      <div class="d-flex align-items-center">
+        <div class="sort-column-actions" *ngIf="params.enableSorting">
+          <span
+            [ngStyle]="{ opacity: sortOrder === 'DESC' ? 1 : 0.5 }"
+            (click)="onSortColumn('DESC')"
+            class="customSortDownLabel mr-1"
+          >
+            <i class="fas fa-long-arrow-alt-up"></i>
+          </span>
+          <span
+            [ngStyle]="{ opacity: sortOrder === 'ASC' ? 1 : 0.5 }"
+            (click)="onSortColumn('ASC')"
+            class="customSortUpLabel mr-1"
+          >
+            <i class="fas fa-long-arrow-alt-down"></i>
+          </span>
+        </div>
+        <span class="custom-header-filter-icon" *ngIf="params.enableMenu" [ngClass]="{ show: filterActive }">
+          <i class="fa {{ menuIcon }}" ngbDropdownAnchor (click)="onFilterClick(dropdown)"></i>
+        </span>
+        <div class="operators" ngbDropdownMenu>
+          <input
+            *ngIf="type === 'text' || type === 'number'"
+            #inputField
+            [type]="type"
+            class="form-control"
+            [formControl]="filterControl"
+            (keyup.enter)="onFilterEnter()"
+            (input)="onFilterInput($event)"
+            [placeholder]="placeholder | translate"
+            min="1"
+          />
+          <input
+            *ngIf="type === 'date'"
+            (click)="datepickerStart.toggle()"
+            type="text"
+            class="form-control"
+            ngbDatepicker
+            #datepickerStart="ngbDatepicker"
+            (dateSelect)="onDateSelection($event)"
+            [autoClose]="false"
+            [formControl]="filterControl"
+          />
+          <select
+            #selectField
+            *ngIf="type === 'list' && list"
+            (change)="onFilterEnter(dropdown)"
+            [formControl]="filterControl"
+            class="form-control"
+          >
+            <option value=""></option>
+            <option *ngFor="let item of list" [value]="item" translate>{{ item }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #reset>
+    <div class="header">
+      <span class="custom-header-label">{{ params.displayName }}</span>
+      <span class="custom-header-filter-icon show">
+        <i class="fa {{ menuIcon }}" (click)="onResetFilter()"></i>
+      </span>
+    </div>
+  </ng-template>
+</div>

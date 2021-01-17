@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   login() {
     this.isLoading = true;
-    this.router.navigate(['accueil']);
+    this.router.navigate(['home-page']);
   }
 
   private createForm() {

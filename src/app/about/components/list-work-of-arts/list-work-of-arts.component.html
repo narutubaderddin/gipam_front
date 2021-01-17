@@ -1,0 +1,97 @@
+<div class="container-fluid">
+  <div class="bar"></div>
+  <div class="body">
+    <div class="add-export-bloc d-flex flex-content-between">
+      <div class="d-flex add-bloc">
+        <div class="add-button">
+          <button class="add-action"><i class="zmdi zmdi-plus"> </i>Ajouter une oeuvre propriétaire</button>
+        </div>
+        <div class="add-button">
+          <button class="add-action"><i class="zmdi zmdi-plus"> </i>Ajouter une oeuvre dépositaire</button>
+        </div>
+      </div>
+    </div>
+    <div class="filter-bloc mt-4 d-flex">
+      <div class="col-md-3 col-sm-12 search-panel">
+        <input
+          (keyup)="search($event)"
+          (clear)="search()"
+          class="form-control"
+          type="text"
+          name="search"
+          autocomplete="off"
+          placeholder="Recherche"
+        />
+      </div>
+      <div class="d-flex">
+        <div>
+          <div class="dropdown-container mb-2 mr-2 mb-sm-0">
+            <div class="d-inline-block drop-bloc">
+              <button class="btn dropdown-btn list" (click)="resetFilter()">Restaurer Filtres</button>
+            </div>
+          </div>
+        </div>
+        <div class="dropdown-container mb-2 mr-2 mb-sm-0">
+          <div
+            ngbDropdown
+            placement="bottom-right"
+            class="d-inline-block drop-bloc"
+            autoClose="outside"
+            container="body"
+          >
+            <button class="btn dropdown-btn list" id="dropdownBasic" ngbDropdownToggle translate>
+              <i class="fas fa-bars"></i>
+            </button>
+            <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">
+              <ul class="list-group">
+                <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter notices catalogue</li>
+                <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter notices technique</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="dropdown-container mb-2 mb-sm-0">
+          <div
+            ngbDropdown
+            placement="bottom-right"
+            class="d-inline-block drop-bloc"
+            autoClose="outside"
+            container="body"
+          >
+            <button class="btn dropdown-btn" id="dropdownBasic1" ngbDropdownToggle translate>Colonnes</button>
+            <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <div class="columns-dropdown">
+                <div class="col-12 col-sm-6 pt-1 column-check" *ngFor="let headerCol of columns">
+                  <label class="checkbox-container" translate
+                    >{{ headerCol.getColDef().headerName }}
+                    <input
+                      type="checkbox"
+                      #headerCheck
+                      (click)="onHeaderToggle(headerCol)"
+                      [checked]="headerCol.isVisible()"
+                    />
+                    <span class="checkmark"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="datatable mt-4">
+      <app-grid-wrapper
+        [columnDefs]="ColDef"
+        [rowData]="oeuvreToShow"
+        [frameworkComponents]="frameworkComponents"
+        [defaultColDef]="defaultColDef"
+        (gridReady)="onGridReady($event)"
+        [context]="this"
+        [gridOptions]="gridOptions"
+        [sizeToFit]="false"
+        [pinnedCols]="pinnedCols"
+        [leftPinnedCols]="leftPinnedCols"
+      ></app-grid-wrapper>
+    </div>
+  </div>
+</div>
