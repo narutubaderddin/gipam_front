@@ -15,6 +15,7 @@ import { GridActionRendererComponent } from '@app/@shared/components/datatables/
   styleUrls: ['./list-work-of-arts.component.scss'],
 })
 export class ListWorkOfArtsComponent implements OnInit {
+  mode = 'liste';
   filterFormGroup: FormGroup;
   columnDropped = new EventEmitter();
   columnDroppedSubscription: Subscription;

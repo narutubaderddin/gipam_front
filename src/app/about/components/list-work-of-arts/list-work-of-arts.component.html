@@ -10,27 +10,19 @@
           <button class="add-action"><i class="zmdi zmdi-plus"> </i>Ajouter une oeuvre en propriété</button>
         </div>
       </div>
+      <div class="d-flex">
+        <div [ngClass]="{ 'picture-mode': mode === 'pictures', 'list-mode': mode === 'liste' }">
+          <button type="button" class="btn picture">
+            <i class="zmdi zmdi-view-stream"></i>
+          </button>
+          <button type="button" class="btn list">
+            <i class="zmdi zmdi-grid"></i>
+          </button>
+        </div>
+      </div>
     </div>
     <div class="filter-bloc mt-4 d-flex">
-      <div class="col-md-3 col-sm-12 search-panel">
-        <input
-          (keyup)="search($event)"
-          (clear)="search()"
-          class="form-control"
-          type="text"
-          name="search"
-          autocomplete="off"
-          placeholder="Recherche"
-        />
-      </div>
       <div class="d-flex">
-        <div>
-          <div class="dropdown-container mb-2 mr-2 mb-sm-0">
-            <div class="d-inline-block drop-bloc">
-              <button class="btn dropdown-btn list" (click)="resetFilter()">Restaurer Filtres</button>
-            </div>
-          </div>
-        </div>
         <div class="dropdown-container mb-2 mr-2 mb-sm-0">
           <div
             ngbDropdown
@@ -39,13 +31,16 @@
             autoClose="outside"
             container="body"
           >
-            <button class="btn dropdown-btn list" id="dropdownBasic" ngbDropdownToggle translate>
-              <i class="fas fa-bars"></i>
+            <button class="btn export-button" id="dropdownBasic" ngbDropdownToggle translate>
+              <i class="fas fa-file-export"></i>
             </button>
             <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">
               <ul class="list-group">
-                <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter notices catalogue</li>
-                <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter notices technique</li>
+                <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter Notices style catalogue</li>
+                <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter Notices techniques</li>
+                <li class="list-group-item">
+                  <i class="fas fa-file-export"></i> Exporter Notices complètes techniques
+                </li>
               </ul>
             </div>
           </div>
@@ -79,6 +74,42 @@
         </div>
       </div>
     </div>
+    <div class="search-quick-fliter-bloc d-flex flex-content-between">
+      <div class="quick-filters d-flex">
+        <h6 class="text-quick-filter">Filtres rapides :</h6>
+        <div class="dropdown-container mb-2 mr-2 mb-sm-0">
+          <div class="d-inline-block drop-bloc">
+            <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">Oeuvres archivées</button>
+          </div>
+        </div>
+        <div class="dropdown-container mb-2 mr-2 mb-sm-0">
+          <div class="d-inline-block drop-bloc">
+            <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">Oeuvres perdues</button>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex">
+        <div>
+          <div class="dropdown-container mb-2 mr-2 mb-sm-0">
+            <div class="d-inline-block drop-bloc">
+              <button class="btn dropdown-btn list" (click)="resetFilter()">Restaurer</button>
+            </div>
+          </div>
+        </div>
+        <div class="search-panel">
+          <input
+            (keyup)="search($event)"
+            (clear)="search()"
+            class="form-control"
+            type="text"
+            name="search"
+            autocomplete="off"
+            placeholder="Recherche"
+          />
+        </div>
+      </div>
+    </div>
+
     <div class="datatable mt-4">
       <app-grid-wrapper
         [columnDefs]="ColDef"
