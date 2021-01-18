@@ -39,25 +39,6 @@
             autoClose="outside"
             container="body"
           >
-            <button class="btn dropdown-btn list" id="dropdownBasic" ngbDropdownToggle translate>
-              <i class="fas fa-bars"></i>
-            </button>
-            <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">
-              <ul class="list-group">
-                <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter notices catalogue</li>
-                <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter notices technique</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="dropdown-container mb-2 mb-sm-0">
-          <div
-            ngbDropdown
-            placement="bottom-right"
-            class="d-inline-block drop-bloc"
-            autoClose="outside"
-            container="body"
-          >
             <button class="btn dropdown-btn" id="dropdownBasic1" ngbDropdownToggle translate>Colonnes</button>
             <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic1">
               <div class="columns-dropdown">
@@ -76,6 +57,38 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="dropdown-container mb-2 mb-sm-0">
+          <div
+            ngbDropdown
+            placement="bottom-right"
+            class="d-inline-block drop-bloc"
+            autoClose="outside"
+            container="body"
+          >
+            <button class="btn export-button" id="dropdownBasic" ngbDropdownToggle translate>
+              <i class="fas fa-file-export"></i>
+            </button>
+            <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">
+              <ul class="list-group">
+                <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter notices catalogue</li>
+                <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter notices technique</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="quick-filters d-flex">
+      <h6 class="text-quick-filter">Filtres rapides :</h6>
+      <div class="dropdown-container mb-2 mr-2 mb-sm-0">
+        <div class="d-inline-block drop-bloc">
+          <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">Oeuvres archivées</button>
+        </div>
+      </div>
+      <div class="dropdown-container mb-2 mr-2 mb-sm-0">
+        <div class="d-inline-block drop-bloc">
+          <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">Oeuvres perdues</button>
         </div>
       </div>
     </div>
