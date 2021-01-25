@@ -1,0 +1,38 @@
+.input-form-control {
+  border-color: #e4e4e4;
+  width: 150px;
+  height: 30px;
+  font-size: 12px;
+  border-radius: 4px;
+  margin: 5px 5px 5px 0;
+  &:focus {
+    box-shadow: none;
+  }
+}
+button {
+  height: 30px;
+  border: 1px solid #ced4da;
+  line-height: 0;
+  background-color: transparent;
+  color: #1d2124;
+  font-size: 12px;
+  &:focus,
+  &:active {
+    outline: none;
+    box-shadow: none;
+  }
+  &:hover {
+    background-color: #407ca8;
+    color: white;
+  }
+}
+
+.delete {
+  color: #be3d4d;
+  font-size: 20px;
+  cursor: pointer;
+}
+.add {
+  background-color: #407ca8;
+  color: white;
+}

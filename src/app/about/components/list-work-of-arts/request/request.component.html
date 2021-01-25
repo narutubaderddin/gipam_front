@@ -1,0 +1,35 @@
+<div [formGroup]="orderForm">
+  <div formArrayName="items" *ngFor="let item of orderForm.get('items')['controls']; let i = index">
+    <div [formGroupName]="i" class="d-flex">
+      <select formControlName="field" placeholder="Item name" class="input-form-control">
+        <option *ngFor="let field of fields">{{ field.headerName }}</option>
+      </select>
+      <div *ngIf="orderForm.controls.items['controls'][i].controls.field.value == 'Domaine'">
+        <ng-multiselect-dropdown
+          class="select"
+          [placeholder]="'Choissiez les domaines'"
+          [data]="WorkOfArtService.domaine"
+          [settings]="dropdownSettings"
+          (onSelect)="onItemSelect($event)"
+          (onSelectAll)="onSelectAll($event)"
+        >
+        </ng-multiselect-dropdown>
+      </div>
+      <div *ngIf="orderForm.controls.items['controls'][i].controls.field.value == 'Date création'">
+        <select class="input-form-control">
+          <option *ngFor="let operator of dateOperator">{{ operator }}</option>
+        </select>
+        <input class="input-form-control" type="date" id="date" name="date" formControlName="value" useValueAsDate />
+      </div>
+      <div *ngIf="orderForm.controls.items['controls'][i].controls.field.value == 'N°'">
+        <input class="input-form-control" type="number" formControlName="value" useValueAsDate />
+      </div>
+      <div *ngIf="orderForm.controls.items['controls'][i].controls.field.value == 'Titre'">
+        <input class="input-form-control" type="text" formControlName="value" useValueAsDate />
+      </div>
+      <i class="fas fa-trash-alt mt-2 delete" (click)="removeElement(i)"></i>
+    </div>
+  </div>
+</div>
+<button class="add mt-1" (click)="addItem()"><i class="fas fa-plus"></i></button>
+<button class="mt-1">Valider la requête</button>

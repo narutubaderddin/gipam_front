@@ -169,3 +169,31 @@ h6 {
     }
   }
 }
+
+::ng-deep .customclass1 {
+  height: 50px !important;
+}
+
+::ng-deep .card {
+  margin-bottom: 20px;
+}
+
+::ng-deep .card .card-header.active > a > span {
+  color: #1d2124;
+}
+
+.request {
+  height: 30px;
+  border: 1px solid #ced4da;
+  line-height: 0;
+  background-color: transparent;
+  color: #1d2124;
+  font-size: 12px;
+  &:focus,
+  &:active {
+    outline: none;
+    box-shadow: none;
+    background-color: #407ca8;
+    color: white;
+  }
+}
