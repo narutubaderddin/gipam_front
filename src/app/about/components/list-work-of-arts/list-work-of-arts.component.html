@@ -21,7 +21,17 @@
         </div>
       </div>
     </div>
-    <div class="filter-bloc mt-4 d-flex">
+    <div>
+      <div>
+        <button class="request" (click)="openCollapse()">Créez vos propres requêtes</button>
+      </div>
+      <div *ngIf="isCollapsed">
+        <div>
+          <app-request [fields]="ColDef"></app-request>
+        </div>
+      </div>
+    </div>
+    <div class="filter-bloc d-flex">
       <div class="d-flex">
         <div class="dropdown-container mb-2 mr-2 mb-sm-0">
           <div

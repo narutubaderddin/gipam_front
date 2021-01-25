@@ -22,6 +22,7 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { AlertModalComponent } from './components/alert-modal/alert-modal.component';
 import { ListWorkOfArtsComponent } from './components/list-work-of-arts/list-work-of-arts.component';
 import { AdministratorHomePageComponent } from './components/administrator-home-page/administrator-home-page.component';
+import { RequestComponent } from '@app/about/components/list-work-of-arts/request/request.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { AdministratorHomePageComponent } from './components/administrator-home-
     AlertModalComponent,
     ListWorkOfArtsComponent,
     AdministratorHomePageComponent,
+    RequestComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent, AlertModalComponent],
   imports: [
