@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { TreeviewItem } from 'ngx-treeview';
 
 @Injectable({
   providedIn: 'root',
@@ -81,7 +82,7 @@ export class WorkOfArtService {
     },
     {
       id: 1,
-      titre: 'La Joconde',
+      titre: 'Nature morte',
       description: 'Le Portrait de Mona Lisa est celui de la Florentine Lisa Gherardini',
       image: 'assets/images/1.jpg',
       vip: 'true',
@@ -257,6 +258,46 @@ export class WorkOfArtService {
       property: 'Propriété',
     },
   ];
-
+  getDomains(): TreeviewItem[] {
+    return [
+      new TreeviewItem({
+        text: 'Art textile',
+        value: 91,
+        collapsed: true,
+        children: [
+          { text: 'Tapis', value: 9111, checked: false },
+          { text: 'Tapisserie', value: 9112, checked: false },
+          { text: 'Rideaux', value: 9112, checked: false },
+        ],
+        checked: false,
+      }),
+      new TreeviewItem({ text: 'Art graphique', value: 91, checked: false }),
+      new TreeviewItem({
+        text: 'Horlogerie',
+        collapsed: true,
+        value: 91,
+        children: [
+          { text: 'Horloge', value: 9111, checked: false },
+          { text: 'Pendule', value: 9112, checked: false },
+          { text: 'Régulateur', value: 9112, checked: false },
+        ],
+        checked: false,
+      }),
+      new TreeviewItem({
+        text: 'Mobilier',
+        value: 91,
+        collapsed: true,
+        children: [
+          { text: 'denom 1', value: 9111, checked: false },
+          { text: 'denom 2', value: 9112, checked: false },
+        ],
+        checked: false,
+      }),
+      new TreeviewItem({ text: 'Luminaire', value: 91, checked: false }),
+      new TreeviewItem({ text: 'Object décoratif', value: 91, checked: false }),
+      new TreeviewItem({ text: 'Decor monumental', value: 91, checked: false }),
+      new TreeviewItem({ text: 'Art de la table', value: 91, checked: false }),
+    ];
+  }
   constructor() {}
 }

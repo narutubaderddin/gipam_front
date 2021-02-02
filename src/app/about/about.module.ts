@@ -23,6 +23,8 @@ import { AlertModalComponent } from './components/alert-modal/alert-modal.compon
 import { ListWorkOfArtsComponent } from './components/list-work-of-arts/list-work-of-arts.component';
 import { AdministratorHomePageComponent } from './components/administrator-home-page/administrator-home-page.component';
 import { RequestComponent } from '@app/about/components/list-work-of-arts/request/request.component';
+import { PortailComponent } from './components/portail/portail.component';
+import { TreeviewModule } from 'ngx-treeview';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,7 @@ import { RequestComponent } from '@app/about/components/list-work-of-arts/reques
     ListWorkOfArtsComponent,
     AdministratorHomePageComponent,
     RequestComponent,
+    PortailComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent, AlertModalComponent],
   imports: [
@@ -53,6 +56,7 @@ import { RequestComponent } from '@app/about/components/list-work-of-arts/reques
     NgbModule,
     AgGridModule.withComponents([]),
     AutocompleteLibModule,
+    TreeviewModule.forRoot(),
   ],
   providers: [MovementsService],
 })

@@ -15,7 +15,8 @@ import { GridActionRendererComponent } from '@app/@shared/components/datatables/
   styleUrls: ['./list-work-of-arts.component.scss'],
 })
 export class ListWorkOfArtsComponent implements OnInit {
-  public isCollapsed = false;
+  isCollapsed = true;
+  data = false;
   mode = 'liste';
   filterFormGroup: FormGroup;
   columnDropped = new EventEmitter();
@@ -58,6 +59,7 @@ export class ListWorkOfArtsComponent implements OnInit {
 
   ColDef: ColDef[] = [
     {
+      cellClass: 'link',
       headerName: 'N°',
       field: 'id',
       checkboxSelection: true,
@@ -238,5 +240,13 @@ export class ListWorkOfArtsComponent implements OnInit {
 
   openCollapse() {
     this.isCollapsed = !this.isCollapsed;
+  }
+
+  onCellClicked(event: any) {
+    console.log(event);
+    if (event.column.colId == 'FirstName') {
+      // only first column clicked
+      // execute the action as you want here in on click of hyperlink
+    }
   }
 }

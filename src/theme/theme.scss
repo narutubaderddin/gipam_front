@@ -142,12 +142,13 @@ button {
   }
 }
 .multiselect-dropdown .dropdown-btn {
-  border-color: #e4e4e4;
+  border-color: #e4e4e4 !important;
   width: 150px;
-  height: 30px;
-  font-size: 12px;
+  height: 23px;
+  font-size: 11px;
   border-radius: 4px;
   margin: 5px 5px 5px 0;
+  line-height: 10px !important;
   &:focus,
   &:active {
     box-shadow: none;
@@ -155,7 +156,7 @@ button {
   }
 }
 .multiselect-dropdown {
-  font-size: 12px !important;
+  font-size: 11px !important;
   &:focus,
   &:active {
     box-shadow: none;
@@ -164,4 +165,8 @@ button {
 }
 .multiselect-dropdown .dropdown-btn .dropdown-multiselect__caret::before {
   display: none !important;
+}
+.multiselect-dropdown .dropdown-btn .selected-item a {
+  font-size: 10px !important;
+  padding-top: 0 !important;
 }

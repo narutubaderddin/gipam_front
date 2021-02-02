@@ -19,10 +19,12 @@
     [debug]="true"
     [rowSelection]="rowSelection"
     [enableRangeSelection]="true"
+    [masterDetail]="true"
     domLayout="autoHeight"
     (gridReady)="onGridReady($event)"
     [overlayLoadingTemplate]="loadingTemplate"
     [overlayNoRowsTemplate]="noRowsTemplate"
+    [detailCellRendererParams]="detailCellRendererParams"
   >
   </ag-grid-angular>
 </div>

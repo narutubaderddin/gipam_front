@@ -13,13 +13,13 @@
       margin-bottom: -20px;
     }
     .sidebar {
-      margin-left: 9px;
       .card {
         box-shadow: 0 0px 4px rgba(0, 0, 0, 0.19), 0 3px 23px rgba(0, 0, 0, 0.23);
         border-radius: 0;
         height: 94%;
         background-color: #f0efef;
         border: 1px solid white;
+        margin-bottom: 25px;
         .card-header {
           height: 30px;
           line-height: 5px;
@@ -43,7 +43,7 @@
         li {
           padding: 10px;
           background-color: #dcdcdc;
-          border-bottom: 1px solid white;
+          border-right: 2px solid white;
           cursor: pointer;
           &:hover {
             background-color: #c0c0c0;
@@ -76,89 +76,6 @@
         padding-left: 0;
         padding-right: 0;
       }
-      .sec-1-1 {
-        justify-content: space-between;
-        flex-wrap: wrap;
-
-        h1 {
-          color: white;
-          margin-top: 2em;
-        }
-        p {
-          color: white;
-        }
-        .stati {
-          background: #fff;
-          height: 6em;
-          padding: 1em;
-          margin: 0.5em 6px;
-          transition: margin 0.5s ease, box-shadow 0.5s ease;
-          box-shadow: 0px 0.2em 0.4em rgb(0, 0, 0, 0.8);
-        }
-        .stati i {
-          font-size: 2.5em;
-        }
-        .stati div {
-          width: calc(100% - 3.5em);
-          display: block;
-          float: right;
-          text-align: right;
-        }
-        .stati div b {
-          font-size: 2.2em;
-          width: 100%;
-          padding-top: 0px;
-          margin-top: -0.3em;
-          margin-bottom: -0.2em;
-          display: block;
-          height: 45px;
-        }
-        .stati div span {
-          font-size: 1em;
-          width: 100%;
-          color: rgb(0, 0, 0, 0.8);
-          display: block;
-        }
-        .stati.bg-turquoise {
-          background: #407ca8;
-          color: white;
-        }
-        .stati.bg-purple {
-          background: #5a4b5f;
-          color: white;
-        }
-        .stati.bg-blue {
-          background: #1f2b50;
-          color: white;
-        }
-        .stati.bg-red {
-          background: #be3d4d;
-          color: white;
-        }
-        .stati.bg-gray {
-          background: #c0c0c0;
-          color: white;
-        }
-        span {
-          color: white !important;
-          font-size: 14px;
-          a {
-            display: flex;
-            span {
-              width: auto;
-            }
-            .title {
-              font-weight: bold;
-            }
-            .period {
-              font-size: 14px;
-            }
-          }
-          &:hover {
-            text-decoration: none;
-          }
-        }
-      }
     }
     .info-section-1 {
       .info-card-bloc3 {
@@ -166,7 +83,7 @@
         justify-content: space-between;
         flex-wrap: wrap;
         .card {
-          width: 33%;
+          width: 24%;
           margin-bottom: 20px;
           min-height: 200px;
           .card-header {
@@ -238,6 +155,90 @@
     .body {
       padding: 10px;
       margin: 5px 10px;
+    }
+  }
+}
+.sec-1-1 {
+  flex-wrap: wrap;
+  .stat-card {
+    width: 98%;
+  }
+  h1 {
+    color: white;
+    margin-top: 2em;
+  }
+  p {
+    color: white;
+  }
+  .stati {
+    background: #fff;
+    height: 6em;
+    padding: 1em;
+    margin: 0.5em 6px;
+    transition: margin 0.5s ease, box-shadow 0.5s ease;
+    box-shadow: 0px 0.2em 0.4em rgb(0, 0, 0, 0.8);
+  }
+  .stati i {
+    font-size: 2.5em;
+  }
+  .stati div {
+    width: calc(100% - 3.5em);
+    display: block;
+    float: right;
+    text-align: right;
+  }
+  .stati div b {
+    font-size: 2.2em;
+    width: 100%;
+    padding-top: 0px;
+    margin-top: -0.3em;
+    margin-bottom: -0.2em;
+    display: block;
+    height: 45px;
+  }
+  .stati div span {
+    font-size: 1em;
+    width: 100%;
+    color: rgb(0, 0, 0, 0.8);
+    display: block;
+  }
+  .stati.bg-turquoise {
+    background: #407ca8;
+    color: white;
+  }
+  .stati.bg-purple {
+    background: #5a4b5f;
+    color: white;
+  }
+  .stati.bg-blue {
+    background: #1f2b50;
+    color: white;
+  }
+  .stati.bg-red {
+    background: #be3d4d;
+    color: white;
+  }
+  .stati.bg-gray {
+    background: #c0c0c0;
+    color: white;
+  }
+  span {
+    color: white !important;
+    font-size: 14px;
+    a {
+      display: flex;
+      span {
+        width: auto;
+      }
+      .title {
+        font-weight: bold;
+      }
+      .period {
+        font-size: 14px;
+      }
+    }
+    &:hover {
+      text-decoration: none;
     }
   }
 }

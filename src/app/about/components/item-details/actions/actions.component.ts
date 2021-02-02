@@ -13,6 +13,7 @@ import { EditActionRendererComponent } from '@shared/components/datatables/edit-
   providers: [DatePipe],
 })
 export class ActionsComponent implements OnInit {
+  detailCellRendererParams: any;
   frameworkComponent = {
     statusRenderer: StatusRendererComponent,
     editActionRenderer: EditActionRendererComponent,
@@ -22,17 +23,22 @@ export class ActionsComponent implements OnInit {
     {
       headerName: 'Date',
       field: 'date',
+      cellRenderer: 'agGroupCellRenderer',
     },
     {
-      headerName: 'Type action',
-      field: 'actionType',
+      headerName: 'Responsable',
+      field: 'responsable',
     },
     {
       headerName: 'Constat',
       field: 'observation',
     },
     {
-      headerName: 'Etat',
+      headerName: 'Conservation',
+      field: 'conservation',
+    },
+    {
+      headerName: 'Etat de conservation',
       field: 'conservationStatus',
       cellRenderer: 'statusRenderer',
       tooltipValueGetter: (value) => {
@@ -85,7 +91,39 @@ export class ActionsComponent implements OnInit {
   gridReady = false;
   constructor(private datePipe: DatePipe, private modalService: NgbModal) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.detailCellRendererParams = {
+      detailGridOptions: {
+        rowSelection: 'multiple',
+        suppressRowClickSelection: true,
+        enableRangeSelection: true,
+        pagination: true,
+        paginationAutoPageSize: true,
+        columnDefs: [
+          {
+            headerName: 'Type action',
+            field: 'actionType',
+          },
+          { field: 'direction' },
+          {
+            field: 'number',
+            minWidth: 150,
+          },
+          {
+            field: 'switchCode',
+            minWidth: 150,
+          },
+        ],
+        defaultColDef: {
+          sortable: true,
+          flex: 1,
+        },
+      },
+      getDetailRowData: function (params: any) {
+        params.successCallback(params.data.callRecords);
+      },
+    };
+  }
 
   onGridReady(params: ICellEditorParams) {
     this.gridApi = params.api;

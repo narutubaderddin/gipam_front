@@ -145,7 +145,6 @@ h6 {
 }
 .picture-mode,
 .list-mode {
-  margin-top: 9px;
   i {
     font-size: 14px;
   }
@@ -156,7 +155,7 @@ h6 {
     line-height: 10px;
     width: 30px;
     padding-left: 9px;
-    margin-right: -3px;
+    margin-right: 0px;
     border-radius: 0;
     &:hover {
       color: white;
@@ -183,17 +182,37 @@ h6 {
 }
 
 .request {
-  height: 30px;
+  width: 100%;
+  height: 40px;
+  cursor: pointer;
   border: 1px solid #ced4da;
-  line-height: 0;
-  background-color: transparent;
-  color: #1d2124;
-  font-size: 12px;
-  &:focus,
-  &:active {
-    outline: none;
-    box-shadow: none;
-    background-color: #407ca8;
-    color: white;
+  background-color: #ced4da;
+  align-items: center;
+  padding: 10.5px 7px;
+
+  h5 {
+    font-size: 15px;
+    margin-bottom: 0;
+    font-weight: bold;
   }
+  &:after {
+    font-family: "Font Awesome 5 Free", serif;
+    font-weight: 900;
+    content: "";
+    position: absolute;
+    top: 175px;
+    transform: rotate(90deg);
+    justify-content: flex-end;
+    float: right;
+    right: 150px;
+  }
+}
+.non-collapsed::after {
+  transform: rotate(-90deg);
+}
+
+.collapse-bloc {
+  border: 1px solid #ced4da;
+  width: 100%;
+  padding: 6.5px 7px;
 }

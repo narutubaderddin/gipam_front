@@ -1,6 +1,6 @@
 <div class="add-search-bloc">
   <div class="add-button">
-    <button (click)="addAction()" class="add-action"><i class="zmdi zmdi-plus"> </i>Ajouter action</button>
+    <button (click)="addAction()" class="add-action"><i class="zmdi zmdi-plus"> </i>Ajouter constat</button>
   </div>
 </div>
 <app-grid-wrapper
@@ -8,6 +8,7 @@
   [rowData]="actions"
   [defaultColDef]="defaultColDef"
   [frameworkComponents]="frameworkComponent"
+  [detailCellRendererParams]="detailCellRendererParams"
   (gridReady)="onGridReady($event)"
 >
 </app-grid-wrapper>

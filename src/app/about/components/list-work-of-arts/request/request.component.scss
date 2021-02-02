@@ -1,13 +1,26 @@
 .input-form-control {
   border-color: #e4e4e4;
   width: 150px;
-  height: 30px;
-  font-size: 12px;
+  height: 23px;
+  font-size: 11px;
   border-radius: 4px;
   margin: 5px 5px 5px 0;
   &:focus {
     box-shadow: none;
+    border-color: #e4e4e4;
+    outline: none;
   }
+}
+.add {
+  background-color: #407ca8;
+  color: white;
+  width: 24px !important;
+  height: 23px;
+  border-radius: 25px;
+  padding: 5.5px;
+  font-size: 13px;
+  margin-bottom: 5px;
+  cursor: pointer;
 }
 button {
   height: 30px;
@@ -31,8 +44,33 @@ button {
   color: #be3d4d;
   font-size: 20px;
   cursor: pointer;
+  margin-top: 6px;
 }
-.add {
+
+.validation {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.valid-btn {
   background-color: #407ca8;
   color: white;
+}
+.add-item {
+  display: flex;
+  align-items: flex-end;
+}
+
+.hide-op {
+  display: none;
+}
+
+.show-op {
+  display: block;
+  width: auto;
+}
+
+.date-op {
+  width: auto;
 }

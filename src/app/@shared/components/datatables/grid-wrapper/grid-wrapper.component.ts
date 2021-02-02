@@ -2,7 +2,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ColDef, ColumnApi, GridApi, GridOptions, GridReadyEvent, RowDataChangedEvent } from 'ag-grid-community';
 import { FormControl } from '@angular/forms';
 import { CustomLoadingOverlayComponent } from '@shared/components/datatables/custom-loading-overlay/custom-loading-overlay.component';
-
+import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 @Component({
   selector: 'app-grid-wrapper',
   templateUrl: './grid-wrapper.component.html',
@@ -34,6 +34,7 @@ export class GridWrapperComponent implements OnInit {
   @Input() showLoading = true;
   @Input() rowSelection: any;
   @Input() emptyRowsMessage = 'DEFAULT_EMPTY_ROWS_MESSAGE';
+  @Input() detailCellRendererParams: any;
   @Output() gridReady = new EventEmitter();
   @Output() pageChanged = new EventEmitter();
   @Output() searchReady = new EventEmitter<FormControl>();
@@ -46,7 +47,6 @@ export class GridWrapperComponent implements OnInit {
   gridAPI: GridApi;
   columnAPI: ColumnApi;
   searchControl: FormControl;
-
   constructor() {
     this.rowSelection = 'multiple';
     this.loadingTemplate = '<span class="ag-overlay-loading-center">chargement de source...</span>';
