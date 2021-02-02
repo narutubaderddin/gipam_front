@@ -115,11 +115,11 @@ button {
 }
 .details-bloc {
   display: flex;
-  justify-content: space-between;
   .details {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+    width: 100%;
     p span {
       color: #aeaeae;
       font-size: 12px;
@@ -210,10 +210,9 @@ li a i:hover {
   flex-wrap: wrap;
   .detail-bloc {
     position: relative;
-    margin-left: 20px;
     .image-bloc {
       position: absolute;
-      right: 0;
+      right: 40px;
       top: 10px;
       img {
         width: 300px;

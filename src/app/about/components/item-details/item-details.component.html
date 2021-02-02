@@ -14,7 +14,7 @@
   <div class="second-bloc">
     <div class="col-md-12 cadre">
       <div class="col-md-12 main-info">
-        <div class="col-md-9">
+        <div class="col-md-12">
           <div class="title">
             <p>Sculpture française</p>
             <div class="alert"><i class="zmdi zmdi-alert-polygon"></i> Retard à la reception</div>
@@ -28,6 +28,9 @@
           <div class="details-bloc">
             <div class="details">
               <p class="col-sm-2 col-md-3">
+                <span>Date de création<br /></span> 1989
+              </p>
+              <p class="col-sm-2 col-md-3">
                 <span>Domaine<br /></span> Sculpture
               </p>
               <p class="col-sm-2 col-md-3">
@@ -35,9 +38,6 @@
               </p>
               <p class="col-sm-2 col-md-3">
                 <span>Epoque<br /></span> Année 1989
-              </p>
-              <p class="col-sm-2 col-md-3">
-                <span>Nombre unité<br /></span> 5
               </p>
               <p class="col-sm-2 col-md-3">
                 <span>Référence<br /></span> S.988
@@ -88,33 +88,25 @@
   </div>
 
   <div class="col-md-12 firth-bloc">
-    <div *ngIf="page == 1" class="first-page-bloc">
-      <div class="detail-bloc col-sm-11 col-lg-11">
+    <div *ngIf="page == 1" class="first-page-bloc col-md-12">
+      <div class="detail-bloc col-sm-12 col-lg-12 d-flex">
         <div class="image-bloc">
           <img src="assets/images/573a.jpg" alt="" />
         </div>
-        <p><strong>Pays :</strong> France</p>
-        <p><strong>Création :</strong> 2014</p>
-        <p><strong>Nombre d'employés :</strong> 4</p>
-        <p><strong>Ville :</strong> Londres et Paris</p>
-        <p><strong>Domaine(s) :</strong> Street art | Art contemporain</p>
-        <p><strong>Taille du catalogue :</strong> Plus de 1 000 oeuvres</p>
-        <p><strong>Fourchette de prix :</strong> de 19 EUR à 12 000 EUR</p>
-        <p><strong>Modèle :</strong> Galerie d'art en ligne</p>
-        <p><strong>Frais acheteur :</strong> N/A</p>
-        <p><strong>Frais vendeur :</strong> ?</p>
-        <p><strong>Livraison :</strong></p>
-        <p>
-          Expédition sous 3 jours par transporteur express avec assurance ad valorem couvrant 100% de la valeur de
-          l’oeuvre, ou remise en mains propres à Paris ou à Londres.
-        </p>
-        <p><strong>Service client :</strong></p>
-        <p>
-          LiveChat sur le site (réponse presque 24h/24 !), présence physique à Londres (+44 743 7475 630) et Paris (+33
-          6 76 18 59 65), possibilité de voir les oeuvres, et réponse sous 24h aux emails (info@kochigallery.com).
-        </p>
-        <p><strong>Service après-vente :</strong></p>
-        <p>Retour gratuit sous 14 jours à compter de la réception de l’oeuvre par l'acheteur.</p>
+        <div class="col-md-7">
+          <p><strong>Titre :</strong> Titre de la sculpture</p>
+          <p><strong>Date de création :</strong> 1989</p>
+          <p><strong>Longueur :</strong> 82.5 cm</p>
+          <p><strong>Hauteur :</strong> 54.9 cm</p>
+          <p><strong>Profondeur :</strong> 94 cm</p>
+          <p><strong>Sign inscr :</strong> Sign inscr</p>
+          <p><strong>Marquage:</strong> Marquage de la sculture</p>
+          <p><strong>Epoque :</strong> Années 80</p>
+          <p><strong>Style :</strong> style</p>
+          <p><strong>Auteur :</strong> Simmen Henri</p>
+          <p><strong>Matière :</strong> Moulage</p>
+          <p><strong>Mots descriptifs :</strong> description de l'oeuvre d'art</p>
+        </div>
       </div>
       <div class="accordion-bloc col-sm-11 col-lg-4">
         <ngb-accordion
