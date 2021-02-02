@@ -115,11 +115,11 @@ button {
 }
 .details-bloc {
   display: flex;
-  justify-content: space-between;
   .details {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+    width: 100%;
     p span {
       color: #aeaeae;
       font-size: 12px;
@@ -127,14 +127,18 @@ button {
   }
 }
 .picture {
-  margin-right: 2%;
+  margin-right: 4%;
   img {
-    width: 100%;
+    width: 190px;
     height: 190px;
     border-radius: 50%;
-    margin-top: 10px;
+    margin-top: 23px;
     border: 5px solid #fafafa;
     box-shadow: 0 0 0.5rem #babbbc;
+    cursor: pointer;
+    &:hover {
+      transform: scale(1.3);
+    }
   }
 }
 
@@ -206,15 +210,17 @@ li a i:hover {
   flex-wrap: wrap;
   .detail-bloc {
     position: relative;
-    margin-left: 20px;
     .image-bloc {
       position: absolute;
-      right: 0;
+      right: 40px;
       top: 10px;
       img {
         width: 300px;
         height: 200px;
         border-radius: 3px;
+        &:hover {
+          transform: scale(1.3);
+        }
       }
     }
   }
@@ -222,6 +228,7 @@ li a i:hover {
     margin-left: 4%;
     padding-top: 10px;
     padding-right: 10px;
+    display: none;
     .details-bloc {
       display: flex;
       justify-content: space-between;

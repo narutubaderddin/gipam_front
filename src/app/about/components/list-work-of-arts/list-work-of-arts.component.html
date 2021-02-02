@@ -21,118 +21,119 @@
         </div>
       </div>
     </div>
-    <div>
-      <div>
-        <button class="request" (click)="openCollapse()">Créez vos propres requêtes</button>
+    <div class="mt-2">
+      <div class="request" [ngClass]="isCollapsed ? 'collapsed' : 'non-collapsed'" (click)="openCollapse()">
+        <h5>Recherche</h5>
       </div>
-      <div *ngIf="isCollapsed">
-        <div>
-          <app-request [fields]="ColDef"></app-request>
-        </div>
+      <div *ngIf="isCollapsed" class="collapse-bloc">
+        <app-request [fields]="ColDef"></app-request>
       </div>
     </div>
-    <div class="filter-bloc d-flex">
-      <div class="d-flex">
-        <div class="dropdown-container mb-2 mr-2 mb-sm-0">
-          <div
-            ngbDropdown
-            placement="bottom-right"
-            class="d-inline-block drop-bloc"
-            autoClose="outside"
-            container="body"
-          >
-            <button class="btn export-button" id="dropdownBasic" ngbDropdownToggle translate>
-              <i class="fas fa-file-export"></i>
-            </button>
-            <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">
-              <ul class="list-group">
-                <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter Notices style catalogue</li>
-                <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter Notices techniques</li>
-                <li class="list-group-item">
-                  <i class="fas fa-file-export"></i> Exporter Notices complètes techniques
-                </li>
-              </ul>
+    <div>
+      <div class="filter-bloc d-flex">
+        <div class="d-flex">
+          <div class="dropdown-container mb-2 mr-2 mb-sm-0">
+            <div
+              ngbDropdown
+              placement="bottom-right"
+              class="d-inline-block drop-bloc"
+              autoClose="outside"
+              container="body"
+            >
+              <button class="btn export-button" id="dropdownBasic" ngbDropdownToggle translate>
+                <i class="fas fa-file-export"></i>
+              </button>
+              <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">
+                <ul class="list-group">
+                  <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter Notices style catalogue</li>
+                  <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter Notices techniques</li>
+                  <li class="list-group-item">
+                    <i class="fas fa-file-export"></i> Exporter Notices complètes techniques
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="dropdown-container mb-2 mb-sm-0">
-          <div
-            ngbDropdown
-            placement="bottom-right"
-            class="d-inline-block drop-bloc"
-            autoClose="outside"
-            container="body"
-          >
-            <button class="btn dropdown-btn" id="dropdownBasic1" ngbDropdownToggle translate>Colonnes</button>
-            <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic1">
-              <div class="columns-dropdown">
-                <div class="col-12 col-sm-6 pt-1 column-check" *ngFor="let headerCol of columns">
-                  <label class="checkbox-container" translate
-                    >{{ headerCol.getColDef().headerName }}
-                    <input
-                      type="checkbox"
-                      #headerCheck
-                      (click)="onHeaderToggle(headerCol)"
-                      [checked]="headerCol.isVisible()"
-                    />
-                    <span class="checkmark"></span>
-                  </label>
+          <div class="dropdown-container mb-2 mb-sm-0">
+            <div
+              ngbDropdown
+              placement="bottom-right"
+              class="d-inline-block drop-bloc"
+              autoClose="outside"
+              container="body"
+            >
+              <button class="btn dropdown-btn" id="dropdownBasic1" ngbDropdownToggle translate>Colonnes</button>
+              <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <div class="columns-dropdown">
+                  <div class="col-12 col-sm-6 pt-1 column-check" *ngFor="let headerCol of columns">
+                    <label class="checkbox-container" translate
+                      >{{ headerCol.getColDef().headerName }}
+                      <input
+                        type="checkbox"
+                        #headerCheck
+                        (click)="onHeaderToggle(headerCol)"
+                        [checked]="headerCol.isVisible()"
+                      />
+                      <span class="checkmark"></span>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="search-quick-fliter-bloc d-flex flex-content-between">
-      <div class="quick-filters d-flex">
-        <h6 class="text-quick-filter">Filtres rapides :</h6>
-        <div class="dropdown-container mb-2 mr-2 mb-sm-0">
-          <div class="d-inline-block drop-bloc">
-            <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">Oeuvres archivées</button>
-          </div>
-        </div>
-        <div class="dropdown-container mb-2 mr-2 mb-sm-0">
-          <div class="d-inline-block drop-bloc">
-            <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">Oeuvres perdues</button>
-          </div>
-        </div>
-      </div>
-      <div class="d-flex">
-        <div>
+      <div class="search-quick-fliter-bloc d-flex flex-content-between">
+        <div class="quick-filters d-flex">
+          <h6 class="text-quick-filter">Filtres rapides :</h6>
           <div class="dropdown-container mb-2 mr-2 mb-sm-0">
             <div class="d-inline-block drop-bloc">
-              <button class="btn dropdown-btn list" (click)="resetFilter()">Restaurer</button>
+              <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">Oeuvres archivées</button>
+            </div>
+          </div>
+          <div class="dropdown-container mb-2 mr-2 mb-sm-0">
+            <div class="d-inline-block drop-bloc">
+              <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">Oeuvres perdues</button>
             </div>
           </div>
         </div>
-        <div class="search-panel">
-          <input
-            (keyup)="search($event)"
-            (clear)="search()"
-            class="form-control"
-            type="text"
-            name="search"
-            autocomplete="off"
-            placeholder="Recherche"
-          />
+        <div class="d-flex">
+          <div>
+            <div class="dropdown-container mb-2 mr-2 mb-sm-0">
+              <div class="d-inline-block drop-bloc">
+                <button class="btn dropdown-btn list" (click)="resetFilter()">Restaurer</button>
+              </div>
+            </div>
+          </div>
+          <div class="search-panel">
+            <input
+              (keyup)="search($event)"
+              (clear)="search()"
+              class="form-control"
+              type="text"
+              name="search"
+              autocomplete="off"
+              placeholder="Recherche"
+            />
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="datatable mt-4">
-      <app-grid-wrapper
-        [columnDefs]="ColDef"
-        [rowData]="oeuvreToShow"
-        [frameworkComponents]="frameworkComponents"
-        [defaultColDef]="defaultColDef"
-        (gridReady)="onGridReady($event)"
-        [context]="this"
-        [gridOptions]="gridOptions"
-        [sizeToFit]="false"
-        [pinnedCols]="pinnedCols"
-        [leftPinnedCols]="leftPinnedCols"
-      ></app-grid-wrapper>
+      <div class="datatable mt-4">
+        <app-grid-wrapper
+          [columnDefs]="ColDef"
+          [rowData]="oeuvreToShow"
+          [frameworkComponents]="frameworkComponents"
+          [defaultColDef]="defaultColDef"
+          (gridReady)="onGridReady($event)"
+          [context]="this"
+          [gridOptions]="gridOptions"
+          [sizeToFit]="false"
+          [pinnedCols]="pinnedCols"
+          [leftPinnedCols]="leftPinnedCols"
+          (cellClicked)="onCellClicked($event)"
+        ></app-grid-wrapper>
+      </div>
     </div>
   </div>
 </div>
