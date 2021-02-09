@@ -2,6 +2,7 @@ import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
+import { Options } from '@angular-slider/ngx-slider';
 
 @Component({
   selector: 'app-portail',
@@ -25,13 +26,17 @@ export class PortailComponent implements OnInit {
     decoupleChildFromParent: false,
     maxHeight: 400,
   });
-
+  value: number = 40;
+  highValue: number = 60;
+  options: Options = {
+    floor: 0,
+    ceil: 9999,
+  };
   constructor(private WorkOfArtService: WorkOfArtService, private router: Router) {}
 
   ngOnInit(): void {
     this.oeuvreToShow = this.oeuvres;
   }
-
   search(event: any) {}
 
   openFilter() {

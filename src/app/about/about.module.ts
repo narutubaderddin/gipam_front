@@ -25,6 +25,7 @@ import { AdministratorHomePageComponent } from './components/administrator-home-
 import { RequestComponent } from '@app/about/components/list-work-of-arts/request/request.component';
 import { PortailComponent } from './components/portail/portail.component';
 import { TreeviewModule } from 'ngx-treeview';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { TreeviewModule } from 'ngx-treeview';
     AgGridModule.withComponents([]),
     AutocompleteLibModule,
     TreeviewModule.forRoot(),
+    NgxSliderModule,
   ],
   providers: [MovementsService],
 })

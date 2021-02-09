@@ -43,42 +43,20 @@
       <div class="hl mt-2"></div>
 
       <div class="filters mt-2">
-        <h5>Dimensions</h5>
-        <div class="mb-2">
-          <ng-autocomplete
-            placeholder="Dimensions"
-            [data]="domains"
-            [searchKeyword]="keyword"
-            (selected)="selectEvent($event)"
-            (inputChanged)="onChangeSearch($event)"
-            (inputFocused)="onFocused($event)"
-            [itemTemplate]="itemTemplate"
-            [notFoundTemplate]="notFoundTemplate"
-          >
-          </ng-autocomplete>
-          <ng-template #itemTemplate let-item>
-            <a [innerHTML]="item.name"></a>
-          </ng-template>
-          <ng-template #notFoundTemplate let-notFound>
-            <div [innerHTML]="notFound"></div>
-          </ng-template>
-        </div>
-        <div class="filter-list">
-          <input class="ml-1 mr-2" type="checkbox" id="test" name="scales" />
-          <label for="scales">77 × 53 cm</label>
-        </div>
-        <div class="filter-list">
-          <input class="ml-1 mr-2" type="checkbox" id="test" name="scales" />
-          <label for="scales">199 × 122 cm</label>
-        </div>
-        <div class="filter-list">
-          <input class="ml-1 mr-2" type="checkbox" id="test" name="scales" />
-          <label for="scales">62 × 44 cm</label>
-        </div>
-        <div class="filter-list">
-          <input class="ml-1 mr-2" type="checkbox" id="test" name="scales" />
-          <label for="scales">260 × 325 cm</label>
-        </div>
+        <h5>Hauteur [cm]</h5>
+        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="options"></ngx-slider>
+      </div>
+      <div class="filters mt-2">
+        <h5>Largeur [cm]</h5>
+        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="options"></ngx-slider>
+      </div>
+      <div class="filters mt-2">
+        <h5>Longueur [cm]</h5>
+        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="options"></ngx-slider>
+      </div>
+      <div class="filters mt-2">
+        <h5>Poids [Kg]</h5>
+        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="options"></ngx-slider>
       </div>
     </div>
     <div class="picture-bloc-images">

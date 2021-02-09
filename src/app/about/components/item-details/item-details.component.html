@@ -17,7 +17,38 @@
         <div class="col-md-12">
           <div class="title">
             <p>Sculpture française</p>
-            <div class="alert"><i class="zmdi zmdi-alert-polygon"></i> Retard à la reception</div>
+            <div class="alert d-flex">
+              <div class="dropdown-container mb-sm-0">
+                <div
+                  ngbDropdown
+                  placement="bottom-right"
+                  class="d-inline-block drop-bloc"
+                  autoClose="outside"
+                  container="body"
+                >
+                  <button class="btn export-button" id="dropdownBasic" ngbDropdownToggle translate>
+                    <i class="fas fa-file-export"></i>
+                  </button>
+                  <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">
+                    <ul class="list-group">
+                      <li class="list-group-item">
+                        <i class="fas fa-file-export"></i> Exporter Notices style catalogue
+                      </li>
+                      <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter Notices techniques</li>
+                      <li class="list-group-item">
+                        <i class="fas fa-file-export"></i> Exporter Notices complètes techniques
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="drop-bloc mr-3">
+                <i class="fas fa-copy"></i>
+              </div>
+              <div class="drop-bloc">
+                <i class="fas fa-archive"></i>
+              </div>
+            </div>
           </div>
           <div class="info">
             <div class="creator-bloc">
@@ -79,8 +110,37 @@
             <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">
               <i class="zmdi zmdi-camera zmdi-hc-3x"></i>
             </a>
-
-            <p>Images</p>
+            <p style="margin-left: -12px">Photographies</p>
+          </li>
+          <li class="nav-item second-icon">
+            <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">
+              <i class="fas fa-link"></i>
+            </a>
+            <p style="margin-left: -22px">Liens hypertextes</p>
+          </li>
+          <li class="nav-item second-icon">
+            <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">
+              <i class="fas fa-paperclip"></i>
+            </a>
+            <p style="margin-left: -13px">Pièces jointes</p>
+          </li>
+          <li class="nav-item second-icon">
+            <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">
+              <i class="fas fa-bezier-curve"></i>
+            </a>
+            <p style="margin-left: -20px">Oeuvres en relation</p>
+          </li>
+          <li class="nav-item firth-icon">
+            <a (click)="page4()" class="nav-link text-uppercase font-weight-bold">
+              <i class="zmdi zmdi-pin zmdi-hc-3x"></i>
+            </a>
+            <p style="margin-left: -10px">Localisations</p>
+          </li>
+          <li class="nav-item fifth-icon">
+            <a (click)="page5()" class="nav-link text-uppercase font-weight-bold">
+              <i class="zmdi zmdi-play zmdi-hc-3x"></i>
+            </a>
+            <p style="margin-left: 0px">Constats</p>
           </li>
         </ul>
       </div>
@@ -139,10 +199,6 @@
 
     <div class="second-page-bloc" *ngIf="page == 2">
       <app-item-images></app-item-images>
-    </div>
-
-    <div class="third-page-bloc" *ngIf="page == 3">
-      <app-timeline></app-timeline>
     </div>
     <div class="fifth-page-bloc" *ngIf="page == 4">
       <app-movements></app-movements>

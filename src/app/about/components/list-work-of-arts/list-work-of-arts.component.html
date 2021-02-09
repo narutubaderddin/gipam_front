@@ -4,10 +4,14 @@
     <div class="add-export-bloc d-flex flex-content-between">
       <div class="d-flex add-bloc">
         <div class="add-button">
-          <button class="add-action"><i class="zmdi zmdi-plus"> </i>Ajouter une oeuvre en dépôt</button>
+          <button class="add-action" (click)="addDepositMovableObject()">
+            <i class="zmdi zmdi-plus"> </i>Ajouter une oeuvre en dépôt
+          </button>
         </div>
         <div class="add-button">
-          <button class="add-action"><i class="zmdi zmdi-plus"> </i>Ajouter une oeuvre en propriété</button>
+          <button class="add-action" (click)="addPropertyMovableObject()">
+            <i class="zmdi zmdi-plus"> </i>Ajouter une oeuvre en propriété
+          </button>
         </div>
       </div>
       <div class="d-flex">
@@ -118,7 +122,14 @@
           </div>
         </div>
       </div>
-
+      <div class="d-flex add-bloc cons-mvt">
+        <div class="add-button mr-2">
+          <button class="add-action"><i class="zmdi zmdi-plus"> </i>Ajouter constat</button>
+        </div>
+        <div class="add-button">
+          <button class="add-action"><i class="zmdi zmdi-plus"> </i>Ajouter mouvement</button>
+        </div>
+      </div>
       <div class="datatable mt-4">
         <app-grid-wrapper
           [columnDefs]="ColDef"

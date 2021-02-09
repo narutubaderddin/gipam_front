@@ -1,3 +1,6 @@
+import { AddDepositMovableObjectModalComponent } from './../../../@shared/components/add-deposit-movable-object-modal/add-deposit-movable-object-modal.component';
+import { AddPropertyMovableObjectModalComponent } from './../../../@shared/components/add-property-movable-object-modal/add-property-movable-object-modal.component';
+import { VisibleCatalogRendererComponent } from './../../../@shared/components/datatables/visible-catalog-renderer/visible-catalog-renderer.component';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { ColDef, ColumnApi, GridApi, ICellEditorParams, Column, GridOptions } from 'ag-grid-community';
 import { Component, EventEmitter, OnInit } from '@angular/core';
@@ -8,6 +11,7 @@ import { CustomHeaderRendererComponent } from '@app/@shared/components/datatable
 import { first } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { GridActionRendererComponent } from '@app/@shared/components/datatables/grid-action-renderer/grid-action-renderer.component';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-list-work-of-arts',
@@ -24,6 +28,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   frameworkComponents = {
     customHeader: CustomHeaderRendererComponent,
     gridActionRenderer: GridActionRendererComponent,
+    visibleRenderer: VisibleCatalogRendererComponent,
   };
   defaultColDef = {
     headerClass: 'header-cell',
@@ -124,8 +129,12 @@ export class ListWorkOfArtsComponent implements OnInit {
       field: 'dimension',
     },
     {
-      headerName: 'Nombre',
-      field: 'number',
+      headerName: 'Visible catalogue',
+      field: 'visible',
+      cellRenderer: 'visibleRenderer',
+      sortable: false,
+      filter: false,
+      width: 110,
     },
     {
       headerName: 'Actions',
@@ -136,7 +145,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       width: 130,
     },
   ];
-  pinnedCols: string[] = ['action'];
+  pinnedCols: string[] = ['action', 'visible'];
   leftPinnedCols: string[] = ['id'];
 
   gridApi: GridApi;
@@ -152,7 +161,8 @@ export class ListWorkOfArtsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     public columnFilterService: ColumnFilterService,
-    private WorkOfArtService: WorkOfArtService
+    private WorkOfArtService: WorkOfArtService,
+    private modalService: NgbModal
   ) {}
 
   get defaultHeaderParams() {
@@ -248,5 +258,23 @@ export class ListWorkOfArtsComponent implements OnInit {
       // only first column clicked
       // execute the action as you want here in on click of hyperlink
     }
+  }
+
+  //add movable objects
+  addPropertyMovableObject() {
+    const ngbModalOptions: NgbModalOptions = {
+      backdropClass: 'modal-container',
+      centered: true,
+      size: 'lg',
+    };
+    this.modalService.open(AddPropertyMovableObjectModalComponent, ngbModalOptions);
+  }
+
+  addDepositMovableObject() {
+    const ngbModalOptions: NgbModalOptions = {
+      backdropClass: 'modal-container',
+      centered: true,
+    };
+    this.modalService.open(AddDepositMovableObjectModalComponent, ngbModalOptions);
   }
 }

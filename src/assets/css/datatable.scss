@@ -122,11 +122,15 @@
 }
 
 .link {
-  color: #407ca8;
+  color: #407ca8 !important;
   font-weight: bold;
   cursor: pointer;
+  text-decoration: underline;
 
   &:hover {
     text-decoration: underline;
+  }
+  .ag-cell-value {
+    color: #407ca8 !important;
   }
 }
