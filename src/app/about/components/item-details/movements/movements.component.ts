@@ -45,8 +45,24 @@ export class MovementsComponent implements AfterViewInit {
       field: 'ministerSigle',
     },
     {
-      headerName: 'Sigle Direction',
+      headerName: 'Sigle Etab/Dir',
       field: 'directionSigle',
+    },
+    {
+      headerName: 'Sigle Service',
+      field: 'directionSigle',
+    },
+    {
+      headerName: 'Sigle Site',
+      field: 'directionSigle',
+    },
+    {
+      headerName: 'Sigle Batiment',
+      field: 'directionSigle',
+    },
+    {
+      headerName: 'Correspondants',
+      field: 'correspondant',
     },
     {
       headerName: 'Détails',

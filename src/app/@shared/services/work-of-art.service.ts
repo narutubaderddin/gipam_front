@@ -5,19 +5,19 @@ import { TreeviewItem } from 'ngx-treeview';
   providedIn: 'root',
 })
 export class WorkOfArtService {
-  domaine: string[] = [
-    'Art graphique',
-    'Horlogerie',
-    'Luminaire',
-    'Mobilier',
-    'Objet décoratif',
-    'Peinture',
-    'Sculpture',
-    'Art textile',
-    'Pièce de musée',
-    'Art de la table',
-    'Décor monumental',
-    'Archeologie',
+  domaine = [
+    { name: 'Art graphique' },
+    { name: 'Horlogerie' },
+    { name: 'Luminaire' },
+    { name: 'Mobilier' },
+    { name: 'Object décoratif' },
+    { name: 'Peinture' },
+    { name: 'Sculpture' },
+    { name: 'Art textile' },
+    { name: 'Pièce de musée' },
+    { name: 'Art de la table' },
+    { name: 'Decor monumental' },
+    { name: 'Archeologie' },
   ];
   epoque: string[] = [
     'Renaissance',
@@ -79,6 +79,7 @@ export class WorkOfArtService {
       style: 'Tableau non classés',
       creationDate: '12/07/1985',
       property: 'Propriété',
+      visible: true,
     },
     {
       id: 1,
@@ -95,6 +96,7 @@ export class WorkOfArtService {
       matiere: 'Huile sur panneau de bois',
       creationDate: '15/02/1975',
       property: 'Propriété',
+      visible: true,
     },
     {
       id: 2,
@@ -111,6 +113,7 @@ export class WorkOfArtService {
       matiere: 'Huile sur panneau de bois',
       creationDate: '30/11/1920',
       property: 'Propriété',
+      visible: false,
     },
     {
       id: 3,
@@ -127,6 +130,7 @@ export class WorkOfArtService {
       style: 'Renaissance',
       creationDate: '25/12/1921',
       property: 'Dépôt',
+      visible: true,
     },
     {
       id: 4,
@@ -142,6 +146,7 @@ export class WorkOfArtService {
       style: 'Tableau non classés',
       creationDate: '24/10/1919',
       property: 'Propriété',
+      visible: false,
     },
     {
       id: 5,
@@ -157,6 +162,7 @@ export class WorkOfArtService {
       style: 'Tableau non classés',
       creationDate: '30/11/1920',
       property: 'Dépôt',
+      visible: true,
     },
     {
       id: 6,
@@ -175,6 +181,7 @@ export class WorkOfArtService {
       style: 'Tableau non classés',
       creationDate: '27/09/1914',
       property: 'Propriété',
+      visible: false,
     },
 
     {
@@ -192,6 +199,7 @@ export class WorkOfArtService {
       style: 'Renaissance',
       creationDate: '30/11/1920',
       property: 'Dépôt',
+      visible: true,
     },
     {
       id: 8,
@@ -208,6 +216,7 @@ export class WorkOfArtService {
       style: 'Renaissance',
       creationDate: '19/01/1990',
       property: 'Propriété',
+      visible: false,
     },
     {
       id: 9,
@@ -224,6 +233,7 @@ export class WorkOfArtService {
       style: 'Sculpture',
       creationDate: '30/11/1920',
       property: 'Dépôt',
+      visible: true,
     },
     {
       id: 10,
@@ -240,6 +250,7 @@ export class WorkOfArtService {
       style: 'Tableau non classés',
       creationDate: '21/02/1920',
       property: 'Dépôt',
+      visible: true,
     },
     {
       id: 11,
@@ -256,6 +267,7 @@ export class WorkOfArtService {
       style: 'Renaissance',
       creationDate: '30/11/1920',
       property: 'Propriété',
+      visible: true,
     },
   ];
   getDomains(): TreeviewItem[] {

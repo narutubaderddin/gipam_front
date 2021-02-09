@@ -22,20 +22,7 @@ export class HomePageComponent implements OnInit {
     { id: 3, style: 'Tableau non classés' },
   ];
   mode = 'pictures';
-  domains = [
-    { name: 'Art graphique' },
-    { name: 'Horlogerie' },
-    { name: 'Luminaire' },
-    { name: 'Mobilier' },
-    { name: 'Object décoratif' },
-    { name: 'Peinture' },
-    { name: 'Sculpture' },
-    { name: 'Art textile' },
-    { name: 'Pièce de musée' },
-    { name: 'Art de la table' },
-    { name: 'Decor monumental' },
-    { name: 'Archeologie' },
-  ];
+  domains = this.WorkOfArtService.domaine;
 
   filters = [
     {

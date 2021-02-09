@@ -5,7 +5,7 @@
     </div>
   </div>
   <div class="content d-flex">
-    <div class="col-sm-12 col-md-7">
+    <div class="col-sm-12 col-md-12">
       <h5>LISTE DES MOUVEMENTS</h5>
       <app-grid-wrapper
         [columnDefs]="columnDefs"
@@ -15,10 +15,6 @@
         (gridReady)="onGridReady($event)"
       >
       </app-grid-wrapper>
-    </div>
-    <div class="vl"></div>
-    <div class="map-frame col-sm-12 col-md-5">
-      <div id="map"></div>
     </div>
   </div>
 </div>

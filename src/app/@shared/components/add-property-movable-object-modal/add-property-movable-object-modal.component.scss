@@ -1,0 +1,76 @@
+a:not([href]) {
+  background-color: transparent !important;
+  font-size: 14px;
+}
+
+.modal-content {
+  width: auto;
+}
+.bloc {
+  border: 2px solid;
+}
+.title-bloc {
+  min-height: 100px;
+  background-color: gainsboro;
+  border-right: 2px solid;
+  h5 {
+    transform: rotate(-90deg);
+    margin-top: 37px;
+    margin-left: -19px;
+    font-weight: bold;
+    font-size: 18px;
+  }
+}
+.form-bloc {
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 10px;
+  .form-group {
+    display: flex;
+    margin-bottom: 10px;
+    width: 50%;
+    label {
+      margin-right: 10px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .form-control {
+      height: 30px;
+    }
+  }
+}
+::ng-deep .autocomplete-container {
+  box-shadow: none !important;
+  position: relative;
+  overflow: visible;
+  height: 30px !important;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  .input-container {
+    margin-top: 0.5px !important;
+    input {
+      height: 26px !important;
+      &::placeholder {
+        font-size: 12px;
+      }
+    }
+  }
+  .suggestions-container ul li a {
+    padding: 4px 15px !important;
+  }
+}
+.autocomplete {
+  padding: 0;
+}
+.checkbox-label {
+  margin-top: -3.9px;
+  margin-left: 10px;
+}
+.correspondants {
+  font-weight: 600;
+  font-size: 14px;
+  color: #407ca8;
+}
+.fa-trash-alt {
+  margin-top: 5px;
+}

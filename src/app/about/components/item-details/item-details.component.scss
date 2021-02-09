@@ -89,10 +89,48 @@ button {
       color: #5a4b5f;
     }
     .alert {
-      color: #be3d4d;
-      font-size: 12px;
-      padding-right: 30px;
-      padding-top: 15px;
+      .dropdown-container {
+        .drop-bloc {
+          .export-button {
+            border: none;
+            &::after {
+              display: none;
+            }
+          }
+          button {
+            height: 30px;
+            border: 1px solid #ced4da;
+            line-height: 0;
+            font-size: 12px;
+            width: 25px;
+            margin-right: 15px;
+            padding: 3px;
+            &:focus,
+            &:active {
+              outline: none;
+              box-shadow: none;
+            }
+          }
+        }
+        i {
+          font-size: 20px;
+          color: #407ca8;
+          &:hover,
+          &:active,
+          &:focus {
+            color: white;
+          }
+        }
+        .list::after {
+          display: none;
+        }
+        button:hover,
+        button:active,
+        button:focus {
+          background-color: #407ca8;
+          color: white;
+        }
+      }
     }
   }
   .creator-bloc {
@@ -282,3 +320,21 @@ li a i:hover {
 }
 
 /** end firth bloc **/
+.fa-copy,
+.fa-archive {
+  margin-top: 5px;
+  font-size: 20px;
+  color: #407ca8;
+  cursor: pointer;
+}
+.list-group-item {
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  i {
+    margin-right: 10px;
+  }
+  &:hover {
+    background-color: #a6a6a6;
+  }
+}
