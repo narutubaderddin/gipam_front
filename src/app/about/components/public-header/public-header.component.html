@@ -13,28 +13,114 @@
 
   <div class="collapse navbar-collapse nav-list" id="navbarSupportedContent">
     <ul class="navbar-nav ml-auto">
-      <li class="right-header list main_nav_list_item lis li bt doc" (click)="home()">
-        <a class="doc" translate> Accueil </a>
+      <li class="right-header list main_nav_list_item home" (click)="home()">
+        <a class="home pl-3 pr-3"> Accueil </a>
       </li>
-      <li class="right-header list main_nav_list_item lis li bt adm">
-        <a class="adm" (click)="home()" translate> Administration </a>
-      </li>
-
-      <li class="right-header list main_nav_list_item lis rapport bt">
-        <a class="rapport" (click)="home()" translate> Rapports</a>
-      </li>
-      <li class="right-header list main_nav_list_item lis bt od" (click)="goToWorkOfArts()">
-        <a translate> OEUVRES D'ART</a>
-      </li>
-      <li class="right-header list main_nav_list_item li">
-        <div class="pt-2">
-          <i class="zmdi zmdi-notifications notif"><span class="num">2</span></i>
+      <li class="right-header list main_nav_list_item administration">
+        <div class="dropdown">
+          <a
+            class="administration btn dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Administration
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+            <div class="dropleft dropdown-item">
+              <a
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Gestion des tables de réferences
+              </a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Gestion des tables de réferences</a>
+                <a class="dropdown-item" href="#">Paramétrage des alertes</a>
+              </div>
+            </div>
+            <a class="dropdown-item" href="#">Paramétrage des alertes</a>
+          </div>
         </div>
       </li>
-      <li class="right-header list main_nav_list_item li">
+
+      <li class="right-header list main_nav_list_item rapport">
+        <div class="dropdown">
+          <a
+            class="rapport btn dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Rapport
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#">Etats des objets mobilier</a>
+            <a class="dropdown-item" href="#">Statistiques des dépôts</a>
+            <a class="dropdown-item" href="#">Localisations des dépôts</a>
+            <a class="dropdown-item" href="#">Résultat des récolements</a>
+            <a class="dropdown-item" href="#">Etat d'inventaire</a>
+          </div>
+        </div>
+      </li>
+      <li class="right-header list main_nav_list_item" (click)="goToWorkOfArts()">
+        <div class="dropdown">
+          <a
+            class="btn dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Oeuvres d'art
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+            <div class="dropleft dropdown-item">
+              <a
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Gestion des oeuvres d'art
+              </a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Liste des oeuvres d'art</a>
+                <a class="dropdown-item" href="#">Créer une notice en propriété</a>
+                <a class="dropdown-item" href="#">Créer une notice en dépôt</a>
+              </div>
+            </div>
+            <div class="dropleft dropdown-item">
+              <a
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Gestion des récolements
+              </a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Liste des récolements</a>
+                <a class="dropdown-item" href="#">Créer un récolement</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="right-header list main_nav_list_item">
         <div class="dropdown" style="box-shadow: none">
           <button
-            class="btn dropdown-toggle li"
+            class="btn dropdown-toggle"
             type="button"
             id="dropdownMenuButton"
             data-toggle="dropdown"

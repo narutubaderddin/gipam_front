@@ -22,9 +22,8 @@ nav {
         font-size: 15px;
         text-transform: uppercase;
         font-weight: bold;
-        padding-left: 20px;
-        padding-right: 20px;
         border-left: 0.2rem solid;
+        background-color: #407ca8;
         i {
           font-size: 35px;
           color: white;
@@ -55,6 +54,47 @@ nav {
   }
 }
 
+::ng-deep a:not([href]) {
+  color: inherit;
+  text-decoration: none;
+}
+
+.home {
+  background-color: #be3d4d !important;
+}
+
+.rapport {
+  background-color: #5a4b5f !important;
+}
+.administration {
+  background-color: #1f2b50 !important;
+}
+
+.bt {
+  padding-right: 30px !important;
+  padding-left: 30px !important;
+}
+
+//dropdown-menu
+.dropdown-toggle {
+  border: none;
+  font-weight: bold;
+}
+.dropdown:hover > .dropdown-menu,
+.dropleft:hover > .dropdown-menu {
+  display: block;
+  a {
+    height: 35px;
+    line-height: 28px;
+    &:hover {
+      background-color: #dcdcdc;
+    }
+  }
+}
+.dropdown > .dropdown-toggle:active {
+  /*Without this, clicking will make it sticky*/
+  pointer-events: none;
+}
 .dropdown-item {
   display: block;
   width: 100%;
@@ -64,34 +104,20 @@ nav {
   font-size: 13px;
 }
 
-::ng-deep a:not([href]) {
-  color: inherit;
-  text-decoration: none;
-  background-color: #407ca8 !important;
+//dropleft
+.dropleft {
+  padding: 0;
+  height: 35px;
+  line-height: 0px;
+  a {
+    padding: 4px 24px;
+    width: 100%;
+    height: 35px;
+    line-height: 30px;
+    background-color: transparent;
+  }
 }
-
-a:hover {
-  font-size: 18px;
-}
-
-.doc {
-  background-color: #be3d4d !important;
-}
-
-.li {
-  background-color: #407ca8;
-}
-.rapport {
-  background-color: #5a4b5f !important;
-}
-.adm {
-  background-color: #1f2b50 !important;
-}
-
-.od {
-  background-color: #407ca8;
-}
-.bt {
-  padding-right: 30px !important;
-  padding-left: 30px !important;
+.dropdown-toggle::after,
+.dropdown-toggle::before {
+  display: none;
 }
