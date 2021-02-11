@@ -1,5 +1,3 @@
-import { AddDepositMovableObjectModalComponent } from './../../../@shared/components/add-deposit-movable-object-modal/add-deposit-movable-object-modal.component';
-import { AddPropertyMovableObjectModalComponent } from './../../../@shared/components/add-property-movable-object-modal/add-property-movable-object-modal.component';
 import { VisibleCatalogRendererComponent } from './../../../@shared/components/datatables/visible-catalog-renderer/visible-catalog-renderer.component';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { ColDef, ColumnApi, GridApi, ICellEditorParams, Column, GridOptions } from 'ag-grid-community';
@@ -261,20 +259,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   }
 
   //add movable objects
-  addPropertyMovableObject() {
-    const ngbModalOptions: NgbModalOptions = {
-      backdropClass: 'modal-container',
-      centered: true,
-      size: 'lg',
-    };
-    this.modalService.open(AddPropertyMovableObjectModalComponent, ngbModalOptions);
-  }
+  addPropertyMovableObject() {}
 
-  addDepositMovableObject() {
-    const ngbModalOptions: NgbModalOptions = {
-      backdropClass: 'modal-container',
-      centered: true,
-    };
-    this.modalService.open(AddDepositMovableObjectModalComponent, ngbModalOptions);
-  }
+  addDepositMovableObject() {}
 }
