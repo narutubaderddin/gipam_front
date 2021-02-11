@@ -90,14 +90,13 @@
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
-                (click)="goToWorkOfArts()"
               >
                 Gestion des oeuvres d'art
               </a>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Liste des oeuvres d'art</a>
-                <a class="dropdown-item" href="#">Créer une notice en propriété</a>
-                <a class="dropdown-item" href="#">Créer une notice en dépôt</a>
+                <a class="dropdown-item" (click)="goToWorkOfArts()">Liste des oeuvres d'art</a>
+                <a class="dropdown-item">Créer une notice en propriété</a>
+                <a class="dropdown-item">Créer une notice en dépôt</a>
               </div>
             </div>
             <div class="dropleft dropdown-item">
@@ -111,8 +110,8 @@
                 Gestion des récolements
               </a>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Liste des récolements</a>
-                <a class="dropdown-item" href="#">Créer un récolement</a>
+                <a class="dropdown-item">Liste des récolements</a>
+                <a class="dropdown-item">Créer un récolement</a>
               </div>
             </div>
           </div>
