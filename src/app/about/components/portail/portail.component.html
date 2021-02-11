@@ -61,20 +61,15 @@
     </div>
     <div class="picture-bloc-images">
       <div class="cadre col-md-12">
-        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 items-bloc" *ngFor="let items of oeuvreToShow">
-          <div class="flip">
-            <div
-              class="front"
-              [ngStyle]="{
-                'background-image': 'url(' + items.image + ')',
-                'background-position': 'center center',
-                'background-size': '100% 100%'
-              }"
-            ></div>
-            <div class="back">
-              <h2 class="titre">{{ items.titre }}</h2>
-              <p class="description">{{ items.description }}</p>
-              <button class="details" (click)="details()">Voir plus de détails</button>
+        <div class="card-columns">
+          <div class="card shadow p-3 items-bloc" style="margin-bottom: 0" *ngFor="let items of oeuvreToShow">
+            <div class="card-block flip">
+              <img class="card-img-top img-fluid" [src]="items.image" alt="Card image cap" />
+              <div class="back">
+                <h5 class="card-title title">{{ items.titre }}</h5>
+                <p class="card-text description">{{ items.description }}</p>
+                <a href="#" class="btn btn-primary details" (click)="details()">Voir plus de détails</a>
+              </div>
             </div>
           </div>
         </div>
