@@ -19,7 +19,6 @@ import { TimelineComponent } from './components/item-details/timeline/timeline.c
 import { ItemImagesComponent } from './components/item-details/item-images/item-images.component';
 import { AboutComponent } from '@app/about/about.component';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
-import { AlertModalComponent } from './components/alert-modal/alert-modal.component';
 import { ListWorkOfArtsComponent } from './components/list-work-of-arts/list-work-of-arts.component';
 import { AdministratorHomePageComponent } from './components/administrator-home-page/administrator-home-page.component';
 import { RequestComponent } from '@app/about/components/list-work-of-arts/request/request.component';
@@ -39,13 +38,12 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     MovementsComponent,
     TimelineComponent,
     ItemImagesComponent,
-    AlertModalComponent,
     ListWorkOfArtsComponent,
     AdministratorHomePageComponent,
     RequestComponent,
     PortailComponent,
   ],
-  exports: [PublicHeaderComponent, AddActionModalComponent, AlertModalComponent],
+  exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
     CommonModule,
     AboutRoutingModule,
