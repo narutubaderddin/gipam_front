@@ -70,7 +70,7 @@
           </div>
         </div>
       </li>
-      <li class="right-header list main_nav_list_item" (click)="goToWorkOfArts()">
+      <li class="right-header list main_nav_list_item">
         <div class="dropdown">
           <a
             class="btn dropdown-toggle"
@@ -90,6 +90,7 @@
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
+                (click)="goToWorkOfArts()"
               >
                 Gestion des oeuvres d'art
               </a>
