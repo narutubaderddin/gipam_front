@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
@@ -11,21 +11,31 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 export class RequestComponent implements OnInit {
   @Input() fields: any;
   orderForm: FormGroup;
+  value: number = 40;
+  highValue: number = 60;
+  options: Options = {
+    floor: 0,
+    ceil: 9999,
+  };
+  domaine: any;
   items: FormArray;
   selectedItems: any;
   dateOperator = ['En', 'Entre', 'Supérieure à', 'Inférieure à'];
-  dropdownSettings: IDropdownSettings = {
-    singleSelection: false,
-    idField: '',
-    textField: '',
-    selectAllText: 'Sélectionner tout',
-    unSelectAllText: 'Supprimer les sélections',
-    itemsShowLimit: 3,
-    allowSearchFilter: true,
-  };
+  dropdownSettings: IDropdownSettings;
+  showAdvancedSearchBloc = false;
   constructor(private formBuilder: FormBuilder, public WorkOfArtService: WorkOfArtService) {}
 
   ngOnInit() {
+    this.domaine = this.WorkOfArtService.domaine;
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'name',
+      selectAllText: 'Sélectionner tout',
+      unSelectAllText: 'Supprimer les sélections',
+      itemsShowLimit: 1,
+      allowSearchFilter: true,
+    };
     this.orderForm = new FormGroup({
       items: new FormArray([]),
     });
@@ -53,5 +63,9 @@ export class RequestComponent implements OnInit {
   }
   onSelectAll(items: any) {
     console.log(items);
+  }
+
+  openAdvancedSearchBloc() {
+    this.showAdvancedSearchBloc = !this.showAdvancedSearchBloc;
   }
 }
