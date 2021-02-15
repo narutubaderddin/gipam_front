@@ -1,10 +1,23 @@
+.input-group {
+  width: 250px;
+  .search-form-control {
+    height: 35px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    font-size: 12px;
+  }
+  button {
+    height: 35px;
+  }
+}
+
 .input-form-control {
   border-color: #e4e4e4;
-  width: 150px;
-  height: 23px;
-  font-size: 11px;
+  height: 35px;
+  width: 100px;
+  font-size: 12px;
   border-radius: 4px;
-  margin: 5px 5px 5px 0;
+  margin: 0px 5px 5px 0;
   &:focus {
     box-shadow: none;
     border-color: #e4e4e4;
@@ -16,7 +29,6 @@
   color: white;
   width: 24px !important;
   height: 23px;
-  border-radius: 25px;
   padding: 5.5px;
   font-size: 13px;
   margin-bottom: 5px;
@@ -62,15 +74,71 @@ button {
   align-items: flex-end;
 }
 
-.hide-op {
-  display: none;
+.form-group {
+  margin-bottom: 0.5rem;
+  label {
+    font-size: 15px;
+    width: 35%;
+    margin-bottom: 0;
+    line-height: 35px;
+    &.col-md-4 {
+      padding-left: 0;
+    }
+  }
+  input {
+    width: 65%;
+    height: 35px;
+    font-size: 14px;
+  }
+  ::ng-deep ng-multiselect-dropdown {
+    width: 65%;
+  }
+  .creation-date-label {
+    padding-left: 0;
+  }
 }
 
-.show-op {
-  display: block;
-  width: auto;
+.principal-bloc {
+  flex-wrap: wrap;
 }
-
-.date-op {
-  width: auto;
+.advanced-search-accordion {
+  span {
+    color: #407ca8;
+    font-weight: bold;
+    padding-top: 4px;
+  }
+  hr {
+    border-top: 1px solid #407ca8;
+  }
+}
+.advancedBloc {
+  flex-wrap: wrap;
+  .custom-slider {
+    width: 65%;
+  }
+}
+// css ngx-slider
+::ng-deep {
+  .custom-slider .ngx-slider .ngx-slider-pointer {
+    width: 15px;
+    height: 15px;
+    top: -21px;
+  }
+  .custom-slider .ngx-slider .ngx-slider-pointer::after {
+    display: none;
+  }
+  .custom-slider .ngx-slider .ngx-slider-pointer:active,
+  .custom-slider .ngx-slider .ngx-slider-pointer:focus {
+    outline: none;
+    border: none;
+  }
+  .custom-slider .ngx-slider .ngx-slider-span {
+    font-size: 12px;
+  }
+  .custom-slider .ngx-slider .ngx-slider-bubble {
+    top: -35px;
+  }
+  .custom-slider .ngx-slider .ngx-slider-bar-wrapper {
+    padding-top: 0;
+  }
 }

@@ -18,6 +18,7 @@ import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ListWorkOfArtsComponent implements OnInit {
   isCollapsed = true;
+  showDatatable = false;
   data = false;
   mode = 'liste';
   filterFormGroup: FormGroup;
@@ -143,7 +144,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       width: 130,
     },
   ];
-  pinnedCols: string[] = ['action', 'visible'];
+  pinnedCols: string[] = ['action'];
   leftPinnedCols: string[] = ['id'];
 
   gridApi: GridApi;
@@ -262,4 +263,12 @@ export class ListWorkOfArtsComponent implements OnInit {
   addPropertyMovableObject() {}
 
   addDepositMovableObject() {}
+
+  //validate request value
+  onValidateRequest(value: boolean) {
+    if (value) {
+      this.showDatatable = true;
+      this.isCollapsed = false;
+    }
+  }
 }

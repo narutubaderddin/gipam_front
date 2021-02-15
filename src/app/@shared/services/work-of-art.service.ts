@@ -6,18 +6,18 @@ import { TreeviewItem } from 'ngx-treeview';
 })
 export class WorkOfArtService {
   domaine = [
-    { name: 'Art graphique' },
-    { name: 'Horlogerie' },
-    { name: 'Luminaire' },
-    { name: 'Mobilier' },
-    { name: 'Object décoratif' },
-    { name: 'Peinture' },
-    { name: 'Sculpture' },
-    { name: 'Art textile' },
-    { name: 'Pièce de musée' },
-    { name: 'Art de la table' },
-    { name: 'Decor monumental' },
-    { name: 'Archeologie' },
+    { id: 0, name: 'Art graphique' },
+    { id: 1, name: 'Horlogerie' },
+    { id: 2, name: 'Luminaire' },
+    { id: 3, name: 'Mobilier' },
+    { id: 4, name: 'Object décoratif' },
+    { id: 5, name: 'Peinture' },
+    { id: 6, name: 'Sculpture' },
+    { id: 7, name: 'Art textile' },
+    { id: 8, name: 'Pièce de musée' },
+    { id: 9, name: 'Art de la table' },
+    { id: 10, name: 'Decor monumental' },
+    { id: 11, name: 'Archeologie' },
   ];
   epoque: string[] = [
     'Renaissance',
