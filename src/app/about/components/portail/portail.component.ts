@@ -95,6 +95,6 @@ export class PortailComponent implements OnInit {
   }
 
   details() {
-    this.router.navigate(['item-details']);
+    this.router.navigate(['portail-details']);
   }
 }
