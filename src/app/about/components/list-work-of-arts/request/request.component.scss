@@ -1,3 +1,16 @@
+.input-group {
+  width: 250px;
+  .search-form-control {
+    height: 35px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    font-size: 12px;
+  }
+  button {
+    height: 35px;
+  }
+}
+
 .input-form-control {
   border-color: #e4e4e4;
   height: 35px;

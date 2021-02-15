@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { Options } from '@angular-slider/ngx-slider';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
@@ -10,20 +10,16 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 })
 export class RequestComponent implements OnInit {
   @Input() fields: any;
-  orderForm: FormGroup;
+  @Output() validateRequest = new EventEmitter<any>();
   value: number = 40;
   highValue: number = 60;
-  options: Options = {
-    floor: 0,
-    ceil: 9999,
-  };
+  dimensionsOptions: Options;
+  poundsOprions: Options;
   domaine: any;
-  items: FormArray;
-  selectedItems: any;
   dateOperator = ['En', 'Entre', 'Supérieure à', 'Inférieure à'];
   dropdownSettings: IDropdownSettings;
   showAdvancedSearchBloc = false;
-  constructor(private formBuilder: FormBuilder, public WorkOfArtService: WorkOfArtService) {}
+  constructor(public WorkOfArtService: WorkOfArtService) {}
 
   ngOnInit() {
     this.domaine = this.WorkOfArtService.domaine;
@@ -36,28 +32,22 @@ export class RequestComponent implements OnInit {
       itemsShowLimit: 1,
       allowSearchFilter: true,
     };
-    this.orderForm = new FormGroup({
-      items: new FormArray([]),
-    });
+    this.dimensionsOptions = {
+      floor: 0,
+      ceil: 9999,
+      translate: (value: number): string => {
+        return value + 'cm';
+      },
+    };
+    this.poundsOprions = {
+      floor: 0,
+      ceil: 9999,
+      translate: (value: number): string => {
+        return value + 'Kg';
+      },
+    };
   }
 
-  createItem(): FormGroup {
-    return this.formBuilder.group({
-      field: '',
-      operator: '',
-      value: '',
-    });
-  }
-
-  addItem(): void {
-    this.items = this.orderForm.get('items') as FormArray;
-    this.items.push(this.createItem());
-  }
-
-  removeElement(i: any) {
-    const remove = this.orderForm.get('items') as FormArray;
-    remove.removeAt(i);
-  }
   onItemSelect(item: any) {
     console.log(item);
   }
@@ -67,5 +57,9 @@ export class RequestComponent implements OnInit {
 
   openAdvancedSearchBloc() {
     this.showAdvancedSearchBloc = !this.showAdvancedSearchBloc;
+  }
+
+  onValidateRequest() {
+    this.validateRequest.emit(true);
   }
 }

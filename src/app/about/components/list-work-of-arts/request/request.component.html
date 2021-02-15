@@ -1,17 +1,27 @@
 <div>
-  <div class="search-panel">
-    <input class="form-control" type="text" name="search" autocomplete="off" placeholder="Recherche" />
+  <div class="input-group">
+    <input
+      class="form-control py-2 border-right-0 border search-form-control"
+      type="search"
+      value="Rechercher"
+      id="example-search-input"
+    />
+    <span class="input-group-append">
+      <button class="btn btn-outline-secondary border-left-0 border" type="button">
+        <i class="fa fa-search"></i>
+      </button>
+    </span>
   </div>
   <div class="d-flex principal-bloc">
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-3">
       <label for="ref">Num réference</label>
       <input type="text" class="form-control" id="ref" placeholder="référence" />
     </div>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-3">
       <label for="title">Titre</label>
       <input type="text" class="form-control" id="title" placeholder="Titre" />
     </div>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-3">
       <label>Domaines</label>
       <ng-multiselect-dropdown
         class="select"
@@ -23,7 +33,7 @@
       >
       </ng-multiselect-dropdown>
     </div>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-3">
       <label>Dénominations</label>
       <ng-multiselect-dropdown
         class="select"
@@ -35,7 +45,7 @@
       >
       </ng-multiselect-dropdown>
     </div>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-3">
       <label>Auteurs</label>
       <ng-multiselect-dropdown
         class="select"
@@ -47,7 +57,7 @@
       >
       </ng-multiselect-dropdown>
     </div>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-3">
       <label>Déposants</label>
       <ng-multiselect-dropdown
         class="select"
@@ -60,7 +70,7 @@
       </ng-multiselect-dropdown>
     </div>
     <div class="col-6"></div>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-3">
       <label>Ministères</label>
       <ng-multiselect-dropdown
         class="select"
@@ -72,7 +82,7 @@
       >
       </ng-multiselect-dropdown>
     </div>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-3">
       <label>Etab./Dir.</label>
       <ng-multiselect-dropdown
         class="select"
@@ -84,7 +94,7 @@
       >
       </ng-multiselect-dropdown>
     </div>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-3">
       <label>Sous-direction</label>
       <ng-multiselect-dropdown
         class="select"
@@ -96,7 +106,7 @@
       >
       </ng-multiselect-dropdown>
     </div>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-3">
       <label>Services</label>
       <ng-multiselect-dropdown
         class="select"
@@ -108,7 +118,7 @@
       >
       </ng-multiselect-dropdown>
     </div>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-3">
       <label>Sites</label>
       <ng-multiselect-dropdown
         class="select"
@@ -120,7 +130,7 @@
       >
       </ng-multiselect-dropdown>
     </div>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-3">
       <label>Bâtiments</label>
       <ng-multiselect-dropdown
         class="select"
@@ -132,7 +142,7 @@
       >
       </ng-multiselect-dropdown>
     </div>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-3">
       <label>N pièces</label>
       <ng-multiselect-dropdown
         class="select"
@@ -158,87 +168,87 @@
       </select>
       <input class="input-form-control col-md-2" type="date" id="date" name="date" useValueAsDate />
     </div>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-4 col-lg-3">
       <label>Hauteur</label>
       <div class="custom-slider">
-        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="options"></ngx-slider>
+        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="dimensionsOptions"></ngx-slider>
       </div>
     </div>
     <select class="input-form-control">
       <option value="1">Et</option>
       <option value="0">Ou</option>
     </select>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-4 col-lg-3">
       <label>Longueur</label>
       <div class="custom-slider">
-        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="options"></ngx-slider>
+        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="dimensionsOptions"></ngx-slider>
       </div>
     </div>
     <select class="input-form-control">
       <option value="1">Et</option>
       <option value="0">Ou</option>
     </select>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-4 col-lg-3">
       <label>Largeur</label>
       <div class="custom-slider">
-        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="options"></ngx-slider>
+        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="dimensionsOptions"></ngx-slider>
       </div>
     </div>
     <select class="input-form-control">
       <option value="1">Et</option>
       <option value="0">Ou</option>
     </select>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-4 col-lg-3">
       <label>Hauteur Tot</label>
       <div class="custom-slider">
-        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="options"></ngx-slider>
+        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="dimensionsOptions"></ngx-slider>
       </div>
     </div>
     <select class="input-form-control">
       <option value="1">Et</option>
       <option value="0">Ou</option>
     </select>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-4 col-lg-3">
       <label>Longueur Tot</label>
       <div class="custom-slider">
-        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="options"></ngx-slider>
+        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="dimensionsOptions"></ngx-slider>
       </div>
     </div>
     <select class="input-form-control">
       <option value="1">Et</option>
       <option value="0">Ou</option>
     </select>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-4 col-lg-3">
       <label>Largeur Tot</label>
       <div class="custom-slider">
-        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="options"></ngx-slider>
+        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="dimensionsOptions"></ngx-slider>
       </div>
     </div>
     <select class="input-form-control">
       <option value="1">Et</option>
       <option value="0">Ou</option>
     </select>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-4 col-lg-3">
       <label>Profondeur</label>
       <div class="custom-slider">
-        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="options"></ngx-slider>
+        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="dimensionsOptions"></ngx-slider>
       </div>
     </div>
     <select class="input-form-control">
       <option value="1">Et</option>
       <option value="0">Ou</option>
     </select>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-4 col-lg-3">
       <label>Poids</label>
       <div class="custom-slider">
-        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="options"></ngx-slider>
+        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="poundsOprions"></ngx-slider>
       </div>
     </div>
     <select class="input-form-control">
       <option value="1">Et</option>
       <option value="0">Ou</option>
     </select>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-4 col-lg-3">
       <label>Nombre unité</label>
       <input class="input-form-control" type="number" />
     </div>
@@ -246,8 +256,8 @@
       <option value="1">Et</option>
       <option value="0">Ou</option>
     </select>
-    <div class="form-group d-flex col-md-3">
-      <label>Catégories de bien</label>
+    <div class="form-group d-flex col-xs-12 col-md-4 col-lg-3">
+      <label>Catégories</label>
       <ng-multiselect-dropdown
         class="select"
         [placeholder]="'Choissiez des catégories'"
@@ -262,7 +272,7 @@
       <option value="1">Et</option>
       <option value="0">Ou</option>
     </select>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-4 col-lg-3">
       <label>Mode Entrée</label>
       <ng-multiselect-dropdown
         class="select"
@@ -278,14 +288,14 @@
       <option value="1">Et</option>
       <option value="0">Ou</option>
     </select>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-4 col-lg-3">
       <label class="col-md-4">Date Entrée</label>
       <select class="input-form-control">
         <option *ngFor="let operator of dateOperator">{{ operator }}</option>
       </select>
       <input class="input-form-control" type="date" id="date" name="date" />
     </div>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-4 col-lg-3">
       <label>N arrêt</label>
       <ng-multiselect-dropdown
         class="select"
@@ -301,7 +311,7 @@
       <option value="1">Et</option>
       <option value="0">Ou</option>
     </select>
-    <div class="form-group d-flex col-md-3">
+    <div class="form-group d-flex col-xs-12 col-md-4 col-lg-3">
       <label class="col-md-4">Date dépôt</label>
       <select class="input-form-control">
         <option *ngFor="let operator of dateOperator">{{ operator }}</option>
@@ -312,5 +322,5 @@
 </div>
 
 <div class="validation">
-  <button class="mt-1 valid-btn">Valider</button>
+  <button class="mt-1 valid-btn" (click)="onValidateRequest()">Valider</button>
 </div>
