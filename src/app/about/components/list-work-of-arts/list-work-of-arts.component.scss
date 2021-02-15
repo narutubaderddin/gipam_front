@@ -219,3 +219,12 @@ h6 {
 .cons-mvt {
   justify-content: flex-end;
 }
+
+.icon-stack {
+  cursor: pointer;
+  .fa-times {
+    margin-left: -10px;
+    color: red;
+    padding-top: 4px;
+  }
+}

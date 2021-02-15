@@ -1,4 +1,3 @@
-import { AlertModalComponent } from './../alert-modal/alert-modal.component';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
@@ -156,11 +155,5 @@ export class HomePageComponent implements OnInit {
 
   addOeuvre() {}
 
-  openAlertModal() {
-    const ngbModalOptions: NgbModalOptions = {
-      backdropClass: 'modal-container',
-      centered: true,
-    };
-    this.modalService.open(AlertModalComponent, ngbModalOptions);
-  }
+  openAlertModal() {}
 }

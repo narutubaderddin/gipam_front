@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Options } from '@angular-slider/ngx-slider';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
@@ -10,48 +10,56 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 })
 export class RequestComponent implements OnInit {
   @Input() fields: any;
-  orderForm: FormGroup;
-  items: FormArray;
-  selectedItems: any;
+  @Output() validateRequest = new EventEmitter<any>();
+  value: number = 40;
+  highValue: number = 60;
+  dimensionsOptions: Options;
+  poundsOprions: Options;
+  domaine: any;
   dateOperator = ['En', 'Entre', 'Supérieure à', 'Inférieure à'];
-  dropdownSettings: IDropdownSettings = {
-    singleSelection: false,
-    idField: '',
-    textField: '',
-    selectAllText: 'Sélectionner tout',
-    unSelectAllText: 'Supprimer les sélections',
-    itemsShowLimit: 3,
-    allowSearchFilter: true,
-  };
-  constructor(private formBuilder: FormBuilder, public WorkOfArtService: WorkOfArtService) {}
+  dropdownSettings: IDropdownSettings;
+  showAdvancedSearchBloc = false;
+  constructor(public WorkOfArtService: WorkOfArtService) {}
 
   ngOnInit() {
-    this.orderForm = new FormGroup({
-      items: new FormArray([]),
-    });
+    this.domaine = this.WorkOfArtService.domaine;
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'name',
+      selectAllText: 'Sélectionner tout',
+      unSelectAllText: 'Supprimer les sélections',
+      itemsShowLimit: 1,
+      allowSearchFilter: true,
+    };
+    this.dimensionsOptions = {
+      floor: 0,
+      ceil: 9999,
+      translate: (value: number): string => {
+        return value + 'cm';
+      },
+    };
+    this.poundsOprions = {
+      floor: 0,
+      ceil: 9999,
+      translate: (value: number): string => {
+        return value + 'Kg';
+      },
+    };
   }
 
-  createItem(): FormGroup {
-    return this.formBuilder.group({
-      field: '',
-      operator: '',
-      value: '',
-    });
-  }
-
-  addItem(): void {
-    this.items = this.orderForm.get('items') as FormArray;
-    this.items.push(this.createItem());
-  }
-
-  removeElement(i: any) {
-    const remove = this.orderForm.get('items') as FormArray;
-    remove.removeAt(i);
-  }
   onItemSelect(item: any) {
     console.log(item);
   }
   onSelectAll(items: any) {
     console.log(items);
+  }
+
+  openAdvancedSearchBloc() {
+    this.showAdvancedSearchBloc = !this.showAdvancedSearchBloc;
+  }
+
+  onValidateRequest() {
+    this.validateRequest.emit(true);
   }
 }

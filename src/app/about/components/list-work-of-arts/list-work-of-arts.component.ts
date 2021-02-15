@@ -1,5 +1,3 @@
-import { AddDepositMovableObjectModalComponent } from './../../../@shared/components/add-deposit-movable-object-modal/add-deposit-movable-object-modal.component';
-import { AddPropertyMovableObjectModalComponent } from './../../../@shared/components/add-property-movable-object-modal/add-property-movable-object-modal.component';
 import { VisibleCatalogRendererComponent } from './../../../@shared/components/datatables/visible-catalog-renderer/visible-catalog-renderer.component';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { ColDef, ColumnApi, GridApi, ICellEditorParams, Column, GridOptions } from 'ag-grid-community';
@@ -20,6 +18,7 @@ import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ListWorkOfArtsComponent implements OnInit {
   isCollapsed = true;
+  showDatatable = false;
   data = false;
   mode = 'liste';
   filterFormGroup: FormGroup;
@@ -145,7 +144,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       width: 130,
     },
   ];
-  pinnedCols: string[] = ['action', 'visible'];
+  pinnedCols: string[] = ['action'];
   leftPinnedCols: string[] = ['id'];
 
   gridApi: GridApi;
@@ -261,20 +260,15 @@ export class ListWorkOfArtsComponent implements OnInit {
   }
 
   //add movable objects
-  addPropertyMovableObject() {
-    const ngbModalOptions: NgbModalOptions = {
-      backdropClass: 'modal-container',
-      centered: true,
-      size: 'lg',
-    };
-    this.modalService.open(AddPropertyMovableObjectModalComponent, ngbModalOptions);
-  }
+  addPropertyMovableObject() {}
 
-  addDepositMovableObject() {
-    const ngbModalOptions: NgbModalOptions = {
-      backdropClass: 'modal-container',
-      centered: true,
-    };
-    this.modalService.open(AddDepositMovableObjectModalComponent, ngbModalOptions);
+  addDepositMovableObject() {}
+
+  //validate request value
+  onValidateRequest(value: boolean) {
+    if (value) {
+      this.showDatatable = true;
+      this.isCollapsed = false;
+    }
   }
 }
