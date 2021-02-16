@@ -25,6 +25,8 @@ import { RequestComponent } from '@app/about/components/list-work-of-arts/reques
 import { PortailComponent } from './components/portail/portail.component';
 import { TreeviewModule } from 'ngx-treeview';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { PortailItemDetailsComponent } from './components/portail-item-details/portail-item-details.component';
+import { PortailItemImageComponent } from './components/portail-item-details/portail-item-image/portail-item-image.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,8 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     AdministratorHomePageComponent,
     RequestComponent,
     PortailComponent,
+    PortailItemDetailsComponent,
+    PortailItemImageComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
