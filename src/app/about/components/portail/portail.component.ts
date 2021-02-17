@@ -1,8 +1,8 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
-import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
-import { Options } from '@angular-slider/ngx-slider';
+import { TreeviewConfig } from 'ngx-treeview';
+import { LabelType, Options } from '@angular-slider/ngx-slider';
 
 @Component({
   selector: 'app-portail',
@@ -28,9 +28,40 @@ export class PortailComponent implements OnInit {
   });
   value: number = 40;
   highValue: number = 60;
-  options: Options = {
+  value1: number = 40;
+  highValue1: number = 60;
+  value2: number = 40;
+  highValue2: number = 60;
+  value3: number = 40;
+  highValue3: number = 60;
+  isCollapsed = false;
+  optionsCm: Options = {
     floor: 0,
     ceil: 9999,
+    translate: (value: number, label: LabelType): string => {
+      switch (label) {
+        case LabelType.Low:
+          return '<b>Min: </b> ' + value + 'cm';
+        case LabelType.High:
+          return '<b>Max: </b> ' + value + 'cm';
+        default:
+          return value.toString();
+      }
+    },
+  };
+  optionsKg: Options = {
+    floor: 0,
+    ceil: 9999,
+    translate: (value: number, label: LabelType): string => {
+      switch (label) {
+        case LabelType.Low:
+          return '<b>Min: </b> ' + value + 'Kg';
+        case LabelType.High:
+          return '<b>Max: </b> ' + value + 'Kg';
+        default:
+          return value.toString();
+      }
+    },
   };
   constructor(private WorkOfArtService: WorkOfArtService, private router: Router) {}
 
@@ -64,6 +95,6 @@ export class PortailComponent implements OnInit {
   }
 
   details() {
-    this.router.navigate(['item-details']);
+    this.router.navigate(['portail-details']);
   }
 }

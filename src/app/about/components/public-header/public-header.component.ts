@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '@app/auth';
 
 @Component({
   selector: 'app-public-header',
@@ -8,7 +9,10 @@ import { Router } from '@angular/router';
 })
 export class PublicHeaderComponent implements OnInit {
   isCollapsed = false;
-  constructor(private router: Router) {}
+  isAuthentiticated: boolean = false;
+  constructor(private router: Router, private authenticationService: AuthenticationService) {
+    this.isAuthentiticated = authenticationService.isAuthenticated();
+  }
 
   ngOnInit(): void {}
 
@@ -17,5 +21,10 @@ export class PublicHeaderComponent implements OnInit {
   }
   goToWorkOfArts() {
     this.router.navigate(['work-of-arts-list']);
+  }
+
+  logout() {
+    this.authenticationService.logout();
+    this.router.navigate(['login']);
   }
 }

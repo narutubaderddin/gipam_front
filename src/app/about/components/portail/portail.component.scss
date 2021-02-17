@@ -29,7 +29,7 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  height: 60px;
+  height: 70px;
   margin-top: 15px;
 }
 
@@ -121,7 +121,19 @@ a:not([href]) {
   }
   ::ng-deep {
     .ngx-slider .ngx-slider-pointer {
-      background: #0db9f0 !important;
+      background: #407ca8 !important;
+      height: 16px !important;
+      width: 16px;
+      outline: none;
+    }
+    .ngx-slider .ngx-slider-pointer:after {
+      width: 4px;
+      height: 4px;
+      top: 6px;
+      left: 6px;
+    }
+    .ngx-slider-selection {
+      background: #407ca8 !important;
     }
   }
 }
@@ -172,6 +184,7 @@ a:not([href]) {
       height: 100%;
       transform: rotateY(-180deg);
     }
+
     &:hover {
       .front {
         transform: rotateY(180deg);
@@ -246,7 +259,7 @@ a:not([href]) {
   .cadre {
     display: flex;
     justify-content: space-between;
-    padding-left: 35px;
+    //padding-left: 35px;
     flex-wrap: wrap;
     background-color: white;
     height: 800px;
@@ -272,10 +285,40 @@ img {
   margin-right: auto;
 }
 .card-columns {
-  column-count: 4;
   column-gap: 0;
   orphans: 2;
-  widows: 3;
+  widows: 2;
+}
+@media (min-width: 34em) {
+  .card-columns {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+  }
+}
+
+@media (min-width: 48em) {
+  .card-columns {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+  }
+}
+
+@media (min-width: 62em) {
+  .card-columns {
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4;
+  }
+}
+
+@media (min-width: 75em) {
+  .card-columns {
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4;
+  }
 }
 .card {
   border-color: rgb(0 0 0 / 30%);

@@ -1,8 +1,21 @@
 <div class="container-fluid">
   <div class="title-bloc">
     <div class="left-title-bloc">
-      <h1 class="title">OEUVRES D'ARTS</h1>
-      <p>254 Oeuvres d'art</p>
+      <h1 class="title">OEUVRES D'ART</h1>
+      <p>
+        254 Oeuvres d'art
+        <br />
+        <a
+          *ngIf="isCollapsed"
+          (click)="isCollapsed = !isCollapsed"
+          [attr.aria-expanded]="!isCollapsed"
+          style="color: #407ca8; text-shadow: 1px 1px 2px #000000; margin-left: -1rem"
+          role="button"
+          aria-controls="collapseExample"
+        >
+          <i class="fas fa-chevron-right" style="font-size: 1.6em"></i>
+        </a>
+      </p>
     </div>
     <div class="sort-bloc">
       <strong>Trié par:</strong>
@@ -14,9 +27,18 @@
       <i class="fas fa-file-download"></i>
     </div>
   </div>
-
-  <div class="d-flex">
-    <div class="filter-bloc mr-3 col-md-2">
+  <div class="d-flex row">
+    <div id="collapseExample" [ngbCollapse]="isCollapsed" class="filter-bloc mb-3 col-lg-2 col-xs-12">
+      <a
+        *ngIf="!isCollapsed"
+        (click)="isCollapsed = !isCollapsed"
+        [attr.aria-expanded]="!isCollapsed"
+        style="color: #407ca8; text-shadow: 1px 1px 2px #000000; position: relative; left: 97%"
+        role="button"
+        aria-controls="collapseExample"
+      >
+        <i class="fas fa-chevron-left" style="font-size: 1.6em"></i>
+      </a>
       <div class="search-panel mt-2">
         <input
           class="form-control"
@@ -44,31 +66,36 @@
 
       <div class="filters mt-2">
         <h5>Hauteur [cm]</h5>
-        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="options"></ngx-slider>
+        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="optionsCm"></ngx-slider>
       </div>
       <div class="filters mt-2">
         <h5>Largeur [cm]</h5>
-        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="options"></ngx-slider>
+        <ngx-slider [(value)]="value1" [(highValue)]="highValue1" [options]="optionsCm"></ngx-slider>
       </div>
       <div class="filters mt-2">
         <h5>Longueur [cm]</h5>
-        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="options"></ngx-slider>
+        <ngx-slider [(value)]="value2" [(highValue)]="highValue2" [options]="optionsCm"></ngx-slider>
       </div>
       <div class="filters mt-2">
         <h5>Poids [Kg]</h5>
-        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="options"></ngx-slider>
+        <ngx-slider [(value)]="value3" [(highValue)]="highValue3" [options]="optionsKg"></ngx-slider>
       </div>
     </div>
-    <div class="picture-bloc-images">
+    <div
+      class="picture-bloc-images"
+      [ngClass]="isCollapsed ? 'col-lg-12 col-xs-12' : 'ml-3 ml-xs-0 col-lg-9 col-xs-12'"
+    >
       <div class="cadre col-md-12">
         <div class="card-columns">
           <div class="card shadow p-3 items-bloc" style="margin-bottom: 0" *ngFor="let items of oeuvreToShow">
             <div class="card-block flip">
               <img class="card-img-top img-fluid" [src]="items.image" alt="Card image cap" />
               <div class="back">
-                <h5 class="card-title title">{{ items.titre }}</h5>
-                <p class="card-text description">{{ items.description }}</p>
-                <a href="#" class="btn btn-primary details" (click)="details()">Voir plus de détails</a>
+                <h5 class="card-title title" style="overflow: auto; text-overflow: ellipsis">{{ items.titre }}</h5>
+                <p class="card-text description" style="overflow: auto; text-overflow: ellipsis">
+                  {{ items.description }}
+                </p>
+                <a href="/portail-details" class="btn btn-primary details">Voir plus de détails</a>
               </div>
             </div>
           </div>

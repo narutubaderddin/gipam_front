@@ -26,6 +26,8 @@ import { PortailComponent } from './components/portail/portail.component';
 import { TreeviewModule } from 'ngx-treeview';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { AddPropertyRemarquerComponent } from './components/add-property-remarquer/add-property-remarquer.component';
+import { PortailItemDetailsComponent } from './components/portail-item-details/portail-item-details.component';
+import { PortailItemImageComponent } from './components/portail-item-details/portail-item-image/portail-item-image.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +46,8 @@ import { AddPropertyRemarquerComponent } from './components/add-property-remarqu
     RequestComponent,
     PortailComponent,
     AddPropertyRemarquerComponent,
+    PortailItemDetailsComponent,
+    PortailItemImageComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [

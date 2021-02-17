@@ -7,6 +7,7 @@ import { AboutComponent } from '@app/about/about.component';
 import { ItemDetailsComponent } from '@app/about/components/item-details/item-details.component';
 import { ListWorkOfArtsComponent } from './components/list-work-of-arts/list-work-of-arts.component';
 import { PortailComponent } from './components/portail/portail.component';
+import { PortailItemDetailsComponent } from '@app/about/components/portail-item-details/portail-item-details.component';
 const routes: Routes = [
   {
     path: '',
@@ -16,6 +17,7 @@ const routes: Routes = [
       { path: 'home-page', component: AdministratorHomePageComponent },
       { path: 'accueil', component: HomePageComponent },
       { path: 'item-details', component: ItemDetailsComponent },
+      { path: 'portail-details', component: PortailItemDetailsComponent },
       { path: 'work-of-arts-list', component: ListWorkOfArtsComponent },
       { path: 'portail', component: PortailComponent },
       { path: 'add-property-remarquer', component: AddPropertyRemarquerComponent },
