@@ -31,6 +31,5 @@ export class DescriptionBlocComponent implements OnInit {
 
   onCollapse() {
     this.isCollapsed = !this.isCollapsed;
-    console.log(this.isCollapsed);
   }
 }
