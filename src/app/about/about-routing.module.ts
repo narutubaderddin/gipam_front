@@ -1,3 +1,4 @@
+import { AddPropertyRemarquerComponent } from './components/add-property-remarquer/add-property-remarquer.component';
 import { AdministratorHomePageComponent } from './components/administrator-home-page/administrator-home-page.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -19,6 +20,7 @@ const routes: Routes = [
       { path: 'portail-details', component: PortailItemDetailsComponent },
       { path: 'work-of-arts-list', component: ListWorkOfArtsComponent },
       { path: 'portail', component: PortailComponent },
+      { path: 'add-property-remarquer', component: AddPropertyRemarquerComponent },
     ],
   },
 ];

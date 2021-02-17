@@ -3,15 +3,22 @@
   <div class="body">
     <div class="add-export-bloc d-flex flex-content-between">
       <div class="d-flex add-bloc">
-        <div class="add-button">
-          <button class="add-action" (click)="addDepositMovableObject()">
-            <i class="zmdi zmdi-plus"> </i>Ajouter une oeuvre en dépôt
-          </button>
-        </div>
-        <div class="add-button">
-          <button class="add-action" (click)="addPropertyMovableObject()">
-            <i class="zmdi zmdi-plus"> </i>Ajouter une oeuvre en propriété
-          </button>
+        <div class="dropdown-container mb-2 mr-2 mb-sm-0">
+          <div
+            ngbDropdown
+            placement="bottom-left"
+            class="d-inline-block add-button"
+            autoClose="outside"
+            container="body"
+          >
+            <button class="btn add-action" id="dropdownBasic" ngbDropdownToggle translate>Ajouter notice</button>
+            <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">
+              <ul class="list-group">
+                <li class="list-group-item" (click)="addPropertyMovableObject()">Ajouter une notice en propriété</li>
+                <li class="list-group-item">Ajouter une notice en dépôt</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
       <div class="d-flex">

@@ -19,6 +19,7 @@ export class RequestComponent implements OnInit {
   dateOperator = ['En', 'Entre', 'Supérieure à', 'Inférieure à'];
   dropdownSettings: IDropdownSettings;
   showAdvancedSearchBloc = false;
+  denomination: any;
   constructor(public WorkOfArtService: WorkOfArtService) {}
 
   ngOnInit() {
@@ -51,10 +52,10 @@ export class RequestComponent implements OnInit {
   onItemSelect(item: any) {
     console.log(item);
   }
-  onSelectAll(items: any) {
-    console.log(items);
+  onSelectAll(items: any) {}
+  onDomainSelect(item: any) {
+    this.denomination = item.denominations;
   }
-
   openAdvancedSearchBloc() {
     this.showAdvancedSearchBloc = !this.showAdvancedSearchBloc;
   }

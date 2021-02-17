@@ -6,40 +6,66 @@ import { TreeviewItem } from 'ngx-treeview';
 })
 export class WorkOfArtService {
   domaine = [
-    { id: 0, name: 'Art graphique' },
-    { id: 1, name: 'Horlogerie' },
-    { id: 2, name: 'Luminaire' },
-    { id: 3, name: 'Mobilier' },
+    {
+      id: 0,
+      name: 'Art graphique',
+      denominations: [
+        { id: 1, name: 'Affiche' },
+        { id: 2, name: 'Dessin' },
+        { id: 3, name: 'Estampe' },
+        { id: 4, name: 'Gravure' },
+        { id: 5, name: 'Peinture sur papier' },
+        { id: 5, name: 'Photographie' },
+      ],
+    },
+    {
+      id: 1,
+      name: 'Horlogerie',
+      denominations: [
+        { id: 1, name: 'Horloge' },
+        { id: 2, name: 'Pendule' },
+        { id: 3, name: 'Régulateur' },
+      ],
+    },
+    {
+      id: 2,
+      name: 'Luminaire',
+      denominations: [
+        { id: 1, name: 'Applique' },
+        { id: 2, name: 'Chandelier' },
+      ],
+    },
     { id: 4, name: 'Object décoratif' },
     { id: 5, name: 'Peinture' },
-    { id: 6, name: 'Sculpture' },
+    {
+      id: 6,
+      name: 'Sculpture',
+      denominations: [
+        { id: 1, name: 'Buste' },
+        { id: 2, name: 'Relief' },
+      ],
+    },
     { id: 7, name: 'Art textile' },
     { id: 8, name: 'Pièce de musée' },
     { id: 9, name: 'Art de la table' },
     { id: 10, name: 'Decor monumental' },
     { id: 11, name: 'Archeologie' },
   ];
-  epoque: string[] = [
-    'Renaissance',
-    'XVIIe siècle',
-    'Empire',
-    'Restauration',
-    'Second Empire',
-    'Louis Philippe',
-    'Louis XIV',
-    'Louis XV',
-    'Régence',
-    'Directoire',
-    'XVIe siècle',
-    'XIXe siècle',
-    'Paléolithique',
-    'Louis XVIII',
-    'Consulat',
-    'Charles X',
-    'Antique',
-    'Art Déco',
-    'Années 70',
-    'Années 50',
+  epoque = [
+    { id: 0, name: 'Renaissance' },
+    { id: 1, name: 'XVIIe siècle' },
+    { id: 2, name: 'Empire' },
+    { id: 3, name: 'Restauration' },
+    { id: 4, name: 'Second Empire' },
+    { id: 5, name: 'Louis Philippe' },
+    { id: 6, name: 'Louis XIV' },
+    { id: 7, name: 'Louis XV' },
+    { id: 8, name: 'Régence' },
+    { id: 9, name: 'Directoire' },
+    { id: 10, name: 'XVIe siècle' },
+    { id: 11, name: 'XIXe siècle' },
+    { id: 12, name: 'Paléolithique' },
+    { id: 13, name: 'Louis XVIII' },
   ];
   property: string[] = ['Propriété', 'Dépôt'];
   style: string[] = [
@@ -60,6 +86,24 @@ export class WorkOfArtService {
     'Oriental',
     'Chinois',
     'Contemporain',
+  ];
+  ministeres = [
+    { id: 0, name: 'MINISTÈRES ÉCONOMIQUES ET FINANCIERS' },
+    { id: 1, name: 'MINISTÈRE DU COMMERCE EXTÉRIEUR' },
+    { id: 2, name: "SECRÉTARIAT D'ÉTAT CHARGE DU BUDGET" },
+    { id: 3, name: "MINISTÈRE DÉLÉGUÉ A L'INDUSTRIE" },
+    { id: 4, name: "SECRETARIAT D'ETAT CHARGÉ DE LA FONCTION PUBLIQUE" },
+    { id: 5, name: 'Louis Philippe' },
+    { id: 6, name: "SECRÉTARIAT D'ETAT CHARGÉ DU COMMERCE EXTÈRIEUR" },
+    { id: 7, name: "SECRÉTARIAT D'ÉTAT CHARGÉ DE L'EMPLOI" },
+    {
+      id: 8,
+      name:
+        "SECRÉTARIAT D'ÉTAT CHARGÉ COMMERCE, DE L'ARTISANAT, DES PME, DU TOURISME, DES SERVICES, DES PROFESSIONS LIBERALES ET DE LA CONSOMMATION",
+    },
+    { id: 9, name: "MINISTÈRE DE L'ARTISANAT, DU COMMERCE  ET DU TOURISME" },
+    { id: 10, name: "SECRÉTARIAT D'ETAT CHARGÉ DU NUMÉRIQUE" },
+    { id: 11, name: 'MINISTÈRE DE LA FONCTION PUBLIQUE' },
   ];
   oeuvres = [
     {

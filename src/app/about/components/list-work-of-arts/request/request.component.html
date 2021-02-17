@@ -28,7 +28,7 @@
         [placeholder]="'Choissiez les domaines'"
         [settings]="dropdownSettings"
         [data]="domaine"
-        (onSelect)="onItemSelect($event)"
+        (onSelect)="onDomainSelect($event)"
         (onSelectAll)="onSelectAll($event)"
       >
       </ng-multiselect-dropdown>
@@ -39,7 +39,7 @@
         class="select"
         [placeholder]="'Choissiez les dénominations'"
         [settings]="dropdownSettings"
-        [data]="domaine"
+        [data]="denomination"
         (onSelect)="onItemSelect($event)"
         (onSelectAll)="onSelectAll($event)"
       >
@@ -76,7 +76,7 @@
         class="select"
         [placeholder]="'Choissiez les ministères'"
         [settings]="dropdownSettings"
-        [data]="domaine"
+        [data]="WorkOfArtService.ministeres"
         (onSelect)="onItemSelect($event)"
         (onSelectAll)="onSelectAll($event)"
       >

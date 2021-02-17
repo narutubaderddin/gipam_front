@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { VisibleCatalogRendererComponent } from './../../../@shared/components/datatables/visible-catalog-renderer/visible-catalog-renderer.component';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { ColDef, ColumnApi, GridApi, ICellEditorParams, Column, GridOptions } from 'ag-grid-community';
@@ -9,7 +10,6 @@ import { CustomHeaderRendererComponent } from '@app/@shared/components/datatable
 import { first } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { GridActionRendererComponent } from '@app/@shared/components/datatables/grid-action-renderer/grid-action-renderer.component';
-import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-list-work-of-arts',
@@ -161,7 +161,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     private fb: FormBuilder,
     public columnFilterService: ColumnFilterService,
     private WorkOfArtService: WorkOfArtService,
-    private modalService: NgbModal
+    private router: Router
   ) {}
 
   get defaultHeaderParams() {
@@ -252,7 +252,6 @@ export class ListWorkOfArtsComponent implements OnInit {
   }
 
   onCellClicked(event: any) {
-    console.log(event);
     if (event.column.colId == 'FirstName') {
       // only first column clicked
       // execute the action as you want here in on click of hyperlink
@@ -260,7 +259,9 @@ export class ListWorkOfArtsComponent implements OnInit {
   }
 
   //add movable objects
-  addPropertyMovableObject() {}
+  addPropertyMovableObject() {
+    this.router.navigate(['add-property-remarquer']);
+  }
 
   addDepositMovableObject() {}
 

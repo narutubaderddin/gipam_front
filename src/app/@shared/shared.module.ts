@@ -16,6 +16,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GridActionRendererComponent } from './components/datatables/grid-action-renderer/grid-action-renderer.component';
 import { VisibleCatalogRendererComponent } from './components/datatables/visible-catalog-renderer/visible-catalog-renderer.component';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
+import { DescriptionBlocComponent } from './components/add-remarquer-blocs/description-bloc/description-bloc.component';
+import { AdministrativeMovementBlocComponent } from './components/add-remarquer-blocs/administrative-movement-bloc/administrative-movement-bloc.component';
+import { GeographicMovementBlocComponent } from './components/add-remarquer-blocs/geographic-movement-bloc/geographic-movement-bloc.component';
+import { ExtraNoticeItemsBlocComponent } from './components/add-remarquer-blocs/extra-notice-items-bloc/extra-notice-items-bloc.component';
+import { AuthorBlocComponent } from './components/add-remarquer-blocs/author-bloc/author-bloc.component';
+import { StatusBlocComponent } from './components/add-remarquer-blocs/status-bloc/status-bloc.component';
 
 @NgModule({
   imports: [
@@ -39,7 +45,23 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
     CustomLoadingOverlayComponent,
     GridActionRendererComponent,
     VisibleCatalogRendererComponent,
+    DescriptionBlocComponent,
+    AdministrativeMovementBlocComponent,
+    GeographicMovementBlocComponent,
+    ExtraNoticeItemsBlocComponent,
+    AuthorBlocComponent,
+    StatusBlocComponent,
   ],
-  exports: [LoaderComponent, GridWrapperComponent, CommentDetailsModalComponent],
+  exports: [
+    LoaderComponent,
+    GridWrapperComponent,
+    CommentDetailsModalComponent,
+    DescriptionBlocComponent,
+    AdministrativeMovementBlocComponent,
+    GeographicMovementBlocComponent,
+    ExtraNoticeItemsBlocComponent,
+    AuthorBlocComponent,
+    StatusBlocComponent,
+  ],
 })
 export class SharedModule {}
