@@ -9,6 +9,7 @@ export class ExtraNoticeItemsBlocComponent implements OnInit {
   @Input() domains: any;
   @Input() ministeres: any;
   @Input() keyword: string;
+  active = 1;
   constructor() {}
 
   ngOnInit(): void {}
@@ -22,4 +23,5 @@ export class ExtraNoticeItemsBlocComponent implements OnInit {
   onFocused(e: any) {
     // do something when input is focused
   }
+  doSomethingOnTabSelect(event: any) {}
 }

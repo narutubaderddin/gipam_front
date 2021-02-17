@@ -1,4 +1,3 @@
-import { TabsModule } from 'ngx-tabset';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -34,7 +33,6 @@ import { StatusBlocComponent } from './components/add-remarquer-blocs/status-blo
     FormsModule,
     ReactiveFormsModule,
     AutocompleteLibModule,
-    TabsModule.forRoot(),
   ],
   declarations: [
     LoaderComponent,

@@ -26,7 +26,6 @@ import { PortailComponent } from './components/portail/portail.component';
 import { TreeviewModule } from 'ngx-treeview';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { AddPropertyRemarquerComponent } from './components/add-property-remarquer/add-property-remarquer.component';
-import { TabsModule } from 'ngx-tabset';
 
 @NgModule({
   declarations: [
@@ -60,7 +59,6 @@ import { TabsModule } from 'ngx-tabset';
     AutocompleteLibModule,
     TreeviewModule.forRoot(),
     NgxSliderModule,
-    TabsModule.forRoot(),
   ],
   providers: [MovementsService],
 })
