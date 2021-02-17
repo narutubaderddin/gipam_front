@@ -1,0 +1,124 @@
+<div class="d-flex bloc mt-2" [ngClass]="isCollapsed ? 'collapsed' : 'non-collapsed'">
+  <div class="title-bloc">
+    <h5>Localisation Administrative</h5>
+  </div>
+  <div class="reduce-bloc">
+    <i class="fas fa-sort-up" (click)="onCollapse()"></i>
+  </div>
+  <div class="form-bloc">
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">Ministère</label>
+      <div class="autocomplete col-md-7">
+        <ng-autocomplete
+          placeholder="Ministères"
+          [data]="ministeres"
+          [searchKeyword]="keyword"
+          (selected)="selectEvent($event)"
+          (inputChanged)="onChangeSearch($event)"
+          (inputFocused)="onFocused($event)"
+          [itemTemplate]="itemTemplate"
+          [notFoundTemplate]="notFoundTemplate"
+        >
+        </ng-autocomplete>
+        <ng-template #itemTemplate let-item>
+          <a [innerHTML]="item.name"></a>
+        </ng-template>
+        <ng-template #notFoundTemplate let-notFound>
+          <div [innerHTML]="notFound"></div>
+        </ng-template>
+      </div>
+    </div>
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">Etab/Dir.</label>
+      <div class="autocomplete col-md-7">
+        <ng-autocomplete
+          placeholder="Etab/Dir"
+          [data]="ministeres"
+          [searchKeyword]="keyword"
+          (selected)="selectEvent($event)"
+          (inputChanged)="onChangeSearch($event)"
+          (inputFocused)="onFocused($event)"
+          [itemTemplate]="itemTemplate"
+          [notFoundTemplate]="notFoundTemplate"
+        >
+        </ng-autocomplete>
+        <ng-template #itemTemplate let-item>
+          <a [innerHTML]="item.name"></a>
+        </ng-template>
+        <ng-template #notFoundTemplate let-notFound>
+          <div [innerHTML]="notFound"></div>
+        </ng-template>
+      </div>
+    </div>
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">Sous-direction</label>
+      <div class="autocomplete col-md-7">
+        <ng-autocomplete
+          placeholder="Sous-direction"
+          [data]="ministeres"
+          [searchKeyword]="keyword"
+          (selected)="selectEvent($event)"
+          (inputChanged)="onChangeSearch($event)"
+          (inputFocused)="onFocused($event)"
+          [itemTemplate]="itemTemplate"
+          [notFoundTemplate]="notFoundTemplate"
+        >
+        </ng-autocomplete>
+        <ng-template #itemTemplate let-item>
+          <a [innerHTML]="item.name"></a>
+        </ng-template>
+        <ng-template #notFoundTemplate let-notFound>
+          <div [innerHTML]="notFound"></div>
+        </ng-template>
+      </div>
+    </div>
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">Service</label>
+      <div class="autocomplete col-md-7">
+        <ng-autocomplete
+          placeholder="Service"
+          [data]="ministeres"
+          [searchKeyword]="keyword"
+          (selected)="selectEvent($event)"
+          (inputChanged)="onChangeSearch($event)"
+          (inputFocused)="onFocused($event)"
+          [itemTemplate]="itemTemplate"
+          [notFoundTemplate]="notFoundTemplate"
+        >
+        </ng-autocomplete>
+        <ng-template #itemTemplate let-item>
+          <a [innerHTML]="item.name"></a>
+        </ng-template>
+        <ng-template #notFoundTemplate let-notFound>
+          <div [innerHTML]="notFound"></div>
+        </ng-template>
+      </div>
+    </div>
+    <h6 class="col-md-12 correspondants">Correspondants administratifs</h6>
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">Nom & prénom</label>
+      <div class="autocomplete col-md-7">
+        <ng-autocomplete
+          placeholder="Nom&prenom"
+          [data]="domains"
+          [searchKeyword]="keyword"
+          (selected)="selectEvent($event)"
+          (inputChanged)="onChangeSearch($event)"
+          (inputFocused)="onFocused($event)"
+          [itemTemplate]="itemTemplate"
+          [notFoundTemplate]="notFoundTemplate"
+        >
+        </ng-autocomplete>
+        <ng-template #itemTemplate let-item>
+          <a [innerHTML]="item.name"></a>
+        </ng-template>
+        <ng-template #notFoundTemplate let-notFound>
+          <div [innerHTML]="notFound"></div>
+        </ng-template>
+      </div>
+    </div>
+    <div>
+      <a href="#">Ajouter correspondant administrative</a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,48 @@
+<div class="d-flex bloc mt-2" [ngClass]="isCollapsed ? 'collapsed' : 'non-collapsed'">
+  <div class="title-bloc">
+    <h5>Localisation Géographiques</h5>
+  </div>
+  <div class="reduce-bloc">
+    <i class="fas fa-sort-up" (click)="onCollapse()"></i>
+  </div>
+  <div class="form-bloc">
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">Site</label>
+      <input class="form-control col-md-7" />
+    </div>
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">Batiment</label>
+      <input class="form-control col-md-7" />
+    </div>
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">N pièce</label>
+      <input class="form-control col-md-7" />
+    </div>
+    <h6 class="col-md-12 correspondants">Correspondants géographiques</h6>
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">Nom & prénom</label>
+      <div class="autocomplete col-md-7">
+        <ng-autocomplete
+          placeholder="Domaines"
+          [data]="domains"
+          [searchKeyword]="keyword"
+          (selected)="selectEvent($event)"
+          (inputChanged)="onChangeSearch($event)"
+          (inputFocused)="onFocused($event)"
+          [itemTemplate]="itemTemplate"
+          [notFoundTemplate]="notFoundTemplate"
+        >
+        </ng-autocomplete>
+        <ng-template #itemTemplate let-item>
+          <a [innerHTML]="item.name"></a>
+        </ng-template>
+        <ng-template #notFoundTemplate let-notFound>
+          <div [innerHTML]="notFound"></div>
+        </ng-template>
+      </div>
+    </div>
+    <div>
+      <a href="#">Ajouter correspondant géographique</a>
+    </div>
+  </div>
+</div>

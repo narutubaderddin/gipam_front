@@ -1,0 +1,17 @@
+<div class="modal-content bd-example-modal-lg">
+  <div class="modal-title">Ajouter une notice en propriété</div>
+  <div class="modal-body">
+    <app-description-bloc [domains]="domains" [keyword]="keyword"></app-description-bloc>
+    <app-status-bloc [domains]="domains" [keyword]="keyword"></app-status-bloc>
+    <app-author-bloc [domains]="domains" [keyword]="keyword"></app-author-bloc>
+    <app-administrative-movement-bloc
+      [keyword]="keyword"
+      [ministeres]="WorkOfArtService.ministeres"
+    ></app-administrative-movement-bloc>
+    <app-geographic-movement-bloc></app-geographic-movement-bloc>
+    <app-extra-notice-items-bloc></app-extra-notice-items-bloc>
+  </div>
+  <div class="add-button">
+    <button class="add-action col-md-2">Enregistrer</button>
+  </div>
+</div>

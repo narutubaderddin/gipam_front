@@ -1,0 +1,92 @@
+<div class="d-flex bloc mt-2" [ngClass]="isCollapsed ? 'collapsed' : 'non-collapsed'">
+  <div class="title-bloc">
+    <h5>Statut</h5>
+  </div>
+  <div class="reduce-bloc">
+    <i class="fas fa-sort-up" (click)="onCollapse()"></i>
+  </div>
+  <div class="form-bloc">
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">Statut propriété<span class="mandatory">*</span></label>
+      <div class="autocomplete col-md-7">
+        <ng-autocomplete
+          placeholder="Statut propriété"
+          [data]="domains"
+          [searchKeyword]="keyword"
+          (selected)="selectEvent($event)"
+          (inputChanged)="onChangeSearch($event)"
+          (inputFocused)="onFocused($event)"
+          [itemTemplate]="itemTemplate"
+          [notFoundTemplate]="notFoundTemplate"
+        >
+        </ng-autocomplete>
+        <ng-template #itemTemplate let-item>
+          <a [innerHTML]="item.name"></a>
+        </ng-template>
+        <ng-template #notFoundTemplate let-notFound>
+          <div [innerHTML]="notFound"></div>
+        </ng-template>
+      </div>
+    </div>
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">Catégorie de bien</label>
+      <div class="autocomplete col-md-7">
+        <ng-autocomplete
+          placeholder="Catégorie de bien"
+          [data]="domains"
+          [searchKeyword]="keyword"
+          (selected)="selectEvent($event)"
+          (inputChanged)="onChangeSearch($event)"
+          (inputFocused)="onFocused($event)"
+          [itemTemplate]="itemTemplate"
+          [notFoundTemplate]="notFoundTemplate"
+        >
+        </ng-autocomplete>
+        <ng-template #itemTemplate let-item>
+          <a [innerHTML]="item.name"></a>
+        </ng-template>
+        <ng-template #notFoundTemplate let-notFound>
+          <div [innerHTML]="notFound"></div>
+        </ng-template>
+      </div>
+    </div>
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">Valeur d'assurrance</label>
+      <input type="number" class="form-control col-md-7" />
+    </div>
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">Date d'assurrance</label>
+      <input type="date" class="form-control col-md-7" />
+    </div>
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">Mode Entrée</label>
+      <div class="autocomplete col-md-7">
+        <ng-autocomplete
+          placeholder="Mode Entrée"
+          [data]="domains"
+          [searchKeyword]="keyword"
+          (selected)="selectEvent($event)"
+          (inputChanged)="onChangeSearch($event)"
+          (inputFocused)="onFocused($event)"
+          [itemTemplate]="itemTemplate"
+          [notFoundTemplate]="notFoundTemplate"
+        >
+        </ng-autocomplete>
+        <ng-template #itemTemplate let-item>
+          <a [innerHTML]="item.name"></a>
+        </ng-template>
+        <ng-template #notFoundTemplate let-notFound>
+          <div [innerHTML]="notFound"></div>
+        </ng-template>
+      </div>
+    </div>
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">Date Entrée</label>
+      <input type="date" class="form-control col-md-7" />
+    </div>
+    <div class="form-group d-flex col-md-12">
+      <label class="col-md-4">Commentaire de mode d'entrée</label>
+      <textarea id="story" name="story" class="form-control col-md-7" rows="5" cols="33"> </textarea>
+    </div>
+  </div>
+</div>

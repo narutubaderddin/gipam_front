@@ -25,6 +25,8 @@ import { RequestComponent } from '@app/about/components/list-work-of-arts/reques
 import { PortailComponent } from './components/portail/portail.component';
 import { TreeviewModule } from 'ngx-treeview';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { AddPropertyRemarquerComponent } from './components/add-property-remarquer/add-property-remarquer.component';
+import { TabsModule } from 'ngx-tabset';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,7 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     AdministratorHomePageComponent,
     RequestComponent,
     PortailComponent,
+    AddPropertyRemarquerComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
@@ -57,6 +60,7 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     AutocompleteLibModule,
     TreeviewModule.forRoot(),
     NgxSliderModule,
+    TabsModule.forRoot(),
   ],
   providers: [MovementsService],
 })

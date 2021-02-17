@@ -1,0 +1,63 @@
+<div class="d-flex bloc mt-2" [ngClass]="isCollapsed ? 'collapsed' : 'non-collapsed'">
+  <div class="title-bloc">
+    <h5>Auteurs</h5>
+  </div>
+  <div class="reduce-bloc">
+    <i class="fas fa-sort-up" (click)="onCollapse()"></i>
+  </div>
+  <div class="form-bloc">
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">Nom&prénom<span class="mandatory">*</span></label>
+      <div class="autocomplete col-md-7">
+        <ng-autocomplete
+          placeholder="Nom&prénom"
+          [data]="domains"
+          [searchKeyword]="keyword"
+          (selected)="selectEvent($event)"
+          (inputChanged)="onChangeSearch($event)"
+          (inputFocused)="onFocused($event)"
+          [itemTemplate]="itemTemplate"
+          [notFoundTemplate]="notFoundTemplate"
+        >
+        </ng-autocomplete>
+        <ng-template #itemTemplate let-item>
+          <a [innerHTML]="item.name"></a>
+        </ng-template>
+        <ng-template #notFoundTemplate let-notFound>
+          <div [innerHTML]="notFound"></div>
+        </ng-template>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <i class="fas fa-trash-alt delete"></i>
+      <i class="add ml-3 mt-1 fas fa-plus"></i>
+    </div>
+    <div class="form-group d-flex col-md-12">
+      <input class="form-control checkbox" type="checkbox" />
+      <label>Ayant droit</label>
+    </div>
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">Nom</label>
+      <input type="text" class="form-control col-md-7" />
+    </div>
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">Prénom</label>
+      <input type="text" class="form-control col-md-7" />
+    </div>
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">Courriel</label>
+      <input type="text" class="form-control col-md-7" />
+    </div>
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">Site web</label>
+      <input type="text" class="form-control col-md-7" />
+    </div>
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">Tel</label>
+      <input type="text" class="form-control col-md-7" />
+    </div>
+    <div class="form-group col-md-12">
+      <a href="#"> Ajouter un auteur</a>
+    </div>
+  </div>
+</div>

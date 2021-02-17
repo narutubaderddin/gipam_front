@@ -1,0 +1,241 @@
+<div class="d-flex bloc" [ngClass]="isCollapsed ? 'collapsed' : 'non-collapsed'">
+  <div class="title-bloc">
+    <h5>Descritif</h5>
+  </div>
+  <div class="reduce-bloc">
+    <i class="fas fa-sort-up" (click)="onCollapse()"></i>
+  </div>
+  <div class="form-bloc">
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">Titre<span class="mandatory">*</span></label>
+      <input class="form-control col-md-7" />
+    </div>
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">Domaine<span class="mandatory">*</span></label>
+      <div class="autocomplete col-md-7">
+        <ng-autocomplete
+          placeholder="Domaines"
+          [data]="domains"
+          [searchKeyword]="keyword"
+          (selected)="selectDomain($event)"
+          (inputChanged)="onChangeSearch($event)"
+          (inputFocused)="onFocused($event)"
+          [itemTemplate]="itemTemplate"
+          [notFoundTemplate]="notFoundTemplate"
+        >
+        </ng-autocomplete>
+        <ng-template #itemTemplate let-item>
+          <a [innerHTML]="item.name"></a>
+        </ng-template>
+        <ng-template #notFoundTemplate let-notFound>
+          <div [innerHTML]="notFound"></div>
+        </ng-template>
+      </div>
+    </div>
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">Dénomination <span class="mandatory">*</span></label>
+      <div class="autocomplete col-md-7">
+        <ng-autocomplete
+          placeholder="Dénomination"
+          [data]="denomination"
+          [searchKeyword]="keyword"
+          (selected)="selectEvent($event)"
+          (inputChanged)="onChangeSearch($event)"
+          (inputFocused)="onFocused($event)"
+          [itemTemplate]="itemTemplate"
+          [notFoundTemplate]="notFoundTemplate"
+        >
+        </ng-autocomplete>
+        <ng-template #itemTemplate let-item>
+          <a [innerHTML]="item.name"></a>
+        </ng-template>
+        <ng-template #notFoundTemplate let-notFound>
+          <div [innerHTML]="notFound"></div>
+        </ng-template>
+      </div>
+    </div>
+    <div class="d-flex col-12 descriptif-bloc" *ngIf="selectedDomain">
+      <hr class="horizontal-line" />
+      <div class="form-group d-flex col-md-4">
+        <label class="col-md-4">Hauteur</label>
+        <div class="d-flex">
+          <input class="col-md-7 form-control" />
+          <select class="col-md-4 form-control">
+            <option class="active">cm</option>
+            <option>m</option>
+          </select>
+        </div>
+      </div>
+      <div
+        class="form-group d-flex col-md-4"
+        *ngIf="
+          selectedDomain ==
+          ('Sculpture' || 'Luminaire' || 'Pièce de musée' || 'Horlogerie' || 'Art textile' || 'Art de la table')
+        "
+      >
+        <label class="col-md-4">Largeur</label>
+        <div class="d-flex">
+          <input class="col-md-7 form-control" />
+          <select class="col-md-4 form-control">
+            <option class="active">cm</option>
+            <option>m</option>
+          </select>
+        </div>
+      </div>
+      <div
+        class="form-group d-flex col-md-4"
+        *ngIf="selectedDomain === ('Luminaire' || 'Pièce de musé' || 'Horlogerie')"
+      >
+        <label class="col-md-4">Longueur</label>
+        <div class="d-flex">
+          <input class="col-md-7 form-control" />
+          <select class="col-md-4 form-control">
+            <option class="active">cm</option>
+            <option>m</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group d-flex col-md-4">
+        <label class="col-md-4">Profondeur</label>
+        <div class="d-flex">
+          <input class="col-md-7 form-control" />
+          <select class="col-md-4 form-control">
+            <option class="active">cm</option>
+            <option>m</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group d-flex col-md-4">
+        <label class="col-md-4">Poids</label>
+        <div class="d-flex">
+          <input class="col-md-7 form-control" />
+          <select class="col-md-4 form-control">
+            <option class="active">Kg</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group d-flex col-md-4" *ngIf="selectedDomain === ('Luminaire' || 'Pièce de musée')">
+        <label class="col-md-4">Diamètre</label>
+        <div class="d-flex">
+          <input class="col-md-7 form-control" />
+          <select class="col-md-4 form-control">
+            <option class="active">cm</option>
+            <option>m</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group d-flex col-md-4" *ngIf="selectedDomain == ('Peinture' || 'Art graphique')">
+        <label class="col-md-4">Hauteur Tot</label>
+        <div class="d-flex">
+          <input class="col-md-7 form-control" />
+          <select class="col-md-4 form-control">
+            <option class="active">cm</option>
+            <option>m</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group d-flex col-md-4" *ngIf="selectedDomain == ('Peinture' || 'Art graphique')">
+        <label class="col-md-4">Largeur Tot</label>
+        <div class="d-flex">
+          <input class="col-md-7 form-control" />
+          <select class="col-md-4 form-control">
+            <option class="active">cm</option>
+            <option>m</option>
+          </select>
+        </div>
+      </div>
+      <hr class="horizontal-line" />
+      <div class="form-group d-flex col-md-4">
+        <label class="col-md-4">Epoque <span class="mandatory">*</span></label>
+        <div class="autocomplete col-md-7">
+          <ng-autocomplete
+            placeholder="Epoque"
+            [data]="denomination"
+            [searchKeyword]="keyword"
+            (selected)="selectEvent($event)"
+            (inputChanged)="onChangeSearch($event)"
+            (inputFocused)="onFocused($event)"
+            [itemTemplate]="itemTemplate"
+            [notFoundTemplate]="notFoundTemplate"
+          >
+          </ng-autocomplete>
+          <ng-template #itemTemplate let-item>
+            <a [innerHTML]="item.name"></a>
+          </ng-template>
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+        </div>
+      </div>
+      <div class="form-group d-flex col-md-4">
+        <label class="col-md-4">Style</label>
+        <div class="autocomplete col-md-7">
+          <ng-autocomplete
+            placeholder="Style"
+            [data]="denomination"
+            [searchKeyword]="keyword"
+            (selected)="selectEvent($event)"
+            (inputChanged)="onChangeSearch($event)"
+            (inputFocused)="onFocused($event)"
+            [itemTemplate]="itemTemplate"
+            [notFoundTemplate]="notFoundTemplate"
+          >
+          </ng-autocomplete>
+          <ng-template #itemTemplate let-item>
+            <a [innerHTML]="item.name"></a>
+          </ng-template>
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+        </div>
+      </div>
+      <div class="form-group d-flex col-md-4">
+        <label class="col-md-4">Matières <span class="mandatory">*</span></label>
+        <div class="autocomplete col-md-7">
+          <ng-autocomplete
+            placeholder="Matières"
+            [data]="denomination"
+            [searchKeyword]="keyword"
+            (selected)="selectEvent($event)"
+            (inputChanged)="onChangeSearch($event)"
+            (inputFocused)="onFocused($event)"
+            [itemTemplate]="itemTemplate"
+            [notFoundTemplate]="notFoundTemplate"
+          >
+          </ng-autocomplete>
+          <ng-template #itemTemplate let-item>
+            <a [innerHTML]="item.name"></a>
+          </ng-template>
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+        </div>
+      </div>
+      <div class="form-group d-flex col-md-4">
+        <label class="col-md-4">Nombre unité</label>
+        <input type="number" class="form-control col-md-7" />
+      </div>
+      <div class="form-group d-flex col-md-4">
+        <label class="col-md-4">Date de création</label>
+        <input type="date" class="form-control col-md-7" />
+      </div>
+      <hr class="horizontal-line" />
+      <div class="form-group d-flex col-md-4">
+        <label class="col-md-4">Marquage</label>
+        <input type="text" class="form-control col-md-7" />
+      </div>
+      <div class="form-group d-flex col-md-4">
+        <label class="col-md-4">Signature</label>
+        <input type="text" class="form-control col-md-7" />
+      </div>
+      <div class="form-group d-flex col-md-4">
+        <label class="col-md-4">Mots descriptifs</label>
+        <textarea id="story" name="story" class="form-control col-md-7" rows="5" cols="33"> </textarea>
+      </div>
+      <div class="form-group d-flex col-md-12">
+        <label class="col-md-4">Description commentaire</label>
+        <textarea id="story" name="story" class="form-control col-md-7" rows="5" cols="33"> </textarea>
+      </div>
+    </div>
+  </div>
+</div>

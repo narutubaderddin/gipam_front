@@ -1,0 +1,15 @@
+a:not([href]) {
+  background-color: transparent !important;
+  font-size: 14px;
+}
+
+.modal-content {
+  width: 81%;
+  margin-left: 9%;
+}
+.add-button {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 5px;
+}
