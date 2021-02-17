@@ -5,7 +5,6 @@
 @import "theme-variables";
 @import "src/assets/css/mixins/mixins.scss";
 @import "~leaflet/dist/leaflet.css";
-@import "~ngx-tabset/ngx-tabset";
 
 html,
 body {
@@ -168,29 +167,6 @@ button {
 .multiselect-dropdown .dropdown-btn .selected-item a {
   font-size: 10px !important;
   padding-top: 0 !important;
-}
-
-//nav-tabset css
-.nav-tabset {
-  margin-bottom: 0;
-}
-
-.nav-tab {
-  border-bottom: 1px solid black !important;
-  &.active {
-    border: 1px solid black !important;
-    border-bottom: 1px solid transparent !important;
-  }
-}
-
-.tabs-container {
-  border: 1px solid;
-  border-top: transparent;
-  margin-left: 0;
-  padding: 10px;
-  &.container {
-    margin-right: 0 !important;
-  }
 }
 
 //form control css
