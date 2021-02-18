@@ -22,6 +22,8 @@ import { GeographicMovementBlocComponent } from './components/add-remarquer-bloc
 import { ExtraNoticeItemsBlocComponent } from './components/add-remarquer-blocs/extra-notice-items-bloc/extra-notice-items-bloc.component';
 import { AuthorBlocComponent } from './components/add-remarquer-blocs/author-bloc/author-bloc.component';
 import { StatusBlocComponent } from './components/add-remarquer-blocs/status-bloc/status-bloc.component';
+import { TagInputModule } from 'ngx-chips';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
@@ -33,6 +35,9 @@ import { StatusBlocComponent } from './components/add-remarquer-blocs/status-blo
     FormsModule,
     ReactiveFormsModule,
     AutocompleteLibModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
+    TagInputModule,
   ],
   declarations: [
     LoaderComponent,

@@ -11,6 +11,8 @@ export class DescriptionBlocComponent implements OnInit {
   denomination: any;
   selectedDomain: any;
   isCollapsed = false;
+  autocompleteItems = ['Item1', 'item2', 'item3'];
+
   constructor() {}
 
   ngOnInit(): void {}

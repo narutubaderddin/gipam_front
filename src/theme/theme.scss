@@ -176,7 +176,7 @@ button {
 .title-bloc {
   min-height: 120px;
   width: 60px;
-  background-color: gainsboro;
+  background-color: #f8f8f8;
   border-right: 2px solid;
   h5 {
     transform: rotate(-90deg);
@@ -296,4 +296,25 @@ button {
       display: none;
     }
   }
+}
+
+.ng2-tag-input {
+  padding: 0 !important;
+}
+.ng2-tag-input__text-input {
+  height: 30px !important;
+  width: 100%;
+  font-size: 12px !important;
+  padding: 0 !important;
+}
+tag {
+  height: 20px !important;
+  line-height: 20px !important;
+  font-size: 12px !important;
+}
+delete-icon svg {
+  height: 20px !important;
+}
+tag-input-dropdown {
+  font-size: 12px !important;
 }
