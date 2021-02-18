@@ -28,6 +28,7 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { AddPropertyRemarquerComponent } from './components/add-property-remarquer/add-property-remarquer.component';
 import { PortailItemDetailsComponent } from './components/portail-item-details/portail-item-details.component';
 import { PortailItemImageComponent } from './components/portail-item-details/portail-item-image/portail-item-image.component';
+import { ObservationsComponent } from './components/item-details/observations/observations.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { PortailItemImageComponent } from './components/portail-item-details/por
     AddPropertyRemarquerComponent,
     PortailItemDetailsComponent,
     PortailItemImageComponent,
+    ObservationsComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
