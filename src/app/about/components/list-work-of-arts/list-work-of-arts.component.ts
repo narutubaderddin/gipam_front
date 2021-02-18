@@ -1,5 +1,6 @@
+import { RemarquerDetailsLinkRendererComponent } from '@shared/components/datatables/remarquer-details-link-renderer/remarquer-details-link-renderer.component';
 import { Router } from '@angular/router';
-import { VisibleCatalogRendererComponent } from './../../../@shared/components/datatables/visible-catalog-renderer/visible-catalog-renderer.component';
+import { VisibleCatalogRendererComponent } from '@shared/components/datatables/visible-catalog-renderer/visible-catalog-renderer.component';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { ColDef, ColumnApi, GridApi, ICellEditorParams, Column, GridOptions } from 'ag-grid-community';
 import { Component, EventEmitter, OnInit } from '@angular/core';
@@ -28,9 +29,9 @@ export class ListWorkOfArtsComponent implements OnInit {
     customHeader: CustomHeaderRendererComponent,
     gridActionRenderer: GridActionRendererComponent,
     visibleRenderer: VisibleCatalogRendererComponent,
+    detailsLink: RemarquerDetailsLinkRendererComponent,
   };
   defaultColDef = {
-    headerClass: 'header-cell',
     headerComponent: 'customHeader',
     sortable: true,
     filter: true,
@@ -66,6 +67,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       cellClass: 'link',
       headerName: 'N°',
       field: 'id',
+      cellRenderer: 'detailsLink',
       checkboxSelection: true,
       headerCheckboxSelection: true,
       sortable: false,

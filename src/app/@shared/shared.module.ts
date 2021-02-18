@@ -24,6 +24,7 @@ import { AuthorBlocComponent } from './components/add-remarquer-blocs/author-blo
 import { StatusBlocComponent } from './components/add-remarquer-blocs/status-bloc/status-bloc.component';
 import { TagInputModule } from 'ngx-chips';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RemarquerDetailsLinkRendererComponent } from './components/datatables/remarquer-details-link-renderer/remarquer-details-link-renderer.component';
 
 @NgModule({
   imports: [
@@ -56,6 +57,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ExtraNoticeItemsBlocComponent,
     AuthorBlocComponent,
     StatusBlocComponent,
+    RemarquerDetailsLinkRendererComponent,
   ],
   exports: [
     LoaderComponent,
