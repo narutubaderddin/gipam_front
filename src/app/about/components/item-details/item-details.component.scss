@@ -133,15 +133,6 @@ button {
       }
     }
   }
-  .creator-bloc {
-    display: flex;
-    padding-right: 30px;
-    white-space: pre;
-    p {
-      font-family: Apercubold, Arial, sans-serif;
-      font-size: 14px;
-    }
-  }
   @media (max-width: 375px) {
     .title {
       height: auto;
@@ -198,6 +189,7 @@ li a i:hover {
     flex-wrap: wrap;
     li {
       margin: 0 20px;
+      cursor: pointer;
       a {
         height: 55px;
         width: 55px;
