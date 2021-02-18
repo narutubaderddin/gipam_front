@@ -5,8 +5,10 @@
     </div>
   </div>
   <div class="content d-flex">
-    <div class="col-sm-12 col-md-12">
-      <h5>LISTE DES MOUVEMENTS</h5>
+    <div class="col-sm-12 col-md-8">
+      <div class="search">
+        <input class="form-control" type="text" name="search" autocomplete="off" placeholder="Recherche" />
+      </div>
       <app-grid-wrapper
         [columnDefs]="columnDefs"
         [rowData]="movements"
@@ -15,6 +17,30 @@
         (gridReady)="onGridReady($event)"
       >
       </app-grid-wrapper>
+    </div>
+    <div class="col-md-4">
+      <div class="card">
+        <h5 class="text-center">Dernier mouvement</h5>
+        <div>
+          <h6>Localisation administrative</h6>
+          <div>
+            <p><strong>Ministères : </strong>MINISTÈRES ÉCONOMIQUES ET FINANCIERS</p>
+            <p><strong>Etab./Dir. : </strong>Administration des Contributions Directes</p>
+            <p><strong>Sous-direction : </strong>Ain</p>
+            <p><strong>Services : </strong>Service de l'Environnement Professionnel 2B</p>
+            <p><strong>Correspondants : </strong>Nom1, Nom2</p>
+          </div>
+        </div>
+        <div>
+          <h6>Localisation géographique</h6>
+          <div>
+            <p><strong>Site : </strong>MINISTÈRES ÉCONOMIQUES ET FINANCIERS</p>
+            <p><strong>Bâtiment : </strong>Administration des Contributions Directes</p>
+            <p><strong>Pièce : </strong>Ain</p>
+            <p><strong>Correspondants : </strong>Nom1, Nom2</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
