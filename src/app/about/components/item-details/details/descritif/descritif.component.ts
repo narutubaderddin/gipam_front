@@ -1,23 +1,26 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { WorkOfArtService } from '@shared/services/work-of-art.service';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-description-bloc',
-  templateUrl: './description-bloc.component.html',
-  styleUrls: ['./description-bloc.component.scss'],
+  selector: 'app-descritif',
+  templateUrl: './descritif.component.html',
+  styleUrls: ['./descritif.component.scss'],
 })
-export class DescriptionBlocComponent implements OnInit {
-  @Input() domains: any;
+export class DescritifComponent implements OnInit {
+  domains: any;
   @Input() keyword: string;
   @Input() edit = true;
   domain = 'Sculpture';
   denomination: any;
-  selectedDomain: any;
+  selectedDomain = 'Sculpture';
   isCollapsed = false;
   autocompleteItems = ['Item1', 'item2', 'item3'];
 
-  constructor() {}
+  constructor(public WorkOfArtService: WorkOfArtService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.domains = this.WorkOfArtService.domaine;
+  }
   selectDomain(item: any) {
     this.denomination = item.denominations;
     this.selectedDomain = item.name;

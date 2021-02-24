@@ -131,23 +131,13 @@
 
   <div class="col-md-12 firth-bloc">
     <div *ngIf="page == 1" class="first-page-bloc col-md-12">
+      <div class="col-md-12 mb-2 d-flex justify-content-end">
+        <i class="fas fa-edit pointer-event" (click)="onEditMode()"></i>
+      </div>
       <div class="detail-bloc col-sm-12 col-lg-12 d-flex">
-        <div class="image-bloc">
-          <img src="assets/images/573a.jpg" alt="" />
-        </div>
-        <div class="col-md-7">
-          <p><strong>Titre :</strong> Titre de la sculpture</p>
-          <p><strong>Date de création :</strong> 1989</p>
-          <p><strong>Longueur :</strong> 82.5 cm</p>
-          <p><strong>Hauteur :</strong> 54.9 cm</p>
-          <p><strong>Profondeur :</strong> 94 cm</p>
-          <p><strong>Sign inscr :</strong> Sign inscr</p>
-          <p><strong>Marquage:</strong> Marquage de la sculture</p>
-          <p><strong>Epoque :</strong> Années 80</p>
-          <p><strong>Style :</strong> style</p>
-          <p><strong>Auteur :</strong> Simmen Henri</p>
-          <p><strong>Matière :</strong> Moulage</p>
-          <p><strong>Mots descriptifs :</strong> description de l'oeuvre d'art</p>
+        <div class="col-md-12">
+          <app-descritif [edit]="edit"></app-descritif>
+          <app-status [edit]="edit"></app-status>
         </div>
       </div>
       <div class="accordion-bloc col-sm-11 col-lg-4">

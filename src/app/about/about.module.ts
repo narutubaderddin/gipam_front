@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { AboutRoutingModule } from './about-routing.module';
 import { SharedModule } from '@shared';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HomePageComponent } from '@app/about/components/home-page/home-page.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { PublicHeaderComponent } from '@app/about/components/public-header/public-header.component';
 import { ItemDetailsComponent } from '@app/about/components/item-details/item-details.component';
@@ -29,11 +28,14 @@ import { AddPropertyRemarquerComponent } from './components/add-property-remarqu
 import { PortailItemDetailsComponent } from './components/portail-item-details/portail-item-details.component';
 import { PortailItemImageComponent } from './components/portail-item-details/portail-item-image/portail-item-image.component';
 import { ObservationsComponent } from './components/item-details/observations/observations.component';
+import { DescritifComponent } from './components/item-details/details/descritif/descritif.component';
+import { StatusComponent } from './components/item-details/details/status/status.component';
+import { AuthorComponent } from './components/item-details/details/author/author.component';
+import { TagInputModule } from 'ngx-chips';
 
 @NgModule({
   declarations: [
     AboutComponent,
-    HomePageComponent,
     PublicHeaderComponent,
     ItemDetailsComponent,
     ActionsComponent,
@@ -50,6 +52,9 @@ import { ObservationsComponent } from './components/item-details/observations/ob
     PortailItemDetailsComponent,
     PortailItemImageComponent,
     ObservationsComponent,
+    DescritifComponent,
+    StatusComponent,
+    AuthorComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
@@ -65,6 +70,7 @@ import { ObservationsComponent } from './components/item-details/observations/ob
     AutocompleteLibModule,
     TreeviewModule.forRoot(),
     NgxSliderModule,
+    TagInputModule,
   ],
   providers: [MovementsService],
 })

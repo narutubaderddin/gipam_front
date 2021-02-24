@@ -15,7 +15,9 @@ body {
   margin: 0;
   font-family: RobotoCondensed, sans-serif;
 }
-
+.bar {
+  height: 160px;
+}
 /** scroll **/
 
 /* width */
@@ -121,6 +123,9 @@ button {
   background: #007dc1 linear-gradient(to bottom, #407ca8 5%, #0061a7 100%);
   border: 1px solid #124d77;
   text-shadow: 0 1px 0 #154682;
+  height: 30px;
+  line-height: 0;
+  font-size: 14px;
   &:hover {
     background: #0061a7 linear-gradient(to bottom, #0061a7 5%, #407ca8 100%);
   }
@@ -135,18 +140,33 @@ button {
     min-width: 140px;
     max-width: 200px;
     margin-top: 12px;
-    height: 30px;
+    height: 25px;
     &::placeholder {
       font-size: 12px;
     }
   }
 }
+.input-group {
+  width: 250px;
+  .search-form-control {
+    height: 30px;
+    font-size: 12px;
+    &:focus {
+      box-shadow: none;
+    }
+  }
+  .input-group-append button {
+    height: 30px;
+    line-height: 0;
+  }
+}
 .multiselect-dropdown .dropdown-btn {
   border-color: #e4e4e4 !important;
-  height: 35px;
-  font-size: 12px;
+  height: 25px;
+  font-size: 11px;
   border-radius: 4px;
-  line-height: 22px !important;
+  line-height: 20px !important;
+  padding: 1px 5px !important;
   &:focus,
   &:active {
     box-shadow: none;
@@ -200,11 +220,11 @@ button {
       margin-right: 10px;
       padding-left: 0;
       padding-right: 0;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: bold;
     }
     .form-control {
-      height: 30px;
+      height: 25px;
       &.checkbox {
         width: 20px;
         height: 15px;
@@ -229,13 +249,13 @@ button {
   box-shadow: none !important;
   position: relative;
   overflow: visible;
-  height: 30px !important;
+  height: 25px !important;
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
   .input-container {
-    margin-top: 0.5px !important;
+    margin-top: 0 !important;
     input {
-      height: 26px !important;
+      height: 20px !important;
       &::placeholder {
         font-size: 12px;
       }
@@ -317,4 +337,40 @@ delete-icon svg {
 }
 tag-input-dropdown {
   font-size: 12px !important;
+}
+
+//details-remarquer css
+.information-bloc {
+  border: 1px solid;
+  box-shadow: 4px 4px 5px rgba(255, 255, 255, 0.3) inset, -4px -4px 5px rgba(0, 0, 0, 0.1) inset,
+    10px 40px 40px rgba(0, 0, 0, 0.1);
+  .title {
+    border-bottom: 1px solid;
+    height: 40px;
+    background-color: aliceblue;
+    padding: 10px;
+    justify-content: space-between;
+    h5 {
+      font-size: 16px;
+      font-weight: bold;
+    }
+  }
+  .form-bloc {
+    .form-group {
+      label,
+      input,
+      p {
+        margin-bottom: 0;
+      }
+      margin-bottom: 5px;
+      p {
+        font-size: 12px;
+      }
+    }
+  }
+  &.non-collapsed {
+    .form-bloc {
+      display: none;
+    }
+  }
 }
