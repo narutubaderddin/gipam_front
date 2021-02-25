@@ -6,18 +6,20 @@
           <div class="card">
             <div class="card-body">
               <ul class="d-flex">
-                <li class="col-md-4">
-                  <i class="fas fa-book-reader"></i><a href="portail">Notices en cours de création</a>
+                <li class="col-md-4" (click)="showRemarquer()">
+                  <i class="fas fa-book-reader"></i><a>Notices en cours de création</a>
                 </li>
-                <li class="col-md-4"><i class="fas fa-angle-right"></i><a href="">Récolements en cours</a></li>
-                <li class="col-md-4"><i class="fas fa-bell"></i><a href="">Alertes en cours</a></li>
+                <li class="col-md-4" (click)="showProofs()">
+                  <i class="fas fa-angle-right"></i><a>Récolements en cours</a>
+                </li>
+                <li class="col-md-4" (click)="showAlerts()"><i class="fas fa-bell"></i><a>Alertes en cours</a></li>
               </ul>
             </div>
           </div>
         </div>
-        <div class="mt-2 datagrid-bloc">
+        <div class="mt-2 datagrid-bloc" *ngIf="page == 1">
           <div class="d-flex search-add-section">
-            <div class="input-group">
+            <div class="search input-group">
               <input
                 class="form-control py-2 border-right-0 border search-form-control"
                 type="search"
@@ -62,6 +64,9 @@
               [leftPinnedCols]="leftPinnedCols"
             ></app-grid-wrapper>
           </div>
+        </div>
+        <div class="mt-2 datagrid-bloc" *ngIf="page == 2">
+          <app-proofs-in-progress></app-proofs-in-progress>
         </div>
       </div>
     </div>

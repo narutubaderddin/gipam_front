@@ -36,7 +36,6 @@ nav {
         line-height: 50px;
         font-size: 15px;
         text-transform: uppercase;
-        font-weight: bold;
         border-left: 0.2rem solid;
         background-color: #407ca8;
         i {
@@ -97,7 +96,6 @@ nav {
 //dropdown-menu
 .dropdown-toggle {
   border: none;
-  font-weight: bold;
 }
 .dropdown:hover > .dropdown-menu,
 .dropleft:hover > .dropdown-menu {
@@ -117,7 +115,6 @@ nav {
 .dropdown-item {
   display: block;
   width: 100%;
-  font-weight: 400;
   background-color: transparent;
   border: 0;
   font-size: 13px;

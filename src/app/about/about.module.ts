@@ -32,6 +32,7 @@ import { DescritifComponent } from './components/item-details/details/descritif/
 import { StatusComponent } from './components/item-details/details/status/status.component';
 import { AuthorComponent } from './components/item-details/details/author/author.component';
 import { TagInputModule } from 'ngx-chips';
+import { ProofsInProgressComponent } from './components/administrator-home-page/proofs-in-progress/proofs-in-progress.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { TagInputModule } from 'ngx-chips';
     DescritifComponent,
     StatusComponent,
     AuthorComponent,
+    ProofsInProgressComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [

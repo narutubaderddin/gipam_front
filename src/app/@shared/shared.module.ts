@@ -25,6 +25,7 @@ import { StatusBlocComponent } from './components/add-remarquer-blocs/status-blo
 import { TagInputModule } from 'ngx-chips';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RemarquerDetailsLinkRendererComponent } from './components/datatables/remarquer-details-link-renderer/remarquer-details-link-renderer.component';
+import { BeingCreatedRemarquersActionsRendererComponent } from './components/datatables/being-created-remarquers-actions-renderer/being-created-remarquers-actions-renderer.component';
 
 @NgModule({
   imports: [
@@ -58,6 +59,7 @@ import { RemarquerDetailsLinkRendererComponent } from './components/datatables/r
     AuthorBlocComponent,
     StatusBlocComponent,
     RemarquerDetailsLinkRendererComponent,
+    BeingCreatedRemarquersActionsRendererComponent,
   ],
   exports: [
     LoaderComponent,

@@ -2,12 +2,11 @@ import { WorkOfArtService } from './../../../@shared/services/work-of-art.servic
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { CustomHeaderRendererComponent } from '@app/@shared/components/datatables/custom-header-renderer/custom-header-renderer.component';
-import { GridActionRendererComponent } from '@app/@shared/components/datatables/grid-action-renderer/grid-action-renderer.component';
+import { BeingCreatedRemarquersActionsRendererComponent } from '@app/@shared/components/datatables/being-created-remarquers-actions-renderer/being-created-remarquers-actions-renderer.component';
 import { RemarquerDetailsLinkRendererComponent } from '@app/@shared/components/datatables/remarquer-details-link-renderer/remarquer-details-link-renderer.component';
 import { VisibleCatalogRendererComponent } from '@app/@shared/components/datatables/visible-catalog-renderer/visible-catalog-renderer.component';
 import { OPERATORS, TYPES } from '@app/@shared/services/column-filter.service';
 import { GridOptions, ColDef, GridApi, ColumnApi, ICellEditorParams } from 'ag-grid-community';
-import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-administrator-home-page',
@@ -17,7 +16,7 @@ import { first } from 'rxjs/operators';
 export class AdministratorHomePageComponent implements OnInit {
   frameworkComponents = {
     customHeader: CustomHeaderRendererComponent,
-    gridActionRenderer: GridActionRendererComponent,
+    gridActionRenderer: BeingCreatedRemarquersActionsRendererComponent,
     visibleRenderer: VisibleCatalogRendererComponent,
     detailsLink: RemarquerDetailsLinkRendererComponent,
   };
@@ -47,8 +46,6 @@ export class AdministratorHomePageComponent implements OnInit {
       headerName: 'N°',
       field: 'id',
       cellRenderer: 'detailsLink',
-      checkboxSelection: true,
-      headerCheckboxSelection: true,
       sortable: false,
       filter: false,
       width: 70,
@@ -131,6 +128,7 @@ export class AdministratorHomePageComponent implements OnInit {
   gridApi: GridApi;
   gridColumnApi: ColumnApi;
   gridReady = false;
+  page = 1;
   constructor(private router: Router, private WorkOfArtService: WorkOfArtService) {}
 
   get defaultHeaderParams() {
@@ -144,5 +142,16 @@ export class AdministratorHomePageComponent implements OnInit {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
     this.gridReady = true;
+  }
+
+  showRemarquer() {
+    this.page = 1;
+  }
+
+  showProofs() {
+    this.page = 2;
+  }
+  showAlerts() {
+    this.page = 3;
   }
 }
