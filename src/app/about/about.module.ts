@@ -14,7 +14,6 @@ import { AddActionModalComponent } from './components/item-details/actions/add-a
 import { EditActionModalComponent } from './components/item-details/actions/edit-action-modal/edit-action-modal.component';
 import { MovementsComponent } from './components/item-details/movements/movements.component';
 import { MovementsService } from '@app/about/components/item-details/movements/movements.service';
-import { TimelineComponent } from './components/item-details/timeline/timeline.component';
 import { ItemImagesComponent } from './components/item-details/item-images/item-images.component';
 import { AboutComponent } from '@app/about/about.component';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
@@ -45,7 +44,6 @@ import { InProgressAlertsComponent } from './components/administrator-home-page/
     AddActionModalComponent,
     EditActionModalComponent,
     MovementsComponent,
-    TimelineComponent,
     ItemImagesComponent,
     ListWorkOfArtsComponent,
     AdministratorHomePageComponent,
