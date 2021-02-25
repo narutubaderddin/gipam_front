@@ -13,10 +13,22 @@ const routes: Routes = [
     component: AboutComponent,
     children: [
       { path: '', redirectTo: 'home-page', pathMatch: 'full' },
-      { path: 'home-page', component: AdministratorHomePageComponent },
+      { path: 'home-page', component: AdministratorHomePageComponent, data: { title: 'Accueil' } },
       { path: 'item-details', component: ItemDetailsComponent },
       { path: 'portail-details', component: PortailItemDetailsComponent },
-      { path: 'work-of-arts-list', component: ListWorkOfArtsComponent },
+      {
+        path: 'work-of-arts-list',
+        component: ListWorkOfArtsComponent,
+        data: {
+          title: "Liste des oeuvres d'art",
+          breadcrumb: [
+            {
+              label: "Liste oeuvres d'art",
+              url: '',
+            },
+          ],
+        },
+      },
       { path: 'portail', component: PortailComponent },
       { path: 'add-property-remarquer', component: AddPropertyRemarquerComponent },
     ],

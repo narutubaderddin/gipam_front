@@ -16,7 +16,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 .bar {
-  height: 190px;
+  height: 175px;
 }
 .body {
   background-color: white;
@@ -47,6 +47,83 @@ body {
 
 /** end scroll **/
 
+/* breadcrumb style */
+$brdcr-bgc: rgba(255, 255, 255, 0.6); //#dedede
+$brdcr-hover-bgc: #cacaca; // #fff
+
+.breadcrumb {
+  overflow: hidden;
+  padding: 0.75rem 4rem;
+  margin-bottom: 0;
+  background-color: transparent;
+  width: 100%;
+  a {
+    background: $brdcr-bgc;
+    padding: 9px 14px;
+    margin: 0 7px 0 14px;
+    float: left;
+    text-decoration: none;
+    color: #444;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    position: relative;
+    &:hover,
+    &:focus {
+      background: $brdcr-hover-bgc;
+      &:before {
+        border-color: $brdcr-hover-bgc $brdcr-hover-bgc $brdcr-hover-bgc transparent;
+      }
+      &:after {
+        border-left-color: $brdcr-hover-bgc;
+      }
+    }
+    &:before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      margin-top: -1.3em;
+      border-width: 1.3em 0 1.3em 1em;
+      border-style: solid;
+      border-color: $brdcr-bgc $brdcr-bgc $brdcr-bgc transparent;
+      left: -1em;
+    }
+    &:first-child {
+      &:hover,
+      &:focus {
+        &:before {
+          border-color: $brdcr-hover-bgc $brdcr-hover-bgc $brdcr-hover-bgc $brdcr-hover-bgc;
+        }
+      }
+      &:before {
+        border-color: $brdcr-bgc $brdcr-bgc $brdcr-bgc $brdcr-bgc;
+      }
+    }
+    &:after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      margin-top: -1.2em;
+      border-top: 1.2em solid transparent;
+      border-bottom: 1.2em solid transparent;
+      border-left: 1em solid $brdcr-bgc;
+      right: -1em;
+    }
+  }
+
+  .current {
+    &,
+    &:hover,
+    &:focus {
+      font-weight: bold;
+      background: none;
+    }
+    &:after,
+    &:before {
+      content: normal;
+    }
+  }
+}
+
+/* button css */
 button {
   border-radius: 3px;
   border: 1px solid #124d77;

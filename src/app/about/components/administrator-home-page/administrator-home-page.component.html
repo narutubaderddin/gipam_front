@@ -1,3 +1,8 @@
+<div class="breadcrumb">
+  <a href="home-page">Accueil</a><a href="home-page" *ngIf="page === 1">Notices en cours de création</a>
+  <a *ngIf="page === 2">Récolements en cours</a>
+  <a *ngIf="page === 3">Alertes en cours</a>
+</div>
 <div class="container-fluid">
   <div class="body d-flex">
     <div class="col-md-12">

@@ -33,6 +33,7 @@ import { StatusComponent } from './components/item-details/details/status/status
 import { AuthorComponent } from './components/item-details/details/author/author.component';
 import { TagInputModule } from 'ngx-chips';
 import { ProofsInProgressComponent } from './components/administrator-home-page/proofs-in-progress/proofs-in-progress.component';
+import { Ng7BootstrapBreadcrumbModule } from 'ng7-bootstrap-breadcrumb';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { ProofsInProgressComponent } from './components/administrator-home-page/
     TreeviewModule.forRoot(),
     NgxSliderModule,
     TagInputModule,
+    Ng7BootstrapBreadcrumbModule,
   ],
   providers: [MovementsService],
 })
