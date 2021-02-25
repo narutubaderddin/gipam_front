@@ -43,7 +43,7 @@ export class AdministratorHomePageComponent implements OnInit {
   ColDef: ColDef[] = [
     {
       cellClass: 'link',
-      headerName: 'N°',
+      headerName: 'Réf',
       field: 'id',
       cellRenderer: 'detailsLink',
       sortable: false,

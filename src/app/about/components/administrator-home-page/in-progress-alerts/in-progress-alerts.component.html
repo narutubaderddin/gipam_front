@@ -1,0 +1,29 @@
+<div class="d-flex search-add-section">
+  <a href="#" class="proofs-link"> >> Liste des alertes </a>
+
+  <div class="search input-group">
+    <input
+      class="form-control py-2 border-right-0 border search-form-control"
+      type="search"
+      value="Rechercher"
+      id="example-search-input"
+    />
+    <span class="input-group-append">
+      <button class="btn btn-outline-secondary border-left-0 border" type="button">
+        <i class="fa fa-search"></i>
+      </button>
+    </span>
+  </div>
+</div>
+<div class="datatable mt-4">
+  <app-grid-wrapper
+    [columnDefs]="ColDef"
+    [rowData]="remarquers"
+    [frameworkComponents]="frameworkComponents"
+    [defaultColDef]="defaultColDef"
+    (gridReady)="onGridReady($event)"
+    [context]="this"
+    [gridOptions]="gridOptions"
+    [sizeToFit]="false"
+  ></app-grid-wrapper>
+</div>
