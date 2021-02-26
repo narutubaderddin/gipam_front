@@ -28,6 +28,28 @@
     }
   }
 }
+.card {
+  padding: 10px;
+  h6 {
+    font-weight: bold;
+  }
+  p {
+    font-size: 12px;
+    margin-bottom: 0;
+  }
+}
+.search {
+  width: 200px;
+  margin-bottom: 10px;
+  input {
+    height: 30px;
+    font-size: 12px;
+    &:active,
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}
 
 @media (max-width: 450px) {
   .content {

@@ -22,6 +22,10 @@ import { GeographicMovementBlocComponent } from './components/add-remarquer-bloc
 import { ExtraNoticeItemsBlocComponent } from './components/add-remarquer-blocs/extra-notice-items-bloc/extra-notice-items-bloc.component';
 import { AuthorBlocComponent } from './components/add-remarquer-blocs/author-bloc/author-bloc.component';
 import { StatusBlocComponent } from './components/add-remarquer-blocs/status-bloc/status-bloc.component';
+import { TagInputModule } from 'ngx-chips';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RemarquerDetailsLinkRendererComponent } from './components/datatables/remarquer-details-link-renderer/remarquer-details-link-renderer.component';
+import { BeingCreatedRemarquersActionsRendererComponent } from './components/datatables/being-created-remarquers-actions-renderer/being-created-remarquers-actions-renderer.component';
 
 @NgModule({
   imports: [
@@ -33,6 +37,9 @@ import { StatusBlocComponent } from './components/add-remarquer-blocs/status-blo
     FormsModule,
     ReactiveFormsModule,
     AutocompleteLibModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
+    TagInputModule,
   ],
   declarations: [
     LoaderComponent,
@@ -51,6 +58,8 @@ import { StatusBlocComponent } from './components/add-remarquer-blocs/status-blo
     ExtraNoticeItemsBlocComponent,
     AuthorBlocComponent,
     StatusBlocComponent,
+    RemarquerDetailsLinkRendererComponent,
+    BeingCreatedRemarquersActionsRendererComponent,
   ],
   exports: [
     LoaderComponent,

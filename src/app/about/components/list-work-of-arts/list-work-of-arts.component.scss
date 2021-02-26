@@ -2,13 +2,7 @@ h6 {
   font-size: 14px;
 }
 .container-fluid {
-  .bar {
-    height: 50px;
-  }
   .body {
-    background-color: white;
-    margin: 5px 70px;
-    padding: 20px 40px;
     .add-export-bloc {
       justify-content: space-between;
       .add-bloc {
@@ -200,11 +194,11 @@ h6 {
     font-weight: 900;
     content: "";
     position: absolute;
-    top: 175px;
+    top: 316px;
     transform: rotate(90deg);
     justify-content: flex-end;
     float: right;
-    right: 150px;
+    right: 100px;
   }
 }
 .non-collapsed::after {

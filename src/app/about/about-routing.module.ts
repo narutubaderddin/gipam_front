@@ -2,7 +2,6 @@ import { AddPropertyRemarquerComponent } from './components/add-property-remarqu
 import { AdministratorHomePageComponent } from './components/administrator-home-page/administrator-home-page.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomePageComponent } from './components/home-page/home-page.component';
 import { AboutComponent } from '@app/about/about.component';
 import { ItemDetailsComponent } from '@app/about/components/item-details/item-details.component';
 import { ListWorkOfArtsComponent } from './components/list-work-of-arts/list-work-of-arts.component';
@@ -14,11 +13,22 @@ const routes: Routes = [
     component: AboutComponent,
     children: [
       { path: '', redirectTo: 'home-page', pathMatch: 'full' },
-      { path: 'home-page', component: AdministratorHomePageComponent },
-      { path: 'accueil', component: HomePageComponent },
+      { path: 'home-page', component: AdministratorHomePageComponent, data: { title: 'Accueil' } },
       { path: 'item-details', component: ItemDetailsComponent },
       { path: 'portail-details', component: PortailItemDetailsComponent },
-      { path: 'work-of-arts-list', component: ListWorkOfArtsComponent },
+      {
+        path: 'work-of-arts-list',
+        component: ListWorkOfArtsComponent,
+        data: {
+          title: "Liste des oeuvres d'art",
+          breadcrumb: [
+            {
+              label: "Liste oeuvres d'art",
+              url: '',
+            },
+          ],
+        },
+      },
       { path: 'portail', component: PortailComponent },
       { path: 'add-property-remarquer', component: AddPropertyRemarquerComponent },
     ],

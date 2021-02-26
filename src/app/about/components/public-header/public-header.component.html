@@ -1,3 +1,9 @@
+<div class="fixed-top header d-flex">
+  <div class="d-flex">
+    <img alt="logo-minefi" src="assets/images/logo-minefi.jpg" />
+    <h5>MISTERE DE L'ECONOMIE ET DES FINANCES</h5>
+  </div>
+</div>
 <nav class="navbar navbar-expand-lg navbar-light fixed-top" aria-label="">
   <button
     class="navbar-toggler"
@@ -12,7 +18,7 @@
   </button>
 
   <div class="collapse navbar-collapse nav-list" id="navbarSupportedContent">
-    <ul class="navbar-nav ml-auto">
+    <ul class="navbar-nav">
       <li *ngIf="isAuthentiticated" class="right-header list main_nav_list_item home" (click)="home()">
         <a class="home pl-3 pr-3"> Accueil </a>
       </li>
@@ -28,7 +34,7 @@
           >
             Administration
           </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+          <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenuButton">
             <div class="dropleft dropdown-item">
               <a
                 type="button"
@@ -64,7 +70,7 @@
           >
             Rapport
           </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+          <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item" href="#">Etats des objets mobilier</a>
             <a class="dropdown-item" href="#">Statistiques des dépôts</a>
             <a class="dropdown-item" href="#">Localisations des dépôts</a>
@@ -73,70 +79,8 @@
           </div>
         </div>
       </li>
-      <li class="right-header list main_nav_list_item" *ngIf="isAuthentiticated">
-        <div class="dropdown">
-          <a
-            class="btn dropdown-toggle"
-            type="button"
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            Oeuvres d'art
-          </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-            <div class="dropleft dropdown-item" *ngIf="isAuthentiticated">
-              <a
-                type="button"
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                Gestion des oeuvres d'art
-              </a>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" (click)="goToWorkOfArts()">Liste des oeuvres d'art</a>
-                <a class="dropdown-item">Créer une notice en propriété</a>
-                <a class="dropdown-item">Créer une notice en dépôt</a>
-              </div>
-            </div>
-            <div class="dropleft dropdown-item">
-              <a
-                type="button"
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                Gestion des récolements
-              </a>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item">Liste des récolements</a>
-                <a class="dropdown-item">Créer un récolement</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-      <li (click)="logout()" class="right-header list main_nav_list_item" *ngIf="isAuthentiticated">
-        <div class="dropdown" style="box-shadow: none">
-          <button
-            class="btn dropdown-toggle"
-            type="button"
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-            style="box-shadow: none"
-          >
-            <i class="zmdi zmdi-account-circle zmdi-hc-lg"></i>
-          </button>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-            <p class="dropdown-item" (click)="logout()">Déconnexion</p>
-          </div>
-        </div>
+      <li *ngIf="isAuthentiticated" class="right-header list main_nav_list_item" (click)="goToWorkOfArts()">
+        <a class="pl-3 pr-3"> Oeuvres d'art </a>
       </li>
     </ul>
   </div>

@@ -1,3 +1,18 @@
+.header {
+  height: 120px;
+  width: 100%;
+  background-color: white;
+  padding: 10px;
+  h5 {
+    align-self: center;
+    margin-left: 10px;
+    font-weight: bold;
+    color: #dcdcdc;
+  }
+}
+.navbar {
+  margin-top: 120px;
+}
 nav {
   background-color: #407ca8;
   padding-right: 0;
@@ -21,7 +36,6 @@ nav {
         line-height: 50px;
         font-size: 15px;
         text-transform: uppercase;
-        font-weight: bold;
         border-left: 0.2rem solid;
         background-color: #407ca8;
         i {
@@ -46,6 +60,10 @@ nav {
           height: 20px;
           font-size: 18px;
         }
+      }
+      .logout {
+        position: absolute;
+        right: 0;
       }
     }
   }
@@ -78,7 +96,6 @@ nav {
 //dropdown-menu
 .dropdown-toggle {
   border: none;
-  font-weight: bold;
 }
 .dropdown:hover > .dropdown-menu,
 .dropleft:hover > .dropdown-menu {
@@ -98,7 +115,6 @@ nav {
 .dropdown-item {
   display: block;
   width: 100%;
-  font-weight: 400;
   background-color: transparent;
   border: 0;
   font-size: 13px;

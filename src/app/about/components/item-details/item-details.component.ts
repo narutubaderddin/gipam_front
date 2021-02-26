@@ -8,6 +8,7 @@ import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ItemDetailsComponent implements OnInit {
   page: any = 1;
+  edit = false;
   moreDetails = ['19-01-2020', '23-02-2020', '01-03-2020', '25-03-2020', '20-04-2020'];
   constructor(config: NgbCarouselConfig) {
     config.interval = 10000;
@@ -32,5 +33,8 @@ export class ItemDetailsComponent implements OnInit {
   }
   page5() {
     this.page = 5;
+  }
+  onEditMode() {
+    this.edit = !this.edit;
   }
 }

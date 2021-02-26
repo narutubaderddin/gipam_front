@@ -1,17 +1,6 @@
-.input-group {
-  width: 250px;
-  .search-form-control {
-    height: 35px;
-    font-size: 12px;
-  }
-  button {
-    height: 35px;
-  }
-}
-
 .input-form-control {
   border-color: #e4e4e4;
-  height: 35px;
+  height: 25px;
   width: 100px;
   font-size: 12px;
   border-radius: 4px;
@@ -68,18 +57,18 @@ button {
 .form-group {
   margin-bottom: 0.5rem;
   label {
-    font-size: 15px;
+    font-size: 12px;
     width: 35%;
     margin-bottom: 0;
-    line-height: 35px;
+    line-height: 25px;
     &.col-md-4 {
       padding-left: 0;
     }
   }
   input {
     width: 65%;
-    height: 35px;
-    font-size: 14px;
+    height: 25px;
+    font-size: 12px;
   }
   ::ng-deep ng-multiselect-dropdown {
     width: 65%;

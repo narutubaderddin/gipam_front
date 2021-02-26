@@ -29,8 +29,12 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  height: 70px;
+  min-height: 70px !important;
   margin-top: 15px;
+  min-height: 70px;
+  width: 100%;
+  background-color: transparent;
+  border-right: transparent;
 }
 
 .title-bloc {
