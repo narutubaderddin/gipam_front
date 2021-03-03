@@ -24,6 +24,7 @@
     (gridReady)="onGridReady($event)"
     [overlayLoadingTemplate]="loadingTemplate"
     [overlayNoRowsTemplate]="noRowsTemplate"
+    (rowSelected)="onRowSelected($event)"
     [detailCellRendererParams]="detailCellRendererParams"
   >
   </ag-grid-angular>

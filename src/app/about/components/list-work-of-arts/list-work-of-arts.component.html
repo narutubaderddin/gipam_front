@@ -1,3 +1,10 @@
+<div class="breadcrumb">
+  <a href="home-page">Accueil</a>
+  <a href="home-page" class="selected-item">
+    <i class="fas fa-chevron-right"></i>
+    Liste oeuvres d'art
+  </a>
+</div>
 <div class="container-fluid">
   <div class="body">
     <div class="add-export-bloc d-flex flex-content-between">
@@ -72,13 +79,13 @@
               autoClose="outside"
               container="body"
             >
-              <button class="btn dropdown-btn" id="dropdownBasic" ngbDropdownToggle translate>Actions en masse</button>
-              <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">
-                <ul class="list-group">
-                  <li class="list-group-item">Créer mouvement</li>
-                  <li class="list-group-item">Créer constat</li>
-                </ul>
-              </div>
+              <!--              <button class="btn dropdown-btn" id="dropdownBasic" ngbDropdownToggle translate>Actions en masse</button>-->
+              <!--              <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">-->
+              <!--                <ul class="list-group">-->
+              <!--                  <li class="list-group-item">Créer mouvement</li>-->
+              <!--                  <li class="list-group-item">Créer constat</li>-->
+              <!--                </ul>-->
+              <!--              </div>-->
             </div>
           </div>
           <div class="dropdown-container mb-2 mb-sm-0">
@@ -163,12 +170,17 @@
         </div>
       </div>
       <div class="datatable mt-4">
+        <div>
+          <button *ngIf="selectedRowCount > 0" class="btn add-action mass-action" translate>Créer mouvement</button>
+          <button *ngIf="selectedRowCount > 0" class="btn add-action" translate>Créer constat</button>
+        </div>
         <app-grid-wrapper
           [columnDefs]="ColDef"
           [rowData]="oeuvreToShow"
           [frameworkComponents]="frameworkComponents"
           [defaultColDef]="defaultColDef"
           (gridReady)="onGridReady($event)"
+          (rowSelected)="onRowSelected($event)"
           [context]="this"
           [gridOptions]="gridOptions"
           [sizeToFit]="false"

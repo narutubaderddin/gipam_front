@@ -2,7 +2,16 @@ import { RemarquerDetailsLinkRendererComponent } from '@shared/components/datata
 import { Router } from '@angular/router';
 import { VisibleCatalogRendererComponent } from '@shared/components/datatables/visible-catalog-renderer/visible-catalog-renderer.component';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
-import { ColDef, ColumnApi, GridApi, ICellEditorParams, Column, GridOptions } from 'ag-grid-community';
+import {
+  ColDef,
+  ColumnApi,
+  GridApi,
+  ICellEditorParams,
+  Column,
+  GridOptions,
+  CellClickedEvent,
+  SelectionChangedEvent,
+} from 'ag-grid-community';
 import { Component, EventEmitter, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ColumnFilterService, OPERATORS, TYPES } from '@shared/services/column-filter.service';
@@ -148,7 +157,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   ];
   pinnedCols: string[] = ['action'];
   leftPinnedCols: string[] = ['id'];
-
+  selectedRowCount = 0;
   gridApi: GridApi;
   gridColumnApi: ColumnApi;
   gridReady = false;
@@ -183,6 +192,15 @@ export class ListWorkOfArtsComponent implements OnInit {
 
     this.columns = this.gridColumnApi.getAllColumns();
     this.columns.splice(0, 2);
+  }
+  onRowSelected(event: any) {
+    if (event.node.selected == true) {
+      this.selectedRowCount++;
+    }
+    if (event.node.selected == false) {
+      this.selectedRowCount--;
+    }
+    console.log(this.selectedRowCount);
   }
 
   onHeaderToggle(column: Column): void {
