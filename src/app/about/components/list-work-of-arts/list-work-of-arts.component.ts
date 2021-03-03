@@ -180,7 +180,9 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.gridColumnApi = params.columnApi;
     this.gridReady = true;
     this.currentColumnStates = this.gridColumnApi.getColumnState();
+
     this.columns = this.gridColumnApi.getAllColumns();
+    this.columns.splice(0, 2);
   }
 
   onHeaderToggle(column: Column): void {
