@@ -1,7 +1,17 @@
 <div class="breadcrumb">
-  <a href="home-page">Accueil</a><a href="home-page" *ngIf="page === 1">Notices en cours de création</a>
-  <a *ngIf="page === 2">Récolements en cours</a>
-  <a *ngIf="page === 3">Alertes en cours</a>
+  <a href="home-page">Accueil</a>
+  <a href="home-page" class="selected-item" *ngIf="page === 1">
+    <i class="fas fa-chevron-right"></i>
+    Notices en cours de création
+  </a>
+  <a href="home-page" class="selected-item" *ngIf="page === 2">
+    <i class="fas fa-chevron-right"></i>
+    Récolements en cours
+  </a>
+  <a href="home-page" class="selected-item" *ngIf="page === 3">
+    <i class="fas fa-chevron-right"></i>
+    Alertes en cours
+  </a>
 </div>
 <div class="container-fluid">
   <div class="body d-flex">
@@ -12,10 +22,10 @@
             <div class="card-body">
               <ul class="d-flex">
                 <li class="col-md-4" (click)="showRemarquer()">
-                  <i class="fas fa-book-reader"></i><a>Notices en cours de création</a>
+                  <i class="fas fa-spinner"></i><a>Notices en cours de création</a>
                 </li>
                 <li class="col-md-4" (click)="showProofs()">
-                  <i class="fas fa-angle-right"></i><a>Récolements en cours</a>
+                  <i class="fas fa-layer-group"></i><a>Récolements en cours</a>
                 </li>
                 <li class="col-md-4" (click)="showAlerts()"><i class="fas fa-bell"></i><a>Alertes en cours</a></li>
               </ul>

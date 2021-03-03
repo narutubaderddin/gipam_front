@@ -1,4 +1,4 @@
-import { WorkOfArtService } from './../../../@shared/services/work-of-art.service';
+import { WorkOfArtService } from '@app/@shared/services/work-of-art.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { CustomHeaderRendererComponent } from '@app/@shared/components/datatables/custom-header-renderer/custom-header-renderer.component';

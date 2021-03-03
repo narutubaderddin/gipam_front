@@ -1,3 +1,4 @@
+import { WorkOfArtService } from '@app/@shared/services/work-of-art.service';
 import { Component, OnInit } from '@angular/core';
 import { CustomHeaderRendererComponent } from '@app/@shared/components/datatables/custom-header-renderer/custom-header-renderer.component';
 import { GridActionRendererComponent } from '@app/@shared/components/datatables/grid-action-renderer/grid-action-renderer.component';
@@ -5,6 +6,7 @@ import { RemarquerDetailsLinkRendererComponent } from '@app/@shared/components/d
 import { VisibleCatalogRendererComponent } from '@app/@shared/components/datatables/visible-catalog-renderer/visible-catalog-renderer.component';
 import { OPERATORS, TYPES } from '@app/@shared/services/column-filter.service';
 import { ColDef, ColumnApi, GridApi, GridOptions, ICellEditorParams } from 'ag-grid-community';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-proofs-in-progress',
@@ -48,27 +50,27 @@ export class ProofsInProgressComponent implements OnInit {
     },
     {
       headerName: "Nombre d'oeuvres à récoler",
-      field: 'depostant',
+      field: 'nombre_prood_a_recole',
     },
     {
       headerName: "Nombre d'oeuvres récolées",
-      field: 'style',
+      field: 'nombre_prood_recole',
     },
     {
       headerName: 'Créé par',
-      field: 'type',
+      field: 'created_by',
     },
     {
       headerName: 'Ministère',
-      field: 'matiere',
+      field: 'minister',
     },
     {
       headerName: 'Etab/Dir.',
-      field: 'denomination',
+      field: 'etab',
     },
     {
       headerName: 'Service',
-      field: 'epoque',
+      field: 'service',
     },
     {
       headerName: 'Actions',
@@ -83,11 +85,13 @@ export class ProofsInProgressComponent implements OnInit {
   gridApi: GridApi;
   gridColumnApi: ColumnApi;
   gridReady = false;
-  constructor() {}
+  constructor(private router: Router, private WorkOfArtService: WorkOfArtService) {}
   get defaultHeaderParams() {
     return this.defaultColDef.headerComponentParams;
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.remarquers = this.WorkOfArtService.proofs;
+  }
   onGridReady(params: ICellEditorParams) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
