@@ -66,7 +66,7 @@ $brdcr-hover-bgc: #cacaca; // #fff
     color: #444;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
     position: relative;
-    height: 2.6em;
+    cursor: pointer;
     &:hover,
     &:focus {
       background: $brdcr-hover-bgc;
@@ -81,8 +81,8 @@ $brdcr-hover-bgc: #cacaca; // #fff
       content: "";
       position: absolute;
       top: 50%;
-      margin-top: -1.3em;
-      border-width: 1.3em 0 1.3em 1em;
+      margin-top: -1.16em;
+      border-width: 1.15em 0 1.15em 1em;
       border-style: solid;
       border-color: $brdcr-bgc $brdcr-bgc $brdcr-bgc transparent;
       left: -1em;
@@ -102,14 +102,15 @@ $brdcr-hover-bgc: #cacaca; // #fff
       content: "";
       position: absolute;
       top: 50%;
-      margin-top: -1.2em;
-      border-top: 1.2em solid transparent;
-      border-bottom: 1.2em solid transparent;
+      margin-top: -1.25em;
+      border-top: 1.25em solid transparent;
+      border-bottom: 1.25em solid transparent;
       border-left: 1em solid $brdcr-bgc;
       right: -1em;
     }
     span {
       color: #444 !important;
+      font-size: 16px;
     }
   }
 
@@ -275,6 +276,16 @@ button {
   padding-top: 0 !important;
 }
 
+.list-group-item {
+  height: 32px;
+  line-height: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  &:hover {
+    background-color: darkgray;
+  }
+}
+
 //form control css
 .bloc {
   border: 2px solid;
@@ -433,7 +444,8 @@ tag-input-dropdown {
   .title {
     border-bottom: 1px solid;
     height: 40px;
-    background-color: aliceblue;
+    background-color: #1f2b50;
+    color: white;
     padding: 10px;
     justify-content: space-between;
     h5 {

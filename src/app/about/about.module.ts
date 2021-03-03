@@ -14,7 +14,6 @@ import { AddActionModalComponent } from './components/item-details/actions/add-a
 import { EditActionModalComponent } from './components/item-details/actions/edit-action-modal/edit-action-modal.component';
 import { MovementsComponent } from './components/item-details/movements/movements.component';
 import { MovementsService } from '@app/about/components/item-details/movements/movements.service';
-import { TimelineComponent } from './components/item-details/timeline/timeline.component';
 import { ItemImagesComponent } from './components/item-details/item-images/item-images.component';
 import { AboutComponent } from '@app/about/about.component';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
@@ -34,6 +33,7 @@ import { AuthorComponent } from './components/item-details/details/author/author
 import { TagInputModule } from 'ngx-chips';
 import { ProofsInProgressComponent } from './components/administrator-home-page/proofs-in-progress/proofs-in-progress.component';
 import { Ng7BootstrapBreadcrumbModule } from 'ng7-bootstrap-breadcrumb';
+import { InProgressAlertsComponent } from './components/administrator-home-page/in-progress-alerts/in-progress-alerts.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +44,6 @@ import { Ng7BootstrapBreadcrumbModule } from 'ng7-bootstrap-breadcrumb';
     AddActionModalComponent,
     EditActionModalComponent,
     MovementsComponent,
-    TimelineComponent,
     ItemImagesComponent,
     ListWorkOfArtsComponent,
     AdministratorHomePageComponent,
@@ -58,6 +57,7 @@ import { Ng7BootstrapBreadcrumbModule } from 'ng7-bootstrap-breadcrumb';
     StatusComponent,
     AuthorComponent,
     ProofsInProgressComponent,
+    InProgressAlertsComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [

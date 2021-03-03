@@ -1,3 +1,11 @@
+.breadcrumb {
+  a {
+    &:before {
+      margin-top: -1.31em;
+      border-width: 1.3em 0 1.3em 1em;
+    }
+  }
+}
 .container-fluid {
   .body {
     .vl {

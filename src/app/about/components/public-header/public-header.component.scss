@@ -98,7 +98,7 @@ nav {
   border: none;
 }
 .dropdown:hover > .dropdown-menu,
-.dropleft:hover > .dropdown-menu {
+.dropright:hover > .dropdown-menu {
   display: block;
   a {
     height: 35px;
@@ -120,8 +120,8 @@ nav {
   font-size: 13px;
 }
 
-//dropleft
-.dropleft {
+//dropright
+.dropright {
   padding: 0;
   height: 35px;
   line-height: 0px;

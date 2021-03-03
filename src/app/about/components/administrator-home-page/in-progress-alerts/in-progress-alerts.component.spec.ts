@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TimelineComponent } from './timeline.component';
+import { InProgressAlertsComponent } from './in-progress-alerts.component';
 
-describe('TimelineComponent', () => {
-  let component: TimelineComponent;
-  let fixture: ComponentFixture<TimelineComponent>;
+describe('InProgressAlertsComponent', () => {
+  let component: InProgressAlertsComponent;
+  let fixture: ComponentFixture<InProgressAlertsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TimelineComponent],
+      declarations: [InProgressAlertsComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TimelineComponent);
+    fixture = TestBed.createComponent(InProgressAlertsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
