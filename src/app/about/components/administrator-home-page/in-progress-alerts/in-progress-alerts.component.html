@@ -1,6 +1,6 @@
-<div class="d-flex search-add-section">
-  <a href="#" class="proofs-link"> >> Liste des alertes </a>
+<a href="#" class="proofs-link"> >> Liste des alertes </a>
 
+<div class="d-flex search-add-section">
   <div class="search input-group">
     <input
       class="form-control py-2 border-right-0 border search-form-control"
@@ -23,6 +23,7 @@
     [defaultColDef]="defaultColDef"
     (gridReady)="onGridReady($event)"
     [context]="this"
+    [paginationPageSize]="rowCount"
     [gridOptions]="gridOptions"
     [sizeToFit]="false"
   ></app-grid-wrapper>

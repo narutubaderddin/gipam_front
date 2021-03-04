@@ -78,15 +78,7 @@
               class="d-inline-block drop-bloc"
               autoClose="outside"
               container="body"
-            >
-              <!--              <button class="btn dropdown-btn" id="dropdownBasic" ngbDropdownToggle translate>Actions en masse</button>-->
-              <!--              <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">-->
-              <!--                <ul class="list-group">-->
-              <!--                  <li class="list-group-item">Créer mouvement</li>-->
-              <!--                  <li class="list-group-item">Créer constat</li>-->
-              <!--                </ul>-->
-              <!--              </div>-->
-            </div>
+            ></div>
           </div>
           <div class="dropdown-container mb-2 mb-sm-0">
             <div
@@ -156,6 +148,20 @@
               </div>
             </div>
           </div>
+          <div class="search input-group" style="margin-top: 12px; height: 50%">
+            <select
+              name="pageSize"
+              id="pageSize"
+              [value]="rowCount"
+              (change)="onRowCountChange($event)"
+              style="width: 100%; border: 1px solid #645e5e40"
+            >
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+            </select>
+          </div>
           <div class="search-panel">
             <input
               (keyup)="search($event)"
@@ -184,6 +190,7 @@
           [context]="this"
           [gridOptions]="gridOptions"
           [sizeToFit]="false"
+          [paginationPageSize]="rowCount"
           [pinnedCols]="pinnedCols"
           [leftPinnedCols]="leftPinnedCols"
           (cellClicked)="onCellClicked($event)"

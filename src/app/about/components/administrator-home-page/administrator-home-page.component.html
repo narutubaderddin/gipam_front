@@ -47,6 +47,21 @@
                 </button>
               </span>
             </div>
+            <div class="search input-group" style="margin-top: 5px">
+              <select
+                name="pageSize"
+                id="pageSize"
+                [value]="rowCount"
+                (change)="onRowCountChange($event)"
+                style="width: 100%; border: 1px solid #645e5e40"
+              >
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+              </select>
+            </div>
+
             <div class="dropdown-container mb-sm-0">
               <div
                 ngbDropdown
@@ -73,6 +88,7 @@
               [defaultColDef]="defaultColDef"
               (gridReady)="onGridReady($event)"
               [context]="this"
+              [paginationPageSize]="rowCount"
               [gridOptions]="gridOptions"
               [sizeToFit]="false"
               [pinnedCols]="pinnedCols"
