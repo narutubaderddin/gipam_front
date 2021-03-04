@@ -80,10 +80,9 @@
       <li class="right-header list main_nav_list_item rapport" *ngIf="isAuthentiticated" (click)="goToWorkOfArts()">
         <a class="pl-3 pr-3"> Oeuvres d'art </a>
       </li>
-      <li *ngIf="isAuthentiticated" class="right-header list main_nav_list_item">
+      <li *ngIf="isAuthentiticated" class="right-header list main_nav_list_item" (click)="goToPoratil()">
         <a class="pl-3 pr-3"> Portail </a>
       </li>
     </ul>
-    <div></div>
   </div>
 </nav>

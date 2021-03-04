@@ -1,3 +1,64 @@
+.selected-page {
+  background-color: #407ca8;
+  margin: -4.516px 0px 0px 0px;
+  height: 8px;
+}
+.label-container {
+  position: fixed;
+  bottom: 0;
+  left: 40px;
+  display: table;
+  visibility: hidden;
+}
+
+.label-text {
+  color: #fff;
+  background: rgba(51, 51, 51, 0.5);
+  display: table-cell;
+  vertical-align: middle;
+  padding: 10px;
+  border-radius: 3px;
+}
+
+.label-arrow {
+  display: table-cell;
+  vertical-align: middle;
+  color: #333;
+  opacity: 0.5;
+  font-size: 25px;
+}
+
+.float {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  bottom: 0;
+  left: 0;
+  opacity: 0.5;
+  border-radius: 50px;
+  text-align: center;
+  box-shadow: 2px 2px 3px #999;
+  z-index: 10;
+}
+a.float:hover {
+  opacity: 1;
+}
+.my-float {
+  font-size: 18px;
+  margin-top: 12px;
+}
+
+a.float + div.label-container {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s ease;
+}
+
+a.float:hover + div.label-container {
+  visibility: visible;
+  opacity: 1;
+  z-index: 11;
+}
 .catalogue-bloc {
   display: flex;
   justify-content: space-between;

@@ -1,34 +1,35 @@
 <a href="#" class="proofs-link"> >> Liste des récolements </a>
 <div class="d-flex search-add-section">
-  <div class="search input-group">
-    <input
-      class="form-control py-2 border-right-0 border search-form-control"
-      type="search"
-      value="Rechercher"
-      id="example-search-input"
-    />
-    <span class="input-group-append">
-      <button class="btn btn-outline-secondary border-left-0 border" type="button">
-        <i class="fa fa-search"></i>
-      </button>
-    </span>
-  </div>
-  <div class="search input-group">
+  <div class="col-auto search input-group">
+    <label for="pageSize">Afficher par</label>
     <select
       name="pageSize"
       id="pageSize"
       [value]="rowCount"
       (change)="onRowCountChange($event)"
-      style="width: 100%; border: 1px solid #645e5e40"
+      style="border: 1px solid #645e5e40; width: 35%; margin: 0 0 4px 10px; outline: none"
     >
       <option value="5">5</option>
       <option value="10">10</option>
-      <option value="15">15</option>
-      <option value="20">20</option>
+      <option value="20">50</option>
     </select>
   </div>
-
-  <button class="btn add-action" translate>Ajouter un récolement</button>
+  <div style="display: flex; justify-content: space-between; width: 25%">
+    <button class="btn add-action" translate>Ajouter un récolement</button>
+    <div class="search input-group">
+      <input
+        class="form-control py-2 border-right-0 border search-form-control"
+        type="search"
+        value="Rechercher"
+        id="example-search-input"
+      />
+      <span class="input-group-append">
+        <button class="btn btn-outline-secondary border-left-0 border" type="button">
+          <i class="fa fa-search"></i>
+        </button>
+      </span>
+    </div>
+  </div>
 </div>
 <div class="datatable mt-4">
   <app-grid-wrapper
