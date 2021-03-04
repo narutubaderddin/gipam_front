@@ -21,12 +21,6 @@ const routes: Routes = [
         component: ListWorkOfArtsComponent,
         data: {
           title: "Liste des oeuvres d'art",
-          breadcrumb: [
-            {
-              label: "Liste oeuvres d'art",
-              url: '',
-            },
-          ],
         },
       },
       { path: 'portail', component: PortailComponent },

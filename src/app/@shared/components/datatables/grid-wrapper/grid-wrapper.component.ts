@@ -38,6 +38,7 @@ export class GridWrapperComponent implements OnInit {
   @Output() gridReady = new EventEmitter();
   @Output() pageChanged = new EventEmitter();
   @Output() searchReady = new EventEmitter<FormControl>();
+  @Output() rowSelected = new EventEmitter();
 
   timeEnd = 0;
   dataLoaded = false;
@@ -108,4 +109,8 @@ export class GridWrapperComponent implements OnInit {
   }
 
   ngOnDestroy() {}
+
+  onRowSelected(event: any) {
+    this.rowSelected.emit(event);
+  }
 }

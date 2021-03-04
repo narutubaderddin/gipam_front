@@ -1,8 +1,10 @@
+import { WorkOfArtService } from '@app/@shared/services/work-of-art.service';
 import { Component, OnInit } from '@angular/core';
 import { CustomHeaderRendererComponent } from '@app/@shared/components/datatables/custom-header-renderer/custom-header-renderer.component';
 import { GridActionRendererComponent } from '@app/@shared/components/datatables/grid-action-renderer/grid-action-renderer.component';
 import { OPERATORS, TYPES } from '@app/@shared/services/column-filter.service';
 import { GridOptions, ColDef, GridApi, ColumnApi, ICellEditorParams } from 'ag-grid-community';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-in-progress-alerts',
@@ -38,7 +40,7 @@ export class InProgressAlertsComponent implements OnInit {
     {
       cellClass: 'link',
       headerName: 'Réf',
-      field: 'id',
+      field: 'reference',
       cellRenderer: 'detailsLink',
       sortable: false,
       filter: false,
@@ -46,7 +48,7 @@ export class InProgressAlertsComponent implements OnInit {
     },
     {
       headerName: 'Date création',
-      field: 'creationDate',
+      field: 'date',
       headerComponentParams: {
         ...this.defaultHeaderParams,
         type: TYPES.date,
@@ -55,27 +57,27 @@ export class InProgressAlertsComponent implements OnInit {
     },
     {
       headerName: "Type d'action",
-      field: 'depostant',
+      field: 'actiontype',
     },
     {
       headerName: 'Date début',
-      field: 'style',
+      field: 'startDate',
     },
     {
       headerName: 'Date fin',
-      field: 'type',
+      field: 'endDate',
     },
     {
       headerName: 'Délai',
-      field: 'matiere',
+      field: 'delai',
     },
     {
       headerName: 'Statut',
-      field: 'denomination',
+      field: 'status',
     },
     {
       headerName: 'Créé par',
-      field: 'epoque',
+      field: 'createdBy',
     },
     {
       headerName: 'Actions',
@@ -90,11 +92,13 @@ export class InProgressAlertsComponent implements OnInit {
   gridApi: GridApi;
   gridColumnApi: ColumnApi;
   gridReady = false;
-  constructor() {}
+  constructor(private router: Router, private WorkOfArtService: WorkOfArtService) {}
   get defaultHeaderParams() {
     return this.defaultColDef.headerComponentParams;
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.remarquers = this.WorkOfArtService.alerts;
+  }
   onGridReady(params: ICellEditorParams) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;

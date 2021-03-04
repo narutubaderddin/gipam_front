@@ -56,25 +56,34 @@ $brdcr-hover-bgc: #cacaca; // #fff
   margin-bottom: 0;
   background-color: #e6e6ea;
   width: 100%;
+  .selected-item {
+    color: #126f7f;
+    border-bottom-color: #acb3c2;
+  }
   a,
   li {
-    background: $brdcr-bgc;
-    padding: 9px 14px;
-    margin: 0 7px 0 14px;
+    display: inline;
+    margin: 0 0 0 3px;
+    padding: 0;
+    list-style-type: none;
     float: left;
     text-decoration: none;
-    color: #444;
+    color: #212529;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
     position: relative;
     cursor: pointer;
+    font-size: 15px;
     &:hover,
     &:focus {
-      background: $brdcr-hover-bgc;
+      -webkit-text-decoration: underline;
+      text-decoration: underline;
+      background: transparent;
       &:before {
-        border-color: $brdcr-hover-bgc $brdcr-hover-bgc $brdcr-hover-bgc transparent;
+        border-color: transparent;
       }
-      &:after {
-        border-left-color: $brdcr-hover-bgc;
+      &:after,
+      &.selected {
+        border-left-color: transparent;
       }
     }
     &:before {
@@ -84,18 +93,18 @@ $brdcr-hover-bgc: #cacaca; // #fff
       margin-top: -1.16em;
       border-width: 1.15em 0 1.15em 1em;
       border-style: solid;
-      border-color: $brdcr-bgc $brdcr-bgc $brdcr-bgc transparent;
+      border-color: #e6e6ea #e6e6ea #e6e6ea transparent;
       left: -1em;
     }
     &:first-child {
       &:hover,
       &:focus {
         &:before {
-          border-color: $brdcr-hover-bgc $brdcr-hover-bgc $brdcr-hover-bgc $brdcr-hover-bgc;
+          //border-color: $brdcr-hover-bgc $brdcr-hover-bgc $brdcr-hover-bgc $brdcr-hover-bgc;
         }
       }
       &:before {
-        border-color: $brdcr-bgc $brdcr-bgc $brdcr-bgc $brdcr-bgc;
+        //border-color: $brdcr-bgc $brdcr-bgc $brdcr-bgc $brdcr-bgc;
       }
     }
     &:after {
@@ -105,7 +114,6 @@ $brdcr-hover-bgc: #cacaca; // #fff
       margin-top: -1.25em;
       border-top: 1.25em solid transparent;
       border-bottom: 1.25em solid transparent;
-      border-left: 1em solid $brdcr-bgc;
       right: -1em;
     }
     span {
