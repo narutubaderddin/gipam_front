@@ -167,7 +167,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   currentOrderedFields: { column: string; direction: string }[] = [];
   paginatorLoading: boolean;
   oeuvreToShow: any;
-
+  rowCount = 5;
   constructor(
     private fb: FormBuilder,
     public columnFilterService: ColumnFilterService,
@@ -288,10 +288,17 @@ export class ListWorkOfArtsComponent implements OnInit {
   addDepositMovableObject() {}
 
   //validate request value
+
   onValidateRequest(value: boolean) {
     if (value) {
       this.showDatatable = true;
       this.isCollapsed = false;
     }
+  }
+
+  onRowCountChange(event: Event) {
+    // @ts-ignore
+    this.rowCount = event.target.value;
+    this.gridApi.paginationSetPageSize(Number(this.rowCount));
   }
 }

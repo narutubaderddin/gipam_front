@@ -129,6 +129,7 @@ export class AdministratorHomePageComponent implements OnInit {
   gridColumnApi: ColumnApi;
   gridReady = false;
   page = 1;
+  rowCount: any = 5;
   constructor(private router: Router, private WorkOfArtService: WorkOfArtService) {}
 
   get defaultHeaderParams() {
@@ -153,5 +154,11 @@ export class AdministratorHomePageComponent implements OnInit {
   }
   showAlerts() {
     this.page = 3;
+  }
+
+  onRowCountChange(event: Event) {
+    // @ts-ignore
+    this.rowCount = event.target.value;
+    this.gridApi.paginationSetPageSize(Number(this.rowCount));
   }
 }

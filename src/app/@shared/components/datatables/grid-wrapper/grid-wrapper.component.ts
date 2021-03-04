@@ -25,6 +25,7 @@ export class GridWrapperComponent implements OnInit {
   @Input() gridFrameworkComponents: any = {};
   @Input() pagination: boolean;
   @Input() serverGridPagination = true;
+  @Input() paginationPageSize = 5;
   @Input() paginationId = 'paginator';
   @Input() currentPage = 1;
   @Input() totalPaginationItems: number;

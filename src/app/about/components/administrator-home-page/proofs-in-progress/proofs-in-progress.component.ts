@@ -85,6 +85,8 @@ export class ProofsInProgressComponent implements OnInit {
   gridApi: GridApi;
   gridColumnApi: ColumnApi;
   gridReady = false;
+  rowCount: any = 5;
+
   constructor(private router: Router, private WorkOfArtService: WorkOfArtService) {}
   get defaultHeaderParams() {
     return this.defaultColDef.headerComponentParams;
@@ -96,5 +98,10 @@ export class ProofsInProgressComponent implements OnInit {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
     this.gridReady = true;
+  }
+  onRowCountChange(event: Event) {
+    // @ts-ignore
+    this.rowCount = event.target.value;
+    this.gridApi.paginationSetPageSize(Number(this.rowCount));
   }
 }
