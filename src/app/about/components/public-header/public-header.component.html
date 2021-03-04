@@ -24,64 +24,66 @@
       </li>
       <li class="right-header list main_nav_list_item administration">
         <div class="dropdown" *ngIf="isAuthentiticated">
-          <a
-            class="administration btn dropdown-toggle"
-            type="button"
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            Administration
-          </a>
-          <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenuButton">
-            <div class="dropright dropdown-item">
-              <a
-                type="button"
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                Gestion des tables de réferences
-              </a>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Domaines</a>
-                <a class="dropdown-item" href="#">Dénominations</a>
-                <a class="dropdown-item" href="#">Matières</a>
-                <a class="dropdown-item" href="#">Styles</a>
-                <a class="dropdown-item" href="#">Epoques</a>
-              </div>
+          <div class="dropdown">
+            <a
+              class="administration btn dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Rapport
+            </a>
+            <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="#">Etats des objets mobilier</a>
+              <a class="dropdown-item" href="#">Statistiques des dépôts</a>
+              <a class="dropdown-item" href="#">Localisations des dépôts</a>
+              <a class="dropdown-item" href="#">Résultat des récolements</a>
+              <a class="dropdown-item" href="#">Etat d'inventaire</a>
             </div>
-            <a class="dropdown-item" href="#">Paramétrage des alertes</a>
           </div>
+          <!--          <a-->
+          <!--            class="administration btn dropdown-toggle"-->
+          <!--            type="button"-->
+          <!--            id="dropdownMenuButton"-->
+          <!--            data-toggle="dropdown"-->
+          <!--            aria-haspopup="true"-->
+          <!--            aria-expanded="false"-->
+          <!--          >-->
+          <!--            Administration-->
+          <!--          </a>-->
+          <!--          <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenuButton">-->
+          <!--            <div class="dropright dropdown-item">-->
+          <!--              <a-->
+          <!--                type="button"-->
+          <!--                id="dropdownMenuButton"-->
+          <!--                data-toggle="dropdown"-->
+          <!--                aria-haspopup="true"-->
+          <!--                aria-expanded="false"-->
+          <!--              >-->
+          <!--                Gestion des tables de réferences-->
+          <!--              </a>-->
+          <!--              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
+          <!--                <a class="dropdown-item" href="#">Domaines</a>-->
+          <!--                <a class="dropdown-item" href="#">Dénominations</a>-->
+          <!--                <a class="dropdown-item" href="#">Matières</a>-->
+          <!--                <a class="dropdown-item" href="#">Styles</a>-->
+          <!--                <a class="dropdown-item" href="#">Epoques</a>-->
+          <!--              </div>-->
+          <!--            </div>-->
+          <!--            <a class="dropdown-item" href="#">Paramétrage des alertes</a>-->
+          <!--          </div>-->
         </div>
       </li>
 
-      <li class="right-header list main_nav_list_item rapport" *ngIf="isAuthentiticated">
-        <div class="dropdown">
-          <a
-            class="rapport btn dropdown-toggle"
-            type="button"
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            Rapport
-          </a>
-          <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#">Etats des objets mobilier</a>
-            <a class="dropdown-item" href="#">Statistiques des dépôts</a>
-            <a class="dropdown-item" href="#">Localisations des dépôts</a>
-            <a class="dropdown-item" href="#">Résultat des récolements</a>
-            <a class="dropdown-item" href="#">Etat d'inventaire</a>
-          </div>
-        </div>
-      </li>
-      <li *ngIf="isAuthentiticated" class="right-header list main_nav_list_item" (click)="goToWorkOfArts()">
+      <li class="right-header list main_nav_list_item rapport" *ngIf="isAuthentiticated" (click)="goToWorkOfArts()">
         <a class="pl-3 pr-3"> Oeuvres d'art </a>
       </li>
+      <li *ngIf="isAuthentiticated" class="right-header list main_nav_list_item">
+        <a class="pl-3 pr-3"> Portail </a>
+      </li>
     </ul>
+    <div></div>
   </div>
 </nav>
