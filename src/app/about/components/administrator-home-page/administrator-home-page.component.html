@@ -1,3 +1,4 @@
+<div class="selected-page"></div>
 <div class="breadcrumb">
   <a href="home-page">Accueil</a>
   <a href="home-page" class="selected-item" *ngIf="page === 1">
@@ -21,62 +22,65 @@
           <div class="card">
             <div class="card-body">
               <ul class="d-flex">
-                <li class="col-md-4" (click)="showRemarquer()">
+                <li class="col-md-4" [class.selected-table]="page == 1" (click)="showRemarquer()">
                   <i class="fas fa-spinner"></i><a>Notices en cours de création</a>
                 </li>
-                <li class="col-md-4" (click)="showProofs()">
+                <li class="col-md-4" [class.selected-table]="page == 2" (click)="showProofs()">
                   <i class="fas fa-layer-group"></i><a>Récolements en cours</a>
                 </li>
-                <li class="col-md-4" (click)="showAlerts()"><i class="fas fa-bell"></i><a>Alertes en cours</a></li>
+                <li class="col-md-4" [class.selected-table]="page == 3" (click)="showAlerts()">
+                  <i class="fas fa-bell"></i><a>Alertes en cours</a>
+                </li>
               </ul>
             </div>
           </div>
         </div>
         <div class="mt-2 datagrid-bloc" *ngIf="page == 1">
           <div class="d-flex search-add-section">
-            <div class="search input-group">
-              <input
-                class="form-control py-2 border-right-0 border search-form-control"
-                type="search"
-                value="Rechercher"
-                id="example-search-input"
-              />
-              <span class="input-group-append">
-                <button class="btn btn-outline-secondary border-left-0 border" type="button">
-                  <i class="fa fa-search"></i>
-                </button>
-              </span>
-            </div>
-            <div class="search input-group" style="margin-top: 5px">
+            <div class="col-auto search input-group">
+              <label for="pageSize">Afficher par</label>
               <select
                 name="pageSize"
                 id="pageSize"
                 [value]="rowCount"
                 (change)="onRowCountChange($event)"
-                style="width: 100%; border: 1px solid #645e5e40"
+                style="border: 1px solid #645e5e40; width: 35%; margin: 0 0 4px 10px; outline: none"
               >
                 <option value="5">5</option>
                 <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
+                <option value="20">50</option>
               </select>
             </div>
-
-            <div class="dropdown-container mb-sm-0">
-              <div
-                ngbDropdown
-                placement="bottom-right"
-                class="d-inline-block add-button"
-                autoClose="outside"
-                container="body"
-              >
-                <button class="btn add-action" id="dropdownBasic" ngbDropdownToggle translate>Ajouter notice</button>
-                <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">
-                  <ul class="list-group">
-                    <li class="list-group-item">Ajouter une notice en propriété</li>
-                    <li class="list-group-item">Ajouter une notice en dépôt</li>
-                  </ul>
+            <div style="display: flex; justify-content: space-between; width: 25%">
+              <div class="dropdown-container mb-sm-0">
+                <div
+                  ngbDropdown
+                  placement="bottom-right"
+                  class="d-inline-block add-button"
+                  autoClose="outside"
+                  container="body"
+                >
+                  <button class="btn add-action" id="dropdownBasic" ngbDropdownToggle translate>Ajouter notice</button>
+                  <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">
+                    <ul class="list-group">
+                      <li class="list-group-item">Ajouter une notice en propriété</li>
+                      <li class="list-group-item">Ajouter une notice en dépôt</li>
+                    </ul>
+                  </div>
                 </div>
+              </div>
+              <div class="search input-group">
+                <input
+                  class="form-control py-2 border-right-0 border search-form-control"
+                  type="search"
+                  value="Rechercher"
+                  id="example-search-input"
+                />
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary border-left-0 border" type="button">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
               </div>
             </div>
           </div>

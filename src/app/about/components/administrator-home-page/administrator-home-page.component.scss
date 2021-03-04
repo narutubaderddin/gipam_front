@@ -6,6 +6,21 @@
     }
   }
 }
+.header-table {
+  border-left: white;
+}
+.selected-table {
+  background-color: #1f2b50 !important;
+  color: white;
+  a {
+    color: white !important;
+  }
+}
+.selected-page {
+  background-color: #be3d4d;
+  margin: -4.516px 0px 0px 0px;
+  height: 8px;
+}
 .container-fluid {
   .body {
     .vl {

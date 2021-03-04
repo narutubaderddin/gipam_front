@@ -44,11 +44,16 @@ export class InProgressAlertsComponent implements OnInit {
       cellRenderer: 'detailsLink',
       sortable: false,
       filter: false,
-      width: 70,
+      width: 60,
+      headerTooltip: 'Réf',
+      tooltipField: 'reference',
     },
     {
       headerName: 'Date création',
       field: 'date',
+      headerTooltip: 'Date création',
+      tooltipField: 'date',
+      width: 70,
       headerComponentParams: {
         ...this.defaultHeaderParams,
         type: TYPES.date,

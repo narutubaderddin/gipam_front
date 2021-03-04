@@ -27,4 +27,8 @@ export class PublicHeaderComponent implements OnInit {
     this.authenticationService.logout();
     this.router.navigate(['login']);
   }
+
+  goToPoratil() {
+    this.router.navigate(['portail']);
+  }
 }
