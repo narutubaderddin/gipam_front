@@ -21,22 +21,45 @@ nav {
     display: none;
   }
   i {
-    font-size: 15px;
+    font-size: 23px;
   }
-
+  .ngbDropdownMenu {
+    left: -68% !important;
+  }
   .nav-list {
     height: 50px;
     margin-left: -20px;
 
-    ul {
+    .nav-active,
+    .nav-menu:hover {
+      color: white !important;
+
+      &::before {
+        pointer-events: all;
+        content: "";
+        position: absolute;
+        background-color: white !important;
+        height: 2px;
+        width: calc(100% - 55%);
+        bottom: 0;
+        top: 70%;
+        left: 30px;
+        right: 0;
+        display: block;
+        margin: 0 auto 0;
+      }
+    }
+
+    ul,
+    .nav-link {
       height: 50px;
       color: white;
       li {
         cursor: pointer;
         line-height: 50px;
-        font-size: 15px;
-        text-transform: uppercase;
-        border-left: 0.2rem solid;
+        font-size: 18px;
+        text-transform: capitalize;
+        border-left: 0.1rem solid;
         background-color: #407ca8;
         i {
           font-size: 35px;
@@ -98,7 +121,8 @@ nav {
   border: none;
 }
 .dropdown:hover > .dropdown-menu,
-.dropright:hover > .dropdown-menu {
+.dropright:hover > .dropdown-menu,
+.user-link:hover {
   display: block;
   a {
     height: 35px;

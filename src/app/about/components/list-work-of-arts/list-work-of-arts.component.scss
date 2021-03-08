@@ -65,6 +65,13 @@ h6 {
 .checkbox-container {
   font-size: 14px;
 }
+.mass-action-container {
+  background-color: #5a4b5fbd;
+  display: inline-block;
+  button {
+    margin-bottom: 0 !important;
+  }
+}
 .dropdown-container {
   .drop-bloc {
     margin-top: 11px;
