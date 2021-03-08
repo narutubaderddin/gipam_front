@@ -133,10 +133,8 @@
               </button>
             </div>
           </div>
-        </div>
-        <div class="d-flex">
           <div>
-            <div class="dropdown-container mb-2 mr-2 mb-sm-0">
+            <div class="dropdown-container mb-2 mr-2 mb-sm-0" style="margin: 3px 0 15px 0">
               <div class="d-inline-block drop-bloc">
                 <span class="icon-stack d-flex" (click)="resetFilter()">
                   <i class="fas fa-filter"></i>
@@ -145,20 +143,8 @@
               </div>
             </div>
           </div>
-          <div class="search input-group" style="margin-top: 12px; height: 50%">
-            <select
-              name="pageSize"
-              id="pageSize"
-              [value]="rowCount"
-              (change)="onRowCountChange($event)"
-              style="width: 100%; border: 1px solid #645e5e40"
-            >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
-              <option value="20">20</option>
-            </select>
-          </div>
+        </div>
+        <div class="d-flex">
           <div class="search-panel">
             <input
               (keyup)="search($event)"
@@ -173,9 +159,22 @@
         </div>
       </div>
       <div class="datatable mt-4">
-        <div>
-          <button *ngIf="selectedRowCount > 0" class="btn add-action mass-action" translate>Créer mouvement</button>
-          <button *ngIf="selectedRowCount > 0" class="btn add-action" translate>Créer constat</button>
+        <div *ngIf="selectedRowCount > 0">
+          <div class="mass-action-container">
+            <i class="fas fa-share"></i>
+            <button class="btn add-action" translate>
+              <i class="fas fa-plus"></i>
+              Créer mouvement
+            </button>
+            <button class="btn add-action" translate>
+              <i class="fas fa-plus"></i>
+              Créer constat
+            </button>
+            <button class="btn add-action" translate>
+              <i class="fas fa-plus"></i>
+              Créer recolement
+            </button>
+          </div>
         </div>
         <app-grid-wrapper
           [columnDefs]="ColDef"
