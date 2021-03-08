@@ -1,36 +1,21 @@
 <div class="selected-page"></div>
-<a
-  class="float"
-  style="background-color: #06c !important; color: #fff"
-  (click)="isCollapsed = !isCollapsed"
-  [attr.aria-expanded]="!isCollapsed"
->
-  <i *ngIf="!isCollapsed" class="fas fa-angle-double-left my-float"></i>
-  <i *ngIf="isCollapsed" class="fas fa-angle-double-right my-float"></i>
-</a>
-<div class="label-container">
-  <i class="fa fa-caret-left label-arrow"></i>
-  <div *ngIf="isCollapsed" class="label-text">Afficher le Filtre</div>
-  <div *ngIf="!isCollapsed" class="label-text">Cacher le Filtre</div>
-</div>
+<!--<a-->
+<!--  class="float"-->
+<!--  style="background-color: #06c !important; color: #fff"-->
+<!--  (click)="isCollapsed = !isCollapsed"-->
+<!--  [attr.aria-expanded]="!isCollapsed"-->
+<!--&gt;-->
+<!--  <i *ngIf="!isCollapsed" class="fas fa-angle-double-left my-float"></i>-->
+<!--  <i *ngIf="isCollapsed" class="fas fa-angle-double-right my-float"></i>-->
+<!--</a>-->
+<!--<div class="label-container">-->
+<!--  <i class="fa fa-caret-left label-arrow"></i>-->
+<!--  <div *ngIf="isCollapsed" class="label-text">Afficher le Filtre</div>-->
+<!--  <div *ngIf="!isCollapsed" class="label-text">Cacher le Filtre</div>-->
+<!--</div>-->
 <div class="container-fluid">
-  <div class="title-bloc">
-    <div class="left-title-bloc">
-      <h1 class="title">OEUVRES D'ART</h1>
-      <p>254 Oeuvres d'art</p>
-    </div>
-    <div class="sort-bloc">
-      <strong>Trié par:</strong>
-      <select class="form-select" aria-label="Default select example">
-        <option selected>Ordre Alphabétique</option>
-        <option value="1">Récemment modifiées</option>
-        <option value="2">Plus récentes</option>
-      </select>
-      <i class="fas fa-file-download"></i>
-    </div>
-  </div>
   <div class="d-flex row mr-t-5">
-    <div id="collapseExample" [ngbCollapse]="isCollapsed" class="filter-bloc mb-3 col-lg-2 col-xs-12">
+    <div id="collapseExample" [ngbCollapse]="isCollapsed" class="filter-bloc mb-3 col-lg-2 col-xs-12 sidebar">
       <div class="search-panel mt-2">
         <input
           class="form-control"
@@ -73,26 +58,57 @@
         <ngx-slider [(value)]="value3" [(highValue)]="highValue3" [options]="optionsKg"></ngx-slider>
       </div>
     </div>
-    <div
-      class="picture-bloc-images"
-      [ngClass]="isCollapsed ? 'col-lg-12 col-xs-12' : 'ml-3 ml-xs-0 col-lg-9 col-xs-12'"
-    >
-      <div class="cadre col-md-12">
-        <div class="card-columns">
-          <div class="card shadow p-3 items-bloc" style="margin-bottom: 0" *ngFor="let items of oeuvreToShow">
-            <div class="card-block flip">
-              <img class="card-img-top img-fluid" [src]="items.image" alt="Card image cap" />
-              <div class="back">
-                <h5 class="card-title title" style="overflow: auto; text-overflow: ellipsis">{{ items.titre }}</h5>
-                <p class="card-text description" style="overflow: auto; text-overflow: ellipsis">
-                  {{ items.description }}
-                </p>
-                <a
-                  (click)="details()"
-                  class="btn btn-primary details details-btn"
-                  style="background-color: #007bff !important"
-                  >Voir plus de détails</a
-                >
+
+    <div class="mt-2">
+      <a
+        class="float"
+        style="background-color: #06c !important; color: #fff"
+        (click)="isCollapsed = !isCollapsed"
+        [attr.aria-expanded]="!isCollapsed"
+      >
+        <i *ngIf="!isCollapsed" class="fas fa-angle-double-left my-float"></i>
+        <i *ngIf="isCollapsed" class="fas fa-angle-double-right my-float"></i>
+      </a>
+      <div class="label-container">
+        <i class="fa fa-caret-left label-arrow"></i>
+        <div *ngIf="isCollapsed" class="label-text">Afficher le Filtre</div>
+        <div *ngIf="!isCollapsed" class="label-text">Cacher le Filtre</div>
+      </div>
+    </div>
+    <div [ngClass]="isCollapsed ? 'col-lg-12 col-xs-12 main' : 'ml-3 ml-xs-0 col-lg-9 col-xs-12 main'">
+      <div class="title-bloc">
+        <div class="left-title-bloc">
+          <h1 class="title">OEUVRES D'ART</h1>
+          <p>254 Oeuvres d'art</p>
+        </div>
+        <div class="sort-bloc">
+          <strong>Trié par:</strong>
+          <select class="form-select" aria-label="Default select example">
+            <option selected>Ordre Alphabétique</option>
+            <option value="1">Récemment modifiées</option>
+            <option value="2">Plus récentes</option>
+          </select>
+          <i class="fas fa-file-download"></i>
+        </div>
+      </div>
+      <div class="picture-bloc-images">
+        <div class="cadre col-md-12">
+          <div class="card-columns">
+            <div class="card shadow p-3 items-bloc" style="margin-bottom: 0" *ngFor="let items of oeuvreToShow">
+              <div class="card-block flip">
+                <img class="card-img-top img-fluid" [src]="items.image" alt="Card image cap" />
+                <div class="back">
+                  <h5 class="card-title title" style="overflow: auto; text-overflow: ellipsis">{{ items.titre }}</h5>
+                  <p class="card-text description" style="overflow: auto; text-overflow: ellipsis">
+                    {{ items.description }}
+                  </p>
+                  <a
+                    (click)="details()"
+                    class="btn btn-primary details details-btn"
+                    style="background-color: #007bff !important"
+                    >Voir plus de détails</a
+                  >
+                </div>
               </div>
             </div>
           </div>
