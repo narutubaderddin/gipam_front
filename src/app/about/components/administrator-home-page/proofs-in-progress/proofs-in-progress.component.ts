@@ -40,6 +40,10 @@ export class ProofsInProgressComponent implements OnInit {
 
   ColDef: ColDef[] = [
     {
+      headerName: 'Titre de récolement ',
+      field: 'titre',
+    },
+    {
       headerName: 'Date création',
       field: 'creationDate',
       headerComponentParams: {
@@ -70,6 +74,14 @@ export class ProofsInProgressComponent implements OnInit {
     },
     {
       headerName: 'Service',
+      field: 'service',
+    },
+    {
+      headerName: 'Site',
+      field: 'service',
+    },
+    {
+      headerName: 'Bâtiment ',
       field: 'service',
     },
     {

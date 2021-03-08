@@ -27,6 +27,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RemarquerDetailsLinkRendererComponent } from './components/datatables/remarquer-details-link-renderer/remarquer-details-link-renderer.component';
 import { BeingCreatedRemarquersActionsRendererComponent } from './components/datatables/being-created-remarquers-actions-renderer/being-created-remarquers-actions-renderer.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { StatusTypeRenderComponent } from './components/datatables/status-type-render/status-type-render.component';
 
 @NgModule({
   imports: [
@@ -62,6 +63,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     StatusBlocComponent,
     RemarquerDetailsLinkRendererComponent,
     BeingCreatedRemarquersActionsRendererComponent,
+    StatusTypeRenderComponent,
   ],
   exports: [
     LoaderComponent,

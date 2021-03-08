@@ -39,26 +39,22 @@ export class InProgressAlertsComponent implements OnInit {
   ColDef: ColDef[] = [
     {
       cellClass: 'link',
-      headerName: 'Réf',
+      headerName: 'N° inventaire',
       field: 'reference',
       cellRenderer: 'detailsLink',
       sortable: false,
       filter: false,
-      width: 60,
+      width: 90,
       headerTooltip: 'Réf',
       tooltipField: 'reference',
     },
     {
-      headerName: 'Date création',
-      field: 'date',
-      headerTooltip: 'Date création',
-      tooltipField: 'date',
-      width: 70,
-      headerComponentParams: {
-        ...this.defaultHeaderParams,
-        type: TYPES.date,
-        operator: OPERATORS.in,
-      },
+      headerName: 'titre',
+      field: 'titre',
+    },
+    {
+      headerName: 'Auteurs',
+      field: 'auteur',
     },
     {
       headerName: "Type d'action",
