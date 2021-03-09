@@ -42,6 +42,8 @@ export class ProofsInProgressComponent implements OnInit {
     {
       headerName: 'Titre de récolement ',
       field: 'titre',
+      headerTooltip: 'Titre de récolement',
+      width: 70,
     },
     {
       headerName: 'Date création',
@@ -51,38 +53,47 @@ export class ProofsInProgressComponent implements OnInit {
         type: TYPES.date,
         operator: OPERATORS.in,
       },
+      width: 90,
     },
     {
       headerName: "Nombre d'oeuvres à récoler",
       field: 'nombre_prood_a_recole',
+      width: 50,
     },
     {
       headerName: "Nombre d'oeuvres récolées",
       field: 'nombre_prood_recole',
+      width: 50,
     },
     {
       headerName: 'Créé par',
       field: 'created_by',
+      width: 70,
     },
     {
       headerName: 'Ministère',
       field: 'minister',
+      width: 185,
     },
     {
       headerName: 'Etab/Dir.',
       field: 'etab',
+      width: 185,
     },
     {
       headerName: 'Service',
       field: 'service',
+      width: 185,
     },
     {
       headerName: 'Site',
       field: 'service',
+      width: 185,
     },
     {
       headerName: 'Bâtiment ',
       field: 'service',
+      width: 182,
     },
     {
       headerName: 'Actions',
@@ -90,10 +101,10 @@ export class ProofsInProgressComponent implements OnInit {
       cellRenderer: 'gridActionRenderer',
       sortable: false,
       filter: false,
-      width: 130,
+      width: 100,
     },
   ];
-
+  pinnedCols: string[] = ['action'];
   gridApi: GridApi;
   gridColumnApi: ColumnApi;
   gridReady = false;

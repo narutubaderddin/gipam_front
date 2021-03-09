@@ -44,17 +44,19 @@ export class InProgressAlertsComponent implements OnInit {
       cellRenderer: 'detailsLink',
       sortable: false,
       filter: false,
-      width: 90,
+      width: 70,
       headerTooltip: 'Réf',
       tooltipField: 'reference',
     },
     {
-      headerName: 'titre',
+      headerName: 'Titre',
       field: 'titre',
+      width: 70,
     },
     {
       headerName: 'Auteurs',
       field: 'auteur',
+      width: 70,
     },
     {
       headerName: "Type d'action",
@@ -63,6 +65,7 @@ export class InProgressAlertsComponent implements OnInit {
     {
       headerName: 'Date début',
       field: 'startDate',
+      width: 90,
     },
     {
       headerName: 'Date fin',
@@ -79,6 +82,7 @@ export class InProgressAlertsComponent implements OnInit {
     {
       headerName: 'Créé par',
       field: 'createdBy',
+      width: 90,
     },
     {
       headerName: 'Actions',
@@ -86,7 +90,7 @@ export class InProgressAlertsComponent implements OnInit {
       cellRenderer: 'gridActionRenderer',
       sortable: false,
       filter: false,
-      width: 130,
+      width: 70,
     },
   ];
 
