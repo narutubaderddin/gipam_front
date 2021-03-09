@@ -62,7 +62,9 @@
               [context]="this"
               [paginationPageSize]="rowCount"
               [gridOptions]="gridOptions"
-              [sizeToFit]="false"
+              [sizeToFit]="true"
+              [totalPaginationItems]="remarquers.length"
+              [totalDataCount]="remarquers.length"
               [pinnedCols]="pinnedCols"
               [leftPinnedCols]="leftPinnedCols"
             ></app-grid-wrapper>

@@ -20,6 +20,9 @@ nav {
   .dropdown-toggle::after {
     display: none;
   }
+  .btn:hover {
+    background-color: transparent !important;
+  }
   i {
     font-size: 23px;
   }

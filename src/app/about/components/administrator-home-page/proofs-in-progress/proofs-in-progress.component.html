@@ -43,7 +43,8 @@
     [paginationPageSize]="rowCount"
     (gridReady)="onGridReady($event)"
     [context]="this"
+    [pinnedCols]="pinnedCols"
     [gridOptions]="gridOptions"
-    [sizeToFit]="false"
+    [sizeToFit]="true"
   ></app-grid-wrapper>
 </div>

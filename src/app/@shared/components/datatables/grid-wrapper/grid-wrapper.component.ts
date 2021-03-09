@@ -127,7 +127,11 @@ export class GridWrapperComponent implements OnInit {
     this.gridAPI.paginationSetPageSize(Number(this.rowCount));
   }
 
-  onPageChanged(event: number) {}
+  onPageChanged(page: number) {
+    // this.gridAPI.showLoadingOverlay();
+    // this.currentPage = page;
+    // this.pageChanged.emit(page);
+  }
 
   private handlePaginationInfo() {
     this.currentPage = this.currentPage ? this.currentPage : 1;
