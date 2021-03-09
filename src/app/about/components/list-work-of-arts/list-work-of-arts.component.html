@@ -5,23 +5,23 @@
   <div class="body">
     <div class="add-export-bloc d-flex flex-content-between">
       <div class="d-flex add-bloc">
-        <div class="dropdown-container mb-2 mr-2 mb-sm-0">
-          <div
-            ngbDropdown
-            placement="bottom-left"
-            class="d-inline-block add-button"
-            autoClose="outside"
-            container="body"
-          >
-            <button class="btn add-action" id="dropdownBasic" ngbDropdownToggle translate>Ajouter notice</button>
-            <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">
-              <ul class="list-group">
-                <li class="list-group-item" (click)="addPropertyMovableObject()">Ajouter une notice en propriété</li>
-                <li class="list-group-item">Ajouter une notice en dépôt</li>
-              </ul>
-            </div>
-          </div>
-        </div>
+        <!--        <div class="dropdown-container mb-2 mr-2 mb-sm-0">-->
+        <!--          <div-->
+        <!--            ngbDropdown-->
+        <!--            placement="bottom-left"-->
+        <!--            class="d-inline-block add-button"-->
+        <!--            autoClose="outside"-->
+        <!--            container="body"-->
+        <!--          >-->
+        <!--            <button class="btn add-action" id="dropdownBasic" ngbDropdownToggle translate>Ajouter notice</button>-->
+        <!--            <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">-->
+        <!--              <ul class="list-group">-->
+        <!--                <li class="list-group-item" (click)="addPropertyMovableObject()">Ajouter une notice en propriété</li>-->
+        <!--                <li class="list-group-item">Ajouter une notice en dépôt</li>-->
+        <!--              </ul>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </div>-->
       </div>
       <div class="d-flex">
         <div [ngClass]="{ 'picture-mode': mode === 'pictures', 'list-mode': mode === 'liste' }">
@@ -192,5 +192,24 @@
         ></app-grid-wrapper>
       </div>
     </div>
+  </div>
+  <div class="floating-add-button">
+    <a href="#" class="float" id="menu-share">
+      <i class="fa fa-plus my-float"></i>
+    </a>
+    <ul>
+      <li>
+        <a style="background-color: #00d6d4" ngbTooltip="" placement="left" class="add-prop-notice"
+          ><i class="fas fa-window-restore my-float"></i>
+          <span>Ajouter une notice en propriété</span>
+        </a>
+      </li>
+      <li>
+        <a style="background-color: #0080ff" class="add-prop-notice">
+          <i class="fas fa-warehouse my-float"></i>
+          <span>Ajouter une notice en dépôt</span>
+        </a>
+      </li>
+    </ul>
   </div>
 </div>

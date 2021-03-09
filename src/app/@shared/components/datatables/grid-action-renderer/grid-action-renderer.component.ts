@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams, IAfterGuiAttachedParams } from 'ag-grid-community';
 import { ProofsInProgressComponent } from '@app/about/components/administrator-home-page/proofs-in-progress/proofs-in-progress.component';
+import { InProgressAlertsComponent } from '@app/about/components/administrator-home-page/in-progress-alerts/in-progress-alerts.component';
 
 @Component({
   selector: 'app-grid-action-renderer',
@@ -26,8 +27,10 @@ export class GridActionRendererComponent implements ICellRendererAngularComp, On
   ngOnInit(): void {
     if (this.params.context.parentComponent instanceof ProofsInProgressComponent) {
       this.actions = 'proof';
-    } else {
+    } else if (this.params.context.parentComponent instanceof InProgressAlertsComponent) {
       this.actions = 'alert';
+    } else {
+      this.actions = 'search';
     }
     console.log(this.actions);
   }
