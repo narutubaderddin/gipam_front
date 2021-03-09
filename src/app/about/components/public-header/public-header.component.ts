@@ -9,6 +9,7 @@ import { AuthenticationService } from '@app/auth';
 })
 export class PublicHeaderComponent implements OnInit {
   isCollapsed = false;
+  menu = 1;
   isAuthentiticated: boolean = false;
   constructor(private router: Router, private authenticationService: AuthenticationService) {
     this.isAuthentiticated = authenticationService.isAuthenticated();
@@ -18,8 +19,10 @@ export class PublicHeaderComponent implements OnInit {
 
   home() {
     this.router.navigate(['home-page']);
+    this.menu = 1;
   }
   goToWorkOfArts() {
+    this.menu = 2;
     this.router.navigate(['work-of-arts-list']);
   }
 
@@ -29,6 +32,7 @@ export class PublicHeaderComponent implements OnInit {
   }
 
   goToPoratil() {
+    this.menu = 4;
     this.router.navigate(['portail']);
   }
 }

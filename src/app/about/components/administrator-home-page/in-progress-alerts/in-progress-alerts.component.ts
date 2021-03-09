@@ -39,26 +39,24 @@ export class InProgressAlertsComponent implements OnInit {
   ColDef: ColDef[] = [
     {
       cellClass: 'link',
-      headerName: 'Réf',
+      headerName: 'N° inventaire',
       field: 'reference',
       cellRenderer: 'detailsLink',
       sortable: false,
       filter: false,
-      width: 60,
+      width: 70,
       headerTooltip: 'Réf',
       tooltipField: 'reference',
     },
     {
-      headerName: 'Date création',
-      field: 'date',
-      headerTooltip: 'Date création',
-      tooltipField: 'date',
+      headerName: 'Titre',
+      field: 'titre',
       width: 70,
-      headerComponentParams: {
-        ...this.defaultHeaderParams,
-        type: TYPES.date,
-        operator: OPERATORS.in,
-      },
+    },
+    {
+      headerName: 'Auteurs',
+      field: 'auteur',
+      width: 70,
     },
     {
       headerName: "Type d'action",
@@ -67,6 +65,7 @@ export class InProgressAlertsComponent implements OnInit {
     {
       headerName: 'Date début',
       field: 'startDate',
+      width: 90,
     },
     {
       headerName: 'Date fin',
@@ -83,6 +82,7 @@ export class InProgressAlertsComponent implements OnInit {
     {
       headerName: 'Créé par',
       field: 'createdBy',
+      width: 90,
     },
     {
       headerName: 'Actions',
@@ -90,7 +90,7 @@ export class InProgressAlertsComponent implements OnInit {
       cellRenderer: 'gridActionRenderer',
       sortable: false,
       filter: false,
-      width: 130,
+      width: 70,
     },
   ];
 

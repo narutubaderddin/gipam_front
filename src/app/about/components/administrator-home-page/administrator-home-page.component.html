@@ -35,25 +35,8 @@
           </div>
         </div>
         <div class="mt-2 datagrid-bloc" *ngIf="page == 1">
-          <div class="d-flex search-add-section">
+          <div class="d-flex search-add-sectlion">
             <div class="search-add-section-div">
-              <div class="dropdown-container mb-sm-0">
-                <div
-                  ngbDropdown
-                  placement="bottom-right"
-                  class="d-inline-block add-button"
-                  autoClose="outside"
-                  container="body"
-                >
-                  <!--                  <button class="btn add-action" id="dropdownBasic" ngbDropdownToggle translate>Ajouter notice</button>-->
-                  <!--                  <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">-->
-                  <!--                    <ul class="list-group">-->
-                  <!--                      <li class="list-group-item">Ajouter une notice en propriété</li>-->
-                  <!--                      <li class="list-group-item">Ajouter une notice en dépôt</li>-->
-                  <!--                    </ul>-->
-                  <!--                  </div>-->
-                </div>
-              </div>
               <div class="search input-group">
                 <input
                   class="form-control py-2 border-right-0 border search-form-control"
@@ -79,7 +62,9 @@
               [context]="this"
               [paginationPageSize]="rowCount"
               [gridOptions]="gridOptions"
-              [sizeToFit]="false"
+              [sizeToFit]="true"
+              [totalPaginationItems]="remarquers.length"
+              [totalDataCount]="remarquers.length"
               [pinnedCols]="pinnedCols"
               [leftPinnedCols]="leftPinnedCols"
             ></app-grid-wrapper>
@@ -100,11 +85,15 @@
     </a>
     <ul>
       <li>
-        <a href="#"> <i class="fa fa-plus-square my-float"></i> Ajouter une notice en propriété </a>
+        <a style="background-color: #00d6d4" ngbTooltip="" placement="left" class="add-prop-notice"
+          ><i class="fas fa-window-restore my-float"></i>
+          <span>Ajouter une notice en propriété</span>
+        </a>
       </li>
       <li>
-        <a href="#">
-          <i class="fa fa-plus-square my-float"></i>
+        <a style="background-color: #0080ff" class="add-prop-notice">
+          <i class="fas fa-warehouse my-float"></i>
+          <span>Ajouter une notice en dépôt</span>
         </a>
       </li>
     </ul>

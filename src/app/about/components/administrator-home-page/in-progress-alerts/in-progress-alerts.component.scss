@@ -1,7 +1,13 @@
-.search-add-section {
-  justify-content: space-between;
-}
 .proofs-link {
   font-size: 12px;
   margin-bottom: 10px;
+}
+.search {
+  width: auto !important;
+}
+.search-add-section-div {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row-reverse;
+  margin-left: auto;
 }

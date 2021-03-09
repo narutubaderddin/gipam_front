@@ -10,7 +10,7 @@
   border-left: white;
 }
 .selected-table {
-  background-color: #1f2b50 !important;
+  background-color: #00d6d4 !important;
   color: white;
   a {
     color: white !important;
@@ -20,6 +20,9 @@
   background-color: #be3d4d;
   margin: -4.516px 0px 0px 0px;
   height: 8px;
+}
+::ng-deep .tooltip-inner {
+  width: 400px;
 }
 .floating-add-button {
   .label-container {
@@ -50,9 +53,9 @@
     position: fixed;
     width: 60px;
     height: 60px;
-    bottom: 40px;
-    right: 40px;
-    background-color: #1f2b50;
+    top: 50%;
+    right: 5px;
+    background-color: #00d6d4;
     color: #fff;
     border-radius: 50px;
     text-align: center;
@@ -63,9 +66,9 @@
 
   ul {
     position: fixed;
-    right: 40px;
+    right: 5px;
     padding-bottom: 20px;
-    bottom: 80px;
+    bottom: 48%;
     z-index: 100;
   }
 
@@ -80,9 +83,18 @@
     border-radius: 50px;
     text-align: center;
     box-shadow: 2px 2px 3px #999;
-    width: 60px;
     height: 60px;
+    width: 60px;
     display: block;
+    span {
+      font-size: 0;
+    }
+  }
+  .add-prop-notice:hover {
+    width: 300px !important;
+    span {
+      font-size: 18px !important;
+    }
   }
 
   ul:hover {
@@ -93,8 +105,13 @@
   .my-float {
     font-size: 24px;
     margin-top: 18px;
+    margin-left: 4px;
   }
-
+  ul {
+    display: flex;
+    flex-direction: column;
+    place-items: flex-end;
+  }
   a#menu-share + ul {
     visibility: hidden;
   }
@@ -205,7 +222,6 @@
       .search-add-section-div {
         display: flex;
         justify-content: flex-end;
-        width: 25%;
         flex-direction: row-reverse;
         margin-left: auto;
       }

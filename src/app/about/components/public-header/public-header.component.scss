@@ -3,7 +3,6 @@
   width: 100%;
   background-color: white;
   padding: 10px;
-
   h5 {
     align-self: center;
     margin-left: 10px;
@@ -11,46 +10,43 @@
     color: #dcdcdc;
   }
 }
-
 .navbar {
   margin-top: 120px;
-  border-bottom: 3px solid #0466c8;
 }
 nav {
-  background-color: #f4f4f6;
+  background-color: #407ca8;
   padding-right: 0;
   height: 50px;
-
   .dropdown-toggle::after {
-    //display: none;
+    display: none;
   }
-
+  .btn:hover {
+    background-color: transparent !important;
+  }
   i {
-    font-size: 15px;
+    font-size: 23px;
   }
-
-  .dropdown {
-    display: inline-block;
+  .ngbDropdownMenu {
+    left: -68% !important;
   }
-
   .nav-list {
     height: 50px;
-    margin-left: 5%;
+    margin-left: -20px;
 
     .nav-active,
     .nav-menu:hover {
-      color: #0466c8 !important;
+      color: white !important;
 
       &::before {
         pointer-events: all;
         content: "";
         position: absolute;
-        background-color: #0466c8 !important;
-        height: 3px;
-        width: calc(100% - 40%);
+        background-color: white !important;
+        height: 2px;
+        width: calc(100% - 55%);
         bottom: 0;
         top: 70%;
-        left: 0;
+        left: 30px;
         right: 0;
         display: block;
         margin: 0 auto 0;
@@ -60,27 +56,24 @@ nav {
     ul,
     .nav-link {
       height: 50px;
-      color: #001845;
-
+      color: white;
       li {
         cursor: pointer;
         line-height: 50px;
-        font-size: 15px;
+        font-size: 18px;
         text-transform: capitalize;
-        //border-left: 0.2rem solid;
-        //background-color: #407ca8;
+        border-left: 0.1rem solid;
+        background-color: #407ca8;
         i {
           font-size: 35px;
           color: white;
         }
-
         .notif {
           position: relative;
           display: block;
           background-size: contain;
           text-decoration: none;
         }
-
         .num {
           position: absolute;
           top: -4px;
@@ -94,14 +87,12 @@ nav {
           font-size: 18px;
         }
       }
-
       .logout {
         position: absolute;
         right: 0;
       }
     }
   }
-
   @media (max-width: 786px) {
     height: 60px;
   }
@@ -113,15 +104,14 @@ nav {
 }
 
 .home {
-  //background-color: #be3d4d !important;
+  background-color: #be3d4d !important;
 }
 
 .rapport {
-  //background-color: #5a4b5f !important;
+  background-color: #5a4b5f !important;
 }
-
 .administration {
-  //background-color: #1f2b50 !important;
+  background-color: #1f2b50 !important;
 }
 
 .bt {
@@ -133,26 +123,22 @@ nav {
 .dropdown-toggle {
   border: none;
 }
-
 .dropdown:hover > .dropdown-menu,
-.dropright:hover > .dropdown-menu {
+.dropright:hover > .dropdown-menu,
+.user-link:hover {
   display: block;
-
   a {
     height: 35px;
     line-height: 28px;
-
     &:hover {
       background-color: #dcdcdc;
     }
   }
 }
-
 .dropdown > .dropdown-toggle:active {
   /*Without this, clicking will make it sticky*/
   pointer-events: none;
 }
-
 .dropdown-item {
   display: block;
   width: 100%;
@@ -166,7 +152,6 @@ nav {
   padding: 0;
   height: 35px;
   line-height: 0px;
-
   a {
     padding: 4px 24px;
     width: 100%;
@@ -175,16 +160,7 @@ nav {
     background-color: transparent;
   }
 }
-
 .dropdown-toggle::after,
 .dropdown-toggle::before {
-  //display: none;
-}
-.dropdown-header {
-  display: block;
-  padding: 0.5rem 1.5rem;
-  margin-bottom: 0; // for use with heading elements
-  font-size: 0.875rem;
-  color: #868e96;
-  white-space: nowrap; // as with > li > a
+  display: none;
 }
