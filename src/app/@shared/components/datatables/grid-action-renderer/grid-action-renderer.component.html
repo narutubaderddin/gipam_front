@@ -1,6 +1,10 @@
-<!--<i class="fa fa-archive" aria-hidden="true" title="Archiver"></i>-->
-<img *ngIf="actions == 'proof'" src="assets/images/icons/publish_1.svg" class="archive-action" alt="" />
-<i *ngIf="actions == 'proof'" class="fas fa-file-export" title="Exporter"></i>
-<i *ngIf="actions == 'alert'" class="far fa-times-circle"></i>
-<!--<i *ngIf="actions =='alert'"class="fas fa-copy" title="Faire une copie"></i>-->
-<!--<i class="fas fa-edit" title="Modifier"></i>-->
+<div class="action-icons">
+  <!--<i class="fa fa-archive" aria-hidden="true" title="Archiver"></i>-->
+  <div (click)="showDetails()" style="width: 5px">
+    <img *ngIf="actions == 'proof'" src="assets/images/icons/publish_1.svg" class="archive-action" alt="" />
+  </div>
+  <i *ngIf="actions == 'proof'" class="fas fa-file-export" title="Exporter"></i>
+  <i *ngIf="actions == 'alert'" class="far fa-times-circle"></i>
+  <!--<i *ngIf="actions =='alert'"class="fas fa-copy" title="Faire une copie"></i>-->
+  <!--<i class="fas fa-edit" title="Modifier"></i>-->
+</div>
