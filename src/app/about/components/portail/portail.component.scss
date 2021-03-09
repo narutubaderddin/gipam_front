@@ -1,3 +1,69 @@
+.selected-page {
+  background-color: #407ca8;
+  margin: -4.516px 0px 0px 0px;
+  height: 8px;
+}
+.label-container {
+  position: fixed;
+  bottom: 0;
+  left: 40px;
+  display: table;
+  visibility: hidden;
+}
+
+.label-text {
+  color: #fff;
+  background: rgba(51, 51, 51, 0.5);
+  display: table-cell;
+  vertical-align: middle;
+  padding: 10px;
+  border-radius: 3px;
+}
+
+.label-arrow {
+  display: table-cell;
+  vertical-align: middle;
+  color: #333;
+  opacity: 0.5;
+  font-size: 25px;
+}
+
+.float {
+  //position: fixed;
+  width: 40px;
+  height: 40px;
+  //bottom: 0;
+  //left: 0;
+  opacity: 0.5;
+  //border-radius: 50px;
+  border-radius: 0 50px 50px 0;
+  padding: 1%;
+  text-align: center;
+  box-shadow: 2px 2px 3px #999;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+a.float:hover {
+  opacity: 1;
+}
+.my-float {
+  font-size: 18px;
+  //margin-top: 12px;
+}
+
+a.float + div.label-container {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s ease;
+}
+
+a.float:hover + div.label-container {
+  visibility: visible;
+  opacity: 1;
+  z-index: 11;
+}
 .catalogue-bloc {
   display: flex;
   justify-content: space-between;
@@ -105,7 +171,7 @@ a:not([href]) {
 
 .filter-bloc {
   background-color: white;
-  height: 550px;
+  height: 790px;
   overflow-y: auto;
   .search-panel {
     padding-left: 0;
@@ -125,7 +191,7 @@ a:not([href]) {
   }
   ::ng-deep {
     .ngx-slider .ngx-slider-pointer {
-      background: #407ca8 !important;
+      background: #0073dd !important;
       height: 16px !important;
       width: 16px;
       outline: none;
@@ -137,7 +203,7 @@ a:not([href]) {
       left: 6px;
     }
     .ngx-slider-selection {
-      background: #407ca8 !important;
+      background: #0073dd !important;
     }
   }
 }
@@ -281,7 +347,7 @@ a:not([href]) {
   cursor: pointer;
 }
 h5 {
-  color: #407ca8;
+  color: #0073dd;
 }
 img {
   display: block;
@@ -326,4 +392,12 @@ img {
 }
 .card {
   border-color: rgb(0 0 0 / 30%);
+}
+.main {
+  transition: margin-left 0.5s;
+  padding: 20px;
+}
+.sidebar {
+  -moz-transition: left 0.5s ease;
+  transition: left 0.5s ease;
 }

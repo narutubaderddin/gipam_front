@@ -16,10 +16,3 @@
 // Theme customization
 @import "theme/theme";
 @import "assets/css/datatable";
-
-body::-webkit-scrollbar {
-  display: none;
-}
-body {
-  min-height: 100vh;
-}

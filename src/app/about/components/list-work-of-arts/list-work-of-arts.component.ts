@@ -20,6 +20,7 @@ import { CustomHeaderRendererComponent } from '@app/@shared/components/datatable
 import { first } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { GridActionRendererComponent } from '@app/@shared/components/datatables/grid-action-renderer/grid-action-renderer.component';
+import { StatusTypeRenderComponent } from '@shared/components/datatables/status-type-render/status-type-render.component';
 
 @Component({
   selector: 'app-list-work-of-arts',
@@ -39,6 +40,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     gridActionRenderer: GridActionRendererComponent,
     visibleRenderer: VisibleCatalogRendererComponent,
     detailsLink: RemarquerDetailsLinkRendererComponent,
+    statusTypeRender: StatusTypeRenderComponent,
   };
   defaultColDef = {
     headerComponent: 'customHeader',
@@ -74,7 +76,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   ColDef: ColDef[] = [
     {
       cellClass: 'link',
-      headerName: 'N°',
+      headerName: 'N° inventaire',
       field: 'id',
       cellRenderer: 'detailsLink',
       checkboxSelection: true,
@@ -97,10 +99,6 @@ export class ListWorkOfArtsComponent implements OnInit {
       },
     },
     {
-      headerName: 'Déposant',
-      field: 'depostant',
-    },
-    {
       headerName: 'Domaine',
       field: 'domaine',
       headerComponentParams: {
@@ -111,32 +109,21 @@ export class ListWorkOfArtsComponent implements OnInit {
       },
     },
     {
-      headerName: 'Style',
-      field: 'style',
-    },
-    {
-      headerName: 'Type',
-      field: 'type',
-    },
-    {
-      headerName: 'Matière',
-      field: 'matiere',
-    },
-    {
       headerName: 'Dénomination',
       field: 'denomination',
     },
     {
-      headerName: 'Epoque',
-      field: 'epoque',
+      headerName: 'Style',
+      field: 'style',
     },
     {
-      headerName: 'Propriété',
+      headerName: 'Date création',
+      field: 'date',
+    },
+    {
+      headerName: 'Type de status',
       field: 'property',
-    },
-    {
-      headerName: 'Dimension',
-      field: 'dimension',
+      cellRenderer: 'statusTypeRender',
     },
     {
       headerName: 'Visible catalogue',
@@ -167,7 +154,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   currentOrderedFields: { column: string; direction: string }[] = [];
   paginatorLoading: boolean;
   oeuvreToShow: any;
-
+  rowCount = 5;
   constructor(
     private fb: FormBuilder,
     public columnFilterService: ColumnFilterService,
@@ -288,10 +275,17 @@ export class ListWorkOfArtsComponent implements OnInit {
   addDepositMovableObject() {}
 
   //validate request value
+
   onValidateRequest(value: boolean) {
     if (value) {
       this.showDatatable = true;
       this.isCollapsed = false;
     }
+  }
+
+  onRowCountChange(event: Event) {
+    // @ts-ignore
+    this.rowCount = event.target.value;
+    this.gridApi.paginationSetPageSize(Number(this.rowCount));
   }
 }

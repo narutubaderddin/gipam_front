@@ -7,6 +7,7 @@ import { RemarquerDetailsLinkRendererComponent } from '@app/@shared/components/d
 import { VisibleCatalogRendererComponent } from '@app/@shared/components/datatables/visible-catalog-renderer/visible-catalog-renderer.component';
 import { OPERATORS, TYPES } from '@app/@shared/services/column-filter.service';
 import { GridOptions, ColDef, GridApi, ColumnApi, ICellEditorParams } from 'ag-grid-community';
+import { StatusTypeRenderComponent } from '@shared/components/datatables/status-type-render/status-type-render.component';
 
 @Component({
   selector: 'app-administrator-home-page',
@@ -19,6 +20,7 @@ export class AdministratorHomePageComponent implements OnInit {
     gridActionRenderer: BeingCreatedRemarquersActionsRendererComponent,
     visibleRenderer: VisibleCatalogRendererComponent,
     detailsLink: RemarquerDetailsLinkRendererComponent,
+    statusTypeRender: StatusTypeRenderComponent,
   };
   defaultColDef = {
     headerComponent: 'customHeader',
@@ -43,29 +45,16 @@ export class AdministratorHomePageComponent implements OnInit {
   ColDef: ColDef[] = [
     {
       cellClass: 'link',
-      headerName: 'Réf',
+      headerName: 'N° inventaire',
       field: 'id',
       cellRenderer: 'detailsLink',
       sortable: false,
       filter: false,
-      width: 70,
+      width: 90,
     },
     {
       headerName: 'Titre',
       field: 'titre',
-    },
-    {
-      headerName: 'Date création',
-      field: 'creationDate',
-      headerComponentParams: {
-        ...this.defaultHeaderParams,
-        type: TYPES.date,
-        operator: OPERATORS.in,
-      },
-    },
-    {
-      headerName: 'Déposant',
-      field: 'depostant',
     },
     {
       headerName: 'Domaine',
@@ -78,40 +67,30 @@ export class AdministratorHomePageComponent implements OnInit {
       },
     },
     {
-      headerName: 'Style',
-      field: 'style',
-    },
-    {
-      headerName: 'Type',
-      field: 'type',
+      headerName: 'Dénomination',
+      field: 'denomination',
     },
     {
       headerName: 'Matière',
       field: 'matiere',
     },
     {
-      headerName: 'Dénomination',
-      field: 'denomination',
+      headerName: 'Style',
+      field: 'style',
     },
     {
-      headerName: 'Epoque',
-      field: 'epoque',
+      headerName: 'Date création',
+      field: 'creationDate',
+      headerComponentParams: {
+        ...this.defaultHeaderParams,
+        type: TYPES.date,
+        operator: OPERATORS.in,
+      },
     },
     {
-      headerName: 'Propriété',
+      headerName: 'Type de Statut',
       field: 'property',
-    },
-    {
-      headerName: 'Dimension',
-      field: 'dimension',
-    },
-    {
-      headerName: 'Visible catalogue',
-      field: 'visible',
-      cellRenderer: 'visibleRenderer',
-      sortable: false,
-      filter: false,
-      width: 110,
+      cellRenderer: 'statusTypeRender',
     },
     {
       headerName: 'Actions',
@@ -129,6 +108,7 @@ export class AdministratorHomePageComponent implements OnInit {
   gridColumnApi: ColumnApi;
   gridReady = false;
   page = 1;
+  rowCount: any = 5;
   constructor(private router: Router, private WorkOfArtService: WorkOfArtService) {}
 
   get defaultHeaderParams() {
@@ -153,5 +133,11 @@ export class AdministratorHomePageComponent implements OnInit {
   }
   showAlerts() {
     this.page = 3;
+  }
+
+  onRowCountChange(event: Event) {
+    // @ts-ignore
+    this.rowCount = event.target.value;
+    this.gridApi.paginationSetPageSize(Number(this.rowCount));
   }
 }

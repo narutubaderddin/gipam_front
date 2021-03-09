@@ -20,55 +20,37 @@
   <div class="collapse navbar-collapse nav-list" id="navbarSupportedContent">
     <ul class="navbar-nav">
       <li *ngIf="isAuthentiticated" class="right-header list main_nav_list_item home" (click)="home()">
-        <a class="home pl-3 pr-3"> Accueil </a>
-      </li>
-      <li class="right-header list main_nav_list_item administration">
-        <div class="dropdown" *ngIf="isAuthentiticated">
-          <a
-            class="administration btn dropdown-toggle"
-            type="button"
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            Administration
+        <div class="dropdown nav-menu" [class.nav-active]="menu == 1">
+          <a class="home pl-3 pr-3">
+            <i class="fas fa-home" style="font-size: 18px"></i>
+            <span style="margin-left: 5px">Accueil</span>
           </a>
-          <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenuButton">
-            <div class="dropright dropdown-item">
-              <a
-                type="button"
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                Gestion des tables de réferences
-              </a>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Domaines</a>
-                <a class="dropdown-item" href="#">Dénominations</a>
-                <a class="dropdown-item" href="#">Matières</a>
-                <a class="dropdown-item" href="#">Styles</a>
-                <a class="dropdown-item" href="#">Epoques</a>
-              </div>
-            </div>
-            <a class="dropdown-item" href="#">Paramétrage des alertes</a>
-          </div>
         </div>
       </li>
-
+      <li
+        class="right-header list main_nav_list_item administration"
+        *ngIf="isAuthentiticated"
+        (click)="goToWorkOfArts()"
+      >
+        <div class="dropdown nav-menu" [class.nav-active]="menu == 2">
+          <a class="pl-3 pr-3">
+            <i class="far fa-object-group" style="font-size: 18px"></i>
+            <span style="margin-left: 5px">Recherche</span>
+          </a>
+        </div>
+      </li>
       <li class="right-header list main_nav_list_item rapport" *ngIf="isAuthentiticated">
-        <div class="dropdown">
+        <div class="dropdown nav-menu" [class.nav-active]="menu == 3">
           <a
-            class="rapport btn dropdown-toggle"
+            class="btn dropdown-toggle"
             type="button"
             id="dropdownMenuButton"
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
           >
-            Rapport
+            <i class="fas fa-poll" style="font-size: 18px"></i>
+            <span style="margin-left: 5px">Rapport</span>
           </a>
           <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item" href="#">Etats des objets mobilier</a>
@@ -78,10 +60,64 @@
             <a class="dropdown-item" href="#">Etat d'inventaire</a>
           </div>
         </div>
+        <!--          <a-->
+        <!--            class="administration btn dropdown-toggle"-->
+        <!--            type="button"-->
+        <!--            id="dropdownMenuButton"-->
+        <!--            data-toggle="dropdown"-->
+        <!--            aria-haspopup="true"-->
+        <!--            aria-expanded="false"-->
+        <!--          >-->
+        <!--            Administration-->
+        <!--          </a>-->
+        <!--          <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenuButton">-->
+        <!--            <div class="dropright dropdown-item">-->
+        <!--              <a-->
+        <!--                type="button"-->
+        <!--                id="dropdownMenuButton"-->
+        <!--                data-toggle="dropdown"-->
+        <!--                aria-haspopup="true"-->
+        <!--                aria-expanded="false"-->
+        <!--              >-->
+        <!--                Gestion des tables de réferences-->
+        <!--              </a>-->
+        <!--              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
+        <!--                <a class="dropdown-item" href="#">Domaines</a>-->
+        <!--                <a class="dropdown-item" href="#">Dénominations</a>-->
+        <!--                <a class="dropdown-item" href="#">Matières</a>-->
+        <!--                <a class="dropdown-item" href="#">Styles</a>-->
+        <!--                <a class="dropdown-item" href="#">Epoques</a>-->
+        <!--              </div>-->
+        <!--            </div>-->
+        <!--            <a class="dropdown-item" href="#">Paramétrage des alertes</a>-->
+        <!--          </div>-->
       </li>
-      <li *ngIf="isAuthentiticated" class="right-header list main_nav_list_item" (click)="goToWorkOfArts()">
-        <a class="pl-3 pr-3"> Oeuvres d'art </a>
+      <li *ngIf="isAuthentiticated" class="right-header list main_nav_list_item" (click)="goToPoratil()">
+        <div class="dropdown nav-menu" [class.nav-active]="menu == 4">
+          <a class="pl-3 pr-3">
+            <i class="fas fa-images" style="font-size: 18px"></i> <span style="margin-left: 5px">Portail</span>
+          </a>
+        </div>
       </li>
     </ul>
+  </div>
+  <div class="right-header list main_nav_list_item" *ngIf="isAuthentiticated">
+    <div class="dropdown" style="left: -5%; color: white; font-size: 22px">
+      <a
+        class="dropdown-toggle"
+        type="button"
+        id="dropdownuserButton"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        <i class="fas fa-user-circle"></i>
+        <span class="ml-2">Claire ROSSET</span>
+      </a>
+      <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownuserButton">
+        <h6 class="dropdown-header"><span translate>Role</span> <b> Gestionnaire SOA</b></h6>
+        <div class="dropdown-divider"></div>
+      </div>
+    </div>
   </div>
 </nav>

@@ -108,6 +108,7 @@ export class WorkOfArtService {
   proofs = [
     {
       id: 0,
+      titre: 'titre 1',
       creationDate: '04/12/2020',
       nombre_prood_a_recole: '5',
       nombre_prood_recole: '15',
@@ -118,6 +119,7 @@ export class WorkOfArtService {
     },
     {
       id: 0,
+      titre: 'titre 2',
       creationDate: '19/10/2020',
       nombre_prood_a_recole: '5',
       nombre_prood_recole: '15',
@@ -128,6 +130,7 @@ export class WorkOfArtService {
     },
     {
       id: 0,
+      titre: 'titre 3',
       creationDate: '04/12/2020',
       nombre_prood_a_recole: '5',
       nombre_prood_recole: '15',
@@ -138,6 +141,7 @@ export class WorkOfArtService {
     },
     {
       id: 0,
+      titre: 'titre 4',
       creationDate: '04/12/2020',
       nombre_prood_a_recole: '5',
       nombre_prood_recole: '15',
@@ -151,6 +155,8 @@ export class WorkOfArtService {
     {
       reference: 'Réf 145',
       date: '01/01/2021',
+      auteur: 'Auteur1;Auteur2',
+      titre: 'titre1',
       actiontype: 'En recherche',
       startDate: '31/10/2020',
       endDate: '31/12/2020',
@@ -161,6 +167,8 @@ export class WorkOfArtService {
     {
       reference: 'Réf 365',
       date: '01/07/2021',
+      auteur: 'Auteur54',
+      titre: 'titre2',
       actiontype: 'Dépot de plainte',
       startDate: '12/05/2020',
       endDate: '30/06/2020',
@@ -171,6 +179,8 @@ export class WorkOfArtService {
     {
       reference: 'Réf 478',
       date: '29/11/2020',
+      auteur: 'Auteur1',
+      titre: 'titre5',
       actiontype: 'Déclassement',
       startDate: '31/10/2020',
       endDate: '28/11/2020',
@@ -181,6 +191,8 @@ export class WorkOfArtService {
     {
       reference: 'Réf 587',
       date: '01/01/2021',
+      auteur: 'Auteur6',
+      titre: 'titre458',
       actiontype: 'En attente de localisation',
       startDate: '31/10/2020',
       endDate: '31/12/2020',
@@ -194,6 +206,7 @@ export class WorkOfArtService {
       id: 0,
       titre: 'Vénus de Milo',
       auteur: 'auteur',
+      denomination: 'Statuette',
       description: 'Une statue en marbre représentantla déesse Aphrodite-C.',
       mots_descriptifs: 'mots_descriptifs',
       commentaire: 'commentaire',
@@ -212,6 +225,7 @@ export class WorkOfArtService {
     {
       id: 1,
       titre: 'Nature morte',
+      denomination: 'Couverts',
       description: 'Le Portrait de Mona Lisa est celui de la Florentine Lisa Gherardini',
       image: 'assets/images/1.jpg',
       vip: 'true',
@@ -229,6 +243,7 @@ export class WorkOfArtService {
     {
       id: 2,
       titre: 'La Belle Ferronnière',
+      denomination: 'Couverts',
       description: 'Un tableau peint sur un panneau en bois de noyer',
       image: 'assets/images/2.jpg',
       vip: 'false',
@@ -246,6 +261,7 @@ export class WorkOfArtService {
     {
       id: 3,
       titre: 'La Liberté guidant le peuple',
+      denomination: 'Couverts',
       description: "Une huile sur toile d'Eugène Delacroix  ",
       image: 'assets/images/4.jpg',
       vip: 'false',

@@ -39,21 +39,24 @@ export class InProgressAlertsComponent implements OnInit {
   ColDef: ColDef[] = [
     {
       cellClass: 'link',
-      headerName: 'Réf',
+      headerName: 'N° inventaire',
       field: 'reference',
       cellRenderer: 'detailsLink',
       sortable: false,
       filter: false,
       width: 70,
+      headerTooltip: 'Réf',
+      tooltipField: 'reference',
     },
     {
-      headerName: 'Date création',
-      field: 'date',
-      headerComponentParams: {
-        ...this.defaultHeaderParams,
-        type: TYPES.date,
-        operator: OPERATORS.in,
-      },
+      headerName: 'Titre',
+      field: 'titre',
+      width: 70,
+    },
+    {
+      headerName: 'Auteurs',
+      field: 'auteur',
+      width: 70,
     },
     {
       headerName: "Type d'action",
@@ -62,6 +65,7 @@ export class InProgressAlertsComponent implements OnInit {
     {
       headerName: 'Date début',
       field: 'startDate',
+      width: 90,
     },
     {
       headerName: 'Date fin',
@@ -78,6 +82,7 @@ export class InProgressAlertsComponent implements OnInit {
     {
       headerName: 'Créé par',
       field: 'createdBy',
+      width: 90,
     },
     {
       headerName: 'Actions',
@@ -85,13 +90,14 @@ export class InProgressAlertsComponent implements OnInit {
       cellRenderer: 'gridActionRenderer',
       sortable: false,
       filter: false,
-      width: 130,
+      width: 70,
     },
   ];
 
   gridApi: GridApi;
   gridColumnApi: ColumnApi;
   gridReady = false;
+  rowCount: any = 5;
   constructor(private router: Router, private WorkOfArtService: WorkOfArtService) {}
   get defaultHeaderParams() {
     return this.defaultColDef.headerComponentParams;
@@ -103,5 +109,10 @@ export class InProgressAlertsComponent implements OnInit {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
     this.gridReady = true;
+  }
+  onRowCountChange(event: Event) {
+    // @ts-ignore
+    this.rowCount = event.target.value;
+    this.gridApi.paginationSetPageSize(Number(this.rowCount));
   }
 }

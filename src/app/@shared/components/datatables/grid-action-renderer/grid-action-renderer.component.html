@@ -1,4 +1,7 @@
-<i class="fa fa-archive" aria-hidden="true" title="Archiver"></i>
-<i class="fas fa-copy" title="Faire une copie"></i>
-<i class="fas fa-edit" title="Modifier"></i>
-<i class="fas fa-file-export" title="Exporter"></i>
+<!--<i class="fa fa-archive" aria-hidden="true" title="Archiver"></i>-->
+<i *ngIf="actions == 'search'" class="fa fa-history"></i>
+<i *ngIf="actions == 'search'" class="fas fa-edit" title="Modifier"></i>
+<i *ngIf="actions == 'search'" class="fas fa-copy" title="Faire une copie"></i>
+<img *ngIf="actions == 'proof'" src="assets/images/icons/publish_1.svg" class="archive-action" alt="" />
+<i *ngIf="actions == 'proof' || actions == 'search'" class="fas fa-file-export" title="Exporter"></i>
+<i *ngIf="actions == 'alert'" class="far fa-times-circle"></i>

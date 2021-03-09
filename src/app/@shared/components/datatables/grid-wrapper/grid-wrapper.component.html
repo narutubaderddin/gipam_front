@@ -13,10 +13,11 @@
     [context]="{ parentComponent: context }"
     [animateRows]="true"
     [pagination]="true"
-    [paginationPageSize]="10"
+    [paginationPageSize]="paginationPageSize"
     [groupSelectsChildren]="true"
     [suppressRowClickSelection]="true"
     [debug]="true"
+    [suppressPaginationPanel]="serverGridPagination"
     [rowSelection]="rowSelection"
     [enableRangeSelection]="true"
     [masterDetail]="true"
@@ -28,4 +29,41 @@
     [detailCellRendererParams]="detailCellRendererParams"
   >
   </ag-grid-angular>
+
+  <div *ngIf="pagination && totalPaginationItems > paginationSize" class="pagination row my-2">
+    <div class="col-12 col-sm-6">
+      <div class="total-count text-center text-sm-left" [hidden]="!rowData.length">
+        <span translate>Résultats </span>
+        <span>de {{ from }} à {{ to }} / {{ totalPaginationItems }} ( filtrés parmi {{ totalDataCount }} )</span>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+      <div class="pagination-controls d-flex flex-column flex-sm-row align-items-center justify-content-sm-end ml-auto">
+        <ul hidden>
+          <li
+            *ngFor="
+              let item of rowData
+                | paginate
+                  : {
+                      itemsPerPage: paginationSize,
+                      currentPage: currentPage,
+                      totalItems: totalPaginationItems,
+                      id: paginationId
+                    }
+            "
+          ></li>
+        </ul>
+        <div class="spinner" *ngIf="paginatorLoading"></div>
+        <pagination-controls
+          [id]="paginationId"
+          responsive="true"
+          maxSize="5"
+          autoHide="autoHide"
+          [nextLabel]="'Suivant'"
+          [previousLabel]="'Précédent'"
+          (pageChange)="onPageChanged($event)"
+        ></pagination-controls>
+      </div>
+    </div>
+  </div>
 </div>

@@ -14,7 +14,7 @@
   }
 
   .ag-header {
-    background-color: #1f2b50;
+    background-color: #0080ff;
     .ag-icon {
       color: white;
     }
@@ -83,6 +83,10 @@
   }
   .ag-header-cell {
     padding-left: 10px !important;
+    border-right: 1px solid white !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   //checkbox
   .ag-checkbox-input-wrapper {
