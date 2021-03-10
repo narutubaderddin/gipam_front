@@ -11,9 +11,26 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 export class RequestComponent implements OnInit {
   @Input() fields: any;
   @Output() validateRequest = new EventEmitter<any>();
+  inventoryValue = 0;
+  hightInventoryValue = 60;
   value: number = 40;
   highValue: number = 60;
+  lengthValue = 0;
+  highLengthValue = 60;
+  widthValue = 0;
+  highWidthValue = 60;
+  totValue: number = 40;
+  highTotValue: number = 60;
+  totLengthValue = 0;
+  highTotLengthValue = 60;
+  totWidthValue = 0;
+  highTotWidthValue = 60;
+  depthValue = 0;
+  highDepthValue = 60;
+  weightValue = 0;
+  highWeightValue = 60;
   dimensionsOptions: Options;
+  inventoryOptions: Options;
   poundsOprions: Options;
   domaine: any;
   denominations: any;
@@ -38,6 +55,10 @@ export class RequestComponent implements OnInit {
       translate: (value: number): string => {
         return value + 'cm';
       },
+    };
+    this.inventoryOptions = {
+      floor: 0,
+      ceil: 9999,
     };
     this.poundsOprions = {
       floor: 0,
