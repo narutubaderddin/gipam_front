@@ -13,7 +13,7 @@ export class DescritifComponent implements OnInit {
   domain = 'Sculpture';
   denomination: any;
   selectedDomain = 'Sculpture';
-  isCollapsed = false;
+  isCollapsed = true;
   autocompleteItems = ['Item1', 'item2', 'item3'];
 
   constructor(public WorkOfArtService: WorkOfArtService) {}

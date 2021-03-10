@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -7,7 +7,9 @@ import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./item-details.component.scss'],
 })
 export class ItemDetailsComponent implements OnInit {
-  page: any = 1;
+  @ViewChildren('accordionSectionDOM', { read: ElementRef }) accordionsDOM: QueryList<ElementRef>;
+  @ViewChild('accordionDOM') public parentRef: ElementRef<HTMLElement>;
+  page: any = 4;
   edit = false;
   moreDetails = ['19-01-2020', '23-02-2020', '01-03-2020', '25-03-2020', '20-04-2020'];
   constructor(config: NgbCarouselConfig) {

@@ -20,7 +20,7 @@ button {
 
 .container-fluid {
   margin-top: 20px;
-  padding: 0 100px;
+  padding: 0 20px;
   p {
     font-size: 14px;
     margin-top: 5px;
@@ -42,6 +42,9 @@ button {
       flex-wrap: wrap;
       margin-bottom: 5px;
     }
+    .detail-image {
+      max-height: 1%;
+    }
     a {
       font-size: 12px;
       cursor: pointer;
@@ -55,12 +58,41 @@ button {
       display: flex;
       justify-content: center;
     }
+    .dock-menu {
+      border: 1px solid black;
+      margin-left: 15px;
+      display: flex;
+      justify-content: center;
+    }
+    .card {
+      margin-bottom: 20px;
+      border-left: 1px solid black;
+      border-right: 1px solid black;
+      border-bottom: 1px solid black;
+    }
+    .card-header {
+      background-color: #0080ff;
+      color: white;
+      text-align: left;
+      border-bottom: 1px solid black;
+      display: flex;
+    }
+    h5 {
+      color: white;
+    }
+    .icons {
+      display: flex;
+      flex-direction: row-reverse;
+    }
   }
   .third-bloc,
   .firth-bloc {
     background-color: white;
     margin-bottom: 5px;
     display: flex;
+    border: 1px solid black;
+    margin-left: 15px;
+    margin-top: 20px;
     justify-content: center;
   }
   .firth-bloc {
@@ -176,16 +208,20 @@ button {
 /** third bloc **/
 
 li a i:hover {
-  color: #c29d57 !important;
+  color: #0061a7 !important;
 }
 .container {
   margin: 0;
   padding: 10px 0 0 0;
+  .first-page {
+    margin-left: 20% !important;
+    width: 100%;
+  }
   ul {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     flex-wrap: wrap;
     li {
       margin: 0 20px;
@@ -193,12 +229,12 @@ li a i:hover {
       a {
         height: 55px;
         width: 55px;
-        color: #407ca8;
+        color: #00d6d4;
         padding: 10px 20px;
-        border: 1px solid #407ca8;
+        border: 1px solid #00d6d4;
         border-radius: 50%;
         i {
-          color: #407ca8;
+          color: #00d6d4;
           margin-top: -3px;
           font-size: 40px;
         }
@@ -206,7 +242,7 @@ li a i:hover {
       p {
         font-size: 12px;
         margin-left: 9px;
-        color: #407ca8;
+        color: black;
         font-weight: bold;
       }
     }
@@ -220,7 +256,7 @@ li a i:hover {
   a {
     height: 55px;
     width: 55px;
-    background-color: #407ca8 !important;
+    background-color: #00d6d4 !important;
     padding: 10px 20px;
     border: 1px solid #407ca8;
     border-radius: 50%;
