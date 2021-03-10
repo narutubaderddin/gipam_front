@@ -1,3 +1,11 @@
+.vl {
+    border:         none;
+    border-left:    1px solid rgba(0, 0, 0, 0.125);
+    height:          auto;
+    width:          1px;
+    margin: 0px 0 10px;
+}
+
 .input-form-control {
   border-color: #e4e4e4;
   height: 25px;
@@ -58,7 +66,7 @@ button {
   margin-bottom: 0.5rem;
   label {
     font-size: 12px;
-    width: 35%;
+    width: 49%;
     margin-bottom: 0;
     line-height: 25px;
     &.col-md-4 {
@@ -78,9 +86,6 @@ button {
   }
 }
 
-.principal-bloc {
-  flex-wrap: wrap;
-}
 .advanced-search-accordion {
   span {
     color: #0080ff;
@@ -91,12 +96,25 @@ button {
     border-top: 1px solid #407ca8;
   }
 }
-.advancedBloc {
+.advanced-bloc {
   flex-wrap: wrap;
-  .custom-slider {
-    width: 65%;
-  }
 }
+.advanced-sub-bloc {
+  width: 33%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.location {
+  flex-wrap: wrap;
+}
+.slider-bloc {
+  height: 25px;
+}
+.custom-slider {
+  width: 65%;
+}
+
 // css ngx-slider
 ::ng-deep {
   .custom-slider .ngx-slider .ngx-slider-pointer {
