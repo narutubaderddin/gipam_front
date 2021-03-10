@@ -3,6 +3,9 @@
   <i *ngIf="actions == 'search'" class="fa fa-history"></i>
   <i *ngIf="actions == 'search'" class="fas fa-edit" title="Modifier"></i>
   <i *ngIf="actions == 'search'" class="fas fa-copy" title="Faire une copie"></i>
+
+  <i *ngIf="actions == 'proofDetails'" class="fas fa-chevron-circle-right" title="Voir détails"></i>
+
   <div (click)="showDetails()" style="width: 5px">
     <img *ngIf="actions == 'proof'" src="assets/images/icons/publish_1.svg" class="archive-action" alt="" />
   </div>

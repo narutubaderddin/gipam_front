@@ -28,6 +28,7 @@ import { RemarquerDetailsLinkRendererComponent } from './components/datatables/r
 import { BeingCreatedRemarquersActionsRendererComponent } from './components/datatables/being-created-remarquers-actions-renderer/being-created-remarquers-actions-renderer.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { StatusTypeRenderComponent } from './components/datatables/status-type-render/status-type-render.component';
+import { RecoleRendererComponent } from './components/datatables/recole-renderer/recole-renderer.component';
 
 @NgModule({
   imports: [
@@ -64,6 +65,7 @@ import { StatusTypeRenderComponent } from './components/datatables/status-type-r
     RemarquerDetailsLinkRendererComponent,
     BeingCreatedRemarquersActionsRendererComponent,
     StatusTypeRenderComponent,
+    RecoleRendererComponent,
   ],
   exports: [
     LoaderComponent,
