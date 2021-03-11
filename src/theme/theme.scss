@@ -521,3 +521,17 @@ tag-input-dropdown {
     font-weight: bold;
   }
 }
+
+// ngbDateicker css
+.ngb-dp-months {
+  font-size: 12px;
+}
+.dropdown-menu.show {
+  height: 260px;
+}
+
+/** slider css **/
+.ngx-slider .ngx-slider-pointer,
+.ngx-slider .ngx-slider-selection {
+  background: #00d6d4 !important;
+}
