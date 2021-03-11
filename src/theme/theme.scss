@@ -448,7 +448,12 @@ delete-icon svg {
 tag-input-dropdown {
   font-size: 12px !important;
 }
-
+::ng-deep .dropdown-container .drop-bloc button {
+  color: #00d6d4;
+  &:hover {
+    color: white;
+  }
+}
 //details-remarquer css
 .information-bloc {
   border: 1px solid;
@@ -526,7 +531,7 @@ tag-input-dropdown {
 .ngb-dp-months {
   font-size: 12px;
 }
-.dropdown-menu.show {
+ngb-datepicker {
   height: 260px;
 }
 

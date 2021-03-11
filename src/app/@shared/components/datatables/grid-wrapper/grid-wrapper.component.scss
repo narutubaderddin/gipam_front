@@ -1,11 +1,14 @@
 @import "src/theme/theme";
 
 .pagination {
+  font-size: 13px;
   .pagination-controls {
     height: 50px;
   }
 }
-
+pagination-controls {
+  margin-top: -15px;
+}
 ::ng-deep {
   ul.ngx-pagination {
     padding: 0;

@@ -113,17 +113,36 @@ export class ListWorkOfArtsComponent implements OnInit {
       field: 'denomination',
     },
     {
+      headerName: 'Matière',
+      field: 'matiere',
+    },
+    {
       headerName: 'Style',
       field: 'style',
     },
     {
-      headerName: 'Date création',
-      field: 'date',
+      headerName: 'Epoque',
+      field: 'epoque',
     },
     {
-      headerName: 'Type de status',
-      field: 'property',
-      cellRenderer: 'statusTypeRender',
+      headerName: 'Auteur',
+      field: 'author',
+    },
+    {
+      headerName: 'Dernier constat de présence',
+      field: 'author',
+    },
+    {
+      headerName: 'Dernière action liée au constat',
+      field: 'author',
+    },
+    {
+      headerName: 'Dernier mouvement',
+      field: 'author',
+    },
+    {
+      headerName: 'Dernière action liée au mouvement',
+      field: 'author',
     },
     {
       headerName: 'Visible catalogue',
@@ -187,7 +206,6 @@ export class ListWorkOfArtsComponent implements OnInit {
     if (event.node.selected == false) {
       this.selectedRowCount--;
     }
-    console.log(this.selectedRowCount);
   }
 
   onHeaderToggle(column: Column): void {
