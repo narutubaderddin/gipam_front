@@ -212,10 +212,7 @@ button {
     text-align: right;
   }
 }
-.btn:hover {
-  color: white !important;
-  background: #314172 !important;
-}
+
 .add-action {
   color: white;
   box-shadow: inset 0 1px 0 0 #314172;
@@ -266,12 +263,14 @@ button {
   border-radius: 4px;
   line-height: 20px !important;
   padding: 1px 5px !important;
+  color: rgb(128, 128, 128);
   &:focus,
   &:active {
     box-shadow: none;
     outline-style: none;
   }
 }
+
 .multiselect-dropdown {
   font-size: 11px !important;
   &:focus,
@@ -280,10 +279,12 @@ button {
     outline-style: none;
   }
 }
-.multiselect-dropdown .dropdown-btn .dropdown-multiselect__caret::before {
-  display: none !important;
+.multiselect-dropdown .dropdown-btn .dropdown-multiselect__caret {
+  height: 25px !important;
+  right: -4px !important;
+  top: -7px;
 }
-.multiselect-dropdown .dropdown-btn .selected-item a {
+.multiselect-dropdown.dropdown-btn .dropdown-multiselect__caret .multiselect-dropdown .dropdown-btn .selected-item a {
   font-size: 10px !important;
   padding-top: 0 !important;
 }
@@ -483,4 +484,54 @@ tag-input-dropdown {
       display: none;
     }
   }
+}
+
+/** accordion style **/
+.accordion .card {
+  overflow: visible;
+}
+.accordion > .card > .card-header {
+  height: 20px !important;
+  line-height: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  background-color: #0080ff;
+  .btn {
+    margin-top: -14px;
+    height: 30px;
+    width: 100%;
+    text-decoration-line: none;
+    &:active,
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}
+.accordion > .card > .collapse {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  .card-body {
+    padding: 0.75rem 0 0.5rem;
+    height: 150px;
+  }
+}
+.accordion-bloc {
+  .title-section {
+    margin-top: -3px;
+    font-size: 14px;
+    color: white;
+    font-weight: bold;
+  }
+}
+
+// ngbDateicker css
+.ngb-dp-months {
+  font-size: 12px;
+}
+.dropdown-menu.show {
+  height: 260px;
+}
+
+/** slider css **/
+.ngx-slider .ngx-slider-pointer,
+.ngx-slider .ngx-slider-selection {
+  background: #00d6d4 !important;
 }

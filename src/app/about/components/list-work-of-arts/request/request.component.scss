@@ -1,3 +1,13 @@
+.vl {
+  border: none;
+  border-left: 1px solid rgba(0, 0, 0, 0.125);
+  height: auto;
+  width: 1px;
+  margin: 0px 0 10px;
+}
+.search-form-control {
+  height: 25px;
+}
 .input-form-control {
   border-color: #e4e4e4;
   height: 25px;
@@ -75,12 +85,10 @@ button {
   }
   .creation-date-label {
     padding-left: 0;
+    padding-right: 0;
   }
 }
 
-.principal-bloc {
-  flex-wrap: wrap;
-}
 .advanced-search-accordion {
   span {
     color: #0080ff;
@@ -91,12 +99,25 @@ button {
     border-top: 1px solid #407ca8;
   }
 }
-.advancedBloc {
+.advanced-bloc {
   flex-wrap: wrap;
-  .custom-slider {
-    width: 65%;
-  }
 }
+.advanced-sub-bloc {
+  width: 33%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.location {
+  flex-wrap: wrap;
+}
+.slider-bloc {
+  height: 25px;
+}
+.custom-slider {
+  width: 65%;
+}
+
 // css ngx-slider
 ::ng-deep {
   .custom-slider .ngx-slider .ngx-slider-pointer {
@@ -121,4 +142,38 @@ button {
   .custom-slider .ngx-slider .ngx-slider-bar-wrapper {
     padding-top: 0;
   }
+}
+
+.date-input {
+  visibility: hidden;
+}
+.datepicker-input {
+  width: 100px !important;
+}
+.form-group.hidden {
+  width: 0;
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+.custom-day {
+  text-align: center;
+  padding: 0.185rem 0.25rem;
+  display: inline-block;
+  height: 2rem;
+  width: 2rem;
+}
+.custom-day.focused {
+  background-color: #e6e6e6;
+}
+.custom-day.range,
+.custom-day:hover {
+  background-color: rgb(2, 117, 216);
+  color: white;
+}
+.custom-day.faded {
+  background-color: rgba(2, 117, 216, 0.5);
+}
+.input-group > .input-group-append > .btn {
+  height: 25px;
 }

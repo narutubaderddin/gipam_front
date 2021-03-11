@@ -15,7 +15,7 @@ export class WorkOfArtService {
         { id: 3, name: 'Estampe' },
         { id: 4, name: 'Gravure' },
         { id: 5, name: 'Peinture sur papier' },
-        { id: 5, name: 'Photographie' },
+        { id: 6, name: 'Photographie' },
       ],
     },
     {
@@ -50,6 +50,22 @@ export class WorkOfArtService {
     { id: 9, name: 'Art de la table' },
     { id: 10, name: 'Decor monumental' },
     { id: 11, name: 'Archeologie' },
+  ];
+  denominations = [
+    { id: 1, name: 'Affiche' },
+    { id: 2, name: 'Dessin' },
+    { id: 3, name: 'Estampe' },
+    { id: 4, name: 'Gravure' },
+    { id: 5, name: 'Peinture sur papier' },
+    { id: 6, name: 'Photographie' },
+    { id: 7, name: 'Horloge' },
+    { id: 8, name: 'Pendule' },
+    { id: 9, name: 'Régulateur' },
+    { id: 10, name: 'Art textile' },
+    { id: 11, name: 'Pièce de musée' },
+    { id: 12, name: 'Art de la table' },
+    { id: 13, name: 'Decor monumental' },
+    { id: 14, name: 'Archeologie' },
   ];
   epoque = [
     { id: 0, name: 'Renaissance' },
@@ -105,6 +121,15 @@ export class WorkOfArtService {
     { id: 10, name: "SECRÉTARIAT D'ETAT CHARGÉ DU NUMÉRIQUE" },
     { id: 11, name: 'MINISTÈRE DE LA FONCTION PUBLIQUE' },
   ];
+  authors = [
+    { id: 0, name: 'author 1' },
+    { id: 1, name: 'author 2' },
+    { id: 2, name: 'author 3' },
+    { id: 3, name: 'author 4' },
+    { id: 4, name: 'author 5' },
+    { id: 5, name: 'author 6' },
+    { id: 6, name: 'author 7' },
+  ]
   proofs = [
     {
       id: 0,
