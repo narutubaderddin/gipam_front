@@ -1,5 +1,5 @@
 import { WorkOfArtService } from '@app/@shared/services/work-of-art.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CustomHeaderRendererComponent } from '@app/@shared/components/datatables/custom-header-renderer/custom-header-renderer.component';
 import { GridActionRendererComponent } from '@app/@shared/components/datatables/grid-action-renderer/grid-action-renderer.component';
 import { RemarquerDetailsLinkRendererComponent } from '@app/@shared/components/datatables/remarquer-details-link-renderer/remarquer-details-link-renderer.component';
@@ -9,14 +9,15 @@ import { CellClickedEvent, ColDef, ColumnApi, GridApi, GridOptions, ICellEditorP
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-proofs-in-progress',
-  templateUrl: './proofs-in-progress.component.html',
-  styleUrls: ['./proofs-in-progress.component.scss'],
+  selector: 'app-proofs-details',
+  templateUrl: './proofs-details.component.html',
+  styleUrls: ['./proofs-details.component.scss'],
 })
-export class ProofsInProgressComponent implements OnInit {
+export class ProofsDetailsComponent implements OnInit {
+  @Input() show: boolean;
   frameworkComponents = {
     customHeader: CustomHeaderRendererComponent,
-    gridActionRenderer: GridActionRendererComponent,
+    //   gridActionRenderer: GridActionRendererComponent,
   };
   defaultColDef = {
     headerComponent: 'customHeader',
@@ -34,20 +35,49 @@ export class ProofsInProgressComponent implements OnInit {
   };
   gridOptions: GridOptions = {
     suppressLoadingOverlay: false,
-    suppressScrollOnNewData: true,
+    suppressScrollOnNewData: false,
+
+    // pagination: true,
+    // paginationPageSize: 2,
   };
   remarquers: any;
 
   ColDef: ColDef[] = [
     {
-      headerName: 'Titre de récolement ',
-      field: 'titre',
-      headerTooltip: 'Titre de récolement',
-      width: 70,
+      headerName: 'N° inventaire',
+      field: 'inventaire',
+      headerTooltip: 'N° inventaire',
+      width: 90,
     },
     {
-      headerName: 'Date création',
-      field: 'creationDate',
+      headerName: 'Titre',
+      field: 'titre',
+      headerTooltip: 'Titre',
+      width: 90,
+    },
+    {
+      headerName: 'Domaine',
+      field: 'Domaine',
+      width: 90,
+    },
+    {
+      headerName: 'Dénomination',
+      field: 'Denomination',
+      width: 90,
+    },
+    {
+      headerName: 'Auteur',
+      field: 'Auteur',
+      width: 90,
+    },
+    {
+      headerName: 'Total récolement',
+      field: 'total_recole',
+      width: 90,
+    },
+    {
+      headerName: 'Date dernier récolement',
+      field: 'Date_last_recole',
       headerComponentParams: {
         ...this.defaultHeaderParams,
         type: TYPES.date,
@@ -56,52 +86,18 @@ export class ProofsInProgressComponent implements OnInit {
       width: 90,
     },
     {
-      headerName: "Nombre d'oeuvres à récoler",
-      field: 'nombre_prood_a_recole',
-      width: 50,
-    },
-    {
-      headerName: "Nombre d'oeuvres récolées",
-      field: 'nombre_prood_recole',
-      width: 50,
-    },
-    {
-      headerName: 'Créé par',
-      field: 'created_by',
-      width: 70,
-    },
-    {
-      headerName: 'Ministère',
-      field: 'minister',
-      width: 185,
-    },
-    {
-      headerName: 'Etab/Dir.',
-      field: 'etab',
-      width: 185,
-    },
-    {
-      headerName: 'Service',
-      field: 'service',
-      width: 185,
-    },
-    {
-      headerName: 'Site',
-      field: 'service',
-      width: 185,
-    },
-    {
-      headerName: 'Bâtiment ',
-      field: 'service',
-      width: 182,
+      headerName: 'Récolé',
+      field: 'Recole',
+      width: 90,
     },
     {
       headerName: 'Actions',
       field: 'action',
-      cellRenderer: 'gridActionRenderer',
+      // cellRenderer: 'gridActionRenderer',
+
       sortable: false,
       filter: false,
-      width: 100,
+      width: 70,
     },
   ];
   pinnedCols: string[] = ['action'];
@@ -109,19 +105,15 @@ export class ProofsInProgressComponent implements OnInit {
   gridColumnApi: ColumnApi;
   gridReady = false;
   rowCount: any = 5;
-  idShow: number;
 
   constructor(private router: Router, private WorkOfArtService: WorkOfArtService) {}
   get defaultHeaderParams() {
     return this.defaultColDef.headerComponentParams;
   }
   ngOnInit(): void {
-    this.remarquers = this.WorkOfArtService.proofs;
+    this.remarquers = this.WorkOfArtService.proofsDetails;
   }
-  methodFromParent(cell: any, id: number) {
-    // alert("Parent Component Method from " + id + "!");
-    this.idShow = id;
-  }
+
   onGridReady(params: ICellEditorParams) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
@@ -130,6 +122,5 @@ export class ProofsInProgressComponent implements OnInit {
   onRowCountChange(event: Event) {
     // @ts-ignore
     this.rowCount = event.target.value;
-    this.gridApi.paginationSetPageSize(Number(this.rowCount));
   }
 }
