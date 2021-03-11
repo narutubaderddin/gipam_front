@@ -5,8 +5,8 @@
 }
 .label-container {
   position: fixed;
-  bottom: 0;
-  left: 40px;
+  top: 0.5;
+  left: 300px;
   display: table;
   visibility: hidden;
 }
@@ -347,7 +347,7 @@ a:not([href]) {
   cursor: pointer;
 }
 h5 {
-  color: #0073dd;
+  color: #00d6d4;
 }
 img {
   display: block;

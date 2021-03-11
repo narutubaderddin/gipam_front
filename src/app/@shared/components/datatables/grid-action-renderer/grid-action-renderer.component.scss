@@ -10,3 +10,8 @@ i {
   height: 3em;
   width: 3em;
 }
+.action-icons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

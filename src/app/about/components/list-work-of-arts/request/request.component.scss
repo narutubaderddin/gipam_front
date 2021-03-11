@@ -1,11 +1,13 @@
 .vl {
-    border:         none;
-    border-left:    1px solid rgba(0, 0, 0, 0.125);
-    height:          auto;
-    width:          1px;
-    margin: 0px 0 10px;
+  border: none;
+  border-left: 1px solid rgba(0, 0, 0, 0.125);
+  height: auto;
+  width: 1px;
+  margin: 0px 0 10px;
 }
-
+.search-form-control {
+  height: 25px;
+}
 .input-form-control {
   border-color: #e4e4e4;
   height: 25px;
@@ -66,7 +68,7 @@ button {
   margin-bottom: 0.5rem;
   label {
     font-size: 12px;
-    width: 49%;
+    width: 35%;
     margin-bottom: 0;
     line-height: 25px;
     &.col-md-4 {
@@ -83,6 +85,7 @@ button {
   }
   .creation-date-label {
     padding-left: 0;
+    padding-right: 0;
   }
 }
 
@@ -139,4 +142,38 @@ button {
   .custom-slider .ngx-slider .ngx-slider-bar-wrapper {
     padding-top: 0;
   }
+}
+
+.date-input {
+  visibility: hidden;
+}
+.datepicker-input {
+  width: 100px !important;
+}
+.form-group.hidden {
+  width: 0;
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+.custom-day {
+  text-align: center;
+  padding: 0.185rem 0.25rem;
+  display: inline-block;
+  height: 2rem;
+  width: 2rem;
+}
+.custom-day.focused {
+  background-color: #e6e6e6;
+}
+.custom-day.range,
+.custom-day:hover {
+  background-color: rgb(2, 117, 216);
+  color: white;
+}
+.custom-day.faded {
+  background-color: rgba(2, 117, 216, 0.5);
+}
+.input-group > .input-group-append > .btn {
+  height: 25px;
 }

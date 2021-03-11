@@ -173,6 +173,28 @@
               <i class="fas fa-plus"></i>
               Créer recolement
             </button>
+            <button class="btn add-action" translate>
+              <div
+                ngbDropdown
+                placement="bottom-right"
+                class="d-inline-block export-dropdown-bloc"
+                autoClose="outside"
+                container="body"
+              >
+                <button class="btn export-button" id="dropdownBasic" ngbDropdownToggle translate>
+                  <i class="fas fa-file-export"></i>
+                </button>
+                <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">
+                  <ul class="list-group">
+                    <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter Notices style catalogue</li>
+                    <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter Notices techniques</li>
+                    <li class="list-group-item">
+                      <i class="fas fa-file-export"></i> Exporter Notices complètes techniques
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </button>
           </div>
         </div>
         <app-grid-wrapper

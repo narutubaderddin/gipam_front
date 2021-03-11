@@ -35,6 +35,7 @@ import { ProofsInProgressComponent } from './components/administrator-home-page/
 import { Ng7BootstrapBreadcrumbModule } from 'ng7-bootstrap-breadcrumb';
 import { InProgressAlertsComponent } from './components/administrator-home-page/in-progress-alerts/in-progress-alerts.component';
 import { DepositorComponent } from './components/item-details/details/depositor/depositor.component';
+import { ProofsDetailsComponent } from './components/administrator-home-page/proofs-in-progress/proofs-details/proofs-details.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { DepositorComponent } from './components/item-details/details/depositor/
     AuthorComponent,
     ProofsInProgressComponent,
     InProgressAlertsComponent,
+    ProofsDetailsComponent,
     DepositorComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
