@@ -2,11 +2,16 @@
   margin-bottom: 40px;
   display: block;
 }
-
+.form-bloc .form-group label {
+  margin-right: 0;
+  padding-left: 0;
+  //padding-right: 0;
+  font-size: 13px;
+  //font-weight: bold;
+}
 .mode-edit {
   height: 100px * 100 /1920px * 1vw !important;
-
-  h3 {
+  the h3 {
     font-size: 32px / 16px * 1rem !important;
   }
 

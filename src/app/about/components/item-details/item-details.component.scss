@@ -43,7 +43,7 @@ button {
       margin-bottom: 5px;
     }
     .detail-image {
-      max-height: 1%;
+      margin-bottom: 10px;
     }
     a {
       font-size: 12px;
@@ -61,6 +61,7 @@ button {
     .dock-menu {
       border: 1px solid black;
       margin-left: 15px;
+      margin-top: 15px;
       display: flex;
       justify-content: center;
     }
@@ -229,12 +230,12 @@ li a i:hover {
       a {
         height: 55px;
         width: 55px;
-        color: #00d6d4;
+        color: #407ca8;
         padding: 10px 20px;
-        border: 1px solid #00d6d4;
+        border: 1px solid #407ca8;
         border-radius: 50%;
         i {
-          color: #00d6d4;
+          color: #407ca8;
           margin-top: -3px;
           font-size: 40px;
         }
@@ -258,7 +259,7 @@ li a i:hover {
     width: 55px;
     background-color: #00d6d4 !important;
     padding: 10px 20px;
-    border: 1px solid #407ca8;
+    border: 1px solid #00d6d4 !important;
     border-radius: 50%;
     i {
       color: white !important;

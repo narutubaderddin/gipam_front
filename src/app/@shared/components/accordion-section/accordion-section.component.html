@@ -21,7 +21,7 @@
 >
   <div #target [ngClass]="{ 'accordion-top-marker': true, 'accordion-top-marker-edit': modeEdit }"></div>
   <div *ngIf="showIcon" class="icon-section ml-auto d-flex justify-content-center align-items-center">
-    <img class="bg-icon" [src]="icon" />
+    <i [ngClass]="icon" style="font-size: 35px"></i>
   </div>
 
   <ng-container>

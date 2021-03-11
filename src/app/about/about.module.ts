@@ -34,6 +34,7 @@ import { TagInputModule } from 'ngx-chips';
 import { ProofsInProgressComponent } from './components/administrator-home-page/proofs-in-progress/proofs-in-progress.component';
 import { Ng7BootstrapBreadcrumbModule } from 'ng7-bootstrap-breadcrumb';
 import { InProgressAlertsComponent } from './components/administrator-home-page/in-progress-alerts/in-progress-alerts.component';
+import { DepositorComponent } from './components/item-details/details/depositor/depositor.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { InProgressAlertsComponent } from './components/administrator-home-page/
     AuthorComponent,
     ProofsInProgressComponent,
     InProgressAlertsComponent,
+    DepositorComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
