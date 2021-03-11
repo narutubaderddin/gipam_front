@@ -1,23 +1,58 @@
 <div class="content">
-  <div class="d-flex">
-    <div class="pictures-list">
+  <div class="d-flex picture">
+    <!--    <div id="collapseExample" [ngbCollapse]="isCollapsed" class="img-details mb-3 col-lg-2 col-xs-12 sidebar">-->
+    <!--      <app-portail-item-image></app-portail-item-image>-->
+    <!--    </div>-->
+
+    <!--    <div class="mt-2">-->
+    <!--      <a-->
+    <!--        class="float"-->
+    <!--        style="background-color: #00d6d4 !important; color: #fff"-->
+    <!--        (click)="isCollapsed = !isCollapsed"-->
+    <!--        [attr.aria-expanded]="!isCollapsed"-->
+    <!--      >-->
+    <!--        <i *ngIf="!isCollapsed" class="fas fa-angle-double-left my-float"></i>-->
+    <!--        <i *ngIf="isCollapsed" class="fas fa-angle-double-right my-float"></i>-->
+    <!--      </a>-->
+    <!--      <div class="label-container">-->
+    <!--        <i class="fa fa-caret-left label-arrow"></i>-->
+    <!--        <div *ngIf="isCollapsed" class="label-text">Afficher le Filtre</div>-->
+    <!--        <div *ngIf="!isCollapsed" class="label-text">Cacher le Filtre</div>-->
+    <!--      </div>-->
+    <!--    </div>-->
+
+    <div class="principal-picture">
       <img class="img-fluid" src="{{ source }}" alt="" />
     </div>
   </div>
 
   <div class="more-details">
     <h2>
-      <p><strong>Détails</strong></p>
+      <p><strong>Titre de la sculpture</strong></p>
     </h2>
-    <p><strong>Domaine :</strong> Peinture</p>
-    <p><strong>Dénomination :</strong> Tableau</p>
-    <p><strong>Titre :</strong> Titre de la sculpture</p>
-    <p><strong>Auteur :</strong> Simmen Henri</p>
-    <p><strong>Epoque :</strong> Années 80</p>
-    <p><strong>Style :</strong> style</p>
-    <p><strong>Matière :</strong> Moulage</p>
-    <p><strong>Dimensions :</strong> 82.5CM X 54.9CM X 94CM</p>
-    <p><strong>Nombre:</strong> 1</p>
-    <p><strong>Mots descriptifs :</strong> description de l'oeuvre d'art</p>
+    <h4>
+      <p><strong>Détails</strong></p>
+    </h4>
+
+    <div class="d-flex">
+      <div style="width: 50%" class="">
+        <p><strong>Domaine :</strong> Peinture</p>
+        <p><strong>Auteur :</strong> Simmen Henri</p>
+        <p><strong>Nombre:</strong> 1</p>
+        <p><strong>Matière :</strong> Moulage</p>
+      </div>
+      <div style="width: 50%" class="">
+        <p><strong>Dénomination :</strong> Tableau</p>
+        <p><strong>Epoque :</strong> Années 80</p>
+
+        <p><strong>Style :</strong> style</p>
+        <p><strong>Poids :</strong> 2 kg</p>
+      </div>
+    </div>
+    <div class="">
+      <p><strong>Dimensions :</strong> 82.5CM X 54.9CM X 94CM</p>
+      <p><strong>Dimensions Total :</strong> 82.5CM X 54.9CM X 94CM</p>
+      <p><strong>Mots descriptifs :</strong> description de l'oeuvre d'art</p>
+    </div>
   </div>
 </div>

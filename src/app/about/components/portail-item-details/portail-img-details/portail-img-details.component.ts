@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 export class PortailImgDetailsComponent implements OnInit {
   source: string;
   constructor(private route: ActivatedRoute) {}
-
+  isCollapsed: boolean = true;
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       this.source = params.source;

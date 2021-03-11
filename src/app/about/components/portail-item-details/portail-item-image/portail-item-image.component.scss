@@ -1,9 +1,9 @@
 .content {
-  //background-color: white;
-  box-shadow: 2px 2px 10px 2px lightgrey;
+  background-color: white;
+  //box-shadow: 2px 2px 10px 2px lightgrey;
   display: flex;
   justify-content: center;
-  padding: 3% 0%;
+
   .carousel {
     margin: 0 1%;
     .picsum-img-wrapper img {
