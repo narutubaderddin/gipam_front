@@ -263,7 +263,7 @@ button {
   border-radius: 4px;
   line-height: 20px !important;
   padding: 1px 5px !important;
-  color: rgb(128,128,128);
+  color: rgb(128, 128, 128);
   &:focus,
   &:active {
     box-shadow: none;
@@ -279,10 +279,12 @@ button {
     outline-style: none;
   }
 }
-.multiselect-dropdown .dropdown-btn .dropdown-multiselect__caret::before {
-  display: none !important;
+.multiselect-dropdown .dropdown-btn .dropdown-multiselect__caret {
+  height: 25px !important;
+  right: -4px !important;
+  top: -7px;
 }
-.multiselect-dropdown .dropdown-btn .selected-item a {
+.multiselect-dropdown.dropdown-btn .dropdown-multiselect__caret .multiselect-dropdown .dropdown-btn .selected-item a {
   font-size: 10px !important;
   padding-top: 0 !important;
 }
@@ -485,25 +487,30 @@ tag-input-dropdown {
 }
 
 /** accordion style **/
+.accordion .card {
+  overflow: visible;
+}
 .accordion > .card > .card-header {
-  height: 20px!important;
+  height: 20px !important;
   line-height: 0;
-  border-bottom : 1px solid rgba(0, 0, 0, 0.125);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
   background-color: #0080ff;
   .btn {
     margin-top: -14px;
     height: 30px;
     width: 100%;
     text-decoration-line: none;
-    &:active, &:focus {
+    &:active,
+    &:focus {
       box-shadow: none;
     }
   }
 }
 .accordion > .card > .collapse {
-  border-bottom : 1px solid rgba(0, 0, 0, 0.125);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
   .card-body {
     padding: 0.75rem 0 0.5rem;
+    height: 150px;
   }
 }
 .accordion-bloc {
@@ -513,4 +520,18 @@ tag-input-dropdown {
     color: white;
     font-weight: bold;
   }
+}
+
+// ngbDateicker css
+.ngb-dp-months {
+  font-size: 12px;
+}
+.dropdown-menu.show {
+  height: 260px;
+}
+
+/** slider css **/
+.ngx-slider .ngx-slider-pointer,
+.ngx-slider .ngx-slider-selection {
+  background: #00d6d4 !important;
 }
