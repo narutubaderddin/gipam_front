@@ -45,9 +45,9 @@ h6 {
       box-sizing: border-box;
       padding: 0;
       right: 0;
-      margin-right: 29px;
+      margin-right: 10px;
       position: absolute;
-      margin-top: 6px;
+      margin-top: 2px;
     }
   }
 }
@@ -63,13 +63,26 @@ h6 {
   }
 }
 .checkbox-container {
-  font-size: 14px;
+  font-size: 12px;
 }
 .mass-action-container {
-  background-color: #5a4b5fbd;
+  background-color: rgba(0, 0, 0, 0.125);
   display: inline-block;
+  height: 40px;
+  padding: 6px;
   button {
     margin-bottom: 0 !important;
+    .export-dropdown-bloc {
+      margin-top: -10px;
+      button {
+        height: 25px;
+        color: white;
+        &:focus,
+        &:active {
+          box-shadow: none;
+        }
+      }
+    }
   }
 }
 .dropdown-container {
@@ -204,11 +217,11 @@ h6 {
     font-weight: 900;
     content: "";
     position: absolute;
-    top: 316px;
+    top: 265px;
     transform: rotate(90deg);
     justify-content: flex-end;
     float: right;
-    right: 100px;
+    right: 85px;
   }
 }
 .non-collapsed::after {
@@ -250,9 +263,9 @@ h6 {
 
   .float {
     position: fixed;
-    width: 60px;
-    height: 60px;
-    top: 50%;
+    width: 40px;
+    height: 40px;
+    top: 60%;
     right: 5px;
     background-color: #00d6d4;
     color: #fff;
@@ -267,7 +280,7 @@ h6 {
     position: fixed;
     right: 5px;
     padding-bottom: 20px;
-    bottom: 48%;
+    bottom: 36%;
     z-index: 100;
   }
 
@@ -282,8 +295,8 @@ h6 {
     border-radius: 50px;
     text-align: center;
     box-shadow: 2px 2px 3px #999;
-    height: 60px;
-    width: 60px;
+    height: 40px;
+    width: 40px;
     display: block;
     span {
       font-size: 0;
@@ -302,8 +315,8 @@ h6 {
   }
 
   .my-float {
-    font-size: 24px;
-    margin-top: 18px;
+    font-size: 18px;
+    margin-top: 13px;
     margin-left: 4px;
   }
   ul {

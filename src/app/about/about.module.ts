@@ -34,6 +34,7 @@ import { TagInputModule } from 'ngx-chips';
 import { ProofsInProgressComponent } from './components/administrator-home-page/proofs-in-progress/proofs-in-progress.component';
 import { Ng7BootstrapBreadcrumbModule } from 'ng7-bootstrap-breadcrumb';
 import { InProgressAlertsComponent } from './components/administrator-home-page/in-progress-alerts/in-progress-alerts.component';
+import { DepositorComponent } from './components/item-details/details/depositor/depositor.component';
 import { ProofsDetailsComponent } from './components/administrator-home-page/proofs-in-progress/proofs-details/proofs-details.component';
 import { PortailImgDetailsComponent } from './components/portail-item-details/portail-img-details/portail-img-details.component';
 
@@ -62,6 +63,7 @@ import { PortailImgDetailsComponent } from './components/portail-item-details/po
     InProgressAlertsComponent,
     ProofsDetailsComponent,
     PortailImgDetailsComponent,
+    DepositorComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [

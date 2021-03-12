@@ -35,12 +35,19 @@
       </div>
     </div>
     <div class="mt-2">
-      <div class="request" [ngClass]="isCollapsed ? 'collapsed' : 'non-collapsed'" (click)="openCollapse()">
-        <h5>Recherche</h5>
-      </div>
-      <div *ngIf="isCollapsed" class="collapse-bloc">
+      <app-accordion-section
+        #accordionSectionDOM
+        [editable]="true"
+        [headerTitle]="'Recherche'"
+        [idMilestoneSection]="2"
+        [sectionIndex]="2"
+        [showIcon]="true"
+        [icon]="'fa fa-search'"
+        [index]="2"
+        [sectionTitle]="'Status'"
+      >
         <app-request [fields]="ColDef" (validateRequest)="onValidateRequest($event)"></app-request>
-      </div>
+      </app-accordion-section>
     </div>
     <div *ngIf="showDatatable">
       <div class="filter-bloc d-flex">
@@ -172,6 +179,28 @@
             <button class="btn add-action" translate>
               <i class="fas fa-plus"></i>
               Créer recolement
+            </button>
+            <button class="btn add-action" translate>
+              <div
+                ngbDropdown
+                placement="bottom-right"
+                class="d-inline-block export-dropdown-bloc"
+                autoClose="outside"
+                container="body"
+              >
+                <button class="btn export-button" id="dropdownBasic" ngbDropdownToggle translate>
+                  <i class="fas fa-file-export"></i>
+                </button>
+                <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">
+                  <ul class="list-group">
+                    <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter Notices style catalogue</li>
+                    <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter Notices techniques</li>
+                    <li class="list-group-item">
+                      <i class="fas fa-file-export"></i> Exporter Notices complètes techniques
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </button>
           </div>
         </div>

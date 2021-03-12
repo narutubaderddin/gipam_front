@@ -1,3 +1,67 @@
+.float {
+  //position: fixed;
+  height: 40px;
+  width: 17vw;
+  border-radius: 50px 0 0 50px;
+  padding: 1%;
+  color: white;
+  text-align: center;
+  box-shadow: 2px 2px 3px #999;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+  cursor: pointer;
+  i {
+    margin-left: 20px;
+    font-size: 24px;
+  }
+  span {
+    font-size: 18px;
+  }
+}
+.float-collapsed {
+  //position: fixed;
+  height: 40px;
+  width: 40px;
+  border-radius: 50px 0 0 50px;
+  padding: 1%;
+  color: white;
+  text-align: center;
+  box-shadow: 2px 2px 3px #999;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+  cursor: pointer;
+  i {
+    margin-left: 0px;
+    font-size: 24px;
+  }
+  span {
+    font-size: 18px;
+  }
+}
+
+.my-float {
+  font-size: 18px;
+  //margin-top: 12px;
+}
+
+a.float + div.label-container {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s ease;
+}
+
+a.float:hover + div.label-container {
+  visibility: visible;
+  opacity: 1;
+  z-index: 11;
+}
+
 li a {
   display: flex;
   flex-direction: column;
@@ -5,22 +69,30 @@ li a {
   padding-top: 10px;
   padding-bottom: 5px;
 }
-a:hover {
-  color: #004d9d !important;
-}
-a:not([href]) {
-  background-color: transparent !important;
-}
+//a:hover {
+//  color: #004d9d !important;
+//}
+//a:not([href]) {
+//  background-color: transparent !important;
+//}
 button {
   background: transparent;
   border: none;
   cursor: pointer;
   outline: none;
 }
+.titre {
+  //font-family: 'BNPP Sans', Arial, Helvetica, sans-serif;
+  margin: 0;
+  font-size: 2.4375rem;
+  color: #0466c8;
+  font-weight: 700;
+  font-family: Arial, Helvetica, sans-serif;
+}
 
 .container-fluid {
   margin-top: 20px;
-  padding: 0 100px;
+  padding: 0 20px;
   p {
     font-size: 14px;
     margin-top: 5px;
@@ -42,6 +114,7 @@ button {
       flex-wrap: wrap;
       margin-bottom: 5px;
     }
+
     a {
       font-size: 12px;
       cursor: pointer;
@@ -49,11 +122,36 @@ button {
     }
   }
   .second-bloc {
+    .detail-image {
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: flex-end;
+    }
     .cadre {
       font-family: sans-serif;
       padding: 0;
       display: flex;
       justify-content: center;
+    }
+    .card {
+      margin-bottom: 20px;
+      border-left: 1px solid black;
+      border-right: 1px solid black;
+      border-bottom: 1px solid black;
+    }
+    .card-header {
+      background-color: #0080ff;
+      color: white;
+      text-align: left;
+      border-bottom: 1px solid black;
+      display: flex;
+    }
+    h5 {
+      color: white;
+    }
+    .icons {
+      display: flex;
+      flex-direction: row-reverse;
     }
   }
   .third-bloc,
@@ -61,6 +159,9 @@ button {
     background-color: white;
     margin-bottom: 5px;
     display: flex;
+    border: 1px solid #dee2e6;
+    margin-left: 15px;
+    margin-top: 20px;
     justify-content: center;
   }
   .firth-bloc {
@@ -173,66 +274,6 @@ button {
 
 /** end of second bloc **/
 
-/** third bloc **/
-
-li a i:hover {
-  color: #c29d57 !important;
-}
-.container {
-  margin: 0;
-  padding: 10px 0 0 0;
-  ul {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    li {
-      margin: 0 20px;
-      cursor: pointer;
-      a {
-        height: 55px;
-        width: 55px;
-        color: #407ca8;
-        padding: 10px 20px;
-        border: 1px solid #407ca8;
-        border-radius: 50%;
-        i {
-          color: #407ca8;
-          margin-top: -3px;
-          font-size: 40px;
-        }
-      }
-      p {
-        font-size: 12px;
-        margin-left: 9px;
-        color: #407ca8;
-        font-weight: bold;
-      }
-    }
-  }
-}
-.first-page .first-icon,
-.second-page .second-icon,
-.third-page .third-icon,
-.firth-page .firth-icon,
-.fifth-page .fifth-icon {
-  a {
-    height: 55px;
-    width: 55px;
-    background-color: #407ca8 !important;
-    padding: 10px 20px;
-    border: 1px solid #407ca8;
-    border-radius: 50%;
-    i {
-      color: white !important;
-      margin-top: -3px;
-    }
-  }
-}
-
-/** end of third bloc **/
-
 /** firth bloc **/
 .first-page-bloc {
   display: flex;
@@ -328,5 +369,17 @@ li a i:hover {
   }
   &:hover {
     background-color: #a6a6a6;
+  }
+}
+.second-bloc {
+  .icons {
+    display: flex;
+    flex-direction: row-reverse;
+    i {
+      font-size: 30px;
+      margin-top: 0 !important;
+      margin-left: 25px;
+      color: #0466c8;
+    }
   }
 }

@@ -29,6 +29,7 @@ import { BeingCreatedRemarquersActionsRendererComponent } from './components/dat
 import { NgxPaginationModule } from 'ngx-pagination';
 import { StatusTypeRenderComponent } from './components/datatables/status-type-render/status-type-render.component';
 import { RecoleRendererComponent } from './components/datatables/recole-renderer/recole-renderer.component';
+import { AccordionSectionComponent } from './components/accordion-section/accordion-section.component';
 
 @NgModule({
   imports: [
@@ -66,6 +67,7 @@ import { RecoleRendererComponent } from './components/datatables/recole-renderer
     BeingCreatedRemarquersActionsRendererComponent,
     StatusTypeRenderComponent,
     RecoleRendererComponent,
+    AccordionSectionComponent,
   ],
   exports: [
     LoaderComponent,
@@ -77,6 +79,7 @@ import { RecoleRendererComponent } from './components/datatables/recole-renderer
     ExtraNoticeItemsBlocComponent,
     AuthorBlocComponent,
     StatusBlocComponent,
+    AccordionSectionComponent,
   ],
 })
 export class SharedModule {}

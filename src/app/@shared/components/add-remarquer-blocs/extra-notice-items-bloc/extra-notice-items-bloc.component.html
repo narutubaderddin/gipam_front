@@ -1,91 +1,152 @@
-<ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs mt-2">
-  <li [ngbNavItem]="1">
-    <a ngbNavLink>Photographie</a>
-    <ng-template ngbNavContent>
-      <div class="form-bloc d-flex">
-        <div class="form-group d-flex col-md-3">
-          <label class="">Photographie</label>
-          <div class="input-group input-group-sm upload-file">
-            <input class="form-control" [hidden]="true" type="file" accept=".yml" #fileSelect />
-            <input readonly class="form-control" placeholder="Select file..." />
-            <div class="input-group-prepend">
-              <span class="input-group-text" (click)="fileSelect.click()" translate> Browse </span>
-            </div>
-          </div>
-        </div>
-        <div class="form-group d-flex col-md-3">
-          <label class="col-md-3">Date</label>
-          <input type="date" class="form-control col-md-8" />
-        </div>
-        <div class="form-group d-flex col-md-3">
-          <label class="col-md-3">Type</label>
-          <div class="autocomplete col-md-8">
-            <ng-autocomplete
-              placeholder="Domaines"
-              [data]="domains"
-              [searchKeyword]="keyword"
-              (selected)="selectEvent($event)"
-              (inputChanged)="onChangeSearch($event)"
-              (inputFocused)="onFocused($event)"
-              [itemTemplate]="itemTemplate"
-              [notFoundTemplate]="notFoundTemplate"
-            >
-            </ng-autocomplete>
-            <ng-template #itemTemplate let-item>
-              <a [innerHTML]="item.name"></a>
-            </ng-template>
-            <ng-template #notFoundTemplate let-notFound>
-              <div [innerHTML]="notFound"></div>
-            </ng-template>
-          </div>
-        </div>
-        <div class="form-group d-flex col-md-2">
-          <input class="form-control checkbox" type="checkbox" />
-          <label>Principal</label>
-        </div>
-        <div class="col-md-1">
-          <i class="fas fa-trash-alt delete"></i>
-          <i class="add ml-3 mt-1 fas fa-plus"></i>
-        </div>
-      </div>
-    </ng-template>
-  </li>
-  <li [ngbNavItem]="2">
-    <a ngbNavLink>Pièces jointes</a>
-    <ng-template ngbNavContent> </ng-template>
-  </li>
-  <li [ngbNavItem]="3">
-    <a ngbNavLink>Liens hypertextes</a>
-    <ng-template ngbNavContent> </ng-template>
-  </li>
-  <li [ngbNavItem]="4">
-    <a ngbNavLink>Liens avec autres oeuvres</a>
-    <ng-template ngbNavContent>
-      <div class="d-flex form-bloc">
-        <div class="form-group d-flex col-md-4">
-          <label class="col-md-4">Fait partie de</label>
-          <div class="autocomplete col-md-7">
-            <ng-autocomplete
-              placeholder="Domaines"
-              [data]="domains"
-              [searchKeyword]="keyword"
-              (selected)="selectEvent($event)"
-              (inputChanged)="onChangeSearch($event)"
-              (inputFocused)="onFocused($event)"
-              [itemTemplate]="itemTemplate"
-              [notFoundTemplate]="notFoundTemplate"
-            >
-            </ng-autocomplete>
-            <ng-template #itemTemplate let-item>
-              <a [innerHTML]="item.name"></a>
-            </ng-template>
-            <ng-template #notFoundTemplate let-notFound>
-              <div [innerHTML]="notFound"></div>
-            </ng-template>
-          </div>
+<div class="col-md-12 header-section dock-menu mt-3">
+  <div class="container">
+    <ul
+      class="navbar-nav"
+      [ngClass]="{
+        'first-page': page == 1,
+        'second-page': page == 2,
+        'third-page': page == 3,
+        'firth-page': page == 4
+      }"
+    >
+      <li class="nav-item first-icon" (click)="goToPage(1)">
+        <a class="nav-link text-uppercase font-weight-bold">
+          <i class="zmdi zmdi-camera zmdi-hc-3x"></i>
+        </a>
+        <p style="margin-left: -12px">Photographies</p>
+      </li>
+      <li class="nav-item second-icon" (click)="goToPage(2)">
+        <a class="nav-link text-uppercase font-weight-bold">
+          <i class="fas fa-paperclip"></i>
+        </a>
+        <p style="margin-left: -13px">Pièces jointes</p>
+      </li>
+      <li class="nav-item third-icon" (click)="goToPage(3)">
+        <a class="nav-link text-uppercase font-weight-bold">
+          <i class="fas fa-link"></i>
+        </a>
+        <p style="margin-left: -22px">Liens avec oeuvres</p>
+      </li>
+      <li class="nav-item firth-icon" (click)="goToPage(4)">
+        <a class="nav-link text-uppercase font-weight-bold">
+          <i class="fas fa-link"></i>
+        </a>
+        <p style="margin-left: -22px">Liens hypertextes</p>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="dock-menu mt-2">
+  <div class="form-bloc d-flex" *ngIf="page === 1">
+    <div class="form-group d-flex col-md-3">
+      <label class="">Photographie</label>
+      <div class="input-group input-group-sm upload-file">
+        <input class="form-control" [hidden]="true" type="file" accept=".yml" #fileSelect />
+        <input readonly class="form-control" placeholder="Select file..." />
+        <div class="input-group-prepend">
+          <span class="input-group-text" (click)="fileSelect.click()" translate> Browse </span>
         </div>
       </div>
-    </ng-template>
-  </li>
-</ul>
-<div [ngbNavOutlet]="nav" class="mt-2"></div>
+    </div>
+    <div class="form-group d-flex col-md-3">
+      <label class="col-md-3">Date</label>
+      <input type="date" class="form-control col-md-8" />
+    </div>
+    <div class="form-group d-flex col-md-3">
+      <label class="col-md-3">Type</label>
+      <div class="autocomplete col-md-8">
+        <ng-autocomplete
+          placeholder="Domaines"
+          [data]="domains"
+          [searchKeyword]="keyword"
+          (selected)="selectEvent($event)"
+          (inputChanged)="onChangeSearch($event)"
+          (inputFocused)="onFocused($event)"
+          [itemTemplate]="itemTemplate"
+          [notFoundTemplate]="notFoundTemplate"
+        >
+        </ng-autocomplete>
+        <ng-template #itemTemplate let-item>
+          <a [innerHTML]="item.name"></a>
+        </ng-template>
+        <ng-template #notFoundTemplate let-notFound>
+          <div [innerHTML]="notFound"></div>
+        </ng-template>
+      </div>
+    </div>
+    <div class="form-group d-flex col-md-2">
+      <input class="form-control checkbox" type="checkbox" />
+      <label>Principal</label>
+    </div>
+    <div class="col-md-1">
+      <i class="fas fa-trash-alt delete"></i>
+      <i class="add ml-3 mt-1 fas fa-plus"></i>
+    </div>
+  </div>
+  <div class="form-bloc d-flex" *ngIf="page === 2">
+    <div class="form-group d-flex col-md-3">
+      <label class="col-md-4">Pièces jointes</label>
+      <div class="input-group input-group-sm upload-file">
+        <input class="form-control" [hidden]="true" type="file" accept=".yml" #fileSelect />
+        <input readonly class="form-control" placeholder="Select file..." />
+        <div class="input-group-prepend">
+          <span class="input-group-text" (click)="fileSelect.click()" translate> Browse </span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group d-flex col-md-3">
+      <label class="col-md-3">Date</label>
+      <input type="date" class="form-control col-md-8" />
+    </div>
+    <div class="form-group d-flex col-md-3">
+      <label class="col-md-3">Type</label>
+      <div class="autocomplete col-md-8">
+        <ng-autocomplete
+          placeholder="Domaines"
+          [data]="domains"
+          [searchKeyword]="keyword"
+          (selected)="selectEvent($event)"
+          (inputChanged)="onChangeSearch($event)"
+          (inputFocused)="onFocused($event)"
+          [itemTemplate]="itemTemplate"
+          [notFoundTemplate]="notFoundTemplate"
+        >
+        </ng-autocomplete>
+        <ng-template #itemTemplate let-item>
+          <a [innerHTML]="item.name"></a>
+        </ng-template>
+        <ng-template #notFoundTemplate let-notFound>
+          <div [innerHTML]="notFound"></div>
+        </ng-template>
+      </div>
+    </div>
+    <div class="col-md-1">
+      <i class="fas fa-trash-alt delete"></i>
+      <i class="add ml-3 mt-1 fas fa-plus"></i>
+    </div>
+  </div>
+  <div class="d-flex form-bloc" *ngIf="page === 4">
+    <div class="form-group d-flex col-md-4">
+      <label class="col-md-4">Fait partie de</label>
+      <div class="autocomplete col-md-7">
+        <ng-autocomplete
+          placeholder="Liste oeuvres"
+          [data]="domains"
+          [searchKeyword]="keyword"
+          (selected)="selectEvent($event)"
+          (inputChanged)="onChangeSearch($event)"
+          (inputFocused)="onFocused($event)"
+          [itemTemplate]="itemTemplate"
+          [notFoundTemplate]="notFoundTemplate"
+        >
+        </ng-autocomplete>
+        <ng-template #itemTemplate let-item>
+          <a [innerHTML]="item.name"></a>
+        </ng-template>
+        <ng-template #notFoundTemplate let-notFound>
+          <div [innerHTML]="notFound"></div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
