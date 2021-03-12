@@ -69,9 +69,9 @@ li a {
   padding-top: 10px;
   padding-bottom: 5px;
 }
-a:hover {
-  color: #004d9d !important;
-}
+//a:hover {
+//  color: #004d9d !important;
+//}
 //a:not([href]) {
 //  background-color: transparent !important;
 //}
@@ -376,10 +376,10 @@ button {
     display: flex;
     flex-direction: row-reverse;
     i {
-      font-size: 40px;
+      font-size: 30px;
       margin-top: 0 !important;
-      margin-left: 20px;
-      color: black;
+      margin-left: 25px;
+      color: #0466c8;
     }
   }
 }
