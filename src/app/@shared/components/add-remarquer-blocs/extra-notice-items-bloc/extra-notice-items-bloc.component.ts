@@ -9,7 +9,7 @@ export class ExtraNoticeItemsBlocComponent implements OnInit {
   @Input() domains: any;
   @Input() ministeres: any;
   @Input() keyword: string;
-  active = 1;
+  page = 1;
   constructor() {}
 
   ngOnInit(): void {}
@@ -24,4 +24,7 @@ export class ExtraNoticeItemsBlocComponent implements OnInit {
     // do something when input is focused
   }
   doSomethingOnTabSelect(event: any) {}
+  goToPage(number: number) {
+    this.page = number;
+  }
 }

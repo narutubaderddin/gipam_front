@@ -35,12 +35,19 @@
       </div>
     </div>
     <div class="mt-2">
-      <div class="request" [ngClass]="isCollapsed ? 'collapsed' : 'non-collapsed'" (click)="openCollapse()">
-        <h5>Recherche</h5>
-      </div>
-      <div *ngIf="isCollapsed" class="collapse-bloc">
+      <app-accordion-section
+        #accordionSectionDOM
+        [editable]="true"
+        [headerTitle]="'Recherche'"
+        [idMilestoneSection]="2"
+        [sectionIndex]="2"
+        [showIcon]="true"
+        [icon]="'fa fa-search'"
+        [index]="2"
+        [sectionTitle]="'Status'"
+      >
         <app-request [fields]="ColDef" (validateRequest)="onValidateRequest($event)"></app-request>
-      </div>
+      </app-accordion-section>
     </div>
     <div *ngIf="showDatatable">
       <div class="filter-bloc d-flex">

@@ -1,6 +1,6 @@
 //input upload file
 .upload-file {
-  height: 30px;
+  height: 25px;
   .button-upload {
     font-weight: 600;
     font-size: 14px;
@@ -22,4 +22,27 @@
   &.active {
     font-weight: bold;
   }
+}
+.container ul li a i {
+  margin-left: 10px;
+}
+.dock-menu {
+  margin-left: 0;
+  border: 1px solid #dee2e6;
+}
+.first-page .first-icon,
+.second-page .second-icon,
+.third-page .third-icon,
+.firth-page .firth-icon,
+.fifth-page .fifth-icon {
+  a {
+    padding: 10px 0;
+  }
+}
+label {
+  padding-top: 5px;
+}
+.checkbox {
+  margin-top: 5px !important;
+  margin-right: 5px;
 }

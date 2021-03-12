@@ -236,7 +236,7 @@ button {
     min-width: 140px;
     max-width: 200px;
     margin-top: 12px;
-    height: 25px;
+    height: 30px;
     &::placeholder {
       font-size: 12px;
     }
@@ -258,10 +258,10 @@ button {
 }
 .multiselect-dropdown .dropdown-btn {
   border-color: #e4e4e4 !important;
-  height: 25px;
+  height: 30px;
   font-size: 11px;
   border-radius: 4px;
-  line-height: 20px !important;
+  line-height: 25px !important;
   padding: 1px 5px !important;
   color: rgb(128, 128, 128);
   &:focus,
@@ -280,7 +280,7 @@ button {
   }
 }
 .multiselect-dropdown .dropdown-btn .dropdown-multiselect__caret {
-  height: 25px !important;
+  height: 30px !important;
   right: -4px !important;
   top: -7px;
 }
@@ -495,9 +495,16 @@ tag-input-dropdown {
   overflow: visible;
 }
 .accordion > .card > .card-header {
-  height: 20px !important;
-  line-height: 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  margin: 0;
+  color: #ffffff;
+  font-weight: bolder;
+  height: 40px * 100 /1920px * 1vw;
+  display: block;
+  align-items: center;
+  justify-content: space-between;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  position: relative;
   background-color: #0080ff;
   .btn {
     margin-top: -14px;
@@ -514,7 +521,7 @@ tag-input-dropdown {
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
   .card-body {
     padding: 0.75rem 0 0.5rem;
-    height: 150px;
+    height: 180px;
   }
 }
 .accordion-bloc {
@@ -538,4 +545,71 @@ ngb-datepicker {
 .ngx-slider .ngx-slider-pointer,
 .ngx-slider .ngx-slider-selection {
   background: #00d6d4 !important;
+}
+
+/** dock details bloc **/
+.dock-menu {
+  border: 1px solid black;
+  margin-left: 15px;
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+}
+li a i:hover {
+  color: #0061a7 !important;
+}
+.container {
+  margin: 0;
+  padding: 10px 0 0 0;
+  .first-page {
+    width: 100%;
+  }
+  ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    li {
+      margin: 0 20px;
+      cursor: pointer;
+      a {
+        height: 55px;
+        width: 55px;
+        color: #407ca8;
+        padding: 10px 20px;
+        border: 1px solid #407ca8;
+        border-radius: 50%;
+        i {
+          color: #407ca8;
+          margin-top: -3px;
+          font-size: 40px;
+        }
+      }
+      p {
+        font-size: 12px;
+        margin-left: 9px;
+        color: black;
+        font-weight: bold;
+      }
+    }
+  }
+}
+.first-page .first-icon,
+.second-page .second-icon,
+.third-page .third-icon,
+.firth-page .firth-icon,
+.fifth-page .fifth-icon {
+  a {
+    height: 55px;
+    width: 55px;
+    background-color: #00d6d4 !important;
+    padding: 10px 20px;
+    border: 1px solid #00d6d4 !important;
+    border-radius: 50%;
+    i {
+      color: white !important;
+      margin-top: -3px;
+    }
+  }
 }
