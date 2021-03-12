@@ -1,23 +1,50 @@
 .float {
   //position: fixed;
-  width: 40px;
   height: 40px;
-  //bottom: 0;
-  //left: 0;
-  opacity: 0.5;
-  //border-radius: 50px;
+  width: 17vw;
   border-radius: 50px 0 0 50px;
   padding: 1%;
+  color: white;
   text-align: center;
   box-shadow: 2px 2px 3px #999;
   z-index: 10;
   display: flex;
   align-items: center;
+  justify-content: center;
   margin-right: 20px;
+  cursor: pointer;
+  i {
+    margin-left: 20px;
+    font-size: 24px;
+  }
+  span {
+    font-size: 18px;
+  }
 }
-a.float:hover {
-  opacity: 1;
+.float-collapsed {
+  //position: fixed;
+  height: 40px;
+  width: 40px;
+  border-radius: 50px 0 0 50px;
+  padding: 1%;
+  color: white;
+  text-align: center;
+  box-shadow: 2px 2px 3px #999;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+  cursor: pointer;
+  i {
+    margin-left: 0px;
+    font-size: 24px;
+  }
+  span {
+    font-size: 18px;
+  }
 }
+
 .my-float {
   font-size: 18px;
   //margin-top: 12px;
@@ -42,9 +69,7 @@ li a {
   padding-top: 10px;
   padding-bottom: 5px;
 }
-a:hover {
-  color: #004d9d !important;
-}
+
 a:not([href]) {
   background-color: transparent !important;
 }
@@ -58,6 +83,7 @@ button {
   //font-family: 'BNPP Sans', Arial, Helvetica, sans-serif;
   margin: 0;
   font-size: 2.4375rem;
+  color: #0466c8;
   font-weight: 700;
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -412,5 +438,17 @@ li a i:hover {
   }
   &:hover {
     background-color: #a6a6a6;
+  }
+}
+.second-bloc {
+  .icons {
+    display: flex;
+    flex-direction: row-reverse;
+    i {
+      font-size: 40px;
+      margin-top: 0 !important;
+      margin-left: 20px;
+      color: black;
+    }
   }
 }

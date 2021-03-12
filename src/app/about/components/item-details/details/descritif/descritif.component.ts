@@ -1,5 +1,6 @@
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { Component, Input, OnInit } from '@angular/core';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 @Component({
   selector: 'app-descritif',
@@ -14,12 +15,22 @@ export class DescritifComponent implements OnInit {
   denomination: any;
   selectedDomain = 'Sculpture';
   isCollapsed = true;
+  dropdownSettings: IDropdownSettings;
   autocompleteItems = ['Item1', 'item2', 'item3'];
 
   constructor(public WorkOfArtService: WorkOfArtService) {}
 
   ngOnInit(): void {
     this.domains = this.WorkOfArtService.domaine;
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'name',
+      selectAllText: 'Sélectionner tout',
+      unSelectAllText: 'Supprimer les sélections',
+      itemsShowLimit: 1,
+      allowSearchFilter: true,
+    };
   }
   selectDomain(item: any) {
     this.denomination = item.denominations;
@@ -39,4 +50,8 @@ export class DescritifComponent implements OnInit {
   onCollapse() {
     this.isCollapsed = !this.isCollapsed;
   }
+  onDomainSelect(item: any) {
+    // this.denominations = item.denominations;
+  }
+  onSelectAll(items: any) {}
 }

@@ -17,9 +17,12 @@
         <div class="col-md-12 row">
           <div class="col-8 titre">Titre de l'Oeuvre N inventaire 145</div>
           <div class="col-4 icons">
-            <!--           <span>Titre de l'Oeuvre N inventaire 145</span>-->
+            <i class="fas fa-archive"></i>
+            <i class="far fa-file-excel"></i>
+            <i class="fas fa-print"></i>
+            <i class="far fa-edit"></i>
           </div>
-          <div class="col-8">
+          <div [ngClass]="isCollapsed ? 'col-md-11' : 'col-md-8'" class="col-8">
             <app-accordion-section
               #accordionSectionDOM
               [editable]="true"
@@ -45,7 +48,7 @@
               [index]="2"
               [sectionTitle]="'Status'"
             >
-              <app-status id="test2" [edit]="false"></app-status>
+              <app-status [edit]="true"></app-status>
             </app-accordion-section>
             <app-accordion-section
               #accordionSectionDOM
@@ -61,13 +64,10 @@
               <app-depositor></app-depositor>
             </app-accordion-section>
           </div>
-          <div class="col-4">
-            <div class="detail-image">
-              <img src="assets/images/573.jpg" alt="" style="width: auto; height: 35vw" />
-            </div>
-            <div class="mt-2" style="position: absolute; top: -7%; right: -2.7vw">
+          <div class="col-1" *ngIf="isCollapsed">
+            <div class="mt-2" style="position: absolute; top: 0; right: 3vw">
               <a
-                class="float"
+                class="float-collapsed"
                 style="background-color: #00d6d4 !important; color: #fff"
                 (click)="isCollapsed = !isCollapsed"
                 [attr.aria-expanded]="!isCollapsed"
@@ -75,10 +75,24 @@
                 <i *ngIf="!isCollapsed" class="fas fa-angle-double-right my-float"></i>
                 <i *ngIf="isCollapsed" class="fas fa-angle-double-left my-float"></i>
               </a>
-              <div class="label-container">
-                <i class="fa fa-caret-left label-arrow"></i>
-                <div *ngIf="isCollapsed" class="label-text">Afficher le Filtre</div>
-                <div *ngIf="!isCollapsed" class="label-text">Cacher le Filtre</div>
+            </div>
+          </div>
+          <div class="col-4" [ngbCollapse]="isCollapsed">
+            <div class="row detail-image">
+              <div class="col-md-12 d-flex" style="justify-content: flex-end">
+                <img src="assets/images/573.jpg" alt="" style="width: auto; min-width: 85%; height: 35vw" />
+              </div>
+              <div class="mt-2">
+                <a
+                  class="float"
+                  style="background-color: #00d6d4 !important; color: #fff"
+                  (click)="isCollapsed = !isCollapsed"
+                  [attr.aria-expanded]="!isCollapsed"
+                >
+                  <i *ngIf="!isCollapsed" class="fas fa-angle-double-right my-float"></i>
+                  <i *ngIf="isCollapsed" class="fas fa-angle-double-left my-float"></i>
+                  <span>Réduire l'image </span>
+                </a>
               </div>
             </div>
           </div>

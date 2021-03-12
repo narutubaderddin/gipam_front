@@ -51,15 +51,25 @@
     <div class="col-md-7 value" *ngIf="!edit">Statuette</div>
   </div>
   <div class="divider"></div>
-  <div class="form-group col-md-12">
+  <div class="form-group col-md-4">
     <label style="margin-right: -17%" class="col-md-3">Auteurs</label>
+    <ng-multiselect-dropdown
+      class="select"
+      [placeholder]="'--- Choisir des auteurs ---'"
+      [settings]="dropdownSettings"
+      [data]="WorkOfArtService.authors"
+      (onSelect)="onDomainSelect($event)"
+      (onSelectAll)="onSelectAll($event)"
+    >
+    </ng-multiselect-dropdown>
     <div class="col-md-9 value" *ngIf="!edit">Auteur 1, Auteur 11</div>
   </div>
+  <div class="col-md-8"></div>
   <div class="divider"></div>
   <div class="form-group col-md-4">
     <label class="col-md-3">Hauteur</label>
     <div class="d-flex" *ngIf="edit">
-      <input class="col-md-7 form-control" />
+      <input class="col-md-8 form-control" />
       <select class="col-md-4 form-control">
         <option class="active">cm</option>
         <option>m</option>
@@ -76,52 +86,52 @@
   >
     <label class="col-md-4">Largeur</label>
     <div class="d-flex" *ngIf="edit">
-      <input class="col-md-7 form-control" />
+      <input class="col-md-8 form-control" />
       <select class="col-md-4 form-control">
         <option class="active">cm</option>
         <option>m</option>
       </select>
     </div>
-    <p class="col-md-7 value" *ngIf="!edit">85cm</p>
+    <p class="col-md-8 value" *ngIf="!edit">85cm</p>
   </div>
   <div class="form-group col-md-4" *ngIf="selectedDomain == ('Peinture' || 'Art graphique') || edit">
     <label class="">Largeur Tot</label>
     <div class="d-flex" *ngIf="edit">
-      <input class="col-md-7 form-control" />
+      <input class="col-md-8 form-control" />
       <select class="col-md-4 form-control">
         <option class="active">cm</option>
         <option>m</option>
       </select>
     </div>
-    <p class="col-md-7 value" *ngIf="!edit">85cm</p>
+    <p class="col-md-8 value" *ngIf="!edit">85cm</p>
   </div>
   <div class="form-group col-md-4" *ngIf="selectedDomain == ('Peinture' || 'Art graphique') || edit">
     <label class="">Hauteur Tot</label>
     <div class="d-flex" *ngIf="edit">
-      <input class="col-md-7 form-control" />
+      <input class="col-md-8 form-control" />
       <select class="col-md-4 form-control">
         <option class="active">cm</option>
         <option>m</option>
       </select>
     </div>
-    <p class="col-md-7 value" *ngIf="!edit">85cm</p>
+    <p class="col-md-8 value" *ngIf="!edit">85cm</p>
   </div>
   <div class="form-group col-md-4" *ngIf="selectedDomain === ('Luminaire' || 'Pièce de musé' || 'Horlogerie') || edit">
     <label class="">Longueur</label>
     <div class="d-flex" *ngIf="edit">
-      <input class="form-control" />
+      <input class="col-md-8 form-control" />
       <select class="col-md-4 form-control">
         <option class="active">cm</option>
         <option>m</option>
       </select>
     </div>
-    <p class="col-md-7 value" *ngIf="!edit">85cm</p>
+    <p class="col-md-8 value" *ngIf="!edit">85cm</p>
   </div>
   <div class="form-group col-md-4">
     <label class="">Profondeur</label>
     <div class="d-flex" *ngIf="edit">
-      <input class="col-md-7 form-control" />
-      <select class="form-control">
+      <input class="col-md-8 form-control" />
+      <select class="col-md-4 form-control">
         <option class="active">cm</option>
         <option>m</option>
       </select>
@@ -131,8 +141,8 @@
   <div class="form-group col-md-4">
     <label class="col-md-3">Poids</label>
     <div class="d-flex" *ngIf="edit">
-      <input class="col-md-7 form-control" />
-      <select class="form-control">
+      <input class="col-md-8 form-control" />
+      <select class="col-md-4 form-control">
         <option class="active">Kg</option>
       </select>
     </div>
@@ -141,13 +151,13 @@
   <div class="form-group col-md-4" *ngIf="selectedDomain === ('Luminaire' || 'Pièce de musée') || edit">
     <label class="">Diamètre</label>
     <div class="d-flex" *ngIf="edit">
-      <input class="col-md-7 form-control" />
-      <select class="form-control">
+      <input class="col-md-8 form-control" />
+      <select class="col-md-4 form-control">
         <option class="active">cm</option>
         <option>m</option>
       </select>
     </div>
-    <p class="col-md-7 value" *ngIf="!edit">85cm</p>
+    <p class="col-md-8 value" *ngIf="!edit">85cm</p>
   </div>
   <div class="col-md-4"></div>
   <div class="divider"></div>
@@ -172,7 +182,7 @@
         <div [innerHTML]="notFound"></div>
       </ng-template>
     </div>
-    <div class="col-md-7 value" *ngIf="!edit">Années</div>
+    <div class="col-md-8 value" *ngIf="!edit">Années</div>
   </div>
   <div class="form-group col-md-4">
     <label class="">Style</label>
@@ -195,12 +205,12 @@
         <div [innerHTML]="notFound"></div>
       </ng-template>
     </div>
-    <div class="col-md-7 value" *ngIf="!edit">85cm</div>
+    <div class="col-md-8 value" *ngIf="!edit">85cm</div>
   </div>
   <div class="form-group col-md-4">
     <label class="">Date de création</label>
     <input type="date" class="form-control" *ngIf="edit" />
-    <div class="col-md-7 value" *ngIf="!edit">12/01/2020</div>
+    <div class="col-md-8 value" *ngIf="!edit">12/01/2020</div>
   </div>
   <div class="form-group col-md-4">
     <label class="">Matières <span class="mandatory">*</span></label>
@@ -223,7 +233,7 @@
         <div [innerHTML]="notFound"></div>
       </ng-template>
     </div>
-    <p class="col-md-7 value" *ngIf="!edit">Metal</p>
+    <p class="col-md-8 value" *ngIf="!edit">Metal</p>
   </div>
 </div>
 <!--</div>-->

@@ -6,7 +6,16 @@ hr {
 }
 
 .divider {
-  border: 1px dashed #babfc7;
-  width: 55vw;
+  border-bottom: 0.1em solid #babfc7;
+  width: 90%;
   margin-left: 40px;
+}
+
+::ng-deep ng-multiselect-dropdown {
+  width: 65%;
+}
+::ng-deep .multiselect-dropdown .dropdown-btn {
+  border-color: transparent;
+  color: black;
+  background-color: white;
 }
