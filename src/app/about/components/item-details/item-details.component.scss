@@ -8,9 +8,9 @@ li a {
 a:hover {
   color: #004d9d !important;
 }
-a:not([href]) {
-  background-color: transparent !important;
-}
+// a:not([href]) {
+//   background-color: transparent !important;
+// }
 button {
   background: transparent;
   border: none;
@@ -55,13 +55,6 @@ button {
     .cadre {
       font-family: sans-serif;
       padding: 0;
-      display: flex;
-      justify-content: center;
-    }
-    .dock-menu {
-      border: 1px solid black;
-      margin-left: 15px;
-      margin-top: 15px;
       display: flex;
       justify-content: center;
     }
@@ -205,70 +198,6 @@ button {
 }
 
 /** end of second bloc **/
-
-/** third bloc **/
-
-li a i:hover {
-  color: #0061a7 !important;
-}
-.container {
-  margin: 0;
-  padding: 10px 0 0 0;
-  .first-page {
-    margin-left: 20% !important;
-    width: 100%;
-  }
-  ul {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    li {
-      margin: 0 20px;
-      cursor: pointer;
-      a {
-        height: 55px;
-        width: 55px;
-        color: #407ca8;
-        padding: 10px 20px;
-        border: 1px solid #407ca8;
-        border-radius: 50%;
-        i {
-          color: #407ca8;
-          margin-top: -3px;
-          font-size: 40px;
-        }
-      }
-      p {
-        font-size: 12px;
-        margin-left: 9px;
-        color: black;
-        font-weight: bold;
-      }
-    }
-  }
-}
-.first-page .first-icon,
-.second-page .second-icon,
-.third-page .third-icon,
-.firth-page .firth-icon,
-.fifth-page .fifth-icon {
-  a {
-    height: 55px;
-    width: 55px;
-    background-color: #00d6d4 !important;
-    padding: 10px 20px;
-    border: 1px solid #00d6d4 !important;
-    border-radius: 50%;
-    i {
-      color: white !important;
-      margin-top: -3px;
-    }
-  }
-}
-
-/** end of third bloc **/
 
 /** firth bloc **/
 .first-page-bloc {

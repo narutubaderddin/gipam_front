@@ -236,7 +236,7 @@ button {
     min-width: 140px;
     max-width: 200px;
     margin-top: 12px;
-    height: 25px;
+    height: 30px;
     &::placeholder {
       font-size: 12px;
     }
@@ -258,10 +258,10 @@ button {
 }
 .multiselect-dropdown .dropdown-btn {
   border-color: #e4e4e4 !important;
-  height: 25px;
+  height: 30px;
   font-size: 11px;
   border-radius: 4px;
-  line-height: 20px !important;
+  line-height: 25px !important;
   padding: 1px 5px !important;
   color: rgb(128, 128, 128);
   &:focus,
@@ -280,7 +280,7 @@ button {
   }
 }
 .multiselect-dropdown .dropdown-btn .dropdown-multiselect__caret {
-  height: 25px !important;
+  height: 30px !important;
   right: -4px !important;
   top: -7px;
 }
@@ -334,7 +334,7 @@ button {
       font-weight: bold;
     }
     .form-control {
-      height: 25px;
+      height: 30px;
       &.checkbox {
         width: 20px;
         height: 15px;
@@ -359,7 +359,7 @@ button {
   box-shadow: none !important;
   position: relative;
   overflow: visible;
-  height: 25px !important;
+  height: 30px !important;
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
   .input-container {
@@ -515,7 +515,7 @@ tag-input-dropdown {
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
   .card-body {
     padding: 0.75rem 0 0.5rem;
-    height: 150px;
+    height: 180px;
   }
 }
 .accordion-bloc {
@@ -556,7 +556,6 @@ li a i:hover {
   margin: 0;
   padding: 10px 0 0 0;
   .first-page {
-    margin-left: 20% !important;
     width: 100%;
   }
   ul {
