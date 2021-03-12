@@ -321,11 +321,10 @@ button {
   display: flex;
   flex-wrap: wrap;
   padding-top: 10px;
-  padding-left: 0;
+  padding-left: 25px;
   width: 100%;
   .form-group {
-    display: flex;
-    width: 50%;
+    width: 100%;
     label {
       margin-right: 10px;
       padding-left: 0;

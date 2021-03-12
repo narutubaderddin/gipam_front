@@ -1,3 +1,40 @@
+.float {
+  //position: fixed;
+  width: 40px;
+  height: 40px;
+  //bottom: 0;
+  //left: 0;
+  opacity: 0.5;
+  //border-radius: 50px;
+  border-radius: 50px 0 0 50px;
+  padding: 1%;
+  text-align: center;
+  box-shadow: 2px 2px 3px #999;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+a.float:hover {
+  opacity: 1;
+}
+.my-float {
+  font-size: 18px;
+  //margin-top: 12px;
+}
+
+a.float + div.label-container {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s ease;
+}
+
+a.float:hover + div.label-container {
+  visibility: visible;
+  opacity: 1;
+  z-index: 11;
+}
+
 li a {
   display: flex;
   flex-direction: column;
@@ -16,6 +53,13 @@ button {
   border: none;
   cursor: pointer;
   outline: none;
+}
+.titre {
+  //font-family: 'BNPP Sans', Arial, Helvetica, sans-serif;
+  margin: 0;
+  font-size: 2.4375rem;
+  font-weight: 700;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .container-fluid {
@@ -42,9 +86,7 @@ button {
       flex-wrap: wrap;
       margin-bottom: 5px;
     }
-    .detail-image {
-      margin-bottom: 10px;
-    }
+
     a {
       font-size: 12px;
       cursor: pointer;
@@ -52,6 +94,11 @@ button {
     }
   }
   .second-bloc {
+    .detail-image {
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: flex-end;
+    }
     .cadre {
       font-family: sans-serif;
       padding: 0;
