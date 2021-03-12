@@ -1,14 +1,34 @@
 <div class="modal-content bd-example-modal-lg">
   <div class="modal-title">Ajouter une notice en propriété</div>
   <div class="modal-body">
-    <app-description-bloc [domains]="domains" [keyword]="keyword"></app-description-bloc>
-    <app-status-bloc [domains]="domains" [keyword]="keyword"></app-status-bloc>
-    <app-author-bloc [domains]="domains" [keyword]="keyword"></app-author-bloc>
-    <app-administrative-movement-bloc
-      [keyword]="keyword"
-      [ministeres]="WorkOfArtService.ministeres"
-    ></app-administrative-movement-bloc>
-    <app-geographic-movement-bloc></app-geographic-movement-bloc>
+    <div class="col-12">
+      <app-accordion-section
+        #accordionSectionDOM
+        [editable]="true"
+        [showIcon]="true"
+        [headerTitle]="'Descriptif'"
+        [icon]="'far fa-file-alt'"
+        [idMilestoneSection]="1"
+        [sectionIndex]="1"
+        [index]="1"
+        [sectionTitle]="'Descriptif'"
+      >
+        <app-descritif [edit]="true"></app-descritif>
+      </app-accordion-section>
+      <app-accordion-section
+        #accordionSectionDOM
+        [editable]="true"
+        [headerTitle]="'Status'"
+        [idMilestoneSection]="2"
+        [sectionIndex]="2"
+        [showIcon]="true"
+        [icon]="'far fa-calendar-alt'"
+        [index]="2"
+        [sectionTitle]="'Status'"
+      >
+        <app-status id="test2" [edit]="true"></app-status>
+      </app-accordion-section>
+    </div>
     <app-extra-notice-items-bloc></app-extra-notice-items-bloc>
   </div>
   <div class="add-button">

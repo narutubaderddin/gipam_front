@@ -495,9 +495,16 @@ tag-input-dropdown {
   overflow: visible;
 }
 .accordion > .card > .card-header {
-  height: 20px !important;
-  line-height: 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  margin: 0;
+  color: #ffffff;
+  font-weight: bolder;
+  height: 40px * 100 /1920px * 1vw;
+  display: block;
+  align-items: center;
+  justify-content: space-between;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  position: relative;
   background-color: #0080ff;
   .btn {
     margin-top: -14px;
