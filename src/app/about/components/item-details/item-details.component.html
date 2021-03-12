@@ -102,11 +102,13 @@
               <ul
                 class="navbar-nav ml-4"
                 [ngClass]="{
-                  'first-page': page == 1,
-                  'second-page': page == 2,
+                  'first-page': page == 2,
+                  'second-page': page == 0,
                   'third-page': page == 3,
                   'firth-page': page == 4,
-                  'fifth-page': page == 5
+                  'fifth-page': page == 5,
+                  'sixth-page': page == 8,
+                  'seventh-page': page == 7
                 }"
               >
                 <!--                <li class="nav-item active first-icon">-->
@@ -115,7 +117,7 @@
                 <!--                  </a>-->
                 <!--                  <p>Détails</p>-->
                 <!--                </li>-->
-                <li class="nav-item second-icon">
+                <li class="nav-item first-icon">
                   <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">
                     <i class="zmdi zmdi-camera zmdi-hc-3x"></i>
                   </a>
@@ -127,7 +129,7 @@
                   </a>
                   <p style="margin-left: -13px">Pièces jointes</p>
                 </li>
-                <li class="nav-item second-icon">
+                <li class="nav-item third-icon">
                   <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">
                     <i class="fas fa-link"></i>
                   </a>
@@ -145,13 +147,13 @@
                   </a>
                   <p style="margin-left: 0px">Constats</p>
                 </li>
-                <li class="nav-item fifth-icon">
+                <li class="nav-item sixth-icon">
                   <a (click)="page5()" class="nav-link text-uppercase font-weight-bold">
                     <i class="zmdi zmdi-play zmdi-hc-3x"></i>
                   </a>
                   <p style="margin-left: 1px">Actions</p>
                 </li>
-                <li class="nav-item second-icon">
+                <li class="nav-item seventh-icon">
                   <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">
                     <i class="fas fa-link"></i>
                   </a>

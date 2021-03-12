@@ -549,12 +549,16 @@ ngb-datepicker {
 
 /** dock details bloc **/
 .dock-menu {
-  border: 1px solid black;
+  border: 1px solid #dee2e6;
   margin-left: 15px;
   margin-top: 15px;
   display: flex;
   justify-content: center;
 }
+//.dock-menu {
+//  margin-left: 0;
+//  border: 1px solid #dee2e6;
+//}
 li a i:hover {
   color: #0061a7 !important;
 }
@@ -599,7 +603,9 @@ li a i:hover {
 .second-page .second-icon,
 .third-page .third-icon,
 .firth-page .firth-icon,
-.fifth-page .fifth-icon {
+.fifth-page .fifth-icon,
+.sixth-page .sixth-icon,
+.seventh-page .seventh-icon {
   a {
     height: 55px;
     width: 55px;

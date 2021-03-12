@@ -72,9 +72,9 @@ li a {
 a:hover {
   color: #004d9d !important;
 }
-a:not([href]) {
-  background-color: transparent !important;
-}
+//a:not([href]) {
+//  background-color: transparent !important;
+//}
 button {
   background: transparent;
   border: none;
@@ -159,7 +159,7 @@ button {
     background-color: white;
     margin-bottom: 5px;
     display: flex;
-    border: 1px solid black;
+    border: 1px solid #dee2e6;
     margin-left: 15px;
     margin-top: 20px;
     justify-content: center;
