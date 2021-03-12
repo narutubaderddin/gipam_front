@@ -321,11 +321,10 @@ button {
   display: flex;
   flex-wrap: wrap;
   padding-top: 10px;
-  padding-left: 0;
+  padding-left: 25px;
   width: 100%;
   .form-group {
-    display: flex;
-    width: 50%;
+    width: 100%;
     label {
       margin-right: 10px;
       padding-left: 0;
@@ -334,7 +333,7 @@ button {
       font-weight: bold;
     }
     .form-control {
-      height: 25px;
+      height: 30px;
       &.checkbox {
         width: 20px;
         height: 15px;
@@ -359,7 +358,7 @@ button {
   box-shadow: none !important;
   position: relative;
   overflow: visible;
-  height: 25px !important;
+  height: 30px !important;
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
   .input-container {

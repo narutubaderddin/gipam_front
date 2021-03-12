@@ -15,8 +15,8 @@
     <div class="col-md-12 cadre">
       <div class="col-md-12 main-info">
         <div class="col-md-12 row">
-          <div class="col-6">Titre de l'Oeuvre N inventaire 145</div>
-          <div class="col-6 icons">
+          <div class="col-8 titre">Titre de l'Oeuvre N inventaire 145</div>
+          <div class="col-4 icons">
             <!--           <span>Titre de l'Oeuvre N inventaire 145</span>-->
           </div>
           <div class="col-8">
@@ -32,7 +32,7 @@
               [sectionTitle]="'Descriptif'"
             >
               <!--                <img src="assets/images/icons/description.png" alt="">-->
-              <app-descritif [edit]="false"></app-descritif>
+              <app-descritif [edit]="true"></app-descritif>
             </app-accordion-section>
             <app-accordion-section
               #accordionSectionDOM
@@ -64,6 +64,22 @@
           <div class="col-4">
             <div class="detail-image">
               <img src="assets/images/573.jpg" alt="" style="width: auto; height: 35vw" />
+            </div>
+            <div class="mt-2" style="position: absolute; top: -7%; right: -2.7vw">
+              <a
+                class="float"
+                style="background-color: #00d6d4 !important; color: #fff"
+                (click)="isCollapsed = !isCollapsed"
+                [attr.aria-expanded]="!isCollapsed"
+              >
+                <i *ngIf="!isCollapsed" class="fas fa-angle-double-right my-float"></i>
+                <i *ngIf="isCollapsed" class="fas fa-angle-double-left my-float"></i>
+              </a>
+              <div class="label-container">
+                <i class="fa fa-caret-left label-arrow"></i>
+                <div *ngIf="isCollapsed" class="label-text">Afficher le Filtre</div>
+                <div *ngIf="!isCollapsed" class="label-text">Cacher le Filtre</div>
+              </div>
             </div>
           </div>
 
