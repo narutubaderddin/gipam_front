@@ -129,7 +129,16 @@ export class WorkOfArtService {
     { id: 4, name: 'author 5' },
     { id: 5, name: 'author 6' },
     { id: 6, name: 'author 7' },
-  ]
+  ];
+  depositor = [
+    { id: 0, name: 'depositor 1' },
+    { id: 1, name: 'depositor 2' },
+    { id: 2, name: 'depositor 3' },
+    { id: 3, name: 'depositor 4' },
+    { id: 4, name: 'depositor 5' },
+    { id: 5, name: 'depositor 6' },
+    { id: 6, name: 'depositor 7' },
+  ];
   proofs = [
     {
       id: 0,

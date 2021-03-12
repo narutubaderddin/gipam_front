@@ -28,6 +28,7 @@ import { RemarquerDetailsLinkRendererComponent } from './components/datatables/r
 import { BeingCreatedRemarquersActionsRendererComponent } from './components/datatables/being-created-remarquers-actions-renderer/being-created-remarquers-actions-renderer.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { StatusTypeRenderComponent } from './components/datatables/status-type-render/status-type-render.component';
+import { AccordionSectionComponent } from './components/accordion-section/accordion-section.component';
 
 @NgModule({
   imports: [
@@ -64,6 +65,7 @@ import { StatusTypeRenderComponent } from './components/datatables/status-type-r
     RemarquerDetailsLinkRendererComponent,
     BeingCreatedRemarquersActionsRendererComponent,
     StatusTypeRenderComponent,
+    AccordionSectionComponent,
   ],
   exports: [
     LoaderComponent,
@@ -75,6 +77,7 @@ import { StatusTypeRenderComponent } from './components/datatables/status-type-r
     ExtraNoticeItemsBlocComponent,
     AuthorBlocComponent,
     StatusBlocComponent,
+    AccordionSectionComponent,
   ],
 })
 export class SharedModule {}

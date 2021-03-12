@@ -1,0 +1,15 @@
+<div class="form-bloc">
+  <div class="form-group col-md-4">
+    <label style="margin-right: -17%" class="col-md-3">Auteurs</label>
+    <ng-multiselect-dropdown
+      class="select"
+      [placeholder]="'--- Choisir les déposants ---'"
+      [settings]="dropdownSettings"
+      [data]="WorkOfArtService.depositor"
+      (onSelect)="onDomainSelect($event)"
+      (onSelectAll)="onSelectAll($event)"
+    >
+    </ng-multiselect-dropdown>
+    <div class="col-md-9 value" *ngIf="!edit">Auteur 1, Auteur 11</div>
+  </div>
+</div>

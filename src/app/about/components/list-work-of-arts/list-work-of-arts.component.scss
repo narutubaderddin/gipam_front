@@ -263,9 +263,9 @@ h6 {
 
   .float {
     position: fixed;
-    width: 60px;
-    height: 60px;
-    top: 50%;
+    width: 40px;
+    height: 40px;
+    top: 60%;
     right: 5px;
     background-color: #00d6d4;
     color: #fff;
@@ -280,7 +280,7 @@ h6 {
     position: fixed;
     right: 5px;
     padding-bottom: 20px;
-    bottom: 48%;
+    bottom: 36%;
     z-index: 100;
   }
 
@@ -295,8 +295,8 @@ h6 {
     border-radius: 50px;
     text-align: center;
     box-shadow: 2px 2px 3px #999;
-    height: 60px;
-    width: 60px;
+    height: 40px;
+    width: 40px;
     display: block;
     span {
       font-size: 0;
@@ -315,8 +315,8 @@ h6 {
   }
 
   .my-float {
-    font-size: 24px;
-    margin-top: 18px;
+    font-size: 18px;
+    margin-top: 13px;
     margin-left: 4px;
   }
   ul {
