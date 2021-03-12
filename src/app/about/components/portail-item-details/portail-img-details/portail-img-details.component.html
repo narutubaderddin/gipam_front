@@ -1,58 +1,90 @@
 <div class="content">
-  <div class="d-flex picture">
-    <!--    <div id="collapseExample" [ngbCollapse]="isCollapsed" class="img-details mb-3 col-lg-2 col-xs-12 sidebar">-->
-    <!--      <app-portail-item-image></app-portail-item-image>-->
-    <!--    </div>-->
-
-    <!--    <div class="mt-2">-->
-    <!--      <a-->
-    <!--        class="float"-->
-    <!--        style="background-color: #00d6d4 !important; color: #fff"-->
-    <!--        (click)="isCollapsed = !isCollapsed"-->
-    <!--        [attr.aria-expanded]="!isCollapsed"-->
-    <!--      >-->
-    <!--        <i *ngIf="!isCollapsed" class="fas fa-angle-double-left my-float"></i>-->
-    <!--        <i *ngIf="isCollapsed" class="fas fa-angle-double-right my-float"></i>-->
-    <!--      </a>-->
-    <!--      <div class="label-container">-->
-    <!--        <i class="fa fa-caret-left label-arrow"></i>-->
-    <!--        <div *ngIf="isCollapsed" class="label-text">Afficher le Filtre</div>-->
-    <!--        <div *ngIf="!isCollapsed" class="label-text">Cacher le Filtre</div>-->
-    <!--      </div>-->
-    <!--    </div>-->
-
-    <div class="principal-picture">
-      <img class="img-fluid" src="{{ source }}" alt="" />
-    </div>
-  </div>
-
-  <div class="more-details">
+  <div class="header mb-md-5">
     <h2>
       <p><strong>Titre de la sculpture</strong></p>
     </h2>
-    <h4>
-      <p><strong>Détails</strong></p>
-    </h4>
-
-    <div class="d-flex">
-      <div style="width: 50%" class="">
-        <p><strong>Domaine :</strong> Peinture</p>
-        <p><strong>Auteur :</strong> Simmen Henri</p>
-        <p><strong>Nombre:</strong> 1</p>
-        <p><strong>Matière :</strong> Moulage</p>
-      </div>
-      <div style="width: 50%" class="">
-        <p><strong>Dénomination :</strong> Tableau</p>
-        <p><strong>Epoque :</strong> Années 80</p>
-
-        <p><strong>Style :</strong> style</p>
-        <p><strong>Poids :</strong> 2 kg</p>
+  </div>
+  <div class="d-flex">
+    <div class="d-flex picture">
+      <div class="principal-picture">
+        <div class="d-flex justify-content-space-between" style="width: 50%">
+          <div class="d-flex principal-img justify-content-center">
+            <img class="img-fluid" src="{{ source }}" alt="" />
+          </div>
+          <div *ngIf="showMore" class="show-details" (click)="isCollapsed = !isCollapsed">
+            <a
+              class="float"
+              style="background-color: #00d6d4 !important; color: #fff; font-size: 20px"
+              (click)="isCollapsed = !isCollapsed"
+              [attr.aria-expanded]="!isCollapsed"
+              title="Détails"
+            >
+              <i *ngIf="isCollapsed" class="fas fa-angle-double-left"></i>
+              <i *ngIf="!isCollapsed" class="fas fa-angle-double-right"></i>
+            </a>
+          </div>
+        </div>
+        <div
+          *ngIf="showMore"
+          class="img-details d-flex justify-content-between bg-white align-items-center"
+          [ngClass]="isCollapsed ? 'img-details-show' : 'img-details-hide'"
+          style="width: 50%"
+        >
+          <div class="show-details" (click)="isCollapsed = !isCollapsed">
+            <a
+              class="float"
+              style="background-color: #00d6d4 !important; color: #fff; font-size: 20px"
+              (click)="isCollapsed = !isCollapsed"
+              [attr.aria-expanded]="!isCollapsed"
+              title="Détails"
+            >
+              <i *ngIf="isCollapsed" class="fas fa-angle-double-left"></i>
+              <i *ngIf="!isCollapsed" class="fas fa-angle-double-right"></i>
+            </a>
+          </div>
+          <div class="img-details sidebar d-flex justify-content-center bg-white align-items-center">
+            <app-portail-item-image></app-portail-item-image>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="">
-      <p><strong>Dimensions :</strong> 82.5CM X 54.9CM X 94CM</p>
-      <p><strong>Dimensions Total :</strong> 82.5CM X 54.9CM X 94CM</p>
-      <p><strong>Mots descriptifs :</strong> description de l'oeuvre d'art</p>
+    <div class="more-details pocket">
+      <div class="more-details-content">
+        <!--    <h2>-->
+        <!--      <p><strong>Titre de la sculpture</strong></p>-->
+        <!--    </h2>-->
+
+        <div class="details-header">
+          <h4 class="mb-md-4">
+            <p><strong>Détails</strong></p>
+          </h4>
+          <a>
+            <i class="fas fa-file-export" title="Exporter"></i>
+            <span>Exporter</span>
+          </a>
+        </div>
+        <div class="d-flex">
+          <div class="info info-block mr-2">
+            <p>Domaine<strong>Peinture</strong></p>
+            <p>Auteur<strong>Simmen Henri</strong></p>
+            <p>Nombre<strong>1</strong></p>
+            <p>Matière<strong>Moulage</strong></p>
+          </div>
+          <div class="info info-block ml-2">
+            <p>Dénomination<strong>Tableau</strong></p>
+            <p>Epoque<strong>Années 80</strong></p>
+            <p>Style<strong>style</strong></p>
+            <p>Poids<strong>2 kg</strong></p>
+          </div>
+        </div>
+        <div class="info mt-3">
+          <p>Dimensions<strong>82.5CM X 54.9CM X 94CM</strong></p>
+          <p>Référence portée sur l'oeuvre<strong>MF 737</strong></p>
+          <p>Mots descriptifs<strong>description de l'oeuvre d'art</strong></p>
+        </div>
+      </div>
+
+      <!--</div>-->
     </div>
   </div>
 </div>

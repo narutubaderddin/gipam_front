@@ -8,12 +8,18 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class PortailImgDetailsComponent implements OnInit {
   source: string;
+  showMore: boolean;
+
   constructor(private route: ActivatedRoute) {}
   isCollapsed: boolean = true;
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       this.source = params.source;
-      console.log(this.source);
+      this.showMore = JSON.parse(params.show);
+      console.log(this.source, this.showMore);
     });
+  }
+  showDetails(e: any) {
+    this.showMore = e;
   }
 }

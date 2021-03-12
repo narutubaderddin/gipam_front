@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./portail-item-image.component.scss'],
 })
 export class PortailItemImageComponent implements OnInit {
+  @Output() dataChange = new EventEmitter<string>();
   show: boolean;
   constructor(private route: ActivatedRoute) {}
 
@@ -14,6 +15,7 @@ export class PortailItemImageComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       this.show = JSON.parse(params.show);
       console.log(params.show);
+      this.dataChange.emit(params.show);
     });
   }
 }
