@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 
@@ -8,7 +8,7 @@ import { WorkOfArtService } from '@shared/services/work-of-art.service';
   styleUrls: ['./depositor.component.scss'],
 })
 export class DepositorComponent implements OnInit {
-  edit: boolean = true;
+  @Input() edit = false;
   dropdownSettings: IDropdownSettings;
 
   constructor(public WorkOfArtService: WorkOfArtService) {}

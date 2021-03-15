@@ -1,7 +1,8 @@
 <div class="form-bloc">
   <div class="form-group col-md-4">
-    <label style="margin-right: -17%" class="col-md-3">Auteurs</label>
+    <label style="margin-right: -17%" class="">Déposant</label>
     <ng-multiselect-dropdown
+      *ngIf="edit"
       class="select"
       [placeholder]="'--- Choisir les déposants ---'"
       [settings]="dropdownSettings"
@@ -10,6 +11,9 @@
       (onSelectAll)="onSelectAll($event)"
     >
     </ng-multiselect-dropdown>
-    <div class="col-md-9 value" *ngIf="!edit">Auteur 1, Auteur 11</div>
+    <div class="value" *ngIf="!edit">Déposant 1</div>
+  </div>
+  <div class="col-md-4 link" *ngIf="edit">
+    <a href="">Ajouter un nouveau déposant</a>
   </div>
 </div>
