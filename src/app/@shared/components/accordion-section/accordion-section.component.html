@@ -30,7 +30,7 @@
     </div>
 
     <button
-      [ngClass]="show ? 'bg-fleche-top' : 'bg-fleche-down'"
+      [ngClass]="show ? 'bg-fleche-down' : 'bg-fleche-top'"
       *ngIf="collapse && show"
       class="color_1 d-inline button-section btn-collapse"
       (click)="toggle($event, target)"
@@ -42,7 +42,7 @@
       <i class="fas fa-chevron-up"></i>
     </button>
     <button
-      [ngClass]="show ? 'bg-fleche-top' : 'bg-fleche-down'"
+      [ngClass]="show ? 'bg-fleche-down' : 'bg-fleche-top'"
       *ngIf="collapse && !show"
       class="color_1 d-inline button-section btn-collapse"
       (click)="toggle($event, target)"
@@ -57,33 +57,6 @@
     <ng-container *ngIf="modeEdit">
       <!--Drag Button Handler-->
       <ng-container *ngTemplateOutlet="buttonDom"></ng-container>
-
-      <!--      <button *ngIf="notes>=0 && hasNote"-->
-      <!--              [attr.data-target]="'#' + sectionId"-->
-      <!--              class="button-section ml-auto bg-notes d-flex justify-content-center align-items-center"-->
-      <!--      ><span>{{notes}}</span>-->
-      <!--      </button>-->
-      <!--      <button *ngIf="editable && showCrayon && !alterableSection && !scenarioMode"-->
-      <!--              class="button-section ml-auto bg-edit justify-content-center align-items-center"-->
-      <!--      >-->
-      <!--      </button>-->
-      <!--      <button *ngIf="editable && alterableSection && !scenarioMode"-->
-      <!--              class="button-section ml-auto bg-edit justify-content-center align-items-center"-->
-      <!--      >-->
-      <!--      </button>-->
-      <!--      <button *ngIf="editable && !alterableSection && scenarioMode"-->
-      <!--              class="button-section ml-auto bg-edit justify-content-center align-items-center"-->
-      <!--      >-->
-      <!--      </button>-->
-      <!--      <button *ngIf="editable && !alterableSection && scenarioMode && removable"-->
-
-      <!--              class="button-section ml-auto bg-trash justify-content-center align-items-center"-->
-      <!--      >-->
-      <!--      </button>-->
-      <!--      <button *ngIf="!alterableSection && personaeMode && removable"-->
-      <!--              class="button-section ml-auto bg-trash justify-content-center align-items-center"-->
-      <!--      >-->
-      <!--      </button>-->
     </ng-container>
   </ng-container>
 </div>

@@ -1,3 +1,19 @@
+.bloc-header {
+  position: fixed;
+  z-index: 1030;
+  background-color: white;
+  margin-top: 170px;
+  margin-left: 10px;
+}
+.valid-btn {
+  background-color: #0080ff;
+  color: white;
+  margin-left: 10px;
+}
+.cancel-btn {
+  background-color: #6c7681c9;
+  color: white;
+}
 .float {
   //position: fixed;
   height: 40px;
@@ -108,6 +124,8 @@ button {
   }
   .first-bloc {
     margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
     .cadre {
       display: flex;
       justify-content: space-between;
