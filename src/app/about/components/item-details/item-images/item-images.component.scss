@@ -1,3 +1,7 @@
+.add-action:hover {
+  border-color: #2972a7;
+  color: white !important;
+}
 .content {
   background-color: white;
   display: flex;
@@ -21,12 +25,12 @@
       margin-bottom: 20px;
     }
   }
+
   .more-details {
     border-left: #407ca8 5px solid;
     margin: 0 1%;
     padding: 20px 15px 20px 20px;
     width: 300px;
-    height: 350px;
   }
 
   @media (max-width: 800px) {
