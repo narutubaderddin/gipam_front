@@ -1,28 +1,31 @@
 <div class="container-fluid">
-  <div class="first-bloc">
-    <div class="cadre col-md-12" aria-label="">
-      <div>
-        <a href="portail"><i class="zmdi zmdi-fast-rewind"></i> Retour aux résultats de la recherche</a>
-      </div>
-      <div>
-        <a href="#"><i class="zmdi zmdi-caret-left"></i> Précédant</a>
-        |
-        <a href="#">Suivant <i class="zmdi zmdi-caret-right"></i></a>
-      </div>
-    </div>
-  </div>
   <div class="second-bloc">
     <div class="col-md-12 cadre">
       <div class="col-md-12 main-info">
         <div class="col-md-12 row">
-          <div class="col-8 titre">Titre de l'Oeuvre N inventaire 145</div>
-          <div class="col-4 icons">
-            <i class="fas fa-archive"></i>
-            <i class="far fa-file-excel"></i>
-            <i class="fas fa-print"></i>
-            <i class="far fa-edit"></i>
+          <div class="col-md-12 row fixed-top bloc-header">
+            <div class="first-bloc col-md-12 row">
+              <!--            <div class="cadre " aria-label="">-->
+              <div>
+                <a href="portail"><i class="zmdi zmdi-fast-rewind"></i> Retour aux résultats de la recherche</a>
+              </div>
+              <div>
+                <a href="#"><i class="zmdi zmdi-caret-left"></i> Précédant</a>
+                |
+                <a href="#">Suivant <i class="zmdi zmdi-caret-right"></i></a>
+              </div>
+              <!--            </div>-->
+            </div>
+            <div class="col-8 titre">Titre de l'Oeuvre N inventaire 145</div>
+            <div class="col-4 icons">
+              <i class="fas fa-archive"></i>
+              <i class="far fa-file-excel"></i>
+              <i class="fas fa-print"></i>
+              <i class="far fa-edit" (click)="onEditMode()"></i>
+            </div>
           </div>
-          <div [ngClass]="isCollapsed ? 'col-md-11' : 'col-md-8'" class="col-8">
+
+          <div [ngClass]="isCollapsed ? 'col-md-11' : 'col-md-8'" class="col-8" style="margin-top: 5%">
             <app-accordion-section
               #accordionSectionDOM
               [editable]="true"
@@ -35,7 +38,7 @@
               [sectionTitle]="'Descriptif'"
             >
               <!--                <img src="assets/images/icons/description.png" alt="">-->
-              <app-descritif [edit]="true"></app-descritif>
+              <app-descritif [edit]="edit"></app-descritif>
             </app-accordion-section>
             <app-accordion-section
               #accordionSectionDOM
@@ -48,7 +51,7 @@
               [index]="2"
               [sectionTitle]="'Status'"
             >
-              <app-status [edit]="true"></app-status>
+              <app-status [edit]="edit"></app-status>
             </app-accordion-section>
             <app-accordion-section
               #accordionSectionDOM
@@ -61,10 +64,10 @@
               [icon]="'fas fa-user-tag'"
               [sectionTitle]="'Déposant'"
             >
-              <app-depositor></app-depositor>
+              <app-depositor [edit]="edit"></app-depositor>
             </app-accordion-section>
           </div>
-          <div class="col-1" *ngIf="isCollapsed">
+          <div class="col-1" *ngIf="isCollapsed" style="margin-top: 5%">
             <div class="mt-2" style="position: absolute; top: 0; right: 3vw">
               <a
                 class="float-collapsed"
@@ -77,12 +80,9 @@
               </a>
             </div>
           </div>
-          <div class="col-4" [ngbCollapse]="isCollapsed">
+          <div class="col-4" [ngbCollapse]="isCollapsed" style="margin-top: 5%">
             <div class="row detail-image">
-              <div class="col-md-12 d-flex" style="justify-content: flex-end">
-                <img src="assets/images/573.jpg" alt="" style="width: auto; min-width: 85%; height: 35vw" />
-              </div>
-              <div class="mt-2">
+              <div class="mb-2">
                 <a
                   class="float"
                   style="background-color: #00d6d4 !important; color: #fff"
@@ -93,6 +93,9 @@
                   <i *ngIf="isCollapsed" class="fas fa-angle-double-left my-float"></i>
                   <span>Réduire l'image </span>
                 </a>
+              </div>
+              <div class="col-md-12 d-flex" style="justify-content: flex-end">
+                <img src="assets/images/573.jpg" alt="" style="width: auto; min-width: 85%; height: 35vw" />
               </div>
             </div>
           </div>
