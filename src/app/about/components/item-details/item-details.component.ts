@@ -48,8 +48,7 @@ export class ItemDetailsComponent implements OnInit {
     this.edit = !this.edit;
   }
   onSave() {
-    this.notificationsService.success('Success', "l'Oeuvre mis à jour  avec succès");
+    this.notificationsService.success('Succès', 'l\'Oeuvre "n° inventaire" a été mise à jour avec succès');
     this.edit = false;
-    console.log('ok');
   }
 }

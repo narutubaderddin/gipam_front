@@ -45,7 +45,7 @@ import { NotificationAnimationType, SimpleNotificationsModule } from 'angular2-n
       clickToClose: true,
       showProgressBar: true,
       preventDuplicates: true,
-      timeOut: 2000000,
+      timeOut: 2000,
     }),
     // must be imported as the last module as it contains the fallback route
   ],
