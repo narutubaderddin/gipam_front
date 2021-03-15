@@ -5,59 +5,54 @@
 }
 .label-container {
   position: absolute;
-  top: 180px;
-
+  top: 250px;
   display: table;
   visibility: hidden;
 }
 .label-container-non-collapsed {
   transition: margin-left 0.5s;
-  left: 20%;
+  left: 19%;
 }
 .label-container-collapsed {
   left: 50px;
 }
 
 .label-text {
-  color: #fff;
-  background: rgba(51, 51, 51, 0.5);
+  color: #ffffff;
+  background: rgba(#020202, 0.8);
   display: table-cell;
   vertical-align: middle;
-  padding: 10px;
+  padding: 3px;
   border-radius: 3px;
+  font-size: 12px;
 }
 
 .label-arrow {
   display: table-cell;
-  vertical-align: middle;
-  color: #333;
-  opacity: 0.5;
-  font-size: 25px;
+  //vertical-align: middle;
+  color: #020202;
+  opacity: 0.8;
+  font-size: 20px;
 }
 
 .float {
-  //position: fixed;
-  width: 40px;
-  height: 40px;
-  //bottom: 0;
-  //left: 0;
+  position: absolute;
+  width: 30px;
+  height: 100px;
   opacity: 0.5;
-  //border-radius: 50px;
-  border-radius: 0 50px 50px 0;
+  border-radius: 0 15px 15px 0;
   padding: 1%;
   text-align: center;
-  box-shadow: 2px 2px 3px #999;
   z-index: 10;
   display: flex;
   align-items: center;
-  margin-right: 20px;
+  justify-content: center;
 }
 a.float:hover {
   opacity: 1;
 }
 .my-float {
   font-size: 18px;
-  //margin-top: 12px;
 }
 
 a.float + div.label-container {
@@ -105,7 +100,8 @@ a.float:hover + div.label-container {
   min-height: 70px !important;
   margin-top: 15px;
   min-height: 70px;
-  width: 100%;
+  width: 98%;
+  float: right;
   background-color: transparent;
   border-right: transparent;
 }
@@ -137,6 +133,10 @@ a.float:hover + div.label-container {
   .col-sm-6 {
     padding-left: 0;
     padding-right: 0;
+  }
+  .checkbox-text {
+    font-size: 11.5px;
+    color: gray;
   }
   .filter-list-bloc {
     min-width: 190px;
@@ -180,8 +180,15 @@ a:not([href]) {
   background-color: white;
   height: 790px;
   overflow-y: auto;
+  border-right: 2px solid #00d6d4;
+  border-bottom: 2px solid #00d6d4;
+
   .search-panel {
     padding-left: 0;
+    width: 100%;
+    input {
+      min-width: 100%;
+    }
   }
   .filters {
     .filter-list {
@@ -193,6 +200,10 @@ a:not([href]) {
       input {
         margin-top: 2px;
         color: #5a4b5f;
+      }
+      .checkbox-label {
+        margin-left: 0;
+        //color: darkcyan;
       }
     }
   }
@@ -208,9 +219,15 @@ a:not([href]) {
       height: 4px;
       top: 6px;
       left: 6px;
+      font-size: 15px;
     }
     .ngx-slider-selection {
-      background: #0073dd !important;
+      background: #3b8ed6 !important;
+      font-size: 15px;
+    }
+    .ngx-slider .ngx-slider-bubble {
+      font-size: 11.5px;
+      color: gray;
     }
   }
 }
@@ -352,6 +369,7 @@ a:not([href]) {
 }
 h5 {
   color: #00d6d4;
+  font-size: 16px;
 }
 img {
   display: block;
@@ -363,6 +381,81 @@ img {
   orphans: 2;
   widows: 2;
 }
+.accordion {
+  //color: white;
+  .card {
+    border: none !important;
+  }
+  .acc-header {
+    background-color: white;
+    color: #17a2b8;
+  }
+  .card-header {
+    background-color: white;
+  }
+}
+.acc-header {
+  background-color: white;
+  color: #17a2b8;
+}
+
+// collapse toggle
+::ng-deep .collapse {
+  //transition: max-height .55s, opacity .35s ease-in-out;
+  //max-height: 0;
+  //opacity: 0;
+  //display: block !important;
+
+  &.show {
+    //min-height: 150rem;
+    //opacity: 1;
+  }
+}
+
+::ng-deep .accordion {
+  .card {
+    border: none !important;
+    font-size: 12px;
+    margin-bottom: 20px;
+    .card-header {
+      font-size: 12px;
+      padding: 8% 0;
+      background-color: white;
+      color: #17a2b8;
+      button {
+        padding: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        span {
+          font-size: 14px !important;
+          font-weight: 600;
+        }
+
+        span {
+          float: left;
+          font-size: 1.2rem;
+        }
+      }
+    }
+
+    .card-body {
+      padding: 1rem;
+      height: auto !important;
+      display: flex;
+      justify-content: space-around;
+      font-size: 11.5px;
+      color: gray;
+    }
+    .collapse {
+      border-bottom: none;
+      .show {
+        height: auto;
+      }
+    }
+  }
+}
+
 @media (min-width: 34em) {
   .card-columns {
     -webkit-column-count: 2;
