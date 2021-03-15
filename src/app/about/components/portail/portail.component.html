@@ -55,9 +55,12 @@
       >
         <i *ngIf="!isCollapsed" class="fas fa-angle-double-right my-float"></i>
         <i *ngIf="isCollapsed" class="fas fa-angle-double-left my-float"></i>
-        <span> cacher L'image</span>
+        <!--        <span> cacher L'image</span>-->
       </a>
-      <div class="label-container">
+      <div
+        class="label-container"
+        [ngClass]="isCollapsed ? 'label-container-collapsed' : 'label-container-non-collapsed'"
+      >
         <i class="fa fa-caret-left label-arrow"></i>
         <div *ngIf="isCollapsed" class="label-text">Afficher le Filtre</div>
         <div *ngIf="!isCollapsed" class="label-text">Cacher le Filtre</div>
