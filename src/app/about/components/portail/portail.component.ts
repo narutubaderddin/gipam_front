@@ -94,7 +94,7 @@ export class PortailComponent implements OnInit {
     console.log('filter:', value);
   }
 
-  details() {
-    this.router.navigate(['portail-details']);
+  details(visible: any, source: string) {
+    this.router.navigate(['portail-details'], { queryParams: { show: visible, source: source } });
   }
 }
