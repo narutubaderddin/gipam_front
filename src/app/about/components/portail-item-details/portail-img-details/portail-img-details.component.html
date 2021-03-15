@@ -11,7 +11,7 @@
           <div class="d-flex principal-img justify-content-center">
             <img class="img-fluid" src="{{ source }}" alt="" />
           </div>
-          <div *ngIf="showMore" class="show-details" (click)="isCollapsed = !isCollapsed">
+          <div *ngIf="showMore && isCollapsed" class="show-details" (click)="isCollapsed = !isCollapsed">
             <a
               class="float"
               style="background-color: #00d6d4 !important; color: #fff; font-size: 20px"
@@ -20,6 +20,16 @@
               title="Détails"
             >
               <i *ngIf="isCollapsed" class="fas fa-angle-double-left"></i>
+            </a>
+          </div>
+          <div *ngIf="showMore && !isCollapsed" class="show-details" (click)="isCollapsed = !isCollapsed">
+            <a
+              class="float"
+              style="background-color: #00d6d4 !important; color: #fff; font-size: 20px"
+              (click)="isCollapsed = !isCollapsed"
+              [attr.aria-expanded]="!isCollapsed"
+              title="Détails"
+            >
               <i *ngIf="!isCollapsed" class="fas fa-angle-double-right"></i>
             </a>
           </div>
@@ -30,7 +40,18 @@
           [ngClass]="isCollapsed ? 'img-details-show' : 'img-details-hide'"
           style="width: 50%"
         >
-          <div class="show-details" (click)="isCollapsed = !isCollapsed">
+          <div *ngIf="!isCollapsed" class="show-details" (click)="isCollapsed = !isCollapsed">
+            <a
+              class="float"
+              style="background-color: #00d6d4 !important; color: #fff; font-size: 20px"
+              (click)="isCollapsed = !isCollapsed"
+              [attr.aria-expanded]="!isCollapsed"
+              title="Détails"
+            >
+              <i *ngIf="!isCollapsed" class="fas fa-angle-double-right"></i>
+            </a>
+          </div>
+          <div *ngIf="isCollapsed" class="show-details" (click)="isCollapsed = !isCollapsed">
             <a
               class="float"
               style="background-color: #00d6d4 !important; color: #fff; font-size: 20px"
@@ -39,7 +60,6 @@
               title="Détails"
             >
               <i *ngIf="isCollapsed" class="fas fa-angle-double-left"></i>
-              <i *ngIf="!isCollapsed" class="fas fa-angle-double-right"></i>
             </a>
           </div>
           <div class="img-details sidebar d-flex justify-content-center bg-white align-items-center">
