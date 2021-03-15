@@ -4,11 +4,18 @@
   height: 8px;
 }
 .label-container {
-  position: fixed;
-  top: 0.5;
-  left: 300px;
+  position: absolute;
+  top: 180px;
+
   display: table;
   visibility: hidden;
+}
+.label-container-non-collapsed {
+  transition: margin-left 0.5s;
+  left: 20%;
+}
+.label-container-collapsed {
+  left: 50px;
 }
 
 .label-text {
