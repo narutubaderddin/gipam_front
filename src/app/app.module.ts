@@ -16,6 +16,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { AboutModule } from '@app/about/about.module';
 import { HomeModule } from '@app/home/home.module';
+import { NotificationAnimationType, SimpleNotificationsModule } from 'angular2-notifications';
 
 @NgModule({
   imports: [
@@ -35,7 +36,18 @@ import { HomeModule } from '@app/home/home.module';
     AuthModule,
     HomeModule,
     AboutModule,
-    AppRoutingModule, // must be imported as the last module as it contains the fallback route
+    AppRoutingModule,
+
+    SimpleNotificationsModule.forRoot({
+      position: ['top', 'right'],
+      animate: NotificationAnimationType.FromRight,
+      pauseOnHover: true,
+      clickToClose: true,
+      showProgressBar: true,
+      preventDuplicates: true,
+      timeOut: 2000000,
+    }),
+    // must be imported as the last module as it contains the fallback route
   ],
   declarations: [AppComponent],
   providers: [],

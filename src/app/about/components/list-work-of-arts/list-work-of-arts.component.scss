@@ -91,6 +91,9 @@ h6 {
 
     .export-button {
       border: none;
+      i {
+        color: #0466c8;
+      }
       &::after {
         display: none;
       }
@@ -119,9 +122,19 @@ h6 {
   button:focus {
     background-color: #00d6d4 !important;
     color: white;
+    i {
+      color: white !important;
+    }
   }
 }
-
+.headers-btn {
+  background-color: #0466c8;
+  color: white !important;
+  border-color: #0466c8 !important;
+  &:hover {
+    border-color: #00d9a8 !important;
+  }
+}
 .quick-filter-btn {
   color: #00d6d4;
   font-weight: bold;
@@ -379,6 +392,7 @@ h6 {
     }
   }
 }
+
 .icon-stack {
   cursor: pointer;
   .fa-times {
@@ -401,4 +415,10 @@ h6 {
 .mass-action {
   margin-bottom: 10px;
   margin-left: 5%;
+}
+.mass-action-container {
+  .add-action:hover {
+    border-color: #2972a7;
+    color: white !important;
+  }
 }

@@ -5,7 +5,6 @@
         <div class="col-md-12 row">
           <div class="col-md-12 row fixed-top bloc-header">
             <div class="first-bloc col-md-12 row">
-              <!--            <div class="cadre " aria-label="">-->
               <div>
                 <a href="portail"><i class="zmdi zmdi-fast-rewind"></i> Retour aux résultats de la recherche</a>
               </div>
@@ -25,7 +24,7 @@
             </div>
           </div>
 
-          <div [ngClass]="isCollapsed ? 'col-md-11' : 'col-md-8'" class="col-8" style="margin-top: 5%">
+          <div [ngClass]="isCollapsed ? 'col-md-11' : 'col-md-8'" style="margin-top: 5%">
             <app-accordion-section
               #accordionSectionDOM
               [editable]="true"
@@ -99,7 +98,14 @@
               </div>
             </div>
           </div>
-
+          <div
+            *ngIf="edit"
+            [ngClass]="isCollapsed ? 'col-md-11' : 'col-md-8'"
+            style="display: flex; flex-direction: row-reverse"
+          >
+            <button class="btn valid-btn" (click)="onSave()">Enregistrer</button>
+            <button class="btn btn-action cancel-btn">Annuler</button>
+          </div>
           <div class="col-md-12 header-section dock-menu">
             <div class="container">
               <ul
@@ -114,12 +120,6 @@
                   'seventh-page': page == 7
                 }"
               >
-                <!--                <li class="nav-item active first-icon">-->
-                <!--                  <a (click)="page1()" class="nav-link text-uppercase font-weight-bold">-->
-                <!--                    <i class="zmdi zmdi-assignment-o zmdi-hc-3x"></i>-->
-                <!--                  </a>-->
-                <!--                  <p>Détails</p>-->
-                <!--                </li>-->
                 <li class="nav-item first-icon">
                   <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">
                     <i class="zmdi zmdi-camera zmdi-hc-3x"></i>
@@ -162,13 +162,6 @@
                   </a>
                   <p style="margin-left: -22px">Liens hypertextes</p>
                 </li>
-
-                <!--                <li class="nav-item second-icon">-->
-                <!--                  <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">-->
-                <!--                    <i class="fas fa-bezier-curve"></i>-->
-                <!--                  </a>-->
-                <!--                  <p style="margin-left: -20px">Oeuvres en relation</p>-->
-                <!--                </li>-->
               </ul>
             </div>
           </div>
@@ -184,8 +177,8 @@
                   activeIds="toggle-1"
                   *ngFor="let detail of moreDetails; let i = index"
                 >
-                  <ngb-panel id="toggle-{{ i }}"
-                    ><ng-template ngbPanelTitle>
+                  <ngb-panel id="toggle-{{ i }}">
+                    <ng-template ngbPanelTitle>
                       <div class="details-bloc">
                         <div class="d-flex details">{{ detail }}</div>
                         <div class="d-flex"><i class="zmdi zmdi-caret-down"></i></div>
@@ -221,163 +214,3 @@
     </div>
   </div>
 </div>
-
-<!--  <div class="second-bloc">-->
-<!--    <div class="col-md-12 cadre">-->
-<!--      <div class="col-md-12 main-info">-->
-<!--        <div class="col-md-12 row">-->
-<!--          <div class="col-6">-->
-<!--             Titre de l'Oeuvre N inventaire 145-->
-<!--          </div>-->
-<!--          <div class="col-6  icons">-->
-<!--&lt;!&ndash;           <span>Titre de l'Oeuvre N inventaire 145</span>&ndash;&gt;-->
-<!--          </div>-->
-<!--          <div class="col-8">-->
-<!--            <div class="accordion" id="accordionExample">-->
-<!--              <div class="card">-->
-<!--                <div class="card-header" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">-->
-<!--                  <h5 class="mb-0">-->
-<!--                    Descriptif-->
-<!--                  </h5>-->
-<!--                </div>-->
-<!--                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">-->
-<!--                  <div class="card-body">-->
-<!--                    <app-descritif [edit]="false"></app-descritif>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--              <div class="card">-->
-<!--                <div class="card-header" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">-->
-<!--                  <h5 class="mb-0">-->
-<!--                    Statut-->
-<!--                  </h5>-->
-<!--                </div>-->
-<!--                <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">-->
-<!--                  <div class="card-body">-->
-<!--                    <app-status [edit]="false"></app-status>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--              <div class="card">-->
-<!--                <div class="card-header" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">-->
-<!--                  <h5 class="mb-0">-->
-<!--                    Déposant-->
-<!--                  </h5>-->
-<!--                </div>-->
-<!--                <div id="collapseThree" class="collapse show" aria-labelledby="headingThree" data-parent="#accordionExample">-->
-<!--                  <div class="card-body">-->
-<!--                    <div>-->
-<!--                      <div class="form-group d-flex col-md-4">-->
-<!--                        <label class="col-md-4">Déposant:  </label>-->
-<!--                        <p class="col-md-7 value" >Déposant 1</p>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="col-4">-->
-<!--            <div class="detail-image">-->
-<!--              <img src="assets/images/573.jpg" alt="" style="max-height: 44em; margin-left: 20%;">-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="col-md-12 header-section dock-menu ">-->
-<!--            <div class="container">-->
-<!--              <ul-->
-<!--                class="navbar-nav ml-4"-->
-<!--                [ngClass]="{-->
-<!--            'first-page': page == 1,-->
-<!--            'second-page': page == 2,-->
-<!--            'third-page': page == 3,-->
-<!--            'firth-page': page == 4,-->
-<!--            'fifth-page': page == 5-->
-<!--          }"-->
-<!--              >-->
-<!--&lt;!&ndash;                <li class="nav-item active first-icon">&ndash;&gt;-->
-<!--&lt;!&ndash;                  <a (click)="page1()" class="nav-link text-uppercase font-weight-bold">&ndash;&gt;-->
-<!--&lt;!&ndash;                    <i class="zmdi zmdi-assignment-o zmdi-hc-3x"></i>&ndash;&gt;-->
-<!--&lt;!&ndash;                  </a>&ndash;&gt;-->
-<!--&lt;!&ndash;                  <p>Détails</p>&ndash;&gt;-->
-<!--&lt;!&ndash;                </li>&ndash;&gt;-->
-<!--                <li class="nav-item second-icon">-->
-<!--                  <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">-->
-<!--                    <i class="zmdi zmdi-camera zmdi-hc-3x"></i>-->
-<!--                  </a>-->
-<!--                  <p>Détails</p>-->
-<!--                </li>-->
-<!--                <li class="nav-item second-icon">-->
-<!--                  <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">-->
-<!--                    <i class="fas fa-bezier-curve"></i>-->
-<!--                  </a>-->
-<!--                  <p style="margin-left: -20px">Oeuvres en relation</p>-->
-<!--                </li>-->
-<!--                <li class="nav-item second-icon">-->
-<!--                  <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">-->
-<!--                    <i class="fas fa-link"></i>-->
-<!--                  </a>-->
-<!--                  <p style="margin-left: -22px">Liens avec oeuvres</p>-->
-<!--                </li>-->
-<!--                <li class="nav-item firth-icon">-->
-<!--                  <a (click)="page4()" class="nav-link text-uppercase font-weight-bold">-->
-<!--                    <i class="zmdi zmdi-pin zmdi-hc-3x"></i>-->
-<!--                  </a>-->
-<!--                  <p style="margin-left: -10px">Localisations</p>-->
-<!--                </li>-->
-<!--                <li class="nav-item fifth-icon">-->
-<!--                  <a (click)="page5()" class="nav-link text-uppercase font-weight-bold">-->
-<!--                    <i class="fas fa-search zmdi-hc-3x"></i>-->
-<!--                  </a>-->
-<!--                  <p style="margin-left: 0px">Constats</p>-->
-<!--                </li>-->
-<!--                <li class="nav-item fifth-icon">-->
-<!--                  <a (click)="page5()" class="nav-link text-uppercase font-weight-bold">-->
-<!--                    <i class="zmdi zmdi-play zmdi-hc-3x"></i>-->
-<!--                  </a>-->
-<!--                  <p style="margin-left: 1px">Actions</p>-->
-<!--                </li>-->
-<!--                <li class="nav-item second-icon">-->
-<!--                  <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">-->
-<!--                    <i class="fas fa-link"></i>-->
-<!--                  </a>-->
-<!--                  <p style="margin-left: -22px">Liens hypertextes</p>-->
-<!--                </li>-->
-
-<!--&lt;!&ndash;                <li class="nav-item second-icon">&ndash;&gt;-->
-<!--&lt;!&ndash;                  <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">&ndash;&gt;-->
-<!--&lt;!&ndash;                    <i class="fas fa-bezier-curve"></i>&ndash;&gt;-->
-<!--&lt;!&ndash;                  </a>&ndash;&gt;-->
-<!--&lt;!&ndash;                  <p style="margin-left: -20px">Oeuvres en relation</p>&ndash;&gt;-->
-<!--&lt;!&ndash;                </li>&ndash;&gt;-->
-
-<!--              </ul>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="col-md-12 firth-bloc">-->
-<!--            <div *ngIf="page == 1" class="first-page-bloc col-md-12">-->
-<!--              <div class="col-md-12 mb-2 d-flex justify-content-end">-->
-<!--                <i class="fas fa-edit pointer-event" (click)="onEditMode()"></i>-->
-<!--              </div>-->
-<!--              <div class="drop-bloc mr-3">-->
-<!--                <i class="fas fa-copy"></i>-->
-<!--              </div>-->
-<!--              <div class="drop-bloc">-->
-<!--                <i class="fas fa-archive"></i>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="details-bloc">-->
-<!--            <div class="details">-->
-<!--              <p class="col-sm-2 col-md-3">-->
-<!--                <span>Domaine<br /></span> Sculpture-->
-<!--              </p>-->
-<!--              <p class="col-sm-2 col-md-3">-->
-<!--                <span>Dénomination<br /></span> Statuette-->
-<!--              </p>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--</div>-->
