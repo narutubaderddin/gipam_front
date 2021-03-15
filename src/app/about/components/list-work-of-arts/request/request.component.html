@@ -342,6 +342,7 @@
               [startDate]="fromDate!"
               tabindex="-1"
             />
+
             <ng-template #t let-date let-focused="focused">
               <span
                 class="custom-day"
@@ -367,7 +368,9 @@
               (input)="fromDate = validateInput(fromDate, dpFromDate.value)"
             />
             <div class="input-group-append">
-              <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button"></button>
+              <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button">
+                <i class="fas fa-calendar-alt"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -382,7 +385,9 @@
               (input)="toDate = validateInput(toDate, dpToDate.value)"
             />
             <div class="input-group-append">
-              <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button"></button>
+              <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button">
+                <i class="fas fa-calendar-alt"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -645,7 +650,9 @@
                 (input)="fromDate = validateInput(fromDate, dpFromDate.value)"
               />
               <div class="input-group-append">
-                <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button"></button>
+                <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button">
+                  <i class="fas fa-calendar-alt"></i>
+                </button>
               </div>
             </div>
           </div>
@@ -660,7 +667,9 @@
                 (input)="toDate = validateInput(toDate, dpToDate.value)"
               />
               <div class="input-group-append">
-                <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button"></button>
+                <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button">
+                  <i class="fas fa-calendar-alt"></i>
+                </button>
               </div>
             </div>
           </div>

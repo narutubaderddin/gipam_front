@@ -4,25 +4,7 @@
 <div class="container-fluid">
   <div class="body">
     <div class="add-export-bloc d-flex flex-content-between">
-      <div class="d-flex add-bloc">
-        <!--        <div class="dropdown-container mb-2 mr-2 mb-sm-0">-->
-        <!--          <div-->
-        <!--            ngbDropdown-->
-        <!--            placement="bottom-left"-->
-        <!--            class="d-inline-block add-button"-->
-        <!--            autoClose="outside"-->
-        <!--            container="body"-->
-        <!--          >-->
-        <!--            <button class="btn add-action" id="dropdownBasic" ngbDropdownToggle translate>Ajouter notice</button>-->
-        <!--            <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">-->
-        <!--              <ul class="list-group">-->
-        <!--                <li class="list-group-item" (click)="addPropertyMovableObject()">Ajouter une notice en propriété</li>-->
-        <!--                <li class="list-group-item">Ajouter une notice en dépôt</li>-->
-        <!--              </ul>-->
-        <!--            </div>-->
-        <!--          </div>-->
-        <!--        </div>-->
-      </div>
+      <div class="d-flex add-bloc"></div>
       <div class="d-flex">
         <div [ngClass]="{ 'picture-mode': mode === 'pictures', 'list-mode': mode === 'liste' }">
           <button type="button" class="btn picture">
@@ -91,7 +73,9 @@
               autoClose="outside"
               container="body"
             >
-              <button class="btn dropdown-btn" id="dropdownBasic1" ngbDropdownToggle translate>Colonnes</button>
+              <button class="btn dropdown-btn headers-btn" id="dropdownBasic1" ngbDropdownToggle translate>
+                Colonnes
+              </button>
               <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic1">
                 <div class="columns-dropdown">
                   <div class="col-12 col-sm-6 pt-1 column-check" *ngFor="let headerCol of columns">
@@ -228,7 +212,12 @@
     </a>
     <ul>
       <li>
-        <a style="background-color: #00d6d4" ngbTooltip="" placement="left" class="add-prop-notice"
+        <a
+          style="background-color: #00d6d4"
+          ngbTooltip=""
+          placement="left"
+          class="add-prop-notice"
+          routerLink="/add-property-remarquer"
           ><i class="fas fa-window-restore my-float"></i>
           <span>Ajouter une notice en propriété</span>
         </a>

@@ -12,7 +12,7 @@ import {
   CellClickedEvent,
   SelectionChangedEvent,
 } from 'ag-grid-community';
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ColumnFilterService, OPERATORS, TYPES } from '@shared/services/column-filter.service';
 import { ColumnFilterModel } from '@shared/models/column-filter-model';
@@ -28,6 +28,7 @@ import { StatusTypeRenderComponent } from '@shared/components/datatables/status-
   styleUrls: ['./list-work-of-arts.component.scss'],
 })
 export class ListWorkOfArtsComponent implements OnInit {
+  @ViewChildren('accordionSectionDOM', { read: ElementRef }) accordionsDOM: QueryList<ElementRef>;
   isCollapsed = true;
   showDatatable = false;
   data = false;
@@ -298,6 +299,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     if (value) {
       this.showDatatable = true;
       this.isCollapsed = false;
+      this.collapse();
     }
   }
 
@@ -305,5 +307,11 @@ export class ListWorkOfArtsComponent implements OnInit {
     // @ts-ignore
     this.rowCount = event.target.value;
     this.gridApi.paginationSetPageSize(Number(this.rowCount));
+  }
+
+  collapse() {
+    this.accordionsDOM.forEach((el) => {
+      el.nativeElement.querySelector('.btn-collapse').click();
+    });
   }
 }

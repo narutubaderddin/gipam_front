@@ -49,19 +49,19 @@ export class AccordionSectionComponent implements OnInit {
   comments: Comment[] = [];
   commentActive = false;
   sectionId: string;
-  show = false;
+  show = true;
   modeEdit = false;
   constructor() {}
 
   ngOnInit(): void {
     this.sectionId = this.generateAccordionId();
-    if (this.show) {
-      this.toggleBtn.nativeElement.click();
-    }
+    // if (this.show) {
+    //   this.toggleBtn.nativeElement.click();
+    // }
 
-    if (!this.collapse) {
-      this.show = true;
-    }
+    // if (!this.collapse) {
+    //   this.show = true;
+    // }
   }
 
   generateAccordionId() {
