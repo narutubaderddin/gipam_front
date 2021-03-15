@@ -7,6 +7,7 @@ import { VisibleCatalogRendererComponent } from '@app/@shared/components/datatab
 import { OPERATORS, TYPES } from '@app/@shared/services/column-filter.service';
 import { CellClickedEvent, ColDef, ColumnApi, GridApi, GridOptions, ICellEditorParams } from 'ag-grid-community';
 import { Router } from '@angular/router';
+import { RecoleRendererComponent } from '@shared/components/datatables/recole-renderer/recole-renderer.component';
 
 @Component({
   selector: 'app-proofs-details',
@@ -17,7 +18,8 @@ export class ProofsDetailsComponent implements OnInit {
   @Input() show: boolean;
   frameworkComponents = {
     customHeader: CustomHeaderRendererComponent,
-    //   gridActionRenderer: GridActionRendererComponent,
+    gridActionRenderer: GridActionRendererComponent,
+    recoleRenderer: RecoleRendererComponent,
   };
   defaultColDef = {
     headerComponent: 'customHeader',
@@ -36,9 +38,6 @@ export class ProofsDetailsComponent implements OnInit {
   gridOptions: GridOptions = {
     suppressLoadingOverlay: false,
     suppressScrollOnNewData: false,
-
-    // pagination: true,
-    // paginationPageSize: 2,
   };
   remarquers: any;
 
@@ -47,33 +46,33 @@ export class ProofsDetailsComponent implements OnInit {
       headerName: 'N° inventaire',
       field: 'inventaire',
       headerTooltip: 'N° inventaire',
-      width: 90,
+      // width: 140,
     },
     {
       headerName: 'Titre',
-      field: 'titre',
+      field: 'Titre',
       headerTooltip: 'Titre',
-      width: 90,
+      // width: 120
     },
     {
       headerName: 'Domaine',
       field: 'Domaine',
-      width: 90,
+      // width: 120,
     },
     {
       headerName: 'Dénomination',
       field: 'Denomination',
-      width: 90,
+      // width: 150,
     },
     {
       headerName: 'Auteur',
       field: 'Auteur',
-      width: 90,
+      // width: 120,
     },
     {
       headerName: 'Total récolement',
-      field: 'total_recole',
-      width: 90,
+      field: 'Total_recole',
+      //   width: 90,
     },
     {
       headerName: 'Date dernier récolement',
@@ -83,21 +82,23 @@ export class ProofsDetailsComponent implements OnInit {
         type: TYPES.date,
         operator: OPERATORS.in,
       },
-      width: 90,
+      // width: 90,
     },
     {
       headerName: 'Récolé',
       field: 'Recole',
-      width: 90,
+      cellRenderer: 'recoleRenderer',
+
+      // width: 100,
     },
     {
       headerName: 'Actions',
       field: 'action',
-      // cellRenderer: 'gridActionRenderer',
+      cellRenderer: 'gridActionRenderer',
 
       sortable: false,
       filter: false,
-      width: 70,
+      width: 138,
     },
   ];
   pinnedCols: string[] = ['action'];

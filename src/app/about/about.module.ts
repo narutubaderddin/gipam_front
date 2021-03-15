@@ -36,6 +36,7 @@ import { Ng7BootstrapBreadcrumbModule } from 'ng7-bootstrap-breadcrumb';
 import { InProgressAlertsComponent } from './components/administrator-home-page/in-progress-alerts/in-progress-alerts.component';
 import { DepositorComponent } from './components/item-details/details/depositor/depositor.component';
 import { ProofsDetailsComponent } from './components/administrator-home-page/proofs-in-progress/proofs-details/proofs-details.component';
+import { PortailImgDetailsComponent } from './components/portail-item-details/portail-img-details/portail-img-details.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { ProofsDetailsComponent } from './components/administrator-home-page/pro
     ProofsInProgressComponent,
     InProgressAlertsComponent,
     ProofsDetailsComponent,
+    PortailImgDetailsComponent,
     DepositorComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
