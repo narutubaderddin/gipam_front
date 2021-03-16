@@ -34,7 +34,7 @@ export class PortailComponent implements OnInit {
   highValue2: number = 60;
   value3: number = 40;
   highValue3: number = 60;
-  isCollapsed = false;
+  isCollapsed = true;
   optionsCm: Options = {
     floor: 0,
     ceil: 9999,

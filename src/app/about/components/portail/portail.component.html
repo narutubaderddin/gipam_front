@@ -1,6 +1,12 @@
 <div class="container-fluid">
   <div class="d-flex row mr-t-5">
-    <div id="collapseExample" [ngbCollapse]="isCollapsed" class="filter-bloc mb-3 col-lg-2 col-xs-12 sidebar">
+    <div
+      id="collapseExample"
+      class="filter-bloc col-lg-2 col-xs-12"
+      [ngbCollapse]="isCollapsed"
+      [class.opened]="isCollapsed"
+      [ngClass]="isCollapsed ? 'sidebar' : 'open'"
+    >
       <div class="search-panel mt-2">
         <input
           class="form-control"
@@ -12,19 +18,112 @@
         />
       </div>
       <div class="hl mt-2"></div>
-      <div class="filters mt-2">
+      <div class="filters mt-4">
         <h5>Domaines</h5>
+
+        <ngb-accordion #acc="ngbAccordion">
+          <ngb-panel id="toggle-1">
+            <ng-template ngbPanelTitle class="acc-header">
+              <span>Art textile</span>
+              <span>
+                <i class="fas fa-sort-down"></i>
+
+                <!--                <i class="fas fa-chevron-up"></i>-->
+                <!--              <i class="fas fa-chevron-down"></i>-->
+              </span>
+            </ng-template>
+            <ng-template ngbPanelContent>
+              <label class="checkbox-label form-check-label">
+                <input class="checkbox-btn" type="checkbox" name="language" value="fr" />
+                <span class="checkbox-shape"></span>
+                <span class="checkbox-text">Tapis</span>
+              </label>
+              <label class="checkbox-label form-check-label">
+                <input class="checkbox-btn" type="checkbox" name="language" value="fr" />
+                <span class="checkbox-shape"></span>
+                <span class="checkbox-text">Tapisserie</span>
+              </label>
+              <label class="checkbox-label form-check-label">
+                <input class="checkbox-btn" type="checkbox" name="language" value="fr" />
+                <span class="checkbox-shape"></span>
+                <span class="checkbox-text">Rideaux</span>
+              </label>
+            </ng-template>
+          </ngb-panel>
+          <ngb-panel id="toggle-2">
+            <ng-template ngbPanelTitle class="acc-header">
+              <span>Horlogerie</span>
+              <span>
+                <i class="fas fa-sort-down"></i>
+
+                <!--                <i class="fas fa-chevron-up"></i>-->
+                <!--              <i class="fas fa-chevron-down"></i>-->
+              </span>
+            </ng-template>
+            <ng-template ngbPanelContent>
+              <label class="checkbox-label form-check-label">
+                <input class="checkbox-btn" type="checkbox" name="language" value="fr" />
+                <span class="checkbox-text">Horloge</span>
+              </label>
+
+              <label class="checkbox-label form-check-label">
+                <input class="checkbox-btn" type="checkbox" name="language" value="fr" />
+                <span class="checkbox-text">Pendule</span>
+              </label>
+            </ng-template>
+          </ngb-panel>
+          <ngb-panel id="toggle-3">
+            <ng-template ngbPanelTitle class="acc-header">
+              <span>Mobilier</span>
+              <span>
+                <i class="fas fa-sort-down"></i>
+
+                <!--                <i class="fas fa-chevron-up"></i>-->
+                <!--              <i class="fas fa-chevron-down"></i>-->
+              </span>
+            </ng-template>
+            <ng-template ngbPanelContent>
+              <label class="checkbox-label form-check-label">
+                <input class="checkbox-btn" type="checkbox" name="language" value="fr" />
+                <span class="checkbox-text">denom 1</span>
+              </label>
+
+              <label class="checkbox-label form-check-label">
+                <input class="checkbox-btn" type="checkbox" name="language" value="fr" />
+                <span class="checkbox-text">denom 2</span>
+              </label>
+            </ng-template>
+          </ngb-panel>
+        </ngb-accordion>
+
         <div class="filter-list">
-          <ngx-treeview
-            [config]="config"
-            [items]="domains"
-            (selectedChange)="values = $event"
-            (filterChange)="onFilterChange($event)"
-          >
-          </ngx-treeview>
+          <label class="checkbox-label form-check-label col-md-12 col-lg-6 p-0">
+            <input class="checkbox-btn" type="checkbox" name="language" value="fr" />
+            <span class="checkbox-text">Art de la table</span>
+          </label>
+          <label class="checkbox-label form-check-label col-md-12 col-lg-6 p-0">
+            <input class="checkbox-btn" type="checkbox" name="language" value="fr" />
+            <span class="checkbox-text">Object décoratif</span>
+          </label>
+          <label class="checkbox-label form-check-label col-md-12 col-lg-6 p-0">
+            <input class="checkbox-btn" type="checkbox" name="language" value="fr" />
+            <span class="checkbox-text">Decor monumental</span>
+          </label>
+          <label class="checkbox-label form-check-label col-md-12 col-lg-6 p-0">
+            <input class="checkbox-btn" type="checkbox" name="language" value="fr" />
+            <span class="checkbox-text">Luminaire</span>
+          </label>
+
+          <!--          <ngx-treeview-->
+          <!--            [config]="config"-->
+          <!--            [items]="domains"-->
+          <!--            (selectedChange)="values = $event"-->
+          <!--            (filterChange)="onFilterChange($event)"-->
+          <!--          >-->
+          <!--          </ngx-treeview>-->
         </div>
       </div>
-      <div class="hl mt-2"></div>
+      <div class="mt-4"></div>
 
       <div class="filters mt-2">
         <h5>Hauteur [cm]</h5>
@@ -47,13 +146,12 @@
     <div class="mt-2">
       <a
         class="float"
-        style="background-color: #00d6d4 !important; color: #fff"
+        style="background-color: #407ca8 !important; color: #fff"
         (click)="isCollapsed = !isCollapsed"
         [attr.aria-expanded]="!isCollapsed"
       >
-        <i *ngIf="!isCollapsed" class="fas fa-angle-double-right my-float"></i>
-        <i *ngIf="isCollapsed" class="fas fa-angle-double-left my-float"></i>
-        <!--        <span> cacher L'image</span>-->
+        <i *ngIf="isCollapsed" class="fas fa-angle-double-right my-float"></i>
+        <i *ngIf="!isCollapsed" class="fas fa-angle-double-left my-float"></i>
       </a>
       <div
         class="label-container"
@@ -64,7 +162,7 @@
         <div *ngIf="!isCollapsed" class="label-text">Cacher le Filtre</div>
       </div>
     </div>
-    <div [ngClass]="isCollapsed ? 'col-lg-12 col-xs-12 main' : 'ml-3 ml-xs-0 col-lg-9 col-xs-12 main'">
+    <div [ngClass]="isCollapsed ? 'col-lg-12 col-xs-12 main' : 'ml-xs-0 col-lg-10 col-xs-12 main'">
       <div class="title-bloc">
         <div class="left-title-bloc">
           <h1 class="title">OEUVRES D'ART</h1>
