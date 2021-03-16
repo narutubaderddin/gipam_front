@@ -1,6 +1,12 @@
 <div class="container-fluid">
   <div class="d-flex row mr-t-5">
-    <div id="collapseExample" [ngbCollapse]="isCollapsed" class="filter-bloc col-lg-2 col-xs-12 sidebar">
+    <div
+      id="collapseExample"
+      class="filter-bloc col-lg-2 col-xs-12"
+      [ngbCollapse]="isCollapsed"
+      [class.opened]="isCollapsed"
+      [ngClass]="isCollapsed ? 'sidebar' : 'open'"
+    >
       <div class="search-panel mt-2">
         <input
           class="form-control"
@@ -140,12 +146,12 @@
     <div class="mt-2">
       <a
         class="float"
-        style="background-color: #00d6d4 !important; color: #fff"
+        style="background-color: #407ca8 !important; color: #fff"
         (click)="isCollapsed = !isCollapsed"
         [attr.aria-expanded]="!isCollapsed"
       >
-        <i *ngIf="!isCollapsed" class="fas fa-angle-double-right my-float"></i>
-        <i *ngIf="isCollapsed" class="fas fa-angle-double-left my-float"></i>
+        <i *ngIf="isCollapsed" class="fas fa-angle-double-right my-float"></i>
+        <i *ngIf="!isCollapsed" class="fas fa-angle-double-left my-float"></i>
       </a>
       <div
         class="label-container"
