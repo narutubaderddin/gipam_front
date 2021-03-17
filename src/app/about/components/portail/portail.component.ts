@@ -24,7 +24,7 @@ export class PortailComponent implements OnInit {
     hasFilter: true,
     hasCollapseExpand: true,
     decoupleChildFromParent: false,
-    maxHeight: 400,
+    // maxHeight: 400,
   });
   value: number = 40;
   highValue: number = 60;

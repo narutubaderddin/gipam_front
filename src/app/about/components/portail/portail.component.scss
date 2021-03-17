@@ -175,10 +175,10 @@ a:not([href]) {
 
 .filter-bloc {
   background-color: white;
-  height: 790px;
+  height: 800px;
   overflow-y: auto;
-  border-right: 2px solid #407ca8;
-  border-bottom: 2px solid #407ca8;
+  border-right: 2px solid #2974ab61;
+  border-bottom: 2px solid #2974ab61;
 
   .search-panel {
     padding-left: 0;
@@ -205,21 +205,17 @@ a:not([href]) {
   }
   ::ng-deep {
     .ngx-slider .ngx-slider-pointer {
-      background: #3a648aeb !important;
+      background: #00d6d4 !important;
       height: 16px !important;
       width: 16px;
       outline: none;
       top: -5px;
     }
     .ngx-slider .ngx-slider-pointer:after {
-      width: 4px;
-      height: 4px;
-      top: 6px;
-      left: 6px;
-      font-size: 15px;
+      display: none;
     }
     .ngx-slider-selection {
-      background: #3a648a75 !important;
+      background: #00d6d4 !important;
       font-size: 15px;
     }
     .ngx-slider .ngx-slider-bubble {
@@ -232,12 +228,116 @@ a:not([href]) {
   margin: 2px 0 2px 0;
   border: 1px solid #e6e6ea;
 }
-
+ngx-treeview {
+  width: 100%;
+}
 ::ng-deep .treeview-header {
   font-size: 12px !important;
+  //.row-filter {
+  display: none;
+  //}
+  font-size: 12px !important;
+  color: #003c73;
 }
 ::ng-deep .treeview-container {
   font-size: 12px !important;
+  padding: 2% 0;
+
+  //color: #003c73;
+  color: #797979;
+  padding-right: 0;
+  .treeview-item {
+    .form-inline {
+      border-bottom: 0.5px solid aliceblue;
+      //background-color: lightgray;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row-reverse;
+      // custom checkbox
+      .form-check {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        width: 100%;
+        padding: 3% 0;
+        .form-check-label {
+          margin-left: 4%;
+          //background-color: #1f2b50;
+        }
+        input[type="checkbox"] {
+          margin-top: -30px;
+          margin-left: 2%;
+        }
+
+        input[type="checkbox"] {
+          -webkit-font-smoothing: antialiased;
+          text-rendering: optimizeSpeed;
+          width: 13px;
+          height: 13px;
+          margin: 0;
+          margin-right: 1px;
+          display: block;
+          float: left;
+          position: relative;
+          cursor: pointer;
+        }
+
+        input[type="checkbox"]:after {
+          content: "";
+          vertical-align: middle;
+          text-align: center;
+          line-height: 13px;
+          position: absolute;
+          cursor: pointer;
+          height: 13px;
+          width: 13px;
+          left: 0;
+          top: 0;
+          font-size: 10px;
+          //-webkit-box-shadow: inset 0 1px 1px #00d6d4, 0 1px 0 #00d6d4;
+          //-moz-box-shadow: inset 0 1px 1px #00d6d4, 0 1px 0 #00d6d4;
+          //box-shadow: inset 0 1px 1px #00d6d4, 0 1px 0 #00d6d4;
+          //background: #00d6d4;
+        }
+
+        input[type="checkbox"]:hover:after,
+        input[type="checkbox"]:checked:hover:after {
+          background: #00d6d4;
+          content: "\2714";
+          color: #fff;
+        }
+
+        input[type="checkbox"]:checked:after {
+          background: #00d6d4;
+          content: "\2714";
+          color: #fff;
+        }
+      }
+    }
+    div {
+      display: flex;
+      max-width: 100%;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      .treeview-item {
+        margin-left: 0.5rem !important;
+        font-size: 11px !important;
+
+        //color: white;
+        .form-inline {
+          border: none;
+          display: flex;
+          justify-content: start;
+          flex-direction: row;
+          //flex-direction: row-reverse;
+          .form-check-label {
+            //background-color: red;
+            margin-left: 13%;
+          }
+        }
+      }
+    }
+  }
 }
 ::ng-deep .form-control {
   height: 30px !important;
@@ -512,3 +612,28 @@ img {
   //transition: transform .2s linear;
   //will-change: transform;
 }
+//ngx-treeview {
+//  //background-color: red !important;
+//  div {
+//    .treeview-container {
+//      background-color: #1f2b50 !important;
+//    }
+//  }
+//}
+//:host .treeview-container .row-item {
+//  margin-bottom: .3rem;
+//  flex-wrap: nowrap;
+//  width:100px;
+//  white-space: nowrap;
+//  overflow: hidden;
+//  text-overflow: ellipsis;
+//  background-color: blue;
+//}
+//.treeview-item{
+//.form-inline, .row-item{
+//  border: 1px solid;
+//  display: flex;
+//  justify-content: space-between;
+//  flex-direction: row-reverse;
+//}
+//}

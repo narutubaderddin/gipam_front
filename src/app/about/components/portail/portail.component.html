@@ -1,12 +1,6 @@
 <div class="container-fluid">
   <div class="d-flex row mr-t-5">
-    <div
-      id="collapseExample"
-      class="filter-bloc col-lg-2 col-xs-12"
-      [ngbCollapse]="isCollapsed"
-      [class.opened]="isCollapsed"
-      [ngClass]="isCollapsed ? 'sidebar' : 'open'"
-    >
+    <div id="collapseExample" class="filter-bloc col-lg-2 col-xs-12" [ngbCollapse]="isCollapsed">
       <div class="search-panel mt-2">
         <input
           class="form-control"
@@ -20,110 +14,109 @@
       <div class="hl mt-2"></div>
       <div class="filters mt-4">
         <h5>Domaines</h5>
+        <ngx-treeview
+          [config]="config"
+          [items]="domains"
+          (selectedChange)="values = $event"
+          (filterChange)="onFilterChange($event)"
+        >
+        </ngx-treeview>
+        <!--        <ngb-accordion #acc="ngbAccordion">-->
+        <!--          <ngb-panel id="toggle-1">-->
+        <!--            <ng-template ngbPanelTitle class="acc-header">-->
+        <!--              <span>Art textile</span>-->
+        <!--              <span>-->
+        <!--                <i class="fas fa-sort-down"></i>-->
 
-        <ngb-accordion #acc="ngbAccordion">
-          <ngb-panel id="toggle-1">
-            <ng-template ngbPanelTitle class="acc-header">
-              <span>Art textile</span>
-              <span>
-                <i class="fas fa-sort-down"></i>
+        <!--                &lt;!&ndash;                <i class="fas fa-chevron-up"></i>&ndash;&gt;-->
+        <!--                &lt;!&ndash;              <i class="fas fa-chevron-down"></i>&ndash;&gt;-->
+        <!--              </span>-->
+        <!--            </ng-template>-->
+        <!--            <ng-template ngbPanelContent>-->
+        <!--              <label class="checkbox-label form-check-label">-->
+        <!--                <input class="checkbox-btn" type="checkbox" name="language" value="fr" />-->
+        <!--                <span class="checkbox-shape"></span>-->
+        <!--                <span class="checkbox-text">Tapis</span>-->
+        <!--              </label>-->
+        <!--              <label class="checkbox-label form-check-label">-->
+        <!--                <input class="checkbox-btn" type="checkbox" name="language" value="fr" />-->
+        <!--                <span class="checkbox-shape"></span>-->
+        <!--                <span class="checkbox-text">Tapisserie</span>-->
+        <!--              </label>-->
+        <!--              <label class="checkbox-label form-check-label">-->
+        <!--                <input class="checkbox-btn" type="checkbox" name="language" value="fr" />-->
+        <!--                <span class="checkbox-shape"></span>-->
+        <!--                <span class="checkbox-text">Rideaux</span>-->
+        <!--              </label>-->
+        <!--            </ng-template>-->
+        <!--          </ngb-panel>-->
+        <!--          <ngb-panel id="toggle-2">-->
+        <!--            <ng-template ngbPanelTitle class="acc-header">-->
+        <!--              <span>Horlogerie</span>-->
+        <!--              <span>-->
+        <!--                <i class="fas fa-sort-down"></i>-->
 
-                <!--                <i class="fas fa-chevron-up"></i>-->
-                <!--              <i class="fas fa-chevron-down"></i>-->
-              </span>
-            </ng-template>
-            <ng-template ngbPanelContent>
-              <label class="checkbox-label form-check-label">
-                <input class="checkbox-btn" type="checkbox" name="language" value="fr" />
-                <span class="checkbox-shape"></span>
-                <span class="checkbox-text">Tapis</span>
-              </label>
-              <label class="checkbox-label form-check-label">
-                <input class="checkbox-btn" type="checkbox" name="language" value="fr" />
-                <span class="checkbox-shape"></span>
-                <span class="checkbox-text">Tapisserie</span>
-              </label>
-              <label class="checkbox-label form-check-label">
-                <input class="checkbox-btn" type="checkbox" name="language" value="fr" />
-                <span class="checkbox-shape"></span>
-                <span class="checkbox-text">Rideaux</span>
-              </label>
-            </ng-template>
-          </ngb-panel>
-          <ngb-panel id="toggle-2">
-            <ng-template ngbPanelTitle class="acc-header">
-              <span>Horlogerie</span>
-              <span>
-                <i class="fas fa-sort-down"></i>
+        <!--                &lt;!&ndash;                <i class="fas fa-chevron-up"></i>&ndash;&gt;-->
+        <!--                &lt;!&ndash;              <i class="fas fa-chevron-down"></i>&ndash;&gt;-->
+        <!--              </span>-->
+        <!--            </ng-template>-->
+        <!--            <ng-template ngbPanelContent>-->
+        <!--              <label class="checkbox-label form-check-label">-->
+        <!--                <input class="checkbox-btn" type="checkbox" name="language" value="fr" />-->
+        <!--                <span class="checkbox-text">Horloge</span>-->
+        <!--              </label>-->
 
-                <!--                <i class="fas fa-chevron-up"></i>-->
-                <!--              <i class="fas fa-chevron-down"></i>-->
-              </span>
-            </ng-template>
-            <ng-template ngbPanelContent>
-              <label class="checkbox-label form-check-label">
-                <input class="checkbox-btn" type="checkbox" name="language" value="fr" />
-                <span class="checkbox-text">Horloge</span>
-              </label>
+        <!--              <label class="checkbox-label form-check-label">-->
+        <!--                <input class="checkbox-btn" type="checkbox" name="language" value="fr" />-->
+        <!--                <span class="checkbox-text">Pendule</span>-->
+        <!--              </label>-->
+        <!--            </ng-template>-->
+        <!--          </ngb-panel>-->
+        <!--          <ngb-panel id="toggle-3">-->
+        <!--            <ng-template ngbPanelTitle class="acc-header">-->
+        <!--              <span>Mobilier</span>-->
+        <!--              <span>-->
+        <!--                <i class="fas fa-sort-down"></i>-->
 
-              <label class="checkbox-label form-check-label">
-                <input class="checkbox-btn" type="checkbox" name="language" value="fr" />
-                <span class="checkbox-text">Pendule</span>
-              </label>
-            </ng-template>
-          </ngb-panel>
-          <ngb-panel id="toggle-3">
-            <ng-template ngbPanelTitle class="acc-header">
-              <span>Mobilier</span>
-              <span>
-                <i class="fas fa-sort-down"></i>
+        <!--                &lt;!&ndash;                <i class="fas fa-chevron-up"></i>&ndash;&gt;-->
+        <!--                &lt;!&ndash;              <i class="fas fa-chevron-down"></i>&ndash;&gt;-->
+        <!--              </span>-->
+        <!--            </ng-template>-->
+        <!--            <ng-template ngbPanelContent>-->
+        <!--              <label class="checkbox-label form-check-label">-->
+        <!--                <input class="checkbox-btn" type="checkbox" name="language" value="fr" />-->
+        <!--                <span class="checkbox-text">denom 1</span>-->
+        <!--              </label>-->
 
-                <!--                <i class="fas fa-chevron-up"></i>-->
-                <!--              <i class="fas fa-chevron-down"></i>-->
-              </span>
-            </ng-template>
-            <ng-template ngbPanelContent>
-              <label class="checkbox-label form-check-label">
-                <input class="checkbox-btn" type="checkbox" name="language" value="fr" />
-                <span class="checkbox-text">denom 1</span>
-              </label>
+        <!--              <label class="checkbox-label form-check-label">-->
+        <!--                <input class="checkbox-btn" type="checkbox" name="language" value="fr" />-->
+        <!--                <span class="checkbox-text">denom 2</span>-->
+        <!--              </label>-->
+        <!--            </ng-template>-->
+        <!--          </ngb-panel>-->
+        <!--        </ngb-accordion>-->
 
-              <label class="checkbox-label form-check-label">
-                <input class="checkbox-btn" type="checkbox" name="language" value="fr" />
-                <span class="checkbox-text">denom 2</span>
-              </label>
-            </ng-template>
-          </ngb-panel>
-        </ngb-accordion>
+        <!--        <div class="filter-list">-->
+        <!--          <label class="checkbox-label form-check-label col-md-12 col-lg-6 p-0">-->
+        <!--            <input class="checkbox-btn" type="checkbox" name="language" value="fr" />-->
+        <!--            <span class="checkbox-text">Art de la table</span>-->
+        <!--          </label>-->
+        <!--          <label class="checkbox-label form-check-label col-md-12 col-lg-6 p-0">-->
+        <!--            <input class="checkbox-btn" type="checkbox" name="language" value="fr" />-->
+        <!--            <span class="checkbox-text">Object décoratif</span>-->
+        <!--          </label>-->
+        <!--          <label class="checkbox-label form-check-label col-md-12 col-lg-6 p-0">-->
+        <!--            <input class="checkbox-btn" type="checkbox" name="language" value="fr" />-->
+        <!--            <span class="checkbox-text">Decor monumental</span>-->
+        <!--          </label>-->
+        <!--          <label class="checkbox-label form-check-label col-md-12 col-lg-6 p-0">-->
+        <!--            <input class="checkbox-btn" type="checkbox" name="language" value="fr" />-->
+        <!--            <span class="checkbox-text">Luminaire</span>-->
+        <!--          </label>-->
 
-        <div class="filter-list">
-          <label class="checkbox-label form-check-label col-md-12 col-lg-6 p-0">
-            <input class="checkbox-btn" type="checkbox" name="language" value="fr" />
-            <span class="checkbox-text">Art de la table</span>
-          </label>
-          <label class="checkbox-label form-check-label col-md-12 col-lg-6 p-0">
-            <input class="checkbox-btn" type="checkbox" name="language" value="fr" />
-            <span class="checkbox-text">Object décoratif</span>
-          </label>
-          <label class="checkbox-label form-check-label col-md-12 col-lg-6 p-0">
-            <input class="checkbox-btn" type="checkbox" name="language" value="fr" />
-            <span class="checkbox-text">Decor monumental</span>
-          </label>
-          <label class="checkbox-label form-check-label col-md-12 col-lg-6 p-0">
-            <input class="checkbox-btn" type="checkbox" name="language" value="fr" />
-            <span class="checkbox-text">Luminaire</span>
-          </label>
-
-          <!--          <ngx-treeview-->
-          <!--            [config]="config"-->
-          <!--            [items]="domains"-->
-          <!--            (selectedChange)="values = $event"-->
-          <!--            (filterChange)="onFilterChange($event)"-->
-          <!--          >-->
-          <!--          </ngx-treeview>-->
-        </div>
+        <!--        </div>-->
       </div>
-      <div class="mt-4"></div>
+      <!--      <div class="mt-4"></div>-->
 
       <div class="filters mt-2">
         <h5>Hauteur [cm]</h5>
