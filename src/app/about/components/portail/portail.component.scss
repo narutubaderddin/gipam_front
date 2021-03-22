@@ -5,16 +5,16 @@
 }
 .label-container {
   position: absolute;
-  top: 250px;
+  top: 80px;
   display: table;
   visibility: hidden;
 }
 .label-container-non-collapsed {
   transition: margin-left 0.5s;
-  left: 19%;
+  left: 21%;
 }
 .label-container-collapsed {
-  left: 50px;
+  left: 80px;
 }
 
 .label-text {
@@ -37,7 +37,7 @@
 
 .float {
   position: absolute;
-  width: 30px;
+  width: 40px;
   height: 100px;
   opacity: 0.5;
   border-radius: 0 15px 15px 0;
@@ -96,7 +96,6 @@ a.float:hover + div.label-container {
   flex-wrap: wrap;
   min-height: 70px !important;
   margin-top: 15px;
-  min-height: 70px;
   width: 98%;
   float: right;
   background-color: transparent;
@@ -179,6 +178,7 @@ a:not([href]) {
   overflow-y: auto;
   border-right: 2px solid #2974ab61;
   border-bottom: 2px solid #2974ab61;
+  animation: translatecollapse 0.3s;
 
   .search-panel {
     padding-left: 0;
@@ -233,17 +233,13 @@ ngx-treeview {
 }
 ::ng-deep .treeview-header {
   font-size: 12px !important;
-  //.row-filter {
   display: none;
-  //}
   font-size: 12px !important;
   color: #003c73;
 }
 ::ng-deep .treeview-container {
   font-size: 12px !important;
   padding: 2% 0;
-
-  //color: #003c73;
   color: #797979;
   padding-right: 0;
   .treeview-item {
@@ -294,10 +290,6 @@ ngx-treeview {
           left: 0;
           top: 0;
           font-size: 10px;
-          //-webkit-box-shadow: inset 0 1px 1px #00d6d4, 0 1px 0 #00d6d4;
-          //-moz-box-shadow: inset 0 1px 1px #00d6d4, 0 1px 0 #00d6d4;
-          //box-shadow: inset 0 1px 1px #00d6d4, 0 1px 0 #00d6d4;
-          //background: #00d6d4;
         }
 
         input[type="checkbox"]:hover:after,
@@ -329,9 +321,7 @@ ngx-treeview {
           display: flex;
           justify-content: start;
           flex-direction: row;
-          //flex-direction: row-reverse;
           .form-check-label {
-            //background-color: red;
             margin-left: 13%;
           }
         }
@@ -345,7 +335,6 @@ ngx-treeview {
   width: 100%;
 }
 .items-bloc {
-  // base
   .flip {
     width: 100%;
     position: relative;
@@ -447,7 +436,6 @@ ngx-treeview {
   .cadre {
     display: flex;
     justify-content: space-between;
-    //padding-left: 35px;
     flex-wrap: wrap;
     background-color: white;
     height: 800px;
@@ -504,14 +492,17 @@ img {
 
 // collapse toggle
 ::ng-deep .collapse {
-  //transition: max-height .55s, opacity .35s ease-in-out;
-  //max-height: 0;
-  //opacity: 0;
-  //display: block !important;
-
-  &.show {
-    //min-height: 150rem;
-    //opacity: 1;
+  animation: translatecollapse 0.3s;
+}
+::ng-deep .collapse:not {
+  animation: translateoff 0.3s;
+}
+@keyframes translatecollapse {
+  from {
+    transform: translateX(-20%);
+  }
+  to {
+    transform: translateX(0%);
   }
 }
 
@@ -598,42 +589,3 @@ img {
   transition: margin-left 0.5s;
   padding: 20px;
 }
-.sidebar {
-  //transform: translateX(-100%);
-  //transition: transform .2s linear;
-  //will-change: transform;
-}
-
-.open {
-  //transform:translateX(0%);;
-}
-.sidebarClosed {
-  //transform: translateX(-100%);
-  //transition: transform .2s linear;
-  //will-change: transform;
-}
-//ngx-treeview {
-//  //background-color: red !important;
-//  div {
-//    .treeview-container {
-//      background-color: #1f2b50 !important;
-//    }
-//  }
-//}
-//:host .treeview-container .row-item {
-//  margin-bottom: .3rem;
-//  flex-wrap: nowrap;
-//  width:100px;
-//  white-space: nowrap;
-//  overflow: hidden;
-//  text-overflow: ellipsis;
-//  background-color: blue;
-//}
-//.treeview-item{
-//.form-inline, .row-item{
-//  border: 1px solid;
-//  display: flex;
-//  justify-content: space-between;
-//  flex-direction: row-reverse;
-//}
-//}

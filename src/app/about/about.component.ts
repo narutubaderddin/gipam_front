@@ -8,6 +8,11 @@ import { AuthenticationService } from '@app/auth';
 })
 export class AboutComponent implements OnInit {
   constructor() {}
+  collapseSideNav: boolean = true;
 
   ngOnInit(): void {}
+  f1(e: any) {
+    this.collapseSideNav = e;
+    console.log('collapseSideNav', this.collapseSideNav);
+  }
 }

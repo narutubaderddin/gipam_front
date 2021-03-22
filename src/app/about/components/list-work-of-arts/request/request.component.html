@@ -15,7 +15,7 @@
 
   <div class="d-flex mb-2">
     <div class="col-md-3">
-      <div class="form-group d-flex slider-bloc">
+      <div class="form-group slider-bloc">
         <label for="title">N° inventaire</label>
         <div class="custom-slider">
           <ngx-slider
@@ -25,11 +25,42 @@
           ></ngx-slider>
         </div>
       </div>
-      <div class="form-group d-flex">
+      <div class="form-group">
+        <label for="title">N° inventaire</label>
+        <input type="text" class="form-control" id="numInventaire" placeholder="Numéro l'inventaire" />
+      </div>
+      <div class="form-group">
         <label for="title">Titre</label>
         <input type="text" class="form-control" id="title" placeholder="Titre" />
       </div>
-      <div class="form-group d-flex">
+    </div>
+    <hr class="vl" />
+    <div class="col-md-3">
+      <div class="form-group">
+        <label>Domaines</label>
+        <ng-multiselect-dropdown
+          class="select"
+          [placeholder]="'Choisir ses domaines'"
+          [settings]="dropdownSettings"
+          [data]="domaine"
+          (onSelect)="onDomainSelect($event)"
+          (onSelectAll)="onSelectAll($event)"
+        >
+        </ng-multiselect-dropdown>
+      </div>
+      <div class="form-group">
+        <label>Dénominations</label>
+        <ng-multiselect-dropdown
+          class="select"
+          [placeholder]="'Choisir des dénominations'"
+          [settings]="dropdownSettings"
+          [data]="WorkOfArtService.denominations"
+          (onSelect)="onItemSelect($event)"
+          (onSelectAll)="onSelectAll($event)"
+        >
+        </ng-multiselect-dropdown>
+      </div>
+      <div class="form-group">
         <label>Auteurs</label>
         <ng-multiselect-dropdown
           class="select"
@@ -44,34 +75,7 @@
     </div>
     <hr class="vl" />
     <div class="col-md-3">
-      <div class="form-group d-flex">
-        <label>Domaines</label>
-        <ng-multiselect-dropdown
-          class="select"
-          [placeholder]="'Choisir ses domaines'"
-          [settings]="dropdownSettings"
-          [data]="domaine"
-          (onSelect)="onDomainSelect($event)"
-          (onSelectAll)="onSelectAll($event)"
-        >
-        </ng-multiselect-dropdown>
-      </div>
-      <div class="form-group d-flex">
-        <label>Dénominations</label>
-        <ng-multiselect-dropdown
-          class="select"
-          [placeholder]="'Choisir des dénominations'"
-          [settings]="dropdownSettings"
-          [data]="WorkOfArtService.denominations"
-          (onSelect)="onItemSelect($event)"
-          (onSelectAll)="onSelectAll($event)"
-        >
-        </ng-multiselect-dropdown>
-      </div>
-    </div>
-    <hr class="vl" />
-    <div class="col-md-3">
-      <div class="form-group d-flex">
+      <div class="form-group">
         <label>Type de mouvement</label>
         <ng-multiselect-dropdown
           class="select"
@@ -83,7 +87,7 @@
         >
         </ng-multiselect-dropdown>
       </div>
-      <div class="form-group d-flex">
+      <div class="form-group">
         <label>Type action mouvement</label>
         <ng-multiselect-dropdown
           class="select"
@@ -98,7 +102,7 @@
     </div>
     <hr class="vl" />
     <div class="col-md-3">
-      <div class="form-group d-flex">
+      <div class="form-group">
         <label>Types de constat</label>
         <ng-multiselect-dropdown
           class="select"
@@ -110,7 +114,7 @@
         >
         </ng-multiselect-dropdown>
       </div>
-      <div class="form-group d-flex">
+      <div class="form-group">
         <label>Types actions constat</label>
         <ng-multiselect-dropdown
           class="select"
@@ -121,6 +125,17 @@
           (onSelectAll)="onSelectAll($event)"
         >
         </ng-multiselect-dropdown>
+      </div>
+      <div class="form-group mt-4 d-flex align-items-center">
+        <input
+          class="m-2"
+          type="radio"
+          name="options"
+          id="option1"
+          value="collectionTitle"
+          [(ngModel)]="collectionTitle"
+        />
+        <label>Titre de perception demandé </label>
       </div>
     </div>
   </div>
@@ -138,7 +153,7 @@
           </ng-template>
           <ng-template ngbPanelContent>
             <div class="d-flex location">
-              <div class="form-group d-flex col-xs-12 col-md-6">
+              <div class="form-group col-xs-12 col-md-6">
                 <label>Ministères</label>
                 <ng-multiselect-dropdown
                   class="select"
@@ -150,7 +165,19 @@
                 >
                 </ng-multiselect-dropdown>
               </div>
-              <div class="form-group d-flex col-xs-12 col-md-6">
+              <div class="form-group col-xs-12 col-md-6">
+                <label>Type Etablissement</label>
+                <ng-multiselect-dropdown
+                  class="select"
+                  [placeholder]="'Choisir type(s) d\'établissement(s)'"
+                  [settings]="dropdownSettings"
+                  [data]="domaine"
+                  (onSelect)="onItemSelect($event)"
+                  (onSelectAll)="onSelectAll($event)"
+                >
+                </ng-multiselect-dropdown>
+              </div>
+              <div class="form-group col-xs-12 col-md-6">
                 <label>Etab./Dir.</label>
                 <ng-multiselect-dropdown
                   class="select"
@@ -162,7 +189,7 @@
                 >
                 </ng-multiselect-dropdown>
               </div>
-              <div class="form-group d-flex col-xs-12 col-md-6">
+              <div class="form-group col-xs-12 col-md-6">
                 <label>Sous-direction</label>
                 <ng-multiselect-dropdown
                   class="select"
@@ -174,7 +201,7 @@
                 >
                 </ng-multiselect-dropdown>
               </div>
-              <div class="form-group d-flex col-xs-12 col-md-6">
+              <div class="form-group col-xs-12 col-md-6">
                 <label>Services</label>
                 <ng-multiselect-dropdown
                   class="select"
@@ -186,7 +213,7 @@
                 >
                 </ng-multiselect-dropdown>
               </div>
-              <div class="form-group d-flex col-xs-12 col-md-6">
+              <div class="form-group col-xs-12 col-md-6">
                 <label>Correspodants</label>
                 <ng-multiselect-dropdown
                   class="select"
@@ -216,7 +243,7 @@
           </ng-template>
           <ng-template ngbPanelContent>
             <div class="d-flex location">
-              <div class="form-group d-flex col-xs-12 col-md-6">
+              <div class="form-group col-xs-12 col-md-6">
                 <label>Type local</label>
                 <ng-multiselect-dropdown
                   class="select"
@@ -228,7 +255,7 @@
                 >
                 </ng-multiselect-dropdown>
               </div>
-              <div class="form-group d-flex col-xs-12 col-md-6">
+              <div class="form-group col-xs-12 col-md-6">
                 <label>Régions</label>
                 <ng-multiselect-dropdown
                   class="select"
@@ -240,7 +267,7 @@
                 >
                 </ng-multiselect-dropdown>
               </div>
-              <div class="form-group d-flex col-xs-12 col-md-6">
+              <div class="form-group col-xs-12 col-md-6">
                 <label>Départements</label>
                 <ng-multiselect-dropdown
                   class="select"
@@ -252,7 +279,7 @@
                 >
                 </ng-multiselect-dropdown>
               </div>
-              <div class="form-group d-flex col-xs-12 col-md-6">
+              <div class="form-group col-xs-12 col-md-6">
                 <label>Communes</label>
                 <ng-multiselect-dropdown
                   class="select"
@@ -264,7 +291,7 @@
                 >
                 </ng-multiselect-dropdown>
               </div>
-              <div class="form-group d-flex col-xs-12 col-md-6">
+              <div class="form-group col-xs-12 col-md-6">
                 <label>Bâtiments</label>
                 <ng-multiselect-dropdown
                   class="select"
@@ -276,7 +303,7 @@
                 >
                 </ng-multiselect-dropdown>
               </div>
-              <div class="form-group d-flex col-xs-12 col-md-6">
+              <div class="form-group col-xs-12 col-md-6">
                 <label>Sites</label>
                 <ng-multiselect-dropdown
                   class="select"
@@ -288,7 +315,7 @@
                 >
                 </ng-multiselect-dropdown>
               </div>
-              <div class="form-group d-flex col-xs-12 col-md-6">
+              <div class="form-group col-xs-12 col-md-6">
                 <label>N pièces</label>
                 <ng-multiselect-dropdown
                   class="select"
@@ -300,7 +327,7 @@
                 >
                 </ng-multiselect-dropdown>
               </div>
-              <div class="form-group d-flex col-xs-12 col-md-6">
+              <div class="form-group col-xs-12 col-md-6">
                 <label>Correspondants</label>
                 <ng-multiselect-dropdown
                   class="select"
@@ -395,7 +422,7 @@
     </div>
     <div class="col-md-3"></div>
     <div class="advanced-sub-bloc">
-      <div class="form-group d-flex col-md-8 col-lg-9">
+      <div class="form-group col-md-8 col-lg-9">
         <label>Epoques</label>
         <ng-multiselect-dropdown
           class="select"
@@ -411,7 +438,7 @@
         <option value="1">Et</option>
         <option value="0">Ou</option>
       </select>
-      <div class="form-group d-flex col-md-8 col-lg-9">
+      <div class="form-group col-md-8 col-lg-9">
         <label>Styles</label>
         <ng-multiselect-dropdown
           class="select"
@@ -427,8 +454,9 @@
         <option value="1">Et</option>
         <option value="0">Ou</option>
       </select>
-      <div class="form-group d-flex col-md-8 col-lg-9">
+      <div class="form-group col-md-8 col-lg-9">
         <label>Matières</label>
+
         <ng-multiselect-dropdown
           class="select"
           [placeholder]="'Choisir des matières'"
@@ -439,6 +467,7 @@
         >
         </ng-multiselect-dropdown>
       </div>
+
       <select class="input-form-control col-md-2">
         <option value="1">Et</option>
         <option value="0">Ou</option>
@@ -446,7 +475,7 @@
     </div>
     <hr class="vl" />
     <div class="advanced-sub-bloc">
-      <div class="form-group d-flex col-xs-12 col-md-8 col-lg-9 slider-bloc">
+      <div class="form-group col-xs-12 col-md-8 col-lg-9 slider-bloc">
         <label>Hauteur</label>
         <div class="custom-slider">
           <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="dimensionsOptions"></ngx-slider>
@@ -456,7 +485,7 @@
         <option value="1">Et</option>
         <option value="0">Ou</option>
       </select>
-      <div class="form-group d-flex col-xs-12 col-md-8 col-lg-9 slider-bloc">
+      <div class="form-group col-xs-12 col-md-8 col-lg-9 slider-bloc">
         <label>Longueur</label>
         <div class="custom-slider">
           <ngx-slider
@@ -470,7 +499,7 @@
         <option value="1">Et</option>
         <option value="0">Ou</option>
       </select>
-      <div class="form-group d-flex col-xs-12 col-md-9 col-lg-9 slider-bloc">
+      <div class="form-group col-xs-12 col-md-9 col-lg-9 slider-bloc">
         <label>Largeur</label>
         <div class="custom-slider">
           <ngx-slider [(value)]="widthValue" [(highValue)]="highWidthValue" [options]="dimensionsOptions"></ngx-slider>
@@ -483,7 +512,7 @@
     </div>
     <hr class="vl" />
     <div class="advanced-sub-bloc">
-      <div class="form-group d-flex col-xs-12 col-md-9 col-lg-9 slider-bloc">
+      <div class="form-group col-xs-12 col-md-9 col-lg-9 slider-bloc">
         <label>Hauteur Tot</label>
         <div class="custom-slider">
           <ngx-slider [(value)]="totValue" [(highValue)]="highTotValue" [options]="dimensionsOptions"></ngx-slider>
@@ -493,7 +522,7 @@
         <option value="1">Et</option>
         <option value="0">Ou</option>
       </select>
-      <div class="form-group d-flex col-xs-12 col-md-9 col-lg-9 slider-bloc">
+      <div class="form-group col-xs-12 col-md-9 col-lg-9 slider-bloc">
         <label>Longueur Tot</label>
         <div class="custom-slider">
           <ngx-slider
@@ -507,7 +536,7 @@
         <option value="1">Et</option>
         <option value="0">Ou</option>
       </select>
-      <div class="form-group d-flex col-xs-12 col-md-9 col-lg-9 slider-bloc">
+      <div class="form-group col-xs-12 col-md-9 col-lg-9 slider-bloc">
         <label>Largeur Tot</label>
         <div class="custom-slider">
           <ngx-slider
@@ -522,19 +551,20 @@
         <option value="0">Ou</option>
       </select>
     </div>
-    <div class="col-12 mt-3"></div>
+    <div class="col-12 mt-3 d-flex"></div>
     <div class="advanced-sub-bloc">
-      <div class="form-group d-flex col-xs-12 col-md-9 col-lg-9 slider-bloc">
+      <div class="form-group col-xs-12 col-md-9 col-lg-9 slider-bloc">
         <label>Profondeur</label>
         <div class="custom-slider">
           <ngx-slider [(value)]="depthValue" [(highValue)]="highDepthValue" [options]="dimensionsOptions"></ngx-slider>
         </div>
       </div>
-      <select class="input-form-control col-md-2">
+      <select class="input-form-control col-md-2 align-self-center">
         <option value="1">Et</option>
         <option value="0">Ou</option>
       </select>
-      <div class="form-group d-flex col-xs-12 col-md-9 col-lg-9 slider-bloc">
+
+      <div class="form-group col-xs-12 col-md-9 col-lg-9 slider-bloc">
         <label>Poids</label>
         <div class="custom-slider">
           <ngx-slider
@@ -544,22 +574,22 @@
           ></ngx-slider>
         </div>
       </div>
-      <select class="input-form-control col-md-2">
+      <select class="input-form-control col-md-2 align-self-center">
         <option value="1">Et</option>
         <option value="0">Ou</option>
       </select>
-      <div class="form-group d-flex col-xs-12 col-md-9 col-lg-9 slider-bloc">
+      <div class="form-group col-xs-12 col-md-9 col-lg-9 slider-bloc">
         <label>N unité</label>
         <input type="number" class="form-control" id="unit" />
       </div>
-      <select class="input-form-control col-md-2">
+      <select class="input-form-control col-md-2 align-self-center">
         <option value="1">Et</option>
         <option value="0">Ou</option>
       </select>
     </div>
     <hr class="vl" />
     <div class="advanced-sub-bloc">
-      <div class="form-group d-flex col-md-8 col-lg-9">
+      <div class="form-group col-md-8 col-lg-9">
         <label>Type de statut</label>
         <ng-multiselect-dropdown
           class="select"
@@ -575,7 +605,7 @@
         <option value="1">Et</option>
         <option value="0">Ou</option>
       </select>
-      <div class="form-group d-flex col-md-8 col-lg-9">
+      <div class="form-group col-md-8 col-lg-9">
         <label>Catégories</label>
         <ng-multiselect-dropdown
           class="select"
@@ -591,7 +621,7 @@
         <option value="1">Et</option>
         <option value="0">Ou</option>
       </select>
-      <div class="form-group d-flex col-md-8 col-lg-9">
+      <div class="form-group col-md-8 col-lg-9">
         <label>Mode Entrée</label>
         <ng-multiselect-dropdown
           class="select"
@@ -607,7 +637,7 @@
         <option value="1">Et</option>
         <option value="0">Ou</option>
       </select>
-      <div class="form-group d-flex col-md-12 col-lg-12">
+      <div class="form-group col-md-12 col-lg-12">
         <label class="col-md-3 pl-0">Date Entrée</label>
         <form class="form-inline">
           <div class="form-group hidden">
@@ -676,8 +706,43 @@
         </form>
       </div>
     </div>
-  </div>
+    <hr class="vl" />
+    <div class="advanced-sub-bloc">
+      <div class="form-group col-md-8 col-lg-9">
+        <div class="form-group col-md-10 col-lg-12 p-0">
+          <label>Déposants</label>
+          <ng-multiselect-dropdown
+            class="select"
+            [placeholder]="'Choisir un/plusieurs déposants'"
+            [settings]="dropdownSettings"
+            [data]="depositor"
+            (onSelect)="onDomainSelect($event)"
+            (onSelectAll)="onSelectAll($event)"
+          >
+          </ng-multiselect-dropdown>
+        </div>
+        <div class="form-group col-md-10 col-lg-12 p-0">
+          <label class="col-12 p-0">Oeuvres archivées</label>
+          <select class="input-form-control col-md-12">
+            <option value="sans oeuvres archivé">Sans oeuvres archivées</option>
+            <option value="avec oeuvres archivé">Avec oeuvres archivées</option>
+            <option value="uniquement oeuvres">Uniquement oeuvres</option>
+          </select>
+        </div>
+      </div>
+    </div>
 
+    <div class="form-group d-flex p-3 align-items-center">
+      <label class="mr-2">Mots descriptifs:</label>
+      <tag-input
+        [(ngModel)]="items"
+        [editable]="true"
+        (onTagEdited)="onTagEdited($event)"
+        secondaryPlaceholder="Entrer mots descriptifs"
+        placeholder="+Mots descriptifs"
+      ></tag-input>
+    </div>
+  </div>
   <div class="validation">
     <button class="mt-1 valid-btn" (click)="onValidateRequest()">Valider</button>
   </div>
