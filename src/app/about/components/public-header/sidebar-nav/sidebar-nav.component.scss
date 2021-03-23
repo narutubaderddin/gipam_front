@@ -31,12 +31,11 @@ h6 {
   border-radius: 25%;
   i {
     color: #002a75;
-    font-size: 14px;
   }
 }
 .btn-show:focus {
   color: #fff;
-  box-shadow: 0 0 0.1rem 0.2rem rgb(22 54 130 / 58%);
+  box-shadow: none;
 }
 a,
 a:hover,
@@ -83,9 +82,12 @@ a:focus {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
 }
-
+li a i:hover {
+  color: #f5f5f5 !important;
+}
 .sidebar-nav {
   width: 250px;
+  cursor: pointer;
 }
 .collapsed-nav {
   overflow: hidden;
@@ -235,6 +237,7 @@ ul ul a {
     height: 40px;
     width: 40px;
     display: block;
+
     span {
       font-size: 0;
     }
