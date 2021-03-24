@@ -2,9 +2,9 @@
   <!-- Sidebar  -->
   <nav
     id="sidebar"
-    [class.active]="classApplied"
+    [class.active]="collapseMenu"
     class="sidebar"
-    [ngClass]="classApplied ? 'collapsed-nav' : 'sidebar-nav'"
+    [ngClass]="collapseMenu ? 'collapsed-nav' : 'sidebar-nav'"
   >
     <div class="sidebar-header">
       <button type="button" id="sidebarCollapse" (click)="toggle()" class="btn btn-show">

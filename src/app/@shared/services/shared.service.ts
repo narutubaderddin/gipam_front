@@ -5,6 +5,7 @@ import * as moment from 'moment';
 
 @Injectable({ providedIn: 'root' })
 export class SharedService {
+  collapseMenu: boolean = true;
   constructor(private http: HttpClient) {}
 
   /**

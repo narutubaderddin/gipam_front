@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { AuthenticationService } from '@app/auth';
+import { SharedService } from '@shared/services/shared.service';
 
 @Component({
   selector: 'app-about',
