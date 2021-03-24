@@ -1,0 +1,330 @@
+body {
+  font-family: "Poppins", sans-serif;
+  background: #fafafa;
+}
+
+p {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.1em;
+  font-weight: 300;
+  line-height: 1.7em;
+  color: #999;
+}
+
+.wrapper {
+  display: flex;
+  width: 100%;
+}
+
+// sidebar
+.logo {
+  width: 120px;
+  margin-bottom: 5%;
+}
+h6 {
+  color: #002a75;
+  font-weight: 600;
+}
+.btn-show {
+  color: #002a75;
+
+  border-radius: 25%;
+  i {
+    color: #002a75;
+  }
+}
+.btn-show:focus {
+  color: #fff;
+  box-shadow: none;
+}
+a,
+a:hover,
+a:focus {
+  //color: inherit;
+  text-decoration: none;
+  transition: width 0.3s;
+  text-align: start;
+}
+
+.home {
+  background-color: #be3d4d !important;
+}
+
+.rapport {
+  background-color: #5a4b5f !important;
+  a {
+    color: white;
+  }
+}
+.administration {
+  background-color: #1f2b50 !important;
+}
+
+.bt {
+  padding-right: 30px !important;
+  padding-left: 30px !important;
+}
+
+.sidebar {
+  background: #407ca8;
+  color: #fff;
+  min-height: 100vh;
+  overflow: hidden;
+  transition: width 0.5s;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 50;
+  overflow-y: scroll;
+  padding-bottom: 10%;
+
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+li a i:hover {
+  color: #f5f5f5 !important;
+}
+.sidebar-nav {
+  width: 250px;
+  cursor: pointer;
+}
+.collapsed-nav {
+  overflow: hidden;
+  width: 60px;
+  border-right: 2px solid #f6f6f6;
+}
+
+.sidebar .sidebar-header {
+  padding: 20px;
+  background: #fffffe;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.sidebar ul.components {
+  padding: 20px 0;
+  border-bottom: 1px solid #47748b;
+}
+
+.sidebar ul p {
+  padding: 10px;
+}
+
+.sidebar ul li a {
+  padding: 10px;
+  font-size: 1.1em;
+  display: block;
+  padding-left: 15px;
+}
+.sidebar ul li a:hover span {
+  border-bottom: 2px solid white;
+}
+
+.sidebar ul li.active > a,
+a[aria-expanded="true"] {
+  color: #fff;
+}
+.nav-active {
+  span {
+    border-bottom: 2px solid white;
+  }
+}
+ul ul a {
+  font-size: 0.9em !important;
+  padding-left: 30px !important;
+  background: #5a4b5f;
+}
+
+.sidebar.active {
+  text-align: center;
+}
+
+/* Toggling the sidebar header content*/
+.sidebar .sidebar-header strong,
+.sidebar.active .sidebar-header .logo,
+.sidebar.active .sidebar-header h6,
+.sidebar.active .dropdown-toggle::after {
+  display: none;
+}
+
+.sidebar.active .sidebar-header strong {
+  display: block;
+}
+
+.sidebar.active .dropdown ul {
+  display: none;
+}
+
+.sidebar.active ul li a span {
+  display: none;
+}
+
+/* Changing the arrow position to bottom center position,
+   translateX(50%) works with right: 50%
+   to accurately  center the arrow */
+.sidebar.active .dropdown-toggle::after {
+  top: auto;
+  bottom: 10px;
+  right: 50%;
+  -webkit-transform: translateX(50%);
+  -ms-transform: translateX(50%);
+  transform: translateX(50%);
+}
+
+.floating-add-button {
+  .label-container {
+    position: fixed;
+    bottom: 48px;
+    right: 105px;
+    display: table;
+    visibility: hidden;
+  }
+
+  .label-text {
+    color: #fff;
+    background: rgba(51, 51, 51, 0.5);
+    display: table-cell;
+    vertical-align: middle;
+    padding: 10px;
+    border-radius: 3px;
+  }
+
+  .label-arrow {
+    display: table-cell;
+    vertical-align: middle;
+    color: #333;
+    opacity: 0.5;
+  }
+
+  .float {
+    position: fixed;
+    width: 80px;
+    height: 40px;
+    top: 90%;
+    left: 0;
+    background-color: #00d6d4;
+    color: #fff;
+    border-radius: 0 50px 50px 0;
+    text-align: center;
+    box-shadow: 2px 2px 3px #999999;
+    z-index: 1000;
+    animation: bot-to-top 2s ease-out;
+  }
+
+  ul {
+    position: fixed;
+    left: 0px;
+    padding-bottom: 20px;
+    bottom: 6%;
+    z-index: 100;
+  }
+
+  ul li {
+    list-style: none;
+    margin-bottom: 10px;
+  }
+
+  ul li a {
+    background-color: #1f2b50;
+    color: #fff;
+    border-radius: 50px;
+    text-align: center;
+    box-shadow: 2px 2px 3px #999;
+    height: 40px;
+    width: 40px;
+    display: block;
+
+    span {
+      font-size: 0;
+    }
+  }
+  .add-prop-notice:hover {
+    width: 300px !important;
+    span {
+      font-size: 18px !important;
+    }
+  }
+
+  ul:hover {
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .my-float {
+    font-size: 18px;
+    margin-top: 13px;
+    margin-left: 4px;
+  }
+  ul {
+    display: flex;
+    flex-direction: column;
+    place-items: flex-start;
+  }
+  a#menu-share + ul {
+    visibility: hidden;
+  }
+
+  a#menu-share:hover + ul {
+    visibility: visible;
+    animation: scale-in 0.5s;
+  }
+
+  a#menu-share i {
+    animation: rotate-in 0.5s;
+  }
+
+  a#menu-share:hover > i {
+    animation: rotate-out 0.5s;
+  }
+
+  @keyframes bot-to-top {
+    0% {
+      bottom: -40px;
+    }
+    50% {
+      bottom: 40px;
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      transform: scale(0);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes rotate-in {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes rotate-out {
+    from {
+      transform: rotate(360deg);
+    }
+    to {
+      transform: rotate(0deg);
+    }
+  }
+}
+
+// scroll css
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: none !important;
+}
+
+::-webkit-scrollbar {
+  width: 4px !important;
+}

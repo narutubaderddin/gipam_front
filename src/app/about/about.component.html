@@ -1,4 +1,12 @@
-<app-public-header></app-public-header>
-<div class="bar"></div>
-<app-ng7-bootstrap-breadcrumb></app-ng7-bootstrap-breadcrumb>
-<router-outlet></router-outlet>
+<!--<app-public-header></app-public-header>-->
+<!--<div class="bar"></div>-->
+<div class="d-flex">
+  <div [ngClass]="collapseSideNav ? 'sideNavCollapsed' : 'sideNav'">
+    <app-sidebar-nav (open)="f1($event)"></app-sidebar-nav>
+  </div>
+
+  <div style="transition: all 0.5s; width: 100%" [ngClass]="collapseSideNav ? 'main-full-width' : 'main'">
+    <app-ng7-bootstrap-breadcrumb></app-ng7-bootstrap-breadcrumb>
+    <router-outlet></router-outlet>
+  </div>
+</div>

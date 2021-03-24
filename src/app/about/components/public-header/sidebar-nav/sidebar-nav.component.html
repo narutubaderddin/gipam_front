@@ -1,0 +1,98 @@
+<div class="wrapper d-flex">
+  <!-- Sidebar  -->
+  <nav
+    id="sidebar"
+    [class.active]="classApplied"
+    class="sidebar"
+    [ngClass]="classApplied ? 'collapsed-nav' : 'sidebar-nav'"
+  >
+    <div class="sidebar-header">
+      <button type="button" id="sidebarCollapse" (click)="toggle()" class="btn btn-show">
+        <i class="fas fa-bars"></i>
+        <span></span>
+      </button>
+      <hr />
+      <img alt="logo-minefi" src="assets/images/logo-minefi.jpg" class="logo" />
+      <h6>MINISTERE DE L'ECONOMIE ET DES FINANCES</h6>
+      <strong></strong>
+    </div>
+
+    <ul class="navbar-nav">
+      <li *ngIf="isAuthentiticated" class="right-header list main_nav_list_item home" (click)="home()">
+        <div class="dropdown nav-menu" [class.nav-active]="menu == 1">
+          <a class="home pl-3 pr-3">
+            <i class="fas fa-home" style="font-size: 18px"></i>
+            <span style="margin-left: 5px">Accueil</span>
+          </a>
+        </div>
+      </li>
+      <li
+        class="right-header list main_nav_list_item administration"
+        *ngIf="isAuthentiticated"
+        (click)="goToWorkOfArts()"
+      >
+        <div class="dropdown nav-menu" [class.nav-active]="menu == 2">
+          <a class="pl-3 pr-3">
+            <i class="far fa-object-group" style="font-size: 18px"></i>
+            <span style="margin-left: 5px">Recherche</span>
+          </a>
+        </div>
+      </li>
+      <li class="right-header list main_nav_list_item rapport" *ngIf="isAuthentiticated">
+        <div class="dropdown nav-menu" [class.nav-active]="menu == 3">
+          <a
+            href="#dropRapport"
+            data-toggle="collapse"
+            aria-expanded="false"
+            class="dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            aria-haspopup="true"
+          >
+            <i class="fas fa-poll" style="font-size: 18px"></i>
+            <span style="margin-left: 5px">Rapport</span>
+          </a>
+          <ul class="collapse list-unstyled" id="dropRapport">
+            <li><a class="dropdown-item" href="#">Etats des objets mobilier</a></li>
+            <li><a class="dropdown-item" href="#">Statistiques des dépôts</a></li>
+            <li><a class="dropdown-item" href="#">Localisations des dépôts</a></li>
+            <li><a class="dropdown-item" href="#">Résultat des récolements</a></li>
+            <li><a class="dropdown-item" href="#">Etat d'inventaire</a></li>
+          </ul>
+        </div>
+      </li>
+      <li *ngIf="isAuthentiticated" class="right-header list main_nav_list_item portail" (click)="goToPoratil()">
+        <div class="dropdown nav-menu" [class.nav-active]="menu == 4">
+          <a class="pl-3 pr-3">
+            <i class="fas fa-images" style="font-size: 18px"></i> <span style="margin-left: 5px">Portail</span>
+          </a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="floating-add-button">
+    <a href="#" class="float" id="menu-share">
+      <i class="fa fa-plus my-float"></i>
+    </a>
+    <ul>
+      <li>
+        <a
+          style="background-color: #00d6d4"
+          ngbTooltip=""
+          placement="left"
+          class="add-prop-notice"
+          routerLink="/add-property-remarquer"
+          ><i class="fas fa-window-restore my-float"></i>
+          <span>Ajouter une notice en propriété</span>
+        </a>
+      </li>
+      <li>
+        <a style="background-color: #0080ff" class="add-prop-notice">
+          <i class="fas fa-warehouse my-float"></i>
+          <span>Ajouter une notice en dépôt</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

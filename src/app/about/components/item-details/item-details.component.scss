@@ -1,10 +1,10 @@
-.bloc-header {
-  position: fixed;
-  z-index: 1030;
-  background-color: white;
-  margin-top: 170px;
-  margin-left: 10px;
-}
+//.bloc-header {
+//  position: fixed;
+//  z-index: 1030;
+//  background-color: white;
+//  margin-top: 170px;
+//  margin-left: 10px;
+//}
 .valid-btn {
   background-color: #0080ff;
   color: white;
@@ -15,22 +15,18 @@
   color: white;
 }
 .float {
-  //position: fixed;
-  height: 40px;
+  height: 3.125vw;
   width: 17vw;
   border-radius: 50px 0 0 50px;
   padding: 1%;
   color: white;
-  text-align: center;
-  box-shadow: 2px 2px 3px #999;
   z-index: 10;
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-right: 20px;
+  //margin-right: 15px;
   cursor: pointer;
   i {
-    margin-left: 20px;
+    margin: 20px;
     font-size: 24px;
   }
   span {
@@ -38,19 +34,15 @@
   }
 }
 .float-collapsed {
-  //position: fixed;
+  justify-content: center;
   height: 40px;
   width: 40px;
   border-radius: 50px 0 0 50px;
   padding: 1%;
   color: white;
-  text-align: center;
-  box-shadow: 2px 2px 3px #999;
   z-index: 10;
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-right: 20px;
   cursor: pointer;
   i {
     margin-left: 0px;
@@ -84,6 +76,8 @@ li a {
   align-items: center;
   padding-top: 10px;
   padding-bottom: 5px;
+  //width:5%;
+  //height: 5%;
 }
 //a:hover {
 //  color: #004d9d !important;
@@ -100,7 +94,7 @@ button {
 .titre {
   //font-family: 'BNPP Sans', Arial, Helvetica, sans-serif;
   margin: 0;
-  font-size: 2.4375rem;
+  font-size: 2rem;
   color: #0466c8;
   font-weight: 700;
   font-family: Arial, Helvetica, sans-serif;
@@ -170,6 +164,10 @@ button {
     .icons {
       display: flex;
       flex-direction: row-reverse;
+      align-items: center;
+      i {
+        font-size: 25px;
+      }
     }
   }
   .third-bloc,

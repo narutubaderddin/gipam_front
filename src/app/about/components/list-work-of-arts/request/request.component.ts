@@ -41,6 +41,10 @@ export class RequestComponent implements OnInit {
 
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
+
+  depositor: any;
+  collectionTitle: boolean = false;
+  items: any = [];
   constructor(
     public WorkOfArtService: WorkOfArtService,
     private calendar: NgbCalendar,
@@ -48,6 +52,7 @@ export class RequestComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.depositor = this.WorkOfArtService.depositor;
     this.domaine = this.WorkOfArtService.domaine;
     this.dropdownSettings = {
       singleSelection: false,
@@ -77,7 +82,9 @@ export class RequestComponent implements OnInit {
       },
     };
   }
-
+  onTagEdited(e: any) {
+    console.log(e);
+  }
   onItemSelect(item: any) {
     console.log(item);
   }

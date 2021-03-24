@@ -8,10 +8,13 @@
 
 .input-form-control {
   border-color: #e4e4e4;
-  width: 100px;
+  //width: 100px;
   font-size: 12px;
   border-radius: 4px;
-  margin: 0px 5px 5px 0;
+  margin: 0px 0.5rem 0.5rem 0;
+  height: 30px;
+  align-self: flex-end;
+  padding: 0 2%;
   &:focus {
     box-shadow: none;
     border-color: #e4e4e4;
@@ -65,7 +68,7 @@ button {
   margin-bottom: 0.5rem;
   label {
     font-size: 12px;
-    width: 35%;
+    //width: 35%;
     margin-bottom: 0;
     line-height: 25px;
     &.col-md-4 {
@@ -73,7 +76,7 @@ button {
     }
   }
   input {
-    width: 65%;
+    //width: 65%;
     font-size: 12px;
   }
   ::ng-deep ng-multiselect-dropdown {
@@ -82,6 +85,15 @@ button {
   .creation-date-label {
     padding-left: 0;
     padding-right: 0;
+  }
+}
+
+// css accordion card
+::ng-deep .accordion {
+  .card {
+    .card-body {
+      height: 300px !important;
+    }
   }
 }
 
@@ -109,9 +121,10 @@ button {
 }
 .slider-bloc {
   height: 25px;
+  margin-bottom: 2rem;
 }
 .custom-slider {
-  width: 65%;
+  width: 100%;
 }
 
 // css ngx-slider
