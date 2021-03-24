@@ -7,8 +7,8 @@ hr {
 
 .divider {
   border-bottom: 0.1em solid #babfc7;
-  width: 90%;
-  margin-left: 40px;
+  width: 95%;
+  margin-left: 10px;
 }
 
 ::ng-deep ng-multiselect-dropdown {
@@ -20,5 +20,15 @@ hr {
   background-color: white;
 }
 label {
-  font-size: 18px !important;
+  font-size: 16px !important;
+  color: #484848;
+}
+.form-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  max-width: 30%;
+  margin: 0.5% 1%;
+  font-size: 14px;
+  color: gray;
 }

@@ -2,5 +2,18 @@
   margin-top: 3%;
 }
 label {
-  font-size: 18px;
+  font-size: 16px !important;
+  color: #484848;
+}
+.form-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  //max-width: 30%;
+  margin: 0.5% 1%;
+  font-size: 14px;
+  color: gray;
+}
+.form-bloc {
+  min-height: 120px;
 }

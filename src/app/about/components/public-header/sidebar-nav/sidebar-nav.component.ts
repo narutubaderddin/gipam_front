@@ -1,6 +1,7 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '@app/auth';
+import { SharedService } from '@shared/services/shared.service';
 
 @Component({
   selector: 'app-sidebar-nav',
@@ -8,20 +9,30 @@ import { AuthenticationService } from '@app/auth';
   styleUrls: ['./sidebar-nav.component.scss'],
 })
 export class SidebarNavComponent implements OnInit {
-  classApplied: boolean = true;
+  collapseMenu: boolean = true;
+
   @Output() open = new EventEmitter();
 
   menu = 1;
   isAuthentiticated: boolean = false;
-  constructor(private router: Router, private authenticationService: AuthenticationService) {
+  constructor(
+    private router: Router,
+    private authenticationService: AuthenticationService,
+    private sharedService: SharedService
+  ) {
     this.isAuthentiticated = authenticationService.isAuthenticated();
   }
 
   ngOnInit(): void {}
-
+  // set openMenu(value: string) {
+  // this.sharedService.collapseMenu = this.collapseMenu;
+  // }
   toggle() {
-    this.classApplied = !this.classApplied;
-    this.open.emit(this.classApplied);
+    this.collapseMenu = !this.collapseMenu;
+    console.log('collapseMenu', this.collapseMenu);
+    this.open.emit(this.collapseMenu);
+    this.sharedService.collapseMenu = this.collapseMenu;
+    // console.log(this.sharedService.collapseMenu);
   }
 
   home() {

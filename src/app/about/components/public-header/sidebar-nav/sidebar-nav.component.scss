@@ -27,7 +27,7 @@ h6 {
 }
 .btn-show {
   color: #002a75;
-
+  align-self: flex-end;
   border-radius: 25%;
   i {
     color: #002a75;
@@ -142,12 +142,16 @@ ul ul a {
 .sidebar.active {
   text-align: center;
 }
+.sidebar.active .sidebar-header .btn-show {
+  align-self: center;
+}
 
 /* Toggling the sidebar header content*/
 .sidebar .sidebar-header strong,
 .sidebar.active .sidebar-header .logo,
 .sidebar.active .sidebar-header h6,
-.sidebar.active .dropdown-toggle::after {
+.sidebar.active .dropdown-toggle::after,
+.sidebar.active ul li a span {
   display: none;
 }
 
@@ -156,10 +160,6 @@ ul ul a {
 }
 
 .sidebar.active .dropdown ul {
-  display: none;
-}
-
-.sidebar.active ul li a span {
   display: none;
 }
 
@@ -211,7 +211,7 @@ ul ul a {
     border-radius: 0 50px 50px 0;
     text-align: center;
     box-shadow: 2px 2px 3px #999999;
-    z-index: 1000;
+    z-index: 100;
     animation: bot-to-top 2s ease-out;
   }
 

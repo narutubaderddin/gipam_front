@@ -1,4 +1,4 @@
-<div class="form-bloc row">
+<div class="form-bloc">
   <div class="form-group col-md-4">
     <label>Titre</label>
     <input class="form-control" placeholder="titre" *ngIf="edit" />
@@ -206,7 +206,7 @@
         <div [innerHTML]="notFound"></div>
       </ng-template>
     </div>
-    <div class="col-md-8 value" *ngIf="!edit">85cm</div>
+    <div class="value" *ngIf="!edit">85cm</div>
   </div>
   <div class="form-group col-md-4">
     <label class="">Date de création</label>

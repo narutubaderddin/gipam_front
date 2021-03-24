@@ -3,7 +3,7 @@
     <div class="col-md-12 cadre">
       <div class="col-md-12 main-info d-flex">
         <div class="col-md-12 row">
-          <div class="col-md-12 row bloc-header">
+          <div class="row bloc-header" [ngClass]="menuClosed ? 'fullwidth' : 'width'">
             <div class="first-bloc col-md-12 row">
               <div>
                 <a href="portail"><i class="zmdi zmdi-fast-rewind"></i> Retour aux résultats de la recherche</a>
@@ -13,200 +13,284 @@
                 |
                 <a href="#">Suivant <i class="zmdi zmdi-caret-right"></i></a>
               </div>
-              <!--            </div>-->
             </div>
-            <div class="col-8 titre">Titre de l'Oeuvre N inventaire 145</div>
+
+            <div class="col-8 titre">
+              Titre de l'Oeuvre N inventaire 145
+              <i class="fas fa-images ml-4" title="voir image" (click)="showImg()"></i>
+            </div>
+
+            <!--                          <div class="col-md-2 d-flex p-0" style="height: 20%;">-->
+            <!--                            <img src="assets/images/365.jpg" alt="" style="width: auto; max-width: 100%" />-->
+            <!--                          </div>-->
             <div class="col-4 icons">
+              <!--              <i class="fas fa-images" title="voir image" (click)="showImg()"></i>-->
               <i class="fas fa-archive"></i>
               <i class="far fa-file-excel"></i>
               <i class="fas fa-print"></i>
               <i class="far fa-edit" (click)="onEditMode()"></i>
+              <!--              <button class="btn btn-outline-primary" (click)="static=!static">-->
+              <!--                {{static? 'Dynamique':'statique'}}-->
+              <!--              </button>-->
+              <div class="row btn-slider mr-2">
+                <label>statique</label>
+                <label class="switch">
+                  <input type="checkbox" [(ngModel)]="!static" />
+                  <span class="slider round"></span>
+                </label>
+                <label>Dynamique</label>
+              </div>
             </div>
           </div>
 
-          <div [ngClass]="isCollapsed ? 'col-md-11' : 'col-md-8'" style="margin-top: 5%">
-            <app-accordion-section
-              #accordionSectionDOM
-              [editable]="true"
-              [showIcon]="true"
-              [headerTitle]="'Descriptif'"
-              [icon]="'far fa-file-alt'"
-              [idMilestoneSection]="1"
-              [sectionIndex]="1"
-              [index]="1"
-              [sectionTitle]="'Descriptif'"
-            >
-              <!--                <img src="assets/images/icons/description.png" alt="">-->
-              <app-descritif [edit]="edit"></app-descritif>
-            </app-accordion-section>
-            <app-accordion-section
-              #accordionSectionDOM
-              [editable]="true"
-              [headerTitle]="'Status'"
-              [idMilestoneSection]="2"
-              [sectionIndex]="2"
-              [showIcon]="true"
-              [icon]="'far fa-calendar-alt'"
-              [index]="2"
-              [sectionTitle]="'Status'"
-            >
-              <app-status [edit]="edit"></app-status>
-            </app-accordion-section>
-            <app-accordion-section
-              #accordionSectionDOM
-              [editable]="true"
-              [headerTitle]="'Déposant'"
-              [idMilestoneSection]="3"
-              [sectionIndex]="3"
-              [showIcon]="true"
-              [index]="3"
-              [icon]="'fas fa-user-tag'"
-              [sectionTitle]="'Déposant'"
-            >
-              <app-depositor [edit]="edit"></app-depositor>
-            </app-accordion-section>
-          </div>
-          <div class="col-1" *ngIf="isCollapsed" style="margin-top: 5%">
-            <div>
-              <a
-                class="float-collapsed"
-                style="background-color: #00d6d4 !important; color: #fff"
-                (click)="isCollapsed = !isCollapsed"
-                [attr.aria-expanded]="!isCollapsed"
+          <div class="col-md-12" style="margin-top: 8%">
+            <div id="image-viewer" [class.active]="openImg">
+              <p class="close" (click)="showImg()">&times;</p>
+              <img
+                src="assets/images/365.jpg"
+                alt=""
+                style="width: auto; height: 75%"
+                class="modal-content"
+                id="full-image"
+              />
+            </div>
+            <div *ngIf="static">
+              <div class="row">
+                <!--              <div class="col-md-12 header-section dock-menu">-->
+                <!--                <div class="container">-->
+                <!--                  <ul-->
+                <!--                    class="navbar-nav"-->
+                <!--                    [ngClass]="{-->
+                <!--                  'first-page': page == 2,-->
+                <!--                  'second-page': page == 0,-->
+                <!--                  'third-page': page == 3,-->
+                <!--                  'firth-page': page == 4,-->
+                <!--                  'fifth-page': page == 5,-->
+                <!--                  'sixth-page': page == 8,-->
+                <!--                  'seventh-page': page == 7-->
+                <!--                }"-->
+                <!--                  >-->
+
+                <!--                    <li class="nav-item firth-icon">-->
+                <!--                      <a (click)="page4()" class="nav-link text-uppercase font-weight-bold">-->
+                <!--                        <i class="zmdi zmdi-pin zmdi-hc-3x"></i>-->
+                <!--                      </a>-->
+                <!--                      <p style="margin-left: -10px">Localisations</p>-->
+                <!--                    </li>-->
+                <!--                    <li class="nav-item fifth-icon">-->
+                <!--                      <a (click)="page5()" class="nav-link text-uppercase font-weight-bold">-->
+                <!--                        <i class="fas fa-search zmdi-hc-3x"></i>-->
+                <!--                      </a>-->
+                <!--                      <p style="margin-left: 0px">Constats</p>-->
+                <!--                    </li>-->
+
+                <!--                    <li class="nav-item seventh-icon">-->
+                <!--                      <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">-->
+                <!--                        <i class="fas fa-link"></i>-->
+                <!--                      </a>-->
+                <!--                      <p style="margin-left: -22px">Liens hypertextes</p>-->
+                <!--                    </li>-->
+                <!--                  </ul>-->
+                <!--                </div>-->
+                <!--              </div>-->
+              </div>
+              <app-accordion-section
+                #accordionSectionDOM
+                [editable]="true"
+                [showIcon]="true"
+                [headerTitle]="'Descriptif'"
+                [icon]="'far fa-file-alt'"
+                [idMilestoneSection]="1"
+                [sectionIndex]="1"
+                [index]="1"
+                [sectionTitle]="'Descriptif'"
               >
-                <i *ngIf="!isCollapsed" class="fas fa-angle-double-right my-float"></i>
-                <i *ngIf="isCollapsed" class="fas fa-angle-double-left my-float"></i>
-              </a>
-            </div>
-          </div>
-          <div class="col-4" [ngbCollapse]="isCollapsed" style="margin-top: 5%">
-            <div class="row detail-image">
-              <div class="mb-2">
-                <a
-                  class="float"
-                  style="background-color: #00d6d4 !important; color: #fff"
-                  (click)="isCollapsed = !isCollapsed"
-                  [attr.aria-expanded]="!isCollapsed"
-                >
-                  <i *ngIf="!isCollapsed" class="fas fa-angle-double-right my-float"></i>
-                  <i *ngIf="isCollapsed" class="fas fa-angle-double-left my-float"></i>
-                  <span>Réduire l'image </span>
-                </a>
+                <!--                <img src="assets/images/icons/description.png" alt="">-->
+                <app-descritif [edit]="edit"></app-descritif>
+              </app-accordion-section>
+              <div class="row">
+                <div class="col-md-6">
+                  <app-accordion-section
+                    #accordionSectionDOM
+                    [editable]="true"
+                    [headerTitle]="'Status'"
+                    [idMilestoneSection]="2"
+                    [sectionIndex]="2"
+                    [showIcon]="true"
+                    [icon]="'far fa-calendar-alt'"
+                    [index]="2"
+                    [sectionTitle]="'Status'"
+                  >
+                    <app-status [edit]="edit"></app-status>
+                  </app-accordion-section>
+                </div>
+                <div class="col-md-6">
+                  <app-accordion-section
+                    #accordionSectionDOM
+                    [editable]="true"
+                    [headerTitle]="'Déposant'"
+                    [idMilestoneSection]="3"
+                    [sectionIndex]="3"
+                    [showIcon]="true"
+                    [index]="3"
+                    [icon]="'fas fa-user-tag'"
+                    [sectionTitle]="'Déposant'"
+                  >
+                    <app-depositor [edit]="edit"></app-depositor>
+                  </app-accordion-section>
+                </div>
               </div>
-              <div class="col-md-12 d-flex p-0" style="justify-content: flex-end">
-                <img src="assets/images/365.jpg" alt="" style="width: auto; max-width: 100%" />
-              </div>
-            </div>
-          </div>
-          <div
-            *ngIf="edit"
-            [ngClass]="isCollapsed ? 'col-md-11' : 'col-md-8'"
-            style="display: flex; flex-direction: row-reverse"
-          >
-            <button class="btn valid-btn" (click)="onSave()">Enregistrer</button>
-            <button class="btn btn-action cancel-btn">Annuler</button>
-          </div>
-          <div class="col-md-12 header-section dock-menu">
-            <div class="container">
-              <ul
-                class="navbar-nav"
-                [ngClass]="{
-                  'first-page': page == 2,
-                  'second-page': page == 0,
-                  'third-page': page == 3,
-                  'firth-page': page == 4,
-                  'fifth-page': page == 5,
-                  'sixth-page': page == 8,
-                  'seventh-page': page == 7
-                }"
+
+              <!--          <div class="col-1" *ngIf="isCollapsed" style="margin-top: 6%">-->
+              <!--            <div>-->
+              <!--              <a-->
+              <!--                class="float-collapsed"-->
+              <!--                style="background-color: #00d6d4 !important; color: #fff"-->
+              <!--                (click)="isCollapsed = !isCollapsed"-->
+              <!--                [attr.aria-expanded]="!isCollapsed"-->
+              <!--              >-->
+              <!--                <i *ngIf="!isCollapsed" class="fas fa-angle-double-right my-float"></i>-->
+              <!--                <i *ngIf="isCollapsed" class="fas fa-angle-double-left my-float"></i>-->
+              <!--              </a>-->
+              <!--            </div>-->
+              <!--          </div>-->
+              <!--          <div class="col-4" [ngbCollapse]="isCollapsed" style="margin-top: 5%">-->
+              <!--            <div class="row detail-image">-->
+              <!--              <div class="mb-2">-->
+              <!--                <a-->
+              <!--                  class="float"-->
+              <!--                  style="background-color: #00d6d4 !important; color: #fff"-->
+              <!--                  (click)="isCollapsed = !isCollapsed"-->
+              <!--                  [attr.aria-expanded]="!isCollapsed"-->
+              <!--                >-->
+              <!--                  <i *ngIf="!isCollapsed" class="fas fa-angle-double-right my-float"></i>-->
+              <!--                  <i *ngIf="isCollapsed" class="fas fa-angle-double-left my-float"></i>-->
+              <!--                  <span>Réduire l'image </span>-->
+              <!--                </a>-->
+              <!--              </div>-->
+              <!--              <div class="col-md-12 d-flex p-0" style="justify-content: flex-end">-->
+              <!--                <img src="assets/images/365.jpg" alt="" style="width: auto; max-width: 100%" />-->
+              <!--              </div>-->
+              <!--            </div>-->
+              <!--          </div>-->
+              <div
+                *ngIf="edit"
+                [ngClass]="isCollapsed ? 'col-md-11' : 'col-md-8'"
+                style="display: flex; flex-direction: row-reverse"
               >
-                <li class="nav-item first-icon">
-                  <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">
-                    <i class="zmdi zmdi-camera zmdi-hc-3x"></i>
-                  </a>
-                  <p style="margin-left: -12px">Photographies</p>
-                </li>
-                <li class="nav-item second-icon">
-                  <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">
-                    <i class="fas fa-paperclip"></i>
-                  </a>
-                  <p style="margin-left: -13px">Pièces jointes</p>
-                </li>
-                <li class="nav-item third-icon">
-                  <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">
-                    <i class="fas fa-link"></i>
-                  </a>
-                  <p style="margin-left: -22px">Liens avec oeuvres</p>
-                </li>
-                <li class="nav-item firth-icon">
-                  <a (click)="page4()" class="nav-link text-uppercase font-weight-bold">
-                    <i class="zmdi zmdi-pin zmdi-hc-3x"></i>
-                  </a>
-                  <p style="margin-left: -10px">Localisations</p>
-                </li>
-                <li class="nav-item fifth-icon">
-                  <a (click)="page5()" class="nav-link text-uppercase font-weight-bold">
-                    <i class="fas fa-search zmdi-hc-3x"></i>
-                  </a>
-                  <p style="margin-left: 0px">Constats</p>
-                </li>
-                <li class="nav-item sixth-icon">
-                  <a (click)="page5()" class="nav-link text-uppercase font-weight-bold">
-                    <i class="zmdi zmdi-play zmdi-hc-3x"></i>
-                  </a>
-                  <p style="margin-left: 1px">Actions</p>
-                </li>
-                <li class="nav-item seventh-icon">
-                  <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">
-                    <i class="fas fa-link"></i>
-                  </a>
-                  <p style="margin-left: -22px">Liens hypertextes</p>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md-12 firth-bloc">
-            <div *ngIf="page == 1" class="first-page-bloc col-md-12">
-              <div class="col-md-12 mb-2 d-flex justify-content-end">
-                <i class="fas fa-edit pointer-event" (click)="onEditMode()"></i>
+                <button class="btn valid-btn" (click)="onSave()">Enregistrer</button>
+                <button class="btn btn-action cancel-btn">Annuler</button>
               </div>
-              <div class="accordion-bloc col-sm-11 col-lg-4">
-                <ngb-accordion
-                  #acc="ngbAccordion"
-                  [closeOthers]="true"
-                  activeIds="toggle-1"
-                  *ngFor="let detail of moreDetails; let i = index"
-                >
-                  <ngb-panel id="toggle-{{ i }}">
-                    <ng-template ngbPanelTitle>
-                      <div class="details-bloc">
-                        <div class="d-flex details">{{ detail }}</div>
-                        <div class="d-flex"><i class="zmdi zmdi-caret-down"></i></div>
-                      </div>
-                    </ng-template>
-                    <ng-template ngbPanelContent>
-                      <p class="paragraph">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-                        3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt
-                        laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin
-                        coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes
-                        anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings
-                        occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard
-                        of them accusamus labore sustainable VHS.
-                      </p>
-                    </ng-template>
-                  </ngb-panel>
-                </ngb-accordion>
+              <div class="col-md-12 header-section dock-menu">
+                <div class="container">
+                  <ul
+                    class="navbar-nav"
+                    [ngClass]="{
+                      'first-page': page == 2,
+                      'second-page': page == 0,
+                      'third-page': page == 3,
+                      'firth-page': page == 4,
+                      'fifth-page': page == 5,
+                      'sixth-page': page == 8,
+                      'seventh-page': page == 7
+                    }"
+                  >
+                    <li class="nav-item first-icon">
+                      <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">
+                        <i class="zmdi zmdi-camera zmdi-hc-3x"></i>
+                      </a>
+                      <p style="margin-left: -12px">Photographies</p>
+                    </li>
+                    <li class="nav-item second-icon">
+                      <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">
+                        <i class="fas fa-paperclip"></i>
+                      </a>
+                      <p style="margin-left: -13px">Pièces jointes</p>
+                    </li>
+                    <li class="nav-item third-icon">
+                      <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">
+                        <i class="fas fa-link"></i>
+                      </a>
+                      <p style="margin-left: -22px">Liens avec oeuvres</p>
+                    </li>
+
+                    <!--                <li class="nav-item firth-icon">-->
+                    <!--                  <a (click)="page4()" class="nav-link text-uppercase font-weight-bold">-->
+                    <!--                    <i class="zmdi zmdi-pin zmdi-hc-3x"></i>-->
+                    <!--                  </a>-->
+                    <!--                  <p style="margin-left: -10px">Localisations</p>-->
+                    <!--                </li>-->
+                    <!--                <li class="nav-item fifth-icon">-->
+                    <!--                  <a (click)="page5()" class="nav-link text-uppercase font-weight-bold">-->
+                    <!--                    <i class="fas fa-search zmdi-hc-3x"></i>-->
+                    <!--                  </a>-->
+                    <!--                  <p style="margin-left: 0px">Constats</p>-->
+                    <!--                </li>-->
+
+                    <!--                <li class="nav-item sixth-icon">-->
+                    <!--                  <a (click)="page5()" class="nav-link text-uppercase font-weight-bold">-->
+                    <!--                    <i class="zmdi zmdi-play zmdi-hc-3x"></i>-->
+                    <!--                  </a>-->
+                    <!--                  <p style="margin-left: 1px">Actions</p>-->
+                    <!--                </li>-->
+
+                    <!--                <li class="nav-item seventh-icon">-->
+                    <!--                  <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">-->
+                    <!--                    <i class="fas fa-link"></i>-->
+                    <!--                  </a>-->
+                    <!--                  <p style="margin-left: -22px">Liens hypertextes</p>-->
+                    <!--                </li>-->
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-12 firth-bloc">
+                <div *ngIf="page == 1" class="first-page-bloc col-md-12">
+                  <div class="col-md-12 mb-2 d-flex justify-content-end">
+                    <i class="fas fa-edit pointer-event" (click)="onEditMode()"></i>
+                  </div>
+                  <div class="accordion-bloc col-sm-11 col-lg-4">
+                    <ngb-accordion
+                      #acc="ngbAccordion"
+                      [closeOthers]="true"
+                      activeIds="toggle-1"
+                      *ngFor="let detail of moreDetails; let i = index"
+                    >
+                      <ngb-panel id="toggle-{{ i }}">
+                        <ng-template ngbPanelTitle>
+                          <div class="details-bloc">
+                            <div class="d-flex details">{{ detail }}</div>
+                            <div class="d-flex"><i class="zmdi zmdi-caret-down"></i></div>
+                          </div>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                          <p class="paragraph">
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
+                            squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
+                            nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
+                            single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft
+                            beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice
+                            lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you
+                            probably haven't heard of them accusamus labore sustainable VHS.
+                          </p>
+                        </ng-template>
+                      </ngb-panel>
+                    </ngb-accordion>
+                  </div>
+                </div>
+                <div class="second-page-bloc" *ngIf="page == 2">
+                  <app-item-images></app-item-images>
+                </div>
+                <div class="fifth-page-bloc" *ngIf="page == 4">
+                  <app-movements></app-movements>
+                </div>
+                <div class="firth-page-bloc" *ngIf="page == 5">
+                  <app-actions></app-actions>
+                </div>
               </div>
             </div>
-            <div class="second-page-bloc" *ngIf="page == 2">
-              <app-item-images></app-item-images>
-            </div>
-            <div class="fifth-page-bloc" *ngIf="page == 4">
-              <app-movements></app-movements>
-            </div>
-            <div class="firth-page-bloc" *ngIf="page == 5">
-              <app-actions></app-actions>
+
+            <div class="col-md-12" *ngIf="!static" style="width: 100%">
+              <app-dynamic></app-dynamic>
             </div>
           </div>
         </div>
