@@ -16,20 +16,249 @@
         </div>
       </div>
     </div>
-    <div class="mt-2">
-      <app-accordion-section
-        #accordionSectionDOM
-        [editable]="true"
-        [headerTitle]="'Recherche'"
-        [idMilestoneSection]="2"
-        [sectionIndex]="2"
-        [showIcon]="true"
-        [icon]="'fa fa-search'"
-        [index]="2"
-        [sectionTitle]="'Status'"
-      >
-        <app-request [fields]="ColDef" (validateRequest)="onValidateRequest($event)"></app-request>
-      </app-accordion-section>
+    <div class="mt-2 d-flex">
+      <div class="dropdown-container search-container mb-2 mr-2 mb-sm-0">
+        <div
+          ngbDropdown
+          placement="bottom-left"
+          autoClose="outside"
+          container="body"
+          (openChange)="onToggel($event)"
+          class="d-inline-block drop-bloc"
+        >
+          <button
+            class="btn dropdown-btn list quick-filter-btn"
+            id="dropDownSearch1"
+            ngbDropdownToggle
+            (click)="resetFilter()"
+          >
+            <span>
+              Identification des oeuvres
+              <i class="fa fa-sort-down" *ngIf="inventaire"></i>
+            </span>
+            <div class="mt-3" style="display: table" *ngIf="!firstSearchDrop">
+              <p>{{ form1.value['inventory'] }}</p>
+              <p>{{ form1.value['title'] }}</p>
+              <p>{{ form1.value['domaine'] }}</p>
+              <p>{{ form1.value['denomination'] }}</p>
+              <p>{{ form1.value['author'] }}</p>
+              <p>....</p>
+            </div>
+          </button>
+          <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropDownSearch1" style="width: 400px">
+            <div class="columns-dropdown" style="width: 100% !important">
+              <form [formGroup]="form1">
+                <div class="col-12 pt-1">
+                  <div class="form-group d-flex slider-bloc row">
+                    <label style="margin-top: 3%" for="inventaire" class="col-5">N° inventaire</label>
+                    <div class="custom-slider">
+                      <ngx-slider
+                        [(value)]="inventoryValue"
+                        [(highValue)]="hightInventoryValue"
+                        [options]="inventoryOptions"
+                      ></ngx-slider>
+                    </div>
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label style="margin-top: 3%" for="titre" class="col-5">N° inventaire</label>
+                    <input
+                      type="text"
+                      formControlName="inventory"
+                      class="form-control col-6"
+                      placeholder="N° inventaire"
+                    />
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label style="margin-top: 3%" for="titre" class="col-5">Titre</label>
+                    <input
+                      type="text"
+                      formControlName="title"
+                      class="form-control col-6"
+                      id="titre"
+                      placeholder="Titre"
+                    />
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label style="margin-top: 3%" for="domaine" class="col-5">Domaine </label>
+                    <ng-multiselect-dropdown
+                      class="select col-6 w-100"
+                      formControlName="domaine"
+                      [placeholder]="'Choisir ses domaines'"
+                      [settings]="dropdownSettings"
+                      [data]="domaine"
+                      (onSelect)="onDomainSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label style="margin-top: 3%" for="denomination" class="col-5">Dénomination</label>
+                    <ng-multiselect-dropdown
+                      class="select col-6"
+                      [placeholder]="'Choisir des dénominations'"
+                      formControlName="denomination"
+                      [settings]="dropdownSettings"
+                      [data]="WorkOfArtService.denominations"
+                      (onSelect)="onItemSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label style="margin-top: 3%" for="denomination" class="col-5">Auteurs</label>
+                    <ng-multiselect-dropdown
+                      class="select col-6"
+                      [placeholder]="'Choisir des auteurs'"
+                      [settings]="dropdownSettings"
+                      formControlName="author"
+                      [data]="WorkOfArtService.authors"
+                      (onSelect)="onItemSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dropdown-container search-container mb-2 mr-2 mb-sm-0">
+        <div ngbDropdown placement="bottom-left" autoClose="outside" container="body" class="d-inline-block drop-bloc">
+          <button
+            class="btn dropdown-btn list quick-filter-btn"
+            id="dropDownSearch2"
+            ngbDropdownToggle
+            (click)="resetFilter()"
+          >
+            Opération de gestion
+          </button>
+          <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropDownSearch2">
+            <div class="columns-dropdown" style="width: auto !important">
+              <div class="col-12 pt-1 column-check">
+                <div class="form-group d-flex slider-bloc row">
+                  <label for="inventaire" class="col-5">N° inventaire</label>
+                  <input type="text" class="form-control col-6" id="inventaire" placeholder="Titre" />
+                  <!--                  <div class="custom-slider">-->
+                  <!--                    <ngx-slider-->
+                  <!--                      [(value)]="inventoryValue"-->
+                  <!--                      [(highValue)]="hightInventoryValue"-->
+                  <!--                      [options]="inventoryOptions"-->
+                  <!--                    ></ngx-slider>-->
+                  <!--                  </div>-->
+                </div>
+                <div class="form-group d-flex slider-bloc row">
+                  <label for="titre" class="col-5">Titre</label>
+                  <input type="text" class="form-control col-6" id="titre" placeholder="Titre" />
+                </div>
+                <div class="form-group d-flex slider-bloc row">
+                  <label for="domaine" class="col-5">domaine </label>
+                  <input type="text" class="form-control col-6" id="domaine" placeholder="Titre" />
+                </div>
+                <div class="form-group d-flex slider-bloc row">
+                  <label for="denomination" class="col-5">Dénomination</label>
+                  <input type="text" class="form-control col-6" id="denomination" placeholder="Titre" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dropdown-container search-container mb-2 mr-2 mb-sm-0">
+        <div ngbDropdown placement="bottom-left" autoClose="outside" container="body" class="d-inline-block drop-bloc">
+          <button
+            class="btn dropdown-btn list quick-filter-btn"
+            id="dropDownSearch3"
+            ngbDropdownToggle
+            (click)="resetFilter()"
+          >
+            ILocalisation administrative
+          </button>
+          <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropDownSearch3">
+            <div class="columns-dropdown" style="width: auto !important">
+              <div class="col-12 pt-1 column-check">
+                <div class="form-group d-flex slider-bloc row">
+                  <label for="inventaire" class="col-5">N° inventaire</label>
+                  <input type="text" class="form-control col-6" id="inventaire" placeholder="Titre" />
+                  <!--                  <div class="custom-slider">-->
+                  <!--                    <ngx-slider-->
+                  <!--                      [(value)]="inventoryValue"-->
+                  <!--                      [(highValue)]="hightInventoryValue"-->
+                  <!--                      [options]="inventoryOptions"-->
+                  <!--                    ></ngx-slider>-->
+                  <!--                  </div>-->
+                </div>
+                <div class="form-group d-flex slider-bloc row">
+                  <label for="titre" class="col-5">Titre</label>
+                  <input type="text" class="form-control col-6" id="titre" placeholder="Titre" />
+                </div>
+                <div class="form-group d-flex slider-bloc row">
+                  <label for="domaine" class="col-5">domaine </label>
+                  <input type="text" class="form-control col-6" id="domaine" placeholder="Titre" />
+                </div>
+                <div class="form-group d-flex slider-bloc row">
+                  <label for="denomination" class="col-5">Dénomination</label>
+                  <input type="text" class="form-control col-6" id="denomination" placeholder="Titre" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dropdown-container search-container mb-2 mr-2 mb-sm-0">
+        <div ngbDropdown placement="bottom-left" autoClose="outside" container="body" class="d-inline-block drop-bloc">
+          <button
+            class="btn dropdown-btn list quick-filter-btn"
+            id="dropDownSearch4"
+            ngbDropdownToggle
+            (click)="resetFilter()"
+          >
+            Localisation géographique
+          </button>
+          <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropDownSearch4">
+            <div class="columns-dropdown" style="width: auto !important">
+              <div class="col-12 pt-1 column-check">
+                <div class="form-group d-flex slider-bloc row">
+                  <label for="inventaire" class="col-5">N° inventaire</label>
+                  <input type="text" class="form-control col-6" id="inventaire" placeholder="Titre" />
+                  <!--                  <div class="custom-slider">-->
+                  <!--                    <ngx-slider-->
+                  <!--                      [(value)]="inventoryValue"-->
+                  <!--                      [(highValue)]="hightInventoryValue"-->
+                  <!--                      [options]="inventoryOptions"-->
+                  <!--                    ></ngx-slider>-->
+                  <!--                  </div>-->
+                </div>
+                <div class="form-group d-flex slider-bloc row">
+                  <label for="titre" class="col-5">Titre</label>
+                  <input type="text" class="form-control col-6" id="titre" placeholder="Titre" />
+                </div>
+                <div class="form-group d-flex slider-bloc row">
+                  <label for="domaine" class="col-5">domaine </label>
+                  <input type="text" class="form-control col-6" id="domaine" placeholder="Titre" />
+                </div>
+                <div class="form-group d-flex slider-bloc row">
+                  <label for="denomination" class="col-5">Dénomination</label>
+                  <input type="text" class="form-control col-6" id="denomination" placeholder="Titre" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--      <app-accordion-section-->
+      <!--        #accordionSectionDOM-->
+      <!--        [editable]="true"-->
+      <!--        [headerTitle]="'Recherche'"-->
+      <!--        [idMilestoneSection]="2"-->
+      <!--        [sectionIndex]="2"-->
+      <!--        [showIcon]="true"-->
+      <!--        [icon]="'fa fa-search'"-->
+      <!--        [index]="2"-->
+      <!--        [sectionTitle]="'Status'"-->
+      <!--      >-->
+      <!--        <app-request [fields]="ColDef" (validateRequest)="onValidateRequest($event)"></app-request>-->
+      <!--      </app-accordion-section>-->
     </div>
     <div *ngIf="showDatatable">
       <div class="filter-bloc d-flex">
@@ -97,48 +326,47 @@
         </div>
       </div>
       <div class="search-quick-fliter-bloc d-flex flex-content-between">
-        <div class="quick-filters d-flex">
-          <h6 class="text-quick-filter">Filtres rapides :</h6>
-          <div class="dropdown-container mb-2 mr-2 mb-sm-0">
-            <div class="d-inline-block drop-bloc">
-              <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">Oeuvres archivées</button>
-            </div>
-          </div>
-          <div class="dropdown-container mb-2 mr-2 mb-sm-0">
-            <div class="d-inline-block drop-bloc">
-              <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">Oeuvres perdues</button>
-            </div>
-          </div>
-          <div class="dropdown-container mb-2 mr-2 mb-sm-0">
-            <div class="d-inline-block drop-bloc">
-              <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">
-                Oeuvres récemment modifiées
-              </button>
-            </div>
-          </div>
-          <div class="dropdown-container mb-2 mr-2 mb-sm-0">
-            <div class="d-inline-block drop-bloc">
-              <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">
-                Oeuvres en cours de création
-              </button>
-            </div>
-          </div>
-          <div>
-            <div class="dropdown-container mb-2 mr-2 mb-sm-0" style="margin: 3px 0 15px 0">
-              <div class="d-inline-block drop-bloc">
-                <span class="icon-stack d-flex" (click)="resetFilter()">
-                  <i class="fas fa-filter"></i>
-                  <i class="fas fa-times"></i>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <!--        <div class="quick-filters d-flex">-->
+        <!--          <h6 class="text-quick-filter">Filtres rapides :</h6>-->
+        <!--          <div class="dropdown-container mb-2 mr-2 mb-sm-0">-->
+        <!--            <div class="d-inline-block drop-bloc">-->
+        <!--              <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">Oeuvres archivées</button>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--          <div class="dropdown-container mb-2 mr-2 mb-sm-0">-->
+        <!--            <div class="d-inline-block drop-bloc">-->
+        <!--              <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">Oeuvres perdues</button>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--          <div class="dropdown-container mb-2 mr-2 mb-sm-0">-->
+        <!--            <div class="d-inline-block drop-bloc">-->
+        <!--              <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">-->
+        <!--                Oeuvres récemment modifiées-->
+        <!--              </button>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--          <div class="dropdown-container mb-2 mr-2 mb-sm-0">-->
+        <!--            <div class="d-inline-block drop-bloc">-->
+        <!--              <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">-->
+        <!--                Oeuvres en cours de création-->
+        <!--              </button>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--          <div>-->
+        <!--            <div class="dropdown-container mb-2 mr-2 mb-sm-0" style="margin: 3px 0 15px 0">-->
+        <!--              <div class="d-inline-block drop-bloc">-->
+        <!--                <span class="icon-stack d-flex" (click)="resetFilter()">-->
+        <!--                  <i class="fas fa-filter"></i>-->
+        <!--                  <i class="fas fa-times"></i>-->
+        <!--                </span>-->
+        <!--              </div>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </div>-->
         <div class="d-flex">
           <div class="search-panel">
             <input
               (keyup)="search($event)"
-              (clear)="search()"
               class="form-control"
               type="text"
               name="search"

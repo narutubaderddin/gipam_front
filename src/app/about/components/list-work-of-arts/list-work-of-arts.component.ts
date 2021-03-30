@@ -13,7 +13,7 @@ import {
   SelectionChangedEvent,
 } from 'ag-grid-community';
 import { Component, ElementRef, EventEmitter, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { ColumnFilterService, OPERATORS, TYPES } from '@shared/services/column-filter.service';
 import { ColumnFilterModel } from '@shared/models/column-filter-model';
 import { CustomHeaderRendererComponent } from '@app/@shared/components/datatables/custom-header-renderer/custom-header-renderer.component';
@@ -21,6 +21,8 @@ import { first } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { GridActionRendererComponent } from '@app/@shared/components/datatables/grid-action-renderer/grid-action-renderer.component';
 import { StatusTypeRenderComponent } from '@shared/components/datatables/status-type-render/status-type-render.component';
+import { Options } from '@angular-slider/ngx-slider';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 @Component({
   selector: 'app-list-work-of-arts',
@@ -167,6 +169,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   selectedRowCount = 0;
   gridApi: GridApi;
   gridColumnApi: ColumnApi;
+  inventoryOptions: Options;
   gridReady = false;
   currentColumnStates: any;
   columns: any;
@@ -175,10 +178,14 @@ export class ListWorkOfArtsComponent implements OnInit {
   paginatorLoading: boolean;
   oeuvreToShow: any;
   rowCount = 5;
+  domaine: any;
+  dropdownSettings: IDropdownSettings;
+  title: any;
+  form1: FormGroup;
   constructor(
     private fb: FormBuilder,
     public columnFilterService: ColumnFilterService,
-    private WorkOfArtService: WorkOfArtService,
+    public WorkOfArtService: WorkOfArtService,
     private router: Router
   ) {}
 
@@ -188,7 +195,28 @@ export class ListWorkOfArtsComponent implements OnInit {
   ngOnInit(): void {
     this.oeuvreToShow = this.oeuvres;
     this.initFilterFormGroup();
+    this.domaine = this.WorkOfArtService.domaine;
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'name',
+      selectAllText: 'Sélectionner tout',
+      unSelectAllText: 'Supprimer les sélections',
+      itemsShowLimit: 1,
+      allowSearchFilter: true,
+    };
+    this.form1 = new FormGroup({
+      inventory: new FormControl(''),
+      title: new FormControl(''),
+      domaine: new FormControl(''),
+      denomination: new FormControl(''),
+      author: new FormControl(),
+    });
     this.gridOptions.tooltipShowDelay = 0;
+    this.inventoryOptions = {
+      floor: 0,
+      ceil: 9999,
+    };
   }
 
   onGridReady(params: ICellEditorParams) {
@@ -294,6 +322,10 @@ export class ListWorkOfArtsComponent implements OnInit {
   addDepositMovableObject() {}
 
   //validate request value
+  inventoryValue = 0;
+  hightInventoryValue = 60;
+  inventaire: any = '';
+  firstSearchDrop = false;
 
   onValidateRequest(value: boolean) {
     if (value) {
@@ -313,5 +345,25 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.accordionsDOM.forEach((el) => {
       el.nativeElement.querySelector('.btn-collapse').click();
     });
+  }
+
+  onSelectAll(items: any) {}
+  onDomainSelect(item: any) {}
+
+  onItemSelect($event: any) {}
+
+  onValueChange(event: any) {
+    this.inventaire = event.target.value + event.key;
+  }
+
+  onToggel(event: any) {
+    this.firstSearchDrop = event;
+    if (event == false) {
+      this.showDatatable = true;
+    }
+  }
+
+  onTitleChange(event: any) {
+    this.title = event.target.value + event.key;
   }
 }

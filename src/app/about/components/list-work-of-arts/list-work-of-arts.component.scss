@@ -85,6 +85,45 @@ h6 {
     }
   }
 }
+.custom-slider {
+  width: 50%;
+}
+.search-container {
+  button {
+    height: fit-content !important;
+    min-height: 30px;
+    border: 1px solid #999999 !important;
+    line-height: 0;
+    max-height: 120px;
+    overflow: auto;
+    border-radius: 5px !important;
+    font-size: 12px;
+    color: black;
+
+    &:focus,
+    &:hover,
+    &:active {
+      border: 1px solid black !important;
+      background-color: white !important;
+      color: black !important;
+      outline: none;
+      box-shadow: none;
+      i {
+        color: black !important;
+      }
+    }
+  }
+  .form-control {
+    width: 25px !important;
+  }
+}
+::ng-deep ng-multiselect-dropdown {
+  width: 100%;
+  margin-left: -15px;
+  .multiselect-dropdown {
+    width: 120% !important;
+  }
+}
 .dropdown-container {
   .drop-bloc {
     margin-top: 11px;
@@ -120,10 +159,10 @@ h6 {
   button:hover,
   button:active,
   button:focus {
-    background-color: #00d6d4 !important;
+    background-color: #00d6d4;
     color: white;
     i {
-      color: white !important;
+      color: white;
     }
   }
 }
