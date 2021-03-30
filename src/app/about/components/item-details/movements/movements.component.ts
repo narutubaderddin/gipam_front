@@ -27,6 +27,8 @@ L.Marker.prototype.options.icon = L.icon({
 })
 export class MovementsComponent implements AfterViewInit {
   map: any;
+  showDetailsMvt: boolean = false;
+
   query = 'Tunis';
   frameworkComponent = {
     showMovementDetailsRenderer: ShowMovementDetailsRendererComponent,
@@ -107,8 +109,8 @@ export class MovementsComponent implements AfterViewInit {
   constructor(private movementsService: MovementsService, private datePipe: DatePipe) {}
 
   ngAfterViewInit(): void {
-    this.initMap();
-    this.movementsService.makeCapitalMarkers(this.map);
+    // this.initMap();
+    // this.movementsService.makeCapitalMarkers(this.map);
   }
 
   onGridReady(params: ICellEditorParams) {
@@ -130,4 +132,9 @@ export class MovementsComponent implements AfterViewInit {
     tiles.addTo(this.map);
   }
   addMovement() {}
+
+  openDetailsMvt() {
+    this.showDetailsMvt = !this.showDetailsMvt;
+    console.log(this.showDetailsMvt);
+  }
 }

@@ -1,9 +1,83 @@
 .bloc-header {
+  //position: fixed;
+  //z-index: 100;
+  //background-color: white;
+  ////margin-top: 170px;
+  ////margin-left: 10px;
+  ////width:93%;
+  //top:0;
+  //padding: 1%;
   position: fixed;
-  z-index: 1030;
+  z-index: 10;
   background-color: white;
-  margin-top: 170px;
-  margin-left: 10px;
+  top: 0;
+  padding: 1%;
+  width: 100%;
+  left: 0;
+}
+
+// switch btn
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 35px;
+  height: 10px;
+  margin: 0 5px;
+}
+.btn-slider {
+  font-size: 12px;
+  color: gray;
+  align-items: baseline;
+}
+.switch input {
+  display: none;
+  background-color: #ccc;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  right: 0px;
+  bottom: -3px;
+  background-color: #0466c8;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(20px);
+  -ms-transform: translateX(20px);
+  transform: translateX(20px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 20px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+.fullwidth {
+  padding-left: 100px;
+}
+.width {
+  padding-left: 300px;
 }
 .valid-btn {
   background-color: #0080ff;
@@ -15,22 +89,18 @@
   color: white;
 }
 .float {
-  //position: fixed;
-  height: 40px;
+  height: 3.125vw;
   width: 17vw;
   border-radius: 50px 0 0 50px;
   padding: 1%;
   color: white;
-  text-align: center;
-  box-shadow: 2px 2px 3px #999;
   z-index: 10;
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-right: 20px;
+  //margin-right: 15px;
   cursor: pointer;
   i {
-    margin-left: 20px;
+    margin: 20px;
     font-size: 24px;
   }
   span {
@@ -38,19 +108,15 @@
   }
 }
 .float-collapsed {
-  //position: fixed;
+  justify-content: center;
   height: 40px;
   width: 40px;
   border-radius: 50px 0 0 50px;
   padding: 1%;
   color: white;
-  text-align: center;
-  box-shadow: 2px 2px 3px #999;
   z-index: 10;
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-right: 20px;
   cursor: pointer;
   i {
     margin-left: 0px;
@@ -84,6 +150,8 @@ li a {
   align-items: center;
   padding-top: 10px;
   padding-bottom: 5px;
+  //width:5%;
+  //height: 5%;
 }
 //a:hover {
 //  color: #004d9d !important;
@@ -100,7 +168,7 @@ button {
 .titre {
   //font-family: 'BNPP Sans', Arial, Helvetica, sans-serif;
   margin: 0;
-  font-size: 2.4375rem;
+  font-size: 1.5rem;
   color: #0466c8;
   font-weight: 700;
   font-family: Arial, Helvetica, sans-serif;
@@ -140,6 +208,14 @@ button {
     }
   }
   .second-bloc {
+    .dock-menu {
+      background-color: #f1f1f18f;
+      padding: 0.3%;
+      .container ul {
+        justify-content: space-around;
+      }
+    }
+
     .detail-image {
       margin-bottom: 10px;
       display: flex;
@@ -170,6 +246,10 @@ button {
     .icons {
       display: flex;
       flex-direction: row-reverse;
+      align-items: baseline;
+      i {
+        font-size: 25px;
+      }
     }
   }
   .third-bloc,
@@ -178,7 +258,8 @@ button {
     margin-bottom: 5px;
     display: flex;
     border: 1px solid #dee2e6;
-    margin-left: 15px;
+    border-radius: 25px;
+    //margin-left: 15px;
     margin-top: 20px;
     justify-content: center;
   }
@@ -190,7 +271,11 @@ button {
     padding: 0 10px;
   }
 }
-
+.btn {
+  border: 1px solid;
+  width: 25%;
+  font-size: 12px;
+}
 /** second bloc **/
 
 .main-info {
@@ -274,21 +359,70 @@ button {
     }
   }
 }
-.picture {
-  margin-right: 4%;
-  img {
-    width: 190px;
-    height: 190px;
-    border-radius: 50%;
-    margin-top: 23px;
-    border: 5px solid #fafafa;
-    box-shadow: 0 0 0.5rem #babbbc;
-    cursor: pointer;
-    &:hover {
-      transform: scale(1.3);
-    }
+/* The Modal (background) */
+#image-viewer.active {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  z-index: 120;
+
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.9);
+}
+#image-viewer {
+  display: none;
+}
+#image-viewer .close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #ffffff;
+  font-size: 30px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+#image-viewer .close:hover,
+#image-viewer .close:focus {
+  color: #9fffeb;
+  text-decoration: none;
+  cursor: pointer;
+}
+.modal-content {
+  margin: auto;
+  display: block;
+  width: 80%;
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+@keyframes zoom {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
   }
 }
+
+//.picture {
+//  margin-right: 4%;
+//  img {
+//    width: 190px;
+//    height: 190px;
+//    border-radius: 50%;
+//    margin-top: 23px;
+//    border: 5px solid #fafafa;
+//    box-shadow: 0 0 0.5rem #babbbc;
+//    cursor: pointer;
+//    &:hover {
+//      transform: scale(1.3);
+//    }
+//  }
+//}
 
 /** end of second bloc **/
 
@@ -390,6 +524,7 @@ button {
   }
 }
 .second-bloc {
+  width: 100%;
   .icons {
     display: flex;
     flex-direction: row-reverse;

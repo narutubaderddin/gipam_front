@@ -5,59 +5,51 @@
 }
 .label-container {
   position: absolute;
-  top: 180px;
-
+  top: 80px;
   display: table;
   visibility: hidden;
 }
 .label-container-non-collapsed {
   transition: margin-left 0.5s;
-  left: 20%;
+  left: 21%;
 }
 .label-container-collapsed {
-  left: 50px;
+  left: 80px;
 }
 
 .label-text {
-  color: #fff;
-  background: rgba(51, 51, 51, 0.5);
+  color: #ffffff;
+  background: rgba(#020202, 0.8);
   display: table-cell;
   vertical-align: middle;
-  padding: 10px;
+  padding: 3px;
   border-radius: 3px;
+  font-size: 12px;
 }
 
 .label-arrow {
   display: table-cell;
-  vertical-align: middle;
-  color: #333;
-  opacity: 0.5;
-  font-size: 25px;
+  //vertical-align: middle;
+  color: #020202;
+  opacity: 0.8;
+  font-size: 20px;
 }
 
 .float {
-  //position: fixed;
+  position: absolute;
   width: 40px;
-  height: 40px;
-  //bottom: 0;
-  //left: 0;
+  height: 100px;
   opacity: 0.5;
-  //border-radius: 50px;
-  border-radius: 0 50px 50px 0;
+  border-radius: 0 15px 15px 0;
   padding: 1%;
   text-align: center;
-  box-shadow: 2px 2px 3px #999;
   z-index: 10;
   display: flex;
   align-items: center;
-  margin-right: 20px;
+  justify-content: center;
 }
 a.float:hover {
   opacity: 1;
-}
-.my-float {
-  font-size: 18px;
-  //margin-top: 12px;
 }
 
 a.float + div.label-container {
@@ -104,8 +96,8 @@ a.float:hover + div.label-container {
   flex-wrap: wrap;
   min-height: 70px !important;
   margin-top: 15px;
-  min-height: 70px;
-  width: 100%;
+  width: 98%;
+  float: right;
   background-color: transparent;
   border-right: transparent;
 }
@@ -137,6 +129,10 @@ a.float:hover + div.label-container {
   .col-sm-6 {
     padding-left: 0;
     padding-right: 0;
+  }
+  .checkbox-text {
+    font-size: 11.5px;
+    color: #004b91;
   }
   .filter-list-bloc {
     min-width: 190px;
@@ -178,10 +174,18 @@ a:not([href]) {
 
 .filter-bloc {
   background-color: white;
-  height: 790px;
+  height: 800px;
   overflow-y: auto;
+  border-right: 2px solid #2974ab61;
+  border-bottom: 2px solid #2974ab61;
+  animation: translatecollapse 0.3s;
+
   .search-panel {
     padding-left: 0;
+    width: 100%;
+    input {
+      min-width: 100%;
+    }
   }
   .filters {
     .filter-list {
@@ -194,23 +198,29 @@ a:not([href]) {
         margin-top: 2px;
         color: #5a4b5f;
       }
+      .checkbox-label {
+        margin-left: 0;
+      }
     }
   }
   ::ng-deep {
     .ngx-slider .ngx-slider-pointer {
-      background: #0073dd !important;
+      background: #00d6d4 !important;
       height: 16px !important;
       width: 16px;
       outline: none;
+      top: -5px;
     }
     .ngx-slider .ngx-slider-pointer:after {
-      width: 4px;
-      height: 4px;
-      top: 6px;
-      left: 6px;
+      display: none;
     }
     .ngx-slider-selection {
-      background: #0073dd !important;
+      background: #00d6d4 !important;
+      font-size: 15px;
+    }
+    .ngx-slider .ngx-slider-bubble {
+      font-size: 11.5px;
+      color: gray;
     }
   }
 }
@@ -218,12 +228,106 @@ a:not([href]) {
   margin: 2px 0 2px 0;
   border: 1px solid #e6e6ea;
 }
-
+ngx-treeview {
+  width: 100%;
+}
 ::ng-deep .treeview-header {
   font-size: 12px !important;
+  display: none;
+  font-size: 12px !important;
+  color: #003c73;
 }
 ::ng-deep .treeview-container {
   font-size: 12px !important;
+  padding: 2% 0;
+  color: #797979;
+  padding-right: 0;
+  .treeview-item {
+    .form-inline {
+      border-bottom: 0.5px solid aliceblue;
+      //background-color: lightgray;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row-reverse;
+      // custom checkbox
+      .form-check {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        width: 100%;
+        padding: 3% 0;
+        .form-check-label {
+          margin-left: 4%;
+          //background-color: #1f2b50;
+        }
+        input[type="checkbox"] {
+          margin-top: -30px;
+          margin-left: 2%;
+        }
+
+        input[type="checkbox"] {
+          -webkit-font-smoothing: antialiased;
+          text-rendering: optimizeSpeed;
+          width: 13px;
+          height: 13px;
+          margin: 0;
+          margin-right: 1px;
+          display: block;
+          float: left;
+          position: relative;
+          cursor: pointer;
+        }
+
+        input[type="checkbox"]:after {
+          content: "";
+          vertical-align: middle;
+          text-align: center;
+          line-height: 13px;
+          position: absolute;
+          cursor: pointer;
+          height: 13px;
+          width: 13px;
+          left: 0;
+          top: 0;
+          font-size: 10px;
+        }
+
+        input[type="checkbox"]:hover:after,
+        input[type="checkbox"]:checked:hover:after {
+          background: #00d6d4;
+          content: "\2714";
+          color: #fff;
+        }
+
+        input[type="checkbox"]:checked:after {
+          background: #00d6d4;
+          content: "\2714";
+          color: #fff;
+        }
+      }
+    }
+    div {
+      display: flex;
+      max-width: 100%;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      .treeview-item {
+        margin-left: 0.5rem !important;
+        font-size: 11px !important;
+
+        //color: white;
+        .form-inline {
+          border: none;
+          display: flex;
+          justify-content: start;
+          flex-direction: row;
+          .form-check-label {
+            margin-left: 13%;
+          }
+        }
+      }
+    }
+  }
 }
 ::ng-deep .form-control {
   height: 30px !important;
@@ -231,7 +335,6 @@ a:not([href]) {
   width: 100%;
 }
 .items-bloc {
-  // base
   .flip {
     width: 100%;
     position: relative;
@@ -333,7 +436,6 @@ a:not([href]) {
   .cadre {
     display: flex;
     justify-content: space-between;
-    //padding-left: 35px;
     flex-wrap: wrap;
     background-color: white;
     height: 800px;
@@ -341,6 +443,9 @@ a:not([href]) {
     padding-top: 10px;
     .col-xl-3 {
       padding: 2px;
+    }
+    h5 {
+      color: #93dae5;
     }
   }
 }
@@ -351,7 +456,9 @@ a:not([href]) {
   cursor: pointer;
 }
 h5 {
-  color: #00d6d4;
+  color: #678eab;
+  font-size: 16px;
+  font-weight: bolder;
 }
 img {
   display: block;
@@ -363,6 +470,87 @@ img {
   orphans: 2;
   widows: 2;
 }
+.accordion {
+  //color: white;
+  font-weight: unset;
+  .card {
+    border: none !important;
+  }
+  .acc-header {
+    background-color: white;
+    color: #004b91;
+    font-weight: unset;
+  }
+  .card-header {
+    background-color: white;
+  }
+}
+.acc-header {
+  background-color: white;
+  color: #004b91;
+}
+
+// collapse toggle
+::ng-deep .collapse {
+  animation: translatecollapse 0.3s;
+}
+::ng-deep .collapse:not {
+  animation: translateoff 0.3s;
+}
+@keyframes translatecollapse {
+  from {
+    transform: translateX(-20%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+::ng-deep .accordion {
+  .card {
+    border: none !important;
+    font-size: 12px;
+    margin-bottom: 20px;
+    .card-header {
+      font-size: 12px;
+      padding: 8% 0;
+      background-color: white;
+      color: #004b91;
+
+      button {
+        padding: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        span {
+          font-size: 14px !important;
+          color: #004b91;
+        }
+
+        span {
+          float: left;
+          font-size: 1.2rem;
+        }
+      }
+    }
+
+    .card-body {
+      padding: 1rem;
+      height: auto !important;
+      display: flex;
+      justify-content: space-around;
+      font-size: 11.5px;
+      color: #004b91;
+    }
+    .collapse {
+      border-bottom: none;
+      .show {
+        height: auto;
+      }
+    }
+  }
+}
+
 @media (min-width: 34em) {
   .card-columns {
     -webkit-column-count: 2;
@@ -400,8 +588,4 @@ img {
 .main {
   transition: margin-left 0.5s;
   padding: 20px;
-}
-.sidebar {
-  -moz-transition: left 0.5s ease;
-  transition: left 0.5s ease;
 }

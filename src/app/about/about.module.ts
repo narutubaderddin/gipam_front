@@ -37,7 +37,8 @@ import { InProgressAlertsComponent } from './components/administrator-home-page/
 import { DepositorComponent } from './components/item-details/details/depositor/depositor.component';
 import { ProofsDetailsComponent } from './components/administrator-home-page/proofs-in-progress/proofs-details/proofs-details.component';
 import { PortailImgDetailsComponent } from './components/portail-item-details/portail-img-details/portail-img-details.component';
-
+import { SidebarNavComponent } from './components/public-header/sidebar-nav/sidebar-nav.component';
+import { DynamicComponent } from './components/item-details/dynamic/dynamic.component';
 @NgModule({
   declarations: [
     AboutComponent,
@@ -64,6 +65,8 @@ import { PortailImgDetailsComponent } from './components/portail-item-details/po
     ProofsDetailsComponent,
     PortailImgDetailsComponent,
     DepositorComponent,
+    SidebarNavComponent,
+    DynamicComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
