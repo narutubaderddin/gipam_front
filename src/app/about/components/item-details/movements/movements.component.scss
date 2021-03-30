@@ -10,8 +10,8 @@
     display: flex;
     flex-wrap: wrap;
     .localisation {
-      margin-top: 2%;
-      height: 180px;
+      //margin-top: 2%;
+      //height: 9rem;
       border-left: 1px solid #bfbfbf;
       align-content: flex-start;
     }
@@ -24,26 +24,36 @@
       top: 52px;
     }
     h5 {
-      font-weight: bold;
-      color: #1d617b;
-      margin: 1%;
+      margin: 0;
+      border-radius: 1rem 1rem 0 0;
+      background-color: #00d6d4;
+      width: fit-content;
+      padding: 0.7rem;
+      color: white;
+      font-weight: 600;
+    }
+    .info-container {
+      background-color: #f7f7f7;
+      padding: 2rem;
+      border-radius: 0 0 2rem 2rem;
+      flex-direction: column;
     }
   }
   .mvt-details {
-    margin: 1% 0%;
+    align-self: flex-end;
+    margin: 0.5rem 0%;
+    display: flex;
+    background-color: #f8f8f8;
     span {
-      color: #0080ff;
+      color: #1963a7;
       font-weight: bold;
       padding-top: 4px;
-    }
-    hr {
-      border-top: 1px solid #407ca8;
     }
     .add-item {
       display: flex;
       font-size: 14px;
       align-self: center;
-      color: #0080ff;
+      color: #1963a7;
     }
   }
 }
