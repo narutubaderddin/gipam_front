@@ -182,6 +182,18 @@ export class ListWorkOfArtsComponent implements OnInit {
   dropdownSettings: IDropdownSettings;
   title: any;
   form1: FormGroup;
+  form1Values: any[] = [];
+  showForm1End = false;
+  form2: FormGroup;
+  form3: FormGroup;
+  form4: FormGroup;
+  form2Values: any[] = [];
+  form3Values: any[] = [];
+  form4Values: any[] = [];
+  showForm2End = false;
+  showForm3End = false;
+  showForm4End = false;
+
   constructor(
     private fb: FormBuilder,
     public columnFilterService: ColumnFilterService,
@@ -192,6 +204,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   get defaultHeaderParams() {
     return this.defaultColDef.headerComponentParams;
   }
+
   ngOnInit(): void {
     this.oeuvreToShow = this.oeuvres;
     this.initFilterFormGroup();
@@ -202,7 +215,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       textField: 'name',
       selectAllText: 'Sélectionner tout',
       unSelectAllText: 'Supprimer les sélections',
-      itemsShowLimit: 1,
+      itemsShowLimit: 2,
       allowSearchFilter: true,
     };
     this.form1 = new FormGroup({
@@ -210,8 +223,34 @@ export class ListWorkOfArtsComponent implements OnInit {
       title: new FormControl(''),
       domaine: new FormControl(''),
       denomination: new FormControl(''),
-      author: new FormControl(),
+      author: new FormControl(''),
     });
+    this.form2 = new FormGroup({
+      mouvement: new FormControl(''),
+      mouvementAction: new FormControl(''),
+      constat: new FormControl(''),
+      constatAction: new FormControl(''),
+      perseption: new FormControl(false),
+    });
+    this.form3 = new FormGroup({
+      ministry: new FormControl(''),
+      etablissement: new FormControl(''),
+      direction: new FormControl(''),
+      sousDirection: new FormControl(''),
+      services: new FormControl(''),
+      correspondant: new FormControl(''),
+    });
+    this.form4 = new FormGroup({
+      localType: new FormControl(''),
+      region: new FormControl(''),
+      departement: new FormControl(''),
+      communes: new FormControl(''),
+      batiment: new FormControl(''),
+      sites: new FormControl(''),
+      pieceNumber: new FormControl(''),
+      correspondant: new FormControl(''),
+    });
+    this.onChanges();
     this.gridOptions.tooltipShowDelay = 0;
     this.inventoryOptions = {
       floor: 0,
@@ -228,6 +267,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.columns = this.gridColumnApi.getAllColumns();
     this.columns.splice(0, 2);
   }
+
   onRowSelected(event: any) {
     if (event.node.selected == true) {
       this.selectedRowCount++;
@@ -326,6 +366,9 @@ export class ListWorkOfArtsComponent implements OnInit {
   hightInventoryValue = 60;
   inventaire: any = '';
   firstSearchDrop = false;
+  secondSearchDrop = false;
+  thirdSearchDrop = false;
+  fourthSearchDrop = false;
 
   onValidateRequest(value: boolean) {
     if (value) {
@@ -348,6 +391,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   }
 
   onSelectAll(items: any) {}
+
   onDomainSelect(item: any) {}
 
   onItemSelect($event: any) {}
@@ -356,8 +400,22 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.inventaire = event.target.value + event.key;
   }
 
-  onToggel(event: any) {
-    this.firstSearchDrop = event;
+  onToggel(event: any, form: string) {
+    switch (form) {
+      case 'form1':
+        this.firstSearchDrop = event;
+        break;
+      case 'form2':
+        this.secondSearchDrop = event;
+        break;
+      case 'form3':
+        this.thirdSearchDrop = event;
+        break;
+      case 'form4':
+        this.fourthSearchDrop = event;
+        break;
+    }
+
     if (event == false) {
       this.showDatatable = true;
     }
@@ -365,5 +423,85 @@ export class ListWorkOfArtsComponent implements OnInit {
 
   onTitleChange(event: any) {
     this.title = event.target.value + event.key;
+  }
+
+  private onChanges() {
+    this.onForm1Change();
+    this.onForm2Change();
+    this.onForm3Change();
+    this.onForm4Change();
+  }
+  onForm1Change() {
+    this.form1.valueChanges.subscribe((val) => {
+      let count = 0;
+      this.form1Values = [];
+      Object.keys(val).forEach((key) => {
+        if (val[key] != '') {
+          count++;
+          let value = this.checkFormvalues(val, key);
+          this.form1Values.push(value);
+        }
+
+        this.showForm1End = count > 4;
+      });
+    });
+  }
+  private checkFormvalues(val: any, key: string) {
+    let value = '';
+    if (['string', 'boolean'].indexOf(typeof val[key]) == -1) {
+      val[key].forEach((choice: any) => {
+        value += choice['name'] + ',';
+      });
+      value = value.slice(0, -1);
+    } else {
+      value = val[key];
+    }
+    return value;
+  }
+  onForm2Change() {
+    this.form2.valueChanges.subscribe((val) => {
+      let count = 0;
+      this.form2Values = [];
+      Object.keys(val).forEach((key) => {
+        if (val[key] != '') {
+          count++;
+          let value = this.checkFormvalues(val, key);
+
+          this.form2Values.push(value);
+        }
+
+        this.showForm2End = count > 4;
+      });
+    });
+  }
+  onForm3Change() {
+    this.form3.valueChanges.subscribe((val) => {
+      let count = 0;
+      this.form3Values = [];
+      Object.keys(val).forEach((key) => {
+        if (val[key] != '') {
+          count++;
+          let value = this.checkFormvalues(val, key);
+          this.form3Values.push(value);
+        }
+
+        this.showForm3End = count > 4;
+      });
+    });
+  }
+  onForm4Change() {
+    this.form4.valueChanges.subscribe((val) => {
+      let count = 0;
+      this.form4Values = [];
+      Object.keys(val).forEach((key) => {
+        if (val[key] != '') {
+          count++;
+          let value = this.checkFormvalues(val, key);
+          this.form4Values.push(value);
+        }
+
+        this.showForm4End = count > 4;
+      });
+    });
   }
 }
