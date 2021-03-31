@@ -5,43 +5,76 @@
     <!--        <button (click)="addMovement()" class="add-action"><i class="zmdi zmdi-plus"> </i>Ajouter mouvement</button>-->
     <!--      </div>-->
     <!--    </div>-->
-    <div class="col-md-12">
+    <div class="col-md-12 p-0">
       <div class="">
-        <h5 class="">Dernier mouvement</h5>
-        <div class="d-flex flex-wrap">
-          <div class="d-flex flex-wrap col-md-6 mt-2">
+        <div class="d-flex justify-content-md-between">
+          <h5 style="width: 100%">Dernier mouvement</h5>
+          <!--        <button class="btn btn-primary mvt-details">-->
+          <!--          <div class="add-item" (click)="openDetailsMvt()"><i class="add ml-2 fas fa-eye"></i></div>-->
+          <!--          <span class="col-sm-4 col-lg-2">Localisation</span>-->
+          <!--        </button>-->
+        </div>
+        <div class="d-flex flex-wrap info-container">
+          <div class="d-flex flex-wrap col-md-12 p-0">
+            <p class="col-md-12 d-flex justify-content-md-between flex-wrap p-0">
+              <strong>Date de mouvement </strong>
+              <span class="pl-2">25/03/2021</span>
+            </p>
+            <p class="col-md-12 d-flex justify-content-md-between flex-wrap p-0">
+              <strong>Type de mouvement </strong>
+              <span class="pl-2">Mise en réserve</span>
+            </p>
+            <p class="col-md-12 d-flex justify-content-md-between flex-wrap p-0">
+              <strong>Type d'action</strong>
+              <span class="pl-2">En attente de restitution</span>
+            </p>
+          </div>
+          <div class="d-flex flex-wrap col-md-12 mt-2 p-0">
             <h6>Localisation administrative</h6>
 
             <div class="d-flex flex-wrap localisation">
               <p class="col-md-12 d-flex justify-content-md-between flex-wrap">
-                <strong>Ministères </strong>MINISTÈRES ÉCONOMIQUES ET FINANCIERS
+                <strong>Ministères </strong>
+                <span>MINISTÈRES ÉCONOMIQUES ET FINANCIERS</span>
               </p>
               <p class="col-md-12 d-flex justify-content-md-between flex-wrap">
-                <strong>Etab./Dir.</strong>Administration des Contributions Directes
-              </p>
-              <hr />
-              <p class="col-md-12 d-flex justify-content-md-between flex-wrap"><strong>Sous-direction </strong>Ain</p>
-              <p class="col-md-12 d-flex justify-content-md-between flex-wrap">
-                <strong>Services </strong>Service de l'Environnement Professionnel 2B
+                <strong>Etab./Dir.</strong>
+                <span>Administration des Contributions Directes</span>
               </p>
               <hr />
               <p class="col-md-12 d-flex justify-content-md-between flex-wrap">
-                <strong>Correspondants </strong>Nom1, Nom2
+                <strong>Sous-direction </strong>
+                <span>Ain</span>
+              </p>
+              <p class="col-md-12 d-flex justify-content-md-between flex-wrap">
+                <strong>Services </strong>
+                <span>Service de l'Environnement Professionnel 2B</span>
+              </p>
+              <hr />
+              <p class="col-md-12 d-flex justify-content-md-between flex-wrap">
+                <strong>Correspondants </strong>
+                <span>Nom1, Nom2</span>
               </p>
             </div>
           </div>
-          <div class="d-flex flex-wrap col-md-6 mt-2">
+          <div class="d-flex flex-wrap col-md-12 mt-2 p-0">
             <h6>Localisation géographique</h6>
             <div class="d-flex flex-wrap localisation">
               <p class="col-md-12 d-flex justify-content-md-between flex-wrap">
-                <strong>Site </strong>MINISTÈRES ÉCONOMIQUES ET FINANCIERS
+                <strong>Site </strong>
+                <span>MINISTÈRES ÉCONOMIQUES ET FINANCIERS</span>
               </p>
               <p class="col-md-12 d-flex justify-content-md-between flex-wrap">
-                <strong>Bâtiment </strong>Administration des Contributions Directes
+                <strong>Bâtiment </strong>
+                <span>Administration des Contributions Directes</span>
               </p>
-              <p class="col-md-12 d-flex justify-content-md-between flex-wrap"><strong>Pièce </strong>Ain</p>
               <p class="col-md-12 d-flex justify-content-md-between flex-wrap">
-                <strong>Correspondants </strong>Nom1, Nom2
+                <strong>Pièce </strong>
+                <span>Ain</span>
+              </p>
+              <p class="col-md-12 d-flex justify-content-md-between flex-wrap">
+                <strong>Correspondants </strong>
+                <span>Nom1, Nom2</span>
               </p>
             </div>
           </div>
@@ -49,25 +82,25 @@
       </div>
     </div>
 
-    <div class="d-flex mvt-details col-md-12">
-      <div class="add-item" (click)="openDetailsMvt()"><i class="add ml-2 fas fa-plus"></i></div>
-      <span class="col-sm-4 col-lg-2">Mouvements</span>
-      <hr class="col-sm-7 col-lg-9" />
-    </div>
-    <div *ngIf="showDetailsMvt" class="advanced-bloc d-flex col-md-12">
-      <div class="col-sm-12 col-md-12">
-        <div class="search">
-          <input class="form-control" type="text" name="search" autocomplete="off" placeholder="Recherche" />
-        </div>
-        <app-grid-wrapper
-          [columnDefs]="columnDefs"
-          [rowData]="movements"
-          [defaultColDef]="defaultColDef"
-          [frameworkComponents]="frameworkComponent"
-          (gridReady)="onGridReady($event)"
-        >
-        </app-grid-wrapper>
-      </div>
-    </div>
+    <!--    <div class="d-flex mvt-details col-md-12">-->
+    <!--      <div class="add-item" (click)="openDetailsMvt()"><i class="add ml-2 fas fa-plus"></i></div>-->
+    <!--      <span class="col-sm-4 col-lg-2">Mouvements</span>-->
+    <!--      <hr class="col-sm-7 col-lg-9" />-->
+    <!--    </div>-->
+    <!--    <div *ngIf="showDetailsMvt" class="advanced-bloc d-flex col-md-12">-->
+    <!--      <div class="col-sm-12 col-md-12">-->
+    <!--        <div class="search">-->
+    <!--          <input class="form-control" type="text" name="search" autocomplete="off" placeholder="Recherche" />-->
+    <!--        </div>-->
+    <!--        <app-grid-wrapper-->
+    <!--          [columnDefs]="columnDefs"-->
+    <!--          [rowData]="movements"-->
+    <!--          [defaultColDef]="defaultColDef"-->
+    <!--          [frameworkComponents]="frameworkComponent"-->
+    <!--          (gridReady)="onGridReady($event)"-->
+    <!--        >-->
+    <!--        </app-grid-wrapper>-->
+    <!--      </div>-->
+    <!--    </div>-->
   </div>
 </div>

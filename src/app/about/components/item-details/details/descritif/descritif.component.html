@@ -1,10 +1,10 @@
 <div class="form-bloc">
-  <div class="form-group col-md-4">
+  <div class="form-group col-md-6">
     <label>Titre</label>
     <input class="form-control" placeholder="titre" *ngIf="edit" />
-    <div class="" *ngIf="!edit">Titre de la sculpture</div>
+    <div class="value" *ngIf="!edit">Titre de la sculpture</div>
   </div>
-  <div class="form-group col-md-4">
+  <div class="form-group col-md-6">
     <label>Domaine</label>
     <div class="autocomplete form-control" *ngIf="edit">
       <ng-autocomplete
@@ -27,7 +27,7 @@
     </div>
     <div class="value" *ngIf="!edit">Sculpture</div>
   </div>
-  <div class="form-group col-md-4">
+  <div class="form-group col-md-6">
     <label class="-4">Dénomination</label>
     <div class="autocomplete form-control" *ngIf="edit">
       <ng-autocomplete
@@ -51,7 +51,7 @@
     <div class="value" *ngIf="!edit">Statuette</div>
   </div>
   <div class="divider"></div>
-  <div class="form-group col-md-4">
+  <div class="form-group col-md-12" style="max-width: 98%">
     <label style="margin-right: -17%" class="col-md-3">Auteurs</label>
     <ng-multiselect-dropdown
       *ngIf="edit"
@@ -67,7 +67,7 @@
   </div>
   <div class="col-md-8"></div>
   <div class="divider"></div>
-  <div class="form-group col-md-4">
+  <div class="form-group col-md-6">
     <label class="col-md-3">Hauteur</label>
     <div class="d-flex" *ngIf="edit">
       <input class="col-md-8 form-control" />
@@ -79,7 +79,7 @@
     <div class="value" *ngIf="!edit">85cm</div>
   </div>
   <div
-    class="form-group col-md-4"
+    class="form-group col-md-6"
     *ngIf="
       selectedDomain ==
         ('Sculpture' || 'Luminaire' || 'Pièce de musée' || 'Horlogerie' || 'Art textile' || 'Art de la table') && edit
@@ -95,7 +95,7 @@
     </div>
     <p class="value" *ngIf="!edit">85cm</p>
   </div>
-  <div class="form-group col-md-4" *ngIf="selectedDomain == ('Peinture' || 'Art graphique') || edit">
+  <div class="form-group col-md-6" *ngIf="selectedDomain == ('Peinture' || 'Art graphique') || edit">
     <label class="">Largeur Tot</label>
     <div class="d-flex" *ngIf="edit">
       <input class="col-md-8 form-control" />
@@ -106,7 +106,7 @@
     </div>
     <p class="value" *ngIf="!edit">85cm</p>
   </div>
-  <div class="form-group col-md-4" *ngIf="selectedDomain == ('Peinture' || 'Art graphique') || edit">
+  <div class="form-group col-md-6" *ngIf="selectedDomain == ('Peinture' || 'Art graphique') || edit">
     <label class="">Hauteur Tot</label>
     <div class="d-flex" *ngIf="edit">
       <input class="col-md-8 form-control" />
@@ -117,7 +117,7 @@
     </div>
     <p class="value" *ngIf="!edit">85cm</p>
   </div>
-  <div class="form-group col-md-4" *ngIf="selectedDomain === ('Luminaire' || 'Pièce de musé' || 'Horlogerie') || edit">
+  <div class="form-group col-md-6" *ngIf="selectedDomain === ('Luminaire' || 'Pièce de musé' || 'Horlogerie') || edit">
     <label class="">Longueur</label>
     <div class="d-flex" *ngIf="edit">
       <input class="col-md-8 form-control" />
@@ -128,7 +128,7 @@
     </div>
     <p class="value" *ngIf="!edit">85cm</p>
   </div>
-  <div class="form-group col-md-4">
+  <div class="form-group col-md-6">
     <label class="">Profondeur</label>
     <div class="d-flex" *ngIf="edit">
       <input class="col-md-8 form-control" />
@@ -139,7 +139,7 @@
     </div>
     <div class="value" *ngIf="!edit">85cm</div>
   </div>
-  <div class="form-group col-md-4">
+  <div class="form-group col-md-6">
     <label class="col-md-3">Poids</label>
     <div class="d-flex" *ngIf="edit">
       <input class="col-md-8 form-control" />
@@ -149,7 +149,7 @@
     </div>
     <div class="value" *ngIf="!edit">85cm</div>
   </div>
-  <div class="form-group col-md-4" *ngIf="selectedDomain === ('Luminaire' || 'Pièce de musée') || edit">
+  <div class="form-group col-md-6" *ngIf="selectedDomain === ('Luminaire' || 'Pièce de musée') || edit">
     <label class="">Diamètre</label>
     <div class="d-flex" *ngIf="edit">
       <input class="col-md-8 form-control" />
@@ -162,7 +162,7 @@
   </div>
   <div class="col-md-4"></div>
   <div class="divider"></div>
-  <div class="form-group col-md-4">
+  <div class="form-group col-md-6">
     <label class="">Epoque</label>
     <div class="form-control autocomplete" *ngIf="edit">
       <ng-autocomplete
@@ -185,7 +185,7 @@
     </div>
     <div class="value" *ngIf="!edit">Années</div>
   </div>
-  <div class="form-group col-md-4">
+  <div class="form-group col-md-6">
     <label class="">Style</label>
     <div class="autocomplete form-control" *ngIf="edit">
       <ng-autocomplete
@@ -208,13 +208,13 @@
     </div>
     <div class="value" *ngIf="!edit">85cm</div>
   </div>
-  <div class="form-group col-md-4">
+  <div class="form-group col-md-6">
     <label class="">Date de création</label>
     <input type="date" class="form-control" *ngIf="edit" />
     <div class="value" *ngIf="!edit">12/01/2020</div>
   </div>
-  <div class="form-group col-md-4">
-    <label class="">Matières <span class="mandatory">*</span></label>
+  <div class="form-group col-md-6">
+    <label class="">Matières <span class="mandatory" *ngIf="edit">*</span></label>
     <div class="autocomplete form-control" *ngIf="edit">
       <ng-autocomplete
         placeholder="Matières"

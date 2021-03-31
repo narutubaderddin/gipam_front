@@ -2,8 +2,8 @@
   margin-top: 3%;
 }
 label {
-  font-size: 16px !important;
-  color: #484848;
+  font-size: 14px !important;
+  color: #838a90;
 }
 .form-group {
   display: flex;
@@ -12,8 +12,17 @@ label {
   //max-width: 30%;
   margin: 0.5% 1%;
   font-size: 14px;
-  color: gray;
+  color: #212121;
+}
+.value {
+  text-align: start;
+  width: 60%;
+}
+
+h5 {
+  color: #0ec7c6;
+  font-size: 16px;
+  font-weight: 700;
 }
 .form-bloc {
-  min-height: 120px;
 }

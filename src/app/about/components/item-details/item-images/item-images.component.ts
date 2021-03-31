@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
+import { ColDef, ColumnApi, GridApi } from 'ag-grid-community';
 
 @Component({
   selector: 'app-item-images',
@@ -8,6 +9,36 @@ import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ItemImagesComponent implements OnInit {
   slide = 1;
+
+  columnDefs: ColDef[] = [
+    {
+      headerName: 'source',
+      field: 'src',
+      width: 100,
+    },
+  ];
+
+  images = [
+    {
+      src: 'assets/images/573.jpg',
+    },
+    {
+      src: 'assets/images/573a.jpg',
+    },
+    {
+      src: 'assets/images/573b.jpg',
+    },
+  ];
+  defaultColDef = {
+    sortable: true,
+    filter: false,
+    resizable: true,
+    flex: 1,
+  };
+  gridApi: GridApi;
+  gridColumnApi: ColumnApi;
+  gridReady = false;
+
   constructor() {}
 
   ngOnInit(): void {}

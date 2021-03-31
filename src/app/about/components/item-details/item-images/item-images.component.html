@@ -1,12 +1,12 @@
 <div class="row">
-  <div class="col-12" style="display: flex; flex-direction: row-reverse; margin-bottom: 20px">
-    <button class="btn add-action">
-      <i class="fas fa-plus"></i>
-      Ajouter une photographie
-    </button>
-  </div>
+  <!--  <div class="col-12" style="display: flex; flex-direction: row-reverse; margin-bottom: 20px">-->
+
+  <!--  </div>-->
   <div class="col-12 content">
-    <div class="d-flex">
+    <div class="d-flex carousel-container">
+      <!--      <app-grid-wrapper [columnDefs]="columnDefs" [rowData]="images" [defaultColDef]="defaultColDef">-->
+      <!--      </app-grid-wrapper>-->
+
       <ngb-carousel class="carousel" (slide)="onChange($event)">
         <ng-template ngbSlide id="slide1">
           <div class="picsum-img-wrapper">
@@ -46,32 +46,38 @@
         </ng-template>
       </ngb-carousel>
       <div class="pictures-list">
+        <!--              <div style="overflow: auto; align-items: center">-->
         <img src="assets/images/573.jpg" alt="" />
         <img src="assets/images/573a.jpg" alt="" />
         <img src="assets/images/573b.jpg" alt="" />
         <img src="assets/images/573.jpg" alt="" />
+        <!--              </div>-->
+        <i class="fas fa-chevron-down" style="align-self: center; font-size: 25px"></i>
       </div>
     </div>
 
-    <div class="more-details" *ngIf="slide == 1">
-      <p><strong>Date d'ajout :</strong> 12/02/2019</p>
-      <p><strong>Type :</strong></p>
-      <p><strong>Pricipal : </strong> oui</p>
-    </div>
-    <div class="more-details" *ngIf="slide == 2">
-      <p><strong>Date d'ajout :</strong> 16/04/2019</p>
-      <p><strong>Type :</strong></p>
-      <p><strong>Pricipal : </strong> non</p>
-    </div>
-    <div class="more-details" *ngIf="slide == 3">
-      <p><strong>Date d'ajout :</strong> 12/06/2019</p>
-      <p><strong>Type :</strong></p>
-      <p><strong>Pricipal : </strong> non</p>
-    </div>
-    <div class="more-details" *ngIf="slide == 4">
-      <p><strong>Date d'ajout :</strong> 12/09/2019</p>
-      <p><strong>Type :</strong></p>
-      <p><strong>Pricipal : </strong> non</p>
+    <div class="more-details">
+      <button class="btn add-action mb-4">
+        <i class="fas fa-plus"></i>
+        Ajouter une photographie
+      </button>
+      <div class="" *ngIf="slide == 1">
+        <p><strong>Date d'ajout :</strong> 12/02/2019</p>
+        <p><strong>Type :</strong><i class="far fa-edit"></i></p>
+      </div>
+
+      <div class="" *ngIf="slide == 2">
+        <p><strong>Date d'ajout :</strong> 16/04/2019</p>
+        <p><strong>Type :</strong> <i class="far fa-edit"></i></p>
+      </div>
+      <div class="" *ngIf="slide == 3">
+        <p><strong>Date d'ajout :</strong> 12/06/2019</p>
+        <p><strong>Type :</strong> <i class="far fa-edit"></i></p>
+      </div>
+      <div class="" *ngIf="slide == 4">
+        <p><strong>Date d'ajout :</strong> 12/09/2019</p>
+        <p><strong>Type :</strong> <i class="far fa-edit"></i></p>
+      </div>
     </div>
   </div>
 </div>
