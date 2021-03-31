@@ -38,6 +38,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   filterFormGroup: FormGroup;
   columnDropped = new EventEmitter();
   columnDroppedSubscription: Subscription;
+  showInventoryRange = false;
   frameworkComponents = {
     customHeader: CustomHeaderRendererComponent,
     gridActionRenderer: GridActionRendererComponent,
@@ -193,7 +194,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   showForm2End = false;
   showForm3End = false;
   showForm4End = false;
-
+  dynamic: boolean = false;
   constructor(
     private fb: FormBuilder,
     public columnFilterService: ColumnFilterService,
@@ -215,7 +216,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       textField: 'name',
       selectAllText: 'Sélectionner tout',
       unSelectAllText: 'Supprimer les sélections',
-      itemsShowLimit: 2,
+      // itemsShowLimit: 2,
       allowSearchFilter: true,
     };
     this.form1 = new FormGroup({
@@ -503,5 +504,13 @@ export class ListWorkOfArtsComponent implements OnInit {
         this.showForm4End = count > 4;
       });
     });
+  }
+
+  onCheckboxChange(event: any) {
+    this.showInventoryRange = event.target.checked;
+  }
+
+  onSearchClick() {
+    this.showDatatable = true;
   }
 }
