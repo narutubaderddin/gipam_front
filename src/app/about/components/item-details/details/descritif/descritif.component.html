@@ -2,7 +2,7 @@
   <div class="form-group col-md-6">
     <label>Titre</label>
     <input class="form-control" placeholder="titre" *ngIf="edit" />
-    <div class="" *ngIf="!edit">Titre de la sculpture</div>
+    <div class="value" *ngIf="!edit">Titre de la sculpture</div>
   </div>
   <div class="form-group col-md-6">
     <label>Domaine</label>
@@ -214,7 +214,7 @@
     <div class="value" *ngIf="!edit">12/01/2020</div>
   </div>
   <div class="form-group col-md-6">
-    <label class="">Matières <span class="mandatory">*</span></label>
+    <label class="">Matières <span class="mandatory" *ngIf="edit">*</span></label>
     <div class="autocomplete form-control" *ngIf="edit">
       <ng-autocomplete
         placeholder="Matières"

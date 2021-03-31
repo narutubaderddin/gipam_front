@@ -25,7 +25,7 @@
               <i class="far fa-file-excel"></i>
               <i class="fas fa-print"></i>
               <i class="far fa-edit" (click)="onEditMode()"></i>
-              <div class="btn-slider mr-2">
+              <div class="btn-slider mr-2" *ngIf="!dynamic">
                 <label [class.active]="!dynamic">statique</label>
                 <label class="switch">
                   <input type="checkbox" [(ngModel)]="dynamic" />
@@ -54,7 +54,7 @@
                   <img src="assets/images/573b.jpg" alt="" class="modal-content" id="full-image" />
                 </div>
 
-                <div class="col-8">
+                <div class="col-8 pr-0">
                   <nav ngbNav #nav="ngbNav" class="nav-tabs">
                     <ng-container ngbNavItem>
                       <a ngbNavLink><i class="far fa-file-alt mr-2"></i>Descriptifs physiques</a>
@@ -119,11 +119,7 @@
                   <!--                  </app-accordion-section>-->
                   <!--                </div>-->
                   <!--              </div>-->
-                  <div
-                    *ngIf="edit"
-                    [ngClass]="isCollapsed ? 'col-md-11' : 'col-md-8'"
-                    style="display: flex; flex-direction: row-reverse"
-                  >
+                  <div *ngIf="edit" class="col-md-11" style="display: flex; flex-direction: row-reverse">
                     <button class="btn valid-btn" (click)="onSave()">Enregistrer</button>
                     <button class="btn btn-action cancel-btn">Annuler</button>
                   </div>
@@ -241,7 +237,7 @@
               </div>
             </div>
             <div class="col-md-12" *ngIf="dynamic" style="width: 100%">
-              <app-dynamic></app-dynamic>
+              <app-dynamic [dynamicState]="dynamic" (dynamic)="f1($event)"></app-dynamic>
             </div>
           </div>
         </div>

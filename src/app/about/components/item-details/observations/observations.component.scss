@@ -1,5 +1,7 @@
 .map-container {
-  padding: 10px;
+  min-height: 100%;
+  background-color: #f7f7f7;
+  border-radius: 0 3rem 2rem 2rem;
   .map-frame {
     height: 350px;
   }
@@ -7,8 +9,10 @@
     height: 100%;
   }
   .content {
+    min-height: 100%;
     display: flex;
     flex-wrap: wrap;
+
     .action {
       //margin-top: 2%;
       //height: 180px;
@@ -25,7 +29,7 @@
     }
     h5 {
       margin: 0;
-      border-radius: 1rem 1rem 0 0;
+      border-radius: 0rem 10rem 0 0;
       background-color: #00d6d4;
       width: fit-content;
       padding: 0.7rem;
@@ -66,12 +70,17 @@ h6 {
 p {
   margin: 1% 0%;
   font-size: 14px;
-  //margin-bottom: 0;
-  //border-bottom: 1px solid #d6d6d6;
+  padding-right: 0;
   color: gray;
   strong {
-    color: #484848;
-    font-size: 16px;
+    //color: #484848;
+    color: #838a90;
+    //font-size: 16px;
+  }
+  span {
+    color: #212121;
+    text-align: start;
+    width: 55%;
   }
 }
 

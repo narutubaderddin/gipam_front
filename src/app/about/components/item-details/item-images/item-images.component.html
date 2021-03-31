@@ -1,80 +1,83 @@
 <div class="row">
-  <div class="col-12" style="display: flex; flex-direction: row-reverse; margin-bottom: 20px">
-    <button class="btn add-action">
-      <i class="fas fa-plus"></i>
-      Ajouter une photographie
-    </button>
-  </div>
-  <div class="col-12 content">
-    <div class="d-flex">
-      <app-grid-wrapper [columnDefs]="columnDefs" [rowData]="images" [defaultColDef]="defaultColDef">
-      </app-grid-wrapper>
+  <!--  <div class="col-12" style="display: flex; flex-direction: row-reverse; margin-bottom: 20px">-->
 
-      <!--      <ngb-carousel class="carousel" (slide)="onChange($event)">-->
-      <!--        <ng-template ngbSlide id="slide1">-->
-      <!--          <div class="picsum-img-wrapper">-->
-      <!--            <img src="assets/images/573.jpg" alt="Random first slide" />-->
-      <!--          </div>-->
-      <!--          <div class="carousel-caption">-->
-      <!--            <h3>10 seconds between slides...</h3>-->
-      <!--            <p>This carousel uses customized default values.</p>-->
-      <!--          </div>-->
-      <!--        </ng-template>-->
-      <!--        <ng-template ngbSlide id="slide2">-->
-      <!--          <div class="picsum-img-wrapper">-->
-      <!--            <img src="assets/images/573a.jpg" alt="Random second slide" />-->
-      <!--          </div>-->
-      <!--          <div class="carousel-caption">-->
-      <!--            <h3>No mouse events...</h3>-->
-      <!--            <p>This carousel doesn't pause or resume on mouse events</p>-->
-      <!--          </div>-->
-      <!--        </ng-template>-->
-      <!--        <ng-template ngbSlide id="slide3">-->
-      <!--          <div class="picsum-img-wrapper">-->
-      <!--            <img src="assets/images/573b.jpg" alt="Random third slide" />-->
-      <!--          </div>-->
-      <!--          <div class="carousel-caption">-->
-      <!--            <h3>No keyboard...</h3>-->
-      <!--            <p>This carousel uses customized default values.</p>-->
-      <!--          </div>-->
-      <!--        </ng-template>-->
-      <!--        <ng-template ngbSlide id="slide4">-->
-      <!--          <div class="picsum-img-wrapper">-->
-      <!--            <img src="assets/images/573.jpg" alt="Random fourth slide" />-->
-      <!--          </div>-->
-      <!--          <div class="carousel-caption">-->
-      <!--            <h3>And no wrap after last slide.</h3>-->
-      <!--            <p>This carousel uses customized default values.</p>-->
-      <!--          </div>-->
-      <!--        </ng-template>-->
-      <!--      </ngb-carousel>-->
-      <!--      <div class="pictures-list">-->
-      <!--        <img src="assets/images/573.jpg" alt="" />-->
-      <!--        <img src="assets/images/573a.jpg" alt="" />-->
-      <!--        <img src="assets/images/573b.jpg" alt="" />-->
-      <!--        <img src="assets/images/573.jpg" alt="" />-->
-      <!--      </div>-->
+  <!--  </div>-->
+  <div class="col-12 content">
+    <div class="d-flex carousel-container">
+      <!--      <app-grid-wrapper [columnDefs]="columnDefs" [rowData]="images" [defaultColDef]="defaultColDef">-->
+      <!--      </app-grid-wrapper>-->
+
+      <ngb-carousel class="carousel" (slide)="onChange($event)">
+        <ng-template ngbSlide id="slide1">
+          <div class="picsum-img-wrapper">
+            <img src="assets/images/573.jpg" alt="Random first slide" />
+          </div>
+          <div class="carousel-caption">
+            <h3>10 seconds between slides...</h3>
+            <p>This carousel uses customized default values.</p>
+          </div>
+        </ng-template>
+        <ng-template ngbSlide id="slide2">
+          <div class="picsum-img-wrapper">
+            <img src="assets/images/573a.jpg" alt="Random second slide" />
+          </div>
+          <div class="carousel-caption">
+            <h3>No mouse events...</h3>
+            <p>This carousel doesn't pause or resume on mouse events</p>
+          </div>
+        </ng-template>
+        <ng-template ngbSlide id="slide3">
+          <div class="picsum-img-wrapper">
+            <img src="assets/images/573b.jpg" alt="Random third slide" />
+          </div>
+          <div class="carousel-caption">
+            <h3>No keyboard...</h3>
+            <p>This carousel uses customized default values.</p>
+          </div>
+        </ng-template>
+        <ng-template ngbSlide id="slide4">
+          <div class="picsum-img-wrapper">
+            <img src="assets/images/573.jpg" alt="Random fourth slide" />
+          </div>
+          <div class="carousel-caption">
+            <h3>And no wrap after last slide.</h3>
+            <p>This carousel uses customized default values.</p>
+          </div>
+        </ng-template>
+      </ngb-carousel>
+      <div class="pictures-list">
+        <!--              <div style="overflow: auto; align-items: center">-->
+        <img src="assets/images/573.jpg" alt="" />
+        <img src="assets/images/573a.jpg" alt="" />
+        <img src="assets/images/573b.jpg" alt="" />
+        <img src="assets/images/573.jpg" alt="" />
+        <!--              </div>-->
+        <i class="fas fa-chevron-down" style="align-self: center; font-size: 25px"></i>
+      </div>
     </div>
 
-    <!--    <div class="more-details" *ngIf="slide == 1">-->
-    <!--      <p><strong>Date d'ajout :</strong> 12/02/2019</p>-->
-    <!--      <p><strong>Type :</strong></p>-->
-    <!--      <p><strong>Pricipal : </strong> oui</p>-->
-    <!--    </div>-->
-    <!--    <div class="more-details" *ngIf="slide == 2">-->
-    <!--      <p><strong>Date d'ajout :</strong> 16/04/2019</p>-->
-    <!--      <p><strong>Type :</strong></p>-->
-    <!--      <p><strong>Pricipal : </strong> non</p>-->
-    <!--    </div>-->
-    <!--    <div class="more-details" *ngIf="slide == 3">-->
-    <!--      <p><strong>Date d'ajout :</strong> 12/06/2019</p>-->
-    <!--      <p><strong>Type :</strong></p>-->
-    <!--      <p><strong>Pricipal : </strong> non</p>-->
-    <!--    </div>-->
-    <!--    <div class="more-details" *ngIf="slide == 4">-->
-    <!--      <p><strong>Date d'ajout :</strong> 12/09/2019</p>-->
-    <!--      <p><strong>Type :</strong></p>-->
-    <!--      <p><strong>Pricipal : </strong> non</p>-->
-    <!--    </div>-->
+    <div class="more-details">
+      <button class="btn add-action mb-4">
+        <i class="fas fa-plus"></i>
+        Ajouter une photographie
+      </button>
+      <div class="" *ngIf="slide == 1">
+        <p><strong>Date d'ajout :</strong> 12/02/2019</p>
+        <p><strong>Type :</strong><i class="far fa-edit"></i></p>
+      </div>
+
+      <div class="" *ngIf="slide == 2">
+        <p><strong>Date d'ajout :</strong> 16/04/2019</p>
+        <p><strong>Type :</strong> <i class="far fa-edit"></i></p>
+      </div>
+      <div class="" *ngIf="slide == 3">
+        <p><strong>Date d'ajout :</strong> 12/06/2019</p>
+        <p><strong>Type :</strong> <i class="far fa-edit"></i></p>
+      </div>
+      <div class="" *ngIf="slide == 4">
+        <p><strong>Date d'ajout :</strong> 12/09/2019</p>
+        <p><strong>Type :</strong> <i class="far fa-edit"></i></p>
+      </div>
+    </div>
   </div>
 </div>
