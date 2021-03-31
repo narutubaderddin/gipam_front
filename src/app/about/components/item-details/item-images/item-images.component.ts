@@ -14,6 +14,7 @@ export class ItemImagesComponent implements OnInit {
     {
       headerName: 'source',
       field: 'src',
+      width: 100,
     },
   ];
 

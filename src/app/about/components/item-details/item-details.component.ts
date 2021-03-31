@@ -15,7 +15,7 @@ export class ItemDetailsComponent implements OnInit {
   page: any = 2;
   edit = false;
   moreDetails = ['19-01-2020', '23-02-2020', '01-03-2020', '25-03-2020', '20-04-2020'];
-  isCollapsed: boolean = false;
+  // isCollapsed: boolean = false;
   dynamic: boolean = false;
   openImg: boolean = false;
 
@@ -38,10 +38,11 @@ export class ItemDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.menuClosed;
-    // console.log("menuCollapsed", this.collapseSideNav);
-    console.log('menuOpened', this.menuClosed);
   }
-
+  f1(e: any) {
+    this.dynamic = e;
+    console.log(this.dynamic);
+  }
   page1() {
     this.page = 1;
   }
@@ -73,6 +74,6 @@ export class ItemDetailsComponent implements OnInit {
 
   showImg() {
     this.openImg = !this.openImg;
-    console.log(this.openImg);
+    // console.log(this.openImg);
   }
 }
