@@ -38,8 +38,6 @@ export class GridActionRendererComponent implements ICellRendererAngularComp, On
     } else {
       this.actions = 'search';
     }
-    console.log(this.actions);
-    console.log(this.params.data.Recole);
   }
   showDetails() {
     this.params.context.parentComponent.methodFromParent(

@@ -16,20 +16,556 @@
         </div>
       </div>
     </div>
-    <div class="mt-2">
-      <app-accordion-section
-        #accordionSectionDOM
-        [editable]="true"
-        [headerTitle]="'Recherche'"
-        [idMilestoneSection]="2"
-        [sectionIndex]="2"
-        [showIcon]="true"
-        [icon]="'fa fa-search'"
-        [index]="2"
-        [sectionTitle]="'Status'"
-      >
-        <app-request [fields]="ColDef" (validateRequest)="onValidateRequest($event)"></app-request>
-      </app-accordion-section>
+    <div>
+      <div class="form-group mt-3">
+        <input type="text" class="form-control w-100" (keyup.enter)="onSearchClick()" placeholder="Recherche" />
+      </div>
+    </div>
+    <div class="mt-2 d-flex">
+      <div class="dropdown-container search-container mb-2 mr-2 mb-sm-0">
+        <div
+          ngbDropdown
+          placement="bottom-left"
+          autoClose="outside"
+          container="body"
+          (openChange)="onToggel($event, 'form1')"
+          class="d-inline-block drop-bloc"
+        >
+          <ng-template #TemplateForm1>
+            <p *ngFor="let value of form1Values; let index = index">
+              <span>{{ value }}</span>
+            </p>
+          </ng-template>
+          <button
+            class="btn dropdown-btn list quick-filter-btn"
+            id="dropDownSearch1"
+            ngbDropdownToggle
+            (click)="resetFilter()"
+          >
+            <span>
+              <i class="fas fa-passport" style="color: #1f2b50"></i>
+              Identification des oeuvres
+              <i class="fa fa-sort-down" *ngIf="!firstSearchDrop && form1Values.length > 0"></i>
+            </span>
+            <div
+              [ngbTooltip]="form1Values.length > 0 ? TemplateForm1 : ''"
+              placement="right"
+              *ngIf="!firstSearchDrop && form1Values.length > 0"
+            >
+              <div class="mt-3">
+                <p *ngFor="let value of form1Values; let index = index">
+                  <span *ngIf="index < 4">{{ value }}</span>
+                </p>
+                <p *ngIf="showForm1End">...</p>
+              </div>
+            </div>
+          </button>
+          <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropDownSearch1" style="width: 400px">
+            <div class="columns-dropdown" style="width: 100% !important">
+              <form [formGroup]="form1">
+                <div class="col-12 pt-1">
+                  <div class="form-group d-flex slider-bloc row">
+                    <!--                    <label style="margin-top: 3%" for="inventaire" class="col-5">N° inventaire</label>-->
+                    <!--                    <div class="custom-slider">-->
+                    <!--                      <ngx-slider-->
+                    <!--                        [(value)]="inventoryValue"-->
+                    <!--                        [(highValue)]="hightInventoryValue"-->
+                    <!--                        [options]="inventoryOptions"-->
+                    <!--                      ></ngx-slider>-->
+                    <!--                    </div>-->
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label style="margin-top: 3%" for="titre" class="col-5">N° inventaire</label>
+                    <input
+                      type="text"
+                      formControlName="inventory"
+                      class="form-control col-4"
+                      *ngIf="!showInventoryRange"
+                      placeholder="N° inventaire"
+                    />
+
+                    <div
+                      class="custom-slider mt-3 col-4"
+                      *ngIf="showInventoryRange"
+                      style="width: 90% !important; margin-top: -15px !important"
+                    >
+                      <ngx-slider
+                        [(value)]="inventoryValue"
+                        [(highValue)]="hightInventoryValue"
+                        [options]="inventoryOptions"
+                      ></ngx-slider>
+                    </div>
+                    <div class="btn-slider mr-2 col-3" *ngIf="!dynamic">
+                      <label [class.active]="!dynamic"></label>
+                      <label class="switch">
+                        <input type="checkbox" (change)="onCheckboxChange($event)" />
+                        <span class="slider round"></span>
+                      </label>
+
+                      <label [class.active]="dynamic"></label>
+                    </div>
+
+                    <!--                    <div class="custom-slider col-4 ">-->
+                    <!--                      <ngx-slider-->
+                    <!--                        [(value)]="inventoryValue"-->
+                    <!--                        [(highValue)]="hightInventoryValue"-->
+                    <!--                        [options]="inventoryOptions"-->
+                    <!--                      ></ngx-slider>-->
+                    <!--                    </div>-->
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label style="margin-top: 3%" for="titre" class="col-5">Titre</label>
+                    <input
+                      type="text"
+                      formControlName="title"
+                      class="form-control col-6"
+                      id="titre"
+                      placeholder="Titre"
+                    />
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label style="margin-top: 3%" for="domaine" class="col-5">Domaine </label>
+                    <ng-multiselect-dropdown
+                      class="select col-6 w-100"
+                      formControlName="domaine"
+                      [placeholder]="'Choisir ses domaines'"
+                      [settings]="dropdownSettings"
+                      [data]="domaine"
+                      (onSelect)="onDomainSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label style="margin-top: 3%" for="denomination" class="col-5">Dénomination</label>
+                    <ng-multiselect-dropdown
+                      class="select col-6"
+                      [placeholder]="'Choisir des dénominations'"
+                      formControlName="denomination"
+                      [settings]="dropdownSettings"
+                      [data]="WorkOfArtService.denominations"
+                      (onSelect)="onItemSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label style="margin-top: 3%" for="denomination" class="col-5">Auteurs</label>
+                    <ng-multiselect-dropdown
+                      class="select col-6"
+                      [placeholder]="'Choisir des auteurs'"
+                      [settings]="dropdownSettings"
+                      formControlName="author"
+                      [data]="WorkOfArtService.authors"
+                      (onSelect)="onItemSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dropdown-container search-container mb-2 mr-2 mb-sm-0">
+        <div
+          ngbDropdown
+          (openChange)="onToggel($event, 'form2')"
+          placement="bottom-left"
+          autoClose="outside"
+          container="body"
+          class="d-inline-block drop-bloc"
+        >
+          <ng-template #TemplateForm2>
+            <p *ngFor="let value of form2Values; let index = index">
+              <span>{{ value }}</span>
+            </p>
+          </ng-template>
+          <button
+            class="btn dropdown-btn list quick-filter-btn"
+            id="dropDownSearch2"
+            ngbDropdownToggle
+            (click)="resetFilter()"
+          >
+            <span>
+              <i class="fas fa-passport" style="color: #1f2b50"></i>
+              Opération de gestion
+              <i class="fa fa-sort-down" *ngIf="form2Values.length > 0 && !secondSearchDrop"></i>
+            </span>
+            <div
+              [ngbTooltip]="form2Values.length > 0 ? TemplateForm2 : ''"
+              placement="right"
+              *ngIf="form2Values.length > 0 && !secondSearchDrop"
+            >
+              <div class="mt-3">
+                <p *ngFor="let value of form2Values; let index = index">
+                  <span *ngIf="index < 4">{{ value }}</span>
+                </p>
+                <p *ngIf="showForm2End">...</p>
+              </div>
+            </div>
+          </button>
+          <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropDownSearch2" style="width: 500px">
+            <div class="columns-dropdown" style="width: 100% !important">
+              <form [formGroup]="form2">
+                <div class="col-12 pt-1">
+                  <div class="form-group d-flex slider-bloc row">
+                    <label for="domaine" class="col-5">Type de mouvement </label>
+                    <ng-multiselect-dropdown
+                      class="select col-6 w-100"
+                      [placeholder]="'Choisir types de mouvement'"
+                      [settings]="dropdownSettings"
+                      formControlName="mouvement"
+                      [data]="domaine"
+                      (onSelect)="onDomainSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label for="domaine" class="col-5">Type action mouvement </label>
+                    <ng-multiselect-dropdown
+                      class="select col-6 w-100"
+                      [placeholder]="'Choisir types d\'action de mouvement'"
+                      [settings]="dropdownSettings"
+                      formControlName="mouvementAction"
+                      [data]="domaine"
+                      (onSelect)="onDomainSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+
+                  <div class="form-group d-flex slider-bloc row">
+                    <label for="domaine" class="col-5">Types de constat </label>
+                    <ng-multiselect-dropdown
+                      class="select col-6 w-100"
+                      [placeholder]="'Choisir des types de constat'"
+                      formControlName="constat"
+                      [settings]="dropdownSettings"
+                      [data]="domaine"
+                      (onSelect)="onDomainSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label for="domaine" class="col-5">Types actions constat </label>
+                    <ng-multiselect-dropdown
+                      class="select col-6 w-100"
+                      [placeholder]="'Choisir types d\'actions'"
+                      [settings]="dropdownSettings"
+                      [data]="domaine"
+                      formControlName="constatAction"
+                      (onSelect)="onDomainSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="form-group mt-4 d-flex align-items-center">
+                    <label class="mt-2">Titre de perception demandé </label>
+                    <input class="m-2" type="checkbox" name="options" id="option1" formControlName="perseption" />
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dropdown-container search-container mb-2 mr-2 mb-sm-0">
+        <div
+          ngbDropdown
+          (openChange)="onToggel($event, 'form3')"
+          placement="bottom-left"
+          autoClose="outside"
+          container="body"
+          class="d-inline-block drop-bloc"
+        >
+          <ng-template #TemplateForm3>
+            <p *ngFor="let value of form3Values; let index = index">
+              <span>{{ value }}</span>
+            </p>
+          </ng-template>
+          <button
+            class="btn dropdown-btn list quick-filter-btn"
+            id="dropDownSearch3"
+            ngbDropdownToggle
+            (click)="resetFilter()"
+          >
+            <span>
+              <i class="fas fa-passport" style="color: #1f2b50"></i>
+              Localisation administrative
+              <i class="fa fa-sort-down" *ngIf="form3Values.length > 0 && !thirdSearchDrop"></i>
+            </span>
+            <div
+              [ngbTooltip]="form3Values.length ? TemplateForm3 : ''"
+              placement="right"
+              *ngIf="form3Values.length > 0 && !thirdSearchDrop"
+            >
+              <div class="mt-3">
+                <p *ngFor="let value of form3Values; let index = index">
+                  <span *ngIf="index < 4">{{ value }}</span>
+                </p>
+                <p *ngIf="showForm3End">...</p>
+              </div>
+            </div>
+          </button>
+          <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropDownSearch3" style="width: 500px">
+            <div class="columns-dropdown" style="width: 100% !important">
+              <form [formGroup]="form3">
+                <div class="col-12 pt-1">
+                  <div class="form-group d-flex slider-bloc row">
+                    <label for="domaine" class="col-5">Ministéres </label>
+                    <ng-multiselect-dropdown
+                      class="select col-6 w-100"
+                      [placeholder]="'Choisir des ministères'"
+                      [settings]="dropdownSettings"
+                      formControlName="ministry"
+                      [data]="WorkOfArtService.ministeres"
+                      (onSelect)="onDomainSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label for="domaine" class="col-5">Type Etablissement </label>
+                    <ng-multiselect-dropdown
+                      class="select col-6 w-100"
+                      [placeholder]="'Choisir type(s) d\'établissement(s)'"
+                      [settings]="dropdownSettings"
+                      [data]="domaine"
+                      formControlName="etablissement"
+                      (onSelect)="onDomainSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label for="domaine" class="col-5">Etab./Dir. </label>
+                    <ng-multiselect-dropdown
+                      class="select col-6 w-100"
+                      [placeholder]="'Choisir des étab/dir'"
+                      [settings]="dropdownSettings"
+                      [data]="domaine"
+                      formControlName="direction"
+                      (onSelect)="onDomainSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label for="domaine" class="col-5">Sous-direction </label>
+                    <ng-multiselect-dropdown
+                      class="select col-6 w-100"
+                      [placeholder]="'Choisir des sous-direction'"
+                      [settings]="dropdownSettings"
+                      [data]="domaine"
+                      formControlName="sousDirection"
+                      (onSelect)="onDomainSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label for="domaine" class="col-5">Services </label>
+                    <ng-multiselect-dropdown
+                      class="select col-6 w-100"
+                      [placeholder]="'Choisir des services'"
+                      [settings]="dropdownSettings"
+                      [data]="domaine"
+                      formControlName="services"
+                      (onSelect)="onDomainSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label for="domaine" class="col-5">Correspondants </label>
+                    <ng-multiselect-dropdown
+                      class="select col-6 w-100"
+                      [placeholder]="'Choisir des correspondants'"
+                      [settings]="dropdownSettings"
+                      [data]="domaine"
+                      formControlName="correspondant"
+                      (onSelect)="onDomainSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dropdown-container search-container mb-2 mr-2 mb-sm-0">
+        <div
+          ngbDropdown
+          (openChange)="onToggel($event, 'form4')"
+          placement="bottom-left"
+          autoClose="outside"
+          container="body"
+          class="d-inline-block drop-bloc"
+        >
+          <ng-template #TemplateForm4>
+            <p *ngFor="let value of form4Values; let index = index">
+              <span>{{ value }}</span>
+            </p>
+          </ng-template>
+          <button
+            class="btn dropdown-btn list quick-filter-btn"
+            id="dropDownSearch4"
+            ngbDropdownToggle
+            (click)="resetFilter()"
+          >
+            <span>
+              <i class="fas fa-passport" style="color: #1f2b50"></i>
+              Localisation géographique
+              <i class="fa fa-sort-down" *ngIf="form4Values.length > 0 && !fourthSearchDrop"></i>
+            </span>
+
+            <div
+              style="display: table"
+              [ngbTooltip]="form4Values.length > 0 ? TemplateForm4 : ''"
+              placement="right"
+              *ngIf="form4Values.length > 0 && !fourthSearchDrop"
+            >
+              <div class="mt-3">
+                <p *ngFor="let value of form4Values; let index = index">
+                  <span *ngIf="index < 4">{{ value }}</span>
+                </p>
+                <p *ngIf="showForm4End">...</p>
+              </div>
+            </div>
+          </button>
+          <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropDownSearch4" style="width: 400px">
+            <div class="columns-dropdown" style="width: 100% !important">
+              <form [formGroup]="form4">
+                <div class="col-12 pt-1">
+                  <div class="form-group d-flex slider-bloc row">
+                    <label for="domaine" class="col-5">Type local </label>
+                    <ng-multiselect-dropdown
+                      class="select col-6 w-100"
+                      [placeholder]="'Choisir des types local'"
+                      [settings]="dropdownSettings"
+                      [data]="domaine"
+                      formControlName="localType"
+                      (onSelect)="onDomainSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label for="domaine" class="col-5">Régions </label>
+                    <ng-multiselect-dropdown
+                      class="select col-6 w-100"
+                      [placeholder]="'Choisir des régions'"
+                      [settings]="dropdownSettings"
+                      formControlName="region"
+                      [data]="domaine"
+                      (onSelect)="onDomainSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label for="domaine" class="col-5">Départements </label>
+                    <ng-multiselect-dropdown
+                      class="select col-6 w-100"
+                      [placeholder]="'Choisir des départements'"
+                      [settings]="dropdownSettings"
+                      formControlName="departement"
+                      [data]="domaine"
+                      (onSelect)="onDomainSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label for="domaine" class="col-5">Communes </label>
+                    <ng-multiselect-dropdown
+                      class="select col-6 w-100"
+                      [placeholder]="'Choisir des communes'"
+                      [settings]="dropdownSettings"
+                      [data]="domaine"
+                      formControlName="communes"
+                      (onSelect)="onDomainSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label for="domaine" class="col-5">Bâtiments </label>
+                    <ng-multiselect-dropdown
+                      class="select col-6 w-100"
+                      [placeholder]="'Choisir des bâtiments '"
+                      [settings]="dropdownSettings"
+                      [data]="domaine"
+                      formControlName="batiment"
+                      (onSelect)="onDomainSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label for="domaine" class="col-5">Sites </label>
+                    <ng-multiselect-dropdown
+                      class="select col-6 w-100"
+                      [placeholder]="'Choisir des sites'"
+                      [settings]="dropdownSettings"
+                      [data]="domaine"
+                      formControlName="sites"
+                      (onSelect)="onDomainSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label for="domaine" class="col-5">N pièces </label>
+                    <ng-multiselect-dropdown
+                      class="select col-6 w-100"
+                      [placeholder]="'Choisir des N pièces'"
+                      [settings]="dropdownSettings"
+                      [data]="domaine"
+                      formControlName="pieceNumber"
+                      (onSelect)="onDomainSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label for="domaine" class="col-5">Correspodants </label>
+                    <ng-multiselect-dropdown
+                      class="select col-6 w-100"
+                      [placeholder]="'Choisir des correspondants'"
+                      [settings]="dropdownSettings"
+                      [data]="domaine"
+                      formControlName="correspondant"
+                      (onSelect)="onDomainSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--      <app-accordion-section-->
+      <!--        #accordionSectionDOM-->
+      <!--        [editable]="true"-->
+      <!--        [headerTitle]="'Recherche'"-->
+      <!--        [idMilestoneSection]="2"-->
+      <!--        [sectionIndex]="2"-->
+      <!--        [showIcon]="true"-->
+      <!--        [icon]="'fa fa-search'"-->
+      <!--        [index]="2"-->
+      <!--        [sectionTitle]="'Status'"-->
+      <!--      >-->
+      <!--        <app-request [fields]="ColDef" (validateRequest)="onValidateRequest($event)"></app-request>-->
+      <!--      </app-accordion-section>-->
     </div>
     <div *ngIf="showDatatable">
       <div class="filter-bloc d-flex">
@@ -97,48 +633,47 @@
         </div>
       </div>
       <div class="search-quick-fliter-bloc d-flex flex-content-between">
-        <div class="quick-filters d-flex">
-          <h6 class="text-quick-filter">Filtres rapides :</h6>
-          <div class="dropdown-container mb-2 mr-2 mb-sm-0">
-            <div class="d-inline-block drop-bloc">
-              <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">Oeuvres archivées</button>
-            </div>
-          </div>
-          <div class="dropdown-container mb-2 mr-2 mb-sm-0">
-            <div class="d-inline-block drop-bloc">
-              <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">Oeuvres perdues</button>
-            </div>
-          </div>
-          <div class="dropdown-container mb-2 mr-2 mb-sm-0">
-            <div class="d-inline-block drop-bloc">
-              <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">
-                Oeuvres récemment modifiées
-              </button>
-            </div>
-          </div>
-          <div class="dropdown-container mb-2 mr-2 mb-sm-0">
-            <div class="d-inline-block drop-bloc">
-              <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">
-                Oeuvres en cours de création
-              </button>
-            </div>
-          </div>
-          <div>
-            <div class="dropdown-container mb-2 mr-2 mb-sm-0" style="margin: 3px 0 15px 0">
-              <div class="d-inline-block drop-bloc">
-                <span class="icon-stack d-flex" (click)="resetFilter()">
-                  <i class="fas fa-filter"></i>
-                  <i class="fas fa-times"></i>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <!--        <div class="quick-filters d-flex">-->
+        <!--          <h6 class="text-quick-filter">Filtres rapides :</h6>-->
+        <!--          <div class="dropdown-container mb-2 mr-2 mb-sm-0">-->
+        <!--            <div class="d-inline-block drop-bloc">-->
+        <!--              <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">Oeuvres archivées</button>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--          <div class="dropdown-container mb-2 mr-2 mb-sm-0">-->
+        <!--            <div class="d-inline-block drop-bloc">-->
+        <!--              <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">Oeuvres perdues</button>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--          <div class="dropdown-container mb-2 mr-2 mb-sm-0">-->
+        <!--            <div class="d-inline-block drop-bloc">-->
+        <!--              <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">-->
+        <!--                Oeuvres récemment modifiées-->
+        <!--              </button>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--          <div class="dropdown-container mb-2 mr-2 mb-sm-0">-->
+        <!--            <div class="d-inline-block drop-bloc">-->
+        <!--              <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">-->
+        <!--                Oeuvres en cours de création-->
+        <!--              </button>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--          <div>-->
+        <!--            <div class="dropdown-container mb-2 mr-2 mb-sm-0" style="margin: 3px 0 15px 0">-->
+        <!--              <div class="d-inline-block drop-bloc">-->
+        <!--                <span class="icon-stack d-flex" (click)="resetFilter()">-->
+        <!--                  <i class="fas fa-filter"></i>-->
+        <!--                  <i class="fas fa-times"></i>-->
+        <!--                </span>-->
+        <!--              </div>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </div>-->
         <div class="d-flex">
           <div class="search-panel">
             <input
               (keyup)="search($event)"
-              (clear)="search()"
               class="form-control"
               type="text"
               name="search"
