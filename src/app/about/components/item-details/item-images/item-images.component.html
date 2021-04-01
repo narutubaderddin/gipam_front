@@ -1,20 +1,30 @@
-<div class="row">
+<div class="row images-container">
   <!--  <div class="col-12" style="display: flex; flex-direction: row-reverse; margin-bottom: 20px">-->
 
   <!--  </div>-->
   <div class="col-12 content">
     <div class="d-flex carousel-container">
-      <!--      <app-grid-wrapper [columnDefs]="columnDefs" [rowData]="images" [defaultColDef]="defaultColDef">-->
-      <!--      </app-grid-wrapper>-->
-
-      <ngb-carousel class="carousel" (slide)="onChange($event)">
+      <div class="d-flex justify-content-center flex-column">
+        <div class="pictures-list">
+          <img src="assets/images/573.jpg" alt="" />
+          <img src="assets/images/573a.jpg" alt="" />
+          <img src="assets/images/573b.jpg" alt="" />
+          <img src="assets/images/573.jpg" alt="" />
+          <img src="assets/images/573b.jpg" alt="" />
+          <img src="assets/images/573.jpg" alt="" />
+        </div>
+        <div style="align-self: center; font-size: 25px; color: gainsboro">
+          <i class="fas fa-chevron-down"></i>
+        </div>
+      </div>
+      <ngb-carousel class="carousel" (slide)="onChange($event)" c>
         <ng-template ngbSlide id="slide1">
           <div class="picsum-img-wrapper">
             <img src="assets/images/573.jpg" alt="Random first slide" />
           </div>
           <div class="carousel-caption">
-            <h3>10 seconds between slides...</h3>
-            <p>This carousel uses customized default values.</p>
+            <!--            <h3>10 seconds between slides...</h3>-->
+            <!--            <p>This carousel uses customized default values.</p>-->
           </div>
         </ng-template>
         <ng-template ngbSlide id="slide2">
@@ -22,8 +32,8 @@
             <img src="assets/images/573a.jpg" alt="Random second slide" />
           </div>
           <div class="carousel-caption">
-            <h3>No mouse events...</h3>
-            <p>This carousel doesn't pause or resume on mouse events</p>
+            <!--            <h3>No mouse events...</h3>-->
+            <!--            <p>This carousel doesn't pause or resume on mouse events</p>-->
           </div>
         </ng-template>
         <ng-template ngbSlide id="slide3">
@@ -31,8 +41,8 @@
             <img src="assets/images/573b.jpg" alt="Random third slide" />
           </div>
           <div class="carousel-caption">
-            <h3>No keyboard...</h3>
-            <p>This carousel uses customized default values.</p>
+            <!--            <h3>No keyboard...</h3>-->
+            <!--            <p>This carousel uses customized default values.</p>-->
           </div>
         </ng-template>
         <ng-template ngbSlide id="slide4">
@@ -40,24 +50,15 @@
             <img src="assets/images/573.jpg" alt="Random fourth slide" />
           </div>
           <div class="carousel-caption">
-            <h3>And no wrap after last slide.</h3>
-            <p>This carousel uses customized default values.</p>
+            <!--            <h3>And no wrap after last slide.</h3>-->
+            <!--            <p>This carousel uses customized default values.</p>-->
           </div>
         </ng-template>
       </ngb-carousel>
-      <div class="pictures-list">
-        <!--              <div style="overflow: auto; align-items: center">-->
-        <img src="assets/images/573.jpg" alt="" />
-        <img src="assets/images/573a.jpg" alt="" />
-        <img src="assets/images/573b.jpg" alt="" />
-        <img src="assets/images/573.jpg" alt="" />
-        <!--              </div>-->
-        <i class="fas fa-chevron-down" style="align-self: center; font-size: 25px"></i>
-      </div>
     </div>
 
     <div class="more-details">
-      <button class="btn add-action mb-4">
+      <button class="btn add-action mb-4" (click)="addImg()">
         <i class="fas fa-plus"></i>
         Ajouter une photographie
       </button>

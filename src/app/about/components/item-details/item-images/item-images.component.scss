@@ -2,38 +2,50 @@
   border-color: #6d8292;
   color: white !important;
 }
+
+.images-container {
+  //max-height: 15rem;
+  //overflow: hidden;
+  height: 49rem;
+  align-content: space-around;
+}
 .content {
   background-color: white;
-  display: flex;
-  justify-content: flex-start;
+  //display: flex;
+  //justify-content: space-around;
   .carousel-container {
-    max-width: 50%;
-    margin: 0 3%;
+    justify-content: space-evenly;
+    //width: 25rem;
+    //margin: 0 3%;
+
     .carousel {
       margin: 0 1%;
       .picsum-img-wrapper img {
-        width: 100%;
-        height: 500px;
+        //width: 100%;
+        //height: 500px;
+        max-height: 25rem;
       }
     }
     .pictures-list {
       display: flex;
       justify-content: flex-start;
       flex-direction: column;
-      margin: 0 1%;
+      overflow-y: scroll;
+      max-height: 22rem;
+      //margin: 0 1%;
       img {
-        width: 100px;
-        height: 100px;
+        max-width: 50px;
         border-radius: 3px;
-        margin-bottom: 20px;
+        margin-bottom: 0.5rem;
       }
     }
   }
   .more-details {
-    border-left: #6d8292 5px solid;
-    margin: 0 1%;
+    //border-left: #6d8292 5px solid;
+    margin: 1rem 1%;
     padding: 20px 15px 20px 20px;
     width: 300px;
+    border-top: 5px #6d8292 dashed;
   }
 
   @media (max-width: 800px) {

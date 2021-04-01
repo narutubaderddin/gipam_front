@@ -9,6 +9,30 @@
   //min-height: 150px;
 }
 
+// toggle button
+.toggle-btn {
+  background-color: lightgrey;
+  border-radius: 25px;
+  margin-bottom: 10px;
+  padding: 0.2rem;
+  /* width: 80%; */
+  align-self: center;
+
+  cursor: pointer;
+  font-weight: 550;
+  .btn-switch {
+    border-radius: 25px;
+    background-color: lightgray;
+    color: white;
+    padding: 0.5rem 1rem;
+    transition: all 0.5s;
+  }
+  .btn-switch.active {
+    background-color: white;
+    color: #0466c8;
+  }
+}
+
 // switch btn
 .switch {
   position: relative;
@@ -91,8 +115,8 @@ input:checked + .slider:before {
   display: flex;
   border: 1px solid #cecece;
   border-radius: 1rem;
-  max-height: 22rem;
-  min-height: 22rem;
+  //max-height: 22rem;
+  //min-height: 22rem;
   div {
     .fa-eye {
       color: #407ca8;
@@ -108,11 +132,15 @@ input:checked + .slider:before {
       color: #369f9d;
     }
     .img-wrapper {
-      max-width: 15rem;
       align-items: center;
       justify-content: center;
       display: flex;
-      max-height: 100%;
+
+      //max-width: 15rem;
+      //align-items: center;
+      //justify-content: center;
+      //display: flex;
+      //max-height: 100%;
       img {
         width: auto;
         max-width: 100%;
@@ -222,6 +250,14 @@ button {
   font-weight: 700;
   font-family: Arial, Helvetica, sans-serif;
 }
+.titre1 {
+  //font-family: 'BNPP Sans', Arial, Helvetica, sans-serif;
+  margin: 0;
+  font-size: 1rem;
+  color: #0466c8;
+  font-weight: 700;
+  font-family: Arial, Helvetica, sans-serif;
+}
 
 .container-fluid {
   margin-top: 20px;
@@ -263,7 +299,7 @@ button {
       width: fit-content;
 
       .container {
-        padding: 1rem;
+        padding: 1rem 0;
         min-height: 23rem;
         display: flex;
         justify-content: space-around;
@@ -313,7 +349,8 @@ button {
     .icons {
       display: flex;
       flex-direction: row-reverse;
-      align-items: baseline;
+
+      align-items: center;
       i {
         font-size: 25px;
       }
@@ -323,8 +360,8 @@ button {
   .firth-bloc {
     background-color: white;
     display: flex;
-    border: 1px solid #dee2e6;
-    border-radius: 25px;
+    //border: 1px solid #dee2e6;
+    //border-radius: 25px;
     margin-top: 15px;
     justify-content: center;
     padding: 0 1rem;
@@ -514,7 +551,6 @@ button {
 //}
 .top-bloc {
   min-height: 22rem;
-
   /** nav tabs **/
   .nav-tabs {
     .nav-link.active {
@@ -648,4 +684,16 @@ button {
       color: #0466c8;
     }
   }
+}
+.second-page-bloc {
+  width: 100%;
+}
+
+.attachments-container {
+  border: 1px solid gainsboro;
+  border-radius: 25px;
+  min-height: 25rem;
+  width: 49%;
+  display: flex;
+  align-items: center;
 }
