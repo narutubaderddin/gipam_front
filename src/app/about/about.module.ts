@@ -39,6 +39,9 @@ import { ProofsDetailsComponent } from './components/administrator-home-page/pro
 import { PortailImgDetailsComponent } from './components/portail-item-details/portail-img-details/portail-img-details.component';
 import { SidebarNavComponent } from './components/public-header/sidebar-nav/sidebar-nav.component';
 import { DynamicComponent } from './components/item-details/dynamic/dynamic.component';
+import { AddImgModalComponent } from './components/item-details/item-images/add-img-modal/add-img-modal.component';
+import { AttachmentsComponent } from './components/item-details/attachments/attachments.component';
+
 @NgModule({
   declarations: [
     AboutComponent,
@@ -67,6 +70,8 @@ import { DynamicComponent } from './components/item-details/dynamic/dynamic.comp
     DepositorComponent,
     SidebarNavComponent,
     DynamicComponent,
+    AddImgModalComponent,
+    AttachmentsComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
