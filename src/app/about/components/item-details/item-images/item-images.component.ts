@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
-import { ColDef, ColumnApi, GridApi } from 'ag-grid-community';
+import { NgbModal, NgbModalOptions, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
+import { AddImgModalComponent } from '@app/about/components/item-details/item-images/add-img-modal/add-img-modal.component';
 
 @Component({
   selector: 'app-item-images',
@@ -10,39 +10,16 @@ import { ColDef, ColumnApi, GridApi } from 'ag-grid-community';
 export class ItemImagesComponent implements OnInit {
   slide = 1;
 
-  columnDefs: ColDef[] = [
-    {
-      headerName: 'source',
-      field: 'src',
-      width: 100,
-    },
-  ];
-
-  images = [
-    {
-      src: 'assets/images/573.jpg',
-    },
-    {
-      src: 'assets/images/573a.jpg',
-    },
-    {
-      src: 'assets/images/573b.jpg',
-    },
-  ];
-  defaultColDef = {
-    sortable: true,
-    filter: false,
-    resizable: true,
-    flex: 1,
-  };
-  gridApi: GridApi;
-  gridColumnApi: ColumnApi;
-  gridReady = false;
-
-  constructor() {}
+  constructor(private modalService: NgbModal) {}
 
   ngOnInit(): void {}
-
+  addImg() {
+    const ngbModalOptions: NgbModalOptions = {
+      backdropClass: 'modal-container',
+      centered: true,
+    };
+    this.modalService.open(AddImgModalComponent, ngbModalOptions);
+  }
   onChange(event: NgbSlideEvent) {
     switch (event.current) {
       case 'slide1':

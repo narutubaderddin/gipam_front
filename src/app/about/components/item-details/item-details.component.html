@@ -13,39 +13,57 @@
               </div>
               <div>
                 <a href="#"><i class="zmdi zmdi-caret-left"></i> Précédant</a>
-                |
+                | <span class="titre1">Titre de l'Oeuvre N inventaire 145</span> |
                 <a href="#">Suivant <i class="zmdi zmdi-caret-right"></i></a>
               </div>
             </div>
-
-            <div class="col-8 titre">Titre de l'Oeuvre N inventaire 145</div>
-
-            <div class="col-4 icons">
-              <i class="fas fa-archive"></i>
-              <i class="far fa-file-excel"></i>
-              <i class="fas fa-print"></i>
-              <i class="far fa-edit" (click)="onEditMode()"></i>
-              <div class="btn-slider mr-2" *ngIf="!dynamic">
-                <label [class.active]="!dynamic">statique</label>
-                <label class="switch">
-                  <input type="checkbox" [(ngModel)]="dynamic" />
-                  <span class="slider round"></span>
-                </label>
-
-                <label [class.active]="dynamic">Dynamique</label>
+            <div class="col-12">
+              <div class="d-flex justify-content-center">
+                <div class="toggle-btn d-flex" (click)="dynamic = !dynamic">
+                  <div class="d-flex">
+                    <div class="btn-switch" [class.active]="!dynamic">Statiques</div>
+                    <div class="btn-switch" [class.active]="dynamic">Dynamiques</div>
+                  </div>
+                </div>
               </div>
             </div>
+            <!--            <div class="col-8 titre">Titre de l'Oeuvre N inventaire 145</div>-->
+
+            <!--            <div class="col-4 icons">-->
+            <!--              <i class="fas fa-archive"></i>-->
+            <!--              <i class="far fa-file-excel"></i>-->
+            <!--              <i class="fas fa-print"></i>-->
+            <!--              <i class="far fa-edit" (click)="onEditMode()"></i>-->
+            <!--&lt;!&ndash;              <div class="btn-slider mr-2" *ngIf="!dynamic">&ndash;&gt;-->
+            <!--&lt;!&ndash;                <label [class.active]="!dynamic">statique</label>&ndash;&gt;-->
+            <!--&lt;!&ndash;                <label class="switch">&ndash;&gt;-->
+            <!--&lt;!&ndash;                  <input type="checkbox" [(ngModel)]="dynamic" />&ndash;&gt;-->
+            <!--&lt;!&ndash;                  <span class="slider round"></span>&ndash;&gt;-->
+            <!--&lt;!&ndash;                </label>&ndash;&gt;-->
+
+            <!--&lt;!&ndash;                <label [class.active]="dynamic">Dynamique</label>&ndash;&gt;-->
+            <!--&lt;!&ndash;              </div>&ndash;&gt;-->
+            <!--            </div>-->
           </div>
 
-          <div class="col-md-12" style="margin-top: 6rem">
+          <div class="col-md-12" style="margin-top: 8rem">
+            <!--            <div class="d-flex justify-content-center">-->
+            <!--            <div class="toggle-btn d-flex" (click)="dynamic=!dynamic">-->
+            <!--              <div class="d-flex">-->
+            <!--                <div class="btn-switch" [class.active]="!dynamic">Statiques</div>-->
+            <!--                <div class="btn-switch" [class.active]="dynamic">Dynamiques</div>-->
+            <!--              </div>-->
+            <!--            </div>-->
+            <!--            </div>-->
             <div *ngIf="!dynamic">
               <div class="d-flex top-bloc">
                 <div class="col-4 image-container">
                   <div class="row detail-image">
                     <div class="col-md-12 d-flex p-0 img-wrapper">
-                      <img src="assets/images/573b.jpg" alt="" style="width: auto; max-width: 100%" />
+                      <app-item-images></app-item-images>
+                      <!--                      <img src="assets/images/573b.jpg" alt="" style="width: auto; max-width: 100%" />-->
                     </div>
-                    <i class="fas fa-eye" title="voir image" (click)="showImg()"></i>
+                    <!--                    <i class="fas fa-eye" title="voir image" (click)="showImg()"></i>-->
                   </div>
                 </div>
                 <!--Modal-->
@@ -55,140 +73,156 @@
                 </div>
 
                 <div class="col-8 pr-0">
-                  <nav ngbNav #nav="ngbNav" class="nav-tabs">
-                    <ng-container ngbNavItem>
-                      <a ngbNavLink><i class="far fa-file-alt mr-2"></i>Descriptifs physiques</a>
-                      <ng-template ngbNavContent>
-                        <app-descritif [edit]="edit"></app-descritif>
-                      </ng-template>
-                    </ng-container>
-                    <ng-container ngbNavItem>
-                      <a ngbNavLink><i class="fas fa-info-circle mr-2"></i>Descriptifs juridiques</a>
-                      <ng-template ngbNavContent>
-                        <app-status [edit]="edit"></app-status>
-                        <app-depositor [edit]="edit"></app-depositor>
-                      </ng-template>
-                    </ng-container>
-                  </nav>
+                  <div class="col-12">
+                    <nav ngbNav #nav="ngbNav" class="nav-tabs">
+                      <ng-container ngbNavItem>
+                        <a ngbNavLink><i class="far fa-file-alt mr-2"></i>Descriptifs physiques</a>
+                        <ng-template ngbNavContent>
+                          <app-descritif [edit]="edit"></app-descritif>
+                        </ng-template>
+                      </ng-container>
+                      <ng-container ngbNavItem>
+                        <a ngbNavLink><i class="fas fa-info-circle mr-2"></i>Descriptifs juridiques</a>
+                        <ng-template ngbNavContent>
+                          <app-status [edit]="edit"></app-status>
+                          <app-depositor [edit]="edit"></app-depositor>
+                        </ng-template>
+                      </ng-container>
+                      <div class="col-4 icons">
+                        <i class="fas fa-archive"></i>
+                        <i class="far fa-file-excel"></i>
+                        <i class="fas fa-print"></i>
+                        <i class="far fa-edit" (click)="onEditMode()"></i>
+                      </div>
+                    </nav>
 
-                  <div [ngbNavOutlet]="nav" class=""></div>
+                    <div [ngbNavOutlet]="nav" class=""></div>
 
-                  <!--              <app-accordion-section-->
-                  <!--                #accordionSectionDOM-->
-                  <!--                [editable]="true"-->
-                  <!--                [showIcon]="true"-->
-                  <!--                [headerTitle]="'Descriptif'"-->
-                  <!--                [icon]="'far fa-file-alt'"-->
-                  <!--                [idMilestoneSection]="1"-->
-                  <!--                [sectionIndex]="1"-->
-                  <!--                [index]="1"-->
-                  <!--                [sectionTitle]="'Descriptif'"-->
-                  <!--              >-->
-                  <!--                &lt;!&ndash;                <img src="assets/images/icons/description.png" alt="">&ndash;&gt;-->
-                  <!--                <app-descritif [edit]="edit"></app-descritif>-->
-                  <!--              </app-accordion-section>-->
-                  <!--              <div class="row">-->
-                  <!--                <div class="col-md-6">-->
-                  <!--                  <app-accordion-section-->
-                  <!--                    #accordionSectionDOM-->
-                  <!--                    [editable]="true"-->
-                  <!--                    [headerTitle]="'Status'"-->
-                  <!--                    [idMilestoneSection]="2"-->
-                  <!--                    [sectionIndex]="2"-->
-                  <!--                    [showIcon]="true"-->
-                  <!--                    [icon]="'far fa-calendar-alt'"-->
-                  <!--                    [index]="2"-->
-                  <!--                    [sectionTitle]="'Status'"-->
-                  <!--                  >-->
-                  <!--                    <app-status [edit]="edit"></app-status>-->
-                  <!--                  </app-accordion-section>-->
-                  <!--                </div>-->
-                  <!--                <div class="col-md-6">-->
-                  <!--                  <app-accordion-section-->
-                  <!--                    #accordionSectionDOM-->
-                  <!--                    [editable]="true"-->
-                  <!--                    [headerTitle]="'Déposant'"-->
-                  <!--                    [idMilestoneSection]="3"-->
-                  <!--                    [sectionIndex]="3"-->
-                  <!--                    [showIcon]="true"-->
-                  <!--                    [index]="3"-->
-                  <!--                    [icon]="'fas fa-user-tag'"-->
-                  <!--                    [sectionTitle]="'Déposant'"-->
-                  <!--                  >-->
-                  <!--                    <app-depositor [edit]="edit"></app-depositor>-->
-                  <!--                  </app-accordion-section>-->
-                  <!--                </div>-->
-                  <!--              </div>-->
-                  <div *ngIf="edit" class="col-md-11" style="display: flex; flex-direction: row-reverse">
-                    <button class="btn valid-btn" (click)="onSave()">Enregistrer</button>
-                    <button class="btn btn-action cancel-btn">Annuler</button>
+                    <!--              <app-accordion-section-->
+                    <!--                #accordionSectionDOM-->
+                    <!--                [editable]="true"-->
+                    <!--                [showIcon]="true"-->
+                    <!--                [headerTitle]="'Descriptif'"-->
+                    <!--                [icon]="'far fa-file-alt'"-->
+                    <!--                [idMilestoneSection]="1"-->
+                    <!--                [sectionIndex]="1"-->
+                    <!--                [index]="1"-->
+                    <!--                [sectionTitle]="'Descriptif'"-->
+                    <!--              >-->
+                    <!--                &lt;!&ndash;                <img src="assets/images/icons/description.png" alt="">&ndash;&gt;-->
+                    <!--                <app-descritif [edit]="edit"></app-descritif>-->
+                    <!--              </app-accordion-section>-->
+                    <!--              <div class="row">-->
+                    <!--                <div class="col-md-6">-->
+                    <!--                  <app-accordion-section-->
+                    <!--                    #accordionSectionDOM-->
+                    <!--                    [editable]="true"-->
+                    <!--                    [headerTitle]="'Status'"-->
+                    <!--                    [idMilestoneSection]="2"-->
+                    <!--                    [sectionIndex]="2"-->
+                    <!--                    [showIcon]="true"-->
+                    <!--                    [icon]="'far fa-calendar-alt'"-->
+                    <!--                    [index]="2"-->
+                    <!--                    [sectionTitle]="'Status'"-->
+                    <!--                  >-->
+                    <!--                    <app-status [edit]="edit"></app-status>-->
+                    <!--                  </app-accordion-section>-->
+                    <!--                </div>-->
+                    <!--                <div class="col-md-6">-->
+                    <!--                  <app-accordion-section-->
+                    <!--                    #accordionSectionDOM-->
+                    <!--                    [editable]="true"-->
+                    <!--                    [headerTitle]="'Déposant'"-->
+                    <!--                    [idMilestoneSection]="3"-->
+                    <!--                    [sectionIndex]="3"-->
+                    <!--                    [showIcon]="true"-->
+                    <!--                    [index]="3"-->
+                    <!--                    [icon]="'fas fa-user-tag'"-->
+                    <!--                    [sectionTitle]="'Déposant'"-->
+                    <!--                  >-->
+                    <!--                    <app-depositor [edit]="edit"></app-depositor>-->
+                    <!--                  </app-accordion-section>-->
+                    <!--                </div>-->
+                    <!--              </div>-->
+                    <div *ngIf="edit" class="col-md-11" style="display: flex; flex-direction: row-reverse">
+                      <button class="btn valid-btn" (click)="onSave()">Enregistrer</button>
+                      <button class="btn btn-action cancel-btn">Annuler</button>
+                    </div>
+                  </div>
+                  <div class="d-flex col-12 mt-4 justify-content-between">
+                    <div class="attachments-container">
+                      <app-attachments></app-attachments>
+                    </div>
+                    <div class="attachments-container">
+                      <app-attachments></app-attachments>
+                    </div>
                   </div>
                 </div>
               </div>
 
               <div class="d-flex justify-content-md-between">
-                <div class="header-section dock-menu" *ngIf="!dynamic">
-                  <div class="container">
-                    <ul
-                      class="navbar-nav"
-                      [ngClass]="{
-                        'first-page': page == 2,
-                        'second-page': page == 0,
-                        'third-page': page == 3,
-                        'firth-page': page == 4,
-                        'fifth-page': page == 5,
-                        'sixth-page': page == 8,
-                        'seventh-page': page == 7
-                      }"
-                    >
-                      <li class="nav-item first-icon" *ngIf="!dynamic">
-                        <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">
-                          <i class="zmdi zmdi-camera zmdi-hc-3x"></i>
-                        </a>
-                        <p style="">Photographies</p>
-                      </li>
-                      <li class="nav-item second-icon" *ngIf="!dynamic">
-                        <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">
-                          <i class="fas fa-paperclip"></i>
-                        </a>
-                        <p style="">Pièces jointes</p>
-                      </li>
-                      <li class="nav-item third-icon" *ngIf="!dynamic">
-                        <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">
-                          <i class="fas fa-link"></i>
-                        </a>
-                        <p style="">Liens avec oeuvres</p>
-                      </li>
+                <!--                <div class="header-section dock-menu" *ngIf="!dynamic">-->
+                <!--                  <div class="container">-->
+                <!--                    <ul-->
+                <!--                      class="navbar-nav"-->
+                <!--                      [ngClass]="{-->
+                <!--                        'first-page': page == 2,-->
+                <!--                        'second-page': page == 0,-->
+                <!--                        'third-page': page == 3,-->
+                <!--                        'firth-page': page == 4,-->
+                <!--                        'fifth-page': page == 5,-->
+                <!--                        'sixth-page': page == 8,-->
+                <!--                        'seventh-page': page == 7-->
+                <!--                      }"-->
+                <!--                    >-->
+                <!--                      <li class="nav-item first-icon" *ngIf="!dynamic">-->
+                <!--                        <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">-->
+                <!--                          <i class="zmdi zmdi-camera zmdi-hc-3x"></i>-->
+                <!--                        </a>-->
+                <!--                        <p style="">Photographies</p>-->
+                <!--                      </li>-->
+                <!--                      <li class="nav-item second-icon" *ngIf="!dynamic">-->
+                <!--                        <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">-->
+                <!--                          <i class="fas fa-paperclip"></i>-->
+                <!--                        </a>-->
+                <!--                        <p style="">Pièces jointes</p>-->
+                <!--                      </li>-->
+                <!--                      <li class="nav-item third-icon" *ngIf="!dynamic">-->
+                <!--                        <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">-->
+                <!--                          <i class="fas fa-link"></i>-->
+                <!--                        </a>-->
+                <!--                        <p style="">Liens avec oeuvres</p>-->
+                <!--                      </li>-->
 
-                      <!--                                  <li class="nav-item firth-icon" *ngIf="dynamic">-->
-                      <!--                                    <a (click)="page4()" class="nav-link text-uppercase font-weight-bold">-->
-                      <!--                                      <i class="zmdi zmdi-pin zmdi-hc-3x"></i>-->
-                      <!--                                    </a>-->
-                      <!--                                    <p style="margin-left: -10px">Localisations</p>-->
-                      <!--                                  </li>-->
-                      <!--                                  <li class="nav-item fifth-icon" *ngIf="dynamic">-->
-                      <!--                                    <a (click)="page5()" class="nav-link text-uppercase font-weight-bold">-->
-                      <!--                                      <i class="fas fa-search zmdi-hc-3x"></i>-->
-                      <!--                                    </a>-->
-                      <!--                                    <p style="margin-left: 0px">Constats</p>-->
-                      <!--                                  </li>-->
+                <!--                      &lt;!&ndash;                                  <li class="nav-item firth-icon" *ngIf="dynamic">&ndash;&gt;-->
+                <!--                      &lt;!&ndash;                                    <a (click)="page4()" class="nav-link text-uppercase font-weight-bold">&ndash;&gt;-->
+                <!--                      &lt;!&ndash;                                      <i class="zmdi zmdi-pin zmdi-hc-3x"></i>&ndash;&gt;-->
+                <!--                      &lt;!&ndash;                                    </a>&ndash;&gt;-->
+                <!--                      &lt;!&ndash;                                    <p style="margin-left: -10px">Localisations</p>&ndash;&gt;-->
+                <!--                      &lt;!&ndash;                                  </li>&ndash;&gt;-->
+                <!--                      &lt;!&ndash;                                  <li class="nav-item fifth-icon" *ngIf="dynamic">&ndash;&gt;-->
+                <!--                      &lt;!&ndash;                                    <a (click)="page5()" class="nav-link text-uppercase font-weight-bold">&ndash;&gt;-->
+                <!--                      &lt;!&ndash;                                      <i class="fas fa-search zmdi-hc-3x"></i>&ndash;&gt;-->
+                <!--                      &lt;!&ndash;                                    </a>&ndash;&gt;-->
+                <!--                      &lt;!&ndash;                                    <p style="margin-left: 0px">Constats</p>&ndash;&gt;-->
+                <!--                      &lt;!&ndash;                                  </li>&ndash;&gt;-->
 
-                      <!--                                  <li class="nav-item sixth-icon" *ngIf="dynamic">-->
-                      <!--                                    <a (click)="page5()" class="nav-link text-uppercase font-weight-bold">-->
-                      <!--                                      <i class="zmdi zmdi-play zmdi-hc-3x"></i>-->
-                      <!--                                    </a>-->
-                      <!--                                    <p style="margin-left: 1px">Actions</p>-->
-                      <!--                                  </li>-->
+                <!--                      &lt;!&ndash;                                  <li class="nav-item sixth-icon" *ngIf="dynamic">&ndash;&gt;-->
+                <!--                      &lt;!&ndash;                                    <a (click)="page5()" class="nav-link text-uppercase font-weight-bold">&ndash;&gt;-->
+                <!--                      &lt;!&ndash;                                      <i class="zmdi zmdi-play zmdi-hc-3x"></i>&ndash;&gt;-->
+                <!--                      &lt;!&ndash;                                    </a>&ndash;&gt;-->
+                <!--                      &lt;!&ndash;                                    <p style="margin-left: 1px">Actions</p>&ndash;&gt;-->
+                <!--                      &lt;!&ndash;                                  </li>&ndash;&gt;-->
 
-                      <!--                <li class="nav-item seventh-icon">-->
-                      <!--                  <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">-->
-                      <!--                    <i class="fas fa-link"></i>-->
-                      <!--                  </a>-->
-                      <!--                  <p style="margin-left: -22px">Liens hypertextes</p>-->
-                      <!--                </li>-->
-                    </ul>
-                  </div>
-                </div>
+                <!--                      &lt;!&ndash;                <li class="nav-item seventh-icon">&ndash;&gt;-->
+                <!--                      &lt;!&ndash;                  <a (click)="page2()" class="nav-link text-uppercase font-weight-bold">&ndash;&gt;-->
+                <!--                      &lt;!&ndash;                    <i class="fas fa-link"></i>&ndash;&gt;-->
+                <!--                      &lt;!&ndash;                  </a>&ndash;&gt;-->
+                <!--                      &lt;!&ndash;                  <p style="margin-left: -22px">Liens hypertextes</p>&ndash;&gt;-->
+                <!--                      &lt;!&ndash;                </li>&ndash;&gt;-->
+                <!--                    </ul>-->
+                <!--                  </div>-->
+                <!--                </div>-->
 
                 <div class="col-md-10 firth-bloc">
                   <div *ngIf="page == 1" class="first-page-bloc col-md-12">
@@ -224,9 +258,9 @@
                       </ngb-accordion>
                     </div>
                   </div>
-                  <div class="second-page-bloc" *ngIf="page == 2">
-                    <app-item-images></app-item-images>
-                  </div>
+                  <!--                  <div class="second-page-bloc" *ngIf="page == 2">-->
+                  <!--                    <app-item-images></app-item-images>-->
+                  <!--                  </div>-->
                   <!--                <div class="fifth-page-bloc" *ngIf="page == 4">-->
                   <!--                  <app-movements></app-movements>-->
                   <!--                </div>-->
