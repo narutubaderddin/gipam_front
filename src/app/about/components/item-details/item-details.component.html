@@ -3,30 +3,30 @@
     <div class="col-md-12 cadre">
       <div class="col-md-12 main-info d-flex">
         <div class="col-md-12 row">
-          <div class="row bloc-header" [ngClass]="menuClosed ? 'fullwidth' : 'width'">
-            <div class="col-2 img-content" *ngIf="dynamic">
-              <img src="assets/images/573b.jpg" alt="" class="img-viewer" />
-            </div>
+          <div class="bloc-header" [ngClass]="menuClosed ? 'fullwidth' : 'width'">
+            <!--            <div class="col-2 img-content" *ngIf="dynamic">-->
+            <!--              <img src="assets/images/573b.jpg" alt="" class="img-viewer" />-->
+            <!--            </div>-->
             <div class="first-bloc col-md-12 row">
-              <div>
-                <a href="portail"><i class="zmdi zmdi-fast-rewind"></i> Retour aux résultats de la recherche</a>
-              </div>
-              <div>
-                <a href="#"><i class="zmdi zmdi-caret-left"></i> Précédant</a>
-                | <span class="titre1">Titre de l'Oeuvre N inventaire 145</span> |
-                <a href="#">Suivant <i class="zmdi zmdi-caret-right"></i></a>
-              </div>
-            </div>
-            <div class="col-12">
-              <div class="d-flex justify-content-center">
+              <a href="portail"><i class="zmdi zmdi-fast-rewind"></i> Retour aux résultats de la recherche</a>
+
+              <div class="d-flex justify-content-end">
                 <div class="toggle-btn d-flex" (click)="dynamic = !dynamic">
                   <div class="d-flex">
-                    <div class="btn-switch" [class.active]="!dynamic">Statiques</div>
-                    <div class="btn-switch" [class.active]="dynamic">Dynamiques</div>
+                    <div class="btn-switch" [class.active]="!dynamic">Descriptifs</div>
+                    <div class="btn-switch" [class.active]="dynamic">Actions</div>
                   </div>
                 </div>
               </div>
+
+              <div style="width: 10rem"></div>
             </div>
+            <div class="first-bloc d-flex justify-content-between">
+              <a href="#"><i class="zmdi zmdi-caret-left"></i> Précédant | 144</a>
+              <span class="titre1">N° inventaire 145</span>
+              <a href="#">146 | Suivant <i class="zmdi zmdi-caret-right"></i></a>
+            </div>
+
             <!--            <div class="col-8 titre">Titre de l'Oeuvre N inventaire 145</div>-->
 
             <!--            <div class="col-4 icons">-->
@@ -46,7 +46,7 @@
             <!--            </div>-->
           </div>
 
-          <div class="col-md-12" style="margin-top: 6rem">
+          <div class="col-md-12 mt-2">
             <!--            <div class="d-flex justify-content-center">-->
             <!--            <div class="toggle-btn d-flex" (click)="dynamic=!dynamic">-->
             <!--              <div class="d-flex">-->
@@ -55,6 +55,15 @@
             <!--              </div>-->
             <!--            </div>-->
             <!--            </div>-->
+            <div class="col-md-12 title-box d-flex">
+              <div class="col-8 titre p-0">Titre de l'Oeuvre</div>
+              <div class="col-4 icons p-0">
+                <i class="fas fa-archive"></i>
+                <i class="far fa-file-excel" *ngIf="!dynamic"></i>
+                <i class="fas fa-print"></i>
+                <i class="far fa-edit" (click)="onEditMode()" *ngIf="!dynamic"></i>
+              </div>
+            </div>
             <div *ngIf="!dynamic">
               <div class="d-flex top-bloc">
                 <div class="col-4 image-container">
@@ -63,7 +72,7 @@
                       <app-item-images></app-item-images>
                       <!--                      <img src="assets/images/573b.jpg" alt="" style="width: auto; max-width: 100%" />-->
                     </div>
-                    <!--                    <i class="fas fa-eye" title="voir image" (click)="showImg()"></i>-->
+                    <i class="fas fa-eye" title="voir image" (click)="showImg()"></i>
                   </div>
                 </div>
                 <!--Modal-->
@@ -73,28 +82,30 @@
                 </div>
 
                 <div class="col-8 pr-0">
-                  <div class="col-12">
-                    <nav ngbNav #nav="ngbNav" class="nav-tabs">
-                      <ng-container ngbNavItem>
-                        <a ngbNavLink><i class="far fa-file-alt mr-2"></i>Descriptifs physiques</a>
-                        <ng-template ngbNavContent>
-                          <app-descritif [edit]="edit"></app-descritif>
-                        </ng-template>
-                      </ng-container>
-                      <ng-container ngbNavItem>
-                        <a ngbNavLink><i class="fas fa-info-circle mr-2"></i>Descriptifs juridiques</a>
-                        <ng-template ngbNavContent>
-                          <app-status [edit]="edit"></app-status>
-                          <app-depositor [edit]="edit"></app-depositor>
-                        </ng-template>
-                      </ng-container>
-                      <div class="col-4 icons">
-                        <i class="fas fa-archive"></i>
-                        <i class="far fa-file-excel"></i>
-                        <i class="fas fa-print"></i>
-                        <i class="far fa-edit" (click)="onEditMode()"></i>
-                      </div>
-                    </nav>
+                  <div class="col-12 p-0">
+                    <div class="d-flex justify-content-between">
+                      <nav ngbNav #nav="ngbNav" class="nav-tabs">
+                        <ng-container ngbNavItem>
+                          <a ngbNavLink><i class="far fa-file-alt mr-2"></i>Descriptifs physiques</a>
+                          <ng-template ngbNavContent>
+                            <app-descritif [edit]="edit"></app-descritif>
+                          </ng-template>
+                        </ng-container>
+                        <ng-container ngbNavItem>
+                          <a ngbNavLink><i class="fas fa-info-circle mr-2"></i>Descriptifs juridiques</a>
+                          <ng-template ngbNavContent>
+                            <app-status [edit]="edit"></app-status>
+                            <app-depositor [edit]="edit"></app-depositor>
+                          </ng-template>
+                        </ng-container>
+                      </nav>
+                      <!--                      <div class="col-4 icons p-0">-->
+                      <!--                        <i class="fas fa-archive"></i>-->
+                      <!--                        <i class="far fa-file-excel"></i>-->
+                      <!--                        <i class="fas fa-print"></i>-->
+                      <!--                        <i class="far fa-edit" (click)="onEditMode()"></i>-->
+                      <!--                      </div>-->
+                    </div>
 
                     <div [ngbNavOutlet]="nav" class=""></div>
 
@@ -149,11 +160,11 @@
                       <button class="btn btn-action cancel-btn">Annuler</button>
                     </div>
                   </div>
-                  <div class="d-flex col-12 mt-4 justify-content-between">
-                    <div class="attachments-container">
+                  <div class="d-flex col-12 p-0 mt-4 justify-content-between">
+                    <div class="attachments-container mr-1">
                       <app-attachments></app-attachments>
                     </div>
-                    <div class="attachments-container">
+                    <div class="attachments-container ml-1">
                       <app-attachments></app-attachments>
                     </div>
                   </div>
@@ -224,7 +235,7 @@
                 <!--                  </div>-->
                 <!--                </div>-->
 
-                <div class="col-md-10 firth-bloc">
+                <div class="col-md-10 p-0 firth-bloc">
                   <div *ngIf="page == 1" class="first-page-bloc col-md-12">
                     <div class="col-md-12 mb-2 d-flex justify-content-end">
                       <i class="fas fa-edit pointer-event" (click)="onEditMode()"></i>
@@ -270,7 +281,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-12" *ngIf="dynamic" style="width: 100%">
+            <div class="col-md-12 p-0" *ngIf="dynamic" style="width: 100%">
               <app-dynamic [dynamicState]="dynamic" (dynamic)="f1($event)"></app-dynamic>
             </div>
           </div>

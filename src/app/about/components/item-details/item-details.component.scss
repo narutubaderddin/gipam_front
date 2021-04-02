@@ -3,12 +3,17 @@
   z-index: 10;
   background-color: white;
   top: 0;
-  padding: 1%;
+  padding: 1% 2% 1% 1%;
   width: 100%;
   left: 0;
   //min-height: 150px;
 }
-
+.title-box {
+  background-color: #f7f7f7;
+  border-radius: 15px;
+  padding: 0.25rem 0.8rem;
+  margin: 0 0 0.5rem 0;
+}
 // toggle button
 .toggle-btn {
   background-color: lightgrey;
@@ -17,14 +22,14 @@
   padding: 0.2rem;
   /* width: 80%; */
   align-self: center;
-
+  font-size: 0.8rem;
   cursor: pointer;
   font-weight: 550;
   .btn-switch {
     border-radius: 25px;
     background-color: lightgray;
     color: white;
-    padding: 0.5rem 1rem;
+    padding: 0.3rem 0.8rem;
     transition: all 0.5s;
   }
   .btn-switch.active {
@@ -276,7 +281,7 @@ button {
     width: 5px;
   }
   .first-bloc {
-    margin-bottom: 20px;
+    //margin-bottom: 20px;
     display: flex;
     justify-content: space-between;
     .cadre {
@@ -570,7 +575,7 @@ button {
   .tab-content {
     background-color: #f7f7f7;
     margin-top: 0;
-    min-height: 19.2rem;
+    min-height: 18rem;
   }
 }
 /** end of second bloc **/
@@ -690,10 +695,10 @@ button {
 }
 
 .attachments-container {
-  border: 1px solid gainsboro;
+  //border: 1px solid gainsboro;
   border-radius: 25px;
-  min-height: 25rem;
-  width: 49%;
+  //min-height: 25rem;
+  //width: 49%;
   display: flex;
   align-items: center;
 }

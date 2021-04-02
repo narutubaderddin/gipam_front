@@ -3,7 +3,7 @@
 
   <!--  </div>-->
   <div class="col-12 content">
-    <div class="d-flex carousel-container">
+    <div class="d-flex carousel-container mb-4">
       <div class="d-flex justify-content-center flex-column">
         <div class="pictures-list">
           <img src="assets/images/573.jpg" alt="" />
@@ -17,7 +17,7 @@
           <i class="fas fa-chevron-down"></i>
         </div>
       </div>
-      <ngb-carousel class="carousel" (slide)="onChange($event)" c>
+      <ngb-carousel class="carousel" (slide)="onChange($event)" [interval]="false">
         <ng-template ngbSlide id="slide1">
           <div class="picsum-img-wrapper">
             <img src="assets/images/573.jpg" alt="Random first slide" />
@@ -57,28 +57,47 @@
       </ngb-carousel>
     </div>
 
-    <div class="more-details">
-      <button class="btn add-action mb-4" (click)="addImg()">
-        <i class="fas fa-plus"></i>
-        Ajouter une photographie
-      </button>
+    <div class="more-details mt-2 pt-4">
       <div class="" *ngIf="slide == 1">
-        <p><strong>Date d'ajout :</strong> 12/02/2019</p>
-        <p><strong>Type :</strong><i class="far fa-edit"></i></p>
+        <p><strong class="col-5">Date d'ajout </strong> <span class="col-7">12/02/2019</span></p>
+        <p>
+          <strong class="col-5">Type </strong>
+          <span class="col-6" *ngIf="!editType">Numérique</span>
+
+          <!--          <select class="form-control col-6" formControlName="photographyType">-->
+          <!--            <option value="">&#45;&#45;Choisissez un type de photographie&#45;&#45;</option>-->
+          <!--            <option *ngFor="let type of types" [value]="type">{{ type }}</option>-->
+          <!--          </select>-->
+          <i class="far fa-edit col-1" (click)="editType = !editType" *ngIf="!editType"></i>
+        </p>
+        <div class="col-12 pr-0" *ngIf="editType">
+          <select formControlName="photographyType" style="font-size: 12px" class="col-12 p-1">
+            <option value="">--Choisissez un type de photographie--</option>
+            <option *ngFor="let type of types" [value]="type">{{ type }}</option>
+          </select>
+          <div class="d-flex justify-content-end col-12 p-0 mt-2 mb-2 edition-btn">
+            <button (click)="editType = !editType" class="mr-2">Annuler</button>
+            <button (click)="editPhotoType()">Valider</button>
+          </div>
+        </div>
       </div>
 
       <div class="" *ngIf="slide == 2">
-        <p><strong>Date d'ajout :</strong> 16/04/2019</p>
-        <p><strong>Type :</strong> <i class="far fa-edit"></i></p>
+        <p><strong>Date d'ajout </strong><span> 16/04/2019</span></p>
+        <p><strong>Type </strong> <i class="far fa-edit"></i></p>
       </div>
       <div class="" *ngIf="slide == 3">
-        <p><strong>Date d'ajout :</strong> 12/06/2019</p>
-        <p><strong>Type :</strong> <i class="far fa-edit"></i></p>
+        <p><strong>Date d'ajout </strong> <span>12/06/2019</span></p>
+        <p><strong>Type </strong> <span>Numérique</span><i class="far fa-edit"></i></p>
       </div>
       <div class="" *ngIf="slide == 4">
-        <p><strong>Date d'ajout :</strong> 12/09/2019</p>
-        <p><strong>Type :</strong> <i class="far fa-edit"></i></p>
+        <p><strong>Date d'ajout </strong> <span>12/09/2019</span></p>
+        <p><strong>Type </strong> <span>Numérique</span><i class="far fa-edit"></i></p>
       </div>
+      <button class="btn add-action mb-2" (click)="addImg()">
+        <i class="fas fa-plus"></i>
+        Ajouter une photographie
+      </button>
     </div>
   </div>
 </div>

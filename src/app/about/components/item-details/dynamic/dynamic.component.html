@@ -13,55 +13,55 @@
 <!--  <app-movements></app-movements>-->
 <!--</app-accordion-section>-->
 
-<div class="d-flex justify-content-center">
-  <div class="d-flex flex-column">
-    <!--    <div class="toggle-btn d-flex" (click)="changeState()">-->
-    <!--      <div class="d-flex">-->
-    <!--        <div class="btn-switch" [class.active]="!dynamicState">Statiques</div>-->
-    <!--        <div class="btn-switch" [class.active]="dynamicState">Dynamiques</div>-->
-    <!--      </div>-->
-    <!--    </div>-->
+<!--<div class="d-flex justify-content-center">-->
+<!--  <div class="d-flex flex-column">-->
+<!--    &lt;!&ndash;    <div class="toggle-btn d-flex" (click)="changeState()">&ndash;&gt;-->
+<!--    &lt;!&ndash;      <div class="d-flex">&ndash;&gt;-->
+<!--    &lt;!&ndash;        <div class="btn-switch" [class.active]="!dynamicState">Statiques</div>&ndash;&gt;-->
+<!--    &lt;!&ndash;        <div class="btn-switch" [class.active]="dynamicState">Dynamiques</div>&ndash;&gt;-->
+<!--    &lt;!&ndash;      </div>&ndash;&gt;-->
+<!--    &lt;!&ndash;    </div>&ndash;&gt;-->
 
-    <div class="d-flex justify-content-center">
-      <div class="header-section menu">
-        <div class="container">
-          <ul
-            class="navbar-nav"
-            [ngClass]="{
-              'first-page': page == 2,
-              'second-page': page == 0,
-              'third-page': page == 3,
-              'firth-page': page == 4,
-              'fifth-page': page == 5,
-              'sixth-page': page == 8,
-              'seventh-page': page == 7
-            }"
-          >
-            <li class="nav-item firth-icon">
-              <a (click)="page4()" class="nav-link text-uppercase font-weight-bold">
-                <i class="zmdi zmdi-pin zmdi-hc-3x"></i>
-              </a>
-              <p style="margin-left: -10px" class="mb-0">Localisations</p>
-            </li>
-            <li class="nav-item fifth-icon">
-              <a (click)="page5()" class="nav-link text-uppercase font-weight-bold">
-                <i class="fas fa-search zmdi-hc-3x"></i>
-              </a>
-              <p style="margin-left: 0px" class="mb-0">Constats</p>
-            </li>
+<!--    <div class="d-flex justify-content-center">-->
+<!--      <div class="header-section menu">-->
+<!--        <div class="container">-->
+<!--          <ul-->
+<!--            class="navbar-nav"-->
+<!--            [ngClass]="{-->
+<!--              'first-page': page == 2,-->
+<!--              'second-page': page == 0,-->
+<!--              'third-page': page == 3,-->
+<!--              'firth-page': page == 4,-->
+<!--              'fifth-page': page == 5,-->
+<!--              'sixth-page': page == 8,-->
+<!--              'seventh-page': page == 7-->
+<!--            }"-->
+<!--          >-->
+<!--            <li class="nav-item firth-icon">-->
+<!--              <a (click)="page4()" class="nav-link text-uppercase font-weight-bold">-->
+<!--                <i class="zmdi zmdi-pin zmdi-hc-3x"></i>-->
+<!--              </a>-->
+<!--              <p style="margin-left: -10px" class="mb-0">Localisations</p>-->
+<!--            </li>-->
+<!--            <li class="nav-item fifth-icon">-->
+<!--              <a (click)="page5()" class="nav-link text-uppercase font-weight-bold">-->
+<!--                <i class="fas fa-search zmdi-hc-3x"></i>-->
+<!--              </a>-->
+<!--              <p style="margin-left: 0px" class="mb-0">Constats</p>-->
+<!--            </li>-->
 
-            <li class="nav-item sixth-icon">
-              <a (click)="page5()" class="nav-link text-uppercase font-weight-bold">
-                <i class="zmdi zmdi-play zmdi-hc-3x"></i>
-              </a>
-              <p style="margin-left: 1px" class="mb-0">Actions</p>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<!--&lt;!&ndash;            <li class="nav-item sixth-icon">&ndash;&gt;-->
+<!--&lt;!&ndash;              <a (click)="page5()" class="nav-link text-uppercase font-weight-bold">&ndash;&gt;-->
+<!--&lt;!&ndash;                <i class="zmdi zmdi-play zmdi-hc-3x"></i>&ndash;&gt;-->
+<!--&lt;!&ndash;              </a>&ndash;&gt;-->
+<!--&lt;!&ndash;              <p style="margin-left: 1px" class="mb-0">Actions</p>&ndash;&gt;-->
+<!--&lt;!&ndash;            </li>&ndash;&gt;-->
+<!--          </ul>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
 <div class="d-flex mt-2">
   <app-movements style="width: 50%; margin-right: 0.5rem"></app-movements>
   <app-observations style="width: 50%; margin-left: 0.5rem"></app-observations>

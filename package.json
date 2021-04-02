@@ -49,6 +49,7 @@
     "ng-multiselect-dropdown": "^0.3.1",
     "ng7-bootstrap-breadcrumb": "^5.0.1",
     "ngx-chips": "^2.2.2",
+    "ngx-horizontal-timeline": "^0.0.6",
     "ngx-pagination": "^5.0.0",
     "ngx-treeview": "^10.0.2",
     "rxjs": "^6.6.3",

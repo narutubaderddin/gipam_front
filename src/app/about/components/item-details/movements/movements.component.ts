@@ -28,7 +28,23 @@ L.Marker.prototype.options.icon = L.icon({
 export class MovementsComponent implements AfterViewInit {
   map: any;
   showDetailsMvt: boolean = false;
-
+  mvtActions: any = [
+    {
+      date: this.datePipe.transform(new Date('01/01/2021'), 'dd/MM/yyyy'),
+      movementType: 'Depôt',
+      author: 'Jean T',
+    },
+    {
+      date: this.datePipe.transform(new Date('03/01/2021'), 'dd/MM/yyyy'),
+      movementType: 'Déplacement',
+      author: 'Olivier T',
+    },
+    {
+      date: this.datePipe.transform(new Date(), 'dd/MM/yyyy'),
+      movementType: 'Prêt',
+      author: 'Paul T',
+    },
+  ];
   query = 'Tunis';
   frameworkComponent = {
     showMovementDetailsRenderer: ShowMovementDetailsRendererComponent,

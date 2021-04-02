@@ -6,7 +6,7 @@
 .images-container {
   //max-height: 15rem;
   //overflow: hidden;
-  height: 49rem;
+  height: 1vh;
   align-content: space-around;
 }
 .content {
@@ -41,18 +41,39 @@
     }
   }
   .more-details {
-    //border-left: #6d8292 5px solid;
-    margin: 1rem 1%;
-    padding: 20px 15px 20px 20px;
     width: 300px;
-    border-top: 5px #6d8292 dashed;
+    border-top: 1px #d0d0d0 solid;
+    display: flex;
+    flex-direction: column;
+    p {
+      display: flex;
+      font-size: 14px;
+      strong {
+        color: #838a90;
+      }
+      span {
+      }
+      i {
+        justify-content: flex-end;
+        display: flex;
+        align-self: baseline;
+        color: #838a90;
+      }
+    }
+    button {
+      align-self: flex-end;
+    }
   }
-
+  .edition-btn {
+    button {
+      background-color: #5c8fb1;
+    }
+  }
   @media (max-width: 800px) {
     flex-wrap: wrap;
-    .more-details {
-      border-left: none;
-      height: auto;
-    }
+    //.more-details {
+    //  border-left: none;
+    //  height: auto;
+    //}
   }
 }
