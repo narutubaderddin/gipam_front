@@ -3,7 +3,7 @@
     <div class="col-md-12 cadre">
       <div class="col-md-12 main-info d-flex">
         <div class="col-md-12 row">
-          <div class="bloc-header" [ngClass]="menuClosed ? 'fullwidth' : 'width'">
+          <div class="bloc-header" [class.sticky]="sticky" [ngClass]="menuClosed ? 'fullwidth' : 'width'" #stickyMenu>
             <!--            <div class="col-2 img-content" *ngIf="dynamic">-->
             <!--              <img src="assets/images/573b.jpg" alt="" class="img-viewer" />-->
             <!--            </div>-->
@@ -21,7 +21,7 @@
 
               <div style="width: 10rem"></div>
             </div>
-            <div class="first-bloc d-flex justify-content-between">
+            <div class="first-bloc col-md-12 row justify-content-between">
               <a href="#"><i class="zmdi zmdi-caret-left"></i> Précédant | 144</a>
               <span class="titre1">N° inventaire 145</span>
               <a href="#">146 | Suivant <i class="zmdi zmdi-caret-right"></i></a>
@@ -44,6 +44,15 @@
             <!--&lt;!&ndash;                <label [class.active]="dynamic">Dynamique</label>&ndash;&gt;-->
             <!--&lt;!&ndash;              </div>&ndash;&gt;-->
             <!--            </div>-->
+            <div class="col-md-12 title-box d-flex">
+              <div class="col-8 titre p-0">Titre de l'Oeuvre</div>
+              <div class="col-4 icons p-0">
+                <i class="fas fa-archive"></i>
+                <i class="far fa-file-excel" *ngIf="!dynamic"></i>
+                <i class="fas fa-print"></i>
+                <i class="far fa-edit" (click)="onEditMode()" *ngIf="!dynamic"></i>
+              </div>
+            </div>
           </div>
 
           <div class="col-md-12 mt-2">
@@ -55,15 +64,7 @@
             <!--              </div>-->
             <!--            </div>-->
             <!--            </div>-->
-            <div class="col-md-12 title-box d-flex">
-              <div class="col-8 titre p-0">Titre de l'Oeuvre</div>
-              <div class="col-4 icons p-0">
-                <i class="fas fa-archive"></i>
-                <i class="far fa-file-excel" *ngIf="!dynamic"></i>
-                <i class="fas fa-print"></i>
-                <i class="far fa-edit" (click)="onEditMode()" *ngIf="!dynamic"></i>
-              </div>
-            </div>
+
             <div *ngIf="!dynamic">
               <div class="d-flex top-bloc">
                 <div class="col-4 image-container">
@@ -160,12 +161,22 @@
                       <button class="btn btn-action cancel-btn">Annuler</button>
                     </div>
                   </div>
-                  <div class="d-flex col-12 p-0 mt-4 justify-content-between">
-                    <div class="attachments-container mr-1">
-                      <app-attachments></app-attachments>
+                  <div class="d-flex col-12 p-0 flex-column">
+                    <div class="d-flex col-12 p-0 mt-4 justify-content-between">
+                      <div class="attachments-container mr-2 col-md-7 p-0">
+                        <app-attachments style="width: 100%"></app-attachments>
+                      </div>
+                      <div class="attachments-container ml-2 col-md-5 p-0">
+                        <app-links style="width: 100%"></app-links>
+                      </div>
                     </div>
-                    <div class="attachments-container ml-1">
-                      <app-attachments></app-attachments>
+                    <div class="attachments-container col-md-12 p-0 row m-0 align-baseline">
+                      <h5 class="col-md-4 p-0">Liens hypertextes</h5>
+                      <ol class="rounded-list col-md-8">
+                        <li>
+                          <span><a href="#">site-oeuvre.com</a> | 24/01/2020 | Jean</span>
+                        </li>
+                      </ol>
                     </div>
                   </div>
                 </div>

@@ -33,16 +33,19 @@ export class MovementsComponent implements AfterViewInit {
       date: this.datePipe.transform(new Date('01/01/2021'), 'dd/MM/yyyy'),
       movementType: 'Depôt',
       author: 'Jean T',
+      status: 'terminé',
     },
     {
       date: this.datePipe.transform(new Date('03/01/2021'), 'dd/MM/yyyy'),
       movementType: 'Déplacement',
       author: 'Olivier T',
+      status: 'alert',
     },
     {
       date: this.datePipe.transform(new Date(), 'dd/MM/yyyy'),
       movementType: 'Prêt',
       author: 'Paul T',
+      status: 'en cours',
     },
   ];
   query = 'Tunis';
