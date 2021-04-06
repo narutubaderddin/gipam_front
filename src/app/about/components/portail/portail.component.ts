@@ -137,10 +137,6 @@ export class PortailComponent implements OnInit {
     }
   }
 
-  private onChanges() {
-    this.onForm1Change();
-  }
-
   resetFilter() {
     this.oeuvreToShow = this.oeuvres;
   }
