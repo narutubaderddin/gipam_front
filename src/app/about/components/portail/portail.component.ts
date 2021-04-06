@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { TreeviewConfig } from 'ngx-treeview';
 import { LabelType, Options } from '@angular-slider/ngx-slider';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-portail',
@@ -19,6 +20,7 @@ export class PortailComponent implements OnInit {
 
   dropdownEnabled = true;
   values: number[];
+  newDomainsvalues: number[];
   config = TreeviewConfig.create({
     hasAllCheckBox: true,
     hasFilter: true,
@@ -63,10 +65,33 @@ export class PortailComponent implements OnInit {
       }
     },
   };
+  inventoryValue = 0;
+  hightInventoryValue = 60;
+  inventoryOptions: Options;
+  dynamic: boolean = false;
+  formDomainsValues: any[] = [];
+  formHeightValues: any[] = [];
+  formWidthValues: any[] = [];
+  formWeightValues: any[] = [];
+  form1: FormGroup;
+  firstSearchDrop = false;
+  showForm1End = false;
+
   constructor(private WorkOfArtService: WorkOfArtService, private router: Router) {}
 
   ngOnInit(): void {
     this.oeuvreToShow = this.oeuvres;
+    this.form1 = new FormGroup({
+      inventory: new FormControl(''),
+      title: new FormControl(''),
+      domaine: new FormControl(''),
+      denomination: new FormControl(''),
+      author: new FormControl(''),
+    });
+    this.inventoryOptions = {
+      floor: 0,
+      ceil: 9999,
+    };
   }
   search(event: any) {}
 
@@ -96,5 +121,28 @@ export class PortailComponent implements OnInit {
 
   details(visible: any, source: string) {
     this.router.navigate(['portail-details'], { queryParams: { show: visible, source: source } });
+  }
+
+  shop(event: any, item: any) {
+    event.stopPropagation();
+  }
+
+  onSearchClick() {}
+
+  onToggel(event: any, form: string) {
+    switch (form) {
+      case 'form1':
+        this.firstSearchDrop = event;
+        break;
+    }
+  }
+
+  resetFilter() {
+    this.oeuvreToShow = this.oeuvres;
+  }
+
+  showInventoryRange = false;
+  onCheckboxChange(event: any) {
+    this.showInventoryRange = event.target.checked;
   }
 }

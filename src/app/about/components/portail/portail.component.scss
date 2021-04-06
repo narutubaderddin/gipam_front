@@ -173,36 +173,6 @@ a:not([href]) {
 }
 
 .filter-bloc {
-  background-color: white;
-  height: 800px;
-  overflow-y: auto;
-  border-right: 2px solid #2974ab61;
-  border-bottom: 2px solid #2974ab61;
-  animation: translatecollapse 0.3s;
-
-  .search-panel {
-    padding-left: 0;
-    width: 100%;
-    input {
-      min-width: 100%;
-    }
-  }
-  .filters {
-    .filter-list {
-      margin-bottom: 0;
-      width: fit-content;
-      label {
-        font-size: 12px;
-      }
-      input {
-        margin-top: 2px;
-        color: #5a4b5f;
-      }
-      .checkbox-label {
-        margin-left: 0;
-      }
-    }
-  }
   ::ng-deep {
     .ngx-slider .ngx-slider-pointer {
       background: #00d6d4 !important;
@@ -306,7 +276,10 @@ ngx-treeview {
         }
       }
     }
-    div {
+    i {
+      color: #00d6d4;
+    }
+    /*div {
       display: flex;
       max-width: 100%;
       flex-wrap: wrap;
@@ -326,7 +299,7 @@ ngx-treeview {
           }
         }
       }
-    }
+    }*/
   }
 }
 ::ng-deep .form-control {
@@ -581,6 +554,168 @@ img {
     -moz-column-count: 4;
     column-count: 4;
   }
+}
+
+.item {
+  ul {
+    list-style: none;
+    display: flex;
+    flex: row wrap;
+    justify-content: flex-end;
+    padding-left: 0;
+    .icon {
+      /*color: #93dae5;*/
+      color: #00d6d4;
+    }
+    li {
+      margin-left: 2%;
+    }
+    li:first-child {
+      margin-right: auto;
+    }
+    li.shopping {
+      margin-left: 4%;
+    }
+  }
+}
+.custom-slider {
+  width: 50%;
+}
+.search-container {
+  button {
+    height: fit-content !important;
+    min-height: 30px;
+    border: 1px solid #999999 !important;
+    line-height: 0;
+    max-height: 130px;
+    overflow: auto;
+    border-radius: 5px !important;
+    font-size: 12px;
+    color: black;
+    overflow-x: hidden;
+    max-width: 250px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block;
+    //float: left;
+
+    &:focus,
+    &:hover,
+    &:active {
+      border: 1px solid black !important;
+      background-color: white !important;
+      color: black !important;
+      outline: none;
+      box-shadow: none;
+      i {
+        color: black !important;
+      }
+    }
+  }
+  .form-control {
+    width: 25px !important;
+  }
+}
+::ng-deep ng-multiselect-dropdown {
+  width: 100%;
+  margin-left: -15px;
+  .multiselect-dropdown {
+    width: 120% !important;
+    .dropdown-btn {
+      min-height: 40px;
+      height: fit-content;
+    }
+  }
+}
+.dropdown-container {
+  .drop-bloc {
+    margin-top: 11px;
+
+    .export-button {
+      border: none;
+      i {
+        color: #0466c8;
+      }
+      &::after {
+        display: none;
+      }
+    }
+    button {
+      height: 30px;
+      border: 1px solid #00d6d4;
+      line-height: 0;
+      border-radius: 12px;
+      font-size: 12px;
+      &:focus,
+      &:active {
+        outline: none;
+        box-shadow: none;
+      }
+    }
+  }
+  i {
+    font-size: 20px;
+  }
+  .list::after {
+    display: none;
+  }
+  button:hover,
+  button:active,
+  button:focus {
+    background-color: #00d6d4;
+    color: white;
+    i {
+      color: white;
+    }
+  }
+}
+
+.btn-cancel-filter {
+  background: #fff;
+  border-color: transparent;
+  color: #696969;
+}
+.btn-confirm-filter {
+  background: #0057ff;
+  color: #fff;
+  border: 1px solid transparent;
+  border-radius: 100px;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  line-height: 1;
+}
+
+input.search-query {
+  padding-left: 26px;
+}
+
+form.form-search {
+  position: relative;
+  width: 100%;
+}
+
+form.form-search:before {
+  content: "";
+  display: block;
+  width: 14px;
+  height: 14px;
+  background-image: url(http://getbootstrap.com/2.3.2/assets/img/glyphicons-halflings.png);
+  background-position: -48px 0;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  opacity: 0.5;
+  z-index: 1000;
+}
+::ng-deep .tooltip-inner {
+  max-width: fit-content;
+  //text-align: left;
+  background-color: #fff;
+  color: #000;
+  border-radius: 30px;
+  box-shadow: 0 0 3px #00000040;
+  opacity: 1;
 }
 .card {
   border-color: rgb(0 0 0 / 30%);

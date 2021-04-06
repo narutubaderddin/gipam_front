@@ -1,99 +1,283 @@
 <div class="container-fluid">
   <div class="d-flex row mr-t-5">
-    <div id="collapseExample" class="filter-bloc col-lg-2 col-xs-12" [ngbCollapse]="isCollapsed">
-      <div class="search-panel mt-2">
-        <input
-          class="form-control"
-          type="text"
-          name="search"
-          autocomplete="off"
-          (keyup)="search($event)"
-          placeholder="Recherche"
-        />
-      </div>
-      <div class="hl mt-2"></div>
-      <div class="filters mt-4">
-        <h5>Domaines</h5>
-        <ngx-treeview
-          [config]="config"
-          [items]="domains"
-          (selectedChange)="values = $event"
-          (filterChange)="onFilterChange($event)"
-        >
-        </ngx-treeview>
-      </div>
-
-      <div class="filters mt-2">
-        <h5>Hauteur [cm]</h5>
-        <ngx-slider [(value)]="value" [(highValue)]="highValue" [options]="optionsCm"></ngx-slider>
-      </div>
-      <div class="filters mt-2">
-        <h5>Largeur [cm]</h5>
-        <ngx-slider [(value)]="value1" [(highValue)]="highValue1" [options]="optionsCm"></ngx-slider>
-      </div>
-      <div class="filters mt-2">
-        <h5>Longueur [cm]</h5>
-        <ngx-slider [(value)]="value2" [(highValue)]="highValue2" [options]="optionsCm"></ngx-slider>
-      </div>
-      <div class="filters mt-2">
-        <h5>Poids [Kg]</h5>
-        <ngx-slider [(value)]="value3" [(highValue)]="highValue3" [options]="optionsKg"></ngx-slider>
-      </div>
-    </div>
-
-    <div class="mt-2">
-      <a
-        class="float"
-        style="background-color: #407ca8 !important; color: #fff"
-        (click)="isCollapsed = !isCollapsed"
-        [attr.aria-expanded]="!isCollapsed"
-      >
-        <i *ngIf="isCollapsed" class="fas fa-angle-double-right my-float"></i>
-        <i *ngIf="!isCollapsed" class="fas fa-angle-double-left my-float"></i>
-      </a>
-      <div
-        class="label-container"
-        [ngClass]="isCollapsed ? 'label-container-collapsed' : 'label-container-non-collapsed'"
-      >
-        <i class="fa fa-caret-left label-arrow"></i>
-        <div *ngIf="isCollapsed" class="label-text">Afficher le Filtre</div>
-        <div *ngIf="!isCollapsed" class="label-text">Cacher le Filtre</div>
-      </div>
-    </div>
     <div [ngClass]="isCollapsed ? 'col-lg-12 col-xs-12 main' : 'ml-xs-0 col-lg-10 col-xs-12 main'">
-      <div class="title-bloc">
-        <div class="left-title-bloc">
-          <h1 class="title">OEUVRES D'ART</h1>
-          <p>254 Oeuvres d'art</p>
+      <div class="search-header">
+        <div class="title-bloc">
+          <div class="left-title-bloc">
+            <h1 class="title">OEUVRES D'ART</h1>
+            <p>254 Oeuvres d'art</p>
+          </div>
+          <div class="sort-bloc">
+            <strong>Trié par:</strong>
+            <select class="form-select" aria-label="Default select example">
+              <option selected>Ordre Alphabétique</option>
+              <option value="1">Récemment modifiées</option>
+              <option value="2">Plus récentes</option>
+            </select>
+            <i class="fas fa-file-download"></i>
+          </div>
         </div>
-        <div class="sort-bloc">
-          <strong>Trié par:</strong>
-          <select class="form-select" aria-label="Default select example">
-            <option selected>Ordre Alphabétique</option>
-            <option value="1">Récemment modifiées</option>
-            <option value="2">Plus récentes</option>
-          </select>
-          <i class="fas fa-file-download"></i>
+        <div class="col-md-12">
+          <div class="row">
+            <form class="form-search form-inline form-group mt-3">
+              <input
+                type="text"
+                class="form-control w-100 search-query"
+                (keyup.enter)="onSearchClick()"
+                placeholder="Recherche"
+              />
+            </form>
+          </div>
+
+          <div class="form-group mt-3 d-flex">
+            <div class="filter-bloc dropdown-container search-container mb-2 mr-2 mb-sm-0">
+              <div
+                ngbDropdown
+                placement="bottom-left"
+                autoClose="outside"
+                container="body"
+                (openChange)="onToggel($event, 'form1')"
+                class="d-inline-block drop-bloc"
+                #domainesDropdown="ngbDropdown"
+              >
+                <ng-template #TemplateForm1>
+                  <p *ngFor="let value of formDomainsValues; let index = index">
+                    <span>{{ value }}</span>
+                  </p>
+                </ng-template>
+                <button
+                  class="btn dropdown-btn list quick-filter-btn"
+                  id="dropDownSearch1"
+                  ngbDropdownToggle
+                  (click)="resetFilter()"
+                >
+                  <span>
+                    <i class="fab fa-creative-commons-nd" style="color: #1f2b50"></i>
+                    Domaines
+                    <i class="fa fa-sort-down" *ngIf="!firstSearchDrop && formDomainsValues.length > 0"></i>
+                  </span>
+                  <div
+                    [ngbTooltip]="formDomainsValues.length > 0 ? TemplateForm1 : ''"
+                    placement="right"
+                    *ngIf="!firstSearchDrop && formDomainsValues.length > 0"
+                  >
+                    <div class="mt-3">
+                      <p *ngFor="let value of formDomainsValues; let index = index">
+                        <span *ngIf="index < 4">{{ value }}</span>
+                      </p>
+                      <p *ngIf="showForm1End">...</p>
+                    </div>
+                  </div>
+                </button>
+                <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropDownSearch1" style="width: 400px">
+                  <div class="columns-dropdown" style="width: 100% !important">
+                    <form [formGroup]="form1">
+                      <div class="col-12 pt-1">
+                        <div class="form-group col-10">
+                          <div class="col-md-12">
+                            <ngx-treeview
+                              [config]="config"
+                              [items]="domains"
+                              (selectedChange)="formDomainsValues = $event"
+                              (filterChange)="onFilterChange($event)"
+                            >
+                            </ngx-treeview>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div
+                ngbDropdown
+                placement="bottom-left"
+                autoClose="outside"
+                container="body"
+                (openChange)="onToggel($event, 'form1')"
+                class="d-inline-block drop-bloc"
+                #domainesDropdown="ngbDropdown"
+              >
+                <ng-template #TemplateForm1>
+                  <p *ngFor="let value of formDomainsValues; let index = index">
+                    <span>{{ value }}</span>
+                  </p>
+                </ng-template>
+                <button
+                  class="btn dropdown-btn list quick-filter-btn"
+                  id="dropDownSearch1"
+                  ngbDropdownToggle
+                  (click)="resetFilter()"
+                >
+                  <span>
+                    <i class="fas fa-text-height" style="color: #1f2b50"></i>
+                    Hauteur
+                    <i class="fa fa-sort-down" *ngIf="!firstSearchDrop && formHeightValues.length > 0"></i>
+                  </span>
+                  <div [ngbTooltip]="formHeightValues.length > 0 ? TemplateForm1 : ''" placement="right">
+                    <div class="mt-3">
+                      <p ng-if="highValue">
+                        <span>Min: {{ value }} cm - Max:{{ highValue }} cm </span>
+                      </p>
+                      <p *ngIf="showForm1End">...</p>
+                    </div>
+                  </div>
+                </button>
+                <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropDownSearch1" style="width: 400px">
+                  <div class="columns-dropdown" style="width: 100% !important">
+                    <form [formGroup]="form1">
+                      <div class="col-12 pt-1">
+                        <div class="form-group col-10">
+                          <div class="col-md-12">
+                            <div class="filters mt-2 filter-bloc">
+                              <h5>Hauteur [cm]</h5>
+                              <ngx-slider
+                                [(value)]="value"
+                                [(highValue)]="highValue"
+                                [options]="optionsCm"
+                              ></ngx-slider>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div
+                ngbDropdown
+                placement="bottom-left"
+                autoClose="outside"
+                container="body"
+                (openChange)="onToggel($event, 'form1')"
+                class="d-inline-block drop-bloc"
+                #domainesDropdown="ngbDropdown"
+              >
+                <ng-template #TemplateForm1>
+                  <p>
+                    <span>Min: {{ value1 }} cm - Max:{{ highValue }} cm </span>
+                  </p>
+                </ng-template>
+                <button
+                  class="btn dropdown-btn list quick-filter-btn"
+                  id="dropDownSearch1"
+                  ngbDropdownToggle
+                  (click)="resetFilter()"
+                >
+                  <span>
+                    <i class="fas fa-text-width" style="color: #1f2b50"></i>
+                    Largeur
+                  </span>
+                  <div [ngbTooltip]="formWidthValues.length > 0 ? TemplateForm1 : ''" placement="right">
+                    <div class="mt-3">
+                      <p>
+                        <span>Min: {{ value1 }} cm - Max:{{ highValue1 }} cm </span>
+                      </p>
+                      <p *ngIf="showForm1End">...</p>
+                    </div>
+                  </div>
+                </button>
+                <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropDownSearch1" style="width: 400px">
+                  <div class="columns-dropdown" style="width: 100% !important">
+                    <form [formGroup]="form1">
+                      <div class="col-12 pt-1">
+                        <div class="form-group col-10">
+                          <div class="col-md-12">
+                            <div class="filters mt-2 filter-bloc">
+                              <h5>Largeur [cm]</h5>
+                              <ngx-slider
+                                [(value)]="value1"
+                                [(highValue)]="highValue1"
+                                [options]="optionsCm"
+                              ></ngx-slider>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div
+                ngbDropdown
+                placement="bottom-left"
+                autoClose="outside"
+                container="body"
+                (openChange)="onToggel($event, 'form1')"
+                class="d-inline-block drop-bloc"
+                #domainesDropdown="ngbDropdown"
+              >
+                <ng-template #TemplateForm1>
+                  <p *ngFor="let value of formWeightValues; let index = index">
+                    <span>{{ value }}</span>
+                  </p>
+                </ng-template>
+                <button
+                  class="btn dropdown-btn list quick-filter-btn"
+                  id="dropDownSearch1"
+                  ngbDropdownToggle
+                  (click)="resetFilter()"
+                >
+                  <span>
+                    <i class="fas fa-weight" style="color: #1f2b50"></i>
+                    Poids
+                  </span>
+                  <div [ngbTooltip]="formWeightValues.length > 0 ? TemplateForm1 : ''" placement="right">
+                    <div class="mt-3">
+                      <p>
+                        <span>Min: {{ value3 }} kg - Max:{{ highValue3 }} kg </span>
+                      </p>
+                      <p *ngIf="showForm1End">...</p>
+                    </div>
+                  </div>
+                </button>
+                <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropDownSearch1" style="width: 400px">
+                  <div class="columns-dropdown" style="width: 100% !important">
+                    <form [formGroup]="form1">
+                      <div class="col-12 pt-1">
+                        <div class="form-group col-10">
+                          <div class="col-md-12">
+                            <div class="filters mt-2 filter-bloc">
+                              <h5>Poids [Kg]</h5>
+                              <ngx-slider
+                                [(value)]="value3"
+                                [(highValue)]="highValue3"
+                                [options]="optionsKg"
+                              ></ngx-slider>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="picture-bloc-images">
-        <div class="cadre col-md-12">
+      <div class="picture-bloc-images" *ngFor="let section of oeuvreToShow">
+        <div class="col-md-12">
+          <strong>{{ section.name }}</strong>
+        </div>
+        <div class="col-md-12">
           <div class="card-columns">
-            <div class="card shadow p-3 items-bloc" style="margin-bottom: 0" *ngFor="let items of oeuvreToShow">
+            <div
+              class="card shadow p-3 items-bloc item"
+              style="margin-bottom: 0"
+              *ngFor="let items of section.items"
+              (click)="details(items.visible, items.image)"
+            >
               <div class="card-block flip">
                 <img class="card-img-top img-fluid" [src]="items.image" alt="Card image cap" />
-                <div class="back">
-                  <h5 class="card-title title" style="overflow: auto; text-overflow: ellipsis">{{ items.titre }}</h5>
-                  <p class="card-text description" style="overflow: auto; text-overflow: ellipsis">
-                    {{ items.description }}
-                  </p>
-                  <a
-                    (click)="details(items.visible, items.image)"
-                    class="btn btn-primary details details-btn"
-                    style="background-color: #279fb2 !important"
-                    >Voir plus de détails</a
-                  >
-                </div>
+                <strong>{{ items.titre }}</strong>
+                <ul>
+                  <li>{{ items.auteur }}</li>
+                  <li><i class="fa fa-eye icon" aria-hidden="true" title="Voir plus de détails"></i></li>
+                  <li class="shopping" (click)="shop($event, items)">
+                    <i class="fa fa-shopping-basket icon" aria-hidden="true"></i>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
