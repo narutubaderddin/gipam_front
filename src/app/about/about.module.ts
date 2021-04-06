@@ -42,6 +42,7 @@ import { DynamicComponent } from './components/item-details/dynamic/dynamic.comp
 import { AddImgModalComponent } from './components/item-details/item-images/add-img-modal/add-img-modal.component';
 import { AttachmentsComponent } from './components/item-details/attachments/attachments.component';
 import { NgxHorizontalTimelineModule } from 'ngx-horizontal-timeline';
+import { LinksComponent } from './components/item-details/links/links.component';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { NgxHorizontalTimelineModule } from 'ngx-horizontal-timeline';
     DynamicComponent,
     AddImgModalComponent,
     AttachmentsComponent,
+    LinksComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [

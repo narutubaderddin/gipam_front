@@ -3,6 +3,27 @@ h5 {
   font-weight: 600;
   display: flex;
 }
+.carousel {
+  .carousel-item,
+  .carousel-item.active {
+    display: flex !important;
+    div {
+      display: flex !important;
+    }
+  }
+}
+.carousel-item.active {
+  display: flex !important;
+  div {
+    display: flex !important;
+  }
+}
+.carousel-item {
+  display: flex;
+  div {
+    display: flex;
+  }
+}
 .card {
   width: 150px;
   .card-header {
