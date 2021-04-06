@@ -40,7 +40,7 @@ export class AdministratorHomePageComponent implements OnInit {
     suppressLoadingOverlay: false,
     suppressScrollOnNewData: true,
   };
-  remarquers: any;
+  remarquers: any[] = [];
 
   ColDef: ColDef[] = [
     {
@@ -115,7 +115,8 @@ export class AdministratorHomePageComponent implements OnInit {
     return this.defaultColDef.headerComponentParams;
   }
   ngOnInit(): void {
-    this.remarquers = this.WorkOfArtService.oeuvres;
+    // this.remarquers = this.WorkOfArtService.oeuvres;
+    this.remarquers = this.WorkOfArtService.oeuvres[0].items;
   }
 
   onGridReady(params: ICellEditorParams) {
