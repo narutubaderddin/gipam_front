@@ -1,0 +1,31 @@
+h5 {
+  color: #347898;
+  font-weight: 600;
+  display: flex;
+}
+.card {
+  width: 150px;
+  .card-header {
+    align-items: center;
+    border: none;
+    color: white;
+    background-color: #87ceeb;
+    font-size: 16px;
+    font-weight: 520;
+    padding: 0.3rem;
+  }
+  .card-title {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .card-text {
+    font-size: 12px;
+    font-weight: 550;
+  }
+  .card-body {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+}

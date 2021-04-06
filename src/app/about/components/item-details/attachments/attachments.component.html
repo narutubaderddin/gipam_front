@@ -1,3 +1,114 @@
-<h5>Pièces jointes</h5>
+<!--<app-grid-wrapper-->
+<!--  [columnDefs]="columnDefs"-->
+<!--  [rowData]="attachments"-->
+<!--  [defaultColDef]="defaultColDef"-->
+<!--[pagination]="false"-->
+<!--  class="col-md-6"-->
 
-<app-grid-wrapper [columnDefs]="columnDefs" [rowData]="attachments" [defaultColDef]="defaultColDef"> </app-grid-wrapper>
+<!--&gt;-->
+<!--</app-grid-wrapper>-->
+<div class="container">
+  <!--Carousel Wrapper-->
+  <div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="carousel">
+    <div class="d-flex justify-content-between">
+      <h5>Pièces jointes</h5>
+
+      <!--Controls-->
+      <div class="controls-top">
+        <a class="btn-floating" href="#multi-item-example" data-slide="prev"><i class="fas fa-chevron-left"></i></a>
+        <a class="btn-floating" href="#multi-item-example" data-slide="next"><i class="fas fa-chevron-right"></i></a>
+      </div>
+      <!--/.Controls-->
+    </div>
+    <!--Indicators-->
+    <ol class="carousel-indicators">
+      <li data-target="#multi-item-example" data-slide-to="0" class="active"></li>
+      <li data-target="#multi-item-example" data-slide-to="1"></li>
+    </ol>
+    <!--/.Indicators-->
+
+    <!--Slides-->
+    <div class="carousel-inner" role="listbox">
+      <!--First slide-->
+      <div class="carousel-item active d-flex justify-content-around">
+        <div class="col-md-3 p-0" style="float: left" *ngFor="let file of attachments">
+          <div class="card mb-2">
+            <!--            <div class="card-header">{{attachement.title}}</div>-->
+            <div class="d-flex justify-content-center card-header">
+              <h4 class="card-header mr-2">{{ file.title }}</h4>
+              <i class="fas fa-file-download"></i>
+            </div>
+
+            <div class="card-body">
+              <p class="card-text">{{ file.date }}</p>
+              <p class="card-text">{{ file.type }}</p>
+              <p class="card-text">{{ file.creator }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!--        <div class="col-md-3" style="float:left">-->
+        <!--          <div class="card mb-2">-->
+        <!--            <img class="card-img-top"-->
+        <!--                 src="https://mdbootstrap.com/img/Photos/Horizontal/City/4-col/img%20(60).jpg" alt="Card image cap">-->
+        <!--            <div class="card-body">-->
+        <!--              <h4 class="card-title">Card title</h4>-->
+        <!--              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the-->
+        <!--                card's content.</p>-->
+        <!--              <a class="btn btn-primary">Button</a>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </div>-->
+
+        <!--        <div class="col-md-3" style="float:left">-->
+        <!--          <div class="card mb-2">-->
+        <!--            <img class="card-img-top"-->
+        <!--                 src="https://mdbootstrap.com/img/Photos/Horizontal/City/4-col/img%20(60).jpg" alt="Card image cap">-->
+        <!--            <div class="card-body">-->
+        <!--              <h4 class="card-title">Card title</h4>-->
+        <!--              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the-->
+        <!--                card's content.</p>-->
+        <!--              <a class="btn btn-primary">Button</a>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </div>-->
+
+        <!--        <div class="col-md-3" style="float:left">-->
+        <!--          <div class="card mb-2">-->
+        <!--            <img class="card-img-top"-->
+        <!--                 src="https://mdbootstrap.com/img/Photos/Horizontal/City/4-col/img%20(60).jpg" alt="Card image cap">-->
+        <!--            <div class="card-body">-->
+        <!--              <h4 class="card-title">Card title</h4>-->
+        <!--              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the-->
+        <!--                card's content.</p>-->
+        <!--              <a class="btn btn-primary">Button</a>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </div>-->
+      </div>
+      <!--/.First slide-->
+
+      <!--Second slide-->
+      <div class="carousel-item d-flex justify-content-around">
+        <div class="col-md-3 p-0" style="float: left" *ngFor="let file of attachments">
+          <div class="card mb-2">
+            <!--            <div class="card-header">{{attachement.title}}</div>-->
+            <div class="d-flex justify-content-center card-header">
+              <h4 class="card-header mr-2">{{ file.title }}</h4>
+              <i class="fas fa-file-download"></i>
+            </div>
+
+            <div class="card-body">
+              <p class="card-text">{{ file.date }}</p>
+              <p class="card-text">{{ file.type }}</p>
+              <p class="card-text">{{ file.creator }}</p>
+            </div>
+          </div>
+        </div>
+        <!--/.Second slide-->
+      </div>
+      <!--/.Slides-->
+    </div>
+    <!--/.Carousel Wrapper-->
+  </div>
+</div>

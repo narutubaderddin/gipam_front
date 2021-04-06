@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren, Input } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren, Input, HostListener } from '@angular/core';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'angular2-notifications';
 import { SharedService } from '@shared/services/shared.service';
@@ -11,6 +11,8 @@ import { SharedService } from '@shared/services/shared.service';
 export class ItemDetailsComponent implements OnInit {
   @ViewChildren('accordionSectionDOM', { read: ElementRef }) accordionsDOM: QueryList<ElementRef>;
   @ViewChild('accordionDOM') public parentRef: ElementRef<HTMLElement>;
+  @ViewChild('stickyMenu') menuElement: ElementRef;
+  elementPosition: any;
   // @Input() collapseSideNav: boolean;
   page: any = 2;
   edit = false;
@@ -18,7 +20,7 @@ export class ItemDetailsComponent implements OnInit {
   // isCollapsed: boolean = false;
   dynamic: boolean = false;
   openImg: boolean = false;
-
+  sticky: boolean = false;
   get menuClosed(): boolean {
     console.log('menuOpened', this.sharedService.collapseMenu);
 
@@ -39,6 +41,21 @@ export class ItemDetailsComponent implements OnInit {
   ngOnInit() {
     this.menuClosed;
   }
+
+  ngAfterViewInit() {
+    this.elementPosition = this.menuElement.nativeElement.offsetTop;
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  handleScroll() {
+    const windowScroll = window.pageYOffset;
+    if (windowScroll >= this.elementPosition) {
+      this.sticky = true;
+    } else {
+      this.sticky = false;
+    }
+  }
+
   f1(e: any) {
     this.dynamic = e;
     console.log(this.dynamic);

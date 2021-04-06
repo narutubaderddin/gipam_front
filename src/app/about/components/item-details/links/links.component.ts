@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ColDef, ColumnApi, GridApi } from 'ag-grid-community';
 
 @Component({
-  selector: 'app-attachments',
-  templateUrl: './attachments.component.html',
-  styleUrls: ['./attachments.component.scss'],
+  selector: 'app-links',
+  templateUrl: './links.component.html',
+  styleUrls: ['./links.component.scss'],
 })
-export class AttachmentsComponent implements OnInit {
+export class LinksComponent implements OnInit {
   columnDefs: ColDef[] = [
     {
       headerName: 'pièce jointes',
@@ -32,19 +32,19 @@ export class AttachmentsComponent implements OnInit {
 
   attachments = [
     {
-      title: 'details.pdf',
+      attachments: 'details.pdf',
       date: '01/01/2020',
-      type: 'type A',
-      creator: 'Olivier',
+      type: 'type',
+      creator: 'Jean',
     },
     {
-      title: 'details.pdf',
+      attachments: 'details.pdf',
       date: '01/03/2020',
-      type: 'type',
+      type: 'type1',
       creator: 'Paul',
     },
     {
-      title: 'details.pdf',
+      attachments: 'details.pdf',
       date: '01/01/2020',
       type: 'type',
       creator: 'Jean',
@@ -59,7 +59,6 @@ export class AttachmentsComponent implements OnInit {
   gridApi: GridApi;
   gridColumnApi: ColumnApi;
   gridReady = false;
-
   constructor() {}
 
   ngOnInit(): void {}

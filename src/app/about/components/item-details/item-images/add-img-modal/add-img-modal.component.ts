@@ -10,9 +10,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class AddImgModalComponent implements OnInit {
   photographyForm: FormGroup;
   types = ['Numérique', 'type 2', 'type 3'];
-  observations = ['Non vu', 'Vu'];
-  observationExplications = ['Retrouvé', 'Disparu', "A fait l'objet d'un dédommagement"];
-  conservationsStatus = ['Bon', 'Voir commentaire'];
+
   constructor(private fb: FormBuilder, public ngbActiveModal: NgbActiveModal) {}
   ngOnInit(): void {
     this.initForm();
@@ -21,11 +19,8 @@ export class AddImgModalComponent implements OnInit {
   initForm() {
     this.photographyForm = this.fb.group({
       date: ['', [Validators.required]],
-      observation: ['', [Validators.required]],
-      observationExplication: ['', [Validators.required]],
-      conservationStatus: ['', [Validators.required]],
-      conservationComment: ['', [Validators.required]],
-      actionType: ['', [Validators.required]],
+      photography: ['', [Validators.required]],
+      photographyType: ['', [Validators.required]],
     });
   }
 
