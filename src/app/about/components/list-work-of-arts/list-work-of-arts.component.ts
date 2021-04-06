@@ -207,7 +207,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.oeuvreToShow = this.oeuvres;
+    this.oeuvreToShow = this.oeuvres[0].items;
     this.initFilterFormGroup();
     this.domaine = this.WorkOfArtService.domaine;
     this.dropdownSettings = {
