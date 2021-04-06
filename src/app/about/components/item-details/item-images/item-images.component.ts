@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbModalOptions, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { AddImgModalComponent } from '@app/about/components/item-details/item-images/add-img-modal/add-img-modal.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-item-images',
@@ -9,10 +10,21 @@ import { AddImgModalComponent } from '@app/about/components/item-details/item-im
 })
 export class ItemImagesComponent implements OnInit {
   slide = 1;
+  editType = false;
+  photographyForm: FormGroup;
+  types = ['Numérique', 'type 2', 'type 3'];
 
-  constructor(private modalService: NgbModal) {}
-
-  ngOnInit(): void {}
+  constructor(private modalService: NgbModal, private fb: FormBuilder) {}
+  ngOnInit(): void {
+    this.initForm();
+  }
+  initForm() {
+    this.photographyForm = this.fb.group({
+      date: ['', [Validators.required]],
+      photography: ['', [Validators.required]],
+      photographyType: ['', [Validators.required]],
+    });
+  }
   addImg() {
     const ngbModalOptions: NgbModalOptions = {
       backdropClass: 'modal-container',
@@ -36,4 +48,5 @@ export class ItemImagesComponent implements OnInit {
         break;
     }
   }
+  editPhotoType() {}
 }

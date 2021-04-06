@@ -41,6 +41,7 @@ import { SidebarNavComponent } from './components/public-header/sidebar-nav/side
 import { DynamicComponent } from './components/item-details/dynamic/dynamic.component';
 import { AddImgModalComponent } from './components/item-details/item-images/add-img-modal/add-img-modal.component';
 import { AttachmentsComponent } from './components/item-details/attachments/attachments.component';
+import { NgxHorizontalTimelineModule } from 'ngx-horizontal-timeline';
 
 @NgModule({
   declarations: [
@@ -87,6 +88,7 @@ import { AttachmentsComponent } from './components/item-details/attachments/atta
     AutocompleteLibModule,
     TreeviewModule.forRoot(),
     NgxSliderModule,
+    NgxHorizontalTimelineModule,
     TagInputModule,
     Ng7BootstrapBreadcrumbModule,
   ],

@@ -1,0 +1,60 @@
+h5 {
+  color: #347898;
+  font-weight: 600;
+  display: flex;
+}
+ol {
+  counter-reset: li; /* Initialise le compteur */
+  list-style: none; /* Supprime la numérotation par défaut */
+  *list-style: decimal; /* Restitue la numérotation par défaut pour IE6/7 */
+  font: 15px "trebuchet MS", "lucida sans";
+  padding: 0;
+  margin-bottom: 4em;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+ol ol {
+  margin: 0 0 0 2em; /* Ajoute une marge à gauche pour les listes imbriquées */
+}
+.rounded-list span {
+  position: relative;
+  //display: block;
+  padding: 0.4em 0.4em 0.4em 2em;
+  *padding: 0.4em;
+  margin: 0.5em 0;
+  background: #ddd;
+  color: #444;
+  text-decoration: none;
+  border-radius: 0.3em;
+  transition: all 0.3s ease-out;
+
+  display: flex;
+  justify-content: space-around;
+}
+
+.rounded-list span:hover {
+  background: #eee;
+}
+
+.rounded-list span:hover:before {
+  transform: rotate(360deg);
+}
+
+.rounded-list span:before {
+  //content: counter(li);
+  content: "";
+  counter-increment: li;
+  position: absolute;
+  left: -1em;
+  top: 50%;
+  margin-top: -1em;
+  background: #87ceeb;
+  height: 2em;
+  width: 2em;
+  line-height: 2em;
+  border: 0.3em solid #fff;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 2em;
+  transition: all 0.3s ease-out;
+}

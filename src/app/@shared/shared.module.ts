@@ -30,6 +30,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { StatusTypeRenderComponent } from './components/datatables/status-type-render/status-type-render.component';
 import { RecoleRendererComponent } from './components/datatables/recole-renderer/recole-renderer.component';
 import { AccordionSectionComponent } from './components/accordion-section/accordion-section.component';
+import { NgxHorizontalTimelineModule } from 'ngx-horizontal-timeline';
 
 @NgModule({
   imports: [
@@ -45,6 +46,7 @@ import { AccordionSectionComponent } from './components/accordion-section/accord
     BrowserAnimationsModule,
     ReactiveFormsModule,
     TagInputModule,
+    NgxHorizontalTimelineModule,
   ],
   declarations: [
     LoaderComponent,
