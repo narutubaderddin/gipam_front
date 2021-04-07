@@ -45,7 +45,14 @@
             <!--&lt;!&ndash;              </div>&ndash;&gt;-->
             <!--            </div>-->
             <div class="col-md-12 title-box d-flex">
-              <div class="col-8 titre p-0">Titre de l'Oeuvre</div>
+              <div class="col-8 titre p-0 d-flex">
+                Titre de l'Oeuvre
+                <span
+                  class="type"
+                  [ngStyle]="type == 'propiete' ? { backgroundColor: '#00D6D4' } : { backgroundColor: '#0080FF' }"
+                  >{{ type == 'propiete' ? 'Propriété' : 'Dépot' }}</span
+                >
+              </div>
               <div class="col-4 icons p-0">
                 <i class="fas fa-archive"></i>
                 <i class="far fa-file-excel" *ngIf="!dynamic"></i>
@@ -156,7 +163,7 @@
                     <!--                  </app-accordion-section>-->
                     <!--                </div>-->
                     <!--              </div>-->
-                    <div *ngIf="edit" class="col-md-11" style="display: flex; flex-direction: row-reverse">
+                    <div *ngIf="edit" class="col-md-12 p-0" style="display: flex; flex-direction: row-reverse">
                       <button class="btn valid-btn" (click)="onSave()">Enregistrer</button>
                       <button class="btn btn-action cancel-btn">Annuler</button>
                     </div>

@@ -1,32 +1,23 @@
-/// <reference types="@types/leaflet" />
-import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import * as L from 'leaflet';
-import { MovementsService } from '@app/about/components/item-details/movements/movements.service';
+
 import { DatePipe } from '@angular/common';
 import { ColDef, ColumnApi, GridApi, ICellEditorParams } from 'ag-grid-community';
+
+import { MovementsService } from '@app/about/components/item-details/movements/movements.service';
 import { ShowMovementDetailsRendererComponent } from '@shared/components/datatables/show-movement-details-renderer/show-movement-details-renderer.component';
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
 const shadowUrl = 'assets/marker-shadow.png';
-L.Marker.prototype.options.icon = L.icon({
-  iconRetinaUrl,
-  iconUrl,
-  shadowUrl,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  tooltipAnchor: [16, -28],
-  shadowSize: [41, 41],
-});
-
 @Component({
-  selector: 'app-movements',
-  templateUrl: './movements.component.html',
-  styleUrls: ['./movements.component.scss'],
+  selector: 'app-last-movement',
+  templateUrl: './last-movement.component.html',
+  styleUrls: ['./last-movement.component.scss'],
   providers: [DatePipe],
 })
-export class MovementsComponent implements AfterViewInit {
-  @Output() closeMvtHistory = new EventEmitter();
+export class LastMovementComponent implements OnInit {
+  @Output() openMvtHistory = new EventEmitter();
+
   map: any;
   showDetailsMvt: boolean = false;
   mvtActions: any = [
@@ -128,9 +119,8 @@ export class MovementsComponent implements AfterViewInit {
 
   constructor(private movementsService: MovementsService, private datePipe: DatePipe) {}
 
-  ngAfterViewInit(): void {
-    // this.initMap();
-    // this.movementsService.makeCapitalMarkers(this.map);
+  ngOnInit(): void {
+    console.log(this.showDetailsMvt);
   }
 
   onGridReady(params: ICellEditorParams) {
@@ -155,8 +145,8 @@ export class MovementsComponent implements AfterViewInit {
 
   openDetailsMvt() {
     // this.showDetailsMvt = !this.showDetailsMvt;
-    this.showDetailsMvt = false;
-    this.closeMvtHistory.emit(this.showDetailsMvt);
+    this.showDetailsMvt = true;
+    this.openMvtHistory.emit(this.showDetailsMvt);
     console.log(this.showDetailsMvt);
   }
 }
