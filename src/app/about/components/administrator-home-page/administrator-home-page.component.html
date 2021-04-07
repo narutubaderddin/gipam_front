@@ -1,16 +1,8 @@
 <div class="breadcrumb">
   <a href="home-page">Accueil</a>
-  <a href="home-page" class="selected-item" *ngIf="page === 1">
+  <a href="home-page" class="selected-item">
     <i class="fas fa-chevron-right"></i>
     Notices en cours de création
-  </a>
-  <a href="home-page" class="selected-item" *ngIf="page === 2">
-    <i class="fas fa-chevron-right"></i>
-    Récolements en cours
-  </a>
-  <a href="home-page" class="selected-item" *ngIf="page === 3">
-    <i class="fas fa-chevron-right"></i>
-    Alertes en cours
   </a>
 </div>
 <div class="container-fluid">
@@ -20,87 +12,67 @@
         <div class="sidebar">
           <div class="card">
             <div class="card-body">
-              <ul class="d-flex">
-                <li class="col-md-4" [class.selected-table]="page == 1" (click)="showRemarquer()">
-                  <i class="fas fa-spinner"></i><a>Notices en cours de création</a>
-                </li>
-                <li class="col-md-4" [class.selected-table]="page == 2" (click)="showProofs()">
-                  <i class="fas fa-layer-group"></i><a>Récolements en cours</a>
-                </li>
-                <li class="col-md-4" [class.selected-table]="page == 3" (click)="showAlerts()">
-                  <i class="fas fa-bell"></i><a>Alertes en cours</a>
-                </li>
-              </ul>
+              <ng-image-slider [images]="imageObject" #nav></ng-image-slider>
             </div>
           </div>
         </div>
-        <div class="mt-2 datagrid-bloc" *ngIf="page == 1">
-          <div class="d-flex search-add-sectlion">
-            <div class="search-add-section-div">
-              <div class="search input-group">
-                <input
-                  class="form-control py-2 border-right-0 border search-form-control"
-                  type="search"
-                  value="Rechercher"
-                  id="example-search-input"
-                />
-                <span class="input-group-append">
-                  <button class="btn btn-outline-secondary border-left-0 border" type="button">
-                    <i class="fa fa-search"></i>
-                  </button>
-                </span>
+        <div class="mt-2 wrap">
+          <div class="form-group search">
+            <input
+              type="text"
+              class="form-control w-100"
+              placeholder="Rechercher un lieu ou un lot d’oeuvres…"
+            />
+            <button type="submit" class="searchButton">
+              <i class="fa fa-search"></i>
+           </button>
+          </div>
+        </div>
+          <div class="d-flex informations  mt-2">
+            <div class="col-md-3">
+              <div class="stati bg-turquoise">
+                <i class="fa fa-spinner"></i>
+                <div>
+                  <b>35</b>
+                  <span>
+                    <a href="work-of-arts-list" class="flex-column">
+                      <span class="title">Oeuvres</span>
+                      <span class="title">en cours de création</span>
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="stati bg-blue">
+                <i class="fa fa-tasks"></i>
+                <div>
+                  <b>20</b>
+                  <span>
+                    <a href="work-of-arts-list" class="flex-column">
+                      <span class="title">Récolements</span>
+                      <span class="title">en cours</span>
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="stati bg-red">
+                <i class="fa fa-exclamation-triangle"></i>
+                <div>
+                  <b>21</b>
+                  <span>
+                    <a href="work-of-arts-list" class="flex-column">
+                      <span class="title">Alertes</span>
+                      <span class="title">en cours</span>
+                    </a>
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-          <div class="datatable mt-4">
-            <app-grid-wrapper
-              [columnDefs]="ColDef"
-              [rowData]="remarquers"
-              [frameworkComponents]="frameworkComponents"
-              [defaultColDef]="defaultColDef"
-              (gridReady)="onGridReady($event)"
-              [context]="this"
-              [paginationPageSize]="rowCount"
-              [gridOptions]="gridOptions"
-              [sizeToFit]="true"
-              [totalPaginationItems]="remarquers.length"
-              [totalDataCount]="remarquers.length"
-              [pinnedCols]="pinnedCols"
-              [leftPinnedCols]="leftPinnedCols"
-            ></app-grid-wrapper>
-          </div>
-        </div>
-        <div class="mt-2 datagrid-bloc" *ngIf="page == 2">
-          <app-proofs-in-progress></app-proofs-in-progress>
-        </div>
-        <div class="mt-2 datagrid-bloc" *ngIf="page == 3">
-          <app-in-progress-alerts></app-in-progress-alerts>
         </div>
       </div>
     </div>
-  </div>
-  <!--  <div class="floating-add-button">-->
-  <!--    <a href="#" class="float" id="menu-share">-->
-  <!--      <i class="fa fa-plus my-float"></i>-->
-  <!--    </a>-->
-  <!--    <ul>-->
-  <!--      <li>-->
-  <!--        <a-->
-  <!--          style="background-color: #00d6d4"-->
-  <!--          ngbTooltip=""-->
-  <!--          placement="left"-->
-  <!--          class="add-prop-notice"-->
-  <!--          routerLink="/add-property-remarquer"-->
-  <!--          ><i class="fas fa-window-restore my-float"></i>-->
-  <!--          <span>Ajouter une notice en propriété</span>-->
-  <!--        </a>-->
-  <!--      </li>-->
-  <!--      <li>-->
-  <!--        <a style="background-color: #0080ff" class="add-prop-notice">-->
-  <!--          <i class="fas fa-warehouse my-float"></i>-->
-  <!--          <span>Ajouter une notice en dépôt</span>-->
-  <!--        </a>-->
-  <!--      </li>-->
-  <!--    </ul>-->
-  <!--  </div>-->
 </div>
