@@ -14,6 +14,7 @@ export class ItemDetailsComponent implements OnInit {
   @ViewChild('stickyMenu') menuElement: ElementRef;
   elementPosition: any;
   // @Input() collapseSideNav: boolean;
+  type: string = 'depot';
   page: any = 2;
   edit = false;
   moreDetails = ['19-01-2020', '23-02-2020', '01-03-2020', '25-03-2020', '20-04-2020'];
