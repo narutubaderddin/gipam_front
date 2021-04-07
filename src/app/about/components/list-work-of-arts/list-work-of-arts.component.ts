@@ -75,7 +75,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       });
     },
   };
-  oeuvres = this.WorkOfArtService.oeuvres;
+  oeuvres = this.WorkOfArtService.oeuvres[0].items;
 
   ColDef: ColDef[] = [
     {
@@ -207,7 +207,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.oeuvreToShow = this.oeuvres[0].items;
+    this.oeuvreToShow = this.oeuvres;
     this.initFilterFormGroup();
     this.domaine = this.WorkOfArtService.domaine;
     this.dropdownSettings = {
