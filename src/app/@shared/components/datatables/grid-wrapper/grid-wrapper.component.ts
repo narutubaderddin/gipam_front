@@ -68,7 +68,6 @@ export class GridWrapperComponent implements OnInit {
     if (!this.currentPage) {
       this.currentPage = 1;
     }
-    console.log(this.paginationSize);
     this.gridOptions.onRowDataChanged = (dataChangedEvent: RowDataChangedEvent) => {
       this.handlePaginationInfo();
       if (this.gridAPI && this.sizeToFit) {
