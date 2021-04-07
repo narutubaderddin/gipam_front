@@ -1,9 +1,5 @@
 <div class="breadcrumb">
   <a href="home-page">Accueil</a>
-  <a href="home-page" class="selected-item">
-    <i class="fas fa-chevron-right"></i>
-    Notices en cours de création
-  </a>
 </div>
 <div class="container-fluid">
   <div class="body d-flex">
@@ -12,67 +8,63 @@
         <div class="sidebar">
           <div class="card">
             <div class="card-body">
-              <ng-image-slider [images]="imageObject" #nav></ng-image-slider>
+              <ng-image-slider [images]="imageObject" [imageSize]="{ width: '20%', space: 5 }" #nav></ng-image-slider>
             </div>
           </div>
         </div>
         <div class="mt-2 wrap">
           <div class="form-group search">
-            <input
-              type="text"
-              class="form-control w-100"
-              placeholder="Rechercher un lieu ou un lot d’oeuvres…"
-            />
+            <input type="text" class="form-control w-100" placeholder="Rechercher un lieu ou un lot d’oeuvres…" />
             <button type="submit" class="searchButton">
               <i class="fa fa-search"></i>
-           </button>
+            </button>
           </div>
         </div>
-          <div class="d-flex informations  mt-2">
-            <div class="col-md-3">
-              <div class="stati bg-turquoise">
-                <i class="fa fa-spinner"></i>
-                <div>
-                  <b>35</b>
-                  <span>
-                    <a href="work-of-arts-list" class="flex-column">
-                      <span class="title">Oeuvres</span>
-                      <span class="title">en cours de création</span>
-                    </a>
-                  </span>
-                </div>
+        <div class="d-flex informations mt-2">
+          <div class="col-md-3">
+            <div class="stati bg-turquoise">
+              <i class="fa fa-spinner"></i>
+              <div>
+                <b>35</b>
+                <span>
+                  <a href="being-created-notices" class="flex-column">
+                    <span class="title">Oeuvres</span>
+                    <span class="title">en cours de création</span>
+                  </a>
+                </span>
               </div>
             </div>
-            <div class="col-md-3">
-              <div class="stati bg-blue">
-                <i class="fa fa-tasks"></i>
-                <div>
-                  <b>20</b>
-                  <span>
-                    <a href="work-of-arts-list" class="flex-column">
-                      <span class="title">Récolements</span>
-                      <span class="title">en cours</span>
-                    </a>
-                  </span>
-                </div>
+          </div>
+          <div class="col-md-3">
+            <div class="stati bg-blue">
+              <i class="fa fa-tasks"></i>
+              <div>
+                <b>20</b>
+                <span>
+                  <a href="work-of-arts-list" class="flex-column">
+                    <span class="title">Récolements</span>
+                    <span class="title">en cours</span>
+                  </a>
+                </span>
               </div>
             </div>
-            <div class="col-md-3">
-              <div class="stati bg-red">
-                <i class="fa fa-exclamation-triangle"></i>
-                <div>
-                  <b>21</b>
-                  <span>
-                    <a href="work-of-arts-list" class="flex-column">
-                      <span class="title">Alertes</span>
-                      <span class="title">en cours</span>
-                    </a>
-                  </span>
-                </div>
+          </div>
+          <div class="col-md-3">
+            <div class="stati bg-red">
+              <i class="fa fa-exclamation-triangle"></i>
+              <div>
+                <b>21</b>
+                <span>
+                  <a href="work-of-arts-list" class="flex-column">
+                    <span class="title">Alertes</span>
+                    <span class="title">en cours</span>
+                  </a>
+                </span>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 </div>

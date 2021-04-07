@@ -44,6 +44,7 @@ import { AttachmentsComponent } from './components/item-details/attachments/atta
 import { NgxHorizontalTimelineModule } from 'ngx-horizontal-timeline';
 import { LinksComponent } from './components/item-details/links/links.component';
 import { NgImageSliderModule } from 'ng-image-slider';
+import { NoticeBeingCreatedComponent } from './components/administrator-home-page/notice-being-created/notice-being-created.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { NgImageSliderModule } from 'ng-image-slider';
     DynamicComponent,
     AddImgModalComponent,
     AttachmentsComponent,
-    LinksComponent
+    LinksComponent,
+    NoticeBeingCreatedComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
