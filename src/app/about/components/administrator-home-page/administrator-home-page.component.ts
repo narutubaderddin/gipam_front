@@ -46,6 +46,18 @@ export class AdministratorHomePageComponent implements OnInit {
       title: 'Image title', //Optional: You can use this key if want to show image with title
       alt: 'Image alt', //Optional: You can use this key if want to show image with alt
     },
+    {
+      image: 'assets/images/24.jpg',
+      thumbImage: 'assets/images/24.jpg',
+      title: 'Image title', //Optional: You can use this key if want to show image with title
+      alt: 'Image alt', //Optional: You can use this key if want to show image with alt
+    },
+    {
+      image: 'assets/images/25.jpg',
+      thumbImage: 'assets/images/25.jpg',
+      title: 'Image title', //Optional: You can use this key if want to show image with title
+      alt: 'Image alt', //Optional: You can use this key if want to show image with alt
+    },
   ];
   frameworkComponents = {
     customHeader: CustomHeaderRendererComponent,
