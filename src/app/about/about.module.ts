@@ -43,6 +43,7 @@ import { AddImgModalComponent } from './components/item-details/item-images/add-
 import { AttachmentsComponent } from './components/item-details/attachments/attachments.component';
 import { NgxHorizontalTimelineModule } from 'ngx-horizontal-timeline';
 import { LinksComponent } from './components/item-details/links/links.component';
+import { LastMovementComponent } from './components/item-details/movements/last-movement/last-movement.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { LinksComponent } from './components/item-details/links/links.component'
     AddImgModalComponent,
     AttachmentsComponent,
     LinksComponent,
+    LastMovementComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [

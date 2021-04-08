@@ -23,7 +23,7 @@ export class ItemDetailsComponent implements OnInit {
   openImg: boolean = false;
   sticky: boolean = false;
   get menuClosed(): boolean {
-    console.log('menuOpened', this.sharedService.collapseMenu);
+    // console.log('menuOpened', this.sharedService.collapseMenu);
 
     return this.sharedService.collapseMenu;
   }

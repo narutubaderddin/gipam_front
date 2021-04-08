@@ -15,7 +15,7 @@ export class AboutComponent implements OnInit {
   ngOnInit(): void {}
   f1(e: any) {
     this.collapseSideNav = e;
-    console.log('collapseSideNav', this.collapseSideNav);
+    // console.log('collapseSideNav', this.collapseSideNav);
   }
 
   onSearchClick() {
