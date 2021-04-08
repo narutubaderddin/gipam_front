@@ -7,6 +7,7 @@ import { ItemDetailsComponent } from '@app/about/components/item-details/item-de
 import { ListWorkOfArtsComponent } from './components/list-work-of-arts/list-work-of-arts.component';
 import { PortailComponent } from './components/portail/portail.component';
 import { PortailItemDetailsComponent } from '@app/about/components/portail-item-details/portail-item-details.component';
+import { NoticeBeingCreatedComponent } from './components/administrator-home-page/notice-being-created/notice-being-created.component';
 const routes: Routes = [
   {
     path: '',
@@ -25,6 +26,7 @@ const routes: Routes = [
       },
       { path: 'portail', component: PortailComponent },
       { path: 'add-property-remarquer', component: AddPropertyRemarquerComponent },
+      { path: 'being-created-notices', component: NoticeBeingCreatedComponent },
     ],
   },
 ];
