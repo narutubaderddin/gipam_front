@@ -1,16 +1,8 @@
 .sideNavCollapsed {
   min-width: 50px;
-  height: 100vh;
 }
-.sideNav {
-  //min-width:250px;
-  height: 100vh;
-}
-.main-full-width {
-  //margin-left: 20px;
-}
+
 .main {
-  //width:auto;
   margin-left: 250px;
 }
 .user-avatar {
@@ -18,4 +10,8 @@
   height: 50px;
   width: 50px;
   border-radius: 31px;
+}
+.add-action:hover {
+  border-color: #6d8292;
+  color: white !important;
 }

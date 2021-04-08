@@ -75,7 +75,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       });
     },
   };
-  oeuvres = this.WorkOfArtService.oeuvres;
+  oeuvres = this.WorkOfArtService.oeuvres[0].items;
 
   ColDef: ColDef[] = [
     {

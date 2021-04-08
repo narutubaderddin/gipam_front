@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ColDef, ColumnApi, GridApi } from 'ag-grid-community';
+import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-attachments',
@@ -7,6 +8,8 @@ import { ColDef, ColumnApi, GridApi } from 'ag-grid-community';
   styleUrls: ['./attachments.component.scss'],
 })
 export class AttachmentsComponent implements OnInit {
+  slide = 1;
+
   columnDefs: ColDef[] = [
     {
       headerName: 'pièce jointes',
@@ -50,6 +53,7 @@ export class AttachmentsComponent implements OnInit {
       creator: 'Jean',
     },
   ];
+
   defaultColDef = {
     sortable: true,
     filter: false,
@@ -63,4 +67,20 @@ export class AttachmentsComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
+  onChange(event: NgbSlideEvent) {
+    switch (event.current) {
+      case 'slide1':
+        this.slide = 1;
+        break;
+      case 'slide2':
+        this.slide = 2;
+        break;
+      case 'slide3':
+        this.slide = 3;
+        break;
+      case 'slide4':
+        this.slide = 4;
+        break;
+    }
+  }
 }

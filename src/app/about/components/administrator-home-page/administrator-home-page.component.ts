@@ -38,7 +38,6 @@ export class AdministratorHomePageComponent implements OnInit {
     },
   ];
 
-  page = 1;
   constructor() {}
   ngOnInit(): void {}
 }
