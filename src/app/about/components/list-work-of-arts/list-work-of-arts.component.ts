@@ -370,6 +370,8 @@ export class ListWorkOfArtsComponent implements OnInit {
   secondSearchDrop = false;
   thirdSearchDrop = false;
   fourthSearchDrop = false;
+  form1Advanced: boolean = false;
+  form3Advanced: boolean = false;
 
   onValidateRequest(value: boolean) {
     if (value) {

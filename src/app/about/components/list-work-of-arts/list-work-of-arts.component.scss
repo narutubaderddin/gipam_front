@@ -133,6 +133,13 @@ input:checked + .slider:before {
     }
   }
 }
+.advanced-search-label {
+  color: #0472d3;
+  cursor: pointer;
+  i {
+    margin: 4px;
+  }
+}
 .list-group-item {
   padding: 10px 20px;
   font-size: 14px;
@@ -205,13 +212,36 @@ input:checked + .slider:before {
     width: 25px !important;
   }
 }
+.search {
+  width: 100%;
+  position: relative;
+  display: flex;
+  input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border: 1px solid #cbd1d7;
+    height: 50px;
+  }
+}
+
+.searchButton {
+  height: 50px;
+  border: 1px solid #00d6d4;
+  background: #00d6d4;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  font-size: 20px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
 ::ng-deep ng-multiselect-dropdown {
   width: 100%;
   margin-left: -15px;
   .multiselect-dropdown {
-    width: 120% !important;
+    width: 115% !important;
     .dropdown-btn {
-      min-height: 40px;
+      min-height: 30px;
       height: fit-content;
     }
   }
@@ -235,6 +265,7 @@ input:checked + .slider:before {
       line-height: 0;
       border-radius: 12px;
       font-size: 12px;
+      min-width: 20vh;
       &:focus,
       &:active {
         outline: none;
@@ -552,4 +583,7 @@ input:checked + .slider:before {
     border-color: #2972a7;
     color: white !important;
   }
+}
+.form-control {
+  height: 30px !important;
 }

@@ -44,6 +44,7 @@ import { AttachmentsComponent } from './components/item-details/attachments/atta
 import { NgxHorizontalTimelineModule } from 'ngx-horizontal-timeline';
 import { LinksComponent } from './components/item-details/links/links.component';
 import { LastMovementComponent } from './components/item-details/movements/last-movement/last-movement.component';
+import { NgImageSliderModule } from 'ng-image-slider';
 
 @NgModule({
   declarations: [
@@ -95,6 +96,7 @@ import { LastMovementComponent } from './components/item-details/movements/last-
     NgxHorizontalTimelineModule,
     TagInputModule,
     Ng7BootstrapBreadcrumbModule,
+    NgImageSliderModule,
   ],
   providers: [MovementsService],
 })
