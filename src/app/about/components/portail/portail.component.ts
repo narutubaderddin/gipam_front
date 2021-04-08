@@ -17,6 +17,7 @@ export class PortailComponent implements OnInit {
   openType = false;
   filter = false;
   keyword = 'name';
+  selectedOeuvre: any[] = [];
   domains = this.WorkOfArtService.getDomains();
 
   dropdownEnabled = true;
@@ -165,7 +166,7 @@ export class PortailComponent implements OnInit {
   closeResult = '';
 
   open(content: any) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then(
       (result) => {
         this.closeResult = `Closed with: ${result}`;
       },
@@ -183,5 +184,8 @@ export class PortailComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+  addToBasket(item: any) {
+    this.selectedOeuvre.push(item);
   }
 }
