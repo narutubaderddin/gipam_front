@@ -76,7 +76,6 @@ a.float:hover + div.label-container {
   .form-select {
     border: none;
     background-color: transparent;
-    height: 27px;
     line-height: 0px;
     font-size: 12px;
     cursor: pointer;
@@ -97,7 +96,7 @@ a.float:hover + div.label-container {
   min-height: 70px !important;
   margin-top: 15px;
   width: 98%;
-  float: right;
+  /*float: right;*/
   background-color: transparent;
   border-right: transparent;
 }
@@ -723,4 +722,56 @@ form.form-search:before {
 .main {
   transition: margin-left 0.5s;
   padding: 20px;
+}
+.search-header {
+  position: sticky;
+  top: 0;
+  z-index: 49;
+  background: #ffffff;
+  padding: 1% 0 1% 0;
+}
+.cancel-icon {
+  position: absolute;
+  bottom: 25%;
+}
+.panier {
+  cursor: pointer;
+  .nbr-panier {
+    background-color: #00d6d4;
+    border-radius: 9px;
+    color: white;
+    display: inline-block;
+    line-height: 0.7;
+    font-weight: 550;
+    margin-left: 0px;
+    min-width: 15px;
+    opacity: 1;
+    padding: 4px 4px;
+    text-align: center;
+    transition: background-color 0.2s cubic-bezier(0.39, 0.575, 0.565, 1);
+    vertical-align: middle;
+    margin-bottom: 35%;
+  }
+}
+.cancel-btn {
+  border: 1px solid transparent;
+  border-radius: 100px;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  line-height: 1;
+  user-select: none;
+}
+
+.confirm-btn {
+  background: #0057ff;
+  color: #fff !important;
+  border: 1px solid transparent;
+  border-radius: 100px;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  line-height: 1;
+  transition-property: color, background;
+  user-select: none;
 }
