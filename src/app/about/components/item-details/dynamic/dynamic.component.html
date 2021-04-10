@@ -63,8 +63,21 @@
 <!--  </div>-->
 <!--</div>-->
 <div class="d-flex mt-2">
-  <app-movements style="width: 50%; margin-right: 0.5rem"></app-movements>
-  <app-observations style="width: 50%; margin-left: 0.5rem"></app-observations>
+  <app-last-movement
+    style="width: 50%; margin-right: 0.5rem"
+    (openMvtHistory)="f1($event)"
+    [ngStyle]="mvtHistory ? { display: 'none' } : { width: '50%' }"
+  ></app-last-movement>
+  <app-observations
+    style="width: 50%; margin-left: 0.5rem"
+    [ngStyle]="mvtHistory ? { display: 'none' } : { width: '50%' }"
+  ></app-observations>
+  <!--  <p>{{mvtHistory}}</p>-->
+  <app-movements
+    *ngIf="mvtHistory"
+    (closeMvtHistory)="f1($event)"
+    style="width: 100%; margin-left: 0.5rem"
+  ></app-movements>
 </div>
 <!--<app-accordion-section-->
 <!--  #accordionSectionDOM-->

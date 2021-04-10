@@ -47,7 +47,7 @@
       border-radius: 0 0 2rem 2rem;
       flex-direction: column;
 
-      //min-height: 40rem;
+      min-height: 40rem;
       justify-content: space-between;
     }
   }
@@ -190,6 +190,6 @@ p {
 }
 @media (max-width: 1445px) {
   .info-container {
-    //min-height: 36rem !important;
+    min-height: 36rem !important;
   }
 }

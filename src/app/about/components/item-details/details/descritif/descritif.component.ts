@@ -35,6 +35,7 @@ export class DescritifComponent implements OnInit {
   selectDomain(item: any) {
     this.denomination = item.denominations;
     this.selectedDomain = item.name;
+    console.log(item);
   }
   selectEvent(item: any) {}
 
@@ -52,6 +53,12 @@ export class DescritifComponent implements OnInit {
   }
   onDomainSelect(item: any) {
     // this.denominations = item.denominations;
+    this.denomination = item.denominations;
+    this.selectedDomain = item.name;
+    console.log(item);
+  }
+  onItemSelect(item: any) {
+    console.log(item);
   }
   onSelectAll(items: any) {}
 }

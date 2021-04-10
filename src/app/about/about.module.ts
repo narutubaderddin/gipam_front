@@ -43,8 +43,10 @@ import { AddImgModalComponent } from './components/item-details/item-images/add-
 import { AttachmentsComponent } from './components/item-details/attachments/attachments.component';
 import { NgxHorizontalTimelineModule } from 'ngx-horizontal-timeline';
 import { LinksComponent } from './components/item-details/links/links.component';
-import { NgImageSliderModule } from 'ng-image-slider';
 import { NoticeBeingCreatedComponent } from './components/administrator-home-page/notice-being-created/notice-being-created.component';
+import { LastMovementComponent } from './components/item-details/movements/last-movement/last-movement.component';
+import { NgImageSliderModule } from 'ng-image-slider';
+
 @NgModule({
   declarations: [
     AboutComponent,
@@ -77,6 +79,7 @@ import { NoticeBeingCreatedComponent } from './components/administrator-home-pag
     AttachmentsComponent,
     LinksComponent,
     NoticeBeingCreatedComponent,
+    LastMovementComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [

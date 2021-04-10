@@ -20,6 +20,15 @@
   padding: 0.25rem 0.8rem;
   margin: 0 0 0.5rem 0;
 }
+.type {
+  background-color: #00d6d4;
+  font-size: 12px;
+  margin-left: 15px;
+  padding: 9px 12px;
+  color: white;
+  border-radius: 25px;
+  text-align: center;
+}
 // toggle button
 .toggle-btn {
   background-color: lightgrey;
@@ -168,9 +177,9 @@ input:checked + .slider:before {
   padding-left: 300px;
 }
 .valid-btn {
-  background-color: #0080ff;
+  background-color: #00d6d4;
+  font-size: 10px;
   color: white;
-  margin-left: 10px;
 }
 .cancel-btn {
   background-color: #6c7681c9;

@@ -1,46 +1,64 @@
 <div class="form-bloc">
   <div class="form-group col-md-6">
     <label>Titre</label>
-    <input class="form-control" placeholder="titre" *ngIf="edit" />
+    <input class="form-control value" placeholder="titre" *ngIf="edit" />
     <div class="value" *ngIf="!edit">Titre de la sculpture</div>
   </div>
   <div class="form-group col-md-6">
     <label>Domaine</label>
-    <div class="autocomplete form-control" *ngIf="edit">
-      <ng-autocomplete
-        placeholder="Domaines"
+    <div class="autocomplete form-control value" *ngIf="edit">
+      <ng-multiselect-dropdown
+        class="select"
+        [placeholder]="'Choisir ses domaines'"
+        [settings]="dropdownSettings"
         [data]="domains"
-        [searchKeyword]="keyword"
-        (selected)="selectDomain($event)"
-        (inputChanged)="onChangeSearch($event)"
-        (inputFocused)="onFocused($event)"
-        [itemTemplate]="itemTemplate"
-        [notFoundTemplate]="notFoundTemplate"
+        (onSelect)="onDomainSelect($event)"
+        (onSelectAll)="onSelectAll($event)"
       >
-      </ng-autocomplete>
-      <ng-template #itemTemplate let-item>
-        <a [innerHTML]="item.name"></a>
-      </ng-template>
-      <ng-template #notFoundTemplate let-notFound>
-        <div [innerHTML]="notFound"></div>
-      </ng-template>
+      </ng-multiselect-dropdown>
+      <!--      <ng-autocomplete-->
+      <!--        placeholder="Domaines"-->
+      <!--        [data]="domains"-->
+      <!--        [searchKeyword]="keyword"-->
+      <!--        (selected)="selectDomain($event)"-->
+      <!--        (inputChanged)="onChangeSearch($event)"-->
+      <!--        (inputFocused)="onFocused($event)"-->
+      <!--        [itemTemplate]="itemTemplate"-->
+      <!--        [notFoundTemplate]="notFoundTemplate"-->
+      <!--      >-->
+      <!--      </ng-autocomplete>-->
+      <!--      <ng-template #itemTemplate let-item>-->
+      <!--        <a [innerHTML]="item.name"></a>-->
+      <!--      </ng-template>-->
+      <!--      <ng-template #notFoundTemplate let-notFound>-->
+      <!--        <div [innerHTML]="notFound"></div>-->
+      <!--      </ng-template>-->
     </div>
     <div class="value" *ngIf="!edit">Sculpture</div>
   </div>
   <div class="form-group col-md-6">
     <label class="-4">Dénomination</label>
-    <div class="autocomplete form-control" *ngIf="edit">
-      <ng-autocomplete
-        placeholder="Dénomination"
-        [data]="denomination"
-        [searchKeyword]="keyword"
-        (selected)="selectEvent($event)"
-        (inputChanged)="onChangeSearch($event)"
-        (inputFocused)="onFocused($event)"
-        [itemTemplate]="itemTemplate"
-        [notFoundTemplate]="notFoundTemplate"
+    <div class="autocomplete form-control value" *ngIf="edit">
+      <ng-multiselect-dropdown
+        class="select"
+        [placeholder]="'Choisir des dénominations'"
+        [settings]="dropdownSettings"
+        [data]="WorkOfArtService.denominations"
+        (onSelect)="onItemSelect($event)"
+        (onSelectAll)="onSelectAll($event)"
       >
-      </ng-autocomplete>
+      </ng-multiselect-dropdown>
+      <!--      <ng-autocomplete-->
+      <!--        placeholder="Dénomination"-->
+      <!--        [data]="denomination"-->
+      <!--        [searchKeyword]="keyword"-->
+      <!--        (selected)="selectEvent($event)"-->
+      <!--        (inputChanged)="onChangeSearch($event)"-->
+      <!--        (inputFocused)="onFocused($event)"-->
+      <!--        [itemTemplate]="itemTemplate"-->
+      <!--        [notFoundTemplate]="notFoundTemplate"-->
+      <!--      >-->
+      <!--      </ng-autocomplete>-->
       <ng-template #itemTemplate let-item>
         <a [innerHTML]="item.name"></a>
       </ng-template>
@@ -52,10 +70,11 @@
   </div>
   <div class="divider"></div>
   <div class="form-group col-md-12" style="max-width: 98%">
-    <label style="margin-right: -17%" class="col-md-3">Auteurs</label>
+    <label style="margin-right: -17%; width: 18%" class="">Auteurs</label>
+
     <ng-multiselect-dropdown
       *ngIf="edit"
-      class="select"
+      class="select col-md-4"
       [placeholder]="'--- Choisir des auteurs ---'"
       [settings]="dropdownSettings"
       [data]="WorkOfArtService.authors"
@@ -63,13 +82,17 @@
       (onSelectAll)="onSelectAll($event)"
     >
     </ng-multiselect-dropdown>
+    <div class="col-md-4 link value" *ngIf="edit">
+      <a href="">Ajouter un nouvel auteur</a>
+    </div>
+
     <div class="value" *ngIf="!edit">Auteur 1, Auteur 11</div>
   </div>
   <div class="col-md-8"></div>
   <div class="divider"></div>
   <div class="form-group col-md-6">
     <label class="col-md-3">Hauteur</label>
-    <div class="d-flex" *ngIf="edit">
+    <div class="d-flex value" *ngIf="edit">
       <input class="col-md-8 form-control" />
       <select class="col-md-4 form-control">
         <option class="active">cm</option>
@@ -86,7 +109,7 @@
     "
   >
     <label class="col-md-4">Largeur</label>
-    <div class="d-flex" *ngIf="edit">
+    <div class="d-flex value" *ngIf="edit">
       <input class="col-md-8 form-control" />
       <select class="col-md-4 form-control">
         <option class="active">cm</option>
@@ -95,9 +118,9 @@
     </div>
     <p class="value" *ngIf="!edit">85cm</p>
   </div>
-  <div class="form-group col-md-6" *ngIf="selectedDomain == ('Peinture' || 'Art graphique') || edit">
+  <div class="form-group col-md-6 value" *ngIf="selectedDomain == ('Peinture' || 'Art graphique') || edit">
     <label class="">Largeur Tot</label>
-    <div class="d-flex" *ngIf="edit">
+    <div class="d-flex value" *ngIf="edit">
       <input class="col-md-8 form-control" />
       <select class="col-md-4 form-control">
         <option class="active">cm</option>
@@ -108,7 +131,7 @@
   </div>
   <div class="form-group col-md-6" *ngIf="selectedDomain == ('Peinture' || 'Art graphique') || edit">
     <label class="">Hauteur Tot</label>
-    <div class="d-flex" *ngIf="edit">
+    <div class="d-flex value" *ngIf="edit">
       <input class="col-md-8 form-control" />
       <select class="col-md-4 form-control">
         <option class="active">cm</option>
@@ -119,9 +142,9 @@
   </div>
   <div class="form-group col-md-6" *ngIf="selectedDomain === ('Luminaire' || 'Pièce de musé' || 'Horlogerie') || edit">
     <label class="">Longueur</label>
-    <div class="d-flex" *ngIf="edit">
+    <div class="d-flex value" *ngIf="edit">
       <input class="col-md-8 form-control" />
-      <select class="col-md-4 form-control">
+      <select class="col-md-4 form-control value">
         <option class="active">cm</option>
         <option>m</option>
       </select>
@@ -130,7 +153,7 @@
   </div>
   <div class="form-group col-md-6">
     <label class="">Profondeur</label>
-    <div class="d-flex" *ngIf="edit">
+    <div class="d-flex value" *ngIf="edit">
       <input class="col-md-8 form-control" />
       <select class="col-md-4 form-control">
         <option class="active">cm</option>
@@ -141,7 +164,7 @@
   </div>
   <div class="form-group col-md-6">
     <label class="col-md-3">Poids</label>
-    <div class="d-flex" *ngIf="edit">
+    <div class="d-flex value" *ngIf="edit">
       <input class="col-md-8 form-control" />
       <select class="col-md-4 form-control">
         <option class="active">Kg</option>
@@ -151,7 +174,7 @@
   </div>
   <div class="form-group col-md-6" *ngIf="selectedDomain === ('Luminaire' || 'Pièce de musée') || edit">
     <label class="">Diamètre</label>
-    <div class="d-flex" *ngIf="edit">
+    <div class="d-flex value" *ngIf="edit">
       <input class="col-md-8 form-control" />
       <select class="col-md-4 form-control">
         <option class="active">cm</option>
@@ -164,7 +187,7 @@
   <div class="divider"></div>
   <div class="form-group col-md-6">
     <label class="">Epoque</label>
-    <div class="form-control autocomplete" *ngIf="edit">
+    <div class="form-control autocomplete value" *ngIf="edit">
       <ng-autocomplete
         placeholder="Epoque"
         [data]="denomination"
@@ -187,7 +210,7 @@
   </div>
   <div class="form-group col-md-6">
     <label class="">Style</label>
-    <div class="autocomplete form-control" *ngIf="edit">
+    <div class="autocomplete form-control value" *ngIf="edit">
       <ng-autocomplete
         placeholder="Style"
         [data]="denomination"
@@ -210,12 +233,12 @@
   </div>
   <div class="form-group col-md-6">
     <label class="">Date de création</label>
-    <input type="date" class="form-control" *ngIf="edit" />
+    <input type="date" class="form-control value" *ngIf="edit" />
     <div class="value" *ngIf="!edit">12/01/2020</div>
   </div>
   <div class="form-group col-md-6">
     <label class="">Matières <span class="mandatory" *ngIf="edit">*</span></label>
-    <div class="autocomplete form-control" *ngIf="edit">
+    <div class="autocomplete form-control value" *ngIf="edit">
       <ng-autocomplete
         placeholder="Matières"
         [data]="denomination"
