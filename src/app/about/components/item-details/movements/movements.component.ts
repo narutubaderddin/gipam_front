@@ -1,10 +1,19 @@
-/// <reference types="@types/leaflet" />
 import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
 import * as L from 'leaflet';
 import { MovementsService } from '@app/about/components/item-details/movements/movements.service';
 import { DatePipe } from '@angular/common';
 import { ColDef, ColumnApi, GridApi, ICellEditorParams } from 'ag-grid-community';
 import { ShowMovementDetailsRendererComponent } from '@shared/components/datatables/show-movement-details-renderer/show-movement-details-renderer.component';
+import { AllCommunityModules, Module } from '@ag-grid-community/all-modules';
+import '@ag-grid-community/all-modules/dist/styles/ag-grid.css';
+import '@ag-grid-community/all-modules/dist/styles/ag-theme-alpine.css';
+import { FullWidthCellRendererComponent as FullWidthCellRenderer } from '@app/@shared/components/datatables/full-width-cell-renderer/full-width-cell-renderer.component';
+import { HttpClient } from '@angular/common/http';
+import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
+import { MasterDetailModule } from '@ag-grid-enterprise/master-detail';
+import { MenuModule } from '@ag-grid-enterprise/menu';
+import { ColumnsToolPanelModule } from '@ag-grid-enterprise/column-tool-panel';
+
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
 const shadowUrl = 'assets/marker-shadow.png';
@@ -27,6 +36,9 @@ L.Marker.prototype.options.icon = L.icon({
 })
 export class MovementsComponent implements AfterViewInit {
   @Output() closeMvtHistory = new EventEmitter();
+
+  public rowData: any;
+
   map: any;
   showDetailsMvt: boolean = false;
   mvtActions: any = [
@@ -122,21 +134,43 @@ export class MovementsComponent implements AfterViewInit {
     resizable: true,
     flex: 1,
   };
+
+  countryCellRenderer(params: any) {
+    var flag = 'hello';
+    return 'hello';
+  }
+  isFullWidth(data: any) {
+    console.log(data);
+    return ['Peru', 'France', 'Italy'].indexOf(data.name) >= 0;
+  }
+  fullWidthCellRenderer = 'fullWidthCellRenderer';
+
+  frameworkComponents = { fullWidthCellRenderer: FullWidthCellRenderer };
+  getRowHeight = function (params: any) {
+    // if (this.isFullWidth(params.data)) {
+    return 100;
+    // }
+  };
+  isFullWidthCell = function (rowNode: any) {
+    console.log(rowNode.data);
+
+    return true;
+  };
+
+  detailCellRenderer = 'myDetailCellRenderer';
   gridApi: GridApi;
   gridColumnApi: ColumnApi;
   gridReady = false;
 
-  constructor(private movementsService: MovementsService, private datePipe: DatePipe) {}
+  constructor(private movementsService: MovementsService, private datePipe: DatePipe, private http: HttpClient) {}
 
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+  }
   ngAfterViewInit(): void {
     // this.initMap();
     // this.movementsService.makeCapitalMarkers(this.map);
-  }
-
-  onGridReady(params: ICellEditorParams) {
-    this.gridApi = params.api;
-    this.gridColumnApi = params.columnApi;
-    this.gridReady = true;
   }
 
   initMap(): void {
@@ -159,4 +193,151 @@ export class MovementsComponent implements AfterViewInit {
     this.closeMvtHistory.emit(this.showDetailsMvt);
     console.log(this.showDetailsMvt);
   }
+
+  rowData1 = [
+    {
+      name: 'Ireland',
+      continent: 'Europe',
+      language: 'English',
+      code: 'ie',
+      population: 4000000,
+      summary: 'Master Drinkers',
+    },
+    {
+      name: 'Spain',
+      continent: 'Europe',
+      language: 'Spanish',
+      code: 'es',
+      population: 4000000,
+      summary: 'Bull Fighters',
+    },
+    {
+      name: 'United Kingdom',
+      continent: 'Europe',
+      language: 'English',
+      code: 'gb',
+      population: 4000000,
+      summary: 'Center of the World',
+    },
+    {
+      name: 'France',
+      continent: 'Europe',
+      language: 'French',
+      code: 'fr',
+      population: 4000000,
+      summary: 'Best Lovers',
+    },
+    {
+      name: 'Germany',
+      continent: 'Europe',
+      language: 'German',
+      code: 'de',
+      population: 4000000,
+      summary: 'Always on Time',
+    },
+    {
+      name: 'Sweden',
+      continent: 'Europe',
+      language: 'Swedish',
+      code: 'se',
+      population: 4000000,
+      summary: 'Home of Vikings',
+    },
+    {
+      name: 'Norway',
+      continent: 'Europe',
+      language: 'Norwegian',
+      code: 'no',
+      population: 4000000,
+      summary: 'Best Vikings',
+    },
+    {
+      name: 'Italy',
+      continent: 'Europe',
+      language: 'Italian',
+      code: 'it',
+      population: 4000000,
+      summary: 'Pizza Pizza',
+    },
+    {
+      name: 'Greece',
+      continent: 'Europe',
+      language: 'Greek',
+      code: 'gr',
+      population: 4000000,
+      summary: 'Many Gods',
+    },
+    {
+      name: 'Iceland',
+      continent: 'Europe',
+      language: 'Icelandic',
+      code: 'is',
+      population: 4000000,
+      summary: 'Exploding Volcano',
+    },
+    {
+      name: 'Portugal',
+      continent: 'Europe',
+      language: 'Portuguese',
+      code: 'pt',
+      population: 4000000,
+      summary: 'Ship Builders',
+    },
+    {
+      name: 'Malta',
+      continent: 'Europe',
+      language: 'Maltese',
+      code: 'mt',
+      population: 4000000,
+      summary: 'Fishermen',
+    },
+    {
+      name: 'Brazil',
+      continent: 'South America',
+      language: 'Portuguese',
+      code: 'br',
+      population: 4000000,
+      summary: 'Best Footballers',
+    },
+    {
+      name: 'Argentina',
+      continent: 'South America',
+      language: 'Spanish',
+      code: 'ar',
+      population: 4000000,
+      summary: 'Beef Steaks',
+    },
+    {
+      name: 'Colombia',
+      continent: 'South America',
+      language: 'Spanish',
+      code: 'co',
+      population: 4000000,
+      summary: 'Wonderful Hospitality',
+    },
+    {
+      name: 'Peru',
+      continent: 'South America',
+      language: 'Spanish',
+      code: 'pe',
+      population: 4000000,
+      summary: 'Paddington Bear',
+    },
+    {
+      name: 'Venezuela',
+      continent: 'South America',
+      language: 'Spanish',
+      code: 've',
+      population: 4000000,
+      summary: 'Never Been, Dunno',
+    },
+    {
+      name: 'Uruguay',
+      continent: 'South America',
+      language: 'Spanish',
+      code: 'uy',
+      population: 4000000,
+      summary: 'Excellent Food',
+    },
+  ];
 }
