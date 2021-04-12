@@ -1,9 +1,5 @@
 <div class="breadcrumb">
   <a href="home-page">Accueil</a>
-  <a href="home-page" class="selected-item">
-    <i class="fas fa-chevron-right"></i>
-    Notices en cours de création
-  </a>
 </div>
 <div class="container-fluid">
   <div class="body d-flex">
@@ -12,7 +8,7 @@
         <div class="sidebar">
           <div class="card">
             <div class="card-body">
-              <ng-image-slider [images]="imageObject" #nav></ng-image-slider>
+              <ng-image-slider [images]="imageObject" [imageSize]="{ width: '20%', space: 5 }" #nav></ng-image-slider>
             </div>
           </div>
         </div>
@@ -31,7 +27,7 @@
               <div>
                 <b>35</b>
                 <span>
-                  <a href="work-of-arts-list" class="flex-column">
+                  <a href="being-created-notices" class="flex-column">
                     <span class="title">Oeuvres</span>
                     <span class="title">en cours de création</span>
                   </a>
