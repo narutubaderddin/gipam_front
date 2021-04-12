@@ -45,6 +45,12 @@ import { NgxHorizontalTimelineModule } from 'ngx-horizontal-timeline';
 import { LinksComponent } from './components/item-details/links/links.component';
 import { LastMovementComponent } from './components/item-details/movements/last-movement/last-movement.component';
 import { NgImageSliderModule } from 'ng-image-slider';
+import { NgWizardModule, NgWizardConfig, THEME } from 'ng-wizard';
+import { FullWidthCellRendererComponent as FullWidthCellRenderer } from '@app/@shared/components/datatables/full-width-cell-renderer/full-width-cell-renderer.component';
+
+const ngWizardConfig: NgWizardConfig = {
+  theme: THEME.default,
+};
 
 @NgModule({
   declarations: [
@@ -84,12 +90,13 @@ import { NgImageSliderModule } from 'ng-image-slider';
     CommonModule,
     AboutRoutingModule,
     SharedModule,
+    NgWizardModule.forRoot(ngWizardConfig),
     ReactiveFormsModule,
     FormsModule,
     NgMultiSelectDropDownModule,
     NgbCarouselModule,
     NgbModule,
-    AgGridModule.withComponents([]),
+    AgGridModule.withComponents([FullWidthCellRenderer]),
     AutocompleteLibModule,
     TreeviewModule.forRoot(),
     NgxSliderModule,

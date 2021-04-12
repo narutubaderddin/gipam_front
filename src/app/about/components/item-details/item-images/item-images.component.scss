@@ -60,6 +60,17 @@
         color: #838a90;
       }
     }
+    .form-group {
+      label {
+        padding: 0;
+        font-size: 12px;
+        font-weight: 600;
+        color: #838a90;
+      }
+      .form-control {
+        //font-size:12px;
+      }
+    }
     button {
       align-self: flex-end;
     }
