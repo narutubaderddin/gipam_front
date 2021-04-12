@@ -47,11 +47,11 @@ import { LastMovementComponent } from './components/item-details/movements/last-
 import { NgImageSliderModule } from 'ng-image-slider';
 import { NgWizardModule, NgWizardConfig, THEME } from 'ng-wizard';
 import { FullWidthCellRendererComponent as FullWidthCellRenderer } from '@app/@shared/components/datatables/full-width-cell-renderer/full-width-cell-renderer.component';
+import { NoticeBeingCreatedComponent } from './components/administrator-home-page/notice-being-created/notice-being-created.component';
 
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default,
 };
-
 @NgModule({
   declarations: [
     AboutComponent,
@@ -84,6 +84,7 @@ const ngWizardConfig: NgWizardConfig = {
     AttachmentsComponent,
     LinksComponent,
     LastMovementComponent,
+    NoticeBeingCreatedComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [

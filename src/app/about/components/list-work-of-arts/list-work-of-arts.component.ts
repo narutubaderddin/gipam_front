@@ -156,16 +156,8 @@ export class ListWorkOfArtsComponent implements OnInit {
       filter: false,
       width: 110,
     },
-    {
-      headerName: 'Actions',
-      field: 'action',
-      cellRenderer: 'gridActionRenderer',
-      sortable: false,
-      filter: false,
-      width: 130,
-    },
   ];
-  pinnedCols: string[] = ['action'];
+  pinnedCols: string[] = [];
   leftPinnedCols: string[] = ['id'];
   selectedRowCount = 0;
   gridApi: GridApi;
