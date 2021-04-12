@@ -21,4 +21,7 @@ export class AboutComponent implements OnInit {
   onSearchClick() {
     this.router.navigate(['work-of-arts-list']);
   }
+  createNotice() {
+    this.router.navigate(['add-property-remarquer']);
+  }
 }

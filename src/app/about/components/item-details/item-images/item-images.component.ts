@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgbModal, NgbModalOptions, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { AddImgModalComponent } from '@app/about/components/item-details/item-images/add-img-modal/add-img-modal.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -9,18 +9,20 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./item-images.component.scss'],
 })
 export class ItemImagesComponent implements OnInit {
+  @Input() add = false;
   slide = 1;
   editType = false;
   photographyForm: FormGroup;
   types = ['Numérique', 'type 2', 'type 3'];
 
-  constructor(private modalService: NgbModal, private fb: FormBuilder) {}
+  constructor(private modalService: NgbModal, public fb: FormBuilder) {}
   ngOnInit(): void {
     this.initForm();
+    console.log(this.add);
   }
   initForm() {
     this.photographyForm = this.fb.group({
-      date: ['', [Validators.required]],
+      photographyDate: ['', [Validators.required]],
       photography: ['', [Validators.required]],
       photographyType: ['', [Validators.required]],
     });
