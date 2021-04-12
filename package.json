@@ -22,6 +22,7 @@
   "dependencies": {
     "@ag-grid-community/all-modules": "^23.2.0",
     "@ag-grid-community/angular": "^25.1.0",
+    "@ag-grid-community/core": "^25.1.0",
     "@ag-grid-enterprise/all-modules": "^23.2.0",
     "@angular-slider/ngx-slider": "^2.0.3",
     "@angular/animations": "^10.1.4",
