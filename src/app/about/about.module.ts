@@ -48,6 +48,8 @@ import { NgImageSliderModule } from 'ng-image-slider';
 import { NgWizardModule, NgWizardConfig, THEME } from 'ng-wizard';
 import { FullWidthCellRendererComponent as FullWidthCellRenderer } from '@app/@shared/components/datatables/full-width-cell-renderer/full-width-cell-renderer.component';
 import { NoticeBeingCreatedComponent } from './components/administrator-home-page/notice-being-created/notice-being-created.component';
+import { NgFileDragDropModule } from 'ng-file-drag-drop';
+import { HypertextLinksComponent } from './components/item-details/links/hypertext-links/hypertext-links.component';
 
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default,
@@ -85,6 +87,7 @@ const ngWizardConfig: NgWizardConfig = {
     LinksComponent,
     LastMovementComponent,
     NoticeBeingCreatedComponent,
+    HypertextLinksComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
@@ -92,6 +95,7 @@ const ngWizardConfig: NgWizardConfig = {
     AboutRoutingModule,
     SharedModule,
     NgWizardModule.forRoot(ngWizardConfig),
+    NgFileDragDropModule,
     ReactiveFormsModule,
     FormsModule,
     NgMultiSelectDropDownModule,

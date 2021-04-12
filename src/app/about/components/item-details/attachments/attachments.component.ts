@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ColDef, ColumnApi, GridApi } from 'ag-grid-community';
 import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 
@@ -8,7 +8,14 @@ import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./attachments.component.scss'],
 })
 export class AttachmentsComponent implements OnInit {
+  @Input() add = false;
   slide = 1;
+  types = ['type 1', 'type 2', 'type 3'];
+
+  dragDropConfig = {
+    showList: true,
+    showProgress: true,
+  };
 
   columnDefs: ColDef[] = [
     {
@@ -67,6 +74,9 @@ export class AttachmentsComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
+  getUploadedFiles(files: any) {
+    console.log('My uploaded files', files);
+  }
   onChange(event: NgbSlideEvent) {
     switch (event.current) {
       case 'slide1':

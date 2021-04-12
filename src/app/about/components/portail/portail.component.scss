@@ -685,28 +685,6 @@ img {
   line-height: 1;
 }
 
-input.search-query {
-  padding-left: 26px;
-}
-
-form.form-search {
-  position: relative;
-  width: 100%;
-}
-
-form.form-search:before {
-  content: "";
-  display: block;
-  width: 14px;
-  height: 14px;
-  background-image: url(http://getbootstrap.com/2.3.2/assets/img/glyphicons-halflings.png);
-  background-position: -48px 0;
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  opacity: 0.5;
-  z-index: 1000;
-}
 ::ng-deep .tooltip-inner {
   max-width: fit-content;
   //text-align: left;
@@ -913,7 +891,7 @@ form.form-search:before {
   strong:after {
     content: "";
     flex: 1 1;
-    border-bottom: 2px dotted #000;
+    border-bottom: 0.1em solid #babfc7;
     margin: auto auto auto 1%;
   }
 }
@@ -921,4 +899,31 @@ form.form-search:before {
 .icon-delete {
   color: darkred;
   margin-top: -0.9%;
+}
+
+.search {
+  width: 100%;
+  position: relative;
+  display: flex;
+  input {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    height: 50px !important;
+    &:focus,
+    &:active {
+      box-shadow: none;
+    }
+  }
+}
+
+.searchButton {
+  height: 50px;
+  border: 1px solid #00d6d4;
+  background: #00d6d4;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  font-size: 20px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
 }

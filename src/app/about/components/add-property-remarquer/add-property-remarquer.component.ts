@@ -20,14 +20,15 @@ export class AddPropertyRemarquerComponent implements OnInit {
 
   config: NgWizardConfig = {
     selected: 0,
-    theme: THEME.circles,
+    theme: THEME.dots,
+    lang: { next: 'Suivant', previous: 'Précédent' },
     toolbarSettings: {
       toolbarExtraButtons: [
         {
-          text: 'Finish',
+          text: 'Quitter',
           class: 'btn btn-info',
           event: () => {
-            alert('Finished!!!');
+            alert('veuillez enregistrer');
           },
         },
       ],

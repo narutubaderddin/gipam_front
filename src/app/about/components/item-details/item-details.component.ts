@@ -12,6 +12,7 @@ export class ItemDetailsComponent implements OnInit {
   @ViewChildren('accordionSectionDOM', { read: ElementRef }) accordionsDOM: QueryList<ElementRef>;
   @ViewChild('accordionDOM') public parentRef: ElementRef<HTMLElement>;
   @ViewChild('stickyMenu') menuElement: ElementRef;
+
   elementPosition: any;
   // @Input() collapseSideNav: boolean;
   type: string = 'depot';
