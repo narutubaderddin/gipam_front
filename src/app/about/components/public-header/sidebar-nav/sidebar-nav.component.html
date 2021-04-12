@@ -38,6 +38,31 @@
           </a>
         </div>
       </li>
+
+      <li class="right-header list main_nav_list_item recolement" *ngIf="isAuthentiticated" (click)="goToWorkOfArts()">
+        <div class="dropdown nav-menu" [class.nav-active]="menu == 2">
+          <a class="pl-3 pr-3">
+            <i class="fa fa-tasks" style="font-size: 18px"></i>
+            <span style="margin-left: 5px">Récolements</span>
+          </a>
+        </div>
+      </li>
+      <li class="right-header list main_nav_list_item alerts" *ngIf="isAuthentiticated" (click)="goToWorkOfArts()">
+        <div class="dropdown nav-menu" [class.nav-active]="menu == 2">
+          <a class="pl-3 pr-3">
+            <i class="fa fa-exclamation-triangle" style="font-size: 18px"></i>
+            <span style="margin-left: 5px">Alertes</span>
+          </a>
+        </div>
+      </li>
+      <li class="right-header list main_nav_list_item demande" *ngIf="isAuthentiticated" (click)="goToWorkOfArts()">
+        <div class="dropdown nav-menu" [class.nav-active]="menu == 2">
+          <a class="pl-3 pr-3">
+            <i class="fas fa-server" style="font-size: 18px"></i>
+            <span style="margin-left: 5px">Demandes</span>
+          </a>
+        </div>
+      </li>
       <li class="right-header list main_nav_list_item rapport" *ngIf="isAuthentiticated">
         <div class="dropdown nav-menu" [class.nav-active]="menu == 3">
           <a
