@@ -880,8 +880,45 @@ form.form-search:before {
     background-color: #f44336;
     border-color: #f44336;
   }
+
+  textarea {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    font-size: 12px;
+  }
+  select {
+    background: none !important;
+  }
 }
 .btn.btn-out {
   outline: 1px solid #fff;
   outline-offset: -5px;
+}
+.section-name {
+  strong {
+    display: flex;
+    flex-direction: row;
+  }
+
+  strong:after {
+    content: "";
+    flex: 1 1;
+    border-bottom: 2px dotted #000;
+    margin: auto auto auto 1%;
+  }
+}
+
+.icon-delete {
+  color: darkred;
+  margin-top: -0.9%;
 }
