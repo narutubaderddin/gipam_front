@@ -64,10 +64,15 @@
   p {
     color: white;
   }
+  .label-detail {
+    display: contents !important;
+    font-size: 20px;
+  }
   .stati {
     background: #fff;
-    height: 7em;
+    //height: 7em;
     padding: 1em;
+    height: 100%;
     margin: 0.5em 6px;
     transition: margin 0.5s ease, box-shadow 0.5s ease;
     box-shadow: 0px 0.2em 0.4em rgb(0, 0, 0, 0.8);
@@ -98,6 +103,10 @@
   }
   .stati.bg-turquoise {
     background: #407ca8;
+    color: white;
+  }
+  .stati.bg-grey {
+    background: #314451;
     color: white;
   }
   .stati.bg-purple {
