@@ -1,6 +1,9 @@
 h6 {
   font-size: 14px;
 }
+input::placeholder {
+  font-size: 11px;
+}
 .container-fluid {
   .body {
     .add-export-bloc {
