@@ -10,9 +10,17 @@ export class DynamicComponent implements OnInit {
   @Output() dynamic = new EventEmitter();
   page: any = 2;
 
+  mvtHistory: boolean = false;
+
   constructor() {}
 
   ngOnInit(): void {}
+
+  f1(e: any) {
+    this.mvtHistory = e;
+
+    console.log('mvtHistory', this.mvtHistory);
+  }
 
   changeState() {
     this.dynamicState = !this.dynamicState;

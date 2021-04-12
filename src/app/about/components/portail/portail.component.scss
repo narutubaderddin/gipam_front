@@ -76,7 +76,6 @@ a.float:hover + div.label-container {
   .form-select {
     border: none;
     background-color: transparent;
-    height: 27px;
     line-height: 0px;
     font-size: 12px;
     cursor: pointer;
@@ -97,7 +96,7 @@ a.float:hover + div.label-container {
   min-height: 70px !important;
   margin-top: 15px;
   width: 98%;
-  float: right;
+  /*float: right;*/
   background-color: transparent;
   border-right: transparent;
 }
@@ -723,4 +722,166 @@ form.form-search:before {
 .main {
   transition: margin-left 0.5s;
   padding: 20px;
+}
+.search-header {
+  position: sticky;
+  top: 0;
+  z-index: 49;
+  background: #ffffff;
+  padding: 1% 0 1% 0;
+}
+.cancel-icon {
+  position: absolute;
+  bottom: 25%;
+}
+.panier {
+  cursor: pointer;
+  .nbr-panier {
+    background-color: #00d6d4;
+    border-radius: 9px;
+    color: white;
+    display: inline-block;
+    line-height: 0.7;
+    font-weight: 550;
+    margin-left: 0px;
+    min-width: 15px;
+    opacity: 1;
+    padding: 4px 4px;
+    text-align: center;
+    transition: background-color 0.2s cubic-bezier(0.39, 0.575, 0.565, 1);
+    vertical-align: middle;
+    margin-bottom: 35%;
+  }
+}
+.cancel-btn {
+  border: 1px solid transparent;
+  border-radius: 100px;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  line-height: 1;
+  user-select: none;
+}
+
+.confirm-btn {
+  background: #0057ff;
+  color: #fff !important;
+  border: 1px solid transparent;
+  border-radius: 100px;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  line-height: 1;
+  transition-property: color, background;
+  user-select: none;
+}
+.shop-container {
+  @import url("https://fonts.googleapis.com/css?family=Open+Sans&display=swap");
+
+  body {
+    background-color: #eeeeee;
+    font-family: "Open Sans", serif;
+    font-size: 14px;
+  }
+
+  .container-fluid {
+    margin-top: 70px;
+  }
+
+  .card-body {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 1.4rem;
+  }
+
+  .img-sm {
+    width: 80px;
+    height: 80px;
+  }
+
+  .itemside .info {
+    padding-left: 15px;
+    padding-right: 7px;
+  }
+
+  .table-shopping-cart .price-wrap {
+    line-height: 1.2;
+  }
+
+  .table-shopping-cart .price {
+    font-weight: bold;
+    margin-right: 5px;
+    display: block;
+  }
+
+  .text-muted {
+    color: #969696 !important;
+  }
+
+  a {
+    text-decoration: none !important;
+  }
+
+  .card {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0px;
+  }
+
+  .itemside {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+  }
+
+  .dlist-align {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+
+  [class*="dlist-"] {
+    margin-bottom: 5px;
+  }
+
+  .coupon {
+    border-radius: 1px;
+  }
+
+  .btn-main {
+    border-radius: 2px;
+    text-transform: capitalize;
+    font-size: 15px;
+    padding: 10px 19px;
+    cursor: pointer;
+    color: #fff;
+    width: 100%;
+  }
+
+  .btn-light {
+    color: #ffffff;
+    background-color: #f44336;
+    border-color: #f8f9fa;
+    font-size: 12px;
+  }
+
+  .btn-light:hover {
+    color: #ffffff;
+    background-color: #f44336;
+    border-color: #f44336;
+  }
+}
+.btn.btn-out {
+  outline: 1px solid #fff;
+  outline-offset: -5px;
 }

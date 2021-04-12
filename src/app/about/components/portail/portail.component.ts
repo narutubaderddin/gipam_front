@@ -4,6 +4,7 @@ import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { TreeviewConfig } from 'ngx-treeview';
 import { LabelType, Options } from '@angular-slider/ngx-slider';
 import { FormControl, FormGroup } from '@angular/forms';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-portail',
@@ -16,6 +17,7 @@ export class PortailComponent implements OnInit {
   openType = false;
   filter = false;
   keyword = 'name';
+  selectedOeuvre: any[] = [];
   domains = this.WorkOfArtService.getDomains();
 
   dropdownEnabled = true;
@@ -28,14 +30,14 @@ export class PortailComponent implements OnInit {
     decoupleChildFromParent: false,
     // maxHeight: 400,
   });
-  value: number = 40;
-  highValue: number = 60;
-  value1: number = 40;
-  highValue1: number = 60;
+  value: number = 0;
+  highValue: number = 0;
+  value1: number = 0;
+  highValue1: number = 0;
   value2: number = 40;
   highValue2: number = 60;
-  value3: number = 40;
-  highValue3: number = 60;
+  value3: number = 0;
+  highValue3: number = 0;
   isCollapsed = true;
   optionsCm: Options = {
     floor: 0,
@@ -77,7 +79,7 @@ export class PortailComponent implements OnInit {
   firstSearchDrop = false;
   showForm1End = false;
 
-  constructor(private WorkOfArtService: WorkOfArtService, private router: Router) {}
+  constructor(private WorkOfArtService: WorkOfArtService, private router: Router, private modalService: NgbModal) {}
 
   ngOnInit(): void {
     this.oeuvreToShow = this.oeuvres;
@@ -144,5 +146,46 @@ export class PortailComponent implements OnInit {
   showInventoryRange = false;
   onCheckboxChange(event: any) {
     this.showInventoryRange = event.target.checked;
+  }
+  resetWeight(id: string) {
+    this.highValue3 = 0;
+    this.value3 = 0;
+    document.getElementById(id).click();
+  }
+  resetHeight(id: string) {
+    this.highValue = 0;
+    this.value = 0;
+    document.getElementById(id).click();
+  }
+  resetWidth(id: string) {
+    this.highValue1 = 0;
+    this.value1 = 0;
+    document.getElementById(id).click();
+  }
+
+  closeResult = '';
+
+  open(content: any) {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then(
+      (result) => {
+        this.closeResult = `Closed with: ${result}`;
+      },
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      }
+    );
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+  addToBasket(item: any) {
+    this.selectedOeuvre.push(item);
   }
 }
