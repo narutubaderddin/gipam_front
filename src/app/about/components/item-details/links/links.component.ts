@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ColDef, ColumnApi, GridApi } from 'ag-grid-community';
 
 @Component({
@@ -7,6 +7,9 @@ import { ColDef, ColumnApi, GridApi } from 'ag-grid-community';
   styleUrls: ['./links.component.scss'],
 })
 export class LinksComponent implements OnInit {
+  @Input() add: false;
+  types = [' 125', ' 222', ' 342'];
+
   columnDefs: ColDef[] = [
     {
       headerName: 'pièce jointes',

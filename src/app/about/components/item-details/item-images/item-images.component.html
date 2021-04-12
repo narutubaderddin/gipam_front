@@ -3,6 +3,7 @@
 
   <!--  </div>-->
   <div class="col-12 content" [formGroup]="photographyForm">
+    <h5 class="col-md-12 p-0" *ngIf="add">Ajouter photographies</h5>
     <div class="d-flex carousel-container mb-4" *ngIf="!add">
       <div class="d-flex justify-content-center flex-column">
         <div class="pictures-list">
@@ -62,7 +63,7 @@
         <div class="form-group col-md-12" *ngIf="add">
           <label class="col-5">Photographie</label>
           <div class="input-group input-group-sm upload-file">
-            <input class="form-control" [hidden]="true" type="file" accept=".yml" #fileSelect />
+            <input class="form-control" [hidden]="true" type="file" accept=".png .jpg" #fileSelect />
             <input readonly class="form-control" placeholder="Select file..." />
             <div class="input-group-prepend">
               <span class="input-group-text" (click)="fileSelect.click()" translate> Browse </span>
@@ -94,7 +95,7 @@
         </div>
         <p>
           <strong class="col-5" *ngIf="!add">Type </strong>
-          <span class="col-6" *ngIf="!editType && !add">Numérique</span>
+          <span class="col-6" *ngIf="!editType && !add">Identification</span>
           <i class="far fa-edit col-1" (click)="editType = !editType" *ngIf="!editType && !add"></i>
         </p>
 

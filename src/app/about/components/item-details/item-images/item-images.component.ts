@@ -13,7 +13,7 @@ export class ItemImagesComponent implements OnInit {
   slide = 1;
   editType = false;
   photographyForm: FormGroup;
-  types = ['Numérique', 'type 2', 'type 3'];
+  types = ['Identification', 'Autre vue', 'Détail', 'Etat', 'Ancien cliché'];
 
   constructor(private modalService: NgbModal, public fb: FormBuilder) {}
   ngOnInit(): void {

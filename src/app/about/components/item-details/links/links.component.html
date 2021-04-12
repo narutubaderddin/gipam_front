@@ -1,24 +1,77 @@
 <div class="col-md-12">
-  <h5>Liens avec oeuvres</h5>
+  <div class="col-md-12">
+    <h5>Liens avec oeuvres</h5>
 
-  <ol class="rounded-list">
-    <li>Fait partie de:</li>
+    <ol class="rounded-list" *ngIf="!add">
+      <li>Fait partie de:</li>
+      <li>
+        <span><a href="#">149</a> | 22/01/2020 | Jean</span>
+      </li>
+      <li>
+        Composé de :
+        <ol>
+          <li>
+            <span><a href="#">149</a> | 22/01/2020 | Jean</span>
+          </li>
+          <li>
+            <span><a href="#">149</a> | 22/01/2020 | Jean</span>
+          </li>
+          <li>
+            <span><a href="#">149</a> | 22/01/2020 | Jean</span>
+          </li>
+        </ol>
+      </li>
+    </ol>
+  </div>
+
+  <ol class="rounded-list" *ngIf="add">
+    <li class="mb-2">Fait partie de:</li>
     <li>
-      <span><a href="#">149</a> | 22/01/2020 | Jean</span>
+      <select formControlName="photographyType" style="font-size: 12px" class="col-12 p-1">
+        <option value="">--Choisissez Référence--</option>
+        <option *ngFor="let type of types" [value]="type">{{ type }}</option>
+      </select>
     </li>
-    <li>
+
+    <li class="mt-2">
       Composé de :
-      <ol>
+      <ol class="mt-2">
+        <li></li>
         <li>
-          <span><a href="#">149</a> | 22/01/2020 | Jean</span>
-        </li>
-        <li>
-          <span><a href="#">149</a> | 22/01/2020 | Jean</span>
-        </li>
-        <li>
-          <span><a href="#">149</a> | 22/01/2020 | Jean</span>
+          <select formControlName="photographyType" style="font-size: 12px" class="col-12 p-1">
+            <option value="">--Choisissez Référence--</option>
+            <option *ngFor="let type of types" [value]="type">{{ type }}</option>
+          </select>
         </li>
       </ol>
     </li>
   </ol>
+
+  <!--    <label class="col-md-2">Fait partie de:</label>-->
+  <!--    -->
+  <!--    <div class="autocomplete col-md-9">-->
+  <!--      <div class="autocomplete col-md-12">-->
+  <!--        <select formControlName="photographyType" style="font-size: 12px" class="col-12 p-1">-->
+  <!--          <option value="">&#45;&#45;Choisissez un type&#45;&#45;</option>-->
+  <!--          <option *ngFor="let type of types" [value]="type">{{ type }}</option>-->
+  <!--        </select>-->
+  <!--        <ng-template #itemTemplate let-item>-->
+  <!--          <a [innerHTML]="item.name"></a>-->
+  <!--        </ng-template>-->
+  <!--        <ng-template #notFoundTemplate let-notFound>-->
+  <!--          <div [innerHTML]="notFound"></div>-->
+  <!--        </ng-template>-->
+  <!--      </div>-->
+
+  <!--      <ng-template #itemTemplate let-item>-->
+  <!--        <a [innerHTML]="item.name"></a>-->
+  <!--      </ng-template>-->
+  <!--      <ng-template #notFoundTemplate let-notFound>-->
+  <!--        <div [innerHTML]="notFound"></div>-->
+  <!--      </ng-template>-->
+  <!--    </div>-->
 </div>
+<!--  <div class="col-md-2 align-self-end" *ngIf=" add">-->
+<!--    <i class="fas fa-trash-alt delete"></i>-->
+<!--    <i class="add ml-3 mt-1 fas fa-plus"></i>-->
+<!--  </div>-->
