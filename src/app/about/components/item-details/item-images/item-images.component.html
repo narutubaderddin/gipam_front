@@ -2,8 +2,9 @@
   <!--  <div class="col-12" style="display: flex; flex-direction: row-reverse; margin-bottom: 20px">-->
 
   <!--  </div>-->
-  <div class="col-12 content">
-    <div class="d-flex carousel-container mb-4">
+  <div class="col-12 content" [formGroup]="photographyForm">
+    <h5 class="col-md-12 p-0" *ngIf="add">Ajouter photographies</h5>
+    <div class="d-flex carousel-container mb-4" *ngIf="!add">
       <div class="d-flex justify-content-center flex-column">
         <div class="pictures-list">
           <img src="assets/images/573.jpg" alt="" />
@@ -59,17 +60,45 @@
 
     <div class="more-details mt-2 pt-4">
       <div class="" *ngIf="slide == 1">
-        <p><strong class="col-5">Date d'ajout </strong> <span class="col-7">12/02/2019</span></p>
-        <p>
-          <strong class="col-5">Type </strong>
-          <span class="col-6" *ngIf="!editType">Numérique</span>
-
-          <!--          <select class="form-control col-6" formControlName="photographyType">-->
-          <!--            <option value="">&#45;&#45;Choisissez un type de photographie&#45;&#45;</option>-->
-          <!--            <option *ngFor="let type of types" [value]="type">{{ type }}</option>-->
-          <!--          </select>-->
-          <i class="far fa-edit col-1" (click)="editType = !editType" *ngIf="!editType"></i>
+        <div class="form-group col-md-12" *ngIf="add">
+          <label class="col-5">Photographie</label>
+          <div class="input-group input-group-sm upload-file">
+            <input class="form-control" [hidden]="true" type="file" accept=".png .jpg" #fileSelect />
+            <input readonly class="form-control" placeholder="Select file..." />
+            <div class="input-group-prepend">
+              <span class="input-group-text" (click)="fileSelect.click()" translate> Browse </span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-md-12" *ngIf="add">
+          <label class="col-md-3">Date</label>
+          <input type="date" class="form-control col-md-12" />
+        </div>
+        <p *ngIf="!add">
+          <strong class="col-5">Date d'ajout </strong>
+          <span class="col-7" *ngIf="!add">12/02/2019</span>
         </p>
+        <div class="form-group col-md-12" *ngIf="add">
+          <label class="col-md-3">Type</label>
+          <div class="autocomplete col-md-12">
+            <select formControlName="photographyType" style="font-size: 12px" class="col-12 p-1">
+              <option value="">--Choisissez un type de photographie--</option>
+              <option *ngFor="let type of types" [value]="type">{{ type }}</option>
+            </select>
+            <ng-template #itemTemplate let-item>
+              <a [innerHTML]="item.name"></a>
+            </ng-template>
+            <ng-template #notFoundTemplate let-notFound>
+              <div [innerHTML]="notFound"></div>
+            </ng-template>
+          </div>
+        </div>
+        <p>
+          <strong class="col-5" *ngIf="!add">Type </strong>
+          <span class="col-6" *ngIf="!editType && !add">Identification</span>
+          <i class="far fa-edit col-1" (click)="editType = !editType" *ngIf="!editType && !add"></i>
+        </p>
+
         <div class="col-12 pr-0" *ngIf="editType">
           <select formControlName="photographyType" style="font-size: 12px" class="col-12 p-1">
             <option value="">--Choisissez un type de photographie--</option>
@@ -94,7 +123,7 @@
         <p><strong>Date d'ajout </strong> <span>12/09/2019</span></p>
         <p><strong>Type </strong> <span>Numérique</span><i class="far fa-edit"></i></p>
       </div>
-      <button class="btn add-action mb-2" (click)="addImg()">
+      <button class="btn add-action mb-2" (click)="addImg()" *ngIf="!add">
         <i class="fas fa-plus"></i>
         Ajouter une photographie
       </button>

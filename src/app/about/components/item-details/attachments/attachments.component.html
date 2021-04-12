@@ -12,7 +12,11 @@
     <h5>Pièces jointes</h5>
   </div>
   <div class="d-flex flex-column justify-content-between">
-    <ngb-carousel *ngIf="attachments" class="carousel mb-2 carousel-attachments" [showNavigationIndicators]="false">
+    <ngb-carousel
+      *ngIf="attachments && !add"
+      class="carousel mb-2 carousel-attachments"
+      [showNavigationIndicators]="false"
+    >
       <ng-template ngbSlide id="slide1" style="">
         <div class="d-flex justify-content-md-between">
           <div class="col-xs-3 col-md-3 col-lg-3 col-sm-6 p-0" *ngFor="let file of attachments; index as i">
@@ -24,7 +28,7 @@
 
               <div class="card-body">
                 <p class="card-text">{{ file.date }}</p>
-                <p class="card-text">{{ file.type }}</p>
+                <!--                <p class="card-text">{{ file.type }}</p>-->
                 <p class="card-text">{{ file.creator }}</p>
               </div>
             </div>
@@ -42,7 +46,7 @@
 
               <div class="card-body">
                 <p class="card-text">{{ file.date }}</p>
-                <p class="card-text">{{ file.type }}</p>
+                <!--                <p class="card-text">{{ file.type }}</p>-->
                 <p class="card-text">{{ file.creator }}</p>
               </div>
             </div>
@@ -51,11 +55,85 @@
       </ng-template>
     </ngb-carousel>
 
-    <div class="d-flex align-self-end">
+    <div class="d-flex align-self-end" *ngIf="!add">
       <button class="btn btn-primary add-attachments">
         <div class="add-item"><i class="fas fa-plus-circle"></i></div>
         <span class="ml-2">Ajouter Pièces jointes</span>
       </button>
     </div>
   </div>
+
+  <!--  <ng-file-drag-drop (uploadedFiles)="getUploadedFiles($event)" [fileConfig]="dragDropConfig"> </ng-file-drag-drop>-->
+  <ngb-carousel
+    *ngIf="add"
+    class="carousel mb-2 carousel-attachments"
+    [showNavigationIndicators]="false"
+    [showNavigationArrows]="false"
+  >
+    <ng-template ngbSlide id="slide" style="">
+      <div class="d-flex justify-content-md-between">
+        <div class="col-xs-3 col-md-3 col-lg-3 col-sm-6 p-0">
+          <div class="card">
+            <div class="d-flex justify-content-center card-header">
+              <h4 class="card-header mr-2">Ajouter</h4>
+              <i class="fas fa-file-download"></i>
+            </div>
+
+            <div class="card-body p-0">
+              <ng-file-drag-drop
+                (uploadedFiles)="getUploadedFiles($event)"
+                [fileConfig]="dragDropConfig"
+                class="upload-file"
+              >
+              </ng-file-drag-drop>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </ngb-carousel>
+  <!--  <div class="form-bloc d-flex flex-column" *ngIf=" add">-->
+  <!--    <div class="form-group d-flex col-md-12">-->
+  <!--      <label class="col-md-2">Pièces jointes</label>-->
+  <!--      <div class="input-group input-group-sm upload-file col-md-9 p-0">-->
+  <!--        <input class="form-control" [hidden]="true" type="file" accept=".yml" #fileSelect />-->
+  <!--        <input readonly class="form-control" placeholder="Select file..." />-->
+  <!--        <div class="input-group-prepend">-->
+  <!--          <span class="input-group-text" (click)="fileSelect.click()" translate> Browse </span>-->
+  <!--        </div>-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--&lt;!&ndash;    <div class="form-group d-flex col-md-12">&ndash;&gt;-->
+  <!--&lt;!&ndash;      <label class="col-md-2">Date</label>&ndash;&gt;-->
+  <!--&lt;!&ndash;      <input type="date" class="form-control col-md-9" />&ndash;&gt;-->
+  <!--&lt;!&ndash;    </div>&ndash;&gt;-->
+  <!--    <div class="form-group d-flex col-md-12">-->
+  <!--      <label class="col-md-2">Type</label>-->
+  <!--      <div class="autocomplete col-md-9">-->
+  <!--        <div class="autocomplete col-md-12">-->
+  <!--          <select formControlName="photographyType" style="font-size: 12px" class="col-12 p-1">-->
+  <!--            <option value="">&#45;&#45;Choisissez un type&#45;&#45;</option>-->
+  <!--            <option *ngFor="let type of types" [value]="type">{{ type }}</option>-->
+  <!--          </select>-->
+  <!--          <ng-template #itemTemplate let-item>-->
+  <!--            <a [innerHTML]="item.name"></a>-->
+  <!--          </ng-template>-->
+  <!--          <ng-template #notFoundTemplate let-notFound>-->
+  <!--            <div [innerHTML]="notFound"></div>-->
+  <!--          </ng-template>-->
+  <!--        </div>-->
+
+  <!--        <ng-template #itemTemplate let-item>-->
+  <!--          <a [innerHTML]="item.name"></a>-->
+  <!--        </ng-template>-->
+  <!--        <ng-template #notFoundTemplate let-notFound>-->
+  <!--          <div [innerHTML]="notFound"></div>-->
+  <!--        </ng-template>-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--    <div class="col-md-2 align-self-end">-->
+  <!--      <i class="fas fa-trash-alt delete"></i>-->
+  <!--      <i class="add ml-3 mt-1 fas fa-plus"></i>-->
+  <!--    </div>-->
+  <!--  </div>-->
 </div>

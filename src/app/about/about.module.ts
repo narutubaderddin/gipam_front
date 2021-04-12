@@ -43,10 +43,17 @@ import { AddImgModalComponent } from './components/item-details/item-images/add-
 import { AttachmentsComponent } from './components/item-details/attachments/attachments.component';
 import { NgxHorizontalTimelineModule } from 'ngx-horizontal-timeline';
 import { LinksComponent } from './components/item-details/links/links.component';
-import { NoticeBeingCreatedComponent } from './components/administrator-home-page/notice-being-created/notice-being-created.component';
 import { LastMovementComponent } from './components/item-details/movements/last-movement/last-movement.component';
 import { NgImageSliderModule } from 'ng-image-slider';
+import { NgWizardModule, NgWizardConfig, THEME } from 'ng-wizard';
+import { FullWidthCellRendererComponent as FullWidthCellRenderer } from '@app/@shared/components/datatables/full-width-cell-renderer/full-width-cell-renderer.component';
+import { NoticeBeingCreatedComponent } from './components/administrator-home-page/notice-being-created/notice-being-created.component';
+import { NgFileDragDropModule } from 'ng-file-drag-drop';
+import { HypertextLinksComponent } from './components/item-details/links/hypertext-links/hypertext-links.component';
 
+const ngWizardConfig: NgWizardConfig = {
+  theme: THEME.default,
+};
 @NgModule({
   declarations: [
     AboutComponent,
@@ -78,20 +85,23 @@ import { NgImageSliderModule } from 'ng-image-slider';
     AddImgModalComponent,
     AttachmentsComponent,
     LinksComponent,
-    NoticeBeingCreatedComponent,
     LastMovementComponent,
+    NoticeBeingCreatedComponent,
+    HypertextLinksComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
     CommonModule,
     AboutRoutingModule,
     SharedModule,
+    NgWizardModule.forRoot(ngWizardConfig),
+    NgFileDragDropModule,
     ReactiveFormsModule,
     FormsModule,
     NgMultiSelectDropDownModule,
     NgbCarouselModule,
     NgbModule,
-    AgGridModule.withComponents([]),
+    AgGridModule.withComponents([FullWidthCellRenderer]),
     AutocompleteLibModule,
     TreeviewModule.forRoot(),
     NgxSliderModule,

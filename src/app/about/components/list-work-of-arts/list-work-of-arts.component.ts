@@ -23,6 +23,7 @@ import { GridActionRendererComponent } from '@app/@shared/components/datatables/
 import { StatusTypeRenderComponent } from '@shared/components/datatables/status-type-render/status-type-render.component';
 import { Options } from '@angular-slider/ngx-slider';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-list-work-of-arts',
@@ -96,6 +97,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     {
       headerName: 'Date création',
       field: 'creationDate',
+      width: 100,
       headerComponentParams: {
         ...this.defaultHeaderParams,
         type: TYPES.date,
@@ -105,6 +107,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     {
       headerName: 'Domaine',
       field: 'domaine',
+      width: 100,
       headerComponentParams: {
         ...this.defaultHeaderParams,
         type: TYPES.list,
@@ -115,38 +118,58 @@ export class ListWorkOfArtsComponent implements OnInit {
     {
       headerName: 'Dénomination',
       field: 'denomination',
+      width: 100,
     },
     {
       headerName: 'Matière',
       field: 'matiere',
+      width: 120,
     },
     {
       headerName: 'Style',
       field: 'style',
+      width: 100,
     },
     {
       headerName: 'Epoque',
       field: 'epoque',
+      width: 90,
     },
     {
       headerName: 'Auteur',
       field: 'author',
+      width: 90,
+    },
+    {
+      headerName: 'Type de Statut',
+      field: 'property',
+      cellRenderer: 'statusTypeRender',
+      width: 180,
+    },
+    {
+      headerName: 'deposant',
+      field: 'depositor',
+      width: 100,
     },
     {
       headerName: 'Dernier constat de présence',
       field: 'author',
+      width: 100,
     },
     {
       headerName: 'Dernière action liée au constat',
       field: 'author',
+      width: 100,
     },
     {
       headerName: 'Dernier mouvement',
       field: 'author',
+      width: 90,
     },
     {
       headerName: 'Dernière action liée au mouvement',
       field: 'author',
+      width: 90,
     },
     {
       headerName: 'Visible catalogue',
@@ -154,18 +177,10 @@ export class ListWorkOfArtsComponent implements OnInit {
       cellRenderer: 'visibleRenderer',
       sortable: false,
       filter: false,
-      width: 110,
-    },
-    {
-      headerName: 'Actions',
-      field: 'action',
-      cellRenderer: 'gridActionRenderer',
-      sortable: false,
-      filter: false,
-      width: 130,
+      width: 100,
     },
   ];
-  pinnedCols: string[] = ['action'];
+  pinnedCols: string[] = [];
   leftPinnedCols: string[] = ['id'];
   selectedRowCount = 0;
   gridApi: GridApi;
@@ -514,5 +529,37 @@ export class ListWorkOfArtsComponent implements OnInit {
 
   onSearchClick() {
     this.showDatatable = true;
+  }
+  fromDate: NgbDate | null;
+  toDate: NgbDate | null;
+  hoveredDate: NgbDate | null = null;
+  onDateSelection(date: NgbDate) {
+    if (!this.fromDate && !this.toDate) {
+      this.fromDate = date;
+    } else if (this.fromDate && !this.toDate && date && date.after(this.fromDate)) {
+      this.toDate = date;
+    } else {
+      this.toDate = null;
+      this.fromDate = date;
+    }
+  }
+
+  isHovered(date: NgbDate) {
+    return (
+      this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate)
+    );
+  }
+
+  isInside(date: NgbDate) {
+    return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
+  }
+
+  isRange(date: NgbDate) {
+    return (
+      date.equals(this.fromDate) ||
+      (this.toDate && date.equals(this.toDate)) ||
+      this.isInside(date) ||
+      this.isHovered(date)
+    );
   }
 }

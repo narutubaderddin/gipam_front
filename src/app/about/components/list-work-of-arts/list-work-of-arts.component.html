@@ -18,7 +18,13 @@
     </div>
     <div>
       <div class="form-group search mt-3">
-        <input type="text" class="w-100" (keyup.enter)="onSearchClick()" placeholder="Recherche ..." />
+        <input
+          type="text"
+          style="outline: none"
+          class="w-100"
+          (keyup.enter)="onSearchClick()"
+          placeholder="Recherche ..."
+        />
         <button type="submit" class="searchButton" (click)="onSearchClick()">
           <i class="fa fa-search"></i>
         </button>
@@ -67,97 +73,101 @@
             class="py-0 ng-dropdown"
             ngbDropdownMenu
             aria-labelledby="dropDownSearch1"
-            style="width: 500px; max-height: 50vh; overflow: auto"
+            style="width: 900px; height: fit-content"
           >
-            <div class="columns-dropdown" style="width: 100% !important">
+            <div class="columns-dropdown search-form" style="width: 100% !important">
               <form [formGroup]="form1">
-                <div class="col-12 pt-1">
-                  <div class="form-group d-flex slider-bloc row"></div>
-                  <div class="form-group d-flex slider-bloc row">
-                    <label for="titre" class="col-5">N° inventaire</label>
-                    <input
-                      type="text"
-                      formControlName="inventory"
-                      class="form-control col-4"
-                      *ngIf="!showInventoryRange"
-                      placeholder="N° inventaire"
-                    />
+                <div class="col-12 pt-1 row">
+                  <div class="col-6 mt-3">
+                    <div class="form-group d-flex slider-bloc row">
+                      <label for="titre" class="col-5">N° inventaire</label>
+                      <input
+                        type="text"
+                        formControlName="inventory"
+                        class="form-control col-4"
+                        *ngIf="!showInventoryRange"
+                        placeholder="N° inventaire"
+                      />
 
-                    <div
-                      class="custom-slider mt-3 col-4"
-                      *ngIf="showInventoryRange"
-                      style="width: 90% !important; margin-top: -15px !important"
-                    >
-                      <ngx-slider
-                        [(value)]="inventoryValue"
-                        [(highValue)]="hightInventoryValue"
-                        [options]="inventoryOptions"
-                      ></ngx-slider>
-                    </div>
-                    <div class="btn-slider mr-2 col-3" *ngIf="!dynamic">
-                      <label [class.active]="!dynamic"></label>
-                      <label class="switch">
-                        <input type="checkbox" (change)="onCheckboxChange($event)" />
-                        <span class="slider round"></span>
-                      </label>
+                      <div
+                        class="custom-slider mt-3 col-4"
+                        *ngIf="showInventoryRange"
+                        style="width: 90% !important; margin-top: -15px !important"
+                      >
+                        <ngx-slider
+                          [(value)]="inventoryValue"
+                          [(highValue)]="hightInventoryValue"
+                          [options]="inventoryOptions"
+                        ></ngx-slider>
+                      </div>
+                      <div class="btn-slider mr-2 col-3" *ngIf="!dynamic">
+                        <label [class.active]="!dynamic"></label>
+                        <label class="switch">
+                          <input type="checkbox" (change)="onCheckboxChange($event)" />
+                          <span class="slider round"></span>
+                        </label>
 
-                      <label [class.active]="dynamic"></label>
+                        <label [class.active]="dynamic"></label>
+                      </div>
+                    </div>
+                    <div class="form-group d-flex slider-bloc row">
+                      <label for="titre" class="col-5">Titre</label>
+                      <input
+                        type="text"
+                        formControlName="title"
+                        class="form-control col-6"
+                        id="titre"
+                        placeholder="Titre"
+                      />
+                    </div>
+                    <div class="form-group d-flex slider-bloc row">
+                      <label for="denomination" class="col-5">Auteurs</label>
+                      <ng-multiselect-dropdown
+                        class="select col-6"
+                        [placeholder]="'Choisir des auteurs'"
+                        [settings]="dropdownSettings"
+                        formControlName="author"
+                        [data]="WorkOfArtService.authors"
+                        (onSelect)="onItemSelect($event)"
+                        (onSelectAll)="onSelectAll($event)"
+                      >
+                      </ng-multiselect-dropdown>
                     </div>
                   </div>
-                  <div class="form-group d-flex slider-bloc row">
-                    <label for="titre" class="col-5">Titre</label>
-                    <input
-                      type="text"
-                      formControlName="title"
-                      class="form-control col-6"
-                      id="titre"
-                      placeholder="Titre"
-                    />
+                  <div class="col-6 mt-3">
+                    <div class="form-group d-flex slider-bloc row">
+                      <label for="domaine" class="col-5">Domaine </label>
+                      <ng-multiselect-dropdown
+                        class="select col-6 w-100"
+                        formControlName="domaine"
+                        [placeholder]="'Choisir ses domaines'"
+                        [settings]="dropdownSettings"
+                        [data]="domaine"
+                        (onSelect)="onDomainSelect($event)"
+                        (onSelectAll)="onSelectAll($event)"
+                      >
+                      </ng-multiselect-dropdown>
+                    </div>
+                    <div class="form-group d-flex slider-bloc row">
+                      <label for="denomination" class="col-5">Dénomination</label>
+                      <ng-multiselect-dropdown
+                        class="select col-6"
+                        [placeholder]="'Choisir des dénominations'"
+                        formControlName="denomination"
+                        [settings]="dropdownSettings"
+                        [data]="WorkOfArtService.denominations"
+                        (onSelect)="onItemSelect($event)"
+                        (onSelectAll)="onSelectAll($event)"
+                      >
+                      </ng-multiselect-dropdown>
+                    </div>
                   </div>
-                  <div class="form-group d-flex slider-bloc row">
-                    <label for="domaine" class="col-5">Domaine </label>
-                    <ng-multiselect-dropdown
-                      class="select col-6 w-100"
-                      formControlName="domaine"
-                      [placeholder]="'Choisir ses domaines'"
-                      [settings]="dropdownSettings"
-                      [data]="domaine"
-                      (onSelect)="onDomainSelect($event)"
-                      (onSelectAll)="onSelectAll($event)"
-                    >
-                    </ng-multiselect-dropdown>
-                  </div>
-                  <div class="form-group d-flex slider-bloc row">
-                    <label for="denomination" class="col-5">Dénomination</label>
-                    <ng-multiselect-dropdown
-                      class="select col-6"
-                      [placeholder]="'Choisir des dénominations'"
-                      formControlName="denomination"
-                      [settings]="dropdownSettings"
-                      [data]="WorkOfArtService.denominations"
-                      (onSelect)="onItemSelect($event)"
-                      (onSelectAll)="onSelectAll($event)"
-                    >
-                    </ng-multiselect-dropdown>
-                  </div>
-                  <div class="form-group d-flex slider-bloc row">
-                    <label for="denomination" class="col-5">Auteurs</label>
-                    <ng-multiselect-dropdown
-                      class="select col-6"
-                      [placeholder]="'Choisir des auteurs'"
-                      [settings]="dropdownSettings"
-                      formControlName="author"
-                      [data]="WorkOfArtService.authors"
-                      (onSelect)="onItemSelect($event)"
-                      (onSelectAll)="onSelectAll($event)"
-                    >
-                    </ng-multiselect-dropdown>
-                  </div>
-                  <div class="d-flex advanced-search-label mb-3" (click)="form1Advanced = !form1Advanced">
-                    <i class="fa fa-plus"></i>
+                  <div class="d-flex advanced-search-label mb-3 col-12" (click)="form1Advanced = !form1Advanced">
+                    <i class="fa fa-plus-circle" *ngIf="!form1Advanced"></i>
+                    <i class="fa fa-minus-circle" *ngIf="form1Advanced"></i>
                     <span>Recherche avancée</span>
                   </div>
-                  <div *ngIf="form1Advanced">
+                  <div class="col-6" *ngIf="form1Advanced">
                     <div class="form-group d-flex slider-bloc row">
                       <div class="row col-10">
                         <label class="col-5">Matières</label>
@@ -172,26 +182,7 @@
                         >
                         </ng-multiselect-dropdown>
                       </div>
-                      <select class="d-flex slider-bloc col-md-2">
-                        <option value="1">Et</option>
-                        <option value="0">Ou</option>
-                      </select>
-                    </div>
-                    <div class="form-group d-flex slider-bloc row">
-                      <div class="row col-10">
-                        <label class="col-5">Epoque</label>
-
-                        <ng-multiselect-dropdown
-                          class="select col-6"
-                          [placeholder]="'Choisir des  époques'"
-                          [settings]="dropdownSettings"
-                          [data]="WorkOfArtService.denominations"
-                          (onSelect)="onItemSelect($event)"
-                          (onSelectAll)="onSelectAll($event)"
-                        >
-                        </ng-multiselect-dropdown>
-                      </div>
-                      <select class="input-form-control col-md-2">
+                      <select class="select-style d-flex slider-bloc col-md-2">
                         <option value="1">Et</option>
                         <option value="0">Ou</option>
                       </select>
@@ -210,27 +201,7 @@
                         >
                         </ng-multiselect-dropdown>
                       </div>
-                      <select class="input-form-control col-md-2">
-                        <option value="1">Et</option>
-                        <option value="0">Ou</option>
-                      </select>
-                    </div>
-                    <div class="form-group d-flex slider-bloc row">
-                      <div class="row col-10">
-                        <label class="col-5">Hauteur</label>
-
-                        <div
-                          class="custom-slider mt-3 col-4"
-                          style="width: 90% !important; margin-top: -15px !important"
-                        >
-                          <ngx-slider
-                            [(value)]="inventoryValue"
-                            [(highValue)]="hightInventoryValue"
-                            [options]="inventoryOptions"
-                          ></ngx-slider>
-                        </div>
-                      </div>
-                      <select class="input-form-control col-md-2">
+                      <select class="select-style input-form-control col-md-2">
                         <option value="1">Et</option>
                         <option value="0">Ou</option>
                       </select>
@@ -239,10 +210,7 @@
                       <div class="row col-10">
                         <label class="col-5">Longueur</label>
 
-                        <div
-                          class="custom-slider mt-3 col-4"
-                          style="width: 90% !important; margin-top: -15px !important"
-                        >
+                        <div class="custom-slider mt-5 col-5 w-100" style="margin-top: -15px !important">
                           <ngx-slider
                             [(value)]="inventoryValue"
                             [(highValue)]="hightInventoryValue"
@@ -250,27 +218,7 @@
                           ></ngx-slider>
                         </div>
                       </div>
-                      <select class="input-form-control col-md-2">
-                        <option value="1">Et</option>
-                        <option value="0">Ou</option>
-                      </select>
-                    </div>
-                    <div class="form-group d-flex slider-bloc row">
-                      <div class="row col-10">
-                        <label class="col-5">Largeur</label>
-
-                        <div
-                          class="custom-slider mt-3 col-4"
-                          style="width: 90% !important; margin-top: -15px !important"
-                        >
-                          <ngx-slider
-                            [(value)]="inventoryValue"
-                            [(highValue)]="hightInventoryValue"
-                            [options]="inventoryOptions"
-                          ></ngx-slider>
-                        </div>
-                      </div>
-                      <select class="input-form-control col-md-2">
+                      <select class="select-style input-form-control col-md-2">
                         <option value="1">Et</option>
                         <option value="0">Ou</option>
                       </select>
@@ -280,7 +228,7 @@
                         <label class="col-5">Hauteur Tot</label>
 
                         <div
-                          class="custom-slider mt-3 col-4"
+                          class="custom-slider mt-3 col-5"
                           style="width: 90% !important; margin-top: -15px !important"
                         >
                           <ngx-slider
@@ -290,7 +238,7 @@
                           ></ngx-slider>
                         </div>
                       </div>
-                      <select class="input-form-control col-md-2">
+                      <select class="select-style input-form-control col-md-2">
                         <option value="1">Et</option>
                         <option value="0">Ou</option>
                       </select>
@@ -300,7 +248,7 @@
                         <label class="col-5">Longueur Tot</label>
 
                         <div
-                          class="custom-slider mt-3 col-4"
+                          class="custom-slider mt-3 col-5"
                           style="width: 90% !important; margin-top: -15px !important"
                         >
                           <ngx-slider
@@ -310,27 +258,7 @@
                           ></ngx-slider>
                         </div>
                       </div>
-                      <select class="input-form-control col-md-2">
-                        <option value="1">Et</option>
-                        <option value="0">Ou</option>
-                      </select>
-                    </div>
-                    <div class="form-group d-flex slider-bloc row">
-                      <div class="row col-10">
-                        <label class="col-5">Largeur Tot</label>
-
-                        <div
-                          class="custom-slider mt-3 col-4"
-                          style="width: 90% !important; margin-top: -15px !important"
-                        >
-                          <ngx-slider
-                            [(value)]="inventoryValue"
-                            [(highValue)]="hightInventoryValue"
-                            [options]="inventoryOptions"
-                          ></ngx-slider>
-                        </div>
-                      </div>
-                      <select class="input-form-control col-md-2">
+                      <select class="select-style input-form-control col-md-2">
                         <option value="1">Et</option>
                         <option value="0">Ou</option>
                       </select>
@@ -340,7 +268,7 @@
                         <label class="col-5">Profondeur</label>
 
                         <div
-                          class="custom-slider mt-3 col-4"
+                          class="custom-slider mt-3 col-5"
                           style="width: 90% !important; margin-top: -15px !important"
                         >
                           <ngx-slider
@@ -350,7 +278,123 @@
                           ></ngx-slider>
                         </div>
                       </div>
-                      <select class="input-form-control col-md-2">
+                      <select class="select-style input-form-control col-md-2">
+                        <option value="1">Et</option>
+                        <option value="0">Ou</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-6" *ngIf="form1Advanced">
+                    <div class="form-group d-flex slider-bloc row">
+                      <div class="row col-10">
+                        <label class="col-5">Epoque</label>
+
+                        <ng-multiselect-dropdown
+                          class="select col-6"
+                          [placeholder]="'Choisir des  époques'"
+                          [settings]="dropdownSettings"
+                          [data]="WorkOfArtService.denominations"
+                          (onSelect)="onItemSelect($event)"
+                          (onSelectAll)="onSelectAll($event)"
+                        >
+                        </ng-multiselect-dropdown>
+                      </div>
+                      <select class="select-style input-form-control col-md-2">
+                        <option value="1">Et</option>
+                        <option value="0">Ou</option>
+                      </select>
+                    </div>
+                    <div class="form-group d-flex slider-bloc row">
+                      <div class="row col-10">
+                        <label class="col-5">Date de création</label>
+
+                        <div class="hidden col-6">
+                          <div class="" style="margin-left: -15px; width: 115%">
+                            <input
+                              name="datepicker"
+                              class="form-control date-input"
+                              ngbDatepicker
+                              type="date"
+                              #datepicker="ngbDatepicker"
+                              [autoClose]="'outside'"
+                              [displayMonths]="2"
+                              [dayTemplate]="t"
+                              outsideDays="hidden"
+                              tabindex="-1"
+                            />
+
+                            <ng-template #t let-date let-focused="focused">
+                              <span
+                                class="custom-day"
+                                [class.focused]="focused"
+                                [class.range]="isRange(date)"
+                                [class.faded]="isHovered(date) || isInside(date)"
+                                (mouseenter)="hoveredDate = date"
+                                (mouseleave)="hoveredDate = null"
+                              >
+                                {{ date.day }}
+                              </span>
+                            </ng-template>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group d-flex slider-bloc row">
+                      <div class="row col-10">
+                        <label class="col-5">Hauteur</label>
+
+                        <div
+                          class="custom-slider mt-3 col-5"
+                          style="width: 90% !important; margin-top: -15px !important"
+                        >
+                          <ngx-slider
+                            [(value)]="inventoryValue"
+                            [(highValue)]="hightInventoryValue"
+                            [options]="inventoryOptions"
+                          ></ngx-slider>
+                        </div>
+                      </div>
+                      <select class="select-style input-form-control col-md-2">
+                        <option value="1">Et</option>
+                        <option value="0">Ou</option>
+                      </select>
+                    </div>
+                    <div class="form-group d-flex slider-bloc row">
+                      <div class="row col-10">
+                        <label class="col-5">Largeur</label>
+
+                        <div
+                          class="custom-slider mt-3 col-5"
+                          style="width: 90% !important; margin-top: -15px !important"
+                        >
+                          <ngx-slider
+                            [(value)]="inventoryValue"
+                            [(highValue)]="hightInventoryValue"
+                            [options]="inventoryOptions"
+                          ></ngx-slider>
+                        </div>
+                      </div>
+                      <select class="select-style input-form-control col-md-2">
+                        <option value="1">Et</option>
+                        <option value="0">Ou</option>
+                      </select>
+                    </div>
+                    <div class="form-group d-flex slider-bloc row">
+                      <div class="row col-10">
+                        <label class="col-5">Largeur Tot</label>
+
+                        <div
+                          class="custom-slider mt-3 col-5"
+                          style="width: 90% !important; margin-top: -15px !important"
+                        >
+                          <ngx-slider
+                            [(value)]="inventoryValue"
+                            [(highValue)]="hightInventoryValue"
+                            [options]="inventoryOptions"
+                          ></ngx-slider>
+                        </div>
+                      </div>
+                      <select class="select-style input-form-control col-md-2">
                         <option value="1">Et</option>
                         <option value="0">Ou</option>
                       </select>
@@ -392,74 +436,91 @@
               placement="right"
               *ngIf="!firstSearchDrop && form1Values.length > 0"
             >
-              <div class="mt-3">
-                <p *ngFor="let value of form1Values; let index = index">
-                  <span *ngIf="index < 4">{{ value }}</span>
-                </p>
-                <p *ngIf="showForm1End">...</p>
-              </div>
+              <!--              <div class="mt-3">-->
+              <!--                <p *ngFor="let value of form1Values; let index = index">-->
+              <!--                  <span *ngIf="index < 4">{{ value }}</span>-->
+              <!--                </p>-->
+              <!--                <p *ngIf="showForm1End">...</p>-->
+              <!--              </div>-->
             </div>
           </button>
           <div
             class="py-0 ng-dropdown"
             ngbDropdownMenu
             aria-labelledby="dropDownSearch5"
-            style="width: 500px; max-height: 50vh; overflow: auto"
+            style="width: 700px; height: fit-content"
           >
-            <div class="columns-dropdown" style="width: 100% !important">
+            <div class="columns-dropdown search-form" style="width: 100% !important">
               <form [formGroup]="form1">
-                <div class="col-12 pt-1">
-                  <div class="form-group d-flex slider-bloc row">
-                    <label for="domaine" class="col-5">Type De Status </label>
-                    <ng-multiselect-dropdown
-                      class="select col-6 w-100"
-                      formControlName="domaine"
-                      [placeholder]="'Dépôt'"
-                      [settings]="dropdownSettings"
-                      [data]="domaine"
-                      (onSelect)="onDomainSelect($event)"
-                      (onSelectAll)="onSelectAll($event)"
-                    >
-                    </ng-multiselect-dropdown>
+                <div class="col-12 pt-1 row">
+                  <div class="col-6 mt-3">
+                    <div class="form-group d-flex slider-bloc row">
+                      <label for="domaine" class="col-5">Type De Status </label>
+                      <ng-multiselect-dropdown
+                        class="select col-6 w-100"
+                        formControlName="domaine"
+                        [placeholder]="'Dépôt'"
+                        [settings]="dropdownSettings"
+                        [data]="WorkOfArtService.statusType"
+                        (onSelect)="onDomainSelect($event)"
+                        (onSelectAll)="onSelectAll($event)"
+                      >
+                      </ng-multiselect-dropdown>
+                    </div>
+                    <div class="form-group d-flex slider-bloc row">
+                      <label for="denomination" class="col-5">Catégorie</label>
+                      <ng-multiselect-dropdown
+                        class="select col-6"
+                        [placeholder]="'Choisir une catégorie'"
+                        formControlName="denomination"
+                        [settings]="dropdownSettings"
+                        [data]="WorkOfArtService.denominations"
+                        (onSelect)="onItemSelect($event)"
+                        (onSelectAll)="onSelectAll($event)"
+                      >
+                      </ng-multiselect-dropdown>
+                    </div>
+                    <div class="form-group d-flex slider-bloc row">
+                      <label for="denomination" class="col-5">Déposants</label>
+                      <ng-multiselect-dropdown
+                        class="select col-6"
+                        [placeholder]="'Choisir un déposant'"
+                        formControlName="denomination"
+                        [settings]="dropdownSettings"
+                        [data]="WorkOfArtService.depositor"
+                        (onSelect)="onItemSelect($event)"
+                        (onSelectAll)="onSelectAll($event)"
+                      >
+                      </ng-multiselect-dropdown>
+                    </div>
                   </div>
-                  <div class="form-group d-flex slider-bloc row">
-                    <label for="denomination" class="col-5">Catégorie</label>
-                    <ng-multiselect-dropdown
-                      class="select col-6"
-                      [placeholder]="'Choisir une catégorie'"
-                      formControlName="denomination"
-                      [settings]="dropdownSettings"
-                      [data]="WorkOfArtService.denominations"
-                      (onSelect)="onItemSelect($event)"
-                      (onSelectAll)="onSelectAll($event)"
-                    >
-                    </ng-multiselect-dropdown>
-                  </div>
-                  <div class="form-group d-flex slider-bloc row">
-                    <label for="titre" class="col-5">Date Entrée</label>
-                    <input
-                      type="date"
-                      name="datepicker"
-                      class="form-control date-input col-6"
-                      ngbDatepicker
-                      autoClose="outside"
-                      displayMonths="2"
-                      outsideDays="hidden"
-                      id="date"
-                    />
-                  </div>
-                  <div class="form-group d-flex slider-bloc row">
-                    <label for="denomination" class="col-5">Mode entrée</label>
-                    <ng-multiselect-dropdown
-                      class="select col-6"
-                      [placeholder]="'Mode entrée'"
-                      [settings]="dropdownSettings"
-                      formControlName="author"
-                      [data]="WorkOfArtService.authors"
-                      (onSelect)="onItemSelect($event)"
-                      (onSelectAll)="onSelectAll($event)"
-                    >
-                    </ng-multiselect-dropdown>
+                  <div class="col-6 mt-3">
+                    <div class="form-group d-flex slider-bloc row">
+                      <label for="titre" class="col-5">Date Entrée</label>
+                      <input
+                        type="date"
+                        name="datepicker"
+                        class="form-control date-input col-6"
+                        ngbDatepicker
+                        autoClose="outside"
+                        displayMonths="2"
+                        outsideDays="hidden"
+                        id="date"
+                      />
+                    </div>
+                    <div class="form-group d-flex slider-bloc row">
+                      <label for="denomination" class="col-5">Mode entrée</label>
+                      <ng-multiselect-dropdown
+                        class="select col-6"
+                        [placeholder]="'Mode entrée'"
+                        [settings]="dropdownSettings"
+                        formControlName="author"
+                        [data]="WorkOfArtService.authors"
+                        (onSelect)="onItemSelect($event)"
+                        (onSelectAll)="onSelectAll($event)"
+                      >
+                      </ng-multiselect-dropdown>
+                    </div>
                   </div>
                 </div>
               </form>
@@ -505,66 +566,74 @@
               </div>
             </div>
           </button>
-          <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropDownSearch2" style="width: 500px">
-            <div class="columns-dropdown" style="width: 100% !important">
+          <div
+            class="py-0 ng-dropdown"
+            ngbDropdownMenu
+            aria-labelledby="dropDownSearch2"
+            style="width: 900px; height: fit-content"
+          >
+            <div class="columns-dropdown search-form" style="width: 100% !important">
               <form [formGroup]="form2">
-                <div class="col-12 pt-1">
-                  <div class="form-group d-flex slider-bloc row">
-                    <label for="domaine" class="col-5">Type de mouvement </label>
-                    <ng-multiselect-dropdown
-                      class="select col-6 w-100"
-                      [placeholder]="'Choisir types de mouvement'"
-                      [settings]="dropdownSettings"
-                      formControlName="mouvement"
-                      [data]="domaine"
-                      (onSelect)="onDomainSelect($event)"
-                      (onSelectAll)="onSelectAll($event)"
-                    >
-                    </ng-multiselect-dropdown>
+                <div class="col-12 pt-1 row">
+                  <div class="col-6 mt-3">
+                    <div class="form-group d-flex slider-bloc row">
+                      <label for="domaine" class="col-5">Type de mouvement </label>
+                      <ng-multiselect-dropdown
+                        class="select col-6 w-100"
+                        [placeholder]="'Choisir types de mouvement'"
+                        [settings]="dropdownSettings"
+                        formControlName="mouvement"
+                        [data]="domaine"
+                        (onSelect)="onDomainSelect($event)"
+                        (onSelectAll)="onSelectAll($event)"
+                      >
+                      </ng-multiselect-dropdown>
+                    </div>
+                    <div class="form-group d-flex slider-bloc row">
+                      <label for="domaine" class="col-5">Type action mouvement </label>
+                      <ng-multiselect-dropdown
+                        class="select col-6 w-100"
+                        [placeholder]="'Choisir types d\'action de mouvement'"
+                        [settings]="dropdownSettings"
+                        formControlName="mouvementAction"
+                        [data]="domaine"
+                        (onSelect)="onDomainSelect($event)"
+                        (onSelectAll)="onSelectAll($event)"
+                      >
+                      </ng-multiselect-dropdown>
+                    </div>
+                    <div class="form-group mt-4 d-flex align-items-center">
+                      <label class="mt-2">Titre de perception demandé </label>
+                      <input class="m-2" type="checkbox" name="options" id="option1" formControlName="perseption" />
+                    </div>
                   </div>
-                  <div class="form-group d-flex slider-bloc row">
-                    <label for="domaine" class="col-5">Type action mouvement </label>
-                    <ng-multiselect-dropdown
-                      class="select col-6 w-100"
-                      [placeholder]="'Choisir types d\'action de mouvement'"
-                      [settings]="dropdownSettings"
-                      formControlName="mouvementAction"
-                      [data]="domaine"
-                      (onSelect)="onDomainSelect($event)"
-                      (onSelectAll)="onSelectAll($event)"
-                    >
-                    </ng-multiselect-dropdown>
-                  </div>
-
-                  <div class="form-group d-flex slider-bloc row">
-                    <label for="domaine" class="col-5">Types de constat </label>
-                    <ng-multiselect-dropdown
-                      class="select col-6 w-100"
-                      [placeholder]="'Choisir des types de constat'"
-                      formControlName="constat"
-                      [settings]="dropdownSettings"
-                      [data]="domaine"
-                      (onSelect)="onDomainSelect($event)"
-                      (onSelectAll)="onSelectAll($event)"
-                    >
-                    </ng-multiselect-dropdown>
-                  </div>
-                  <div class="form-group d-flex slider-bloc row">
-                    <label for="domaine" class="col-5">Types actions constat </label>
-                    <ng-multiselect-dropdown
-                      class="select col-6 w-100"
-                      [placeholder]="'Choisir types d\'actions'"
-                      [settings]="dropdownSettings"
-                      [data]="domaine"
-                      formControlName="constatAction"
-                      (onSelect)="onDomainSelect($event)"
-                      (onSelectAll)="onSelectAll($event)"
-                    >
-                    </ng-multiselect-dropdown>
-                  </div>
-                  <div class="form-group mt-4 d-flex align-items-center">
-                    <label class="mt-2">Titre de perception demandé </label>
-                    <input class="m-2" type="checkbox" name="options" id="option1" formControlName="perseption" />
+                  <div class="col-6 mt-3">
+                    <div class="form-group d-flex slider-bloc row">
+                      <label for="domaine" class="col-5">Types de constat </label>
+                      <ng-multiselect-dropdown
+                        class="select col-6 w-100"
+                        [placeholder]="'Choisir des types de constat'"
+                        formControlName="constat"
+                        [settings]="dropdownSettings"
+                        [data]="domaine"
+                        (onSelect)="onDomainSelect($event)"
+                        (onSelectAll)="onSelectAll($event)"
+                      >
+                      </ng-multiselect-dropdown>
+                    </div>
+                    <div class="form-group d-flex slider-bloc row">
+                      <label for="domaine" class="col-5">Types actions constat </label>
+                      <ng-multiselect-dropdown
+                        class="select col-6 w-100"
+                        [placeholder]="'Choisir types d\'actions'"
+                        [settings]="dropdownSettings"
+                        [data]="domaine"
+                        formControlName="constatAction"
+                        (onSelect)="onDomainSelect($event)"
+                        (onSelectAll)="onSelectAll($event)"
+                      >
+                      </ng-multiselect-dropdown>
+                    </div>
                   </div>
                 </div>
               </form>
@@ -614,94 +683,72 @@
             class="py-0 ng-dropdown"
             ngbDropdownMenu
             aria-labelledby="dropDownSearch3"
-            style="width: 550px; max-height: 50vh; overflow: auto"
+            style="width: 550px; height: fit-content"
           >
-            <div class="columns-dropdown" style="width: 100% !important">
+            <div class="columns-dropdown search-form" style="width: 100% !important">
               <form [formGroup]="form3">
-                <div class="col-12 pt-1">
-                  <div class="form-group d-flex slider-bloc row">
-                    <label for="domaine" class="col-5">Ministéres </label>
-                    <ng-multiselect-dropdown
-                      class="select col-6 w-100"
-                      [placeholder]="'Choisir des ministères'"
-                      [settings]="dropdownSettings"
-                      formControlName="ministry"
-                      [data]="WorkOfArtService.ministeres"
-                      (onSelect)="onDomainSelect($event)"
-                      (onSelectAll)="onSelectAll($event)"
-                    >
-                    </ng-multiselect-dropdown>
+                <div class="col-12 pt-1 row">
+                  <div class="col-12 mt-3">
+                    <div class="form-group d-flex slider-bloc row">
+                      <label for="domaine" class="col-5">Ministéres </label>
+                      <ng-multiselect-dropdown
+                        class="select col-6 w-100"
+                        [placeholder]="'Choisir des ministères'"
+                        [settings]="dropdownSettings"
+                        formControlName="ministry"
+                        [data]="WorkOfArtService.ministeres"
+                        (onSelect)="onDomainSelect($event)"
+                        (onSelectAll)="onSelectAll($event)"
+                      >
+                      </ng-multiselect-dropdown>
+                    </div>
+                    <div class="form-group d-flex slider-bloc row">
+                      <label for="domaine" class="col-5">Etab./Dir. </label>
+                      <ng-multiselect-dropdown
+                        class="select col-6 w-100"
+                        [placeholder]="'Choisir des étab/dir'"
+                        [settings]="dropdownSettings"
+                        [data]="domaine"
+                        formControlName="direction"
+                        (onSelect)="onDomainSelect($event)"
+                        (onSelectAll)="onSelectAll($event)"
+                      >
+                      </ng-multiselect-dropdown>
+                    </div>
+                    <div class="form-group d-flex slider-bloc row">
+                      <label for="domaine" class="col-5">Sous-direction </label>
+                      <ng-multiselect-dropdown
+                        class="select col-6 w-100"
+                        [placeholder]="'Choisir des sous-direction'"
+                        [settings]="dropdownSettings"
+                        [data]="domaine"
+                        formControlName="sousDirection"
+                        (onSelect)="onDomainSelect($event)"
+                        (onSelectAll)="onSelectAll($event)"
+                      >
+                      </ng-multiselect-dropdown>
+                    </div>
+                    <div class="form-group d-flex slider-bloc row">
+                      <label for="domaine" class="col-5">Services </label>
+                      <ng-multiselect-dropdown
+                        class="select col-6 w-100"
+                        [placeholder]="'Choisir des services'"
+                        [settings]="dropdownSettings"
+                        [data]="domaine"
+                        formControlName="services"
+                        (onSelect)="onDomainSelect($event)"
+                        (onSelectAll)="onSelectAll($event)"
+                      >
+                      </ng-multiselect-dropdown>
+                    </div>
                   </div>
-                  <div class="form-group d-flex slider-bloc row">
-                    <label for="domaine" class="col-5">Type Etablissement </label>
-                    <ng-multiselect-dropdown
-                      class="select col-6 w-100"
-                      [placeholder]="'Choisir type(s) d\'établissement(s)'"
-                      [settings]="dropdownSettings"
-                      [data]="domaine"
-                      formControlName="etablissement"
-                      (onSelect)="onDomainSelect($event)"
-                      (onSelectAll)="onSelectAll($event)"
-                    >
-                    </ng-multiselect-dropdown>
-                  </div>
-                  <div class="form-group d-flex slider-bloc row">
-                    <label for="domaine" class="col-5">Etab./Dir. </label>
-                    <ng-multiselect-dropdown
-                      class="select col-6 w-100"
-                      [placeholder]="'Choisir des étab/dir'"
-                      [settings]="dropdownSettings"
-                      [data]="domaine"
-                      formControlName="direction"
-                      (onSelect)="onDomainSelect($event)"
-                      (onSelectAll)="onSelectAll($event)"
-                    >
-                    </ng-multiselect-dropdown>
-                  </div>
-                  <div class="form-group d-flex slider-bloc row">
-                    <label for="domaine" class="col-5">Sous-direction </label>
-                    <ng-multiselect-dropdown
-                      class="select col-6 w-100"
-                      [placeholder]="'Choisir des sous-direction'"
-                      [settings]="dropdownSettings"
-                      [data]="domaine"
-                      formControlName="sousDirection"
-                      (onSelect)="onDomainSelect($event)"
-                      (onSelectAll)="onSelectAll($event)"
-                    >
-                    </ng-multiselect-dropdown>
-                  </div>
-                  <div class="form-group d-flex slider-bloc row">
-                    <label for="domaine" class="col-5">Services </label>
-                    <ng-multiselect-dropdown
-                      class="select col-6 w-100"
-                      [placeholder]="'Choisir des services'"
-                      [settings]="dropdownSettings"
-                      [data]="domaine"
-                      formControlName="services"
-                      (onSelect)="onDomainSelect($event)"
-                      (onSelectAll)="onSelectAll($event)"
-                    >
-                    </ng-multiselect-dropdown>
-                  </div>
-                  <div class="form-group d-flex slider-bloc row">
-                    <label for="domaine" class="col-5">Correspondants </label>
-                    <ng-multiselect-dropdown
-                      class="select col-6 w-100"
-                      [placeholder]="'Choisir des correspondants'"
-                      [settings]="dropdownSettings"
-                      [data]="domaine"
-                      formControlName="correspondant"
-                      (onSelect)="onDomainSelect($event)"
-                      (onSelectAll)="onSelectAll($event)"
-                    >
-                    </ng-multiselect-dropdown>
-                  </div>
-                  <div class="d-flex advanced-search-label mb-3" (click)="form3Advanced = !form3Advanced">
-                    <i class="fa fa-plus"></i>
+
+                  <div class="d-flex advanced-search-label mb-3 col-12" (click)="form3Advanced = !form3Advanced">
+                    <i class="fa fa-plus-circle" *ngIf="!form3Advanced"></i>
+                    <i class="fa fa-minus-circle" *ngIf="form3Advanced"></i>
                     <span>Recherche avancée</span>
                   </div>
-                  <div *ngIf="form3Advanced">
+                  <div *ngIf="form3Advanced" class="col-12">
                     <div class="form-group d-flex slider-bloc row">
                       <div class="row col-10">
                         <label class="col-5">Type Etablissement</label>
@@ -716,7 +763,7 @@
                         >
                         </ng-multiselect-dropdown>
                       </div>
-                      <select class="d-flex slider-bloc col-md-2">
+                      <select class="select-style d-flex slider-bloc col-md-2">
                         <option value="1">Et</option>
                         <option value="0">Ou</option>
                       </select>
@@ -735,7 +782,7 @@
                         >
                         </ng-multiselect-dropdown>
                       </div>
-                      <select class="input-form-control col-md-2">
+                      <select class="select-style input-form-control col-md-2">
                         <option value="1">Et</option>
                         <option value="0">Ou</option>
                       </select>
@@ -787,8 +834,13 @@
               </div>
             </div>
           </button>
-          <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropDownSearch4" style="width: 400px">
-            <div class="columns-dropdown" style="width: 100% !important">
+          <div
+            class="py-0 ng-dropdown"
+            ngbDropdownMenu
+            aria-labelledby="dropDownSearch4"
+            style="width: 400px; height: fit-content"
+          >
+            <div class="columns-dropdown search-form" style="width: 100% !important">
               <form [formGroup]="form4">
                 <div class="col-12 pt-1">
                   <div class="form-group d-flex slider-bloc row">
@@ -901,19 +953,6 @@
           </div>
         </div>
       </div>
-      <!--      <app-accordion-section-->
-      <!--        #accordionSectionDOM-->
-      <!--        [editable]="true"-->
-      <!--        [headerTitle]="'Recherche'"-->
-      <!--        [idMilestoneSection]="2"-->
-      <!--        [sectionIndex]="2"-->
-      <!--        [showIcon]="true"-->
-      <!--        [icon]="'fa fa-search'"-->
-      <!--        [index]="2"-->
-      <!--        [sectionTitle]="'Status'"-->
-      <!--      >-->
-      <!--        <app-request [fields]="ColDef" (validateRequest)="onValidateRequest($event)"></app-request>-->
-      <!--      </app-accordion-section>-->
     </div>
     <div *ngIf="showDatatable">
       <div class="filter-bloc d-flex">
@@ -926,8 +965,17 @@
               autoClose="outside"
               container="body"
             >
-              <button class="btn export-button" id="dropdownBasic" ngbDropdownToggle translate>
-                <i class="fas fa-file-export"></i>
+              <!--              <button class=" btn dropdown-btn export-button " id="dropdownBasic" ngbDropdownToggle translate  style="background-color: #0466C8">-->
+              <!--                <i class="fas fa-file-export" style="color: white"></i>-->
+              <!--              </button>-->
+              <button
+                class="btn dropdown-btn export-button"
+                id="dropdownBasic"
+                ngbDropdownToggle
+                translate
+                style="background-color: #0466c8"
+              >
+                <i class="fas fa-file-export" style="color: white"></i>
               </button>
               <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">
                 <ul class="list-group">
@@ -958,10 +1006,11 @@
               container="body"
             >
               <button class="btn dropdown-btn headers-btn" id="dropdownBasic1" ngbDropdownToggle translate>
+                <i class="fas fa-cog"></i>
                 Colonnes
               </button>
               <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                <div class="columns-dropdown">
+                <div class="columns-dropdown header-dropdown">
                   <div class="col-12 col-sm-6 pt-1 column-check" *ngFor="let headerCol of columns">
                     <label class="checkbox-container" translate
                       >{{ headerCol.getColDef().headerName }}
@@ -981,43 +1030,6 @@
         </div>
       </div>
       <div class="search-quick-fliter-bloc d-flex flex-content-between">
-        <!--        <div class="quick-filters d-flex">-->
-        <!--          <h6 class="text-quick-filter">Filtres rapides :</h6>-->
-        <!--          <div class="dropdown-container mb-2 mr-2 mb-sm-0">-->
-        <!--            <div class="d-inline-block drop-bloc">-->
-        <!--              <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">Oeuvres archivées</button>-->
-        <!--            </div>-->
-        <!--          </div>-->
-        <!--          <div class="dropdown-container mb-2 mr-2 mb-sm-0">-->
-        <!--            <div class="d-inline-block drop-bloc">-->
-        <!--              <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">Oeuvres perdues</button>-->
-        <!--            </div>-->
-        <!--          </div>-->
-        <!--          <div class="dropdown-container mb-2 mr-2 mb-sm-0">-->
-        <!--            <div class="d-inline-block drop-bloc">-->
-        <!--              <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">-->
-        <!--                Oeuvres récemment modifiées-->
-        <!--              </button>-->
-        <!--            </div>-->
-        <!--          </div>-->
-        <!--          <div class="dropdown-container mb-2 mr-2 mb-sm-0">-->
-        <!--            <div class="d-inline-block drop-bloc">-->
-        <!--              <button class="btn dropdown-btn list quick-filter-btn" (click)="resetFilter()">-->
-        <!--                Oeuvres en cours de création-->
-        <!--              </button>-->
-        <!--            </div>-->
-        <!--          </div>-->
-        <!--          <div>-->
-        <!--            <div class="dropdown-container mb-2 mr-2 mb-sm-0" style="margin: 3px 0 15px 0">-->
-        <!--              <div class="d-inline-block drop-bloc">-->
-        <!--                <span class="icon-stack d-flex" (click)="resetFilter()">-->
-        <!--                  <i class="fas fa-filter"></i>-->
-        <!--                  <i class="fas fa-times"></i>-->
-        <!--                </span>-->
-        <!--              </div>-->
-        <!--            </div>-->
-        <!--          </div>-->
-        <!--        </div>-->
         <div class="d-flex">
           <div class="search-panel">
             <input
@@ -1032,7 +1044,7 @@
         </div>
       </div>
       <div class="datatable mt-4">
-        <div *ngIf="selectedRowCount > 0">
+        <div *ngIf="selectedRowCount > 1">
           <div class="mass-action-container">
             <i class="fas fa-share"></i>
             <button class="btn add-action" translate>
@@ -1055,10 +1067,10 @@
                 autoClose="outside"
                 container="body"
               >
-                <button class="btn export-button" id="dropdownBasic" ngbDropdownToggle translate>
+                <button class="btn export-button" id="dropdownBasic12" ngbDropdownToggle translate>
                   <i class="fas fa-file-export"></i>
                 </button>
-                <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">
+                <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic12">
                   <ul class="list-group">
                     <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter Notices style catalogue</li>
                     <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter Notices techniques</li>
@@ -1068,6 +1080,23 @@
                   </ul>
                 </div>
               </div>
+            </button>
+          </div>
+        </div>
+        <div *ngIf="selectedRowCount == 1">
+          <div class="mass-action-container">
+            <i class="fas fa-share"></i>
+            <button class="btn add-action" translate>
+              <i class="fas fa-history"></i>
+              Historique
+            </button>
+            <button class="btn add-action" translate>
+              <i class="fas fa-edit"></i>
+              Modifier
+            </button>
+            <button class="btn add-action" translate>
+              <i class="fas fa-copy"></i>
+              Copier
             </button>
           </div>
         </div>

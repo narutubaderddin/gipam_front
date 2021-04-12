@@ -4,7 +4,13 @@ import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { TreeviewConfig } from 'ngx-treeview';
 import { LabelType, Options } from '@angular-slider/ngx-slider';
 import { FormControl, FormGroup } from '@angular/forms';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbModal,
+  ModalDismissReasons,
+  NgbDate,
+  NgbDateParserFormatter,
+  NgbCalendar,
+} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-portail',
@@ -79,7 +85,13 @@ export class PortailComponent implements OnInit {
   firstSearchDrop = false;
   showForm1End = false;
 
-  constructor(private WorkOfArtService: WorkOfArtService, private router: Router, private modalService: NgbModal) {}
+  constructor(
+    private WorkOfArtService: WorkOfArtService,
+    private router: Router,
+    private modalService: NgbModal,
+    public formatter: NgbDateParserFormatter,
+    private calendar: NgbCalendar
+  ) {}
 
   ngOnInit(): void {
     this.oeuvreToShow = this.oeuvres;
@@ -123,10 +135,6 @@ export class PortailComponent implements OnInit {
 
   details(visible: any, source: string) {
     this.router.navigate(['portail-details'], { queryParams: { show: visible, source: source } });
-  }
-
-  shop(event: any, item: any) {
-    event.stopPropagation();
   }
 
   onSearchClick() {}
@@ -185,7 +193,22 @@ export class PortailComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
-  addToBasket(item: any) {
+
+  addToBasket(event: any, item: any) {
+    event.stopPropagation();
+    item.isDemanded = true;
     this.selectedOeuvre.push(item);
+  }
+  removeFromBasket(event: any, item: any) {
+    event.stopPropagation();
+    item.isDemanded = false;
+    this.selectedOeuvre = this.selectedOeuvre.filter((oeuvre) => {
+      return oeuvre.id !== item.id;
+    });
+  }
+
+  validateInput(currentValue: NgbDate | null, input: string): NgbDate | null {
+    const parsed = this.formatter.parse(input);
+    return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
   }
 }

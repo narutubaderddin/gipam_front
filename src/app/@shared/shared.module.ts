@@ -31,12 +31,13 @@ import { StatusTypeRenderComponent } from './components/datatables/status-type-r
 import { RecoleRendererComponent } from './components/datatables/recole-renderer/recole-renderer.component';
 import { AccordionSectionComponent } from './components/accordion-section/accordion-section.component';
 import { NgxHorizontalTimelineModule } from 'ngx-horizontal-timeline';
+import { FullWidthCellRendererComponent as FullWidthCellRenderer } from './components/datatables/full-width-cell-renderer/full-width-cell-renderer.component';
 
 @NgModule({
   imports: [
     CommonModule,
     TranslateModule,
-    AgGridModule.withComponents([]),
+    AgGridModule.withComponents([FullWidthCellRenderer]),
     NgbTooltipModule,
     NgbModule,
     NgxPaginationModule,
@@ -70,6 +71,7 @@ import { NgxHorizontalTimelineModule } from 'ngx-horizontal-timeline';
     StatusTypeRenderComponent,
     RecoleRendererComponent,
     AccordionSectionComponent,
+    FullWidthCellRenderer,
   ],
   exports: [
     LoaderComponent,
