@@ -180,22 +180,37 @@
           </div>
           <div class="form-group mt-3 d-flex">
             <div class="filter-bloc dropdown-container search-container mb-2 mr-2 mb-sm-0">
-              <div class="dropdown d-inline" ngbDropdown>
+              <div
+                ngbDropdown
+                placement="bottom-left"
+                autoClose="outside"
+                container="dropdown-container"
+                (openChange)="onToggel($event, 'form1')"
+                class="d-inline-block drop-bloc d-inline p-2"
+                #domainesDropdown="ngbDropdown"
+              >
+                <ng-template #TemplateForm1>
+                  <p *ngFor="let value of formDomainsValues; let index = index">
+                    <span>{{ value }}</span>
+                  </p>
+                </ng-template>
                 <button
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
                   class="btn dropdown-btn list quick-filter-btn"
-                  id="dropdownMenuDomaine"
+                  id="dropDownSearch1"
                   ngbDropdownToggle
                   (click)="resetFilter()"
                 >
                   <span>
                     <i class="fab fa-creative-commons-nd" style="color: #1f2b50"></i>
-                    Domaines
+                    Domainesd
+                    <i class="fa fa-sort-down" *ngIf="!firstSearchDrop && formDomainsValues.length > 0"></i>
                   </span>
-                  <div placement="right">
-                    <div class="mt-3" *ngIf="!firstSearchDrop && formDomainsValues.length > 0">
+                  <div
+                    [ngbTooltip]="formDomainsValues.length > 0 ? TemplateForm1 : ''"
+                    placement="right"
+                    *ngIf="!firstSearchDrop && formDomainsValues.length > 0"
+                  >
+                    <div class="mt-3">
                       <p *ngFor="let value of formDomainsValues; let index = index">
                         <span *ngIf="index < 4">{{ value }}</span>
                       </p>
@@ -203,15 +218,10 @@
                     </div>
                   </div>
                 </button>
-                <div
-                  class="dropdown-menu"
-                  aria-labelledby="dropdownMenuDomaine"
-                  style="width: 400px !important"
-                  #matSelect
-                >
-                  <div class="columns-dropdown">
+                <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropDownSearch1" style="width: 400px">
+                  <div class="columns-dropdown" style="width: 100% !important">
                     <form [formGroup]="form1">
-                      <div class="pt-1 col-12">
+                      <div class="col-12 pt-1">
                         <div class="form-group col-10">
                           <div class="col-md-12">
                             <ngx-treeview
