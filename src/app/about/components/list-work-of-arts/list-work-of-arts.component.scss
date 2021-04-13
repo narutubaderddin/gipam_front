@@ -108,11 +108,12 @@ input:checked + .slider:before {
   box-shadow: 0 0 3px #00000040;
   opacity: 1;
 }
+.header-dropdown {
+  display: flex;
+  flex-wrap: wrap;
+  width: 300px;
+}
 .columns-dropdown {
-  //display: flex;
-  //flex-wrap: wrap;
-  //width: 300px;
-
   .column-check {
     border-bottom: solid #ccc 1px;
     cursor: pointer;
@@ -296,7 +297,7 @@ input:checked + .slider:before {
   color: white !important;
   border-color: #0466c8 !important;
   i {
-    background-color: white;
+    //background-color: white;
   }
   &:hover {
     border-color: #0466c8 !important;

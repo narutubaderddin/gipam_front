@@ -59,6 +59,15 @@ a:focus {
 .administration {
   background-color: #05bac5 !important;
 }
+.recolement {
+  background-color: #62c0c8 !important;
+}
+.alerts {
+  background-color: #8dc6cb !important;
+}
+.demande {
+  background-color: #b0cbcd !important;
+}
 
 .bt {
   padding-right: 30px !important;
@@ -75,7 +84,7 @@ a:focus {
   top: 0;
   left: 0;
   height: 100vh;
-  z-index: 50;
+  z-index: 150;
   overflow-y: scroll;
   padding-bottom: 10%;
 

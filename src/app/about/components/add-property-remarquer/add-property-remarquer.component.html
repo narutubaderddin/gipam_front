@@ -1,7 +1,7 @@
 <ng-wizard [config]="config" (stepChanged)="stepChanged($event)">
   <ng-wizard-step
     [title]="'1'"
-    [description]="'Créer une notice en proprieté'"
+    [description]="'Création notice en proprieté'"
     [canEnter]="isValidTypeBoolean"
     [canExit]="isValidFunctionReturnsBoolean.bind(this)"
   >
@@ -60,14 +60,15 @@
                       <div class="d-flex col-12 p-0 flex-column">
                         <div class="d-flex col-12 p-0 mt-4 justify-content-between">
                           <div class="attachments-container mr-2 col-md-7 p-0">
-                            <!--                            <app-attachments style="width: 100%"></app-attachments>-->
+                            <app-attachments style="width: 100%" [add]="true"></app-attachments>
                           </div>
                           <div class="attachments-container ml-2 col-md-5 p-0">
-                            <!--                            <app-links style="width: 100%"></app-links>-->
+                            <app-links style="width: 100%" [add]="true"></app-links>
                           </div>
                         </div>
                         <div class="attachments-container col-md-12 p-0 row m-0 align-baseline">
-                          <h5 class="col-md-4 p-0">Liens hypertextes</h5>
+                          <!--                          <h5 class="col-md-4 p-0">Liens hypertextes</h5>-->
+                          <app-hypertext-links style="width: 100%" [add]="true"></app-hypertext-links>
                           <!--                          <ol class="rounded-list col-md-8">-->
                           <!--                            <li>-->
                           <!--                              <span><a href="#">site-oeuvre.com</a> | 24/01/2020 | Jean</span>-->
