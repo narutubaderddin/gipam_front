@@ -210,6 +210,8 @@ export class ListWorkOfArtsComponent implements OnInit {
   showForm3End = false;
   showForm4End = false;
   dynamic: boolean = false;
+  modelDate = '2021';
+  items = ['oeuvre art', 'test'];
   constructor(
     private fb: FormBuilder,
     public columnFilterService: ColumnFilterService,

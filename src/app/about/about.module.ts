@@ -50,7 +50,9 @@ import { FullWidthCellRendererComponent as FullWidthCellRenderer } from '@app/@s
 import { NoticeBeingCreatedComponent } from './components/administrator-home-page/notice-being-created/notice-being-created.component';
 import { NgFileDragDropModule } from 'ng-file-drag-drop';
 import { HypertextLinksComponent } from './components/item-details/links/hypertext-links/hypertext-links.component';
-
+import { BsDatepickerModule, BsDatepickerConfig, DatepickerModule } from 'ngx-bootstrap/datepicker';
+import { setTheme } from 'ngx-bootstrap/utils';
+setTheme('bs4');
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default,
 };
@@ -109,7 +111,9 @@ const ngWizardConfig: NgWizardConfig = {
     TagInputModule,
     Ng7BootstrapBreadcrumbModule,
     NgImageSliderModule,
+    BsDatepickerModule.forRoot(),
+    DatepickerModule.forRoot(),
   ],
-  providers: [MovementsService],
+  providers: [MovementsService, , BsDatepickerConfig],
 })
 export class AboutModule {}
