@@ -8,6 +8,7 @@ import { ListWorkOfArtsComponent } from './components/list-work-of-arts/list-wor
 import { PortailComponent } from './components/portail/portail.component';
 import { PortailItemDetailsComponent } from '@app/about/components/portail-item-details/portail-item-details.component';
 import { NoticeBeingCreatedComponent } from './components/administrator-home-page/notice-being-created/notice-being-created.component';
+import { InProgressDemandComponent } from '@app/about/components/in-progress-demand/in-progress-demand.component';
 const routes: Routes = [
   {
     path: '',
@@ -22,6 +23,13 @@ const routes: Routes = [
         component: ListWorkOfArtsComponent,
         data: {
           title: "Liste des oeuvres d'art",
+        },
+      },
+      {
+        path: 'demandes-en-cours',
+        component: InProgressDemandComponent,
+        data: {
+          title: 'Liste des demandes en cours',
         },
       },
       { path: 'portail', component: PortailComponent },

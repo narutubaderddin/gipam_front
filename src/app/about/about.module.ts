@@ -52,6 +52,24 @@ import { NgFileDragDropModule } from 'ng-file-drag-drop';
 import { HypertextLinksComponent } from './components/item-details/links/hypertext-links/hypertext-links.component';
 import { BsDatepickerModule, BsDatepickerConfig, DatepickerModule } from 'ngx-bootstrap/datepicker';
 import { setTheme } from 'ngx-bootstrap/utils';
+import { InProgressDemandComponent } from '@app/about/components/in-progress-demand/in-progress-demand.component';
+import { HttpClientModule } from '@angular/common/http';
+
+import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
+import { CalendarModule } from 'primeng/calendar';
+import { SliderModule } from 'primeng/slider';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ContextMenuModule } from 'primeng/contextmenu';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { InputTextModule } from 'primeng/inputtext';
+import { RatingModule } from 'primeng/rating';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { TooltipModule } from 'primeng/tooltip';
+
 setTheme('bs4');
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default,
@@ -90,6 +108,7 @@ const ngWizardConfig: NgWizardConfig = {
     LastMovementComponent,
     NoticeBeingCreatedComponent,
     HypertextLinksComponent,
+    InProgressDemandComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
@@ -103,7 +122,7 @@ const ngWizardConfig: NgWizardConfig = {
     NgMultiSelectDropDownModule,
     NgbCarouselModule,
     NgbModule,
-    AgGridModule.withComponents([FullWidthCellRenderer]),
+    AgGridModule.withComponents([]),
     AutocompleteLibModule,
     TreeviewModule.forRoot(),
     NgxSliderModule,
@@ -113,6 +132,23 @@ const ngWizardConfig: NgWizardConfig = {
     NgImageSliderModule,
     BsDatepickerModule.forRoot(),
     DatepickerModule.forRoot(),
+    HttpClientModule,
+    TableModule,
+    CalendarModule,
+    SliderModule,
+    DialogModule,
+    MultiSelectModule,
+    ContextMenuModule,
+    DropdownModule,
+    ButtonModule,
+    ToastModule,
+    InputTextModule,
+    ProgressBarModule,
+    HttpClientModule,
+    FormsModule,
+    RatingModule,
+    InputSwitchModule,
+    TooltipModule,
   ],
   providers: [MovementsService, , BsDatepickerConfig],
 })

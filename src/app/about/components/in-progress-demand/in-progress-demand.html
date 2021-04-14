@@ -1,0 +1,105 @@
+<div class="breadcrumb">
+  <a href="home-page" class="selected-item"> Liste des commandes </a>
+</div>
+<div class="container-fluid">
+  <div class="body">
+    <p-table [value]="products" dataKey="name">
+      <ng-template pTemplate="caption">
+        <div class="p-d-flex">
+          <span class="p-input-icon-left p-ml-auto">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text" placeholder="Rechercher ..." />
+          </span>
+          <button
+            type="button"
+            style="float: right"
+            pButton
+            pRipple
+            icon="pi pi-file-excel"
+            class="p-button-success p-mr-2"
+            pTooltip="Exporter"
+            tooltipPosition="top"
+          ></button>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 3rem"></th>
+          <th pSortableColumn="date">Date de demande<p-sortIcon field="date"></p-sortIcon></th>
+          <th pSortableColumn="name">Demandé par <p-sortIcon field="name"></p-sortIcon></th>
+          <th pSortableColumn="category">Direction <p-sortIcon field="category"></p-sortIcon></th>
+          <th pSortableColumn="rating">Sous-direction <p-sortIcon field="rating"></p-sortIcon></th>
+          <th pSortableColumn="inventoryStatus">Bâtiment <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
+          <th>Date de livraision souhaité<p-sortIcon field="date"></p-sortIcon></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product let-expanded="expanded">
+        <tr>
+          <td>
+            <button
+              type="button"
+              pButton
+              pRipple
+              [pRowToggler]="product"
+              class="p-button-text p-button-rounded p-button-plain"
+              [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+            ></button>
+          </td>
+          <td>{{product.date}}</td>
+          <td>{{product.name}}</td>
+          <td>{{product.category}}</td>
+          <td>{{product.name}}</td>
+          <td>
+            <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()"
+              >{{product.inventoryStatus}}</span
+            >
+          </td>
+          <td>{{product.date}}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="rowexpansion" let-product>
+        <tr>
+          <td colspan="7">
+            <div class="p-p-3">
+              <p-table [value]="product.orders" dataKey="id">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th pSortableColumn="id">Numéro inventaire <p-sortIcon field="price"></p-sortIcon></th>
+                    <th></th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-order>
+                  <tr>
+                    <td>{{order.id}}</td>
+                    <td style="text-align: center">
+                      <p class="d-inline p-3">Non</p>
+                      <p class="d-inline p-3">
+                        <p-inputSwitch style="margin-top: 5px" [(ngModel)]="checked2"></p-inputSwitch>
+                      </p>
+                      <p class="d-inline p-3">Oui</p>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="6">There are no order for this product yet.</td>
+                  </tr>
+                </ng-template>
+                <tr>
+                  <td colspan="2">
+                    <button pButton pRipple type="button" label="Valider demandes" class="p-button-secondary"></button>
+                  </td>
+                </tr>
+              </p-table>
+              <tr class="float-right">
+                <td colspan="2" style="text-align: left; border-width: 0 0 1px 0; padding: 1rem 1rem">
+                  <button pButton pRipple type="button" label="Valider demandes" class="p-button-secondary"></button>
+                </td>
+              </tr>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
