@@ -1,5 +1,5 @@
 <div class="breadcrumb">
-  <a href="home-page">Accueil</a>
+  <a href="accueil">Accueil</a>
 </div>
 <div class="container-fluid">
   <div class="body d-flex">
@@ -27,7 +27,7 @@
               <div>
                 <b>35</b>
                 <span>
-                  <a href="being-created-notices" class="flex-column">
+                  <a (click)="onNoticeClick()" class="flex-column">
                     <span class="title">Oeuvres</span>
                     <span class="title">en cours de création</span>
                   </a>
@@ -54,7 +54,7 @@
               <div>
                 <b>20</b>
                 <span>
-                  <a href="work-of-arts-list" class="flex-column">
+                  <a (click)="onRecolementClick()" class="flex-column">
                     <span class="title">Récolements</span>
                     <span class="title">en cours</span>
                   </a>
@@ -95,7 +95,7 @@
               <div>
                 <b>21</b>
                 <span>
-                  <a href="work-of-arts-list" class="flex-column">
+                  <a (click)="onAlertClick()" class="flex-column">
                     <span class="title">Alertes</span>
                     <span class="title">en cours</span>
                   </a>

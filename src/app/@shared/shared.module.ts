@@ -32,6 +32,7 @@ import { RecoleRendererComponent } from './components/datatables/recole-renderer
 import { AccordionSectionComponent } from './components/accordion-section/accordion-section.component';
 import { NgxHorizontalTimelineModule } from 'ngx-horizontal-timeline';
 import { FullWidthCellRendererComponent as FullWidthCellRenderer } from './components/datatables/full-width-cell-renderer/full-width-cell-renderer.component';
+import { ImageViewerComponent } from './components/datatables/image-viewer/image-viewer.component';
 
 @NgModule({
   imports: [
@@ -72,6 +73,7 @@ import { FullWidthCellRendererComponent as FullWidthCellRenderer } from './compo
     RecoleRendererComponent,
     AccordionSectionComponent,
     FullWidthCellRenderer,
+    ImageViewerComponent,
   ],
   exports: [
     LoaderComponent,

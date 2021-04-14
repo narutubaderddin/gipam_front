@@ -18,12 +18,12 @@ export class PublicHeaderComponent implements OnInit {
   ngOnInit(): void {}
 
   home() {
-    this.router.navigate(['home-page']);
+    this.router.navigate(['accueil']);
     this.menu = 1;
   }
   goToWorkOfArts() {
     this.menu = 2;
-    this.router.navigate(['work-of-arts-list']);
+    this.router.navigate(['oeuvres-list']);
   }
 
   logout() {

@@ -24,11 +24,14 @@ import { StatusTypeRenderComponent } from '@shared/components/datatables/status-
 import { Options } from '@angular-slider/ngx-slider';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { ImageViewerComponent } from '@shared/components/datatables/image-viewer/image-viewer.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-list-work-of-arts',
   templateUrl: './list-work-of-arts.component.html',
   styleUrls: ['./list-work-of-arts.component.scss'],
+  providers: [DatePipe],
 })
 export class ListWorkOfArtsComponent implements OnInit {
   @ViewChildren('accordionSectionDOM', { read: ElementRef }) accordionsDOM: QueryList<ElementRef>;
@@ -46,6 +49,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     visibleRenderer: VisibleCatalogRendererComponent,
     detailsLink: RemarquerDetailsLinkRendererComponent,
     statusTypeRender: StatusTypeRenderComponent,
+    imageViewer: ImageViewerComponent,
   };
   defaultColDef = {
     headerComponent: 'customHeader',
@@ -152,6 +156,12 @@ export class ListWorkOfArtsComponent implements OnInit {
       width: 100,
     },
     {
+      headerName: 'photographie',
+      field: 'property',
+      cellRenderer: 'imageViewer',
+      width: 100,
+    },
+    {
       headerName: 'Dernier constat de présence',
       field: 'author',
       width: 100,
@@ -216,6 +226,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     private fb: FormBuilder,
     public columnFilterService: ColumnFilterService,
     public WorkOfArtService: WorkOfArtService,
+    private datePipe: DatePipe,
     private router: Router
   ) {}
 
@@ -242,6 +253,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       domaine: new FormControl(''),
       denomination: new FormControl(''),
       author: new FormControl(''),
+      date: new FormControl(''),
     });
     this.form2 = new FormGroup({
       mouvement: new FormControl(''),
@@ -374,7 +386,7 @@ export class ListWorkOfArtsComponent implements OnInit {
 
   //add movable objects
   addPropertyMovableObject() {
-    this.router.navigate(['add-property-remarquer']);
+    this.router.navigate(['creation-notice']);
   }
 
   addDepositMovableObject() {}
@@ -468,7 +480,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   }
   private checkFormvalues(val: any, key: string) {
     let value = '';
-    if (['string', 'boolean'].indexOf(typeof val[key]) == -1) {
+    if (['string', 'boolean', 'object', 'number'].indexOf(typeof val[key]) == -1) {
       val[key].forEach((choice: any) => {
         value += choice['name'] + ',';
       });
@@ -535,6 +547,8 @@ export class ListWorkOfArtsComponent implements OnInit {
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
   hoveredDate: NgbDate | null = null;
+  openImg: boolean = false;
+  imageUrl: string;
   onDateSelection(date: NgbDate) {
     if (!this.fromDate && !this.toDate) {
       this.fromDate = date;
@@ -563,5 +577,23 @@ export class ListWorkOfArtsComponent implements OnInit {
       this.isInside(date) ||
       this.isHovered(date)
     );
+  }
+
+  showImg(url: string = null) {
+    if (url == null) {
+      this.openImg = false;
+    } else {
+      this.imageUrl = url;
+      this.openImg = !this.openImg;
+    }
+  }
+
+  onChange(event: Date) {
+    if (event && !isNaN(event.getFullYear())) {
+      console.log(this.datePipe.transform(new Date(event.getFullYear()), 'yyyy'));
+
+      this.form1.controls['date'].setValue(event.getFullYear());
+      console.log(this.form1.value);
+    }
   }
 }

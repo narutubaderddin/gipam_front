@@ -71,28 +71,59 @@
     <input type="date" class="form-control value" *ngIf="edit" />
     <div class="value" *ngIf="!edit">12/01/2020</div>
   </div>
-  <!--  <div class="form-group d-flex col-md-4">-->
-  <!--    <label class="col-md-4">Mode Entrée</label>-->
-  <!--    <div class="autocomplete col-md-7" *ngIf="edit">-->
-  <!--      <ng-autocomplete-->
-  <!--        placeholder="Mode Entrée"-->
-  <!--        [data]="domains"-->
-  <!--        [searchKeyword]="keyword"-->
-  <!--        (selected)="selectEvent($event)"-->
-  <!--        (inputChanged)="onChangeSearch($event)"-->
-  <!--        (inputFocused)="onFocused($event)"-->
-  <!--        [itemTemplate]="itemTemplate"-->
-  <!--        [notFoundTemplate]="notFoundTemplate"-->
-  <!--      >-->
-  <!--      </ng-autocomplete>-->
-  <!--      <ng-template #itemTemplate let-item>-->
-  <!--        <a [innerHTML]="item.name"></a>-->
-  <!--      </ng-template>-->
-  <!--      <ng-template #notFoundTemplate let-notFound>-->
-  <!--        <div [innerHTML]="notFound"></div>-->
-  <!--      </ng-template>-->
+
+  <div class="form-group col-md-6" *ngIf="addProperty">
+    <label class="col-md-3">Mode Entrée</label>
+    <div class="d-flex value">
+      <select class="col-md-12 form-control">
+        <option class="active">--choisir Mode Entrée--</option>
+        <option *ngFor="let mode of modeEntree">{{ mode }}</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group col-md-6" *ngIf="addProperty">
+    <label class="">Date de création</label>
+    <input type="date" class="form-control value" *ngIf="edit" />
+    <div class="value" *ngIf="!edit">12/01/2020</div>
+  </div>
+  <div class="form-group col-md-6" *ngIf="addProperty">
+    <label class="col-md-3">Catégorie de bien</label>
+    <div class="d-flex value" *ngIf="addProperty">
+      <select class="col-md-12 form-control">
+        <option class="active">--choisir une catégorie--</option>
+        <option *ngFor="let category of categories">{{ category }}</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="d-flex form-group col-md-12 p-0">
+      <label>Commentaire</label>
+      <textarea type="text" class="form-control value" placeholder="Commentaire ..." *ngIf="addProperty"></textarea>
+    </div>
+  </div>
+
+  <!--    <div class="form-group d-flex col-md-4">-->
+  <!--      <label class="col-md-4">Mode Entrée</label>-->
+  <!--      <div class="autocomplete col-md-7" *ngIf="edit">-->
+  <!--        <ng-autocomplete-->
+  <!--          placeholder="Mode Entrée"-->
+  <!--          [data]="domains"-->
+  <!--          [searchKeyword]="keyword"-->
+  <!--          (selected)="selectEvent($event)"-->
+  <!--          (inputChanged)="onChangeSearch($event)"-->
+  <!--          (inputFocused)="onFocused($event)"-->
+  <!--          [itemTemplate]="itemTemplate"-->
+  <!--          [notFoundTemplate]="notFoundTemplate"-->
+  <!--        >-->
+  <!--        </ng-autocomplete>-->
+  <!--        <ng-template #itemTemplate let-item>-->
+  <!--          <a [innerHTML]="item.name"></a>-->
+  <!--        </ng-template>-->
+  <!--        <ng-template #notFoundTemplate let-notFound>-->
+  <!--          <div [innerHTML]="notFound"></div>-->
+  <!--        </ng-template>-->
+  <!--      </div>-->
+  <!--     -->
   <!--    </div>-->
-  <!--    <p class="col-md-7 value" *ngIf="!edit">Sculpture</p>-->
-  <!--  </div>-->
 </div>
 <!--</div>-->

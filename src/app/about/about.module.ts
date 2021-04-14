@@ -50,8 +50,12 @@ import { FullWidthCellRendererComponent as FullWidthCellRenderer } from '@app/@s
 import { NoticeBeingCreatedComponent } from './components/administrator-home-page/notice-being-created/notice-being-created.component';
 import { NgFileDragDropModule } from 'ng-file-drag-drop';
 import { HypertextLinksComponent } from './components/item-details/links/hypertext-links/hypertext-links.component';
+import { AddDescriptionsComponent } from './components/add-property-remarquer/add-descriptions/add-descriptions.component';
 import { BsDatepickerModule, BsDatepickerConfig, DatepickerModule } from 'ngx-bootstrap/datepicker';
 import { setTheme } from 'ngx-bootstrap/utils';
+import { NoticeListComponent } from './components/notice-list/notice-list.component';
+import { RecolementListComponent } from './components/recolement-list/recolement-list.component';
+import { AlertListComponent } from './components/alert-list/alert-list.component';
 import { InProgressDemandComponent } from '@app/about/components/in-progress-demand/in-progress-demand.component';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -71,6 +75,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { TooltipModule } from 'primeng/tooltip';
 
 setTheme('bs4');
+
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default,
 };
@@ -108,6 +113,10 @@ const ngWizardConfig: NgWizardConfig = {
     LastMovementComponent,
     NoticeBeingCreatedComponent,
     HypertextLinksComponent,
+    AddDescriptionsComponent,
+    NoticeListComponent,
+    RecolementListComponent,
+    AlertListComponent,
     InProgressDemandComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
@@ -122,7 +131,7 @@ const ngWizardConfig: NgWizardConfig = {
     NgMultiSelectDropDownModule,
     NgbCarouselModule,
     NgbModule,
-    AgGridModule.withComponents([]),
+    AgGridModule.withComponents([FullWidthCellRenderer]),
     AutocompleteLibModule,
     TreeviewModule.forRoot(),
     NgxSliderModule,
