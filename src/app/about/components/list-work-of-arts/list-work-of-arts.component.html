@@ -1,5 +1,5 @@
 <div class="breadcrumb">
-  <a href="home-page" class="selected-item"> Liste oeuvres d'art </a>
+  <a href="accueil" class="selected-item"> Liste oeuvres d'art </a>
 </div>
 <div class="container-fluid">
   <div class="body">
@@ -283,6 +283,23 @@
                         <option value="0">Ou</option>
                       </select>
                     </div>
+                    <div class="form-group d-flex slider-bloc row">
+                      <div class="row col-10">
+                        <label class="col-5">N unité</label>
+
+                        <input
+                          type="text"
+                          formControlName="inventory"
+                          class="form-control col-6"
+                          *ngIf="!showInventoryRange"
+                          placeholder="N° inventaire"
+                        />
+                      </div>
+                      <select class="select-style input-form-control col-md-2">
+                        <option value="1">Et</option>
+                        <option value="0">Ou</option>
+                      </select>
+                    </div>
                   </div>
                   <div class="col-6" *ngIf="form1Advanced">
                     <div class="form-group d-flex slider-bloc row">
@@ -310,9 +327,11 @@
 
                         <input
                           class="col-6 form-control"
-                          [(ngModel)]="modelDate"
+                          formControlName="date"
                           autocomplete="off"
                           name="date"
+                          (bsValueChange)="onChange($event)"
+                          [bsConfig]="{ dateInputFormat: 'YYYY' }"
                           bsDatepicker
                           minMode="year"
                           placeholder="YYYY"
@@ -384,11 +403,31 @@
                         <option value="0">Ou</option>
                       </select>
                     </div>
+                    <div class="form-group d-flex slider-bloc row">
+                      <div class="row col-10">
+                        <label class="col-5">Poids</label>
+
+                        <div
+                          class="custom-slider mt-3 col-5"
+                          style="width: 90% !important; margin-top: -15px !important"
+                        >
+                          <ngx-slider
+                            [(value)]="inventoryValue"
+                            [(highValue)]="hightInventoryValue"
+                            [options]="inventoryOptions"
+                          ></ngx-slider>
+                        </div>
+                      </div>
+                      <select class="select-style input-form-control col-md-2">
+                        <option value="1">Et</option>
+                        <option value="0">Ou</option>
+                      </select>
+                    </div>
                     <div class="form-group slider-bloc row">
                       <div class="row col-12">
                         <label class="col-4">Mots descriptifs</label>
 
-                        <tag-input [(ngModel)]="items" [modelAsStrings]="true"> </tag-input>
+                        <tag-input [modelAsStrings]="true"> </tag-input>
                       </div>
                     </div>
                   </div>
@@ -927,6 +966,19 @@
                     </ng-multiselect-dropdown>
                   </div>
                   <div class="form-group d-flex slider-bloc row">
+                    <label for="domaine" class="col-5">Etage </label>
+                    <ng-multiselect-dropdown
+                      class="select col-6 w-100"
+                      [placeholder]="'Choisir des Etages'"
+                      [settings]="dropdownSettings"
+                      [data]="domaine"
+                      formControlName="pieceNumber"
+                      (onSelect)="onDomainSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
                     <label for="domaine" class="col-5">Correspodants </label>
                     <ng-multiselect-dropdown
                       class="select col-6 w-100"
@@ -1110,4 +1162,9 @@
       </div>
     </div>
   </div>
+</div>
+<!--Modal-->
+<div id="image-viewer" [class.active]="openImg">
+  <p class="close" (click)="showImg()">&times;</p>
+  <img [src]="imageUrl" alt="" class="modal-content" id="full-image" />
 </div>

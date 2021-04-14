@@ -36,12 +36,12 @@ export class SidebarNavComponent implements OnInit {
   }
 
   home() {
-    this.router.navigate(['home-page']);
+    this.router.navigate(['accueil']);
     this.menu = 1;
   }
   goToWorkOfArts() {
     this.menu = 2;
-    this.router.navigate(['work-of-arts-list']);
+    this.router.navigate(['oeuvres-list']);
   }
 
   logout() {
@@ -53,4 +53,12 @@ export class SidebarNavComponent implements OnInit {
     this.menu = 4;
     this.router.navigate(['portail']);
   }
+
+  goToRecolementList() {
+    this.router.navigate(['recolements-list']);
+  }
+  goToAlertList() {
+    this.router.navigate(['alerts-list']);
+  }
+  goToDemandesList() {}
 }

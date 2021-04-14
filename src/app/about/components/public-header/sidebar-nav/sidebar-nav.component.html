@@ -39,7 +39,11 @@
         </div>
       </li>
 
-      <li class="right-header list main_nav_list_item recolement" *ngIf="isAuthentiticated" (click)="goToWorkOfArts()">
+      <li
+        class="right-header list main_nav_list_item recolement"
+        *ngIf="isAuthentiticated"
+        (click)="goToRecolementList()"
+      >
         <div class="dropdown nav-menu" [class.nav-active]="menu == 2">
           <a class="pl-3 pr-3">
             <i class="fa fa-tasks" style="font-size: 18px"></i>
@@ -47,7 +51,7 @@
           </a>
         </div>
       </li>
-      <li class="right-header list main_nav_list_item alerts" *ngIf="isAuthentiticated" (click)="goToWorkOfArts()">
+      <li class="right-header list main_nav_list_item alerts" *ngIf="isAuthentiticated" (click)="goToAlertList()">
         <div class="dropdown nav-menu" [class.nav-active]="menu == 2">
           <a class="pl-3 pr-3">
             <i class="fa fa-exclamation-triangle" style="font-size: 18px"></i>
