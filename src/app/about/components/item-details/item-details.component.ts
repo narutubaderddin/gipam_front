@@ -15,6 +15,7 @@ export class ItemDetailsComponent implements OnInit {
 
   elementPosition: any;
   // @Input() collapseSideNav: boolean;
+
   type: string = 'depot';
   page: any = 2;
   edit = false;
