@@ -9,6 +9,9 @@ import { of } from 'rxjs';
   styleUrls: ['./add-property-remarquer.component.scss'],
 })
 export class AddPropertyRemarquerComponent implements OnInit {
+  createDepot: false;
+  createProperty: true;
+
   domains = this.WorkOfArtService.domaine;
   keyword = 'name';
   stepStates = {

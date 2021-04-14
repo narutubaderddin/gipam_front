@@ -15,6 +15,7 @@ export class AttachmentsComponent implements OnInit {
   dragDropConfig = {
     showList: true,
     showProgress: true,
+    lang: {},
   };
 
   columnDefs: ColDef[] = [

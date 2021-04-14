@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ColDef, ColumnApi, GridApi } from 'ag-grid-community';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 @Component({
   selector: 'app-links',
@@ -8,7 +9,8 @@ import { ColDef, ColumnApi, GridApi } from 'ag-grid-community';
 })
 export class LinksComponent implements OnInit {
   @Input() add: false;
-  types = [' 125', ' 222', ' 342'];
+  refs = [' 125', ' 222', ' 342'];
+  dropdownSettings: IDropdownSettings;
 
   columnDefs: ColDef[] = [
     {
@@ -64,5 +66,20 @@ export class LinksComponent implements OnInit {
   gridReady = false;
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // this.domains = this.WorkOfArtService.domaine;
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'name',
+      selectAllText: 'Sélectionner tout',
+      unSelectAllText: 'Supprimer les sélections',
+      itemsShowLimit: 1,
+      allowSearchFilter: true,
+    };
+  }
+  onItemSelect(item: any) {
+    console.log(item);
+  }
+  onSelectAll(items: any) {}
 }

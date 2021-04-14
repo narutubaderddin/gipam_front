@@ -50,6 +50,7 @@ import { FullWidthCellRendererComponent as FullWidthCellRenderer } from '@app/@s
 import { NoticeBeingCreatedComponent } from './components/administrator-home-page/notice-being-created/notice-being-created.component';
 import { NgFileDragDropModule } from 'ng-file-drag-drop';
 import { HypertextLinksComponent } from './components/item-details/links/hypertext-links/hypertext-links.component';
+import { AddDescriptionsComponent } from './components/add-property-remarquer/add-descriptions/add-descriptions.component';
 
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default,
@@ -88,6 +89,7 @@ const ngWizardConfig: NgWizardConfig = {
     LastMovementComponent,
     NoticeBeingCreatedComponent,
     HypertextLinksComponent,
+    AddDescriptionsComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [

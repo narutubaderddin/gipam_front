@@ -1,6 +1,6 @@
 <div class="col-md-12">
-  <div class="col-md-12">
-    <h5>Liens avec oeuvres</h5>
+  <div class="col-md-12 p-0">
+    <h5 class="pl-0">Liens avec oeuvres</h5>
 
     <ol class="rounded-list" *ngIf="!add">
       <li>Fait partie de:</li>
@@ -24,26 +24,24 @@
     </ol>
   </div>
 
-  <ol class="rounded-list" *ngIf="add">
+  <ol class="mb-2" *ngIf="add">
     <li class="mb-2">Fait partie de:</li>
     <li>
-      <select formControlName="photographyType" style="font-size: 12px" class="col-12 p-1">
-        <option value="">--Choisissez Référence--</option>
-        <option *ngFor="let type of types" [value]="type">{{ type }}</option>
-      </select>
-    </li>
-
-    <li class="mt-2">
-      Composé de :
-      <ol class="mt-2">
-        <li></li>
-        <li>
-          <select formControlName="photographyType" style="font-size: 12px" class="col-12 p-1">
-            <option value="">--Choisissez Référence--</option>
-            <option *ngFor="let type of types" [value]="type">{{ type }}</option>
-          </select>
-        </li>
-      </ol>
+      <!--      <select formControlName="photographyType" style="font-size: 12px" class="col-12 p-1">-->
+      <!--        <option value="">&#45;&#45;Choisissez Référence&#45;&#45;</option>-->
+      <!--        <option *ngFor="let type of types" [value]="type">{{ type }}</option>-->
+      <!--      </select>-->
+      <ng-multiselect-dropdown
+        style="font-size: 12px"
+        class="col-12 p-1"
+        class="select"
+        [placeholder]="'--Choisir Référence d\'oeuvre--'"
+        [settings]="dropdownSettings"
+        [data]="refs"
+        (onSelect)="onItemSelect($event)"
+        (onSelectAll)="onSelectAll($event)"
+      >
+      </ng-multiselect-dropdown>
     </li>
   </ol>
 
@@ -71,7 +69,3 @@
   <!--      </ng-template>-->
   <!--    </div>-->
 </div>
-<!--  <div class="col-md-2 align-self-end" *ngIf=" add">-->
-<!--    <i class="fas fa-trash-alt delete"></i>-->
-<!--    <i class="add ml-3 mt-1 fas fa-plus"></i>-->
-<!--  </div>-->

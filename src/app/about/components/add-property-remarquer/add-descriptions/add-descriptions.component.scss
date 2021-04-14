@@ -1,0 +1,41 @@
+hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.divider {
+  border-bottom: 0.1em solid #babfc7;
+  width: 95%;
+  margin-left: 10px;
+}
+
+::ng-deep ng-multiselect-dropdown {
+  width: 65%;
+}
+::ng-deep .multiselect-dropdown .dropdown-btn {
+  border-color: transparent;
+  color: black;
+  background-color: white;
+}
+label {
+  font-size: 14px !important;
+  color: #838a90;
+}
+.form-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  max-width: 48%;
+  margin: 0.5% 1%;
+  font-size: 14px;
+  color: #212121;
+}
+.value {
+  text-align: start;
+  width: 60%;
+}
+.form-control {
+  font-size: 12px;
+}

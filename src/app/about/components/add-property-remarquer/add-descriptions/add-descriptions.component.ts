@@ -1,20 +1,20 @@
-import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { WorkOfArtService } from '@shared/services/work-of-art.service';
 
 @Component({
-  selector: 'app-descritif',
-  templateUrl: './descritif.component.html',
-  styleUrls: ['./descritif.component.scss'],
+  selector: 'app-add-descriptions',
+  templateUrl: './add-descriptions.component.html',
+  styleUrls: ['./add-descriptions.component.scss'],
 })
-export class DescritifComponent implements OnInit {
+export class AddDescriptionsComponent implements OnInit {
   domains: any;
   @Input() keyword: string;
-  @Input() edit = false;
+
   @Input() addDepot = false;
   @Input() addProperty = true;
-
-  domain = 'Sculpture';
+  items: any = [];
+  domain = '';
   denomination: any;
   selectedDomain = '';
   isCollapsed = true;
@@ -34,6 +34,9 @@ export class DescritifComponent implements OnInit {
       itemsShowLimit: 1,
       allowSearchFilter: true,
     };
+  }
+  onTagEdited(e: any) {
+    console.log(e);
   }
   selectDomain(item: any) {
     this.denomination = item.denominations;
@@ -59,10 +62,16 @@ export class DescritifComponent implements OnInit {
     this.denomination = item.denominations;
     this.selectedDomain = item.name;
     console.log('selectedDomain', this.selectedDomain);
+    console.log('Domain', this.domain);
+
     console.log(item);
   }
   onItemSelect(item: any) {
-    console.log(item);
+    this.denomination = item;
+    console.log('item', item);
+  }
+  onAuthorSelect(item: any) {
+    console.log('author', item);
   }
   onSelectAll(items: any) {}
 }

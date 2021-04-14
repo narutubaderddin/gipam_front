@@ -53,7 +53,8 @@ export class WorkOfArtService {
   ];
   denominations = [
     { id: 1, name: 'Affiche' },
-    { id: 2, name: 'Dessin' },
+    { id: 2, name: 'Statuette' },
+    { id: 15, name: 'Dessin' },
     { id: 3, name: 'Estampe' },
     { id: 4, name: 'Gravure' },
     { id: 5, name: 'Peinture sur papier' },
