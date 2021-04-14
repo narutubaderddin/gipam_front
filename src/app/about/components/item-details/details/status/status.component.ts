@@ -9,7 +9,10 @@ export class StatusComponent implements OnInit {
   @Input() domains: any;
   @Input() keyword: string;
   @Input() edit = false;
+  @Input() addProperty = false;
   isCollapsed = false;
+  categories = ['Bien patrimonial exceptionnel', 'Bien patrimonial standard', 'Bien usuel', 'issu du 1% artistique'];
+  modeEntree = ["Inscription rétrospective à l'inventaire", 'Don', 'Acquisition', "Cession / transfert d'affectation"];
   constructor() {}
 
   ngOnInit(): void {}

@@ -87,7 +87,7 @@
                         <ng-container ngbNavItem>
                           <a ngbNavLink><i class="far fa-file-alt mr-2"></i>Descriptifs physiques</a>
                           <ng-template ngbNavContent>
-                            <app-descritif [edit]="edit"></app-descritif>
+                            <app-descritif [edit]="edit" [addProperty]="false" [addDepot]="false"></app-descritif>
                           </ng-template>
                         </ng-container>
                         <ng-container ngbNavItem>
@@ -102,10 +102,10 @@
 
                     <div [ngbNavOutlet]="nav" class=""></div>
 
-                    <div *ngIf="edit" class="col-md-12 p-0" style="display: flex; flex-direction: row-reverse">
-                      <button class="btn valid-btn" (click)="onSave()">Enregistrer</button>
-                      <button class="btn gbtn-action cancel-btn">Annuler</button>
-                    </div>
+                    <!--                    <div *ngIf="edit" class="col-md-12 p-0" style="display: flex; flex-direction: row-reverse">-->
+                    <!--                      <button class="btn valid-btn" (click)="onSave()">Enregistrer</button>-->
+                    <!--                      <button class="btn gbtn-action cancel-btn">Annuler</button>-->
+                    <!--                    </div>-->
                   </div>
                   <div class="d-flex col-12 p-0 flex-column">
                     <div class="d-flex col-12 p-0 mt-4 justify-content-between">
