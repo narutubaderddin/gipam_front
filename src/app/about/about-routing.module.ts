@@ -8,25 +8,30 @@ import { ListWorkOfArtsComponent } from './components/list-work-of-arts/list-wor
 import { PortailComponent } from './components/portail/portail.component';
 import { PortailItemDetailsComponent } from '@app/about/components/portail-item-details/portail-item-details.component';
 import { NoticeBeingCreatedComponent } from './components/administrator-home-page/notice-being-created/notice-being-created.component';
+import { NoticeListComponent } from '@app/about/components/notice-list/notice-list.component';
+import { RecolementListComponent } from '@app/about/components/recolement-list/recolement-list.component';
+import { AlertListComponent } from '@app/about/components/alert-list/alert-list.component';
 const routes: Routes = [
   {
     path: '',
     component: AboutComponent,
     children: [
-      { path: '', redirectTo: 'home-page', pathMatch: 'full' },
-      { path: 'home-page', component: AdministratorHomePageComponent, data: { title: 'Accueil' } },
-      { path: 'item-details', component: ItemDetailsComponent },
+      { path: '', redirectTo: 'accueil', pathMatch: 'full' },
+      { path: 'accueil', component: AdministratorHomePageComponent, data: { title: 'Accueil' } },
+      { path: 'details', component: ItemDetailsComponent },
       { path: 'portail-details', component: PortailItemDetailsComponent },
       {
-        path: 'work-of-arts-list',
+        path: 'oeuvres-list',
         component: ListWorkOfArtsComponent,
         data: {
           title: "Liste des oeuvres d'art",
         },
       },
       { path: 'portail', component: PortailComponent },
-      { path: 'add-property-remarquer', component: AddPropertyRemarquerComponent },
-      { path: 'being-created-notices', component: NoticeBeingCreatedComponent },
+      { path: 'creation-notice', component: AddPropertyRemarquerComponent },
+      { path: 'notices-list', component: NoticeListComponent },
+      { path: 'recolements-list', component: RecolementListComponent },
+      { path: 'alerts-list', component: AlertListComponent },
     ],
   },
 ];

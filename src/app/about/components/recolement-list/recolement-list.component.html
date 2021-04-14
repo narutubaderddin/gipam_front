@@ -1,0 +1,74 @@
+<div class="breadcrumb">
+  <a href="accueil">Accueil</a>
+  <a href="accueil" class="selected-item">
+    <i class="fas fa-chevron-right"></i>
+    List des Recolements
+  </a>
+</div>
+<div class="container-fluid">
+  <div class="body d-flex">
+    <div class="col-md-12">
+      <div class="mt-3">
+        <div class="sidebar">
+          <div class="card">
+            <div class="card-body">
+              <ul class="d-flex">
+                <li class="col-md-12 selected-table"><i class="fas fa-tasks"></i><a>List des Recolements </a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="mt-2 datagrid-bloc">
+          <div class="quick-filters d-flex">
+            <h6 class="text-quick-filter">Filtres rapides :</h6>
+            <div class="dropdown-container mb-2 mr-2 mb-sm-0">
+              <div class="d-inline-block drop-bloc">
+                <button class="btn dropdown-btn list quick-filter-btn" [class.active]="filter" (click)="resetFilter()">
+                  Récolement En Cours
+                </button>
+              </div>
+            </div>
+            <div class="search-add-section-div mt-3">
+              <div class="search input-group">
+                <input
+                  class="form-control py-2 border-right-0 border search-form-control"
+                  type="search"
+                  value="Rechercher"
+                  id="example-search-input"
+                />
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary border-left-0 border" type="button">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <div>
+              <!--              <div class="dropdown-container mb-2 mr-2 mb-sm-0" style="margin: 3px 0 15px 0">-->
+              <!--                <div class="d-inline-block drop-bloc">-->
+              <!--                <span class="icon-stack d-flex" (click)="resetFilter()">-->
+              <!--                  <i class="fas fa-filter"></i>-->
+              <!--                  <i class="fas fa-times"></i>-->
+              <!--                </span>-->
+              <!--                </div>-->
+              <!--              </div>-->
+            </div>
+          </div>
+          <div class="datatable mt-4">
+            <app-grid-wrapper
+              [columnDefs]="ColDef"
+              [rowData]="remarquers"
+              [frameworkComponents]="frameworkComponents"
+              [defaultColDef]="defaultColDef"
+              (gridReady)="onGridReady($event)"
+              [context]="this"
+              [paginationPageSize]="rowCount"
+              [gridOptions]="gridOptions"
+              [sizeToFit]="true"
+            ></app-grid-wrapper>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

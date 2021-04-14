@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-administrator-home-page',
   templateUrl: './administrator-home-page.component.html',
@@ -38,6 +39,17 @@ export class AdministratorHomePageComponent implements OnInit {
     },
   ];
 
-  constructor() {}
+  constructor(private router: Router) {}
   ngOnInit(): void {}
+
+  onNoticeClick() {
+    this.router.navigate(['notices-list'], { queryParams: { filter: 'en-cours' } });
+  }
+
+  onRecolementClick() {
+    this.router.navigate(['recolements-list'], { queryParams: { filter: 'en-cours' } });
+  }
+  onAlertClick() {
+    this.router.navigate(['alerts-list'], { queryParams: { filter: 'en-cours' } });
+  }
 }

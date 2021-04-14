@@ -24,7 +24,6 @@ export class StatusTypeRenderComponent implements ICellRendererAngularComp {
     } else {
       this.class = 'class2';
     }
-    console.log(this.params.value);
   }
 
   refresh(params: any): boolean {

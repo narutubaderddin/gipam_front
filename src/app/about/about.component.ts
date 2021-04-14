@@ -19,9 +19,9 @@ export class AboutComponent implements OnInit {
   }
 
   onSearchClick() {
-    this.router.navigate(['work-of-arts-list']);
+    this.router.navigate(['oeuvres-list']);
   }
   createNotice() {
-    this.router.navigate(['add-property-remarquer']);
+    this.router.navigate(['creation-notice']);
   }
 }

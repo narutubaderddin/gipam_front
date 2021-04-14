@@ -52,6 +52,9 @@ import { NgFileDragDropModule } from 'ng-file-drag-drop';
 import { HypertextLinksComponent } from './components/item-details/links/hypertext-links/hypertext-links.component';
 import { BsDatepickerModule, BsDatepickerConfig, DatepickerModule } from 'ngx-bootstrap/datepicker';
 import { setTheme } from 'ngx-bootstrap/utils';
+import { NoticeListComponent } from './components/notice-list/notice-list.component';
+import { RecolementListComponent } from './components/recolement-list/recolement-list.component';
+import { AlertListComponent } from './components/alert-list/alert-list.component';
 setTheme('bs4');
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default,
@@ -90,6 +93,9 @@ const ngWizardConfig: NgWizardConfig = {
     LastMovementComponent,
     NoticeBeingCreatedComponent,
     HypertextLinksComponent,
+    NoticeListComponent,
+    RecolementListComponent,
+    AlertListComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
