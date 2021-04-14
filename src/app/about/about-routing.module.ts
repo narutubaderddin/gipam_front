@@ -11,6 +11,7 @@ import { NoticeBeingCreatedComponent } from './components/administrator-home-pag
 import { NoticeListComponent } from '@app/about/components/notice-list/notice-list.component';
 import { RecolementListComponent } from '@app/about/components/recolement-list/recolement-list.component';
 import { AlertListComponent } from '@app/about/components/alert-list/alert-list.component';
+import { InProgressDemandComponent } from '@app/about/components/in-progress-demand/in-progress-demand.component';
 const routes: Routes = [
   {
     path: '',
@@ -25,6 +26,13 @@ const routes: Routes = [
         component: ListWorkOfArtsComponent,
         data: {
           title: "Liste des oeuvres d'art",
+        },
+      },
+      {
+        path: 'demandes-en-cours',
+        component: InProgressDemandComponent,
+        data: {
+          title: 'Liste des demandes en cours',
         },
       },
       { path: 'portail', component: PortailComponent },
