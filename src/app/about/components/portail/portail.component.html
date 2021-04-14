@@ -33,6 +33,15 @@
               </div>
               <div class="modal-body">
                 <div class="shop-container container-fluid">
+                  <div class="row" *ngIf="selectedOeuvre.length > 0">
+                    <div class="col-md-12">
+                      <i
+                        class="float-right fas fa-file-download d-inline p-2"
+                        placement="top"
+                        ngbTooltip="Exporter"
+                      ></i>
+                    </div>
+                  </div>
                   <div class="col-md-12" *ngIf="selectedOeuvre.length === 0; else existSelectedOeuvre">
                     <div class="alert alert-warning" role="alert" style="margin-top: 25px">
                       Vous n'avez aucun bien culturel demandé.
@@ -68,6 +77,8 @@
                                   <td class="text-center d-none d-md-block">
                                     <button
                                       (click)="removeFromBasket($event, oeuvre)"
+                                      placement="top"
+                                      ngbTooltip="Retirer du panier"
                                       type="button"
                                       class="btn btn-outline-danger btn-xs"
                                     >
@@ -427,12 +438,15 @@
                 <strong>{{ items.titre }}</strong>
                 <ul>
                   <li>{{ items.auteur }}</li>
-                  <li><i class="fa fa-eye icon" aria-hidden="true" title="Voir plus de détails"></i></li>
+                  <li>
+                    <i class="fa fa-eye icon" aria-hidden="true" placement="top" ngbTooltip="Voir plus de détails"></i>
+                  </li>
                   <li *ngIf="!items.isDemanded; else removeOuvre" class="shopping">
                     <i
                       data-toggle="tooltip"
                       data-placement="top"
-                      title="Ajouter au panier1"
+                      placement="top"
+                      ngbTooltip="Ajouter au panier"
                       class="fa fa-shopping-basket icon"
                       aria-hidden="true"
                       (click)="addToBasket($event, items)"
@@ -441,7 +455,8 @@
                   <ng-template #removeOuvre>
                     <li class="shopping">
                       <i
-                        title="Retirer du panier"
+                        placement="top"
+                        ngbTooltip="Retirer du panier"
                         class="far fa-trash-alt icon-delete"
                         aria-hidden="true"
                         (click)="removeFromBasket($event, items)"
