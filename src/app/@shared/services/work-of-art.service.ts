@@ -5,6 +5,16 @@ import { TreeviewItem } from 'ngx-treeview';
   providedIn: 'root',
 })
 export class WorkOfArtService {
+  statusType = [
+    {
+      id: 0,
+      name: 'Dépôt ',
+    },
+    {
+      id: 1,
+      name: 'Prorièté ',
+    },
+  ];
   domaine = [
     {
       id: 0,
@@ -401,6 +411,7 @@ export class WorkOfArtService {
           style: 'Renaissance',
           creationDate: '25/12/1921',
           property: 'Dépôt',
+          depositor: 'depoistor 1',
           visible: true,
         },
         {
@@ -435,6 +446,7 @@ export class WorkOfArtService {
           style: 'Tableau non classés',
           creationDate: '30/11/1920',
           property: 'Dépôt',
+          depositor: 'depoistor 1',
           visible: true,
         },
         {
@@ -473,6 +485,7 @@ export class WorkOfArtService {
           style: 'Renaissance',
           creationDate: '30/11/1920',
           property: 'Dépôt',
+          depositor: 'depoistor 1',
           visible: true,
         },
         {
@@ -514,6 +527,7 @@ export class WorkOfArtService {
           style: 'Sculpture',
           creationDate: '30/11/1920',
           property: 'Dépôt',
+          depositor: 'depoistor 1',
           visible: true,
         },
         {
@@ -532,6 +546,7 @@ export class WorkOfArtService {
           style: 'Tableau non classés',
           creationDate: '21/02/1920',
           property: 'Dépôt',
+          depositor: 'depoistor 1',
           visible: true,
         },
         {
