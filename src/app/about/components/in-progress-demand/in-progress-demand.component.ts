@@ -27,6 +27,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 })
 export class InProgressDemandComponent {
   checked2: boolean = true;
+
   products: any[] = [
     {
       id: '1000',
@@ -128,4 +129,12 @@ export class InProgressDemandComponent {
       ],
     },
   ];
+  stateOptions: any[];
+  value1: string = 'oui';
+  constructor() {
+    this.stateOptions = [
+      { label: 'Oui', value: 'oui' },
+      { label: 'Non', value: 'non' },
+    ];
+  }
 }
