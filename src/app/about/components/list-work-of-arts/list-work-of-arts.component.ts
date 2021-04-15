@@ -36,7 +36,7 @@ import { DatePipe } from '@angular/common';
 export class ListWorkOfArtsComponent implements OnInit {
   @ViewChildren('accordionSectionDOM', { read: ElementRef }) accordionsDOM: QueryList<ElementRef>;
   isCollapsed = true;
-  showDatatable = false;
+  showDatatable = true;
   data = false;
   mode = 'liste';
   filterFormGroup: FormGroup;
@@ -81,7 +81,55 @@ export class ListWorkOfArtsComponent implements OnInit {
     },
   };
   oeuvres = this.WorkOfArtService.oeuvres[0].items;
-
+  columns: any[] = [
+    {
+      headerName: 'N° inventaire',
+      field: 'id',
+      sortable: false,
+      width: 70,
+      filter: 'text',
+    },
+    {
+      headerName: 'Titre',
+      field: 'titre',
+      filter: 'text',
+    },
+    {
+      headerName: 'N° inventaire',
+      field: 'id',
+      sortable: false,
+      width: 70,
+      filter: false,
+    },
+    {
+      headerName: 'N° inventaire',
+      field: 'id',
+      sortable: false,
+      width: 70,
+      filter: false,
+    },
+    {
+      headerName: 'N° inventaire',
+      field: 'id',
+      sortable: false,
+      width: 70,
+      filter: false,
+    },
+    {
+      headerName: 'N° inventaire',
+      field: 'id',
+      sortable: false,
+      width: 70,
+      filter: false,
+    },
+    {
+      headerName: 'N° inventaire',
+      field: 'id',
+      sortable: false,
+      width: 70,
+      filter: false,
+    },
+  ];
   ColDef: ColDef[] = [
     {
       cellClass: 'link',
@@ -198,7 +246,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   inventoryOptions: Options;
   gridReady = false;
   currentColumnStates: any;
-  columns: any;
+
   currentFilters: ColumnFilterModel[] = [];
   currentOrderedFields: { column: string; direction: string }[] = [];
   paginatorLoading: boolean;
@@ -222,6 +270,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   dynamic: boolean = false;
   modelDate = '2021';
   items = ['oeuvre art', 'test'];
+
   constructor(
     private fb: FormBuilder,
     public columnFilterService: ColumnFilterService,
@@ -463,6 +512,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.onForm3Change();
     this.onForm4Change();
   }
+
   onForm1Change() {
     this.form1.valueChanges.subscribe((val) => {
       let count = 0;
@@ -478,6 +528,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       });
     });
   }
+
   private checkFormvalues(val: any, key: string) {
     let value = '';
     if (['string', 'boolean', 'object', 'number'].indexOf(typeof val[key]) == -1) {
@@ -490,6 +541,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     }
     return value;
   }
+
   onForm2Change() {
     this.form2.valueChanges.subscribe((val) => {
       let count = 0;
@@ -506,6 +558,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       });
     });
   }
+
   onForm3Change() {
     this.form3.valueChanges.subscribe((val) => {
       let count = 0;
@@ -521,6 +574,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       });
     });
   }
+
   onForm4Change() {
     this.form4.valueChanges.subscribe((val) => {
       let count = 0;
@@ -544,11 +598,13 @@ export class ListWorkOfArtsComponent implements OnInit {
   onSearchClick() {
     this.showDatatable = true;
   }
+
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
   hoveredDate: NgbDate | null = null;
   openImg: boolean = false;
   imageUrl: string;
+
   onDateSelection(date: NgbDate) {
     if (!this.fromDate && !this.toDate) {
       this.fromDate = date;
