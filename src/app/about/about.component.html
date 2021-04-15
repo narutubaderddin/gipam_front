@@ -8,11 +8,21 @@
       </div>
     </div>
     <div class="col-2">
-      <div class="form-group">
-        <button class="form-control w-100 btn add-action" style="height: 38px" (click)="createNotice()">
+      <div class="form-group" ngbDropdown>
+        <button class="form-control w-100 btn add-action" style="height: 38px" ngbDropdownToggle id="dropdownButton">
           <i class="fas fa-plus"></i>
           Création Notice
         </button>
+        <div class="py-0 ng-dropdown w-100" ngbDropdownMenu aria-labelledby="dropdownButton">
+          <ul class="list-group">
+            <li class="list-group-item" (click)="createNotice()">
+              <i class="fas fa-plus"></i> Création notice en proprieté
+            </li>
+            <li class="list-group-item" (click)="createNotice()">
+              <i class="fas fa-plus"></i> Création notice en dépôt
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="col-2">
