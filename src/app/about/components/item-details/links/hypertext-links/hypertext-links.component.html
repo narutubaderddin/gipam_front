@@ -1,4 +1,4 @@
-<div class="col-md-12 d-flex align-items-baseline" [formGroup]="myForm" *ngIf="!add">
+<div class="col-md-12  d-flex align-items-baseline" [formGroup]="myForm" *ngIf="!add">
   <h5 class="col-md-4 p-0">Liens hypertextes</h5>
   <ol class="rounded-list col-md-8">
     <li>
@@ -7,11 +7,11 @@
   </ol>
 </div>
 
-<div class="col-md-12 d-flex align-items-baseline" [formGroup]="myForm" *ngIf="add">
+<div class="col-md-12 d-flex pl-0 align-items-baseline" [formGroup]="myForm" *ngIf="add">
   <div class="form-group" class="col-md-12 d-flex flex-column p-0">
     <h5 class="col-md-12 p-0 m-0">Liens hypertextes</h5>
     <div formArrayName="liens" class="col-md-12 p-0">
-      <div [formGroupName]="i" class="mt-3" *ngFor="let lien of liens.controls; let i = index">
+      <div [formGroupName]="i" class="mt-1" *ngFor="let lien of liens.controls; let i = index">
         <div class="d-flex">
           <div class="form-group col-md-5 d-flex p-0">
             <!--            <label>Nom URL</label>-->
@@ -22,7 +22,7 @@
             <input class="form-control" placeholder="URL" formControlName="url" />
           </div>
 
-          <div class="col-md-2 align-self-center p-0">
+          <div class="col-1 col-md-2 align-self-center d-flex p-0">
             <i class="fas fa-trash-alt delete" style="color: gray" (click)="removeBook(i)"></i>
             <i class="add ml-3 mt-1 fas fa-plus" style="color: gray" (click)="addBook()"></i>
           </div>

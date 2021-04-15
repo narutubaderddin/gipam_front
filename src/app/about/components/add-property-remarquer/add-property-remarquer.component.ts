@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { NgWizardConfig, NgWizardService, StepChangedArgs, StepValidationArgs, STEP_STATE, THEME } from 'ng-wizard';
 import { of } from 'rxjs';
+import {BsModalService} from "ngx-bootstrap/modal";
+import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-add-property-remarquer',
@@ -9,6 +11,8 @@ import { of } from 'rxjs';
   styleUrls: ['./add-property-remarquer.component.scss'],
 })
 export class AddPropertyRemarquerComponent implements OnInit {
+  @ViewChild('content')ngTemplate: ElementRef;
+
   createDepot: false;
   createProperty: true;
 
@@ -31,17 +35,45 @@ export class AddPropertyRemarquerComponent implements OnInit {
           text: 'Quitter',
           class: 'btn btn-info',
           event: () => {
-            alert('veuillez enregistrer');
+            this.open(this.ngTemplate.nativeElement);
+            console.log(this.ngTemplate.nativeElement)
+            // alert('veuillez enregistrer');
           },
         },
       ],
     },
   };
 
-  constructor(public WorkOfArtService: WorkOfArtService, private ngWizardService: NgWizardService) {}
+  constructor(public WorkOfArtService: WorkOfArtService, private ngWizardService: NgWizardService,
+              private modalService: NgbModal) {}
 
   ngOnInit(): void {}
 
+  openVerticallyCentered(content:any) {
+    this.modalService.open(content, { centered: true });
+  }
+  closeResult = '';
+
+  open(content: any) {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then(
+      (result) => {
+        this.closeResult = `Closed with: ${result}`;
+      },
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      }
+    );
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
   selectEvent(item: any) {}
 
   onChangeSearch(val: string) {
