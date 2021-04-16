@@ -203,6 +203,8 @@ export class ListWorkOfArtsComponent implements OnInit {
   currentOrderedFields: { column: string; direction: string }[] = [];
   paginatorLoading: boolean;
   oeuvreToShow: any;
+  oeuvrePerDomain: any;
+  selectedOeuvres: any[] = [];
   rowCount = 5;
   domaine: any;
   dropdownSettings: IDropdownSettings;
@@ -238,6 +240,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.oeuvreToShow = this.oeuvres;
     this.initFilterFormGroup();
     this.domaine = this.WorkOfArtService.domaine;
+    this.oeuvrePerDomain = this.WorkOfArtService.oeuvres;
     this.dropdownSettings = {
       singleSelection: false,
       idField: 'id',
@@ -463,6 +466,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.onForm3Change();
     this.onForm4Change();
   }
+
   onForm1Change() {
     this.form1.valueChanges.subscribe((val) => {
       let count = 0;
@@ -478,6 +482,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       });
     });
   }
+
   private checkFormvalues(val: any, key: string) {
     let value = '';
     if (['string', 'boolean', 'object', 'number'].indexOf(typeof val[key]) == -1) {
@@ -490,6 +495,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     }
     return value;
   }
+
   onForm2Change() {
     this.form2.valueChanges.subscribe((val) => {
       let count = 0;
@@ -506,6 +512,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       });
     });
   }
+
   onForm3Change() {
     this.form3.valueChanges.subscribe((val) => {
       let count = 0;
@@ -521,6 +528,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       });
     });
   }
+
   onForm4Change() {
     this.form4.valueChanges.subscribe((val) => {
       let count = 0;
@@ -544,11 +552,13 @@ export class ListWorkOfArtsComponent implements OnInit {
   onSearchClick() {
     this.showDatatable = true;
   }
+
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
   hoveredDate: NgbDate | null = null;
   openImg: boolean = false;
   imageUrl: string;
+
   onDateSelection(date: NgbDate) {
     if (!this.fromDate && !this.toDate) {
       this.fromDate = date;
@@ -594,6 +604,20 @@ export class ListWorkOfArtsComponent implements OnInit {
 
       this.form1.controls['date'].setValue(event.getFullYear());
       console.log(this.form1.value);
+    }
+  }
+  changeMode(mode: string) {
+    this.mode = mode;
+  }
+  selectedValues: string[] = [];
+  selectOeuvre(item: any, index: number) {
+    item.active = !item.active;
+    if (item.active) {
+      this.selectedOeuvres.push(item);
+    } else {
+      this.selectedOeuvres = this.selectedOeuvres.filter((oeuvre) => {
+        return oeuvre.id !== item.id;
+      });
     }
   }
 }

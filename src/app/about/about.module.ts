@@ -73,6 +73,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { RatingModule } from 'primeng/rating';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { TooltipModule } from 'primeng/tooltip';
+import { CheckboxModule } from 'primeng/checkbox';
 import { SelectButtonModule } from 'primeng/selectbutton';
 
 setTheme('bs4');
@@ -159,6 +160,7 @@ const ngWizardConfig: NgWizardConfig = {
     RatingModule,
     InputSwitchModule,
     TooltipModule,
+    CheckboxModule,
     SelectButtonModule,
   ],
   providers: [MovementsService, , BsDatepickerConfig],
