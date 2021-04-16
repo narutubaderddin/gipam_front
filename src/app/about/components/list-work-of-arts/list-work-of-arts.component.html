@@ -1244,10 +1244,13 @@
                     <div class="check-card"></div>
                     <img class="card-img-top img-fluid" [src]="items.image" alt="Card image cap" />
                     <strong>{{ items.titre }}</strong>
-                    <p>{{ items.id }}</p>
+                    <p>N°: {{ items.id }}</p>
                   </div>
                 </div>
-                <div class="card-footer" [ngClass]="{ 'is-property': items.property == 'Dépôt' }">
+                <div
+                  class="card-footer"
+                  [ngStyle]="{ 'border-bottom': items.property == 'Dépôt' ? '5px solid #0080ff' : '5px solid #00d6d4' }"
+                >
                   <table class="tab-oeuvre-actions">
                     <tr>
                       <td pTooltip="Partager" tooltipPosition="top">
