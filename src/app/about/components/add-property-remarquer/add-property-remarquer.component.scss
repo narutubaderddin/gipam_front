@@ -605,6 +605,7 @@ button {
   min-height: 22rem;
   /** nav tabs **/
   .nav-tabs {
+    flex-wrap: nowrap !important;
     .nav-link.active {
       //color: #00d6d4;
       background-color: #00d6d4;
