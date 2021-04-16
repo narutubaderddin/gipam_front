@@ -1,9 +1,9 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { NgWizardConfig, NgWizardService, StepChangedArgs, StepValidationArgs, STEP_STATE, THEME } from 'ng-wizard';
 import { of } from 'rxjs';
-import {BsModalService} from "ngx-bootstrap/modal";
-import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-add-property-remarquer',
@@ -11,7 +11,7 @@ import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
   styleUrls: ['./add-property-remarquer.component.scss'],
 })
 export class AddPropertyRemarquerComponent implements OnInit {
-  @ViewChild('content')ngTemplate: ElementRef;
+  @ViewChild('content') ngTemplate: ElementRef;
 
   createDepot: false;
   createProperty: true;
@@ -36,7 +36,7 @@ export class AddPropertyRemarquerComponent implements OnInit {
           class: 'btn btn-info',
           event: () => {
             this.open(this.ngTemplate.nativeElement);
-            console.log(this.ngTemplate.nativeElement)
+            console.log(this.ngTemplate.nativeElement);
             // alert('veuillez enregistrer');
           },
         },
@@ -44,12 +44,15 @@ export class AddPropertyRemarquerComponent implements OnInit {
     },
   };
 
-  constructor(public WorkOfArtService: WorkOfArtService, private ngWizardService: NgWizardService,
-              private modalService: NgbModal) {}
+  constructor(
+    public WorkOfArtService: WorkOfArtService,
+    private ngWizardService: NgWizardService,
+    private modalService: NgbModal
+  ) {}
 
   ngOnInit(): void {}
 
-  openVerticallyCentered(content:any) {
+  openVerticallyCentered(content: any) {
     this.modalService.open(content, { centered: true });
   }
   closeResult = '';

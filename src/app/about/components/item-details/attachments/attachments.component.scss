@@ -122,7 +122,7 @@ h5 {
   .files-list {
     position: absolute;
     left: 10rem;
-    top: 0 ;
+    top: 0;
     margin-top: 0 !important;
     .single-file {
       width: 15rem !important;
@@ -137,9 +137,8 @@ h5 {
     }
   }
 }
-@media screen and (max-width: 1250px) and (min-width : 870px){
+@media screen and (max-width: 1250px) and (min-width: 870px) {
   ::ng-deep .upload-file {
-
     .files-list {
       left: 6rem;
       .single-file {
@@ -148,9 +147,8 @@ h5 {
     }
   }
 }
-@media screen and (max-width : 993px)and (min-width : 720px){
+@media screen and (max-width: 993px) and (min-width: 720px) {
   ::ng-deep .upload-file {
-
     .files-list {
       left: 8rem;
       .single-file {
@@ -159,9 +157,8 @@ h5 {
     }
   }
 }
-@media screen and (max-width : 556px) and (min-width : 427px){
+@media screen and (max-width: 556px) and (min-width: 427px) {
   ::ng-deep .upload-file {
-
     .files-list {
       left: 8.5rem;
       .single-file {
@@ -170,9 +167,8 @@ h5 {
     }
   }
 }
-@media screen and (max-width : 426px)and (min-width : 360px){
+@media screen and (max-width: 426px) and (min-width: 360px) {
   ::ng-deep .upload-file {
-
     .files-list {
       left: 6rem;
       .single-file {
