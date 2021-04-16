@@ -743,7 +743,8 @@ input:checked + .slider:before {
   widows: 2;
 
   .active {
-    border: solid 2px #2196f3;
+    /*border: solid 2px #2196f3;*/
+    border: solid 2px rgba(12, 17, 43, 0.8);
     border-radius: 0.25rem;
   }
 
@@ -845,4 +846,7 @@ div.actions-oeuvre {
 
 .is-property {
   background: #d4d2d2;
+}
+.card-footer {
+  border-radius: 0px;
 }
