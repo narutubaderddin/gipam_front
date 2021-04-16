@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'my-app',
@@ -131,10 +132,14 @@ export class InProgressDemandComponent {
   ];
   stateOptions: any[];
   value1: string = 'oui';
-  constructor() {
+  constructor(private router: Router) {
     this.stateOptions = [
       { label: 'Oui', value: 'oui' },
       { label: 'Non', value: 'non' },
     ];
+  }
+
+  goToOuvreDetails(oeuvre: any) {
+    this.router.navigate(['portail-details'], { queryParams: { show: false, source: oeuvre.image } });
   }
 }
