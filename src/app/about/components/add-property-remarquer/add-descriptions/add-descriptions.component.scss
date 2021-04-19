@@ -27,12 +27,13 @@ label {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  max-width: 48%;
-  margin: 0.5% 1%;
+  //max-width: 48%;
+  margin: 0.5% 0;
   font-size: 14px;
   color: #212121;
 }
 .value {
+  padding: 0;
   text-align: start;
   width: 60%;
 }

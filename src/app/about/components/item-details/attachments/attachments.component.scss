@@ -121,17 +121,58 @@ h5 {
   }
   .files-list {
     position: absolute;
-    left: 170px;
+    left: 10rem;
     top: 0;
-
+    margin-top: 0 !important;
     .single-file {
-      width: 250px !important;
+      width: 15rem !important;
 
       display: flex;
-      padding: 0rem;
+      padding: 0rem !important;
+      margin-bottom: 0.5rem !important;
 
       img {
         width: 30px;
+      }
+    }
+  }
+}
+@media screen and (max-width: 1250px) and (min-width: 870px) {
+  ::ng-deep .upload-file {
+    .files-list {
+      left: 6rem;
+      .single-file {
+        width: 14rem !important;
+      }
+    }
+  }
+}
+@media screen and (max-width: 993px) and (min-width: 720px) {
+  ::ng-deep .upload-file {
+    .files-list {
+      left: 8rem;
+      .single-file {
+        width: 14rem !important;
+      }
+    }
+  }
+}
+@media screen and (max-width: 556px) and (min-width: 427px) {
+  ::ng-deep .upload-file {
+    .files-list {
+      left: 8.5rem;
+      .single-file {
+        width: 12rem !important;
+      }
+    }
+  }
+}
+@media screen and (max-width: 426px) and (min-width: 360px) {
+  ::ng-deep .upload-file {
+    .files-list {
+      left: 6rem;
+      .single-file {
+        width: 6rem !important;
       }
     }
   }

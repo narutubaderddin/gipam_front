@@ -12,6 +12,8 @@ import { NoticeListComponent } from '@app/about/components/notice-list/notice-li
 import { RecolementListComponent } from '@app/about/components/recolement-list/recolement-list.component';
 import { AlertListComponent } from '@app/about/components/alert-list/alert-list.component';
 import { InProgressDemandComponent } from '@app/about/components/in-progress-demand/in-progress-demand.component';
+import { DomainsComponent } from '@app/about/components/tabs-ref/domains/domains.component';
+import { DenominationsComponent } from '@app/about/components/tabs-ref/denominations/denominations.component';
 const routes: Routes = [
   {
     path: '',
@@ -40,6 +42,8 @@ const routes: Routes = [
       { path: 'notices-list', component: NoticeListComponent },
       { path: 'recolements-list', component: RecolementListComponent },
       { path: 'alerts-list', component: AlertListComponent },
+      { path: 'tab-ref-domaine', component: DomainsComponent },
+      { path: 'tab-ref-dénomination', component: DenominationsComponent },
     ],
   },
 ];

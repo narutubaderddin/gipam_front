@@ -9,7 +9,7 @@ const INVALID_FILEDS_MSG = 'Veuillez vérifier tous les champs encadrés en roug
 })
 export class FlashFormErrorsDirective {
   @Input('appFlashFormErrors') formGroup: FormGroup;
-  @Input('customErrorMessage') customErrorMessage;
+  @Input('customErrorMessage') customErrorMessage: any;
   @Output('appFormSubmit') submitTrigger = new EventEmitter();
 
   constructor(private notificationService: NotificationsService) {}

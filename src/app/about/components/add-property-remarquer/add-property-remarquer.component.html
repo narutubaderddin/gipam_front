@@ -12,26 +12,21 @@
       <div class="second-bloc">
         <div class="col-md-12 cadre">
           <div class="col-md-12 main-info d-flex">
-            <div class="col-md-12 row">
+            <div class="row-cols-lg-12">
               <div class="col-md-12 mt-2">
                 <div>
-                  <div class="d-flex top-bloc">
-                    <div class="col-4 image-container">
-                      <div class="row detail-image">
-                        <div class="col-md-12 d-flex p-0 img-wrapper">
+                  <div
+                    class="flex-column-reverse d-flex top-bloc flex-sm-column-reverse flex-md-column-reverse flex-lg-row"
+                  >
+                    <div class="col-lg-4 col-md-12 col-sm-12 col-12 image-container">
+                      <div class="detail-image">
+                        <div class="col-md-12 d-flex p-0 img-wrapper mt-2 mt-sm-0">
                           <app-item-images [add]="true"></app-item-images>
-                          <!--                      <img src="assets/images/573b.jpg" alt="" style="width: auto; max-width: 100%" />-->
                         </div>
-                        <!--                        <i class="fas fa-eye" title="voir image" (click)="showImg()"></i>-->
                       </div>
                     </div>
-                    <!--Modal-->
-                    <!--                    <div id="image-viewer" [class.active]="openImg">-->
-                    <!--                      <p class="close" (click)="showImg()">&times;</p>-->
-                    <!--                      <img src="assets/images/573b.jpg" alt="" class="modal-content" id="full-image" />-->
-                    <!--                    </div>-->
 
-                    <div class="col-8 pr-0">
+                    <div class="col-lg-8 col-md-12 p-0 pl-lg-4">
                       <div class="col-12 p-0">
                         <div class="d-flex justify-content-between">
                           <nav ngbNav #nav="ngbNav" class="nav-tabs">
@@ -57,11 +52,13 @@
                         <div [ngbNavOutlet]="nav" class=""></div>
                       </div>
                       <div class="d-flex col-12 p-0 flex-column">
-                        <div class="d-flex col-12 p-0 mt-4 justify-content-between">
+                        <div class="d-flex col-12 p-0 mt-4 justify-content-between flex-column flex-md-row">
                           <div class="attachments-container mr-2 col-md-7 p-0">
                             <app-attachments style="width: 100%" [add]="true"></app-attachments>
                           </div>
-                          <div class="attachments-container ml-2 col-md-5 p-0 d-flex flex-column">
+                          <div
+                            class="attachments-container ml-2 col-md-5 p-0 d-flex flex-column flex-sm-row flex-md-column"
+                          >
                             <app-links style="width: 100%" [add]="true"></app-links>
                             <app-hypertext-links style="width: 100%" [add]="true"></app-hypertext-links>
                           </div>
@@ -94,58 +91,18 @@
   >
     <span>Création constat</span>
   </ng-wizard-step>
-
-  <!-- <ng-wizard-step [title]="'Step 4'" [description]="'Step 4 description'">
-    <span>Step 4 content</span>
-  </ng-wizard-step>
-
-  <ng-wizard-step [title]="'Step 5'" [description]="'Step 5 description'" [state]="stepStates.hidden">
-    <span>Step 5 content</span>
-  </ng-wizard-step>
-
-  <ng-wizard-step [title]="'Step 6'" [description]="'Step 6 description'" [state]="stepStates.error">
-    <span>Step 6 content</span>
-  </ng-wizard-step>
-
-  <ng-wizard-step [title]="'Step 7'" [description]="'Step 7 description'">
-    <span>Step 7 content</span>
-  </ng-wizard-step> -->
+  <ng-template #content let-modal class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Modal title</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>One fine body&hellip;</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-template>
 </ng-wizard>
-
-<!--<div class="modal-content bd-example-modal-lg">-->
-<!--  <div class="modal-title">Ajouter une notice en propriété</div>-->
-<!--  <div class="modal-body">-->
-<!--    <div class="col-12">-->
-<!--      <app-accordion-section-->
-<!--        #accordionSectionDOM-->
-<!--        [editable]="true"-->
-<!--        [showIcon]="true"-->
-<!--        [headerTitle]="'Descriptif'"-->
-<!--        [icon]="'far fa-file-alt'"-->
-<!--        [idMilestoneSection]="1"-->
-<!--        [sectionIndex]="1"-->
-<!--        [index]="1"-->
-<!--        [sectionTitle]="'Descriptif'"-->
-<!--      >-->
-<!--        <app-descritif [edit]="true"></app-descritif>-->
-<!--      </app-accordion-section>-->
-<!--      <app-accordion-section-->
-<!--        #accordionSectionDOM-->
-<!--        [editable]="true"-->
-<!--        [headerTitle]="'Status'"-->
-<!--        [idMilestoneSection]="2"-->
-<!--        [sectionIndex]="2"-->
-<!--        [showIcon]="true"-->
-<!--        [icon]="'far fa-calendar-alt'"-->
-<!--        [index]="2"-->
-<!--        [sectionTitle]="'Status'"-->
-<!--      >-->
-<!--        <app-status [edit]="true"></app-status>-->
-<!--      </app-accordion-section>-->
-<!--    </div>-->
-<!--    <app-extra-notice-items-bloc></app-extra-notice-items-bloc>-->
-<!--  </div>-->
-<!--  <div class="add-button">-->
-<!--    <button class="add-action col-md-2">Enregistrer</button>-->
-<!--  </div>-->
-<!--</div>-->

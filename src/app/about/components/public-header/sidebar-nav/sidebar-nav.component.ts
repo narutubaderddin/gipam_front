@@ -29,7 +29,7 @@ export class SidebarNavComponent implements OnInit {
   // }
   toggle() {
     this.collapseMenu = !this.collapseMenu;
-    console.log('collapseMenu', this.collapseMenu);
+    // console.log('collapseMenu', this.collapseMenu);
     this.open.emit(this.collapseMenu);
     this.sharedService.collapseMenu = this.collapseMenu;
     // console.log(this.sharedService.collapseMenu);
@@ -48,7 +48,14 @@ export class SidebarNavComponent implements OnInit {
     this.authenticationService.logout();
     this.router.navigate(['login']);
   }
-
+  goToDomainsList() {
+    this.menu = 3;
+    this.router.navigate(['tab-ref-domaine']);
+  }
+  goToDenominationsList() {
+    this.menu = 3;
+    this.router.navigate(['tab-ref-dénomination']);
+  }
   goToPoratil() {
     this.menu = 4;
     this.router.navigate(['portail']);

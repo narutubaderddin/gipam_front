@@ -49,48 +49,6 @@
                   </div>
                   <ng-template #existSelectedOeuvre>
                     <div class="row">
-                      <aside class="col-lg-7">
-                        <div class="card" style="height: 444.78px">
-                          <div class="table-responsive">
-                            <table class="table table-borderless table-shopping-cart">
-                              <thead class="text-muted">
-                                <tr class="small text-uppercase">
-                                  <th scope="col"></th>
-                                  <!--<th scope="col" width="120">Price</th>-->
-                                  <th scope="col" class="text-right d-none d-md-block" width="100"></th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr *ngFor="let oeuvre of selectedOeuvre; let index = index">
-                                  <td>
-                                    <figure class="itemside align-items-center">
-                                      <div class="aside"><img [src]="oeuvre.image" class="img-sm" /></div>
-                                      <figcaption class="info">
-                                        <a class="title text-dark" data-abc="true">{{ oeuvre.titre }}</a>
-                                        <!--<p class="text-muted small">SIZE: L <br> Brand: MAXTRA</p>-->
-                                      </figcaption>
-                                    </figure>
-                                  </td>
-                                  <!--<td>
-                                  <div class="price-wrap"> <var class="price">$10.00</var> <small class="text-muted"> $9.20 each </small> </div>
-                                </td>-->
-                                  <td class="text-center d-none d-md-block">
-                                    <button
-                                      (click)="removeFromBasket($event, oeuvre)"
-                                      placement="top"
-                                      ngbTooltip="Retirer du panier"
-                                      type="button"
-                                      class="btn btn-outline-danger btn-xs"
-                                    >
-                                      <i class="fa fa-trash" aria-hidden="true"></i>
-                                    </button>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      </aside>
                       <aside class="col-lg-5">
                         <div class="card mb-3">
                           <div class="card-body">
@@ -157,6 +115,53 @@
                                 </div>
                               </div>
                             </form>
+                          </div>
+                        </div>
+                      </aside>
+                      <aside class="col-lg-7">
+                        <div class="card" style="height: 444.78px">
+                          <div class="table-responsive">
+                            <table class="table table-borderless table-shopping-cart">
+                              <thead class="text-muted">
+                                <tr class="small text-uppercase">
+                                  <th scope="col"></th>
+                                  <!--<th scope="col" width="120">Price</th>-->
+                                  <th scope="col" class="text-right d-none d-md-block" width="100"></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let oeuvre of selectedOeuvre; let index = index">
+                                  <td>
+                                    <figure class="itemside align-items-center">
+                                      <div class="aside"><img [src]="oeuvre.image" class="img-sm" /></div>
+                                      <figcaption class="info">
+                                        <a class="title text-dark" data-abc="true">{{ oeuvre.titre }}</a>
+                                        <!--<p class="text-muted small">SIZE: L <br> Brand: MAXTRA</p>-->
+                                      </figcaption>
+                                    </figure>
+                                  </td>
+                                  <!--<td>
+                                <div class="price-wrap"> <var class="price">$10.00</var> <small class="text-muted"> $9.20 each </small> </div>
+                              </td>-->
+                                  <td class="text-center d-none d-md-block">
+                                    <button
+                                      (click)="removeFromBasket($event, oeuvre)"
+                                      placement="top"
+                                      ngbTooltip="Retirer du panier"
+                                      type="button"
+                                      class="btn btn-outline-danger btn-xs"
+                                    >
+                                      <i
+                                        class="fa fa-trash"
+                                        pTooltip="Retirer du panier"
+                                        tooltipPosition="top"
+                                        aria-hidden="true"
+                                      ></i>
+                                    </button>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
                           </div>
                         </div>
                       </aside>
@@ -439,14 +444,15 @@
                 <ul>
                   <li>{{ items.auteur }}</li>
                   <li>
-                    <i class="fa fa-eye icon" aria-hidden="true" placement="top" ngbTooltip="Voir plus de détails"></i>
+                    <i class="fa fa-eye icon" aria-hidden="true" pTooltip="Voir plus de détails" tooltipPosition="top">
+                    </i>
                   </li>
                   <li *ngIf="!items.isDemanded; else removeOuvre" class="shopping">
                     <i
                       data-toggle="tooltip"
                       data-placement="top"
-                      placement="top"
-                      ngbTooltip="Ajouter au panier"
+                      pTooltip="Ajouter au panier"
+                      tooltipPosition="top"
                       class="fa fa-shopping-basket icon"
                       aria-hidden="true"
                       (click)="addToBasket($event, items)"
@@ -455,8 +461,8 @@
                   <ng-template #removeOuvre>
                     <li class="shopping">
                       <i
-                        placement="top"
-                        ngbTooltip="Retirer du panier"
+                        pTooltip="Retirer du panier"
+                        tooltipPosition="top"
                         class="far fa-trash-alt icon-delete"
                         aria-hidden="true"
                         (click)="removeFromBasket($event, items)"

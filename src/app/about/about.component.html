@@ -9,17 +9,23 @@
     </div>
     <div class="col-2">
       <div class="form-group" ngbDropdown>
-        <button class="form-control w-100 btn add-action" style="height: 38px" ngbDropdownToggle id="dropdownButton">
-          <i class="fas fa-plus"></i>
+        <button class="form-control btn add-action" style="height: 38px" ngbDropdownToggle id="dropdownButton">
+          <i class="fas fa-plus-circle mr-1"></i>
           Création Notice
         </button>
         <div class="py-0 ng-dropdown w-100" ngbDropdownMenu aria-labelledby="dropdownButton">
-          <ul class="list-group" style="margin-top: -3px">
-            <li class="list-group-item" (click)="createNotice()" style="background-color: #4385b5; color: white">
-              <i class="fas fa-plus"></i> Création notice en proprieté
+          <ul class="list-group" style="width: max-content; min-width: 100%; border-color: transparent">
+            <li
+              class="list-group-item"
+              (click)="createNotice()"
+              style="background-color: #00d6d4; color: white; font-size: 12px"
+            >
+              <i class="fas fa-plus-circle mr-1"></i>
+              Création notice en proprieté
             </li>
-            <li class="list-group-item" style="background-color: #4583af; color: white">
-              <i class="fas fa-plus"></i> Création notice en dépôt
+            <li class="list-group-item" style="background-color: #4583af; color: white; font-size: 12px">
+              <i class="fas fa-plus-circle mr-1"></i>
+              Création notice en dépôt
             </li>
           </ul>
         </div>
@@ -47,7 +53,7 @@
     <app-sidebar-nav (open)="f1($event)"></app-sidebar-nav>
   </div>
 
-  <div style="transition: all 0.5s; width: 100%" [ngClass]="collapseSideNav ? 'main-full-width' : 'main'">
+  <div style="width: 100%">
     <app-ng7-bootstrap-breadcrumb></app-ng7-bootstrap-breadcrumb>
     <router-outlet></router-outlet>
   </div>
