@@ -4,9 +4,6 @@
       <div class="col-md-12 main-info d-flex">
         <div class="col-md-12 row">
           <div class="bloc-header" [class.sticky]="sticky" [ngClass]="menuClosed ? 'fullwidth' : 'width'" #stickyMenu>
-            <!--            <div class="col-2 img-content" *ngIf="dynamic">-->
-            <!--              <img src="assets/images/573b.jpg" alt="" class="img-viewer" />-->
-            <!--            </div>-->
             <div class="first-bloc col-md-12 row">
               <a href="portail"><i class="zmdi zmdi-fast-rewind"></i> Retour aux résultats de la recherche</a>
 
@@ -27,23 +24,6 @@
               <a href="#">146 | Suivant <i class="zmdi zmdi-caret-right"></i></a>
             </div>
 
-            <!--            <div class="col-8 titre">Titre de l'Oeuvre N inventaire 145</div>-->
-
-            <!--            <div class="col-4 icons">-->
-            <!--              <i class="fas fa-archive"></i>-->
-            <!--              <i class="far fa-file-excel"></i>-->
-            <!--              <i class="fas fa-print"></i>-->
-            <!--              <i class="far fa-edit" (click)="onEditMode()"></i>-->
-            <!--&lt;!&ndash;              <div class="btn-slider mr-2" *ngIf="!dynamic">&ndash;&gt;-->
-            <!--&lt;!&ndash;                <label [class.active]="!dynamic">statique</label>&ndash;&gt;-->
-            <!--&lt;!&ndash;                <label class="switch">&ndash;&gt;-->
-            <!--&lt;!&ndash;                  <input type="checkbox" [(ngModel)]="dynamic" />&ndash;&gt;-->
-            <!--&lt;!&ndash;                  <span class="slider round"></span>&ndash;&gt;-->
-            <!--&lt;!&ndash;                </label>&ndash;&gt;-->
-
-            <!--&lt;!&ndash;                <label [class.active]="dynamic">Dynamique</label>&ndash;&gt;-->
-            <!--&lt;!&ndash;              </div>&ndash;&gt;-->
-            <!--            </div>-->
             <div class="col-md-12 title-box d-flex">
               <div class="col-8 titre p-0 d-flex">
                 Titre de l'Oeuvre
@@ -69,7 +49,6 @@
                   <div class="row detail-image">
                     <div class="col-md-12 d-flex p-0 img-wrapper">
                       <app-item-images></app-item-images>
-                      <!--                      <img src="assets/images/573b.jpg" alt="" style="width: auto; max-width: 100%" />-->
                     </div>
                     <i class="fas fa-eye" title="voir image" (click)="showImg()"></i>
                   </div>
@@ -101,11 +80,10 @@
                     </div>
 
                     <div [ngbNavOutlet]="nav" class=""></div>
-
-                    <!--                    <div *ngIf="edit" class="col-md-12 p-0" style="display: flex; flex-direction: row-reverse">-->
-                    <!--                      <button class="btn valid-btn" (click)="onSave()">Enregistrer</button>-->
-                    <!--                      <button class="btn gbtn-action cancel-btn">Annuler</button>-->
-                    <!--                    </div>-->
+                    <div *ngIf="edit" class="col-md-12 p-0" style="display: flex; flex-direction: row-reverse">
+                      <button class="btn valid-btn" (click)="onSave()">Enregistrer</button>
+                      <button class="btn gbtn-action cancel-btn">Annuler</button>
+                    </div>
                   </div>
                   <div class="d-flex col-12 p-0 flex-column">
                     <div class="d-flex col-12 p-0 mt-4 justify-content-between">
@@ -118,12 +96,6 @@
                     </div>
                     <div class="attachments-container col-md-12 p-0 row m-0 align-baseline">
                       <app-hypertext-links style="width: 100%"></app-hypertext-links>
-                      <!--                      <h5 class="col-md-4 p-0">Liens hypertextes</h5>-->
-                      <!--                      <ol class="rounded-list col-md-8">-->
-                      <!--                        <li>-->
-                      <!--                          <span><a href="#">site-oeuvre.com</a> | 24/01/2020 | Jean</span>-->
-                      <!--                        </li>-->
-                      <!--                      </ol>-->
                     </div>
                   </div>
                 </div>
@@ -164,15 +136,6 @@
                       </ngb-accordion>
                     </div>
                   </div>
-                  <!--                  <div class="second-page-bloc" *ngIf="page == 2">-->
-                  <!--                    <app-item-images></app-item-images>-->
-                  <!--                  </div>-->
-                  <!--                <div class="fifth-page-bloc" *ngIf="page == 4">-->
-                  <!--                  <app-movements></app-movements>-->
-                  <!--                </div>-->
-                  <!--                <div class="firth-page-bloc" *ngIf="page == 5">-->
-                  <!--                  <app-actions></app-actions>-->
-                  <!--                </div>-->
                 </div>
               </div>
             </div>

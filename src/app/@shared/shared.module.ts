@@ -33,6 +33,9 @@ import { AccordionSectionComponent } from './components/accordion-section/accord
 import { NgxHorizontalTimelineModule } from 'ngx-horizontal-timeline';
 import { FullWidthCellRendererComponent as FullWidthCellRenderer } from './components/datatables/full-width-cell-renderer/full-width-cell-renderer.component';
 import { ImageViewerComponent } from './components/datatables/image-viewer/image-viewer.component';
+import { DomainsActionsRendererComponent } from './components/datatables/domains-actions-renderer/domains-actions-renderer.component';
+import { DenominationsActionsRendererComponent } from './components/datatables/denominations-actions-renderer/denominations-actions-renderer.component';
+import { FlashFormErrorsDirective } from './directives/flash-form-errors.directive';
 
 @NgModule({
   imports: [
@@ -74,6 +77,9 @@ import { ImageViewerComponent } from './components/datatables/image-viewer/image
     AccordionSectionComponent,
     FullWidthCellRenderer,
     ImageViewerComponent,
+    DomainsActionsRendererComponent,
+    DenominationsActionsRendererComponent,
+    FlashFormErrorsDirective,
   ],
   exports: [
     LoaderComponent,
@@ -86,6 +92,7 @@ import { ImageViewerComponent } from './components/datatables/image-viewer/image
     AuthorBlocComponent,
     StatusBlocComponent,
     AccordionSectionComponent,
+    FlashFormErrorsDirective,
   ],
 })
 export class SharedModule {}

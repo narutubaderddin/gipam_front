@@ -75,6 +75,9 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { TooltipModule } from 'primeng/tooltip';
 import { CheckboxModule } from 'primeng/checkbox';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { TabsRefComponent } from './components/tabs-ref/tabs-ref.component';
+import { DomainsComponent } from './components/tabs-ref/domains/domains.component';
+import { DenominationsComponent } from './components/tabs-ref/denominations/denominations.component';
 
 setTheme('bs4');
 
@@ -120,6 +123,9 @@ const ngWizardConfig: NgWizardConfig = {
     RecolementListComponent,
     AlertListComponent,
     InProgressDemandComponent,
+    TabsRefComponent,
+    DomainsComponent,
+    DenominationsComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
