@@ -638,3 +638,30 @@ li a i:hover {
     background-color: skyblue;
   }
 }
+/*
+  Notifications and form errors
+ */
+input,
+select,
+textarea,
+.dropdown-btn {
+  &:not(.novalidate) {
+    &.ng-invalid.ng-dirty {
+      border: 2px solid $red !important;
+      border-radius: 3px !important;
+      box-shadow: 1px 1px 3px $red !important;
+    }
+
+    &.ng-invalid.ng-touched:not(form) {
+      border-bottom: 4px solid $red;
+    }
+
+    &:focus:not(.filter-button) {
+      color: #495057;
+      background-color: #fff;
+      border: solid $blue 2px !important;
+      outline: 0 !important;
+      box-shadow: none !important;
+    }
+  }
+}

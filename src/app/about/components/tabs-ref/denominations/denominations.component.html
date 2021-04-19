@@ -62,7 +62,8 @@
   </div>
 </div>
 
-<ng-template #content let-modal [formGroup]="denominationForm">
+<ng-template #content let-modal >
+  <form [formGroup]="denominationForm">
   <div class="modal-header">
     <h4 class="modal-title" *ngIf="editDenomination">Modification de dénomination</h4>
     <h4 class="modal-title" *ngIf="addDenomination">Ajout de dénomination</h4>
@@ -111,4 +112,5 @@
       Supprimer
     </button>
   </div>
+  </form>
 </ng-template>

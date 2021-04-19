@@ -35,6 +35,7 @@ import { FullWidthCellRendererComponent as FullWidthCellRenderer } from './compo
 import { ImageViewerComponent } from './components/datatables/image-viewer/image-viewer.component';
 import { DomainsActionsRendererComponent } from './components/datatables/domains-actions-renderer/domains-actions-renderer.component';
 import { DenominationsActionsRendererComponent } from './components/datatables/denominations-actions-renderer/denominations-actions-renderer.component';
+import { FlashFormErrorsDirective } from './directives/flash-form-errors.directive';
 
 @NgModule({
   imports: [
@@ -78,18 +79,20 @@ import { DenominationsActionsRendererComponent } from './components/datatables/d
     ImageViewerComponent,
     DomainsActionsRendererComponent,
     DenominationsActionsRendererComponent,
+    FlashFormErrorsDirective,
   ],
-  exports: [
-    LoaderComponent,
-    GridWrapperComponent,
-    CommentDetailsModalComponent,
-    DescriptionBlocComponent,
-    AdministrativeMovementBlocComponent,
-    GeographicMovementBlocComponent,
-    ExtraNoticeItemsBlocComponent,
-    AuthorBlocComponent,
-    StatusBlocComponent,
-    AccordionSectionComponent,
-  ],
+    exports: [
+        LoaderComponent,
+        GridWrapperComponent,
+        CommentDetailsModalComponent,
+        DescriptionBlocComponent,
+        AdministrativeMovementBlocComponent,
+        GeographicMovementBlocComponent,
+        ExtraNoticeItemsBlocComponent,
+        AuthorBlocComponent,
+        StatusBlocComponent,
+        AccordionSectionComponent,
+        FlashFormErrorsDirective,
+    ],
 })
 export class SharedModule {}
