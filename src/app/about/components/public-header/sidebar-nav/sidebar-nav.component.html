@@ -37,7 +37,7 @@
           </a>
         </div>
       </li>
-      <li class="right-header list main_nav_list_item rapport" *ngIf="isAuthentiticated">
+      <li class="right-header list main_nav_list_item rapport" *ngIf="isAuthentiticated && isAdmin">
         <div class="dropdown nav-menu" [class.nav-active]="menu == 3">
           <a
             href="#dropAdministration"
