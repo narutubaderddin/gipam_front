@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Provider } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AgGridModule } from 'ag-grid-angular';
@@ -34,6 +34,16 @@ import { NgxHorizontalTimelineModule } from 'ngx-horizontal-timeline';
 import { FullWidthCellRendererComponent as FullWidthCellRenderer } from './components/datatables/full-width-cell-renderer/full-width-cell-renderer.component';
 import { ImageViewerComponent } from './components/datatables/image-viewer/image-viewer.component';
 import { NgDataTableComponent } from './components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { TableModule } from 'primeng/table';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
+import { TooltipModule } from 'primeng/tooltip';
+import { CalendarModule } from 'primeng/calendar';
+import { PaginatorModule } from 'primeng/paginator';
+import { ActionsCellComponent } from './components/ng-dataTables/actions-cell/actions-cell.component';
+import { StatusTypeComponentRenderComponent } from './components/ng-dataTables/status-type-component-render/status-type-component-render.component';
+import { VisibleCatalogComponentRenderComponent } from './components/ng-dataTables/visible-catalog-component-render/visible-catalog-component-render.component';
 
 @NgModule({
   imports: [
@@ -50,6 +60,13 @@ import { NgDataTableComponent } from './components/ng-dataTables/ng-data-table/n
     ReactiveFormsModule,
     TagInputModule,
     NgxHorizontalTimelineModule,
+    TableModule,
+    InputTextModule,
+    ButtonModule,
+    RippleModule,
+    TooltipModule,
+    CalendarModule,
+    PaginatorModule,
   ],
   declarations: [
     LoaderComponent,
@@ -76,6 +93,9 @@ import { NgDataTableComponent } from './components/ng-dataTables/ng-data-table/n
     FullWidthCellRenderer,
     ImageViewerComponent,
     NgDataTableComponent,
+    ActionsCellComponent,
+    StatusTypeComponentRenderComponent,
+    VisibleCatalogComponentRenderComponent,
   ],
   exports: [
     LoaderComponent,

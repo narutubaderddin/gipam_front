@@ -1166,22 +1166,14 @@
             </button>
           </div>
         </div>
-        <!--        <app-grid-wrapper-->
-        <!--          [columnDefs]="ColDef"-->
-        <!--          [rowData]="oeuvreToShow"-->
-        <!--          [frameworkComponents]="frameworkComponents"-->
-        <!--          [defaultColDef]="defaultColDef"-->
-        <!--          (gridReady)="onGridReady($event)"-->
-        <!--          (rowSelected)="onRowSelected($event)"-->
-        <!--          [context]="this"-->
-        <!--          [gridOptions]="gridOptions"-->
-        <!--          [sizeToFit]="false"-->
-        <!--          [paginationPageSize]="rowCount"-->
-        <!--          [pinnedCols]="pinnedCols"-->
-        <!--          [leftPinnedCols]="leftPinnedCols"-->
-        <!--          (cellClicked)="onCellClicked($event)"-->
-        <!--        ></app-grid-wrapper>-->
-        <app-ng-data-table> </app-ng-data-table>
+        <app-ng-data-table
+          [columns]="columns"
+          [data]="oeuvreToShow"
+          [frozenCols]="frozenCols"
+          [frozenWidth]="'200px'"
+          [checkBoxSelection]="true"
+        >
+        </app-ng-data-table>
       </div>
     </div>
   </div>
