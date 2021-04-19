@@ -107,7 +107,10 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-light cancel-btn" (click)="close()">Annuler</button>
     <button type="button" class="btn btn-light valid-btn" (click)="submit()" *ngIf="editDenomination">Modifier</button>
-    <button type="button" class="btn btn-light valid-btn" (click)="submit()" *ngIf="addDenomination">Ajouter</button>
+    <button type="button" class="btn btn-light valid-btn" (click)="submit()" *ngIf="addDenomination"
+           >
+      Ajouter
+    </button>
     <button type="button" class="btn btn-light valid-btn" (click)="submit()" *ngIf="deleteDenomination">
       Supprimer
     </button>
