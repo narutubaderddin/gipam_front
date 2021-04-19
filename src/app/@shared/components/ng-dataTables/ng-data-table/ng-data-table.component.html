@@ -5,7 +5,7 @@
     [paginator]="false"
     [rows]="5"
     [(selection)]="selectedRows"
-    [frozenWidth]="frozenWidth"
+    [frozenWidth]="frozenCols.length > 0 ? frozenWidth : '0px'"
     [frozenColumns]="frozenCols"
     [columns]="columns"
     [scrollable]="true"
@@ -41,8 +41,18 @@
           [pSortableColumn]="col.sortable ? col.header : ''"
         >
           {{ col.header }}
-
-          <i class="fas fa-filter" *ngIf="col.filter" [id]="'dropDowFilter-' + col.header" ngbDropdownToggle></i>
+          <p-sortIcon
+            *ngIf="col.sortable"
+            [field]="col.header"
+            [pSortableColumn]="col.sortable ? col.header : ''"
+          ></p-sortIcon>
+          <i
+            class="fas fa-filter"
+            style="position: relative; top: 3px"
+            *ngIf="col.filter"
+            [id]="'dropDowFilter-' + col.header"
+            ngbDropdownToggle
+          ></i>
           <div class="py-0 ng-dropdown" ngbDropdownMenu [attr.aria-labelledby]="'dropDowFilter-' + col.header">
             <div [ngSwitch]="col.filterType">
               <input type="text" [placeholder]="col.header" (input)="filterHeader($event)" *ngSwitchCase="'text'" />
@@ -61,7 +71,6 @@
               ></p-calendar>
             </div>
           </div>
-          <p-sortIcon *ngIf="col.sortable" [field]="col.header"></p-sortIcon>
         </th>
       </tr>
     </ng-template>
@@ -76,8 +85,19 @@
           container="body"
         >
           {{ col.header }}
+          <p-sortIcon
+            *ngIf="col.sortable"
+            [field]="col.header"
+            [pSortableColumn]="col.sortable ? col.header : ''"
+          ></p-sortIcon>
 
-          <i class="fas fa-filter" *ngIf="col.filter" [id]="'dropDowFilter-' + col.header" ngbDropdownToggle></i>
+          <i
+            class="fas fa-filter"
+            style="position: relative; top: 3px"
+            *ngIf="col.filter"
+            [id]="'dropDowFilter-' + col.header"
+            ngbDropdownToggle
+          ></i>
           <div class="py-0 ng-dropdown" ngbDropdownMenu [attr.aria-labelledby]="'dropDowFilter-' + col.header">
             <div [ngSwitch]="col.filterType">
               <input type="text" [placeholder]="col.header" (input)="filterHeader($event)" *ngSwitchCase="'text'" />
@@ -93,13 +113,17 @@
                 outsideDays="hidden"
                 id="date"
               />
+              <ng-multiselect-dropdown
+                [placeholder]="col.placeholder ? col.placeholder : ''"
+                *ngSwitchCase="'multiselect'"
+                [settings]="dropdownSettings"
+                [data]="col.selectData"
+                (onSelect)="onItemSelect($event)"
+                (onSelectAll)="onSelectAll($event)"
+              >
+              </ng-multiselect-dropdown>
             </div>
           </div>
-          <p-sortIcon
-            *ngIf="col.sortable"
-            [field]="col.header"
-            [pSortableColumn]="col.sortable ? col.header : ''"
-          ></p-sortIcon>
         </th>
       </tr>
     </ng-template>
@@ -136,7 +160,10 @@
       </tr>
     </ng-template>
   </p-table>
-  <div style="position: relative; display: flex; flex-direction: row-reverse">
+  <div
+    [style.margin-top]="frozenCols.length > 0 ? '0' : '8%'"
+    style="position: relative; display: flex; flex-direction: row-reverse"
+  >
     <p-paginator rows="5" (onPageChange)="loadData($event)" [totalRecords]="total"> </p-paginator>
     <span style="position: absolute; top: 3px; left: 12px; margin: 15px"
       >Résultats de {{ start }} à {{ end }} / {{ totalFiltred }} (filtrés parmis {{ total }})

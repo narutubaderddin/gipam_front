@@ -44,6 +44,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { ActionsCellComponent } from './components/ng-dataTables/actions-cell/actions-cell.component';
 import { StatusTypeComponentRenderComponent } from './components/ng-dataTables/status-type-component-render/status-type-component-render.component';
 import { VisibleCatalogComponentRenderComponent } from './components/ng-dataTables/visible-catalog-component-render/visible-catalog-component-render.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   imports: [
@@ -67,6 +68,7 @@ import { VisibleCatalogComponentRenderComponent } from './components/ng-dataTabl
     TooltipModule,
     CalendarModule,
     PaginatorModule,
+    NgMultiSelectDropDownModule,
   ],
   declarations: [
     LoaderComponent,

@@ -117,7 +117,9 @@ export class ListWorkOfArtsComponent implements OnInit {
       sortable: true,
       width: '150px',
       filter: true,
-      filterType: 'text',
+      filterType: 'multiselect',
+      placeholder: 'Choisir des Domaine',
+      selectData: this.WorkOfArtService.domaine,
       type: 'key',
     },
     {
@@ -126,7 +128,8 @@ export class ListWorkOfArtsComponent implements OnInit {
       sortable: true,
       width: '150px',
       filter: true,
-      filterType: 'text',
+      filterType: 'multiselect',
+      selectData: this.WorkOfArtService.denominations,
       type: 'key',
     },
     {
