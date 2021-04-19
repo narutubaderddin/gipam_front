@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-portail-item-details',
@@ -7,7 +8,7 @@ import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./portail-item-details.component.scss'],
 })
 export class PortailItemDetailsComponent implements OnInit {
-  constructor(config: NgbCarouselConfig) {
+  constructor(config: NgbCarouselConfig, private _location: Location) {
     config.interval = 10000;
     config.wrap = false;
     config.keyboard = false;
@@ -15,4 +16,8 @@ export class PortailItemDetailsComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  goBack() {
+    this._location.back();
+  }
 }

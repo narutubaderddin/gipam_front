@@ -426,14 +426,14 @@
           </div>
         </div>
       </div>
-      <div class="picture-bloc-images" *ngFor="let section of oeuvreToShow; let index = index" style="margin-top: 2%">
+      <div *ngFor="let section of oeuvreToShow; let index = index" style="margin-top: 2%">
         <div class="col-12 section-name">
           <strong>{{ section.name }}</strong>
         </div>
         <div class="col-md-12" style="margin-top: 1%">
           <div class="card-columns">
             <div
-              class="card shadow p-3 items-bloc item"
+              class="picture-bloc-images card shadow p-3 items-bloc item"
               style="margin-bottom: 0"
               *ngFor="let items of section.items"
               (click)="details(items.visible, items.image)"
@@ -444,15 +444,20 @@
                 <ul>
                   <li>{{ items.auteur }}</li>
                   <li>
-                    <i class="fa fa-eye icon" aria-hidden="true" pTooltip="Voir plus de détails" tooltipPosition="top">
+                    <i
+                      class="fa fa-eye icon"
+                      aria-hidden="true"
+                      ngbTooltip="Voir plus de détails"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                    >
                     </i>
                   </li>
                   <li *ngIf="!items.isDemanded; else removeOuvre" class="shopping">
                     <i
                       data-toggle="tooltip"
                       data-placement="top"
-                      pTooltip="Ajouter au panier"
-                      tooltipPosition="top"
+                      ngbTooltip="Ajouter au panier"
                       class="fa fa-shopping-basket icon"
                       aria-hidden="true"
                       (click)="addToBasket($event, items)"
@@ -461,8 +466,8 @@
                   <ng-template #removeOuvre>
                     <li class="shopping">
                       <i
-                        pTooltip="Retirer du panier"
-                        tooltipPosition="top"
+                        placement="top"
+                        ngbTooltip="Retirer du panier"
                         class="far fa-trash-alt icon-delete"
                         aria-hidden="true"
                         (click)="removeFromBasket($event, items)"
