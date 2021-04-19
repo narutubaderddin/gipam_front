@@ -15,12 +15,16 @@ export class SidebarNavComponent implements OnInit {
 
   menu = 1;
   isAuthentiticated: boolean = false;
+  isAdmin: boolean = false;
+
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
     private sharedService: SharedService
   ) {
     this.isAuthentiticated = authenticationService.isAuthenticated();
+    this.isAdmin = authenticationService.isAdmin();
+    console.log(this.isAdmin);
   }
 
   ngOnInit(): void {}
