@@ -16,23 +16,7 @@
         (onSelectAll)="onSelectAll($event)"
       >
       </ng-multiselect-dropdown>
-      <!--      <ng-autocomplete-->
-      <!--        placeholder="Domaines"-->
-      <!--        [data]="domains"-->
-      <!--        [searchKeyword]="keyword"-->
-      <!--        (selected)="selectDomain($event)"-->
-      <!--        (inputChanged)="onChangeSearch($event)"-->
-      <!--        (inputFocused)="onFocused($event)"-->
-      <!--        [itemTemplate]="itemTemplate"-->
-      <!--        [notFoundTemplate]="notFoundTemplate"-->
-      <!--      >-->
-      <!--      </ng-autocomplete>-->
-      <!--      <ng-template #itemTemplate let-item>-->
-      <!--        <a [innerHTML]="item.name"></a>-->
-      <!--      </ng-template>-->
-      <!--      <ng-template #notFoundTemplate let-notFound>-->
-      <!--        <div [innerHTML]="notFound"></div>-->
-      <!--      </ng-template>-->
+
     </div>
     <div class="value" *ngIf="!edit">Sculpture</div>
   </div>
@@ -48,17 +32,7 @@
         (onSelectAll)="onSelectAll($event)"
       >
       </ng-multiselect-dropdown>
-      <!--      <ng-autocomplete-->
-      <!--        placeholder="Dénomination"-->
-      <!--        [data]="denomination"-->
-      <!--        [searchKeyword]="keyword"-->
-      <!--        (selected)="selectEvent($event)"-->
-      <!--        (inputChanged)="onChangeSearch($event)"-->
-      <!--        (inputFocused)="onFocused($event)"-->
-      <!--        [itemTemplate]="itemTemplate"-->
-      <!--        [notFoundTemplate]="notFoundTemplate"-->
-      <!--      >-->
-      <!--      </ng-autocomplete>-->
+
       <ng-template #itemTemplate let-item>
         <a [innerHTML]="item.name"></a>
       </ng-template>
@@ -261,4 +235,4 @@
     <p class="value" *ngIf="!edit">Metal</p>
   </div>
 </div>
-<!--</div>-->
+

@@ -12,8 +12,6 @@
     display: flex;
     flex-wrap: wrap;
     .localisation {
-      //margin-top: 2%;
-      //height: 9rem;
       border-left: 1px solid #bfbfbf;
       align-content: flex-start;
     }
@@ -27,7 +25,6 @@
     }
     h5 {
       margin: 0;
-      //border-radius: 0rem 10rem 0 0;
       background-color: #00d6d4;
       width: fit-content;
       padding: 0.7rem;
@@ -59,7 +56,6 @@
     span {
       color: white;
       font-weight: bold;
-      padding-top: 4px;
     }
     .add-item {
       display: flex;
@@ -81,9 +77,7 @@ p {
   padding-right: 0;
   color: gray;
   strong {
-    //color: #484848;
     color: #838a90;
-    //font-size: 16px;
   }
   span {
     color: #212121;
@@ -123,7 +117,6 @@ p {
   margin-bottom: 20px;
   padding: 0px 10px;
   display: flex;
-  //flex-direction: column;
   justify-content: center;
   align-items: center;
   font-weight: 100;
@@ -163,7 +156,6 @@ p {
   overflow: hidden;
 }
 .swiper-slide {
-  //width: 200px;
   text-align: center;
   font-size: 12px;
 }

@@ -1,45 +1,14 @@
 <div class="map-container">
   <div class="content d-flex">
-    <!--    <div class="add-search-bloc col-md-4">-->
-    <!--      <div class="add-button">-->
-    <!--        <button (click)="addMovement()" class="add-action"><i class="zmdi zmdi-plus"> </i>Ajouter mouvement</button>-->
-    <!--      </div>-->
-    <!--    </div>-->
     <div class="col-md-12 p-0">
       <div class="">
         <div class="d-flex justify-content-md-between">
           <h5 style="width: 100%"><i class="fas fa-map-marker-alt mr-2"></i>Dernier mouvement</h5>
-          <!--                  <button class="btn btn-primary mvt-details">-->
-          <!--                    <div class="add-item" (click)="openDetailsMvt()"><i class="add ml-2 fas fa-eye"></i></div>-->
-          <!--                    <span class="col-sm-4 col-lg-2">Localisation</span>-->
-          <!--                  </button>-->
           <button class="historic-btn" (click)="openDetailsMvt()">
             <i class="fas fa-history" placement="bottom" ngbTooltip="Historique mouvement"></i>
           </button>
         </div>
         <div class="d-flex flex-wrap info-container">
-          <!--          <div *ngIf="showDetailsMvt">-->
-          <!--            <div class="d-flex mvt-details col-md-12">-->
-          <!--              &lt;!&ndash;          <div class="add-item" (click)="openDetailsMvt()"><i class="add ml-2 fas fa-plus"></i></div>&ndash;&gt;-->
-          <!--              <span class="col-sm-4 col-lg-2" style="color: #0080ff; font-weight: 600">Mouvements</span>-->
-          <!--              &lt;!&ndash;            <hr class="col-sm-7 col-lg-9" />&ndash;&gt;-->
-          <!--            </div>-->
-          <!--            <div class="advanced-bloc d-flex col-md-12">-->
-          <!--              <div class="col-sm-12 col-md-12">-->
-          <!--                <div class="search">-->
-          <!--                  <input class="form-control" type="text" name="search" autocomplete="off" placeholder="Recherche" />-->
-          <!--                </div>-->
-          <!--                <app-grid-wrapper-->
-          <!--                  [columnDefs]="columnDefs"-->
-          <!--                  [rowData]="movements"-->
-          <!--                  [defaultColDef]="defaultColDef"-->
-          <!--                  [frameworkComponents]="frameworkComponent"-->
-          <!--                  (gridReady)="onGridReady($event)"-->
-          <!--                >-->
-          <!--                </app-grid-wrapper>-->
-          <!--              </div>-->
-          <!--            </div>-->
-          <!--          </div>-->
 
           <div>
             <div class="row">
@@ -62,7 +31,7 @@
                     </div>
                     <i class="fas fa-plus-circle" style="color: #00d6d4" title="Ajouter une action"></i>
                   </div>
-                  <!-- Add Pagination -->
+
                   <div class="swiper-pagination"></div>
                 </div>
               </div>
