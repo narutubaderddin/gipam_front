@@ -15,11 +15,15 @@
         </button>
         <div class="py-0 ng-dropdown w-100" ngbDropdownMenu aria-labelledby="dropdownButton">
           <ul class="list-group" style="width: max-content; min-width: 100%; border-color: transparent">
-            <li class="list-group-item" (click)="createNotice()" style="background-color: #00d6d4; color: white; font-size:12px">
+            <li
+              class="list-group-item"
+              (click)="createNotice()"
+              style="background-color: #00d6d4; color: white; font-size: 12px"
+            >
               <i class="fas fa-plus-circle mr-1"></i>
               Création notice en proprieté
             </li>
-            <li class="list-group-item" style="background-color: #4583af; color: white; font-size:12px">
+            <li class="list-group-item" style="background-color: #4583af; color: white; font-size: 12px">
               <i class="fas fa-plus-circle mr-1"></i>
               Création notice en dépôt
             </li>
@@ -53,5 +57,4 @@
     <app-ng7-bootstrap-breadcrumb></app-ng7-bootstrap-breadcrumb>
     <router-outlet></router-outlet>
   </div>
-
 </div>

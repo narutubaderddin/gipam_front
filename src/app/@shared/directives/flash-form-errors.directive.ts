@@ -8,24 +8,22 @@ const INVALID_FILEDS_MSG = 'Veuillez vérifier tous les champs encadrés en roug
   selector: '[appFlashFormErrors]',
 })
 export class FlashFormErrorsDirective {
-  @Input('appFlashFormErrors') formGroup: FormGroup;
-  @Input('customErrorMessage') customErrorMessage : any;
-  @Output('appFormSubmit') submitTrigger = new EventEmitter();
+  @Input() formGroup: FormGroup;
+  @Input() customError: string;
+  @Output() appFormSubmit = new EventEmitter();
+  private errorTitle = 'Erreur';
+  private errorMessage = INVALID_FILEDS_MSG;
 
   constructor(private notificationService: NotificationsService) {}
 
   ngOnInit(): void {}
 
-  @HostListener('click', ['$event']) onClick() {
+  @HostListener('submit', ['$event']) onClick() {
     if (this.formGroup.invalid) {
       markAsDirtyDeep(this.formGroup);
-      let errorMessage = INVALID_FILEDS_MSG;
-      if (this.customErrorMessage) {
-        errorMessage = this.customErrorMessage;
-      }
-      this.notificationService.error('Erreur Formulaire', errorMessage, true);
+      this.notificationService.error(this.errorTitle, this.errorMessage);
     } else {
-      this.submitTrigger.emit(this.formGroup);
+      this.appFormSubmit.emit(this.formGroup);
     }
   }
 }

@@ -20,6 +20,7 @@ export class DenominationsComponent implements OnInit {
 
   private myModal: any;
   selectedDenomination: string;
+  selectedDomain:any;
   denominationToDelete: string;
   denominationForm: FormGroup;
   editDenomination: boolean = false;
@@ -89,7 +90,8 @@ export class DenominationsComponent implements OnInit {
   }
   initForm() {
     this.denominationForm = this.fb.group({
-      domain: [this.selectedDenomination, [Validators.required]],
+      domain: [this.selectedDomain, [Validators.required]],
+      denomination: [this.selectedDenomination, [Validators.required]],
     });
   }
   get defaultHeaderParams() {

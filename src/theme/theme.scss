@@ -217,16 +217,16 @@ button {
 }
 
 .add-action {
-    font-size: 12px;
-    background-color: #2c74b3;
+  font-size: 12px;
+  background-color: #2c74b3;
+  color: white;
+  font-weight: bold;
+  .i {
+    display: flex;
+    font-size: 14px;
+    align-self: center;
     color: white;
-    font-weight: bold;
-    .i {
-      display: flex;
-      font-size: 14px;
-      align-self: center;
-      color: white;
-    }
+  }
 }
 
 .search-panel {
@@ -643,6 +643,7 @@ li a i:hover {
  */
 input,
 select,
+ng-multiselect-dropdown,
 textarea,
 .dropdown-btn {
   &:not(.novalidate) {
