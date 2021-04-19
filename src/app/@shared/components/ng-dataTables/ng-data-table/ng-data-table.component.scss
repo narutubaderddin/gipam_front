@@ -1,0 +1,50 @@
+::ng-deep {
+  .p-datatable .p-datatable-thead > tr > th {
+    background: #0080ff;
+    color: white;
+    line-height: 2;
+    border-left: 1px solid white;
+    margin-right: 10px;
+    box-sizing: border-box;
+    outline: none;
+    font-size: 12px;
+    text-align: start;
+  }
+  .p-sortable-column:hover {
+    background: #0080ff !important;
+    color: white !important;
+  }
+  .p-sortable-column {
+    background: #0080ff !important;
+    color: white !important;
+  }
+  .p-datatable .p-sortable-column .p-sortable-column-icon {
+    color: white !important;
+    &:hover > .p-sortable-column-icon {
+      color: white !important;
+    }
+  }
+  .p-datatable .p-sortable-column:focus {
+    box-shadow: transparent;
+  }
+  .p-datatable .p-datatable-tbody > tr {
+    font-size: 12px;
+    color: black;
+  }
+
+  .p-datatable .p-sortable-column.p-highlight .p-sortable-column-icon {
+    color: white !important;
+  }
+  .p-datatable .p-paginator-bottom {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .p-paginator .p-paginator-pages .p-paginator-page {
+    color: black;
+    font-size: 12px;
+  }
+  p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background: #0080ff !important;
+    color: white !important;
+  }
+}

@@ -36,7 +36,7 @@ import { DatePipe } from '@angular/common';
 export class ListWorkOfArtsComponent implements OnInit {
   @ViewChildren('accordionSectionDOM', { read: ElementRef }) accordionsDOM: QueryList<ElementRef>;
   isCollapsed = true;
-  showDatatable = false;
+  showDatatable = true;
   data = false;
   mode = 'liste';
   filterFormGroup: FormGroup;
@@ -81,7 +81,152 @@ export class ListWorkOfArtsComponent implements OnInit {
     },
   };
   oeuvres = this.WorkOfArtService.oeuvres[0].items;
-
+  frozenCols: any = [
+    {
+      header: 'N° inventaire',
+      field: 'id',
+      sortable: true,
+      filter: true,
+      filterType: 'text',
+      checkBoxSelection: false,
+      type: 'app-remarquer-details-link-render',
+    },
+  ];
+  columns: any[] = [
+    {
+      header: 'Titre',
+      field: 'titre',
+      type: 'key',
+      width: '150px',
+      filter: true,
+      filterType: 'text',
+      sortable: true,
+    },
+    {
+      header: 'Date création',
+      field: 'creationDate',
+      sortable: true,
+      width: '150px',
+      filter: true,
+      type: 'key',
+      filterType: 'range-date',
+    },
+    {
+      header: 'Domaine',
+      field: 'domaine',
+      sortable: true,
+      width: '150px',
+      filter: true,
+      filterType: 'text',
+      type: 'key',
+    },
+    {
+      header: 'Dénomination',
+      field: 'denomination',
+      sortable: true,
+      width: '150px',
+      filter: true,
+      filterType: 'text',
+      type: 'key',
+    },
+    {
+      header: 'Matière',
+      field: 'matiere',
+      sortable: true,
+      width: '150px',
+      filter: true,
+      filterType: 'text',
+      type: 'key',
+    },
+    {
+      header: 'Style',
+      field: 'style',
+      sortable: true,
+      width: '150px',
+      filter: true,
+      filterType: 'text',
+      type: 'key',
+    },
+    {
+      header: 'Epoque',
+      field: 'epoque',
+      width: '150px',
+      sortable: true,
+      filter: true,
+      filterType: 'text',
+      type: 'key',
+    },
+    {
+      header: 'Auteur',
+      field: 'author',
+      width: '150px',
+      sortable: true,
+      filter: true,
+      filterType: 'text',
+      type: 'key',
+    },
+    {
+      header: 'Type de Statut',
+      field: 'property',
+      cellRenderer: 'statusTypeRender',
+      width: '200px',
+      sortable: false,
+      filter: false,
+      type: 'app-status-component-render',
+    },
+    {
+      header: 'deposant',
+      field: 'depositor',
+      width: '150px',
+      sortable: true,
+      filter: true,
+      filterType: 'text',
+      type: 'key',
+    },
+    {
+      header: 'photographie',
+      field: 'property',
+      cellRenderer: 'imageViewer',
+      width: '150px',
+      sortable: true,
+      filter: true,
+      filterType: 'text',
+      type: 'key',
+    },
+    {
+      header: 'Dernier constat de présence',
+      field: 'author',
+      width: '150px',
+      sortable: true,
+      filter: true,
+      filterType: 'text',
+      type: 'key',
+    },
+    {
+      header: 'Dernière action liée au constat',
+      field: 'author',
+      width: '150px',
+    },
+    {
+      header: 'Dernier mouvement',
+      field: 'author',
+      width: '150px',
+    },
+    {
+      header: 'Dernière action liée au mouvement',
+      field: 'author',
+      width: '150px',
+    },
+    {
+      header: 'Visible catalogue',
+      field: 'visible',
+      cellRenderer: 'visibleRenderer',
+      sortable: false,
+      filter: false,
+      type: 'app-visible-catalog-component-render',
+      width: '150px',
+    },
+  ];
   ColDef: ColDef[] = [
     {
       cellClass: 'link',
@@ -198,7 +343,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   inventoryOptions: Options;
   gridReady = false;
   currentColumnStates: any;
-  columns: any;
+
   currentFilters: ColumnFilterModel[] = [];
   currentOrderedFields: { column: string; direction: string }[] = [];
   paginatorLoading: boolean;
@@ -224,6 +369,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   dynamic: boolean = false;
   modelDate = '2021';
   items = ['oeuvre art', 'test'];
+
   constructor(
     private fb: FormBuilder,
     public columnFilterService: ColumnFilterService,

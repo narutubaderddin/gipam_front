@@ -1120,18 +1120,18 @@
               </button>
               <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic1">
                 <div class="columns-dropdown header-dropdown">
-                  <div class="col-12 col-sm-6 pt-1 column-check" *ngFor="let headerCol of columns">
-                    <label class="checkbox-container" translate
-                      >{{ headerCol.getColDef().headerName }}
-                      <input
-                        type="checkbox"
-                        #headerCheck
-                        (click)="onHeaderToggle(headerCol)"
-                        [checked]="headerCol.isVisible()"
-                      />
-                      <span class="checkmark"></span>
-                    </label>
-                  </div>
+                  <!--                  <div class="col-12 col-sm-6 pt-1 column-check" *ngFor="let headerCol of columns">-->
+                  <!--                    <label class="checkbox-container" translate-->
+                  <!--                      >{{ headerCol.getColDef().headerName }}-->
+                  <!--                      <input-->
+                  <!--                        type="checkbox"-->
+                  <!--                        #headerCheck-->
+                  <!--                        (click)="onHeaderToggle(headerCol)"-->
+                  <!--                        [checked]="headerCol.isVisible()"-->
+                  <!--                      />-->
+                  <!--                      <span class="checkmark"></span>-->
+                  <!--                    </label>-->
+                  <!--                  </div>-->
                 </div>
               </div>
             </div>
@@ -1209,21 +1209,14 @@
             </button>
           </div>
         </div>
-        <app-grid-wrapper
-          [columnDefs]="ColDef"
-          [rowData]="oeuvreToShow"
-          [frameworkComponents]="frameworkComponents"
-          [defaultColDef]="defaultColDef"
-          (gridReady)="onGridReady($event)"
-          (rowSelected)="onRowSelected($event)"
-          [context]="this"
-          [gridOptions]="gridOptions"
-          [sizeToFit]="false"
-          [paginationPageSize]="rowCount"
-          [pinnedCols]="pinnedCols"
-          [leftPinnedCols]="leftPinnedCols"
-          (cellClicked)="onCellClicked($event)"
-        ></app-grid-wrapper>
+        <app-ng-data-table
+          [columns]="columns"
+          [data]="oeuvreToShow"
+          [frozenCols]="frozenCols"
+          [frozenWidth]="'200px'"
+          [checkBoxSelection]="true"
+        >
+        </app-ng-data-table>
       </div>
     </div>
     <div *ngIf="mode == 'pictures'">
