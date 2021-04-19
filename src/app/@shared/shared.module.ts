@@ -33,6 +33,7 @@ import { AccordionSectionComponent } from './components/accordion-section/accord
 import { NgxHorizontalTimelineModule } from 'ngx-horizontal-timeline';
 import { FullWidthCellRendererComponent as FullWidthCellRenderer } from './components/datatables/full-width-cell-renderer/full-width-cell-renderer.component';
 import { ImageViewerComponent } from './components/datatables/image-viewer/image-viewer.component';
+import { FlashFormErrorsDirective } from './directives/flash-form-errors.directive';
 
 @NgModule({
   imports: [
@@ -74,6 +75,7 @@ import { ImageViewerComponent } from './components/datatables/image-viewer/image
     AccordionSectionComponent,
     FullWidthCellRenderer,
     ImageViewerComponent,
+    FlashFormErrorsDirective,
   ],
   exports: [
     LoaderComponent,
