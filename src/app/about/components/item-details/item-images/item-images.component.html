@@ -1,6 +1,6 @@
 <div class="row images-container">
   <div *ngIf="!add">
-    <div class="col-12 content" [formGroup]="photographyForm">
+    <div class="col-12 content">
       <div class="d-flex carousel-container mb-4" *ngIf="!add">
         <div class="d-flex justify-content-center flex-column">
           <div class="pictures-list">
@@ -56,7 +56,7 @@
           </p>
 
           <div class="col-12 pr-0" *ngIf="editType">
-            <select formControlName="photographyType" style="font-size: 12px" class="col-12 p-1">
+            <select style="font-size: 12px" class="col-12 p-1">
               <option value="">--Choisissez un type de photographie--</option>
               <option *ngFor="let type of types" [value]="type">{{ type }}</option>
             </select>
@@ -90,11 +90,11 @@
     <div class="col-12 content" [formGroup]="photographyForm">
       <h5 class="col-md-12 pt-2">Ajouter photographies</h5>
       <div class="more-details mt-2 pt-4">
-        <div class="d-flex flex-wrap" *ngIf="slide == 1">
-          <div class="d-flex carousel-container mb-4">
+        <div class="d-flex flex-wrap">
+          <div class="d-flex carousel-container mb-4" *ngIf="imageUrl">
             <div class="d-flex justify-content-center flex-column">
               <div class="pictures-list">
-                <img *ngIf="imageUrl" [src]="imageUrl" alt="" />
+                <img [src]="imageUrl" alt="" />
               </div>
               <div style="align-self: center; font-size: 25px; color: gainsboro">
                 <i class="fas fa-chevron-down"></i>
@@ -103,38 +103,54 @@
             <ngb-carousel class="carousel" (slide)="onChange($event)" [interval]="false">
               <ng-template ngbSlide id="slide1">
                 <div class="picsum-img-wrapper">
-                  <img width="100%" height="250" *ngIf="imageUrl" [src]="imageUrl" alt="Random first slide" />
+                  <img width="100%" height="250" [src]="imageUrl" alt="Random first slide" />
                 </div>
                 <div class="carousel-caption"></div>
               </ng-template>
             </ngb-carousel>
           </div>
-
-          <div class="form-group col-md-12">
-            <label class="col-5">Photographie</label>
-            <div class="input-group input-group-sm upload-file">
-              <button class="import-image" type="submit" (click)="addFile()">
-                <i class="fas fa-upload mr-2"></i>Importer une image
-              </button>
-            </div>
-          </div>
-          <div class="form-group col-md-12">
-            <label class="col-md-3">Date</label>
-            <input type="date" class="form-control col-md-12" />
-          </div>
-          <div class="form-group col-md-12">
-            <label class="col-md-3">Type</label>
-            <div class="autocomplete col-md-12">
-              <select formControlName="photographyType" style="font-size: 12px" class="col-12 p-1">
-                <option value="">--Choisissez un type de photographie--</option>
-                <option *ngFor="let type of types" [value]="type">{{ type }}</option>
-              </select>
-              <ng-template #itemTemplate let-item>
-                <a [innerHTML]="item.name"></a>
-              </ng-template>
-              <ng-template #notFoundTemplate let-notFound>
-                <div [innerHTML]="notFound"></div>
-              </ng-template>
+          <div formArrayName="photographies" *ngFor="let item of photographies.controls; let i = index">
+            <div [formGroupName]="i">
+              <div class="form-group col-md-12">
+                <label class="col-5">Photographie</label>
+                <div class="input-group input-group-sm upload-file">
+                  <div class="input-group input-group-sm h-auto">
+                    <input
+                      class="form-control"
+                      [hidden]="true"
+                      (change)="handleFileInput($event.target.files)"
+                      accept=".PNG,.png,.jpg,.JPG, .jpeg, .JPEG"
+                      type="file"
+                      #fileSelect
+                    />
+                    <input readonly class="form-control" formControlName="photography" placeholder="Select file..." />
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" (click)="fileSelect.click()" translate>
+                        <i class="fas fa-upload mr-2"></i>Importer
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-md-12">
+                <label class="col-md-3">Date</label>
+                <input type="date" class="form-control col-md-12" />
+              </div>
+              <div class="form-group col-md-12">
+                <label class="col-md-3">Type</label>
+                <div class="autocomplete col-md-12">
+                  <select formControlName="photographyType" style="font-size: 12px" class="col-12 p-1">
+                    <option value="">--Choisissez un type de photographie--</option>
+                    <option *ngFor="let type of types" [value]="type">{{ type }}</option>
+                  </select>
+                  <ng-template #itemTemplate let-item>
+                    <a [innerHTML]="item.name"></a>
+                  </ng-template>
+                  <ng-template #notFoundTemplate let-notFound>
+                    <div [innerHTML]="notFound"></div>
+                  </ng-template>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -17,16 +17,16 @@ export class ItemImagesComponent implements OnInit {
   types = ['Identification', 'Autre vue', 'Détail', 'Etat', 'Ancien cliché'];
   fileToUpload: any;
   imageUrl: any;
-
+  get photographies(): FormArray {
+    return this.photographyForm.get('photographies') as FormArray;
+  }
   constructor(private modalService: NgbModal, public fb: FormBuilder) {}
   ngOnInit(): void {
     this.initForm();
   }
   initForm() {
-    this.photographyForm = this.fb.group({
-      photographyDate: ['', [Validators.required]],
-      photography: ['', [Validators.required]],
-      photographyType: ['', [Validators.required]],
+    this.photographyForm = new FormGroup({
+      photographies: this.fb.array([this.createPhotography()]),
     });
   }
   createPhotography(): FormGroup {
@@ -37,9 +37,6 @@ export class ItemImagesComponent implements OnInit {
     });
   }
 
-  get photographies(): FormArray {
-    return this.photographyForm.get('liens') as FormArray;
-  }
   addPhotography(): void {
     this.photographies.push(this.createPhotography());
   }
