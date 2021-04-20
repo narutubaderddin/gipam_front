@@ -1,9 +1,10 @@
 <div class="table-container card">
   <p-table
     [value]="data"
-    dataKey="id"
+    [dataKey]="key"
     [paginator]="false"
     [rows]="5"
+    (selectionChange)="onCheckBoxSelection($event)"
     [(selection)]="selectedRows"
     [frozenWidth]="frozenCols.length > 0 ? frozenWidth : '0px'"
     [frozenColumns]="frozenCols"
@@ -13,24 +14,27 @@
     [totalRecords]="total"
     [resizableColumns]="true"
     [rowHover]="true"
-    class="p-datatable-gridlines"
+    class="p-datatable-gridlines p-datatable-sm"
   >
     <ng-template pTemplate="frozencolgroup" let-columns>
       <colgroup>
         <col *ngIf="checkBoxSelection" style="width: 3em" />
+        <col *ngIf="!checkBoxSelection && singleSelect" style="width: 3em" />
         <col *ngFor="let col of frozenCols" [style.width]="col.width ? col.width : '250px'" />
       </colgroup>
     </ng-template>
     <ng-template pTemplate="colgroup" let-columns>
       <colgroup>
+        <col *ngIf="!checkBoxSelection && singleSelect" style="width: 3em" />
         <col *ngFor="let col of columns" [style.width]="col.width" />
       </colgroup>
     </ng-template>
     <ng-template pTemplate="frozenheader" let-columns>
       <tr>
-        <th style="width: 3em; text-align: center">
-          <p-tableHeaderCheckbox *ngIf="checkBoxSelection"></p-tableHeaderCheckbox>
+        <th style="width: 3em; text-align: center" *ngIf="checkBoxSelection">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
         </th>
+        <th style="width: 3em; text-align: center" *ngIf="!checkBoxSelection && singleSelect"></th>
         <th
           *ngFor="let col of columns; let index = index"
           ngbDropdown
@@ -62,7 +66,6 @@
                 selectionMode="range"
                 [readonlyInput]="true"
                 [monthNavigator]="true"
-                [locale]="calendar_fr"
                 [yearNavigator]="true"
                 (change)="filterHeader($event)"
                 yearRange="1900:2100"
@@ -76,6 +79,7 @@
     </ng-template>
     <ng-template pTemplate="header" let-columns>
       <tr>
+        <th *ngIf="!checkBoxSelection && singleSelect && frozenCols.length == 0"></th>
         <th
           *ngFor="let col of columns; let index = index"
           ngbDropdown
@@ -101,18 +105,20 @@
           <div class="py-0 ng-dropdown" ngbDropdownMenu [attr.aria-labelledby]="'dropDowFilter-' + col.header">
             <div [ngSwitch]="col.filterType">
               <input type="text" [placeholder]="col.header" (input)="filterHeader($event)" *ngSwitchCase="'text'" />
-
-              <input
-                type="date"
-                name="datepicker"
-                class="form-control date-input w-100"
-                ngbDatepicker
-                autoClose="outside"
-                displayMonths="2"
+              <ngb-datepicker
                 *ngSwitchCase="'range-date'"
+                #dp
+                (dateSelect)="onDateSelection($event)"
+                [displayMonths]="2"
+                [dayTemplate]="t"
                 outsideDays="hidden"
-                id="date"
-              />
+              >
+              </ngb-datepicker>
+              <select class="select-style w-100" *ngSwitchCase="'select'">
+                <option value=""></option>
+                <option [value]="data.id" *ngFor="let data of col.selectData">{{ data.name }}</option>
+              </select>
+
               <ng-multiselect-dropdown
                 [placeholder]="col.placeholder ? col.placeholder : ''"
                 *ngSwitchCase="'multiselect'"
@@ -129,7 +135,12 @@
     </ng-template>
     <ng-template pTemplate="frozenbody" let-item let-columns="columns">
       <tr>
-        <td><p-tableCheckbox *ngIf="checkBoxSelection" [value]="item"></p-tableCheckbox></td>
+        <td *ngIf="checkBoxSelection">
+          <p-tableCheckbox [value]="item"></p-tableCheckbox>
+        </td>
+        <td *ngIf="!checkBoxSelection && singleSelect">
+          <p-tableRadioButton [value]="item"></p-tableRadioButton>
+        </td>
         <td *ngFor="let col of columns; let index = index">
           <span [ngSwitch]="col.type">
             <app-remarquer-details-link-renderer
@@ -143,6 +154,12 @@
     </ng-template>
     <ng-template pTemplate="body" let-item let-columns="columns" let-expanded="expanded" let-i="index">
       <tr>
+        <td *ngIf="checkBoxSelection && frozenCols.length == 0">
+          <p-tableCheckbox [value]="item"></p-tableCheckbox>
+        </td>
+        <td *ngIf="!checkBoxSelection && singleSelect && frozenCols.length == 0">
+          <p-tableRadioButton (click)="onRadioSelect(this)" [value]="item"></p-tableRadioButton>
+        </td>
         <td *ngFor="let col of columns">
           <span [ngSwitch]="col.type">
             <app-actions-cell *ngSwitchCase="'app-actions-cell'" [value]="item[col.field]"></app-actions-cell>
@@ -160,13 +177,23 @@
       </tr>
     </ng-template>
   </p-table>
-  <div
-    [style.margin-top]="frozenCols.length > 0 ? '0' : '8%'"
-    style="position: relative; display: flex; flex-direction: row-reverse"
-  >
-    <p-paginator rows="5" (onPageChange)="loadData($event)" [totalRecords]="total"> </p-paginator>
+  <div style="position: relative; display: flex; flex-direction: row-reverse">
+    <p-paginator rows="5" (onPageChange)="loadData($event)" [totalRecords]="total"></p-paginator>
     <span style="position: absolute; top: 3px; left: 12px; margin: 15px"
       >Résultats de {{ start }} à {{ end }} / {{ totalFiltred }} (filtrés parmis {{ total }})
     </span>
   </div>
 </div>
+
+<ng-template #t let-date let-focused="focused">
+  <span
+    class="custom-day"
+    [class.focused]="focused"
+    [class.range]="isRange(date)"
+    [class.faded]="isHovered(date) || isInside(date)"
+    (mouseenter)="hoveredDate = date"
+    (mouseleave)="hoveredDate = null"
+  >
+    {{ date.day }}
+  </span>
+</ng-template>

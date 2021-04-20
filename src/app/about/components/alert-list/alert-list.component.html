@@ -43,29 +43,18 @@
                 </span>
               </div>
             </div>
-            <div>
-              <!--              <div class="dropdown-container mb-2 mr-2 mb-sm-0" style="margin: 3px 0 15px 0">-->
-              <!--                <div class="d-inline-block drop-bloc">-->
-              <!--                <span class="icon-stack d-flex" (click)="resetFilter()">-->
-              <!--                  <i class="fas fa-filter"></i>-->
-              <!--                  <i class="fas fa-times"></i>-->
-              <!--                </span>-->
-              <!--                </div>-->
-              <!--              </div>-->
-            </div>
+            <div></div>
           </div>
           <div class="datatable mt-4">
-            <app-grid-wrapper
-              [columnDefs]="ColDef"
-              [rowData]="remarquers"
-              [frameworkComponents]="frameworkComponents"
-              [defaultColDef]="defaultColDef"
-              (gridReady)="onGridReady($event)"
-              [context]="this"
-              [paginationPageSize]="rowCount"
-              [gridOptions]="gridOptions"
-              [sizeToFit]="true"
-            ></app-grid-wrapper>
+            <app-ng-data-table
+              [columns]="columns"
+              [data]="remarquers"
+              [frozenCols]="[]"
+              [frozenWidth]="'0'"
+              (singleSelectionEvent)="onRowsSelection($event)"
+              [checkBoxSelection]="false"
+            >
+            </app-ng-data-table>
           </div>
         </div>
       </div>

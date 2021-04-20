@@ -308,13 +308,6 @@
                           <option value="avec oeuvres archivé">Avec oeuvres archivées</option>
                           <option value="uniquement oeuvres">Uniquement oeuvres</option>
                         </select>
-                        <!--                        <input-->
-                        <!--                          type="text"-->
-                        <!--                          formControlName="inventory"-->
-                        <!--                          class="form-control col-6"-->
-                        <!--                          *ngIf="!showInventoryRange"-->
-                        <!--                          placeholder="N° inventaire"-->
-                        <!--                        />-->
                       </div>
                       <select class="select-style input-form-control col-md-2">
                         <option value="1">Et</option>
@@ -1169,6 +1162,7 @@
         <app-ng-data-table
           [columns]="columns"
           [data]="oeuvreToShow"
+          (multipleSelectionEvent)="onRowsSelection($event)"
           [frozenCols]="frozenCols"
           [frozenWidth]="'200px'"
           [checkBoxSelection]="true"

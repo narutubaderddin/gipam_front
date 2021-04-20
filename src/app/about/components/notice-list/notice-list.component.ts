@@ -41,6 +41,94 @@ export class NoticeListComponent implements OnInit {
     suppressScrollOnNewData: true,
   };
   remarquers: any;
+  columns: any[] = [
+    {
+      header: 'N° inventaire',
+      field: 'id',
+      type: 'app-remarquer-details-link-render',
+      width: '150px',
+      filter: true,
+      filterType: 'text',
+      sortable: true,
+    },
+    {
+      header: 'Titre',
+      field: 'titre',
+      type: 'key',
+      width: '150px',
+      filter: true,
+      filterType: 'text',
+      sortable: true,
+    },
+    {
+      header: 'Domaine',
+      field: 'domaine',
+      sortable: true,
+      width: '150px',
+      filter: true,
+      filterType: 'multiselect',
+      placeholder: 'Choisir des Domaine',
+      selectData: this.WorkOfArtService.domaine,
+      type: 'key',
+    },
+    {
+      header: 'Dénomination',
+      field: 'denomination',
+      sortable: true,
+      width: '150px',
+      filter: true,
+      filterType: 'multiselect',
+      selectData: this.WorkOfArtService.denominations,
+      type: 'key',
+    },
+    {
+      header: 'Matière',
+      field: 'matiere',
+      sortable: true,
+      width: '150px',
+      filter: true,
+      filterType: 'text',
+      type: 'key',
+    },
+    {
+      header: 'Style',
+      field: 'style',
+      sortable: true,
+      width: '150px',
+      filter: true,
+      filterType: 'text',
+      type: 'key',
+    },
+    {
+      header: 'Date création',
+      field: 'creationDate',
+      sortable: true,
+      width: '150px',
+      filter: true,
+      type: 'key',
+      filterType: 'range-date',
+    },
+    {
+      header: 'Type de Statut',
+      field: 'property',
+      cellRenderer: 'statusTypeRender',
+      width: '200px',
+      sortable: false,
+      filter: true,
+      type: 'app-status-component-render',
+      filterType: 'select',
+      selectData: this.WorkOfArtService.statusType,
+    },
+    // {
+    //   header: 'action',
+    //   field: 'titre',
+    //   type: 'key',
+    //   width: '150px',
+    //   filter: true,
+    //   filterType: 'text',
+    //   sortable: true,
+    // }
+  ];
 
   ColDef: ColDef[] = [
     {
@@ -137,4 +225,7 @@ export class NoticeListComponent implements OnInit {
   }
 
   resetFilter() {}
+  onRowsSelection(event: any) {
+    console.log(event);
+  }
 }

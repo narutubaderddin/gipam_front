@@ -174,8 +174,10 @@ export class ListWorkOfArtsComponent implements OnInit {
       cellRenderer: 'statusTypeRender',
       width: '200px',
       sortable: false,
-      filter: false,
+      filter: true,
       type: 'app-status-component-render',
+      filterType: 'select',
+      selectData: this.WorkOfArtService.statusType,
     },
     {
       header: 'deposant',
@@ -193,7 +195,6 @@ export class ListWorkOfArtsComponent implements OnInit {
       width: '150px',
       sortable: true,
       filter: true,
-      filterType: 'text',
       type: 'key',
     },
     {
@@ -751,5 +752,8 @@ export class ListWorkOfArtsComponent implements OnInit {
       this.form1.controls['date'].setValue(event.getFullYear());
       console.log(this.form1.value);
     }
+  }
+  onRowsSelection(event: any) {
+    console.log(event);
   }
 }

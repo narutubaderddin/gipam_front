@@ -41,7 +41,98 @@ export class RecolementListComponent implements OnInit {
     suppressScrollOnNewData: true,
   };
   remarquers: any;
-
+  columns: any[] = [
+    {
+      header: 'Titre de récolement',
+      field: 'titre',
+      type: 'key',
+      width: '100px',
+      filter: true,
+      filterType: 'text',
+      sortable: true,
+    },
+    {
+      header: 'Date création',
+      field: 'creationDate',
+      sortable: true,
+      width: '100px',
+      filter: true,
+      type: 'key',
+      filterType: 'range-date',
+    },
+    {
+      header: "Nombre d'oeuvres à récoler",
+      field: 'nombre_prood_a_recole',
+      type: 'key',
+      width: '100px',
+      filter: true,
+      filterType: 'text',
+      sortable: true,
+    },
+    {
+      header: "Nombre d'oeuvres récolées",
+      field: 'nombre_prood_recole',
+      type: 'key',
+      width: '100px',
+      filter: true,
+      filterType: 'text',
+      sortable: true,
+    },
+    {
+      header: 'Créé par',
+      field: 'created_by',
+      type: 'key',
+      width: '100px',
+      filter: true,
+      filterType: 'text',
+      sortable: true,
+    },
+    {
+      header: 'Ministère',
+      field: 'minister',
+      type: 'key',
+      width: '100px',
+      filter: true,
+      filterType: 'text',
+      sortable: true,
+    },
+    {
+      header: 'Etab/Dir.',
+      field: 'etab',
+      type: 'key',
+      width: '100px',
+      filter: true,
+      filterType: 'text',
+      sortable: true,
+    },
+    {
+      header: 'Service',
+      field: 'service',
+      type: 'key',
+      width: '100px',
+      filter: true,
+      filterType: 'text',
+      sortable: true,
+    },
+    {
+      header: 'Site',
+      field: 'service',
+      type: 'key',
+      width: '100px',
+      filter: true,
+      filterType: 'text',
+      sortable: true,
+    },
+    {
+      header: 'Bâtiment',
+      field: 'service',
+      type: 'key',
+      width: '100px',
+      filter: true,
+      filterType: 'text',
+      sortable: true,
+    },
+  ];
   ColDef: ColDef[] = [
     {
       headerName: 'Titre de récolement ',
@@ -126,6 +217,7 @@ export class RecolementListComponent implements OnInit {
   get defaultHeaderParams() {
     return this.defaultColDef.headerComponentParams;
   }
+
   ngOnInit(): void {
     this.remarquers = this.WorkOfArtService.proofs;
     this.filter =
@@ -138,6 +230,7 @@ export class RecolementListComponent implements OnInit {
     this.gridColumnApi = params.columnApi;
     this.gridReady = true;
   }
+
   onRowCountChange(event: Event) {
     // @ts-ignore
     this.rowCount = event.target.value;
@@ -145,4 +238,7 @@ export class RecolementListComponent implements OnInit {
   }
 
   resetFilter() {}
+  onRowsSelection(event: any) {
+    console.log(event);
+  }
 }
