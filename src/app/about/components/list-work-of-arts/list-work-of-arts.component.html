@@ -442,7 +442,7 @@
                       <div class="row col-12">
                         <label class="col-4">Mots descriptifs</label>
 
-                        <tag-input [modelAsStrings]="true"> </tag-input>
+                        <tag-input [modelAsStrings]="true"></tag-input>
                       </div>
                     </div>
                   </div>
@@ -1070,18 +1070,18 @@
               </button>
               <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic1">
                 <div class="columns-dropdown header-dropdown">
-                  <!--                  <div class="col-12 col-sm-6 pt-1 column-check" *ngFor="let headerCol of columns">-->
-                  <!--                    <label class="checkbox-container" translate-->
-                  <!--                      >{{ headerCol.getColDef().headerName }}-->
-                  <!--                      <input-->
-                  <!--                        type="checkbox"-->
-                  <!--                        #headerCheck-->
-                  <!--                        (click)="onHeaderToggle(headerCol)"-->
-                  <!--                        [checked]="headerCol.isVisible()"-->
-                  <!--                      />-->
-                  <!--                      <span class="checkmark"></span>-->
-                  <!--                    </label>-->
-                  <!--                  </div>-->
+                  <div class="col-12 col-sm-6 pt-1 column-check" *ngFor="let headerCol of visibleCol">
+                    <label class="checkbox-container" translate
+                      >{{ headerCol.header }}
+                      <input
+                        type="checkbox"
+                        #headerCheck
+                        (click)="onHeaderToggle(headerCol, $event)"
+                        [checked]="headerCol.isVisible"
+                      />
+                      <span class="checkmark"></span>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>

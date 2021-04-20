@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
 import { NgbCalendar, NgbDate, NgbDatepickerI18n } from '@ng-bootstrap/ng-bootstrap';
@@ -40,7 +40,12 @@ export class NgDataTableComponent implements OnInit {
   ngOnInit(): void {
     this.data = this.data.slice(0, 5);
     this.key = this.columns[0]['field'];
-
+    this.columns = this.columns.filter((col) => {
+      if (Object.keys(col).indexOf('isVisible') == -1 || col.isVisible) {
+        return col;
+      }
+    });
+    console.log(this.columns);
     this.dropdownSettings = {
       singleSelection: false,
       idField: 'id',
@@ -108,5 +113,10 @@ export class NgDataTableComponent implements OnInit {
 
   onCheckBoxSelection(event: any) {
     this.multipleSelectionEvent.emit(event);
+  }
+
+  update(columns: any[]) {
+    this.columns = columns;
+    this.ngOnInit();
   }
 }

@@ -45,6 +45,7 @@ import { ActionsCellComponent } from './components/ng-dataTables/actions-cell/ac
 import { StatusTypeComponentRenderComponent } from './components/ng-dataTables/status-type-component-render/status-type-component-render.component';
 import { VisibleCatalogComponentRenderComponent } from './components/ng-dataTables/visible-catalog-component-render/visible-catalog-component-render.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @NgModule({
   imports: [
@@ -69,6 +70,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     CalendarModule,
     PaginatorModule,
     NgMultiSelectDropDownModule,
+    MultiSelectModule,
   ],
   declarations: [
     LoaderComponent,

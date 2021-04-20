@@ -4,6 +4,7 @@
     [dataKey]="key"
     [paginator]="false"
     [rows]="5"
+    [lazy]="true"
     (selectionChange)="onCheckBoxSelection($event)"
     [(selection)]="selectedRows"
     [frozenWidth]="frozenCols.length > 0 ? frozenWidth : '0px'"
