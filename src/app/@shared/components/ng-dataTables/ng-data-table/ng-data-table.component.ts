@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { outputNames } from '@angular/cdk/schematics';
 
 @Component({
   selector: 'app-ng-data-table',
@@ -15,6 +16,9 @@ export class NgDataTableComponent implements OnInit {
   @Input() total: number = 10;
   @Input() checkBoxSelection: Boolean = false;
   @Input() frozenWidth: string = '250px';
+  @Input() component: string;
+
+  @Output() action: EventEmitter<any> = new EventEmitter();
   calendar_fr: any;
 
   rangeDates: Date[];
@@ -70,4 +74,9 @@ export class NgDataTableComponent implements OnInit {
   }
 
   onChange() {}
+
+  actionMethod(e: any) {
+    console.log(e);
+    this.action.emit(e);
+  }
 }

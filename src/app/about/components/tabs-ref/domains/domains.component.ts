@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CustomHeaderRendererComponent } from '@shared/components/datatables/custom-header-renderer/custom-header-renderer.component';
 import { DomainsActionsRendererComponent } from '@shared/components/datatables/domains-actions-renderer/domains-actions-renderer.component';
 
@@ -9,6 +9,9 @@ import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { BsModalService, ModalModule } from 'ngx-bootstrap/modal';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { first } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { ColumnFilterModel } from '@shared/models/column-filter-model';
 
 @Component({
   selector: 'app-domains',
@@ -28,6 +31,12 @@ export class DomainsComponent implements OnInit {
   deleteDomain: boolean = false;
   active: boolean = true;
 
+  columnDropped = new EventEmitter();
+  columnDroppedSubscription: Subscription;
+  currentColumnStates: any;
+  currentFilters: ColumnFilterModel[] = [];
+  currentOrderedFields: { column: string; direction: string }[] = [];
+
   frameworkComponents = {
     customHeader: CustomHeaderRendererComponent,
     gridActionRenderer: DomainsActionsRendererComponent,
@@ -38,7 +47,7 @@ export class DomainsComponent implements OnInit {
     filter: true,
     resizable: true,
     headerValueGetter: (params: any) => {
-      return params.colDef.headerName;
+      return params.colDef.header;
     },
     headerComponentParams: {
       menuIcon: 'fa-filter',
@@ -52,23 +61,24 @@ export class DomainsComponent implements OnInit {
   };
   domains: any;
 
-  ColDef = [
+  columns: any[] = [
     {
-      headerName: 'Libellé',
+      header: 'Libellé',
       field: 'name',
-      headerTooltip: 'Libellé',
+      type: 'key',
+      filter: true,
+      filterType: 'text',
+      sortable: true,
     },
     {
-      headerName: 'Actions',
-      field: 'action',
-      cellRenderer: 'gridActionRenderer',
+      header: 'Actions',
+
+      type: 'app-actions-cell',
       sortable: false,
       filter: false,
-      width: 30,
+      width: '300px',
     },
   ];
-  pinnedCols: string[] = ['action'];
-  leftPinnedCols: string[] = ['id'];
 
   gridApi: GridApi;
   gridColumnApi: ColumnApi;
@@ -87,6 +97,7 @@ export class DomainsComponent implements OnInit {
     config.backdrop = 'static';
     config.keyboard = false;
   }
+
   initForm() {
     this.DomainForm = this.fb.group({
       domain: [this.selectedDomain, [Validators.required]],
@@ -143,7 +154,7 @@ export class DomainsComponent implements OnInit {
     this.myModal.dismiss('Cross click');
   }
   visibleDomain(data: any) {
-    console.log(data.active);
+    console.log('active', data.active);
     data.active = !data.active;
     console.log(data.active);
     console.log(data);
@@ -152,5 +163,22 @@ export class DomainsComponent implements OnInit {
     this.deleteDomain = true;
     this.domainToDelete = data.name;
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
+  }
+
+  actionMethod(e: any) {
+    console.log(e);
+    switch (e.method) {
+      case 'delete':
+        this.deleteItem(e.item);
+        break;
+      case 'edit':
+        this.openModal(e.item);
+        break;
+      case 'visibility':
+        this.visibleDomain(e.item);
+        break;
+      default:
+        this.close();
+    }
   }
 }

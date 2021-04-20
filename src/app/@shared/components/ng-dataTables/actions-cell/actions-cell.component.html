@@ -1,0 +1,16 @@
+<div class="d-flex justify-content-center align-items-baseline">
+  <i class="fas fa-edit" title="Modifier" (click)="modalEdit()"></i>
+  <i class="fas fa-trash-alt" title="supprimer" (click)="delete()"></i>
+  <i
+    class="fas fa-eye-slash"
+    title="désactivé"
+    *ngIf="!active && component === 'tabRefDomain'"
+    (click)="ChangeVisibility($event)"
+  ></i>
+  <i
+    class="fas fa-eye"
+    title="active"
+    *ngIf="active && component === 'tabRefDomain'"
+    (click)="ChangeVisibility($event)"
+  ></i>
+</div>

@@ -44,17 +44,16 @@
             <div></div>
           </div>
           <div class="datatable mt-4">
-            <app-grid-wrapper
-              [columnDefs]="ColDef"
-              [rowData]="domains"
-              [frameworkComponents]="frameworkComponents"
-              [defaultColDef]="defaultColDef"
-              (gridReady)="onGridReady($event)"
-              [context]="this"
-              [paginationPageSize]="rowCount"
-              [gridOptions]="gridOptions"
-              [sizeToFit]="true"
-            ></app-grid-wrapper>
+            <app-ng-data-table
+              (action)="actionMethod($event)"
+              [component]="'tabRefDomain'"
+              [columns]="columns"
+              [data]="domains"
+              [frozenCols]="[]"
+              [frozenWidth]="'0px'"
+              [checkBoxSelection]="false"
+            >
+            </app-ng-data-table>
           </div>
         </div>
       </div>

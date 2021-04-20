@@ -121,7 +121,12 @@
       <tr>
         <td *ngFor="let col of columns">
           <span [ngSwitch]="col.type">
-            <app-actions-cell *ngSwitchCase="'app-actions-cell'" [value]="item[col.field]"></app-actions-cell>
+            <app-actions-cell
+              *ngSwitchCase="'app-actions-cell'"
+              [value]="item"
+              [component]="component"
+              (methodToEmit)="actionMethod($event)"
+            ></app-actions-cell>
             <app-status-type-component-render
               *ngSwitchCase="'app-status-component-render'"
               [value]="item[col.field]"

@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomHeaderRendererComponent } from '@shared/components/datatables/custom-header-renderer/custom-header-renderer.component';
 import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
@@ -20,7 +20,7 @@ export class DenominationsComponent implements OnInit {
 
   private myModal: any;
   selectedDenomination: string;
-  selectedDomain:any;
+  selectedDomain: any;
   denominationToDelete: string;
   denominationForm: FormGroup;
   editDenomination: boolean = false;
@@ -53,19 +53,22 @@ export class DenominationsComponent implements OnInit {
   };
   denominations: any;
 
-  ColDef = [
+  columns = [
     {
-      headerName: 'Libellé',
+      header: 'Libellé',
       field: 'name',
-      headerTooltip: 'Libellé',
+      type: 'key',
+      filter: true,
+      filterType: 'text',
+      sortable: true,
     },
     {
-      headerName: 'Actions',
+      header: 'Actions',
       field: 'action',
-      cellRenderer: 'gridActionRenderer',
+      type: 'app-actions-cell',
       sortable: false,
       filter: false,
-      width: 30,
+      width: '300px',
     },
   ];
   pinnedCols: string[] = ['action'];
@@ -129,8 +132,6 @@ export class DenominationsComponent implements OnInit {
   resetFilter() {}
 
   openModal(domain: any) {
-    // this.editDenomination = true;
-    // console.log('editDenomination',this.editDenomination);
     if (domain) {
       this.editDenomination = true;
     } else {
@@ -141,8 +142,6 @@ export class DenominationsComponent implements OnInit {
     this.selectedDenomination = domain.name;
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
-    // }
-    // this.modalService.open(content, { centered: true });
   }
   submit() {
     console.log(this.denominationForm.value.domain);
@@ -164,4 +163,18 @@ export class DenominationsComponent implements OnInit {
     console.log(item);
   }
   onSelectAll(items: any) {}
+
+  actionMethod(e: any) {
+    console.log(e);
+    switch (e.method) {
+      case 'delete':
+        this.deleteItem(e.item);
+        break;
+      case 'edit':
+        this.openModal(e.item);
+        break;
+      default:
+        this.close();
+    }
+  }
 }

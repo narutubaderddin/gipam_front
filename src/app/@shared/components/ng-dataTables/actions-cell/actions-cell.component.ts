@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-actions-cell',
@@ -6,10 +6,29 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./actions-cell.component.scss'],
 })
 export class ActionsCellComponent implements OnInit {
-  @Input() value: string = '';
-  class: any;
+  @Input() value: any;
+  @Input() component: string;
+  @Output() methodToEmit: EventEmitter<any> = new EventEmitter();
+
+  visible: boolean = true;
+  active: boolean = true;
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.value);
+    this.active = this.value.active;
+  }
+
+  modalEdit() {
+    this.methodToEmit.emit({ method: 'edit', item: this.value });
+  }
+
+  ChangeVisibility(e: any) {
+    this.active = !this.active;
+    this.methodToEmit.emit({ method: 'visibility', item: this.value });
+  }
+  delete() {
+    this.methodToEmit.emit({ method: 'delete', item: this.value });
+  }
 }

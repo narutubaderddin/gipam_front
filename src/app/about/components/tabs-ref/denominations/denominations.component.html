@@ -44,17 +44,27 @@
             <div></div>
           </div>
           <div class="datatable mt-4">
-            <app-grid-wrapper
-              [columnDefs]="ColDef"
-              [rowData]="denominations"
-              [frameworkComponents]="frameworkComponents"
-              [defaultColDef]="defaultColDef"
-              (gridReady)="onGridReady($event)"
-              [context]="this"
-              [paginationPageSize]="rowCount"
-              [gridOptions]="gridOptions"
-              [sizeToFit]="true"
-            ></app-grid-wrapper>
+            <app-ng-data-table
+              (action)="actionMethod($event)"
+              [component]="'tabRefDenomination'"
+              [columns]="columns"
+              [data]="domains"
+              [frozenCols]="[]"
+              [frozenWidth]="'0px'"
+              [checkBoxSelection]="false"
+            >
+            </app-ng-data-table>
+            <!--            <app-grid-wrapper-->
+            <!--              [columnDefs]="ColDef"-->
+            <!--              [rowData]="denominations"-->
+            <!--              [frameworkComponents]="frameworkComponents"-->
+            <!--              [defaultColDef]="defaultColDef"-->
+            <!--              (gridReady)="onGridReady($event)"-->
+            <!--              [context]="this"-->
+            <!--              [paginationPageSize]="rowCount"-->
+            <!--              [gridOptions]="gridOptions"-->
+            <!--              [sizeToFit]="true"-->
+            <!--            ></app-grid-wrapper>-->
           </div>
         </div>
       </div>
@@ -91,7 +101,6 @@
           (onSelectAll)="onSelectAll($event)"
         >
         </ng-multiselect-dropdown>
-
       </div>
 
       <div
@@ -105,18 +114,13 @@
           value="{{ editDenomination ? selectedDenomination : '' }}"
           formControlName="denomination"
         />
-
       </div>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-light cancel-btn" (click)="close()">Annuler</button>
-      <button type="submit" class="btn btn-light valid-btn" *ngIf="editDenomination">
-        Modifier
-      </button>
+      <button type="submit" class="btn btn-light valid-btn" *ngIf="editDenomination">Modifier</button>
       <button type="submit" class="btn btn-light valid-btn" *ngIf="addDenomination">Ajouter</button>
-      <button type="button" class="btn btn-light valid-btn" *ngIf="deleteDenomination">
-        Supprimer
-      </button>
+      <button type="button" class="btn btn-light valid-btn" *ngIf="deleteDenomination">Supprimer</button>
     </div>
   </form>
 </ng-template>

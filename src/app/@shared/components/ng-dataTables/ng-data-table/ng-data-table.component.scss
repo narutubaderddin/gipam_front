@@ -47,4 +47,11 @@
     background: #0080ff !important;
     color: white !important;
   }
+  .p-datatable-scrollable-header-box {
+    padding: unset !important;
+  }
+  .p-datatable-scrollable-wrapper {
+    overflow: auto;
+    min-height: 320px;
+  }
 }
