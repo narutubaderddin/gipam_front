@@ -1,0 +1,116 @@
+<div class="breadcrumb">
+  <a href="accueil">Accueil</a>
+  <a href="tab-ref-domaine" class="selected-item">
+    <i class="fas fa-chevron-right"></i>
+    Gestion des Dénominations
+  </a>
+</div>
+<div class="container-fluid">
+  <div class="body d-flex">
+    <div class="col-md-12">
+      <div class="mt-3">
+        <div class="sidebar">
+          <div class="card">
+            <div class="card-body">
+              <ul class="d-flex">
+                <li class="col-md-12 selected-table"><i class="fas fa-tasks"></i><a>Gestion des Dénominations</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="mt-2 datagrid-bloc">
+          <div class="quick-filters d-flex">
+            <div class="search-add-section-div mt-3">
+              <div class="search input-group">
+                <input
+                  class="form-control py-2 border-right-0 border search-form-control"
+                  type="search"
+                  value="Rechercher"
+                  id="example-search-input"
+                />
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary border-left-0 border" type="button">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+              <div class="mr-3">
+                <button class="btn add-action" (click)="openModal('')">
+                  <i class="fas fa-plus-circle mr-1"></i>
+                  Ajouter Dénomination
+                </button>
+              </div>
+            </div>
+            <div></div>
+          </div>
+          <div class="datatable mt-4">
+            <app-grid-wrapper
+              [columnDefs]="ColDef"
+              [rowData]="denominations"
+              [frameworkComponents]="frameworkComponents"
+              [defaultColDef]="defaultColDef"
+              (gridReady)="onGridReady($event)"
+              [context]="this"
+              [paginationPageSize]="rowCount"
+              [gridOptions]="gridOptions"
+              [sizeToFit]="true"
+            ></app-grid-wrapper>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <form [formGroup]="denominationForm" appFlashFormErrors (appFormSubmit)="submit()">
+    <div class="modal-header">
+      <h4 class="modal-title" *ngIf="editDenomination">Modification de dénomination</h4>
+      <h4 class="modal-title" *ngIf="addDenomination">Ajout de dénomination</h4>
+      <h4 class="modal-title" *ngIf="deleteDenomination">Suppression de dénomination</h4>
+      <button type="button" class="close" aria-label="Close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="col-md-12" *ngIf="deleteDenomination">
+        Voulez-vous supprimer la dénomination "{{ denominationToDelete }}" ?
+      </div>
+      <div
+        class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
+        *ngIf="editDenomination || addDenomination"
+      >
+        <label class="col-sm-3">Domaine<span class="mandatory"> *</span></label>
+        <ng-multiselect-dropdown
+          formControlName="domain"
+          class="select col-sm-7 p-0"
+          [placeholder]="'Choisir ses domaines'"
+          [settings]="dropdownSettings"
+          [data]="domains"
+          (onSelect)="onDomainSelect($event)"
+          (onSelectAll)="onSelectAll($event)"
+        >
+        </ng-multiselect-dropdown>
+      </div>
+
+      <div
+        class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
+        *ngIf="editDenomination || addDenomination"
+      >
+        <label class="col-sm-3">Libellé<span class="mandatory"> *</span></label>
+        <input
+          type="text"
+          class="form-control col-sm-7"
+          value="{{ editDenomination ? selectedDenomination : '' }}"
+          formControlName="denomination"
+        />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light cancel-btn" (click)="close()">Annuler</button>
+      <button type="submit" class="btn btn-light valid-btn" *ngIf="editDenomination">Modifier</button>
+      <button type="submit" class="btn btn-light valid-btn" *ngIf="addDenomination">Ajouter</button>
+      <button type="button" class="btn btn-light valid-btn" *ngIf="deleteDenomination">Supprimer</button>
+    </div>
+  </form>
+</ng-template>

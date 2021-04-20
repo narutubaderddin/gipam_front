@@ -1,12 +1,3 @@
-<!--<app-grid-wrapper-->
-<!--  [columnDefs]="columnDefs"-->
-<!--  [rowData]="attachments"-->
-<!--  [defaultColDef]="defaultColDef"-->
-<!--[pagination]="false"-->
-<!--  class="col-md-6"-->
-
-<!--&gt;-->
-<!--</app-grid-wrapper>-->
 <div class="container p-0">
   <div class="d-flex justify-content-between">
     <h5>Pièces jointes</h5>
@@ -46,7 +37,6 @@
 
               <div class="card-body">
                 <p class="card-text">{{ file.date }}</p>
-                <!--                <p class="card-text">{{ file.type }}</p>-->
                 <p class="card-text">{{ file.creator }}</p>
               </div>
             </div>
@@ -63,7 +53,6 @@
     </div>
   </div>
 
-  <!--  <ng-file-drag-drop (uploadedFiles)="getUploadedFiles($event)" [fileConfig]="dragDropConfig"> </ng-file-drag-drop>-->
   <ngb-carousel
     *ngIf="add"
     class="carousel mb-2 carousel-attachments"
@@ -97,48 +86,4 @@
       </div>
     </ng-template>
   </ngb-carousel>
-  <!--  <div class="form-bloc d-flex flex-column" *ngIf=" add">-->
-  <!--    <div class="form-group d-flex col-md-12">-->
-  <!--      <label class="col-md-2">Pièces jointes</label>-->
-  <!--      <div class="input-group input-group-sm upload-file col-md-9 p-0">-->
-  <!--        <input class="form-control" [hidden]="true" type="file" accept=".yml" #fileSelect />-->
-  <!--        <input readonly class="form-control" placeholder="Select file..." />-->
-  <!--        <div class="input-group-prepend">-->
-  <!--          <span class="input-group-text" (click)="fileSelect.click()" translate> Browse </span>-->
-  <!--        </div>-->
-  <!--      </div>-->
-  <!--    </div>-->
-  <!--&lt;!&ndash;    <div class="form-group d-flex col-md-12">&ndash;&gt;-->
-  <!--&lt;!&ndash;      <label class="col-md-2">Date</label>&ndash;&gt;-->
-  <!--&lt;!&ndash;      <input type="date" class="form-control col-md-9" />&ndash;&gt;-->
-  <!--&lt;!&ndash;    </div>&ndash;&gt;-->
-  <!--    <div class="form-group d-flex col-md-12">-->
-  <!--      <label class="col-md-2">Type</label>-->
-  <!--      <div class="autocomplete col-md-9">-->
-  <!--        <div class="autocomplete col-md-12">-->
-  <!--          <select formControlName="photographyType" style="font-size: 12px" class="col-12 p-1">-->
-  <!--            <option value="">&#45;&#45;Choisissez un type&#45;&#45;</option>-->
-  <!--            <option *ngFor="let type of types" [value]="type">{{ type }}</option>-->
-  <!--          </select>-->
-  <!--          <ng-template #itemTemplate let-item>-->
-  <!--            <a [innerHTML]="item.name"></a>-->
-  <!--          </ng-template>-->
-  <!--          <ng-template #notFoundTemplate let-notFound>-->
-  <!--            <div [innerHTML]="notFound"></div>-->
-  <!--          </ng-template>-->
-  <!--        </div>-->
-
-  <!--        <ng-template #itemTemplate let-item>-->
-  <!--          <a [innerHTML]="item.name"></a>-->
-  <!--        </ng-template>-->
-  <!--        <ng-template #notFoundTemplate let-notFound>-->
-  <!--          <div [innerHTML]="notFound"></div>-->
-  <!--        </ng-template>-->
-  <!--      </div>-->
-  <!--    </div>-->
-  <!--    <div class="col-md-2 align-self-end">-->
-  <!--      <i class="fas fa-trash-alt delete"></i>-->
-  <!--      <i class="add ml-3 mt-1 fas fa-plus"></i>-->
-  <!--    </div>-->
-  <!--  </div>-->
 </div>

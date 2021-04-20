@@ -15,12 +15,16 @@ export class SidebarNavComponent implements OnInit {
 
   menu = 1;
   isAuthentiticated: boolean = false;
+  isAdmin: boolean = false;
+
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
     private sharedService: SharedService
   ) {
     this.isAuthentiticated = authenticationService.isAuthenticated();
+    this.isAdmin = authenticationService.isAdmin();
+    console.log(this.isAdmin);
   }
 
   ngOnInit(): void {}
@@ -29,7 +33,7 @@ export class SidebarNavComponent implements OnInit {
   // }
   toggle() {
     this.collapseMenu = !this.collapseMenu;
-    console.log('collapseMenu', this.collapseMenu);
+    // console.log('collapseMenu', this.collapseMenu);
     this.open.emit(this.collapseMenu);
     this.sharedService.collapseMenu = this.collapseMenu;
     // console.log(this.sharedService.collapseMenu);
@@ -48,7 +52,14 @@ export class SidebarNavComponent implements OnInit {
     this.authenticationService.logout();
     this.router.navigate(['login']);
   }
-
+  goToDomainsList() {
+    this.menu = 3;
+    this.router.navigate(['tab-ref-domaine']);
+  }
+  goToDenominationsList() {
+    this.menu = 3;
+    this.router.navigate(['tab-ref-dénomination']);
+  }
   goToPoratil() {
     this.menu = 4;
     this.router.navigate(['portail']);
