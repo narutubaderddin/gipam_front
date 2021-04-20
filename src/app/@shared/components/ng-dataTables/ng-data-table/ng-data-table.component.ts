@@ -20,8 +20,8 @@ export class NgDataTableComponent implements OnInit {
   @Input() total: number = 10;
   @Input() checkBoxSelection: Boolean = false;
   @Input() frozenWidth: string = '250px';
-  @Input() singleSelect: boolean = true;
-
+  @Input() singleSelect: Boolean = false;
+  @Input() expand: Boolean = false;
   @Output() singleSelectionEvent = new EventEmitter();
   @Output() multipleSelectionEvent = new EventEmitter();
 

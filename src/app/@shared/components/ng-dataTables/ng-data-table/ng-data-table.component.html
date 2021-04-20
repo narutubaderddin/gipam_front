@@ -19,14 +19,13 @@
   >
     <ng-template pTemplate="frozencolgroup" let-columns>
       <colgroup>
-        <col *ngIf="checkBoxSelection" style="width: 3em" />
-        <col *ngIf="!checkBoxSelection && singleSelect" style="width: 3em" />
+        <col *ngIf="checkBoxSelection || singleSelect" style="width: 3em" />
         <col *ngFor="let col of frozenCols" [style.width]="col.width ? col.width : '250px'" />
       </colgroup>
     </ng-template>
     <ng-template pTemplate="colgroup" let-columns>
       <colgroup>
-        <col *ngIf="!checkBoxSelection && singleSelect" style="width: 3em" />
+        <col *ngIf="checkBoxSelection || singleSelect" style="width: 3em" />
         <col *ngFor="let col of columns" [style.width]="col.width" />
       </colgroup>
     </ng-template>
@@ -35,7 +34,7 @@
         <th style="width: 3em; text-align: center" *ngIf="checkBoxSelection">
           <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
         </th>
-        <th style="width: 3em; text-align: center" *ngIf="!checkBoxSelection && singleSelect"></th>
+        <th style="width: 3em; text-align: center" *ngIf="singleSelect"></th>
         <th
           *ngFor="let col of columns; let index = index"
           ngbDropdown
@@ -80,7 +79,7 @@
     </ng-template>
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th *ngIf="!checkBoxSelection && singleSelect && frozenCols.length == 0"></th>
+        <th *ngIf="singleSelect && frozenCols.length == 0"></th>
         <th
           *ngFor="let col of columns; let index = index"
           ngbDropdown
@@ -139,7 +138,7 @@
         <td *ngIf="checkBoxSelection">
           <p-tableCheckbox [value]="item"></p-tableCheckbox>
         </td>
-        <td *ngIf="!checkBoxSelection && singleSelect">
+        <td *ngIf="singleSelect">
           <p-tableRadioButton [value]="item"></p-tableRadioButton>
         </td>
         <td *ngFor="let col of columns; let index = index">
@@ -158,7 +157,7 @@
         <td *ngIf="checkBoxSelection && frozenCols.length == 0">
           <p-tableCheckbox [value]="item"></p-tableCheckbox>
         </td>
-        <td *ngIf="!checkBoxSelection && singleSelect && frozenCols.length == 0">
+        <td *ngIf="singleSelect && frozenCols.length == 0">
           <p-tableRadioButton (click)="onRadioSelect(this)" [value]="item"></p-tableRadioButton>
         </td>
         <td *ngFor="let col of columns">

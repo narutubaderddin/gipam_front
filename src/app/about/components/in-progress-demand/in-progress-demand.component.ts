@@ -27,6 +27,29 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 })
 export class InProgressDemandComponent {
   checked2: boolean = true;
+  columns: any = [
+    {
+      header: 'Date de la demande',
+      field: 'date',
+    },
+
+    {
+      header: 'Demandé par ',
+      field: 'name',
+    },
+    {
+      header: 'Direction',
+      field: 'category',
+    },
+    {
+      header: 'Sous-direction',
+      field: 'name',
+    },
+    {
+      header: 'Date de livraision souhaité',
+      field: 'inventoryStatus',
+    },
+  ];
 
   products: any[] = [
     {
