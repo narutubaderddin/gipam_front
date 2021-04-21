@@ -48,23 +48,12 @@
               (action)="actionMethod($event)"
               [component]="'tabRefDenomination'"
               [columns]="columns"
-              [data]="domains"
+              [data]="denominations"
               [frozenCols]="[]"
               [frozenWidth]="'0px'"
               [checkBoxSelection]="false"
             >
             </app-ng-data-table>
-            <!--            <app-grid-wrapper-->
-            <!--              [columnDefs]="ColDef"-->
-            <!--              [rowData]="denominations"-->
-            <!--              [frameworkComponents]="frameworkComponents"-->
-            <!--              [defaultColDef]="defaultColDef"-->
-            <!--              (gridReady)="onGridReady($event)"-->
-            <!--              [context]="this"-->
-            <!--              [paginationPageSize]="rowCount"-->
-            <!--              [gridOptions]="gridOptions"-->
-            <!--              [sizeToFit]="true"-->
-            <!--            ></app-grid-wrapper>-->
           </div>
         </div>
       </div>
@@ -84,7 +73,7 @@
     </div>
     <div class="modal-body">
       <div class="col-md-12" *ngIf="deleteDenomination">
-        Voulez-vous supprimer la dénomination "{{ denominationToDelete }}" ?
+        Voulez-vous supprimer la dénomination "{{ denominationToDelete.label }}" ?
       </div>
       <div
         class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
@@ -115,12 +104,31 @@
           formControlName="denomination"
         />
       </div>
+      <div class="form-group col-md-12 d-flex align-items-baseline" *ngIf="addDenomination">
+        <label class="col-sm-5">visibilité<span class="mandatory"> *</span></label>
+        <div class="btn-slider mr-2 col-3" *ngIf="active">
+          <label [class.active]="active"></label>
+          <label class="switch">
+            <input type="checkbox" [checked]="true" formControlName="active" />
+            <span class="slider round"></span>
+          </label>
+          <label [class.active]="!active"></label>
+        </div>
+      </div>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-light cancel-btn" (click)="close()">Annuler</button>
       <button type="submit" class="btn btn-light valid-btn" *ngIf="editDenomination">Modifier</button>
       <button type="submit" class="btn btn-light valid-btn" *ngIf="addDenomination">Ajouter</button>
-      <button type="button" class="btn btn-light valid-btn" *ngIf="deleteDenomination">Supprimer</button>
+      <button
+        type="button"
+        class="btn btn-light valid-btn"
+        *ngIf="deleteDenomination"
+        (click)="deleteDenominations(denominationToDelete)"
+      >
+        Supprimer
+      </button>
     </div>
   </form>
 </ng-template>
+<p-toast></p-toast>

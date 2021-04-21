@@ -316,6 +316,11 @@ label {
   font-size: 12px;
   padding: 0.4rem 1rem;
 }
+
+.form-control {
+  font-size: 12px;
+}
+
 // switch btn
 .switch {
   position: relative;
@@ -355,11 +360,11 @@ label {
 }
 
 input:checked + .slider {
-  //background-color: #00d6d4;
+  background-color: #00d6d4;
 }
 
 input:focus + .slider {
-  //box-shadow: 0 0 1px #00d6d4;
+  box-shadow: 0 0 1px #00d6d4;
 }
 
 input:checked + .slider:before {
@@ -388,8 +393,4 @@ input:checked + .slider:before {
   label.active {
     color: #0466c8;
   }
-}
-
-.form-control {
-  font-size: 12px;
 }

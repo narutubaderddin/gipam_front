@@ -78,6 +78,8 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { TabsRefComponent } from './components/tabs-ref/tabs-ref.component';
 import { DomainsComponent } from './components/tabs-ref/domains/domains.component';
 import { DenominationsComponent } from './components/tabs-ref/denominations/denominations.component';
+import { RippleModule } from 'primeng/ripple';
+import { MessageService } from 'primeng/api';
 
 setTheme('bs4');
 
@@ -132,6 +134,7 @@ const ngWizardConfig: NgWizardConfig = {
     CommonModule,
     AboutRoutingModule,
     SharedModule,
+    RippleModule,
     NgWizardModule.forRoot(ngWizardConfig),
     NgFileDragDropModule,
     ReactiveFormsModule,
@@ -169,6 +172,6 @@ const ngWizardConfig: NgWizardConfig = {
     CheckboxModule,
     SelectButtonModule,
   ],
-  providers: [MovementsService, , BsDatepickerConfig],
+  providers: [MovementsService, BsDatepickerConfig, MessageService],
 })
 export class AboutModule {}

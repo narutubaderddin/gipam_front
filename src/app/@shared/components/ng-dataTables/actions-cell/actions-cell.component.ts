@@ -10,13 +10,13 @@ export class ActionsCellComponent implements OnInit {
   @Input() component: string;
   @Output() methodToEmit: EventEmitter<any> = new EventEmitter();
 
-  visible: boolean = true;
-  active: boolean = true;
+  visible = true;
+  active = true;
 
   constructor() {}
 
   ngOnInit(): void {
-    console.log(this.value);
+    // console.log(this.value);
     this.active = this.value.active;
   }
 

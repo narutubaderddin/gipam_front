@@ -28,15 +28,12 @@ export class SidebarNavComponent implements OnInit {
   }
 
   ngOnInit(): void {}
-  // set openMenu(value: string) {
-  // this.sharedService.collapseMenu = this.collapseMenu;
-  // }
+
   toggle() {
     this.collapseMenu = !this.collapseMenu;
-    // console.log('collapseMenu', this.collapseMenu);
+
     this.open.emit(this.collapseMenu);
     this.sharedService.collapseMenu = this.collapseMenu;
-    // console.log(this.sharedService.collapseMenu);
   }
 
   home() {

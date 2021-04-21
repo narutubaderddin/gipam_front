@@ -41,7 +41,6 @@
     "@ng-bootstrap/ng-bootstrap": "~5.2.2",
     "@ngx-translate/core": "^13.0.0",
     "@types/leaflet": "^1.5.19",
-    "@types/parse5": "^6.0.0",
     "ag-grid-angular": "^23.2.0",
     "ag-grid-community": "^23.2.0",
     "angular-2-local-storage": "^3.0.2",
