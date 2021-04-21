@@ -158,26 +158,7 @@ input:checked + .slider:before {
 .checkbox-container {
   font-size: 12px;
 }
-.mass-action-container {
-  background-color: rgba(0, 0, 0, 0.125);
-  display: inline-block;
-  height: 40px;
-  padding: 6px;
-  button {
-    margin-bottom: 0 !important;
-    .export-dropdown-bloc {
-      margin-top: -10px;
-      button {
-        height: 25px;
-        color: white;
-        &:focus,
-        &:active {
-          box-shadow: none;
-        }
-      }
-    }
-  }
-}
+
 .custom-slider {
   width: 100%;
   padding: 0;

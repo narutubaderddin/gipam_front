@@ -197,6 +197,7 @@ export class AlertListComponent implements OnInit {
   gridReady = false;
   rowCount: any = 5;
   filter: boolean = false;
+  selectedItem: any;
 
   constructor(
     private router: Router,
@@ -228,6 +229,6 @@ export class AlertListComponent implements OnInit {
   resetFilter() {}
 
   onRowsSelection(event: any) {
-    console.log(event);
+    this.selectedItem = event.selectedRows;
   }
 }

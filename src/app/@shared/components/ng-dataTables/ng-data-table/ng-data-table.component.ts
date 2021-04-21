@@ -3,15 +3,37 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
 import { NgbCalendar, NgbDate, NgbDatepickerI18n } from '@ng-bootstrap/ng-bootstrap';
 import { CustomDatepickerI18nService, I18n } from '@shared/services/custom-datepicker-i18n.service';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-ng-data-table',
   templateUrl: './ng-data-table.component.html',
   styleUrls: ['./ng-data-table.component.scss'],
+  animations: [
+    trigger('rowExpansionTrigger', [
+      state(
+        'void',
+        style({
+          transform: 'translateX(-10%)',
+          opacity: 0,
+        })
+      ),
+      state(
+        'active',
+        style({
+          transform: 'translateX(0)',
+          opacity: 1,
+        })
+      ),
+      transition('* <=> *', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)')),
+    ]),
+  ],
   providers: [I18n, { provide: NgbDatepickerI18n, useClass: CustomDatepickerI18nService }],
 })
 export class NgDataTableComponent implements OnInit {
   @Input() columns: any[];
+  @Input() expandColumns: any[] = [];
   @Input() frozenCols: any[] = [];
   @Input() data: any[] = [];
   @Input() start: number = 1;
@@ -22,6 +44,8 @@ export class NgDataTableComponent implements OnInit {
   @Input() frozenWidth: string = '250px';
   @Input() singleSelect: Boolean = false;
   @Input() expand: Boolean = false;
+
+  @Output() pageChanged = new EventEmitter();
   @Output() singleSelectionEvent = new EventEmitter();
   @Output() multipleSelectionEvent = new EventEmitter();
 
@@ -32,8 +56,8 @@ export class NgDataTableComponent implements OnInit {
   fromDate: NgbDate;
   toDate: NgbDate | null = null;
   selectedRows: any[];
-
-  constructor(calendar: NgbCalendar) {
+  form: FormGroup;
+  constructor(calendar: NgbCalendar, public formBuilder: FormBuilder) {
     this.fromDate = calendar.getToday();
   }
 
@@ -45,34 +69,46 @@ export class NgDataTableComponent implements OnInit {
         return col;
       }
     });
-    console.log(this.columns);
+    this.form = this.formBuilder.group({});
+    this.initForm(this.columns);
+    console.log(this.form.value);
+    this.expandColumns = [
+      {
+        header: 'Numéro inventaire',
+        field: 'id',
+      },
+      {
+        header: '',
+        field: 'select',
+        type: 'app-select-button-render',
+      },
+    ];
     this.dropdownSettings = {
       singleSelection: false,
       idField: 'id',
       textField: 'name',
       selectAllText: 'Sélectionner tout',
       unSelectAllText: 'Supprimer les sélections',
-      // itemsShowLimit: 2,
       allowSearchFilter: true,
     };
   }
 
-  onDataChange(event: any) {
+  onPageChange(event: any) {
     console.log(event);
   }
-
-  loadData($event: any) {}
 
   filterHeader($event: Event) {
     // @ts-ignore
     console.log($event.target.value);
   }
 
-  onRowSelect(event: any) {
-    console.log(this.selectedRows);
+  initForm(colomns: any[]) {
+    this.columns.forEach((col) => {
+      if (col.filter) {
+        this.form.addControl(col.field, new FormControl('', []));
+      }
+    });
   }
-
-  onChange() {}
 
   onItemSelect($event: ListItem) {}
 
@@ -88,6 +124,7 @@ export class NgDataTableComponent implements OnInit {
       this.fromDate = date;
     }
   }
+
   isHovered(date: NgbDate) {
     return (
       this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate)
@@ -118,5 +155,11 @@ export class NgDataTableComponent implements OnInit {
   update(columns: any[]) {
     this.columns = columns;
     this.ngOnInit();
+  }
+
+  onFilterChange(open: boolean) {
+    if (!open) {
+      console.log(this.form.value);
+    }
   }
 }

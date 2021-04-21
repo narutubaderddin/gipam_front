@@ -5,28 +5,8 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
   selector: 'my-app',
   templateUrl: './in-progress-demand.html',
   styleUrls: ['./in-progress-demand.scss'],
-  animations: [
-    trigger('rowExpansionTrigger', [
-      state(
-        'void',
-        style({
-          transform: 'translateX(-10%)',
-          opacity: 0,
-        })
-      ),
-      state(
-        'active',
-        style({
-          transform: 'translateX(0)',
-          opacity: 1,
-        })
-      ),
-      transition('* <=> *', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)')),
-    ]),
-  ],
 })
 export class InProgressDemandComponent {
-  checked2: boolean = true;
   columns: any = [
     {
       header: 'Date de la demande',
@@ -50,6 +30,17 @@ export class InProgressDemandComponent {
       field: 'inventoryStatus',
     },
   ];
+  expandColumns = [
+    {
+      header: 'Numéro inventaire',
+      field: 'id',
+    },
+    {
+      header: '',
+      field: 'select',
+      type: 'app-select-button-render',
+    },
+  ];
 
   products: any[] = [
     {
@@ -64,12 +55,13 @@ export class InProgressDemandComponent {
       inventoryStatus: 'INSTOCK',
       date: '2020-09-13',
       rating: 5,
-      orders: [
+      expandData: [
         {
           id: '1002',
           productCode: 'f230fh0g3',
           date: '2019-01-04',
           amount: 65,
+          select: 'oui',
           quantity: 1,
           customer: 'Juan Alejandro',
           status: 'RETURNED',
@@ -79,6 +71,7 @@ export class InProgressDemandComponent {
           productCode: 'f230fh0g3',
           date: '2020-09-13',
           amount: 195,
+          select: 'oui',
           quantity: 3,
           customer: 'Claire Morrow',
           status: 'CANCELLED',
@@ -97,13 +90,14 @@ export class InProgressDemandComponent {
       inventoryStatus: 'INSTOCK',
       rating: 4,
       date: '2019-01-04',
-      orders: [
+      expandData: [
         {
           id: '2000',
           productCode: 'nvklal433',
           date: '2020-05-14',
           amount: 72,
           quantity: 1,
+          select: 'non',
           customer: 'Maisha Jefferson',
           status: 'DELIVERED',
         },
@@ -113,6 +107,7 @@ export class InProgressDemandComponent {
           date: '2020-02-28',
           amount: 144,
           quantity: 2,
+          select: 'oui',
           customer: 'Octavia Murillo',
           status: 'PENDING',
         },
@@ -130,12 +125,13 @@ export class InProgressDemandComponent {
       inventoryStatus: 'LOWSTOCK',
       date: '2020-07-05',
       rating: 3,
-      orders: [
+      expandData: [
         {
           id: '3000',
           productCode: 'zz21cz3c1',
           date: '2020-07-05',
           amount: 79,
+          select: 'oui',
           quantity: 1,
           customer: 'Stacey Leja',
           status: 'DELIVERED',
@@ -145,6 +141,7 @@ export class InProgressDemandComponent {
           productCode: 'zz21cz3c1',
           date: '2020-02-06',
           amount: 79,
+          select: 'non',
           quantity: 1,
           customer: 'Ashley Wickens',
           status: 'DELIVERED',
@@ -152,12 +149,5 @@ export class InProgressDemandComponent {
       ],
     },
   ];
-  stateOptions: any[];
-  value1: string = 'oui';
-  constructor() {
-    this.stateOptions = [
-      { label: 'Oui', value: 'oui' },
-      { label: 'Non', value: 'non' },
-    ];
-  }
+  constructor() {}
 }

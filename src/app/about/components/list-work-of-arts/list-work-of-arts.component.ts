@@ -470,11 +470,11 @@ export class ListWorkOfArtsComponent implements OnInit {
   }
 
   onHeaderToggle(column: any, event: MouseEvent): void {
-    let localcolumn = this.columns[column.index];
+    let localColumn = this.columns[column.index];
     // @ts-ignore
-    localcolumn['isVisible'] = event.target.checked;
+    localColumn['isVisible'] = event.target.checked;
     this.columns.splice(column.index, 1);
-    this.columns.splice(column.index, 0, localcolumn);
+    this.columns.splice(column.index, 0, localColumn);
     this.dataTableComponent.update(this.columns);
   }
 

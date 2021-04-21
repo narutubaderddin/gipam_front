@@ -39,11 +39,26 @@
             </div>
           </div>
           <div class="datatable mt-4">
+            <div *ngIf="selectedItem">
+              <div class="mass-action-container">
+                <i class="fas fa-share"></i>
+                <button class="btn add-action" translate>
+                  <i class="fas fa-edit"></i>
+                  Modifier
+                </button>
+                <button class="btn add-action" translate>
+                  <i class="fas fa-trash-alt"></i>
+                  Supprimer
+                </button>
+              </div>
+            </div>
             <app-ng-data-table
               [columns]="columns"
               [data]="remarquers"
               [frozenCols]="[]"
               [frozenWidth]="'0px'"
+              [singleSelect]="true"
+              (singleSelectionEvent)="onRowsSelection($event)"
               [checkBoxSelection]="false"
             >
             </app-ng-data-table>

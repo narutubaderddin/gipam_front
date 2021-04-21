@@ -119,84 +119,14 @@ export class NoticeListComponent implements OnInit {
       filterType: 'select',
       selectData: this.WorkOfArtService.statusType,
     },
-    // {
-    //   header: 'action',
-    //   field: 'titre',
-    //   type: 'key',
-    //   width: '150px',
-    //   filter: true,
-    //   filterType: 'text',
-    //   sortable: true,
-    // }
   ];
-
-  ColDef: ColDef[] = [
-    {
-      cellClass: 'link',
-      headerName: 'N° inventaire',
-      field: 'id',
-      cellRenderer: 'detailsLink',
-      sortable: false,
-      filter: false,
-      width: 90,
-    },
-    {
-      headerName: 'Titre',
-      field: 'titre',
-    },
-    {
-      headerName: 'Domaine',
-      field: 'domaine',
-      headerComponentParams: {
-        ...this.defaultHeaderParams,
-        type: TYPES.list,
-        list: this.WorkOfArtService.domaine,
-        operator: OPERATORS.in,
-      },
-    },
-    {
-      headerName: 'Dénomination',
-      field: 'denomination',
-    },
-    {
-      headerName: 'Matière',
-      field: 'matiere',
-    },
-    {
-      headerName: 'Style',
-      field: 'style',
-    },
-    {
-      headerName: 'Date création',
-      field: 'creationDate',
-      headerComponentParams: {
-        ...this.defaultHeaderParams,
-        type: TYPES.date,
-        operator: OPERATORS.in,
-      },
-    },
-    {
-      headerName: 'Type de Statut',
-      field: 'property',
-      cellRenderer: 'statusTypeRender',
-    },
-    {
-      headerName: 'Actions',
-      field: 'action',
-      cellRenderer: 'gridActionRenderer',
-      sortable: false,
-      filter: false,
-      width: 130,
-    },
-  ];
-  pinnedCols: string[] = ['action'];
-  leftPinnedCols: string[] = ['id'];
 
   gridApi: GridApi;
   gridColumnApi: ColumnApi;
   gridReady = false;
   rowCount: any = 5;
   filter: boolean = false;
+  selectedItem: any;
 
   constructor(
     private router: Router,
@@ -225,7 +155,8 @@ export class NoticeListComponent implements OnInit {
   }
 
   resetFilter() {}
+
   onRowsSelection(event: any) {
-    console.log(event);
+    this.selectedItem = event.selectedRows;
   }
 }
