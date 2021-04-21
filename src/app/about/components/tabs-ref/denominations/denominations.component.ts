@@ -297,7 +297,7 @@ export class DenominationsComponent implements OnInit {
     this.denominationsService.editDenominations(item, id).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Modification', 'Dénomination modifié avec succés');
+        this.addSingle('success', 'Modification', 'Dénomination modifiée avec succés');
         this.getAllDenominations();
       },
 

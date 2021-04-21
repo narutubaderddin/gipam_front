@@ -226,7 +226,7 @@ export class DomainsComponent implements OnInit {
     this.feildsService.editField(field, id).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Modification', 'Dénomination modifié avec succés');
+        this.addSingle('success', 'Modification', 'Domaine modifié avec succés');
         this.getAllFeilds();
       },
       (error) => {
