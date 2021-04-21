@@ -64,14 +64,17 @@ export class NgDataTableComponent implements OnInit {
   ngOnInit(): void {
     this.data = this.data.slice(0, 5);
     this.key = this.columns[0]['field'];
-    this.columns = this.columns.filter((col) => {
-      if (Object.keys(col).indexOf('isVisible') == -1 || col.isVisible) {
-        return col;
-      }
-    });
     this.form = this.formBuilder.group({});
     this.initForm(this.columns);
     console.log(this.form.value);
+    this.columns = this.columns.filter((col) => {
+      if (Object.keys(col).indexOf('isVisible') == -1 || col.isVisible) {
+        return col;
+      } else {
+        this.form.removeControl(col.field);
+      }
+    });
+
     this.expandColumns = [
       {
         header: 'Numéro inventaire',
