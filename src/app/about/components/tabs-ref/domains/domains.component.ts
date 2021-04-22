@@ -36,7 +36,7 @@ export class DomainsComponent implements OnInit {
   currentColumnStates: any;
   currentFilters: ColumnFilterModel[] = [];
   currentOrderedFields: { column: string; direction: string }[] = [];
-
+  itemLabel: any;
   frameworkComponents = {
     customHeader: CustomHeaderRendererComponent,
     gridActionRenderer: DomainsActionsRendererComponent,
@@ -51,6 +51,7 @@ export class DomainsComponent implements OnInit {
       filterType: 'text',
       sortable: true,
     },
+
     {
       header: 'Actions',
 
@@ -61,9 +62,6 @@ export class DomainsComponent implements OnInit {
     },
   ];
 
-  gridApi: GridApi;
-  gridColumnApi: ColumnApi;
-  gridReady = false;
   rowCount: any = 5;
   filter = false;
 
@@ -95,18 +93,13 @@ export class DomainsComponent implements OnInit {
       this.activatedRoute.snapshot.queryParams.filter && this.activatedRoute.snapshot.queryParams.filter.length > 0;
   }
 
-  // onRowCountChange(event: Event) {
-  //   // @ts-ignore
-  //   this.rowCount = event.target.value;
-  //   this.gridApi.paginationSetPageSize(Number(this.rowCount));
-  // }
-
   resetFilter() {}
 
   openModal(domain: any) {
     if (domain) {
       this.editDomain = true;
       this.domainToEdit = domain;
+      this.itemLabel = domain.label;
     } else {
       this.addDomain = true;
     }
@@ -163,6 +156,7 @@ export class DomainsComponent implements OnInit {
   deleteItem(data: any) {
     this.deleteDomain = true;
     this.domainToDelete = data;
+    this.itemLabel = data.label;
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
 

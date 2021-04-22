@@ -35,48 +35,53 @@ export class SidebarNavComponent implements OnInit {
     this.open.emit(this.collapseMenu);
     this.sharedService.collapseMenu = this.collapseMenu;
   }
+  toggleClose() {
+    this.collapseMenu = true;
+
+    this.open.emit(this.collapseMenu);
+    this.sharedService.collapseMenu = this.collapseMenu;
+  }
 
   home() {
     this.router.navigate(['accueil']);
     this.menu = 1;
-    this.collapseMenu = !this.collapseMenu;
+    this.toggleClose();
   }
   goToWorkOfArts() {
     this.menu = 2;
     this.router.navigate(['oeuvres-list']);
-    this.collapseMenu = !this.collapseMenu;
+    this.toggleClose();
   }
 
   logout() {
     this.authenticationService.logout();
     this.router.navigate(['login']);
-    this.collapseMenu = !this.collapseMenu;
   }
   goToDomainsList() {
     this.menu = 3;
     this.router.navigate(['tab-ref-domaine']);
-    this.collapseMenu = !this.collapseMenu;
+    this.toggleClose();
   }
   goToDenominationsList() {
     this.menu = 3;
     this.router.navigate(['tab-ref-dénomination']);
-    this.collapseMenu = !this.collapseMenu;
+    this.toggleClose();
   }
   goToPoratil() {
     this.menu = 4;
     this.router.navigate(['portail']);
-    this.collapseMenu = !this.collapseMenu;
+    this.toggleClose();
   }
 
   goToRecolementList() {
     this.router.navigate(['recolements-list']);
-    this.collapseMenu = !this.collapseMenu;
+    this.toggleClose();
   }
   goToAlertList() {
     this.router.navigate(['alerts-list']);
-    this.collapseMenu = !this.collapseMenu;
+    this.toggleClose();
   }
   goToDemandesList() {
-    this.collapseMenu = !this.collapseMenu;
+    this.toggleClose();
   }
 }

@@ -72,9 +72,7 @@
       </button>
     </div>
     <div class="modal-body">
-      <div class="col-md-12" *ngIf="deleteDenomination">
-        Voulez-vous supprimer la dénomination "{{ denominationToDelete.label }}" ?
-      </div>
+      <div class="col-md-12" *ngIf="deleteDenomination">Voulez-vous supprimer la dénomination "{{ itemLabel }}" ?</div>
       <div
         class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
         *ngIf="editDenomination || addDenomination"

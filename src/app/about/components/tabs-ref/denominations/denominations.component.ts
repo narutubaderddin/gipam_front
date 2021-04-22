@@ -35,6 +35,7 @@ export class DenominationsComponent implements OnInit {
   success: any = [];
   active = true;
   dropdownList: any;
+  itemLabel: any;
   frameworkComponents = {
     customHeader: CustomHeaderRendererComponent,
     gridActionRenderer: DenominationsActionsRendererComponent,
@@ -53,10 +54,10 @@ export class DenominationsComponent implements OnInit {
       type: TYPES.text,
     },
   };
-  gridOptions: GridOptions = {
-    suppressLoadingOverlay: false,
-    suppressScrollOnNewData: true,
-  };
+  // gridOptions: GridOptions = {
+  //   suppressLoadingOverlay: false,
+  //   suppressScrollOnNewData: true,
+  // };
   denominations: any;
 
   columns = [
@@ -77,12 +78,7 @@ export class DenominationsComponent implements OnInit {
       width: '300px',
     },
   ];
-  pinnedCols: string[] = ['action'];
-  leftPinnedCols: string[] = ['id'];
 
-  gridApi: GridApi;
-  gridColumnApi: ColumnApi;
-  gridReady = false;
   rowCount: any = 5;
   filter = false;
 
@@ -127,24 +123,13 @@ export class DenominationsComponent implements OnInit {
       this.activatedRoute.snapshot.queryParams['filter'].length > 0;
   }
 
-  onGridReady(params: ICellEditorParams) {
-    this.gridApi = params.api;
-    this.gridColumnApi = params.columnApi;
-    this.gridReady = true;
-  }
-  onRowCountChange(event: Event) {
-    // @ts-ignore
-    this.rowCount = event.target.value;
-    this.gridApi.paginationSetPageSize(Number(this.rowCount));
-  }
-
   resetFilter() {}
 
   openModal(denomination: any) {
-    // this.domains = this.getAllFields();
     if (denomination) {
       this.editDenomination = true;
       this.denominationToEdit = denomination;
+      this.itemLabel = denomination.label;
     } else {
       this.addDenomination = true;
       this.domains = this.getAllFields();
@@ -188,6 +173,7 @@ export class DenominationsComponent implements OnInit {
   deleteItem(data: any) {
     this.deleteDenomination = true;
     this.denominationToDelete = data;
+    this.itemLabel = data.label;
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
 
@@ -270,34 +256,26 @@ export class DenominationsComponent implements OnInit {
   visibleDenomination(data: any) {
     data.active = !data.active;
 
-    this.denominationsService
-      .editDenominations(
-        {
-          label: data.label,
-          active: data.active,
-        },
-        data.id
-      )
-      .subscribe(
-        (result) => {
-          if (data.active) {
-            this.addSingle('success', 'Activation', 'Dénomination activée avec succés');
-          } else {
-            this.addSingle('success', 'Activation', 'Dénomination désactivée avec succés');
-          }
-          this.getAllDenominations();
-        },
-
-        (error) => {
-          this.addSingle('error', 'Modification', error.error.message);
+    this.denominationsService.editDenominations({ label: data.label, active: data.active }, data.id).subscribe(
+      (result) => {
+        if (data.active) {
+          this.addSingle('success', 'Activation', 'Dénomination ' + data.label + ' activée avec succés');
+        } else {
+          this.addSingle('success', 'Activation', 'Dénomination ' + data.label + ' désactivée avec succés');
         }
-      );
+        this.getAllDenominations();
+      },
+
+      (error) => {
+        this.addSingle('error', 'Modification', error.error.message);
+      }
+    );
   }
   editField(item: any, id: number) {
     this.denominationsService.editDenominations(item, id).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Modification', 'Dénomination modifiée avec succés');
+        this.addSingle('success', 'Modification', 'Dénomination ' + item.label + ' modifiée avec succés');
         this.getAllDenominations();
       },
 

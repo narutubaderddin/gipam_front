@@ -19,7 +19,7 @@ export class DenominationsService {
 
   // Get All Denominations
   getAllDenominations(): Observable<any> {
-    const params = new HttpParams().set('limit', '5').set('page', '17');
+    const params = new HttpParams().set('limit', '5').set('page', '1');
 
     return this.http.get<any[]>(baseUrl + 'api/denominations/', { params });
   }
