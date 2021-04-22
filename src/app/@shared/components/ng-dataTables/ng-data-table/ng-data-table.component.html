@@ -1,151 +1,257 @@
-<div class="table-container card">
-  <p-table
-    [value]="data"
-    dataKey="id"
-    [paginator]="false"
-    [rows]="5"
-    [(selection)]="selectedRows"
-    [frozenWidth]="frozenWidth"
-    [frozenColumns]="frozenCols"
-    [columns]="columns"
-    [scrollable]="true"
-    selectionMode=""
-    [totalRecords]="total"
-    [resizableColumns]="true"
-    [rowHover]="true"
-    class="p-datatable-gridlines"
-  >
-    <ng-template pTemplate="frozencolgroup" let-columns>
-      <colgroup>
-        <col *ngIf="checkBoxSelection" style="width: 3em" />
-        <col *ngFor="let col of frozenCols" [style.width]="col.width ? col.width : '250px'" />
-      </colgroup>
-    </ng-template>
-    <ng-template pTemplate="colgroup" let-columns>
-      <colgroup>
-        <col *ngFor="let col of columns" [style.width]="col.width" />
-      </colgroup>
-    </ng-template>
-    <ng-template pTemplate="frozenheader" let-columns>
-      <tr>
-        <th style="width: 3em; text-align: center">
-          <p-tableHeaderCheckbox *ngIf="checkBoxSelection"></p-tableHeaderCheckbox>
-        </th>
-        <th
-          *ngFor="let col of columns; let index = index"
-          ngbDropdown
-          pResizableColumn
-          placement="bottom-left"
-          autoClose="outside"
-          container="body"
-          [pSortableColumn]="col.sortable ? col.header : ''"
-        >
-          {{ col.header }}
-
-          <i class="fas fa-filter" *ngIf="col.filter" [id]="'dropDowFilter-' + col.header" ngbDropdownToggle></i>
-          <div class="py-0 ng-dropdown" ngbDropdownMenu [attr.aria-labelledby]="'dropDowFilter-' + col.header">
-            <div [ngSwitch]="col.filterType">
-              <input type="text" [placeholder]="col.header" (input)="filterHeader($event)" *ngSwitchCase="'text'" />
-              <p-calendar
-                id="range_frozen"
-                [(ngModel)]="rangeDates"
-                selectionMode="range"
-                [readonlyInput]="true"
-                [monthNavigator]="true"
-                [locale]="calendar_fr"
-                [yearNavigator]="true"
-                (change)="filterHeader($event)"
-                yearRange="1900:2100"
-                *ngSwitchCase="'range-date'"
-                inputId="range"
-              ></p-calendar>
-            </div>
-          </div>
-          <p-sortIcon *ngIf="col.sortable" [field]="col.header"></p-sortIcon>
-        </th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="header" let-columns>
-      <tr>
-        <th
-          *ngFor="let col of columns; let index = index"
-          ngbDropdown
-          pResizableColumn
-          placement="bottom-left"
-          autoClose="outside"
-          container="body"
-        >
-          {{ col.header }}
-
-          <i class="fas fa-filter" *ngIf="col.filter" [id]="'dropDowFilter-' + col.header" ngbDropdownToggle></i>
-          <div class="py-0 ng-dropdown" ngbDropdownMenu [attr.aria-labelledby]="'dropDowFilter-' + col.header">
-            <div [ngSwitch]="col.filterType">
-              <input type="text" [placeholder]="col.header" (input)="filterHeader($event)" *ngSwitchCase="'text'" />
-
-              <input
-                type="date"
-                name="datepicker"
-                class="form-control date-input w-100"
-                ngbDatepicker
-                autoClose="outside"
-                displayMonths="2"
-                *ngSwitchCase="'range-date'"
-                outsideDays="hidden"
-                id="date"
-              />
-            </div>
-          </div>
-          <p-sortIcon
-            *ngIf="col.sortable"
-            [field]="col.header"
+<form [formGroup]="form">
+  <div class="table-container card">
+    <p-table
+      [value]="data"
+      [dataKey]="key"
+      [paginator]="false"
+      [rows]="5"
+      [lazy]="true"
+      (selectionChange)="onCheckBoxSelection($event)"
+      [(selection)]="selectedRows"
+      [frozenWidth]="frozenCols.length > 0 ? frozenWidth : '0px'"
+      [frozenColumns]="frozenCols"
+      [columns]="columns"
+      [scrollable]="true"
+      selectionMode=""
+      [totalRecords]="total"
+      [resizableColumns]="true"
+      [rowHover]="false"
+      class="p-datatable-gridlines p-datatable-sm"
+    >
+      <ng-template pTemplate="frozencolgroup" let-columns>
+        <colgroup>
+          <col *ngIf="checkBoxSelection || singleSelect || expand" style="width: 3em" />
+          <col *ngFor="let col of frozenCols" [style.width]="col.width ? col.width : '250px'" />
+        </colgroup>
+      </ng-template>
+      <ng-template pTemplate="colgroup" let-columns>
+        <colgroup>
+          <col *ngIf="checkBoxSelection" style="width: 3em" />
+          <col *ngIf="singleSelect" style="width: 2em" />
+          <col *ngIf="expand" style="width: 4em" />
+          <col *ngFor="let col of columns" [style.width]="col.width" />
+        </colgroup>
+      </ng-template>
+      <ng-template pTemplate="frozenheader" let-columns>
+        <tr>
+          <th style="width: 3em; text-align: center" *ngIf="checkBoxSelection">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th style="width: 3em; text-align: center" *ngIf="singleSelect || expand"></th>
+          <th
+            *ngFor="let col of columns; let index = index"
+            ngbDropdown
+            pResizableColumn
+            placement="bottom-left"
+            autoClose="outside"
+            container="body"
             [pSortableColumn]="col.sortable ? col.header : ''"
-          ></p-sortIcon>
-        </th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="frozenbody" let-item let-columns="columns">
-      <tr>
-        <td><p-tableCheckbox *ngIf="checkBoxSelection" [value]="item"></p-tableCheckbox></td>
-        <td *ngFor="let col of columns; let index = index">
-          <span [ngSwitch]="col.type">
-            <app-remarquer-details-link-renderer
-              *ngSwitchCase="'app-remarquer-details-link-render'"
-              [value]="item[col.field]"
-            ></app-remarquer-details-link-renderer>
-            <span *ngSwitchDefault> {{ item[col.field] }} </span>
-          </span>
-        </td>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-item let-columns="columns" let-expanded="expanded" let-i="index">
-      <tr>
-        <td *ngFor="let col of columns">
-          <span [ngSwitch]="col.type">
-            <app-actions-cell
-              *ngSwitchCase="'app-actions-cell'"
-              [value]="item"
-              [component]="component"
-              (methodToEmit)="actionMethod($event)"
-            ></app-actions-cell>
-            <app-status-type-component-render
-              *ngSwitchCase="'app-status-component-render'"
-              [value]="item[col.field]"
-            ></app-status-type-component-render>
-            <app-visible-catalog-component-render
-              *ngSwitchCase="'app-visible-catalog-component-render'"
-              [value]="item[col.field]"
-            ></app-visible-catalog-component-render>
-            <span *ngSwitchCase="'key-array'"> {{ item[col.key_data[0]][col.key_data[1]] }} </span>
-            <span *ngSwitchDefault> {{ item[col.field] }} </span>
-          </span>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
-  <div style="position: relative; display: flex; flex-direction: row-reverse">
-    <p-paginator rows="5" (onPageChange)="onChangePage($event)" [totalRecords]="total"> </p-paginator>
-    <span style="position: absolute; top: 3px; left: 12px; margin: 15px"
-      >Résultats de {{ start }} à {{ end }} / {{ totalFiltred }} (filtrés parmis {{ total }})
-    </span>
+          >
+            {{ col.header }}
+            <p-sortIcon
+              *ngIf="col.sortable"
+              [field]="col.header"
+              [pSortableColumn]="col.sortable ? col.header : ''"
+            ></p-sortIcon>
+            <i
+              class="fas fa-filter"
+              style="position: relative; top: 3px"
+              *ngIf="col.filter"
+              [id]="'dropDowFilter-' + col.header"
+              ngbDropdownToggle
+            ></i>
+            <div class="py-0 ng-dropdown" ngbDropdownMenu [attr.aria-labelledby]="'dropDowFilter-' + col.header">
+              <div [ngSwitch]="col.filterType">
+                <input type="text" [placeholder]="col.header" (input)="filterHeader($event)" *ngSwitchCase="'text'" />
+                <p-calendar
+                  id="range_frozen"
+                  [(ngModel)]="rangeDates"
+                  selectionMode="range"
+                  [readonlyInput]="true"
+                  [monthNavigator]="true"
+                  [yearNavigator]="true"
+                  (change)="filterHeader($event)"
+                  yearRange="1900:2100"
+                  *ngSwitchCase="'range-date'"
+                  inputId="range"
+                ></p-calendar>
+              </div>
+            </div>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngIf="(singleSelect || expand) && frozenCols.length == 0"></th>
+          <th
+            *ngFor="let col of columns; let index = index"
+            ngbDropdown
+            pResizableColumn
+            (openChange)="onFilterChange($event)"
+            placement="bottom-left"
+            autoClose="outside"
+            container="body"
+          >
+            {{ col.header }}
+            <p-sortIcon
+              *ngIf="col.sortable"
+              [field]="col.header"
+              [pSortableColumn]="col.sortable ? col.header : ''"
+            ></p-sortIcon>
+
+            <i
+              class="fas fa-filter"
+              style="position: relative; top: 3px"
+              *ngIf="col.filter"
+              [id]="'dropDowFilter-' + col.header"
+              ngbDropdownToggle
+            ></i>
+            <div class="py-0 ng-dropdown" ngbDropdownMenu [attr.aria-labelledby]="'dropDowFilter-' + col.header">
+              <div [ngSwitch]="col.filterType">
+                <input type="text" [formControlName]="col.field" [placeholder]="col.header" *ngSwitchCase="'text'" />
+                <ngb-datepicker
+                  *ngSwitchCase="'range-date'"
+                  #dp
+                  (dateSelect)="onDateSelection($event)"
+                  [displayMonths]="2"
+                  [dayTemplate]="t"
+                  [formControlName]="col.field"
+                  outsideDays="hidden"
+                >
+                </ngb-datepicker>
+                <select class="select-style w-100" *ngSwitchCase="'select'" [formControlName]="col.field">
+                  <option value=""></option>
+                  <option [value]="data.id" *ngFor="let data of col.selectData">{{ data.name }}</option>
+                </select>
+
+                <ng-multiselect-dropdown
+                  [placeholder]="col.placeholder ? col.placeholder : ''"
+                  *ngSwitchCase="'multiselect'"
+                  [settings]="dropdownSettings"
+                  [data]="col.selectData"
+                  [formControlName]="col.field"
+                  (onSelect)="onItemSelect($event)"
+                  (onSelectAll)="onSelectAll($event)"
+                >
+                </ng-multiselect-dropdown>
+              </div>
+            </div>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="frozenbody" let-item let-columns="columns" let-expanded="expanded">
+        <tr>
+          <td *ngIf="checkBoxSelection">
+            <p-tableCheckbox [value]="item"></p-tableCheckbox>
+          </td>
+          <td *ngIf="singleSelect">
+            <p-tableRadioButton [value]="item"></p-tableRadioButton>
+          </td>
+          <td *ngIf="expand">okk</td>
+          <td *ngFor="let col of columns; let index = index">
+            <span [ngSwitch]="col.type">
+              <app-remarquer-details-link-renderer
+                *ngSwitchCase="'app-remarquer-details-link-render'"
+                [value]="item[col.field]"
+              ></app-remarquer-details-link-renderer>
+              <span *ngSwitchDefault> {{ item[col.field] }} </span>
+            </span>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-item let-columns="columns" let-expanded="expanded" let-i="index">
+        <tr>
+          <td *ngIf="checkBoxSelection && frozenCols.length == 0">
+            <p-tableCheckbox [value]="item"></p-tableCheckbox>
+          </td>
+          <td *ngIf="expand && frozenCols.length == 0">
+            <button
+              type="button"
+              pButton
+              pRipple
+              [pRowToggler]="item"
+              class="p-button-text p-button-rounded p-button-plain"
+              [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+            ></button>
+          </td>
+          <td *ngIf="singleSelect && frozenCols.length == 0">
+            <p-tableRadioButton (click)="onRadioSelect(this)" [value]="item"></p-tableRadioButton>
+          </td>
+          <td *ngFor="let col of columns">
+            <span [ngSwitch]="col.type">
+              <app-actions-cell
+                *ngSwitchCase="'app-actions-cell'"
+                [value]="item"
+                [component]="component"
+                (methodToEmit)="actionMethod($event)"
+              ></app-actions-cell>
+              <app-status-type-component-render
+                *ngSwitchCase="'app-status-component-render'"
+                [value]="item[col.field]"
+              ></app-status-type-component-render>
+              <app-visible-catalog-component-render
+                *ngSwitchCase="'app-visible-catalog-component-render'"
+                [value]="item[col.field]"
+              ></app-visible-catalog-component-render>
+              <span *ngSwitchCase="'key-array'"> {{ item[col.key_data[0]][col.key_data[1]] }} </span>
+              <span *ngSwitchDefault> {{ item[col.field] }} </span>
+            </span>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="rowexpansion" let-item>
+        <tr>
+          <td [colSpan]="columns.length + 1" *ngIf="expand">
+            <div class="p-p-3">
+              <p-table [value]="item.expandData">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th *ngFor="let col of expandColumns; let index = index">{{ col.header }}</th>
+                  </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-expandItem>
+                  <tr>
+                    <td *ngFor="let col of expandColumns">
+                      <span [ngSwitch]="col.type">
+                        <span *ngSwitchDefault> {{ expandItem[col.field] }} </span>
+                        <app-select-button-render
+                          *ngSwitchCase="'app-select-button-render'"
+                          [value]="expandItem[col.field]"
+                        ></app-select-button-render>
+                      </span>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="6">There are no order for this product yet.</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <div style="position: relative; display: flex; flex-direction: row-reverse">
+      <p-paginator rows="5" (onPageChange)="onPageChange($event)" [totalRecords]="total"></p-paginator>
+      <span style="position: absolute; top: 3px; left: 12px; margin: 15px"
+        >Résultats de {{ start }} à {{ end }} / {{ totalFiltred }} (filtrés parmis {{ total }})
+      </span>
+    </div>
   </div>
-</div>
+</form>
+<ng-template #t let-date let-focused="focused">
+  <span
+    class="custom-day"
+    [class.focused]="focused"
+    [class.range]="isRange(date)"
+    [class.faded]="isHovered(date) || isInside(date)"
+    (mouseenter)="hoveredDate = date"
+    (mouseleave)="hoveredDate = null"
+  >
+    {{ date.day }}
+  </span>
+</ng-template>

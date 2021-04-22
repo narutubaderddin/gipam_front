@@ -1,14 +1,40 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { outputNames } from '@angular/cdk/schematics';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
+import { NgbCalendar, NgbDate, NgbDatepickerI18n } from '@ng-bootstrap/ng-bootstrap';
+import { CustomDatepickerI18nService, I18n } from '@shared/services/custom-datepicker-i18n.service';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-ng-data-table',
   templateUrl: './ng-data-table.component.html',
   styleUrls: ['./ng-data-table.component.scss'],
+  animations: [
+    trigger('rowExpansionTrigger', [
+      state(
+        'void',
+        style({
+          transform: 'translateX(-10%)',
+          opacity: 0,
+        })
+      ),
+      state(
+        'active',
+        style({
+          transform: 'translateX(0)',
+          opacity: 1,
+        })
+      ),
+      transition('* <=> *', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)')),
+    ]),
+  ],
+  providers: [I18n, { provide: NgbDatepickerI18n, useClass: CustomDatepickerI18nService }],
 })
 export class NgDataTableComponent implements OnInit {
   @Input() columns: any[];
-  @Input() frozenCols: any[];
+  @Input() expandColumns: any[] = [];
+  @Input() frozenCols: any[] = [];
   @Input() data: any[] = [];
   @Input() start: number = 1;
   @Input() end: number = 5;
@@ -21,41 +47,55 @@ export class NgDataTableComponent implements OnInit {
   @Output() action: EventEmitter<any> = new EventEmitter();
   calendar_fr: any;
   @Output() pageChanged = new EventEmitter();
+  @Input() singleSelect: Boolean = false;
+  @Input() expand: Boolean = false;
+
+  @Output() pageChanged = new EventEmitter();
+  @Output() singleSelectionEvent = new EventEmitter();
+  @Output() multipleSelectionEvent = new EventEmitter();
+
+  dropdownSettings: IDropdownSettings;
+  key: string;
   rangeDates: Date[];
-  selectedItems: any;
-
+  hoveredDate: NgbDate | null = null;
+  fromDate: NgbDate;
+  toDate: NgbDate | null = null;
   selectedRows: any[];
-
-  constructor() {}
+  form: FormGroup;
+  constructor(calendar: NgbCalendar, public formBuilder: FormBuilder) {
+    this.fromDate = calendar.getToday();
+  }
 
   ngOnInit(): void {
     this.data = this.data.slice(0, 5);
-    // this. calendar_fr = {
-    //   closeText: 'Fermer',
-    //   prevText: 'Précédent',
-    //   nextText: 'Suivant',
-    //   monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre' ],
-    //   monthNamesShort: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc' ],
-    //   dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-    //   dayNamesShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
-    //   dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
-    //   weekHeader: 'Semaine',
-    //   firstDay: 1,
-    //   isRTL: false,
-    //   showMonthAfterYear: false,
-    //   yearSuffix:'',
-    //   timeOnlyTitle: 'Choisir l\'heure',
-    //   timeText: 'Heure',
-    //   hourText: 'Heures',
-    //   minuteText: 'Minutes',
-    //   secondText: 'Secondes',
-    //   currentText: 'Maintenant',
-    //   ampm: false,
-    //   month: 'Mois',
-    //   week: 'Semaine',
-    //   day: 'Jour',
-    //   allDayText: 'Toute la journée'
-    // };
+    this.key = this.columns[0]['field'];
+    this.columns = this.columns.filter((col) => {
+      if (Object.keys(col).indexOf('isVisible') == -1 || col.isVisible) {
+        return col;
+      }
+    });
+    this.form = this.formBuilder.group({});
+    this.initForm(this.columns);
+    console.log(this.form.value);
+    this.expandColumns = [
+      {
+        header: 'Numéro inventaire',
+        field: 'id',
+      },
+      {
+        header: '',
+        field: 'select',
+        type: 'app-select-button-render',
+      },
+    ];
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'name',
+      selectAllText: 'Sélectionner tout',
+      unSelectAllText: 'Supprimer les sélections',
+      allowSearchFilter: true,
+    };
   }
 
   onChangePage(event: any) {
@@ -63,17 +103,59 @@ export class NgDataTableComponent implements OnInit {
     this.pageChanged.emit(event);
   }
 
-  loadData($event: any) {
-    console.log($event);
-  }
-
   filterHeader($event: Event) {
     // @ts-ignore
     console.log($event.target.value);
   }
 
-  onRowSelect(event: any) {
-    console.log(this.selectedRows);
+  initForm(colomns: any[]) {
+    this.columns.forEach((col) => {
+      if (col.filter) {
+        this.form.addControl(col.field, new FormControl('', []));
+      }
+    });
+  }
+
+  onItemSelect($event: ListItem) {}
+
+  onSelectAll($event: Array<ListItem>) {}
+
+  onDateSelection(date: NgbDate) {
+    if (!this.fromDate && !this.toDate) {
+      this.fromDate = date;
+    } else if (this.fromDate && !this.toDate && date.after(this.fromDate)) {
+      this.toDate = date;
+    } else {
+      this.toDate = null;
+      this.fromDate = date;
+    }
+  }
+
+  isHovered(date: NgbDate) {
+    return (
+      this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate)
+    );
+  }
+
+  isInside(date: NgbDate) {
+    return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
+  }
+
+  isRange(date: NgbDate) {
+    return (
+      date.equals(this.fromDate) ||
+      (this.toDate && date.equals(this.toDate)) ||
+      this.isInside(date) ||
+      this.isHovered(date)
+    );
+  }
+
+  onRadioSelect(event: NgDataTableComponent) {
+    this.singleSelectionEvent.emit(event);
+  }
+
+  onCheckBoxSelection(event: any) {
+    this.multipleSelectionEvent.emit(event);
   }
 
   onChange() {}
@@ -81,5 +163,15 @@ export class NgDataTableComponent implements OnInit {
   actionMethod(e: any) {
     console.log(e);
     this.action.emit(e);
+  }
+  update(columns: any[]) {
+    this.columns = columns;
+    this.ngOnInit();
+  }
+
+  onFilterChange(open: boolean) {
+    if (!open) {
+      console.log(this.form.value);
+    }
   }
 }
