@@ -43,16 +43,19 @@ export class NgDataTableComponent implements OnInit {
   @Input() checkBoxSelection: Boolean = false;
   @Input() frozenWidth: string = '250px';
   @Input() component: string;
-
+  @Output() filterValue: EventEmitter<any> = new EventEmitter();
   @Output() action: EventEmitter<any> = new EventEmitter();
   calendar_fr: any;
   @Output() pageChanged = new EventEmitter();
+  @Output() sort = new EventEmitter();
   @Input() singleSelect: Boolean = false;
   @Input() expand: Boolean = false;
 
-  @Output() pageChanged = new EventEmitter();
   @Output() singleSelectionEvent = new EventEmitter();
   @Output() multipleSelectionEvent = new EventEmitter();
+  asc: boolean = true;
+  currentPage: number;
+  paginationSize: number;
 
   dropdownSettings: IDropdownSettings;
   key: string;
@@ -67,7 +70,8 @@ export class NgDataTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.data = this.data.slice(0, 5);
+    console.log('columns', this.columns);
+
     this.key = this.columns[0]['field'];
     this.columns = this.columns.filter((col) => {
       if (Object.keys(col).indexOf('isVisible') == -1 || col.isVisible) {
@@ -99,8 +103,16 @@ export class NgDataTableComponent implements OnInit {
   }
 
   onChangePage(event: any) {
-    console.log(event);
     this.pageChanged.emit(event);
+    this.currentPage = event.page + 1;
+    this.paginationSize = event.rows;
+    this.currentPage = this.currentPage ? this.currentPage : 1;
+    // calculate from data index
+    const from = event.first + 1;
+    this.start = this.data.length && from ? from : 1;
+    // calculate to data index
+    const to = this.currentPage * this.paginationSize;
+    this.end = Math.min(to, this.total);
   }
 
   filterHeader($event: Event) {
@@ -161,7 +173,6 @@ export class NgDataTableComponent implements OnInit {
   onChange() {}
 
   actionMethod(e: any) {
-    console.log(e);
     this.action.emit(e);
   }
   update(columns: any[]) {
@@ -171,7 +182,11 @@ export class NgDataTableComponent implements OnInit {
 
   onFilterChange(open: boolean) {
     if (!open) {
-      console.log(this.form.value);
+      this.filterValue.emit(this.form.value);
     }
+  }
+  sortHeader() {
+    this.asc = !this.asc;
+    this.sort.emit(this.asc);
   }
 }

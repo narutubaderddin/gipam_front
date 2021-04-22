@@ -60,6 +60,7 @@
               [id]="'dropDowFilter-' + col.header"
               ngbDropdownToggle
             ></i>
+
             <div class="py-0 ng-dropdown" ngbDropdownMenu [attr.aria-labelledby]="'dropDowFilter-' + col.header">
               <div [ngSwitch]="col.filterType">
                 <input type="text" [placeholder]="col.header" (input)="filterHeader($event)" *ngSwitchCase="'text'" />
@@ -97,6 +98,7 @@
               *ngIf="col.sortable"
               [field]="col.header"
               [pSortableColumn]="col.sortable ? col.header : ''"
+              (click)="sortHeader()"
             ></p-sortIcon>
 
             <i
@@ -236,7 +238,7 @@
       </ng-template>
     </p-table>
     <div style="position: relative; display: flex; flex-direction: row-reverse">
-      <p-paginator rows="5" (onPageChange)="onPageChange($event)" [totalRecords]="total"></p-paginator>
+      <p-paginator rows="5" (onPageChange)="onChangePage($event)" [totalRecords]="total"></p-paginator>
       <span style="position: absolute; top: 3px; left: 12px; margin: 15px"
         >Résultats de {{ start }} à {{ end }} / {{ totalFiltred }} (filtrés parmis {{ total }})
       </span>

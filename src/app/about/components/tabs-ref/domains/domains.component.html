@@ -43,20 +43,20 @@
             </div>
             <div></div>
           </div>
-          <div class="datatable mt-4">
+          <div class="datatable mt-4" *ngIf="domains">
             <app-ng-data-table
               (action)="actionMethod($event)"
               (pageChanged)="pagination($event)"
+              (filterValue)="filters($event)"
+              (sort)="sortEvent($event)"
               [component]="'tabRefDomain'"
               [columns]="columns"
-              [data]="domains"
+              [data]="domains.results"
               [frozenCols]="[]"
               [frozenWidth]="'0px'"
               [checkBoxSelection]="false"
-              [start]="start"
-              [end]="end"
-              [totalFiltred]="totalFiltred"
-              [total]="total"
+              [totalFiltred]="domains.filtredQuantity"
+              [total]="domains.totalQuantity"
             >
             </app-ng-data-table>
           </div>

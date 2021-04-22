@@ -18,9 +18,14 @@ export class DenominationsService {
   constructor(private http: HttpClient) {}
 
   // Get All Denominations
-  getAllDenominations(): Observable<any> {
-    const params = new HttpParams().set('limit', '5').set('page', '2');
+  getAllDenominations(data: any): Observable<any> {
+    let params = new HttpParams();
 
+    Object.keys(data).forEach((key) => {
+      if (data[key]) {
+        params = params.append(key, data[key]);
+      }
+    });
     return this.http.get<any[]>(baseUrl + 'api/denominations/', { params });
   }
 

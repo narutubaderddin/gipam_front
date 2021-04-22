@@ -28,8 +28,7 @@ export class DomainsComponent implements OnInit {
   addDomain = false;
   deleteDomain = false;
   active = true;
-  errors: any = [];
-  success: any = [];
+
   domains: any;
   columnDropped = new EventEmitter();
   columnDroppedSubscription: Subscription;
@@ -37,8 +36,8 @@ export class DomainsComponent implements OnInit {
   currentFilters: ColumnFilterModel[] = [];
   currentOrderedFields: { column: string; direction: string }[] = [];
   itemLabel: any;
-  start: any;
-  end: any;
+  filter: any;
+  sort: string = 'asc';
   totalFiltred: any;
   total: any;
   limit = '5';
@@ -61,7 +60,6 @@ export class DomainsComponent implements OnInit {
 
     {
       header: 'Actions',
-
       type: 'app-actions-cell',
       sortable: false,
       filter: false,
@@ -70,7 +68,7 @@ export class DomainsComponent implements OnInit {
   ];
 
   rowCount: any = 5;
-  filter = false;
+  // filter = false;
 
   constructor(
     private router: Router,
@@ -93,7 +91,7 @@ export class DomainsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getAllFeilds(this.limit, this.page);
+    this.getAllFeilds();
     this.initForm();
 
     this.filter =
@@ -132,8 +130,7 @@ export class DomainsComponent implements OnInit {
     this.editDomain = false;
     this.addDomain = false;
     this.deleteDomain = false;
-    this.errors = [];
-    this.success = [];
+
     this.myModal.close('Close click');
     this.myModal.dismiss('Cross click');
   }
@@ -146,19 +143,12 @@ export class DomainsComponent implements OnInit {
         } else {
           this.addSingle('success', 'Activation', 'Domaine désactivée avec succés');
         }
-        this.getAllFeilds(this.limit, this.page);
+        this.getAllFeilds();
       },
       (error) => {
         this.addSingle('error', 'Modification', error.error.message);
       }
     );
-    // this.editField(
-    //   {
-    //     label: data.label,
-    //     active: data.active,
-    //   },
-    //   data.id
-    // );
   }
   deleteItem(data: any) {
     this.deleteDomain = true;
@@ -183,31 +173,29 @@ export class DomainsComponent implements OnInit {
     }
   }
 
-  getAllFeilds(limit: any, page: any) {
-    console.log(this.limit, this.page);
-    this.feildsService.getAllFields(limit, page).subscribe(
-      (fields) => {
-        this.domains = fields;
-
-        console.log(this.domains);
-        // this.start=  this.domains.size*(this.domains.page-1)+1;
-        // this.end= Math.min(limit*this.domains.page+1, this.domains.totalQuantity);
-        this.totalFiltred = this.domains.filteredQuantity;
-        this.total = this.domains.totalQuantity;
-        console.log(this.start, this.end, this.totalFiltred, this.total);
-        this.domains = this.domains.results;
-      },
-      (error) => {
-        this.addSingle('error', '', error.error.message);
-      }
-    );
+  getAllFeilds() {
+    this.feildsService
+      .getAllFields({ limit: this.limit, page: this.page, label: this.filter, sort: this.sort })
+      .subscribe(
+        (fields) => {
+          this.domains = fields;
+          // console.log(this.domains)
+          // this.start=  this.domains.size*(this.domains.page-1)+1;
+          // this.end= Math.min(limit*this.domains.page+1, this.domains.totalQuantity);
+          this.totalFiltred = this.domains.filteredQuantity;
+          this.total = this.domains.totalQuantity;
+        },
+        (error) => {
+          this.addSingle('error', '', error.error.message);
+        }
+      );
   }
   deleteField(field: any) {
     this.feildsService.deleteField(field).subscribe(
       (result) => {
         this.close();
         this.addSingle('success', 'Suppression', 'Domaine ' + field.label + ' supprimé avec succés');
-        this.getAllFeilds(this.limit, this.page);
+        this.getAllFeilds();
       },
       (error) => {
         this.close();
@@ -224,7 +212,7 @@ export class DomainsComponent implements OnInit {
       (result) => {
         this.close();
         this.addSingle('success', 'Ajout', 'Domaine ' + field.label + ' ajoutée avec succés');
-        this.getAllFeilds(this.limit, this.page);
+        this.getAllFeilds();
       },
       (error) => {
         this.addSingle('error', 'Ajout', error.error.message);
@@ -236,7 +224,7 @@ export class DomainsComponent implements OnInit {
       (result) => {
         this.close();
         this.addSingle('success', 'Modification', 'Domaine ' + field.label + ' modifié avec succés');
-        this.getAllFeilds(this.limit, this.page);
+        this.getAllFeilds();
       },
       (error) => {
         this.addSingle('error', 'Modification', error.error.message);
@@ -247,14 +235,28 @@ export class DomainsComponent implements OnInit {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
   }
   pagination(e: any) {
-    console.log(e);
     if (e.page < 2) {
       this.page = e.page + 1;
     } else {
       this.page = Math.max(e.page, 1).toString();
     }
     this.limit = Math.min(e.rows, this.totalFiltred - e.page * e.rows).toString();
-    this.start = e.first + 1;
-    this.getAllFeilds(this.limit, this.page);
+    // this.start = e.first + 1;
+    this.getAllFeilds();
+  }
+  filters(e: any) {
+    console.log(e);
+    this.filter = e.label;
+    this.getAllFeilds();
+  }
+  sortEvent(e: any) {
+    console.log(e);
+    if (e) {
+      this.sort = 'asc';
+      this.getAllFeilds();
+    } else {
+      this.sort = 'desc';
+      this.getAllFeilds();
+    }
   }
 }

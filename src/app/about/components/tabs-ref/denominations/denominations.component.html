@@ -46,12 +46,17 @@
           <div class="datatable mt-4">
             <app-ng-data-table
               (action)="actionMethod($event)"
+              (pageChanged)="pagination($event)"
+              (filterValue)="filters($event)"
+              (sort)="sortEvent($event)"
               [component]="'tabRefDenomination'"
               [columns]="columns"
-              [data]="denominations"
+              [data]="denominations.results"
               [frozenCols]="[]"
               [frozenWidth]="'0px'"
               [checkBoxSelection]="false"
+              [totalFiltred]="denominations.filtredQuantity"
+              [total]="denominations.totalQuantity"
             >
             </app-ng-data-table>
           </div>

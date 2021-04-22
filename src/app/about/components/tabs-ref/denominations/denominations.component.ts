@@ -31,11 +31,17 @@ export class DenominationsComponent implements OnInit {
   deleteDenomination = false;
   dropdownSettings: IDropdownSettings;
   domains: any;
-  errors: any = [];
-  success: any = [];
   active = true;
   dropdownList: any;
   itemLabel: any;
+
+  filter: any;
+  sort: string = 'asc';
+  totalFiltred: any;
+  total: any;
+  limit = '5';
+  page = '1';
+
   frameworkComponents = {
     customHeader: CustomHeaderRendererComponent,
     gridActionRenderer: DenominationsActionsRendererComponent,
@@ -54,10 +60,7 @@ export class DenominationsComponent implements OnInit {
       type: TYPES.text,
     },
   };
-  // gridOptions: GridOptions = {
-  //   suppressLoadingOverlay: false,
-  //   suppressScrollOnNewData: true,
-  // };
+
   denominations: any;
 
   columns = [
@@ -89,7 +92,7 @@ export class DenominationsComponent implements OnInit {
   ];
 
   rowCount: any = 5;
-  filter = false;
+  // filter = false;
 
   constructor(
     private router: Router,
@@ -115,6 +118,9 @@ export class DenominationsComponent implements OnInit {
     return this.defaultColDef.headerComponentParams;
   }
   ngOnInit(): void {
+    this.initForm();
+    this.getAllDenominations();
+    this.domains = this.getAllFields();
     this.dropdownSettings = {
       singleSelection: true,
       idField: 'id',
@@ -124,9 +130,7 @@ export class DenominationsComponent implements OnInit {
       itemsShowLimit: 1,
       allowSearchFilter: true,
     };
-    this.initForm();
-    this.getAllDenominations();
-    this.domains = this.getAllFields();
+
     this.filter =
       this.activatedRoute.snapshot.queryParams['filter'] &&
       this.activatedRoute.snapshot.queryParams['filter'].length > 0;
@@ -174,8 +178,7 @@ export class DenominationsComponent implements OnInit {
     this.editDenomination = false;
     this.addDenomination = false;
     this.deleteDenomination = false;
-    this.errors = [];
-    this.success = [];
+
     // this.myModal.close('Close click');
     this.myModal.dismiss('Cross click');
   }
@@ -209,7 +212,7 @@ export class DenominationsComponent implements OnInit {
     }
   }
   getAllFields() {
-    this.fieldsService.getAllFields().subscribe(
+    this.fieldsService.getAllFields({}).subscribe(
       (feilds) => {
         this.domains = feilds;
         this.domains = this.domains.results;
@@ -221,16 +224,20 @@ export class DenominationsComponent implements OnInit {
     );
   }
   getAllDenominations() {
-    this.denominationsService.getAllDenominations().subscribe(
-      (result) => {
-        this.denominations = result;
-        this.denominations = this.denominations.results;
-        console.log('result', result);
-      },
-      (error) => {
-        this.addSingle('error', '', error.error.message);
-      }
-    );
+    this.denominationsService
+      .getAllDenominations({ limit: this.limit, page: this.page, label: this.filter, sort: this.sort })
+      .subscribe(
+        (result) => {
+          this.denominations = result;
+          this.totalFiltred = this.denominations.filteredQuantity;
+          this.total = this.denominations.totalQuantity;
+          // this.denominations = this.denominations.results;
+          console.log('result', this.denominations);
+        },
+        (error) => {
+          this.addSingle('error', '', error.error.message);
+        }
+      );
   }
   deleteDenominations(item: any) {
     this.denominationsService.deleteDenominations(item).subscribe(
@@ -296,5 +303,30 @@ export class DenominationsComponent implements OnInit {
 
   addSingle(type: string, sum: string, msg: string) {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
+  }
+  pagination(e: any) {
+    if (e.page < 2) {
+      this.page = e.page + 1;
+    } else {
+      this.page = Math.max(e.page, 1).toString();
+    }
+    this.limit = Math.min(e.rows, this.totalFiltred - e.page * e.rows).toString();
+    // this.start = e.first + 1;
+    this.getAllDenominations();
+  }
+  filters(e: any) {
+    console.log(e);
+    this.filter = e.label;
+    this.getAllDenominations();
+  }
+  sortEvent(e: any) {
+    console.log(e);
+    if (e) {
+      this.sort = 'asc';
+      this.getAllDenominations();
+    } else {
+      this.sort = 'desc';
+      this.getAllDenominations();
+    }
   }
 }
