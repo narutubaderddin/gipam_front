@@ -70,6 +70,15 @@ export class DenominationsComponent implements OnInit {
       sortable: true,
     },
     {
+      header: 'Domaine',
+      field: 'field',
+      type: 'key-array',
+      key_data: ['field', 'label'],
+      filter: true,
+      filterType: 'text',
+      sortable: true,
+    },
+    {
       header: 'Actions',
       field: 'action',
       type: 'app-actions-cell',

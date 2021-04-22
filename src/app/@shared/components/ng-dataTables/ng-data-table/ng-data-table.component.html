@@ -135,6 +135,7 @@
               *ngSwitchCase="'app-visible-catalog-component-render'"
               [value]="item[col.field]"
             ></app-visible-catalog-component-render>
+            <span *ngSwitchCase="'key-array'"> {{ item[col.key_data[0]][col.key_data[1]] }} </span>
             <span *ngSwitchDefault> {{ item[col.field] }} </span>
           </span>
         </td>
