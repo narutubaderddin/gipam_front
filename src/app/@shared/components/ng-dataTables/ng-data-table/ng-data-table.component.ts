@@ -20,7 +20,7 @@ export class NgDataTableComponent implements OnInit {
 
   @Output() action: EventEmitter<any> = new EventEmitter();
   calendar_fr: any;
-
+  @Output() pageChanged = new EventEmitter();
   rangeDates: Date[];
   selectedItems: any;
 
@@ -58,11 +58,14 @@ export class NgDataTableComponent implements OnInit {
     // };
   }
 
-  onDataChange(event: any) {
+  onChangePage(event: any) {
     console.log(event);
+    this.pageChanged.emit(event);
   }
 
-  loadData($event: any) {}
+  loadData($event: any) {
+    console.log($event);
+  }
 
   filterHeader($event: Event) {
     // @ts-ignore

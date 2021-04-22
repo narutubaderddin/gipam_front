@@ -236,13 +236,13 @@ export class DenominationsComponent implements OnInit {
     this.denominationsService.deleteDenominations(item).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Suppression', 'Dénomination supprimée avec succés');
+        this.addSingle('success', 'Suppression', 'Dénomination ' + item.label + ' supprimée avec succés');
         this.getAllDenominations();
       },
       (error) => {
         this.close();
         if (error.error.code === 400) {
-          this.addSingle('error', 'Suppression', 'Dénomination admet une relation');
+          this.addSingle('error', 'Suppression', 'Dénomination ' + item.label + ' admet une relation');
         } else {
           this.addSingle('error', 'Suppression', error.error.message);
         }
@@ -254,7 +254,7 @@ export class DenominationsComponent implements OnInit {
     this.denominationsService.addDenominations(item).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Ajout', 'Dénomination ajoutée avec succés');
+        this.addSingle('success', 'Ajout', 'Dénomination ' + item.label + ' ajoutée avec succés');
         this.getAllDenominations();
       },
       (error) => {

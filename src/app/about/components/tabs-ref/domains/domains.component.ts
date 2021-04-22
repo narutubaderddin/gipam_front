@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CustomHeaderRendererComponent } from '@shared/components/datatables/custom-header-renderer/custom-header-renderer.component';
 import { DomainsActionsRendererComponent } from '@shared/components/datatables/domains-actions-renderer/domains-actions-renderer.component';
 import { ColumnApi, GridApi, GridOptions, ICellEditorParams } from 'ag-grid-community';
@@ -18,7 +18,7 @@ import { MessageService } from 'primeng/api';
 export class DomainsComponent implements OnInit {
   @ViewChild('content')
   modalRef: TemplateRef<any>;
-
+  // @Input() pageChanged;
   myModal: any;
   selectedDomain: string;
   domainToDelete: string;
@@ -37,6 +37,13 @@ export class DomainsComponent implements OnInit {
   currentFilters: ColumnFilterModel[] = [];
   currentOrderedFields: { column: string; direction: string }[] = [];
   itemLabel: any;
+  start: any;
+  end: any;
+  totalFiltred: any;
+  total: any;
+  limit = '5';
+  page = '1';
+
   frameworkComponents = {
     customHeader: CustomHeaderRendererComponent,
     gridActionRenderer: DomainsActionsRendererComponent,
@@ -86,7 +93,7 @@ export class DomainsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getAllFeilds();
+    this.getAllFeilds(this.limit, this.page);
     this.initForm();
 
     this.filter =
@@ -139,7 +146,7 @@ export class DomainsComponent implements OnInit {
         } else {
           this.addSingle('success', 'Activation', 'Domaine désactivée avec succés');
         }
-        this.getAllFeilds();
+        this.getAllFeilds(this.limit, this.page);
       },
       (error) => {
         this.addSingle('error', 'Modification', error.error.message);
@@ -176,10 +183,18 @@ export class DomainsComponent implements OnInit {
     }
   }
 
-  getAllFeilds() {
-    this.feildsService.getAllFields().subscribe(
-      (feilds) => {
-        this.domains = feilds;
+  getAllFeilds(limit: any, page: any) {
+    console.log(this.limit, this.page);
+    this.feildsService.getAllFields(limit, page).subscribe(
+      (fields) => {
+        this.domains = fields;
+
+        console.log(this.domains);
+        // this.start=  this.domains.size*(this.domains.page-1)+1;
+        // this.end= Math.min(limit*this.domains.page+1, this.domains.totalQuantity);
+        this.totalFiltred = this.domains.filteredQuantity;
+        this.total = this.domains.totalQuantity;
+        console.log(this.start, this.end, this.totalFiltred, this.total);
         this.domains = this.domains.results;
       },
       (error) => {
@@ -191,13 +206,13 @@ export class DomainsComponent implements OnInit {
     this.feildsService.deleteField(field).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Suppression', 'Domaine supprimé avec succés');
-        this.getAllFeilds();
+        this.addSingle('success', 'Suppression', 'Domaine ' + field.label + ' supprimé avec succés');
+        this.getAllFeilds(this.limit, this.page);
       },
       (error) => {
         this.close();
         if (error.error.code === 400) {
-          this.addSingle('error', 'Suppression', 'Domaine admet une relation');
+          this.addSingle('error', 'Suppression', 'Domaine ' + field.label + ' admet une relation');
         } else {
           this.addSingle('error', 'Suppression', error.error.message);
         }
@@ -208,8 +223,8 @@ export class DomainsComponent implements OnInit {
     this.feildsService.addField(field).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Ajout', 'Domaine ajoutée avec succés');
-        this.getAllFeilds();
+        this.addSingle('success', 'Ajout', 'Domaine ' + field.label + ' ajoutée avec succés');
+        this.getAllFeilds(this.limit, this.page);
       },
       (error) => {
         this.addSingle('error', 'Ajout', error.error.message);
@@ -220,8 +235,8 @@ export class DomainsComponent implements OnInit {
     this.feildsService.editField(field, id).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Modification', 'Domaine modifié avec succés');
-        this.getAllFeilds();
+        this.addSingle('success', 'Modification', 'Domaine ' + field.label + ' modifié avec succés');
+        this.getAllFeilds(this.limit, this.page);
       },
       (error) => {
         this.addSingle('error', 'Modification', error.error.message);
@@ -230,5 +245,16 @@ export class DomainsComponent implements OnInit {
   }
   addSingle(type: string, sum: string, msg: string) {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
+  }
+  pagination(e: any) {
+    console.log(e);
+    if (e.page < 2) {
+      this.page = e.page + 1;
+    } else {
+      this.page = Math.max(e.page, 1).toString();
+    }
+    this.limit = Math.min(e.rows, this.totalFiltred - e.page * e.rows).toString();
+    this.start = e.first + 1;
+    this.getAllFeilds(this.limit, this.page);
   }
 }

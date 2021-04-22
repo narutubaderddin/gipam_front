@@ -18,8 +18,8 @@ export class FieldsService {
   constructor(private http: HttpClient) {}
 
   // Get All Feilds
-  getAllFields(): Observable<any[]> {
-    const params = new HttpParams().set('limit', '5').set('page', '1');
+  getAllFields(limit: any, page: any): Observable<any[]> {
+    const params = new HttpParams().set('limit', limit).set('page', page);
     return this.http.get<any[]>(baseUrl + 'api/fields/', { params });
   }
 
