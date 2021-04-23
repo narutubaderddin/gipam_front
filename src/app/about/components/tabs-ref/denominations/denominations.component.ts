@@ -20,7 +20,7 @@ export class DenominationsComponent implements OnInit {
 
   private myModal: any;
   selectedDenomination: string;
-  selectedDomain:any;
+  selectedDomain: any;
   denominationToDelete: string;
   denominationForm: FormGroup;
   editDenomination: boolean = false;
