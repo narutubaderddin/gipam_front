@@ -8,14 +8,16 @@ import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
+import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+
 @Component({
   selector: 'app-styles',
   templateUrl: './styles.component.html',
   styleUrls: ['./styles.component.scss'],
 })
 export class StylesComponent implements OnInit {
-  @ViewChild('content')
-  modalRef: TemplateRef<any>;
+  @ViewChild('content') modalRef: TemplateRef<any>;
+  @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
 
   myModal: any;
   selectedItem: string;
@@ -181,7 +183,7 @@ export class StylesComponent implements OnInit {
           this.totalFiltred = this.items.filteredQuantity;
           this.total = this.items.totalQuantity;
           this.items = this.items.results;
-          console.log('result', this.items);
+          console.log('result', result);
         },
         (error: any) => {
           this.addSingle('error', '', error.error.message);
@@ -206,9 +208,9 @@ export class StylesComponent implements OnInit {
     );
   }
   addItems(item: any) {
-    console.log(item);
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
+        console.log('result', result);
         this.close();
         this.addSingle('success', 'Ajout', 'Style ' + item.label + ' ajoutée avec succés');
         this.getAllitems();
@@ -254,13 +256,14 @@ export class StylesComponent implements OnInit {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
   }
   pagination(e: any) {
+    console.log(e);
     if (e.page < this.total / parseInt(this.limit, 0)) {
       this.page = e.page + 1;
     } else {
       this.page = (this.total / parseInt(this.limit, 0)).toString();
     }
-    this.limit = Math.min(e.rows, this.totalFiltred - e.page * e.rows).toString();
-
+    this.limit = e.rows;
+    // Math.min(e.rows, this.totalFiltred - e.page * e.rows).toString();
     this.getAllitems();
   }
   filters(e: any) {
@@ -276,5 +279,8 @@ export class StylesComponent implements OnInit {
       this.sort = 'desc';
       this.getAllitems();
     }
+  }
+  paginationData(): void {
+    this.dataTableComponent.handlePaginationInfo();
   }
 }

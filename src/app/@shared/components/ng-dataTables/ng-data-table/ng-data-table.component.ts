@@ -101,6 +101,10 @@ export class NgDataTableComponent implements OnInit {
       unSelectAllText: 'Supprimer les sélections',
       allowSearchFilter: true,
     };
+    // pagination
+    if (!this.currentPage) {
+      this.currentPage = 1;
+    }
   }
 
   onChangePage(event: any) {
@@ -180,6 +184,10 @@ export class NgDataTableComponent implements OnInit {
     this.columns = columns;
     this.ngOnInit();
   }
+  updateData(data: any[]) {
+    this.data = data;
+    this.ngOnInit();
+  }
 
   onFilterChange(open: boolean) {
     if (!open) {
@@ -189,5 +197,14 @@ export class NgDataTableComponent implements OnInit {
   sortHeader() {
     this.asc = !this.asc;
     this.sort.emit(this.asc);
+  }
+  handlePaginationInfo() {
+    this.currentPage = this.currentPage ? this.currentPage : 1;
+    // calculate from data index
+    const from = (this.currentPage - 1) * this.limit + 1;
+    this.start = this.data.length && from ? from : 1;
+    // calculate to data index
+    const to = this.currentPage * this.limit;
+    this.end = this.data.length === this.limit && to ? to : this.total;
   }
 }

@@ -75,7 +75,6 @@ export class DenominationsComponent implements OnInit {
     },
     {
       header: 'Domaine',
-      field: 'field',
       type: 'key-array',
       key_data: ['field', 'label'],
       filter: true,
@@ -128,15 +127,9 @@ export class DenominationsComponent implements OnInit {
       singleSelection: true,
       idField: 'id',
       textField: 'label',
-      selectAllText: 'Sélectionner tout',
-      unSelectAllText: 'Supprimer les sélections',
       itemsShowLimit: 1,
       allowSearchFilter: true,
     };
-
-    this.filter =
-      this.activatedRoute.snapshot.queryParams['filter'] &&
-      this.activatedRoute.snapshot.queryParams['filter'].length > 0;
   }
 
   resetFilter() {}
@@ -196,7 +189,6 @@ export class DenominationsComponent implements OnInit {
     console.log(item);
     this.selectedDomain = item;
   }
-  onSelectAll(items: any) {}
 
   actionMethod(e: any) {
     console.log(e);
