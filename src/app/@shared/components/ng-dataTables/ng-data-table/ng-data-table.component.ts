@@ -50,7 +50,8 @@ export class NgDataTableComponent implements OnInit {
   @Output() sort = new EventEmitter();
   @Input() singleSelect: Boolean = false;
   @Input() expand: Boolean = false;
-
+  @Input() page: any;
+  @Input() limit: any;
   @Output() singleSelectionEvent = new EventEmitter();
   @Output() multipleSelectionEvent = new EventEmitter();
   asc: boolean = true;

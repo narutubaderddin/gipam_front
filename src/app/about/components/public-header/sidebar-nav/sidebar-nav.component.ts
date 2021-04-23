@@ -84,4 +84,12 @@ export class SidebarNavComponent implements OnInit {
   goToDemandesList() {
     this.toggleClose();
   }
+  goToStylesList() {
+    this.router.navigate(['tab-ref-style']);
+    this.toggleClose();
+  }
+  goToMaterialList() {
+    this.router.navigate(['tab-ref-matière']);
+    this.toggleClose();
+  }
 }

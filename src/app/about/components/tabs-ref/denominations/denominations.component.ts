@@ -10,6 +10,7 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { DenominationsService } from '@shared/services/denominations.service';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
+import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 
 @Component({
   selector: 'app-denominations',
@@ -102,7 +103,8 @@ export class DenominationsComponent implements OnInit {
     private fieldsService: FieldsService,
     public fb: FormBuilder,
     config: NgbModalConfig,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private simpleTabsRef: SimpleTabsRefService
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
@@ -118,6 +120,7 @@ export class DenominationsComponent implements OnInit {
     return this.defaultColDef.headerComponentParams;
   }
   ngOnInit(): void {
+    this.simpleTabsRef.tabRef = 'denominations';
     this.initForm();
     this.getAllDenominations();
     this.domains = this.getAllFields();
@@ -171,7 +174,7 @@ export class DenominationsComponent implements OnInit {
         label: this.denominationForm.value.denomination,
         active: this.denominationForm.value.active,
       };
-      this.editField(item, this.denominationToEdit.id);
+      this.editItem(item, this.denominationToEdit.id);
     }
   }
   close() {
@@ -224,15 +227,14 @@ export class DenominationsComponent implements OnInit {
     );
   }
   getAllDenominations() {
-    this.denominationsService
-      .getAllDenominations({ limit: this.limit, page: this.page, label: this.filter, sort: this.sort })
+    this.simpleTabsRef
+      .getAllItems({ limit: this.limit, page: this.page, 'label[contains]': this.filter, sort: this.sort })
       .subscribe(
         (result) => {
           this.denominations = result;
           this.totalFiltred = this.denominations.filteredQuantity;
           this.total = this.denominations.totalQuantity;
-          // this.denominations = this.denominations.results;
-          console.log('result', this.denominations);
+          this.denominations = this.denominations.results;
         },
         (error) => {
           this.addSingle('error', '', error.error.message);
@@ -240,7 +242,7 @@ export class DenominationsComponent implements OnInit {
       );
   }
   deleteDenominations(item: any) {
-    this.denominationsService.deleteDenominations(item).subscribe(
+    this.simpleTabsRef.deleteItem(item).subscribe(
       (result) => {
         this.close();
         this.addSingle('success', 'Suppression', 'Dénomination ' + item.label + ' supprimée avec succés');
@@ -258,7 +260,7 @@ export class DenominationsComponent implements OnInit {
   }
   addDenominations(item: any) {
     console.log(item);
-    this.denominationsService.addDenominations(item).subscribe(
+    this.simpleTabsRef.addItem(item).subscribe(
       (result) => {
         this.close();
         this.addSingle('success', 'Ajout', 'Dénomination ' + item.label + ' ajoutée avec succés');
@@ -272,7 +274,7 @@ export class DenominationsComponent implements OnInit {
   visibleDenomination(data: any) {
     data.active = !data.active;
 
-    this.denominationsService.editDenominations({ label: data.label, active: data.active }, data.id).subscribe(
+    this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
       (result) => {
         if (data.active) {
           this.addSingle('success', 'Activation', 'Dénomination ' + data.label + ' activée avec succés');
@@ -287,8 +289,8 @@ export class DenominationsComponent implements OnInit {
       }
     );
   }
-  editField(item: any, id: number) {
-    this.denominationsService.editDenominations(item, id).subscribe(
+  editItem(item: any, id: number) {
+    this.simpleTabsRef.editItem(item, id).subscribe(
       (result) => {
         this.close();
         this.addSingle('success', 'Modification', 'Dénomination ' + item.label + ' modifiée avec succés');
@@ -305,10 +307,11 @@ export class DenominationsComponent implements OnInit {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
   }
   pagination(e: any) {
-    if (e.page < 2) {
+    if (e.page < this.total / parseInt(this.limit, 0)) {
       this.page = e.page + 1;
     } else {
-      this.page = Math.max(e.page, 1).toString();
+      // this.page = Math.max(e.page, 1).toString();
+      this.page = (this.total / parseInt(this.limit, 0)).toString();
     }
     this.limit = Math.min(e.rows, this.totalFiltred - e.page * e.rows).toString();
     // this.start = e.first + 1;

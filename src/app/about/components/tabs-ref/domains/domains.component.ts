@@ -175,13 +175,11 @@ export class DomainsComponent implements OnInit {
 
   getAllFeilds() {
     this.feildsService
-      .getAllFields({ limit: this.limit, page: this.page, label: this.filter, sort: this.sort })
+      .getAllFields({ limit: this.limit, page: this.page, 'label[contains]': this.filter, sort: this.sort })
       .subscribe(
         (fields) => {
           this.domains = fields;
-          // console.log(this.domains)
-          // this.start=  this.domains.size*(this.domains.page-1)+1;
-          // this.end= Math.min(limit*this.domains.page+1, this.domains.totalQuantity);
+
           this.totalFiltred = this.domains.filteredQuantity;
           this.total = this.domains.totalQuantity;
         },
@@ -235,10 +233,11 @@ export class DomainsComponent implements OnInit {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
   }
   pagination(e: any) {
-    if (e.page < 2) {
+    if (e.page < this.total / parseInt(this.limit, 0)) {
       this.page = e.page + 1;
     } else {
-      this.page = Math.max(e.page, 1).toString();
+      // this.page = Math.max(e.page, 1).toString();
+      this.page = (this.total / parseInt(this.limit, 0)).toString();
     }
     this.limit = Math.min(e.rows, this.totalFiltred - e.page * e.rows).toString();
     // this.start = e.first + 1;

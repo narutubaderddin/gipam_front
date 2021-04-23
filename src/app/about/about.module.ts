@@ -80,6 +80,8 @@ import { DomainsComponent } from './components/tabs-ref/domains/domains.componen
 import { DenominationsComponent } from './components/tabs-ref/denominations/denominations.component';
 import { RippleModule } from 'primeng/ripple';
 import { MessageService } from 'primeng/api';
+import { StylesComponent } from './components/tabs-ref/styles/styles.component';
+import { MaterialTechniqueComponent } from './components/tabs-ref/material-technique/material-technique.component';
 
 setTheme('bs4');
 
@@ -128,6 +130,8 @@ const ngWizardConfig: NgWizardConfig = {
     TabsRefComponent,
     DomainsComponent,
     DenominationsComponent,
+    StylesComponent,
+    MaterialTechniqueComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [

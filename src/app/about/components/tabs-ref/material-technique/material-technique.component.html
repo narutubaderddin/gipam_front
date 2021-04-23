@@ -2,7 +2,7 @@
   <a href="accueil">Accueil</a>
   <a href="tab-ref-domaine" class="selected-item">
     <i class="fas fa-chevron-right"></i>
-    Gestion des Domaines
+    Gestion des Matières / Techniques
   </a>
 </div>
 <div class="container-fluid">
@@ -13,7 +13,9 @@
           <div class="card">
             <div class="card-body">
               <ul class="d-flex">
-                <li class="col-md-12 selected-table"><i class="fas fa-tasks"></i><a>Gestion des Domaines</a></li>
+                <li class="col-md-12 selected-table">
+                  <i class="fas fa-tasks"></i><a>Gestion des Matières / Techniques</a>
+                </li>
               </ul>
             </div>
           </div>
@@ -25,7 +27,7 @@
                 <input
                   class="form-control py-2 border-right-0 border search-form-control"
                   type="search"
-                  placeholder="Rechercher"
+                  value="Rechercher"
                   id="example-search-input"
                 />
                 <span class="input-group-append">
@@ -37,26 +39,28 @@
               <div class="mr-3">
                 <button class="btn add-action" (click)="openModal('')">
                   <i class="fas fa-plus-circle mr-1"></i>
-                  Ajouter Domaine
+                  Ajouter matière / technique
                 </button>
               </div>
             </div>
             <div></div>
           </div>
-          <div class="datatable mt-4" *ngIf="domains">
+          <div class="datatable mt-4">
             <app-ng-data-table
               (action)="actionMethod($event)"
               (pageChanged)="pagination($event)"
               (filterValue)="filters($event)"
               (sort)="sortEvent($event)"
-              [component]="'tabRefDomain'"
+              [component]="'tabRefMaterial'"
               [columns]="columns"
-              [data]="domains.results"
               [frozenCols]="[]"
               [frozenWidth]="'0px'"
               [checkBoxSelection]="false"
-              [totalFiltred]="domains.filtredQuantity"
-              [total]="domains.totalQuantity"
+              [data]="items"
+              [totalFiltred]="totalFiltred"
+              [total]="total"
+              [page]="page"
+              [limit]="limit"
             >
             </app-ng-data-table>
           </div>
@@ -67,30 +71,28 @@
 </div>
 
 <ng-template #content let-modal>
-  <form [formGroup]="DomainForm" appFlashFormErrors (appFormSubmit)="submit()">
+  <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
     <div class="modal-header">
-      <h4 class="modal-title" *ngIf="editDomain">Modification de domaine</h4>
-      <h4 class="modal-title" *ngIf="addDomain">Ajout de domaine</h4>
-      <h4 class="modal-title" *ngIf="deleteDomain">Suppression de domaine</h4>
+      <h4 class="modal-title" *ngIf="editItem">Modification de matière / technique</h4>
+      <h4 class="modal-title" *ngIf="addItem">Ajout de matière / technique</h4>
+      <h4 class="modal-title" *ngIf="deleteItems">Suppression de matière / technique</h4>
       <button type="button" class="close" aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
-      <div class="col-md-12" *ngIf="deleteDomain">Voulez-vous supprimer le domaine "{{ itemLabel }}" ?</div>
-      <div
-        class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
-        *ngIf="editDomain || addDomain"
-      >
+      <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer la matière / technique "{{ itemLabel }}" ?</div>
+
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-3">Libellé<span class="mandatory"> *</span></label>
         <input
           type="text"
           class="form-control col-sm-7"
-          value="{{ editDomain ? selectedDomain : '' }}"
-          formControlName="label"
+          value="{{ editItem ? selectedItem : '' }}"
+          formControlName="material"
         />
       </div>
-      <div class="form-group col-md-12 d-flex align-items-baseline" *ngIf="addDomain">
+      <div class="form-group col-md-12 d-flex align-items-baseline" *ngIf="addItem">
         <label class="col-sm-5">visibilité<span class="mandatory"> *</span></label>
         <div class="btn-slider mr-2 col-3" *ngIf="active">
           <label [class.active]="active"></label>
@@ -104,9 +106,9 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-light cancel-btn" (click)="close()">Annuler</button>
-      <button type="submit" class="btn btn-light valid-btn" *ngIf="editDomain">Modifier</button>
-      <button type="submit" class="btn btn-light valid-btn" *ngIf="addDomain">Ajouter</button>
-      <button type="button" class="btn btn-light valid-btn" (click)="deleteField(domainToDelete)" *ngIf="deleteDomain">
+      <button type="submit" class="btn btn-light valid-btn" *ngIf="editItem">Modifier</button>
+      <button type="submit" class="btn btn-light valid-btn" *ngIf="addItem">Ajouter</button>
+      <button type="button" class="btn btn-light valid-btn" *ngIf="deleteItems" (click)="deleteItemss(itemToDelete)">
         Supprimer
       </button>
     </div>

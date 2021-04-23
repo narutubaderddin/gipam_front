@@ -25,7 +25,7 @@
                 <input
                   class="form-control py-2 border-right-0 border search-form-control"
                   type="search"
-                  value="Rechercher"
+                  placeholder="Rechercher"
                   id="example-search-input"
                 />
                 <span class="input-group-append">
@@ -51,12 +51,12 @@
               (sort)="sortEvent($event)"
               [component]="'tabRefDenomination'"
               [columns]="columns"
-              [data]="denominations.results"
+              [data]="denominations"
               [frozenCols]="[]"
               [frozenWidth]="'0px'"
               [checkBoxSelection]="false"
-              [totalFiltred]="denominations.filtredQuantity"
-              [total]="denominations.totalQuantity"
+              [totalFiltred]="totalFiltred"
+              [total]="total"
             >
             </app-ng-data-table>
           </div>

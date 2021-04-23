@@ -14,6 +14,8 @@ import { AlertListComponent } from '@app/about/components/alert-list/alert-list.
 import { InProgressDemandComponent } from '@app/about/components/in-progress-demand/in-progress-demand.component';
 import { DomainsComponent } from '@app/about/components/tabs-ref/domains/domains.component';
 import { DenominationsComponent } from '@app/about/components/tabs-ref/denominations/denominations.component';
+import { StylesComponent } from '@app/about/components/tabs-ref/styles/styles.component';
+import { MaterialTechniqueComponent } from '@app/about/components/tabs-ref/material-technique/material-technique.component';
 const routes: Routes = [
   {
     path: '',
@@ -44,6 +46,8 @@ const routes: Routes = [
       { path: 'alerts-list', component: AlertListComponent },
       { path: 'tab-ref-domaine', component: DomainsComponent },
       { path: 'tab-ref-dénomination', component: DenominationsComponent },
+      { path: 'tab-ref-style', component: StylesComponent },
+      { path: 'tab-ref-matière', component: MaterialTechniqueComponent },
     ],
   },
 ];
