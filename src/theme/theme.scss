@@ -99,17 +99,6 @@ $brdcr-hover-bgc: #cacaca; // #fff
       border-color: transparent;
       left: -1em;
     }
-    &:first-child {
-      &:hover,
-      &:focus {
-        &:before {
-          //border-color: $brdcr-hover-bgc $brdcr-hover-bgc $brdcr-hover-bgc $brdcr-hover-bgc;
-        }
-      }
-      &:before {
-        //border-color: $brdcr-bgc $brdcr-bgc $brdcr-bgc $brdcr-bgc;
-      }
-    }
     &:after {
       content: "";
       position: absolute;
@@ -664,5 +653,21 @@ textarea,
       outline: 0 !important;
       box-shadow: none !important;
     }
+  }
+}
+
+/** ngPrime css */
+p-dropdown,
+p-calendar {
+  &.col-md-12 {
+    padding-left: 0;
+  }
+}
+.p-dropdown,
+.p-calendar {
+  height: 30px;
+  line-height: 10px;
+  .p-dropdown-label {
+    font-size: 12px;
   }
 }

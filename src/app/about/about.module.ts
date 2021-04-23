@@ -78,6 +78,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { TabsRefComponent } from './components/tabs-ref/tabs-ref.component';
 import { DomainsComponent } from './components/tabs-ref/domains/domains.component';
 import { DenominationsComponent } from './components/tabs-ref/denominations/denominations.component';
+import { GalleriaModule } from 'primeng/galleria';
 
 setTheme('bs4');
 
@@ -168,6 +169,7 @@ const ngWizardConfig: NgWizardConfig = {
     TooltipModule,
     CheckboxModule,
     SelectButtonModule,
+    GalleriaModule,
   ],
   providers: [MovementsService, , BsDatepickerConfig],
 })

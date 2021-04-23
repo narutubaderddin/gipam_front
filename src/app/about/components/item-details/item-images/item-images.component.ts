@@ -13,47 +13,93 @@ export class ItemImagesComponent implements OnInit {
   @Input() add = false;
   slide = 1;
   editType = false;
-  photographyForm: FormGroup;
-  types = ['Identification', 'Autre vue', 'Détail', 'Etat', 'Ancien cliché'];
+  photographiesForm: FormGroup;
+  photography: string;
+  photographyDate: Date = new Date();
+  photographyType: any;
+  types = [
+    { name: 'Identification' },
+    { name: 'Autre vue' },
+    { name: 'Détail' },
+    { name: 'Etat' },
+    { name: 'Ancien cliché' },
+  ];
   fileToUpload: any;
-  imageUrl: any;
+  imageName: any;
+  images: any = [];
+  photographyInsertionNumber = 0;
+  selectedPhotography = 1;
   get photographies(): FormArray {
-    return this.photographyForm.get('photographies') as FormArray;
+    return this.photographiesForm.get('photographies') as FormArray;
   }
   constructor(private modalService: NgbModal, public fb: FormBuilder) {}
   ngOnInit(): void {
     this.initForm();
   }
   initForm() {
-    this.photographyForm = new FormGroup({
+    this.photographiesForm = new FormGroup({
       photographies: this.fb.array([this.createPhotography()]),
     });
   }
-  createPhotography(): FormGroup {
+  initData(photography?: string, photographyDate?: Date, photographyType?: any, imageName?: string) {
+    this.photography = photography;
+    this.photographyDate = photographyDate;
+    this.photographyType = photographyType;
+    this.imageName = imageName;
+  }
+  createPhotography(
+    photography?: string,
+    photographyDate?: Date,
+    photographyType?: any,
+    imageName?: string
+  ): FormGroup {
     return this.fb.group({
-      photographyDate: ['', [Validators.required]],
-      photography: ['', [Validators.required]],
-      photographyType: ['', [Validators.required]],
+      photographyDate: [photographyDate, [Validators.required]],
+      photography: [photography, [Validators.required]],
+      photographyType: [photographyType, [Validators.required]],
+      photographyName: [imageName, [Validators.required]],
     });
   }
 
   addPhotography(): void {
-    this.photographies.push(this.createPhotography());
+    console.log(this.photographies.value.length);
+    if (this.selectedPhotography == this.photographies.value.length) {
+      this.images.push({
+        i: this.photographyInsertionNumber,
+        imageUrl: this.photography,
+        alt: 'description',
+        image: this.imageName,
+      });
+      this.photographies.push(
+        this.createPhotography(this.photography, this.photographyDate, this.photographyType, this.imageName)
+      );
+    } else {
+      this.photographies.value[this.selectedPhotography + 1].photographyType = this.photographyType;
+      this.photographies.value[this.selectedPhotography + 1].photographyDate = this.photographyDate;
+      this.photographies.value[this.selectedPhotography + 1].photographyName = this.imageName;
+      this.photographies.value[this.selectedPhotography + 1].photography = this.photography;
+      this.images[this.selectedPhotography].imageUrl = this.photography;
+      this.images[this.selectedPhotography].image = this.imageName;
+    }
+    this.initData('', new Date());
+    this.photographyInsertionNumber++;
+    this.selectedPhotography = this.photographies.value.length;
+    console.log(this.photographies.value);
   }
-  removePhotography(i: number) {
-    this.photographies.removeAt(i);
-  }
-  handleFileInput(file: FileList) {
-    console.log(file);
 
+  handleFileInput(file: FileList) {
     this.fileToUpload = file.item(0);
 
     //Show image preview
     let reader = new FileReader();
     reader.onload = (event: any) => {
-      this.imageUrl = event.target.result;
+      this.photography = event.target.result;
     };
     reader.readAsDataURL(this.fileToUpload);
+    reader.onloadend = (_event: any) => {
+      console.log(this.fileToUpload.name);
+      this.imageName = this.fileToUpload.name;
+    };
   }
   addImg() {
     const ngbModalOptions: NgbModalOptions = {
@@ -81,5 +127,12 @@ export class ItemImagesComponent implements OnInit {
   editPhotoType() {}
   addFile() {
     this.file.nativeElement.click();
+  }
+  show(item: any) {
+    console.log(item);
+    let data = this.photographies.value[item.i + 1];
+    console.log(data);
+    this.initData(data.photography, data.photographyDate, data.photographyType, item.image);
+    this.selectedPhotography = item.i;
   }
 }
