@@ -25,7 +25,7 @@
                 <input
                   class="form-control py-2 border-right-0 border search-form-control"
                   type="search"
-                  value="Rechercher"
+                  placeholder="Rechercher"
                   id="example-search-input"
                 />
                 <span class="input-group-append">
@@ -44,17 +44,21 @@
             <div></div>
           </div>
           <div class="datatable mt-4">
-            <app-grid-wrapper
-              [columnDefs]="ColDef"
-              [rowData]="denominations"
-              [frameworkComponents]="frameworkComponents"
-              [defaultColDef]="defaultColDef"
-              (gridReady)="onGridReady($event)"
-              [context]="this"
-              [paginationPageSize]="rowCount"
-              [gridOptions]="gridOptions"
-              [sizeToFit]="true"
-            ></app-grid-wrapper>
+            <app-ng-data-table
+              (action)="actionMethod($event)"
+              (pageChanged)="pagination($event)"
+              (filterValue)="filters($event)"
+              (sort)="sortEvent($event)"
+              [component]="'tabRefDenomination'"
+              [columns]="columns"
+              [data]="denominations"
+              [frozenCols]="[]"
+              [frozenWidth]="'0px'"
+              [checkBoxSelection]="false"
+              [totalFiltred]="totalFiltred"
+              [total]="total"
+            >
+            </app-ng-data-table>
           </div>
         </div>
       </div>
@@ -73,9 +77,7 @@
       </button>
     </div>
     <div class="modal-body">
-      <div class="col-md-12" *ngIf="deleteDenomination">
-        Voulez-vous supprimer la dénomination "{{ denominationToDelete }}" ?
-      </div>
+      <div class="col-md-12" *ngIf="deleteDenomination">Voulez-vous supprimer la dénomination "{{ itemLabel }}" ?</div>
       <div
         class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
         *ngIf="editDenomination || addDenomination"
@@ -105,12 +107,31 @@
           formControlName="denomination"
         />
       </div>
+      <div class="form-group col-md-12 d-flex align-items-baseline" *ngIf="addDenomination">
+        <label class="col-sm-5">visibilité<span class="mandatory"> *</span></label>
+        <div class="btn-slider mr-2 col-3" *ngIf="active">
+          <label [class.active]="active"></label>
+          <label class="switch">
+            <input type="checkbox" [checked]="true" formControlName="active" />
+            <span class="slider round"></span>
+          </label>
+          <label [class.active]="!active"></label>
+        </div>
+      </div>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-light cancel-btn" (click)="close()">Annuler</button>
       <button type="submit" class="btn btn-light valid-btn" *ngIf="editDenomination">Modifier</button>
       <button type="submit" class="btn btn-light valid-btn" *ngIf="addDenomination">Ajouter</button>
-      <button type="button" class="btn btn-light valid-btn" *ngIf="deleteDenomination">Supprimer</button>
+      <button
+        type="button"
+        class="btn btn-light valid-btn"
+        *ngIf="deleteDenomination"
+        (click)="deleteDenominations(denominationToDelete)"
+      >
+        Supprimer
+      </button>
     </div>
   </form>
 </ng-template>
+<p-toast></p-toast>

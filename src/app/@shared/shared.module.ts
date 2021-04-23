@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Provider } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AgGridModule } from 'ag-grid-angular';
@@ -36,6 +36,21 @@ import { ImageViewerComponent } from './components/datatables/image-viewer/image
 import { DomainsActionsRendererComponent } from './components/datatables/domains-actions-renderer/domains-actions-renderer.component';
 import { DenominationsActionsRendererComponent } from './components/datatables/denominations-actions-renderer/denominations-actions-renderer.component';
 import { FlashFormErrorsDirective } from './directives/flash-form-errors.directive';
+import { NgDataTableComponent } from './components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { TableModule } from 'primeng/table';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
+import { TooltipModule } from 'primeng/tooltip';
+import { CalendarModule } from 'primeng/calendar';
+import { PaginatorModule } from 'primeng/paginator';
+import { ActionsCellComponent } from './components/ng-dataTables/actions-cell/actions-cell.component';
+import { StatusTypeComponentRenderComponent } from './components/ng-dataTables/status-type-component-render/status-type-component-render.component';
+import { VisibleCatalogComponentRenderComponent } from './components/ng-dataTables/visible-catalog-component-render/visible-catalog-component-render.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { SelectButtonRenderComponent } from './components/ng-dataTables/select-button-render/select-button-render.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 @NgModule({
   imports: [
@@ -52,6 +67,16 @@ import { FlashFormErrorsDirective } from './directives/flash-form-errors.directi
     ReactiveFormsModule,
     TagInputModule,
     NgxHorizontalTimelineModule,
+    TableModule,
+    InputTextModule,
+    ButtonModule,
+    RippleModule,
+    TooltipModule,
+    CalendarModule,
+    PaginatorModule,
+    NgMultiSelectDropDownModule,
+    MultiSelectModule,
+    SelectButtonModule,
   ],
   declarations: [
     LoaderComponent,
@@ -80,6 +105,11 @@ import { FlashFormErrorsDirective } from './directives/flash-form-errors.directi
     DomainsActionsRendererComponent,
     DenominationsActionsRendererComponent,
     FlashFormErrorsDirective,
+    NgDataTableComponent,
+    ActionsCellComponent,
+    StatusTypeComponentRenderComponent,
+    VisibleCatalogComponentRenderComponent,
+    SelectButtonRenderComponent,
   ],
   exports: [
     LoaderComponent,
@@ -93,6 +123,7 @@ import { FlashFormErrorsDirective } from './directives/flash-form-errors.directi
     StatusBlocComponent,
     AccordionSectionComponent,
     FlashFormErrorsDirective,
+    NgDataTableComponent,
   ],
 })
 export class SharedModule {}
