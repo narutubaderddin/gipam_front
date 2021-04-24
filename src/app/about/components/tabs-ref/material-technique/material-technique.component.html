@@ -105,7 +105,10 @@
           [placeholder]="'Choisir ses dénominations'"
           [settings]="dropdownSettings"
           [data]="denominations"
-          (onSelect)="onDenominationSelect($event)"
+          (onSelect)="onSelect($event)"
+          (onDeSelect)="onDeSelect($event)"
+          (onSelectAll)="onSelectAll($event)"
+          (onDeSelectAll)="onDeSelectAll($event)"
         >
         </ng-multiselect-dropdown>
       </div>

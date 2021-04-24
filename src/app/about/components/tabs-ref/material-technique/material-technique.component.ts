@@ -53,7 +53,7 @@ export class MaterialTechniqueComponent implements OnInit {
       width: '300px',
     },
     {
-      header: 'Dénomination',
+      header: 'Dénominations',
       field: 'denominations',
       type: 'key-multiple-data',
       key_multiple_data: ['denominations', 'label'],
@@ -104,9 +104,11 @@ export class MaterialTechniqueComponent implements OnInit {
     // this.getAllFields();
     this.getAllDenominations();
     this.initForm();
+    this.selectedDenominations = [];
     this.dropdownSettings = {
       singleSelection: false,
       selectAllText: 'Sélectionner tout',
+      unSelectAllText: 'Déselectionner tout',
       idField: 'id',
       textField: 'label',
       itemsShowLimit: 1,
@@ -125,6 +127,7 @@ export class MaterialTechniqueComponent implements OnInit {
   resetFilter() {}
 
   openModal(item: any) {
+    this.selectedDenominations = [];
     if (item) {
       this.editItem = true;
       this.itemToEdit = item;
@@ -150,12 +153,6 @@ export class MaterialTechniqueComponent implements OnInit {
       this.addItems(item);
     }
     if (this.editItem) {
-      // const item2 = {
-      //   label: this.tabForm.value.material,
-      //   type:'',
-      //   denominations:[this.tabForm.value.denomination[0].id],
-      //   active: this.tabForm.value.active,
-      // };
       this.editItems(item, this.itemToEdit.id);
     }
   }
@@ -332,10 +329,19 @@ export class MaterialTechniqueComponent implements OnInit {
       }
     );
   }
-  onDenominationSelect(item: any) {
-    console.log(item);
+  onSelect(item: any) {
     this.selectedDenominations.push(item.id);
-    console.log(this.selectedDenominations);
-    // this.selectedDomain = item;
+  }
+  public onDeSelect(item: any) {
+    this.selectedDenominations = this.selectedDenominations.filter((denomination: any) => {
+      return denomination !== item.id;
+    });
+  }
+
+  public onSelectAll(items: any) {
+    items.map((item: any) => this.selectedDenominations.push(item.id));
+  }
+  public onDeSelectAll(items: any) {
+    this.selectedDenominations = [];
   }
 }

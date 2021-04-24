@@ -305,7 +305,8 @@ export class DenominationsComponent implements OnInit {
       // this.page = Math.max(e.page, 1).toString();
       this.page = (this.total / parseInt(this.limit, 0)).toString();
     }
-    this.limit = Math.min(e.rows, this.totalFiltred - e.page * e.rows).toString();
+    this.limit = e.rows;
+    // this.limit = Math.min(e.rows, this.totalFiltred - e.page * e.rows).toString();
     // this.start = e.first + 1;
     this.getAllDenominations();
   }
