@@ -295,7 +295,6 @@ export class DepositTypesComponent implements OnInit {
     } else {
       this.page = this.total / parseInt(this.limit.toString(), 0);
     }
-    // this.limit = Math.min(e.rows, this.totalFiltred - e.page * e.rows).toString();
     this.getAllItems();
   }
 

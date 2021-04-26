@@ -224,20 +224,20 @@ export class StylesComponent implements OnInit {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
   }
   pagination(e: any) {
-    if (e.page < this.total / parseInt(this.limit, 0)) {
+    if (e.page < this.total / parseInt(this.limit.toString(), 0)) {
       this.page = e.page + 1;
     } else {
-      this.page = (this.total / parseInt(this.limit, 0)).toString();
+      this.page = this.total / parseInt(this.limit.toString(), 0);
     }
-    // this.limit = e.rows;
-    // Math.min(e.rows, this.totalFiltred - e.page * e.rows).toString();
     this.getAllItems();
   }
+
   filters(e: any) {
+    console.log(e);
     this.filter = e.label;
-    this.page = '1';
     this.getAllItems();
   }
+
   sortEvent(e: any) {
     if (e) {
       this.sort = 'asc';

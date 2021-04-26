@@ -75,6 +75,7 @@ export class NgDataTableComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('columns', this.columns);
+
     this.key = this.columns[0]['field'];
     this.columns = this.columns.filter((col) => {
       if (Object.keys(col).indexOf('isVisible') == -1 || col.isVisible) {

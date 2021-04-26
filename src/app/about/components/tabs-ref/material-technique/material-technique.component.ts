@@ -103,7 +103,7 @@ export class MaterialTechniqueComponent implements OnInit {
 
   ngOnInit(): void {
     this.simpleTabsRef.tabRef = 'materialTechniques';
-    this.getAllitems();
+    this.getAllItems();
     // this.getAllFields();
     this.getAllDenominations();
     this.initForm();
@@ -190,7 +190,7 @@ export class MaterialTechniqueComponent implements OnInit {
     }
   }
 
-  getAllitems() {
+  getAllItems() {
     this.simpleTabsRef.tabRef = 'materialTechniques';
     this.simpleTabsRef
       .getAllItems({ limit: this.limit, page: this.page, 'label[contains]': this.filter, sort: this.sort })
@@ -214,7 +214,7 @@ export class MaterialTechniqueComponent implements OnInit {
       (result: any) => {
         this.close();
         this.addSingle('success', 'Suppression', 'Matière/technique ' + item.label + ' supprimée avec succés');
-        this.getAllitems();
+        this.getAllItems();
       },
       (error: any) => {
         this.close();
@@ -233,7 +233,7 @@ export class MaterialTechniqueComponent implements OnInit {
       (result: any) => {
         this.close();
         this.addSingle('success', 'Ajout', 'Matière/technique ' + item.label + ' ajoutée avec succés');
-        this.getAllitems();
+        this.getAllItems();
       },
       (error) => {
         this.addSingle('error', 'Ajout', error.error.message);
@@ -250,7 +250,7 @@ export class MaterialTechniqueComponent implements OnInit {
         } else {
           this.addSingle('success', 'Activation', 'Matière/technique ' + data.label + ' désactivée avec succés');
         }
-        this.getAllitems();
+        this.getAllItems();
       },
 
       (error) => {
@@ -266,7 +266,7 @@ export class MaterialTechniqueComponent implements OnInit {
         console.log(result);
         this.close();
         this.addSingle('success', 'Modification', 'Matière/technique ' + item.label + ' modifiée avec succés');
-        this.getAllitems();
+        this.getAllItems();
       },
 
       (error) => {
@@ -279,48 +279,30 @@ export class MaterialTechniqueComponent implements OnInit {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
   }
   pagination(e: any) {
-    if (e.page < this.total / parseInt(this.limit, 0)) {
+    if (e.page < this.total / parseInt(this.limit.toString(), 0)) {
       this.page = e.page + 1;
     } else {
-      this.page = (this.total / parseInt(this.limit, 0)).toString();
+      this.page = this.total / parseInt(this.limit.toString(), 0);
     }
-    this.limit = Math.min(e.rows, this.totalFiltred).toString();
-    // this.limit = Math.min(e.rows, this.totalFiltred - e.page * e.rows).toString();
-
-    this.getAllitems();
+    this.getAllItems();
   }
+
   filters(e: any) {
     console.log(e);
     this.filter = e.label;
-    this.getAllitems();
+    this.getAllItems();
   }
   sortEvent(e: any) {
     console.log(e);
     if (e) {
       this.sort = 'asc';
-      this.getAllitems();
+      this.getAllItems();
     } else {
       this.sort = 'desc';
-      this.getAllitems();
+      this.getAllItems();
     }
   }
-  // getAllFields() {
-  //   this.simpleTabsRef.tabRef='fields';
-  //   this.simpleTabsRef.getAllItems({}).subscribe(
-  //     (fields) => {
-  //       this.domains = fields;
-  //       this.domains = this.domains.results;
-  //     },
-  //     (error) => {
-  //       // this.errors.push(error.error.message);
-  //       console.log(error.error.message);
-  //     }
-  //   );
-  // }
-  // onDomainSelect(item: any) {
-  //   console.log(item);
-  //   this.selectedDomain = item;
-  // }
+
   getAllDenominations() {
     this.simpleTabsRef.tabRef = 'denominations';
     this.simpleTabsRef.getAllItems({}).subscribe(

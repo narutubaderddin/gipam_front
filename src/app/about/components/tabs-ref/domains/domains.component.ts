@@ -37,7 +37,6 @@ export class DomainsComponent implements OnInit {
   currentOrderedFields: { column: string; direction: string }[] = [];
   itemLabel: any;
   filter: any;
-  sort: string = 'asc';
   totalFiltred: any;
   total: any;
   limit: any = '5';
@@ -45,6 +44,8 @@ export class DomainsComponent implements OnInit {
   start: any;
   end: any;
   sortBy = 'id';
+  sort: string = 'asc';
+
   loading: boolean = false;
   frameworkComponents = {
     customHeader: CustomHeaderRendererComponent,
@@ -244,18 +245,17 @@ export class DomainsComponent implements OnInit {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
   }
   pagination(e: any) {
-    if (e.page < this.total / parseInt(this.limit, 0)) {
+    if (e.page < this.total / parseInt(this.limit.toString(), 0)) {
       this.page = e.page + 1;
     } else {
-      this.page = (this.total / parseInt(this.limit, 0)).toString();
+      this.page = this.total / parseInt(this.limit.toString(), 0);
     }
-    // this.limit = e.rows;
-    // Math.min(e.rows, this.totalFiltred - e.page * e.rows).toString();
     this.getAllFeilds();
   }
+
   filters(e: any) {
+    console.log(e);
     this.filter = e.label;
-    this.page = '1';
     this.getAllFeilds();
   }
   sortEvent(e: any) {

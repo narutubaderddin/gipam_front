@@ -202,9 +202,9 @@ export class EpoquesComponent implements OnInit {
     this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
       (result) => {
         if (data.active) {
-          this.addSingle('success', 'Activation', 'Style ' + data.label + ' activée avec succés');
+          this.addSingle('success', 'Activation', 'Epoque ' + data.label + ' activée avec succés');
         } else {
-          this.addSingle('success', 'Activation', 'Style ' + data.label + ' désactivée avec succés');
+          this.addSingle('success', 'Activation', 'Epoque ' + data.label + ' désactivée avec succés');
         }
         this.getAllItems();
       },
@@ -229,8 +229,9 @@ export class EpoquesComponent implements OnInit {
     this.getAllItems();
   }
   filters(e: any) {
+    console.log(e);
     this.filter = e.label;
-    this.page = '1';
+
     this.getAllItems();
   }
   sortEvent(e: any) {
@@ -249,7 +250,7 @@ export class EpoquesComponent implements OnInit {
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Ajout', 'Style ' + item.label + ' ajoutée avec succés');
+        this.addSingle('success', 'Ajout', 'Epoque ' + item.label + ' ajoutée avec succés');
         this.getAllItems();
       },
       (error) => {
@@ -277,7 +278,7 @@ export class EpoquesComponent implements OnInit {
     this.simpleTabsRef.editItem(item, id).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Modification', 'Style ' + item.label + ' modifiée avec succés');
+        this.addSingle('success', 'Modification', 'Epoque ' + item.label + ' modifiée avec succés');
         this.getAllItems();
       },
 
@@ -290,13 +291,13 @@ export class EpoquesComponent implements OnInit {
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Suppression', 'Style ' + item.label + ' supprimée avec succés');
+        this.addSingle('success', 'Suppression', 'Epoque ' + item.label + ' supprimée avec succés');
         this.getAllItems();
       },
       (error: any) => {
         this.close();
         if (error.error.code === 400) {
-          this.addSingle('error', 'Suppression', 'Style ' + item.label + ' admet une relation');
+          this.addSingle('error', 'Suppression', 'Epoque ' + item.label + ' admet une relation');
         } else {
           this.addSingle('error', 'Suppression', error.error.message);
         }
