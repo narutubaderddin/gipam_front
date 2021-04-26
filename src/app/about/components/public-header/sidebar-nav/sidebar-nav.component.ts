@@ -92,4 +92,8 @@ export class SidebarNavComponent implements OnInit {
     this.router.navigate(['tab-ref-matière']);
     this.toggleClose();
   }
+  goToEpoquesList() {
+    this.router.navigate(['tab-ref-époque']);
+    this.toggleClose();
+  }
 }

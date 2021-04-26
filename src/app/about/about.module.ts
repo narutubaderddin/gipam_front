@@ -82,6 +82,8 @@ import { RippleModule } from 'primeng/ripple';
 import { MessageService } from 'primeng/api';
 import { StylesComponent } from './components/tabs-ref/styles/styles.component';
 import { MaterialTechniqueComponent } from './components/tabs-ref/material-technique/material-technique.component';
+import { ModalTabsRefComponent } from './components/tabs-ref/modal-tabs-ref/modal-tabs-ref.component';
+import { EpoquesComponent } from './components/tabs-ref/epoques/epoques.component';
 
 setTheme('bs4');
 
@@ -132,6 +134,8 @@ const ngWizardConfig: NgWizardConfig = {
     DenominationsComponent,
     StylesComponent,
     MaterialTechniqueComponent,
+    ModalTabsRefComponent,
+    EpoquesComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [

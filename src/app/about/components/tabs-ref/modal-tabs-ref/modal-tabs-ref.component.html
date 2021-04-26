@@ -1,0 +1,45 @@
+<div class="modal-content">
+  <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
+    <div class="modal-header">
+      <h4 class="modal-title" *ngIf="editItem">Modification de {{ name }}</h4>
+      <h4 class="modal-title" *ngIf="addItem">Ajout de {{ name }}</h4>
+      <h4 class="modal-title" *ngIf="deleteItems">Suppression de {{ name }}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer "{{ itemToDelete.label }}" ?</div>
+
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
+        <label class="col-sm-3">Libellé<span class="mandatory"> *</span></label>
+        <input
+          type="text"
+          class="form-control col-sm-7"
+          value="{{ editItem ? selectedItem : '' }}"
+          formControlName="label"
+        />
+      </div>
+      <div class="form-group col-md-12 d-flex align-items-baseline" *ngIf="addItem">
+        <label class="col-sm-5">visibilité<span class="mandatory"> *</span></label>
+        <div class="btn-slider mr-2 col-3" *ngIf="active">
+          <label [class.active]="active"></label>
+          <label class="switch">
+            <input type="checkbox" [checked]="true" formControlName="active" />
+            <span class="slider round"></span>
+          </label>
+          <label [class.active]="!active"></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light cancel-btn" (click)="close()">Annuler</button>
+      <button type="submit" class="btn btn-light valid-btn" *ngIf="editItem">Modifier</button>
+      <button type="submit" class="btn btn-light valid-btn" *ngIf="addItem">Ajouter</button>
+      <button type="button" class="btn btn-light valid-btn" *ngIf="deleteItems" (click)="deleteItem()">
+        Supprimer
+      </button>
+    </div>
+  </form>
+</div>

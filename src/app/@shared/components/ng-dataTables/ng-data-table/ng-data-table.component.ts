@@ -32,6 +32,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
   providers: [I18n, { provide: NgbDatepickerI18n, useClass: CustomDatepickerI18nService }],
 })
 export class NgDataTableComponent implements OnInit {
+  @Input() loading: boolean;
   @Input() columns: any[];
   @Input() expandColumns: any[] = [];
   @Input() frozenCols: any[] = [];

@@ -1,25 +1,20 @@
-import { Component, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalConfig, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
-import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
-
-import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
-import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 import { ModalTabsRefComponent } from '@app/about/components/tabs-ref/modal-tabs-ref/modal-tabs-ref.component';
 
 @Component({
-  selector: 'app-styles',
-  templateUrl: './styles.component.html',
-  styleUrls: ['./styles.component.scss'],
+  selector: 'app-epoques',
+  templateUrl: './epoques.component.html',
+  styleUrls: ['./epoques.component.scss'],
 })
-export class StylesComponent implements OnInit {
-  @ViewChild('content') modalRef: TemplateRef<any>;
-  @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
-
+export class EpoquesComponent implements OnInit {
   dropdownSettings: IDropdownSettings;
   dropdownList: any;
   items: any;
@@ -99,7 +94,7 @@ export class StylesComponent implements OnInit {
     return this.defaultColDef.headerComponentParams;
   }
   ngOnInit(): void {
-    this.simpleTabsRef.tabRef = 'styles';
+    this.simpleTabsRef.tabRef = 'eras';
     this.getAllItems();
   }
 
@@ -123,7 +118,7 @@ export class StylesComponent implements OnInit {
     };
     const modalRef = this.modalService.open(ModalTabsRefComponent, ngbModalOptions);
     modalRef.componentInstance.fromParent = {
-      name: 'style',
+      name: 'époque',
       editItem: this.editItem,
       addItem: this.addItem,
       deleteItems: this.deleteItems,
