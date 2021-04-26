@@ -295,7 +295,6 @@ export class CategoryComponent implements OnInit {
     } else {
       this.page = this.total / parseInt(this.limit.toString(), 0);
     }
-    // this.limit = Math.min(e.rows, this.totalFiltred - e.page * e.rows).toString();
     this.getAllItems();
   }
 
@@ -313,5 +312,14 @@ export class CategoryComponent implements OnInit {
       this.sort = 'asc';
       this.getAllItems();
     }
+  }
+  search(input: string) {
+    if (input) {
+      this.filter = input;
+      this.getAllItems();
+      return;
+    }
+    this.filter = '';
+    this.getAllItems();
   }
 }

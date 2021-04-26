@@ -314,4 +314,13 @@ export class DepositTypesComponent implements OnInit {
       this.getAllItems();
     }
   }
+  search(input: string) {
+    if (input) {
+      this.filter = input;
+      this.getAllItems();
+      return;
+    }
+    this.filter = '';
+    this.getAllItems();
+  }
 }

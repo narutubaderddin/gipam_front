@@ -27,9 +27,17 @@
                   type="search"
                   placeholder="Rechercher"
                   id="example-search-input"
+                  #searchBox
+                  (keyup.enter)="search(searchBox.value)"
+                  (blur)="search(searchBox.value)"
+                  (close)="search('')"
                 />
                 <span class="input-group-append">
-                  <button class="btn btn-outline-secondary border-left-0 border" type="button">
+                  <button
+                    class="btn btn-outline-secondary border-left-0 border btn-search"
+                    type="button"
+                    (click)="search(searchBox.value)"
+                  >
                     <i class="fa fa-search"></i>
                   </button>
                 </span>
