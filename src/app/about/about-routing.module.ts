@@ -17,6 +17,10 @@ import { DenominationsComponent } from '@app/about/components/tabs-ref/denominat
 import { StylesComponent } from '@app/about/components/tabs-ref/styles/styles.component';
 import { MaterialTechniqueComponent } from '@app/about/components/tabs-ref/material-technique/material-technique.component';
 import { EpoquesComponent } from '@app/about/components/tabs-ref/epoques/epoques.component';
+import { DepositTypesComponent } from '@app/about/components/tabs-ref/depositTypes/depositTypes.component';
+import { ReportTypesComponent } from '@app/about/components/tabs-ref/reportTypes/reportTypes.component';
+import { ActionReportTypesComponent } from '@app/about/components/tabs-ref/actionReportTypes/actionReportTypes.component';
+import { CategoryComponent } from '@app/about/components/tabs-ref/category/category.component';
 const routes: Routes = [
   {
     path: '',
@@ -50,6 +54,10 @@ const routes: Routes = [
       { path: 'tab-ref-style', component: StylesComponent },
       { path: 'tab-ref-matière', component: MaterialTechniqueComponent },
       { path: 'tab-ref-époque', component: EpoquesComponent },
+      { path: 'tab-ref-type-déposant', component: DepositTypesComponent },
+      { path: 'tab-ref-type-constat', component: ReportTypesComponent },
+      { path: 'tab-ref-type-action-constat', component: ActionReportTypesComponent },
+      { path: 'tab-ref-categorie', component: CategoryComponent },
     ],
   },
 ];

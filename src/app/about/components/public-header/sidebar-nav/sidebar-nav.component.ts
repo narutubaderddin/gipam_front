@@ -96,4 +96,20 @@ export class SidebarNavComponent implements OnInit {
     this.router.navigate(['tab-ref-époque']);
     this.toggleClose();
   }
+  goToDepositTypesList() {
+    this.router.navigate(['tab-ref-type-déposant']);
+    this.toggleClose();
+  }
+  goToReportTypesList() {
+    this.router.navigate(['tab-ref-type-constat']);
+    this.toggleClose();
+  }
+  goToActionReportTypesList() {
+    this.router.navigate(['tab-ref-type-action-constat']);
+    this.toggleClose();
+  }
+  goToCategoriesList() {
+    this.router.navigate(['tab-ref-categorie']);
+    this.toggleClose();
+  }
 }

@@ -32,7 +32,8 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
   providers: [I18n, { provide: NgbDatepickerI18n, useClass: CustomDatepickerI18nService }],
 })
 export class NgDataTableComponent implements OnInit {
-  @Input() loading: boolean;
+  @Input() noDataMessage = 'Aucun élément à afficher';
+  @Input() loading = false;
   @Input() columns: any[];
   @Input() expandColumns: any[] = [];
   @Input() frozenCols: any[] = [];
@@ -67,13 +68,13 @@ export class NgDataTableComponent implements OnInit {
   toDate: NgbDate | null = null;
   selectedRows: any[];
   form: FormGroup;
+
   constructor(calendar: NgbCalendar, public formBuilder: FormBuilder) {
     this.fromDate = calendar.getToday();
   }
 
   ngOnInit(): void {
     console.log('columns', this.columns);
-
     this.key = this.columns[0]['field'];
     this.columns = this.columns.filter((col) => {
       if (Object.keys(col).indexOf('isVisible') == -1 || col.isVisible) {
@@ -115,7 +116,7 @@ export class NgDataTableComponent implements OnInit {
     this.currentPage = this.currentPage ? this.currentPage : 1;
     // calculate from data index
     const from = event.first + 1;
-    this.start = this.data.length && from ? from : 1;
+    this.start = (this.currentPage - 1) * this.paginationSize && from ? from : 1;
     // calculate to data index
     const to = this.currentPage * this.paginationSize;
     this.end = Math.min(to, this.total);
@@ -181,6 +182,7 @@ export class NgDataTableComponent implements OnInit {
   actionMethod(e: any) {
     this.action.emit(e);
   }
+
   update(columns: any[]) {
     this.columns = columns;
     this.ngOnInit();
@@ -195,6 +197,7 @@ export class NgDataTableComponent implements OnInit {
       this.filterValue.emit(this.form.value);
     }
   }
+
   sortHeader() {
     this.asc = !this.asc;
     this.sort.emit(this.asc);
