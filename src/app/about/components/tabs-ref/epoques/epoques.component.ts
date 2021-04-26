@@ -37,7 +37,7 @@ export class EpoquesComponent implements OnInit {
   start: any;
   end: any;
 
-  loading: boolean;
+  loading: boolean = false;
   defaultColDef = {
     headerComponent: 'customHeader',
     sortable: true,
@@ -173,27 +173,27 @@ export class EpoquesComponent implements OnInit {
   }
 
   getAllItems() {
-    this.simpleTabsRef
-      .getAllItems({
-        limit: this.limit,
-        page: this.page,
-        'label[contains]': this.filter,
-        sort_by: this.sortBy,
-        sort: this.sort,
-      })
-      .subscribe(
-        (result: any) => {
-          this.items = result.results;
-          this.totalFiltred = result.filteredQuantity;
-          this.total = result.totalQuantity;
-          this.start = (this.page - 1) * this.limit + 1;
-          this.end = (this.page - 1) * this.limit + this.items.length;
-          this.loading = false;
-        },
-        (error: any) => {
-          this.addSingle('error', '', error.error.message);
-        }
-      );
+    this.loading = true;
+    const data = {
+      limit: this.limit,
+      page: this.page,
+      'label[contains]': this.filter,
+      sort_by: this.sortBy,
+      sort: this.sort,
+    };
+    this.simpleTabsRef.getAllItems(data).subscribe(
+      (result: any) => {
+        this.items = result.results;
+        this.totalFiltred = result.filteredQuantity;
+        this.total = result.totalQuantity;
+        this.start = (this.page - 1) * this.limit + 1;
+        this.end = (this.page - 1) * this.limit + this.items.length;
+        this.loading = false;
+      },
+      (error: any) => {
+        this.addSingle('error', '', error.error.message);
+      }
+    );
   }
 
   visibleItem(data: any) {
@@ -224,7 +224,7 @@ export class EpoquesComponent implements OnInit {
     } else {
       this.page = (this.total / parseInt(this.limit, 0)).toString();
     }
-    this.limit = e.rows;
+    // this.limit = e.rows;
     // Math.min(e.rows, this.totalFiltred - e.page * e.rows).toString();
     this.getAllItems();
   }

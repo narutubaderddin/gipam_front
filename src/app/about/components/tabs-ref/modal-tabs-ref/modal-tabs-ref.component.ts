@@ -11,6 +11,7 @@ export class ModalTabsRefComponent implements OnInit {
   @Output() passEntry: EventEmitter<any> = new EventEmitter();
   @Input() fromParent: any;
   addItem: boolean;
+  btnLoading: boolean;
   deleteItems: boolean;
   editItem: boolean;
   tabForm: FormGroup;

@@ -245,7 +245,7 @@
       </ng-template>
     </p-table>
     <div style="position: relative; display: flex; flex-direction: row-reverse">
-      <p-paginator rows="5" (onPageChange)="onChangePage($event)" [totalRecords]="totalFiltred"></p-paginator>
+      <p-paginator rows="5" (onPageChange)="onChangePage($event)" [totalRecords]="total"></p-paginator>
       <span style="position: absolute; top: 3px; left: 12px; margin: 15px"
         >Résultats de {{ start }} à {{ end }} / {{ totalFiltred }} (filtrés parmis {{ total }})
       </span>

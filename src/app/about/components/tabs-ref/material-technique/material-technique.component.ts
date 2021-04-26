@@ -37,9 +37,12 @@ export class MaterialTechniqueComponent implements OnInit {
   sort: string = 'asc';
   totalFiltred: any;
   total: any;
-  limit = '5';
-  page = '1';
+  limit: any = '5';
+  page: any = '1';
+  start: any;
+  end: any;
 
+  loading: boolean = false;
   items: any;
 
   columns = [
@@ -193,11 +196,12 @@ export class MaterialTechniqueComponent implements OnInit {
       .getAllItems({ limit: this.limit, page: this.page, 'label[contains]': this.filter, sort: this.sort })
       .subscribe(
         (result: any) => {
-          this.items = result;
-          this.totalFiltred = this.items.filteredQuantity;
-          this.total = this.items.totalQuantity;
-          this.items = this.items.results;
-          // console.log('result', this.items);
+          this.items = result.results;
+          this.totalFiltred = result.filteredQuantity;
+          this.total = result.totalQuantity;
+          this.start = (this.page - 1) * this.limit + 1;
+          this.end = (this.page - 1) * this.limit + this.items.length;
+          this.loading = false;
         },
         (error: any) => {
           this.addSingle('error', '', error.error.message);

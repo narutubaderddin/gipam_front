@@ -229,7 +229,7 @@ export class StylesComponent implements OnInit {
     } else {
       this.page = (this.total / parseInt(this.limit, 0)).toString();
     }
-    this.limit = e.rows;
+    // this.limit = e.rows;
     // Math.min(e.rows, this.totalFiltred - e.page * e.rows).toString();
     this.getAllItems();
   }

@@ -35,8 +35,12 @@
 
     <div class="modal-footer">
       <button type="button" class="btn btn-light cancel-btn" (click)="close()">Annuler</button>
-      <button type="submit" class="btn btn-light valid-btn" *ngIf="editItem">Modifier</button>
-      <button type="submit" class="btn btn-light valid-btn" *ngIf="addItem">Ajouter</button>
+      <button type="submit" class="btn btn-light valid-btn" *ngIf="editItem" [attr.disabled]="btnLoading">
+        Modifier
+      </button>
+      <button type="submit" class="btn btn-light valid-btn" *ngIf="addItem" [attr.disabled]="btnLoading">
+        Ajouter
+      </button>
       <button type="button" class="btn btn-light valid-btn" *ngIf="deleteItems" (click)="deleteItem()">
         Supprimer
       </button>

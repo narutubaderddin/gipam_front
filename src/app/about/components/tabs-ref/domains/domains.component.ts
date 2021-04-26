@@ -40,9 +40,12 @@ export class DomainsComponent implements OnInit {
   sort: string = 'asc';
   totalFiltred: any;
   total: any;
-  limit = '5';
-  page = '1';
-
+  limit: any = '5';
+  page: any = '1';
+  start: any;
+  end: any;
+  sortBy = 'id';
+  loading: boolean = false;
   frameworkComponents = {
     customHeader: CustomHeaderRendererComponent,
     gridActionRenderer: DomainsActionsRendererComponent,
@@ -174,20 +177,27 @@ export class DomainsComponent implements OnInit {
   }
 
   getAllFeilds() {
-    this.feildsService
-      .getAllFields({ limit: this.limit, page: this.page, 'label[contains]': this.filter, sort: this.sort })
-      .subscribe(
-        (fields) => {
-          this.domains = fields;
-
-          this.totalFiltred = this.domains.filteredQuantity;
-          this.total = this.domains.totalQuantity;
-          console.log();
-        },
-        (error) => {
-          this.addSingle('error', '', error.error.message);
-        }
-      );
+    this.loading = true;
+    const data = {
+      limit: this.limit,
+      page: this.page,
+      'label[contains]': this.filter,
+      sort_by: this.sortBy,
+      sort: this.sort,
+    };
+    this.feildsService.getAllFields(data).subscribe(
+      (result: any) => {
+        this.domains = result.results;
+        this.totalFiltred = result.filteredQuantity;
+        this.total = result.totalQuantity;
+        this.start = (this.page - 1) * this.limit + 1;
+        this.end = (this.page - 1) * this.limit + this.domains.length;
+        this.loading = false;
+      },
+      (error) => {
+        this.addSingle('error', '', error.error.message);
+      }
+    );
   }
   deleteField(field: any) {
     this.feildsService.deleteField(field).subscribe(
@@ -234,21 +244,18 @@ export class DomainsComponent implements OnInit {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
   }
   pagination(e: any) {
-    console.log(e);
     if (e.page < this.total / parseInt(this.limit, 0)) {
       this.page = e.page + 1;
     } else {
-      // this.page = Math.max(e.page, 1).toString();
       this.page = (this.total / parseInt(this.limit, 0)).toString();
     }
-    this.limit = e.rows;
-    // this.limit = Math.min(e.rows, this.totalFiltred - e.page * e.rows).toString();
-    // this.start = e.first + 1;
+    // this.limit = e.rows;
+    // Math.min(e.rows, this.totalFiltred - e.page * e.rows).toString();
     this.getAllFeilds();
   }
   filters(e: any) {
-    console.log(e);
     this.filter = e.label;
+    this.page = '1';
     this.getAllFeilds();
   }
   sortEvent(e: any) {

@@ -51,12 +51,15 @@
               (sort)="sortEvent($event)"
               [component]="'tabRefDomain'"
               [columns]="columns"
-              [data]="domains.results"
+              [data]="domains"
               [frozenCols]="[]"
               [frozenWidth]="'0px'"
               [checkBoxSelection]="false"
-              [totalFiltred]="domains.filtredQuantity"
-              [total]="domains.totalQuantity"
+              [totalFiltred]="totalFiltred"
+              [total]="total"
+              [page]="page"
+              [limit]="limit"
+              [loading]="loading"
             >
             </app-ng-data-table>
           </div>
