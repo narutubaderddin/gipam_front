@@ -82,6 +82,10 @@ import { RippleModule } from 'primeng/ripple';
 import { MessageService } from 'primeng/api';
 import { StylesComponent } from './components/tabs-ref/styles/styles.component';
 import { MaterialTechniqueComponent } from './components/tabs-ref/material-technique/material-technique.component';
+import { DepositTypesComponent } from '@app/about/components/tabs-ref/depositTypes/depositTypes.component';
+import { ReportTypesComponent } from '@app/about/components/tabs-ref/reportTypes/reportTypes.component';
+import { ActionReportTypesComponent } from '@app/about/components/tabs-ref/actionReportTypes/actionReportTypes.component';
+import { CategoryComponent } from '@app/about/components/tabs-ref/category/category.component';
 
 setTheme('bs4');
 
@@ -132,6 +136,10 @@ const ngWizardConfig: NgWizardConfig = {
     DenominationsComponent,
     StylesComponent,
     MaterialTechniqueComponent,
+    DepositTypesComponent,
+    ReportTypesComponent,
+    ActionReportTypesComponent,
+    CategoryComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
