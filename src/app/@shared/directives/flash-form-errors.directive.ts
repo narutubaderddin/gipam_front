@@ -2,6 +2,7 @@ import { Directive, EventEmitter, HostListener, Input, OnInit, Output } from '@a
 import { FormGroup } from '@angular/forms';
 import { NotificationsService } from 'angular2-notifications';
 import { markAsDirtyDeep } from '@shared/utils/helpers';
+import { MessageService } from 'primeng/api';
 const INVALID_FILEDS_MSG = 'Veuillez vérifier tous les champs encadrés en rouge';
 
 @Directive({
@@ -14,14 +15,12 @@ export class FlashFormErrorsDirective {
   private errorTitle = 'Erreur';
   private errorMessage = INVALID_FILEDS_MSG;
 
-  constructor(private notificationService: NotificationsService) {}
-
-  ngOnInit(): void {}
+  constructor(private notificationService: MessageService) {}
 
   @HostListener('submit', ['$event']) onClick() {
     if (this.formGroup.invalid) {
       markAsDirtyDeep(this.formGroup);
-      this.notificationService.error(this.errorTitle, this.errorMessage);
+      this.notificationService.add({ severity: 'error', summary: this.errorTitle, detail: this.errorMessage });
     } else {
       this.appFormSubmit.emit(this.formGroup);
     }
