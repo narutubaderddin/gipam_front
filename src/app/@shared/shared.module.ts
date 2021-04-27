@@ -1,4 +1,4 @@
-import { NgModule, Provider } from '@angular/core';
+import { NgModule, Provider, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AgGridModule } from 'ag-grid-angular';
@@ -51,6 +51,9 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectButtonRenderComponent } from './components/ng-dataTables/select-button-render/select-button-render.component';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { AddDescriptionsComponent } from './components/notice-blocs/add-descriptions/add-descriptions.component';
+import { DropdownModule } from 'primeng/dropdown';
+import { StatusComponent } from './components/notice-blocs/status/status.component';
 
 @NgModule({
   imports: [
@@ -77,6 +80,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     NgMultiSelectDropDownModule,
     MultiSelectModule,
     SelectButtonModule,
+    DropdownModule,
   ],
   declarations: [
     LoaderComponent,
@@ -110,6 +114,8 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     StatusTypeComponentRenderComponent,
     VisibleCatalogComponentRenderComponent,
     SelectButtonRenderComponent,
+    AddDescriptionsComponent,
+    StatusComponent,
   ],
   exports: [
     LoaderComponent,
@@ -124,6 +130,8 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     AccordionSectionComponent,
     FlashFormErrorsDirective,
     NgDataTableComponent,
+    AddDescriptionsComponent,
+    StatusComponent,
   ],
 })
 export class SharedModule {}

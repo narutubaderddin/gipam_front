@@ -28,7 +28,6 @@ import { PortailItemDetailsComponent } from './components/portail-item-details/p
 import { PortailItemImageComponent } from './components/portail-item-details/portail-item-image/portail-item-image.component';
 import { ObservationsComponent } from './components/item-details/observations/observations.component';
 import { DescritifComponent } from './components/item-details/details/descritif/descritif.component';
-import { StatusComponent } from './components/item-details/details/status/status.component';
 import { AuthorComponent } from './components/item-details/details/author/author.component';
 import { TagInputModule } from 'ngx-chips';
 import { ProofsInProgressComponent } from './components/administrator-home-page/proofs-in-progress/proofs-in-progress.component';
@@ -50,7 +49,6 @@ import { FullWidthCellRendererComponent as FullWidthCellRenderer } from '@app/@s
 import { NoticeBeingCreatedComponent } from './components/administrator-home-page/notice-being-created/notice-being-created.component';
 import { NgFileDragDropModule } from 'ng-file-drag-drop';
 import { HypertextLinksComponent } from './components/item-details/links/hypertext-links/hypertext-links.component';
-import { AddDescriptionsComponent } from './components/add-property-remarquer/add-descriptions/add-descriptions.component';
 import { BsDatepickerModule, BsDatepickerConfig, DatepickerModule } from 'ngx-bootstrap/datepicker';
 import { setTheme } from 'ngx-bootstrap/utils';
 import { NoticeListComponent } from './components/notice-list/notice-list.component';
@@ -92,6 +90,7 @@ import { TypeMvtComponent } from './components/tabs-ref/type-mvt/type-mvt.compon
 import { MovementActionTypesComponent } from './components/tabs-ref/movement-action-types/movement-action-types.component';
 import { ModalMvtActionTypesComponent } from './components/tabs-ref/movement-action-types/modal-mvt-action-types/modal-mvt-action-types.component';
 import { ReportSubTypesComponent } from './components/tabs-ref/report-sub-types/report-sub-types.component';
+import { GalleriaModule } from 'primeng/galleria';
 
 setTheme('bs4');
 
@@ -117,7 +116,6 @@ const ngWizardConfig: NgWizardConfig = {
     PortailItemImageComponent,
     ObservationsComponent,
     DescritifComponent,
-    StatusComponent,
     AuthorComponent,
     ProofsInProgressComponent,
     InProgressAlertsComponent,
@@ -132,7 +130,6 @@ const ngWizardConfig: NgWizardConfig = {
     LastMovementComponent,
     NoticeBeingCreatedComponent,
     HypertextLinksComponent,
-    AddDescriptionsComponent,
     NoticeListComponent,
     RecolementListComponent,
     AlertListComponent,
@@ -195,6 +192,8 @@ const ngWizardConfig: NgWizardConfig = {
     TooltipModule,
     CheckboxModule,
     SelectButtonModule,
+    GalleriaModule,
+    MultiSelectModule,
   ],
   providers: [MovementsService, BsDatepickerConfig, MessageService],
 })

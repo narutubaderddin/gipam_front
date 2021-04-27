@@ -61,7 +61,16 @@ export class WorkOfArtService {
     },
     { id: 7, name: 'Art textile', active: true },
     { id: 8, name: 'Pièce de musée', active: true },
-    { id: 9, name: 'Art de la table', active: true },
+    {
+      id: 9,
+      name: 'Art de la table',
+      active: true,
+      denominations: [
+        { id: 1, name: 'Plat de service' },
+        { id: 2, name: 'Chauffe plat' },
+        { id: 2, name: 'Couverts' },
+      ],
+    },
     { id: 10, name: 'Decor monumental', active: true },
     { id: 11, name: 'Archeologie', active: false },
   ];
