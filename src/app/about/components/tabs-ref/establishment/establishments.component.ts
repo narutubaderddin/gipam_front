@@ -115,9 +115,6 @@ export class EstablishmentsComponent implements OnInit {
       header: 'Ministère',
       field: 'ministryName',
       type: 'key',
-      filter: true,
-      filterType: 'text',
-      sortable: true,
       width: '380px',
     },
     {
@@ -129,6 +126,12 @@ export class EstablishmentsComponent implements OnInit {
       width: '100px',
     },
   ];
+
+  fieldNames = {
+    label: 'Libellé',
+    denominations: 'Dénominations',
+    type: 'Type',
+  };
 
   rowCount: any = 5;
 
@@ -425,18 +428,24 @@ export class EstablishmentsComponent implements OnInit {
   }
 
   filters(e: any) {
+    console.log('filter', e);
     this.page = 1;
     this.dataTableComponent.currentPage = 1;
     this.filter = e.label;
     this.getAllItems();
   }
 
+  getKeyByValue(object: any, value: any) {
+    return Object.keys(object).find((key) => object[key] === value);
+  }
+
   sortEvent(e: any) {
-    if (e) {
-      this.sort = 'desc';
+    this.sortBy = this.getKeyByValue(this.fieldNames, e.field);
+    if (e.order === 1) {
+      this.sort = 'asc';
       this.getAllItems();
     } else {
-      this.sort = 'asc';
+      this.sort = 'desc';
       this.getAllItems();
     }
   }
