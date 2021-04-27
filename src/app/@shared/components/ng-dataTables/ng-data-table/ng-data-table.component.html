@@ -26,9 +26,9 @@
       </ng-template>
       <ng-template pTemplate="colgroup" let-columns>
         <colgroup>
-          <col *ngIf="checkBoxSelection" style="width: 3em" />
-          <col *ngIf="singleSelect" style="width: 2em" />
-          <col *ngIf="expand" style="width: 4em" />
+          <col *ngIf="checkBoxSelection && frozenCols.length == 0" style="width: 3em" />
+          <col *ngIf="singleSelect && frozenCols.length == 0" style="width: 2em" />
+          <col *ngIf="expand && frozenCols.length == 0" style="width: 4em" />
           <col *ngFor="let col of columns" [style.width]="col.width" />
         </colgroup>
       </ng-template>
@@ -230,6 +230,7 @@
                 </ng-template>
               </p-table>
             </div>
+            ng
           </td>
         </tr>
       </ng-template>
@@ -237,7 +238,7 @@
     <div style="position: relative; display: flex; flex-direction: row-reverse">
       <p-paginator rows="5" (onPageChange)="onPageChange($event)" [totalRecords]="total"></p-paginator>
       <span style="position: absolute; top: 3px; left: 12px; margin: 15px"
-        >Résultats de {{ start }} à {{ end }} / {{ totalFiltred }} (filtrés parmis {{ total }})
+        >Résultats de {{ start }} à {{ data.length }} / {{ totalFiltred }} (filtrés parmis {{ total }})
       </span>
     </div>
   </div>

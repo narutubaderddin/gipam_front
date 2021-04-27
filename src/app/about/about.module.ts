@@ -74,6 +74,8 @@ import { RatingModule } from 'primeng/rating';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { TooltipModule } from 'primeng/tooltip';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { ArtWorksPipe } from '@app/about/pipes/art-works.pipe';
+import { ArtWorksDataPipe } from '@app/about/pipes/art-works-data.pipe';
 
 setTheme('bs4');
 
@@ -98,6 +100,8 @@ const ngWizardConfig: NgWizardConfig = {
     PortailItemDetailsComponent,
     PortailItemImageComponent,
     ObservationsComponent,
+    ArtWorksPipe,
+    ArtWorksDataPipe,
     DescritifComponent,
     StatusComponent,
     AuthorComponent,
@@ -161,6 +165,6 @@ const ngWizardConfig: NgWizardConfig = {
     TooltipModule,
     SelectButtonModule,
   ],
-  providers: [MovementsService, , BsDatepickerConfig],
+  providers: [MovementsService, BsDatepickerConfig, ArtWorksDataPipe, ArtWorksPipe],
 })
 export class AboutModule {}

@@ -18,6 +18,8 @@ import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { ImageViewerComponent } from '@shared/components/datatables/image-viewer/image-viewer.component';
 import { DatePipe } from '@angular/common';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { ArtWorkService } from '@app/about/services/art-work.service';
+import ArtWorksDataModel from '@app/about/models/art-works-model';
 
 @Component({
   selector: 'app-list-work-of-arts',
@@ -109,7 +111,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     },
     {
       header: 'Domaine',
-      field: 'domaine',
+      field: 'field',
       sortable: true,
       width: '150px',
       filter: true,
@@ -132,7 +134,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     },
     {
       header: 'Matière',
-      field: 'matiere',
+      field: 'materialTechnique',
       sortable: true,
       width: '150px',
       filter: true,
@@ -152,7 +154,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     },
     {
       header: 'Epoque',
-      field: 'epoque',
+      field: 'era',
       width: '150px',
       sortable: true,
       filter: true,
@@ -162,7 +164,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     },
     {
       header: 'Auteur',
-      field: 'author',
+      field: 'authors',
       width: '150px',
       sortable: true,
       filter: true,
@@ -172,7 +174,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     },
     {
       header: 'Type de Statut',
-      field: 'property',
+      field: 'statusType',
       cellRenderer: 'statusTypeRender',
       width: '200px',
       sortable: false,
@@ -357,7 +359,10 @@ export class ListWorkOfArtsComponent implements OnInit {
   inventoryOptions: Options;
   gridReady = false;
   currentColumnStates: any;
-
+  dataSlider: any = {
+    length: { value: 0, heightValue: 0 },
+    heightTot: { value: 0, heightValue: 0 },
+  };
   currentFilters: ColumnFilterModel[] = [];
   currentOrderedFields: { column: string; direction: string }[] = [];
   paginatorLoading: boolean;
@@ -382,20 +387,31 @@ export class ListWorkOfArtsComponent implements OnInit {
   modelDate = '2021';
   visibleCol: any[] = [];
   items = ['oeuvre art', 'test'];
+  artWorksData: ArtWorksDataModel;
+  headerFilter: any = {};
+  advancedForm1: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     public columnFilterService: ColumnFilterService,
     public WorkOfArtService: WorkOfArtService,
     private datePipe: DatePipe,
-    private router: Router
+    private router: Router,
+    private artWorkService: ArtWorkService
   ) {}
 
   get defaultHeaderParams() {
     return this.defaultColDef.headerComponentParams;
   }
-
+  initData(filter: any, advancedFilter: any, headerFilters: any = {}) {
+    this.artWorkService
+      .getArtWorksData(filter, advancedFilter, headerFilters)
+      .subscribe((artWorksData: ArtWorksDataModel) => {
+        this.artWorksData = artWorksData;
+      });
+  }
   ngOnInit(): void {
+    this.initData({}, {}, this.headerFilter);
     this.oeuvreToShow = this.oeuvres;
     this.initFilterFormGroup();
     this.domaine = this.WorkOfArtService.domaine;
@@ -410,12 +426,20 @@ export class ListWorkOfArtsComponent implements OnInit {
     };
     this.initVisibleCols(this.columns);
     this.form1 = new FormGroup({
-      inventory: new FormControl(''),
-      title: new FormControl(''),
+      id: new FormControl(''),
+      titre: new FormControl(''),
       domaine: new FormControl(''),
       denomination: new FormControl(''),
-      author: new FormControl(''),
-      date: new FormControl(''),
+      auteurs: new FormControl(''),
+      // date: new FormControl(''),
+    });
+    this.advancedForm1 = new FormGroup({
+      materialTechnique: new FormControl(''),
+      materialTechniqueOperator: new FormControl('and'),
+      style: new FormControl(''),
+      styleOperator: new FormControl('and'),
+      length: new FormControl(''),
+      lengthOperator: new FormControl('and'),
     });
     this.form2 = new FormGroup({
       mouvement: new FormControl(''),
@@ -476,6 +500,13 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.columns.splice(column.index, 1);
     this.columns.splice(column.index, 0, localColumn);
     this.dataTableComponent.update(this.columns);
+  }
+
+  onDataTableFilterChange(headersFilter: any) {
+    const forms = this.formatFormsData({}, [this.form1.value, this.form2.value, this.form3.value, this.form4.value]);
+    const advancedForms = this.formatAdvancedData({}, [this.advancedForm1.value]);
+    this.headerFilter = this.formatFormsData({}, [headersFilter]);
+    this.initData(forms, advancedForms, this.headerFilter);
   }
 
   initFilterFormGroup() {
@@ -594,6 +625,89 @@ export class ListWorkOfArtsComponent implements OnInit {
   onValueChange(event: any) {
     this.inventaire = event.target.value + event.key;
   }
+  formatFormsData(data: any, values: any[]) {
+    values.forEach((value) => {
+      data = this.getDataFromForm(data, value);
+    });
+    return data;
+  }
+
+  formatAdvancedData(data: any, values: any[]) {
+    values.forEach((value) => {
+      data = this.getDataFromAdvancedForm(data, value);
+    });
+    return data;
+  }
+  getDataFromAdvancedForm(data: any, value: any) {
+    Object.keys(value).forEach((key) => {
+      if (!key.includes('Operator')) {
+        if (value[key] != '' || ['length'].includes(key)) {
+          let keyValue;
+          switch (key) {
+            case 'style':
+            case 'materialTechnique':
+              let result: any[] = [];
+              if (Array.isArray(value[key])) {
+                value[key].forEach((item: any) => {
+                  result.push(item['id']);
+                });
+              }
+              keyValue = result;
+              break;
+            case 'length':
+              console.log(this.dataSlider['length']['value'] <= this.dataSlider['length']['heightValue']);
+              console.log(this.dataSlider['length']['heightValue'] > 0);
+              if (
+                this.dataSlider['length']['value'] <= this.dataSlider['length']['heightValue'] &&
+                this.dataSlider['length']['heightValue'] > 0
+              ) {
+                keyValue = [this.dataSlider['length']['value'], this.dataSlider['length']['heightValue']];
+              }
+              break;
+            default:
+              keyValue = value[key];
+              break;
+          }
+          if (keyValue) {
+            data[key] = { value: keyValue, operator: value[key + 'Operator'] };
+          }
+        }
+      }
+    });
+    return data;
+  }
+  getDataFromForm(data: any, value: any) {
+    Object.keys(value).forEach((key) => {
+      switch (key) {
+        case 'domaine':
+        case 'denomination':
+        case 'auteurs':
+          let result: any[] = [];
+          if (Array.isArray(value[key])) {
+            value[key].forEach((item: any) => {
+              result.push(item['id']);
+            });
+          }
+          data[key] = result;
+          break;
+        case 'id':
+          if (
+            this.showInventoryRange &&
+            this.inventoryValue <= this.hightInventoryValue &&
+            this.hightInventoryValue != 0
+          ) {
+            data[key] = [this.inventoryValue, this.hightInventoryValue];
+          } else {
+            data[key] = value[key];
+          }
+          break;
+        default:
+          data[key] = value[key];
+          break;
+      }
+    });
+    return data;
+  }
 
   onToggel(event: any, form: string) {
     switch (form) {
@@ -613,6 +727,9 @@ export class ListWorkOfArtsComponent implements OnInit {
 
     if (event == false) {
       this.showDatatable = true;
+      let data = this.formatFormsData({}, [this.form1.value, this.form2.value, this.form3.value, this.form4.value]);
+      let advancedData = this.formatAdvancedData({}, [this.advancedForm1.value]);
+      this.initData(data, advancedData, this.headerFilter);
     }
   }
 

@@ -48,6 +48,7 @@ export class NgDataTableComponent implements OnInit {
   @Output() pageChanged = new EventEmitter();
   @Output() singleSelectionEvent = new EventEmitter();
   @Output() multipleSelectionEvent = new EventEmitter();
+  @Output() filterChange = new EventEmitter();
 
   dropdownSettings: IDropdownSettings;
   key: string;
@@ -66,7 +67,6 @@ export class NgDataTableComponent implements OnInit {
     this.key = this.columns[0]['field'];
     this.form = this.formBuilder.group({});
     this.initForm(this.columns);
-    console.log(this.form.value);
     this.columns = this.columns.filter((col) => {
       if (Object.keys(col).indexOf('isVisible') == -1 || col.isVisible) {
         return col;
@@ -162,7 +162,7 @@ export class NgDataTableComponent implements OnInit {
 
   onFilterChange(open: boolean) {
     if (!open) {
-      console.log(this.form.value);
+      this.filterChange.emit(this.form.value);
     }
   }
 }

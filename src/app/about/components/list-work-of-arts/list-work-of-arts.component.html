@@ -83,7 +83,7 @@
                       <label for="titre" class="col-5">N° inventaire</label>
                       <input
                         type="text"
-                        formControlName="inventory"
+                        formControlName="id"
                         class="form-control col-4"
                         *ngIf="!showInventoryRange"
                         placeholder="N° inventaire"
@@ -114,7 +114,7 @@
                       <label for="titre" class="col-5">Titre</label>
                       <input
                         type="text"
-                        formControlName="title"
+                        formControlName="titre"
                         class="form-control col-6"
                         id="titre"
                         placeholder="Titre"
@@ -126,7 +126,7 @@
                         class="select col-6"
                         [placeholder]="'Choisir des auteurs'"
                         [settings]="dropdownSettings"
-                        formControlName="author"
+                        formControlName="auteurs"
                         [data]="WorkOfArtService.authors"
                         (onSelect)="onItemSelect($event)"
                         (onSelectAll)="onSelectAll($event)"
@@ -167,285 +167,293 @@
                     <i class="fa fa-minus-circle" *ngIf="form1Advanced"></i>
                     <span>Recherche avancée</span>
                   </div>
-                  <div class="col-6" *ngIf="form1Advanced">
-                    <div class="form-group d-flex slider-bloc row">
-                      <div class="row col-10">
-                        <label class="col-5">Matières/technique</label>
+                  <form [formGroup]="advancedForm1" class="col-12 row">
+                    <div class="col-6" *ngIf="form1Advanced">
+                      <div class="form-group d-flex slider-bloc row">
+                        <div class="row col-10">
+                          <label class="col-5">Matières/technique</label>
 
-                        <ng-multiselect-dropdown
-                          class="select col-6"
-                          [placeholder]="'Choisir des matières'"
-                          [settings]="dropdownSettings"
-                          [data]="WorkOfArtService.denominations"
-                          (onSelect)="onItemSelect($event)"
-                          (onSelectAll)="onSelectAll($event)"
-                        >
-                        </ng-multiselect-dropdown>
-                      </div>
-                      <select class="select-style d-flex slider-bloc col-md-2">
-                        <option value="1">Et</option>
-                        <option value="0">Ou</option>
-                      </select>
-                    </div>
-                    <div class="form-group d-flex slider-bloc row">
-                      <div class="row col-10">
-                        <label class="col-5">Style</label>
-
-                        <ng-multiselect-dropdown
-                          class="select col-6"
-                          [placeholder]="'Choisir des Styles'"
-                          [settings]="dropdownSettings"
-                          [data]="WorkOfArtService.denominations"
-                          (onSelect)="onItemSelect($event)"
-                          (onSelectAll)="onSelectAll($event)"
-                        >
-                        </ng-multiselect-dropdown>
-                      </div>
-                      <select class="select-style input-form-control col-md-2">
-                        <option value="1">Et</option>
-                        <option value="0">Ou</option>
-                      </select>
-                    </div>
-                    <div class="form-group d-flex slider-bloc row">
-                      <div class="row col-10">
-                        <label class="col-5">Longueur</label>
-
-                        <div class="custom-slider mt-5 col-5 w-100" style="margin-top: -15px !important">
-                          <ngx-slider
-                            [(value)]="inventoryValue"
-                            [(highValue)]="hightInventoryValue"
-                            [options]="inventoryOptions"
-                          ></ngx-slider>
+                          <ng-multiselect-dropdown
+                            class="select col-6"
+                            [placeholder]="'Choisir des matières'"
+                            formControlName="materialTechnique"
+                            [settings]="dropdownSettings"
+                            [data]="WorkOfArtService.denominations"
+                            (onSelect)="onItemSelect($event)"
+                            (onSelectAll)="onSelectAll($event)"
+                          >
+                          </ng-multiselect-dropdown>
                         </div>
-                      </div>
-                      <select class="select-style input-form-control col-md-2">
-                        <option value="1">Et</option>
-                        <option value="0">Ou</option>
-                      </select>
-                    </div>
-                    <div class="form-group d-flex slider-bloc row">
-                      <div class="row col-10">
-                        <label class="col-5">Hauteur Tot</label>
-
-                        <div
-                          class="custom-slider mt-3 col-5"
-                          style="width: 90% !important; margin-top: -15px !important"
+                        <select
+                          class="select-style d-flex slider-bloc col-md-2"
+                          formControlName="materialTechniqueOperator"
                         >
-                          <ngx-slider
-                            [(value)]="inventoryValue"
-                            [(highValue)]="hightInventoryValue"
-                            [options]="inventoryOptions"
-                          ></ngx-slider>
-                        </div>
-                      </div>
-                      <select class="select-style input-form-control col-md-2">
-                        <option value="1">Et</option>
-                        <option value="0">Ou</option>
-                      </select>
-                    </div>
-                    <div class="form-group d-flex slider-bloc row">
-                      <div class="row col-10">
-                        <label class="col-5">Longueur Tot</label>
-
-                        <div
-                          class="custom-slider mt-3 col-5"
-                          style="width: 90% !important; margin-top: -15px !important"
-                        >
-                          <ngx-slider
-                            [(value)]="inventoryValue"
-                            [(highValue)]="hightInventoryValue"
-                            [options]="inventoryOptions"
-                          ></ngx-slider>
-                        </div>
-                      </div>
-                      <select class="select-style input-form-control col-md-2">
-                        <option value="1">Et</option>
-                        <option value="0">Ou</option>
-                      </select>
-                    </div>
-                    <div class="form-group d-flex slider-bloc row">
-                      <div class="row col-10">
-                        <label class="col-5">Profondeur</label>
-
-                        <div
-                          class="custom-slider mt-3 col-5"
-                          style="width: 90% !important; margin-top: -15px !important"
-                        >
-                          <ngx-slider
-                            [(value)]="inventoryValue"
-                            [(highValue)]="hightInventoryValue"
-                            [options]="inventoryOptions"
-                          ></ngx-slider>
-                        </div>
-                      </div>
-                      <select class="select-style input-form-control col-md-2">
-                        <option value="1">Et</option>
-                        <option value="0">Ou</option>
-                      </select>
-                    </div>
-                    <div class="form-group d-flex slider-bloc row">
-                      <div class="row col-10">
-                        <label class="col-5">N unité</label>
-
-                        <input
-                          type="text"
-                          formControlName="inventory"
-                          class="form-control col-6"
-                          *ngIf="!showInventoryRange"
-                          placeholder="N° inventaire"
-                        />
-                      </div>
-                      <select class="select-style input-form-control col-md-2">
-                        <option value="1">Et</option>
-                        <option value="0">Ou</option>
-                      </select>
-                    </div>
-                    <div class="form-group d-flex slider-bloc row">
-                      <div class="row col-10">
-                        <label class="col-5">Oeuvres archivées</label>
-                        <select name="archive" class="select-style input-group col-6">
-                          <option value="sans oeuvres archivé">Sans oeuvres archivées</option>
-                          <option value="avec oeuvres archivé">Avec oeuvres archivées</option>
-                          <option value="uniquement oeuvres">Uniquement oeuvres</option>
+                          <option value="and">Et</option>
+                          <option value="or">Ou</option>
+                          <option value="not">sauf</option>
                         </select>
                       </div>
-                      <select class="select-style input-form-control col-md-2">
-                        <option value="1">Et</option>
-                        <option value="0">Ou</option>
-                        <option value="2">Sauf</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-6" *ngIf="form1Advanced">
-                    <div class="form-group d-flex slider-bloc row">
-                      <div class="row col-10">
-                        <label class="col-5">Epoque</label>
+                      <div class="form-group d-flex slider-bloc row">
+                        <div class="row col-10">
+                          <label class="col-5">Style</label>
 
-                        <ng-multiselect-dropdown
-                          class="select col-6"
-                          [placeholder]="'Choisir des  époques'"
-                          [settings]="dropdownSettings"
-                          [data]="WorkOfArtService.denominations"
-                          (onSelect)="onItemSelect($event)"
-                          (onSelectAll)="onSelectAll($event)"
-                        >
-                        </ng-multiselect-dropdown>
+                          <ng-multiselect-dropdown
+                            class="select col-6"
+                            formControlName="style"
+                            [placeholder]="'Choisir des Styles'"
+                            [settings]="dropdownSettings"
+                            [data]="WorkOfArtService.denominations"
+                            (onSelect)="onItemSelect($event)"
+                            (onSelectAll)="onSelectAll($event)"
+                          >
+                          </ng-multiselect-dropdown>
+                        </div>
+                        <select class="select-style input-form-control col-md-2" formControlName="styleOperator">
+                          <option value="and">Et</option>
+                          <option value="or">Ou</option>
+                          <option value="not">Sauf</option>
+                        </select>
                       </div>
-                      <select class="select-style input-form-control col-md-2">
-                        <option value="1">Et</option>
-                        <option value="0">Ou</option>
-                      </select>
-                    </div>
-                    <div class="form-group d-flex slider-bloc row">
-                      <div class="row col-10">
-                        <label class="col-5">Date de création</label>
+                      <div class="form-group d-flex slider-bloc row">
+                        <div class="row col-10">
+                          <label class="col-5">Longueur</label>
 
-                        <input
-                          class="col-6 form-control"
-                          formControlName="date"
-                          autocomplete="off"
-                          name="date"
-                          (bsValueChange)="onChange($event)"
-                          [bsConfig]="{ dateInputFormat: 'YYYY' }"
-                          bsDatepicker
-                          minMode="year"
-                          placeholder="YYYY"
-                        />
+                          <div class="custom-slider mt-5 col-5 w-100" style="margin-top: -15px !important">
+                            <ngx-slider
+                              [(value)]="dataSlider['length']['value']"
+                              [(highValue)]="dataSlider['length']['heightValue']"
+                              [options]="inventoryOptions"
+                            ></ngx-slider>
+                          </div>
+                        </div>
+                        <select class="select-style input-form-control col-md-2" formControlName="lengthOperator">
+                          <option value="and">Et</option>
+                          <option value="or">Ou</option>
+                          <option value="not">Sauf</option>
+                        </select>
                       </div>
-                      <select class="select-style input-form-control col-md-2">
-                        <option value="1">Et</option>
-                        <option value="0">Ou</option>
-                      </select>
+                      <div class="form-group d-flex slider-bloc row">
+                        <div class="row col-10">
+                          <label class="col-5">Hauteur Tot</label>
+
+                          <div
+                            class="custom-slider mt-3 col-5"
+                            style="width: 90% !important; margin-top: -15px !important"
+                          >
+                            <ngx-slider
+                              [(value)]="inventoryValue"
+                              [(highValue)]="hightInventoryValue"
+                              [options]="inventoryOptions"
+                            ></ngx-slider>
+                          </div>
+                        </div>
+                        <select class="select-style input-form-control col-md-2">
+                          <option value="1">Et</option>
+                          <option value="0">Ou</option>
+                        </select>
+                      </div>
+                      <div class="form-group d-flex slider-bloc row">
+                        <div class="row col-10">
+                          <label class="col-5">Longueur Tot</label>
+
+                          <div
+                            class="custom-slider mt-3 col-5"
+                            style="width: 90% !important; margin-top: -15px !important"
+                          >
+                            <ngx-slider
+                              [(value)]="inventoryValue"
+                              [(highValue)]="hightInventoryValue"
+                              [options]="inventoryOptions"
+                            ></ngx-slider>
+                          </div>
+                        </div>
+                        <select class="select-style input-form-control col-md-2">
+                          <option value="1">Et</option>
+                          <option value="0">Ou</option>
+                        </select>
+                      </div>
+                      <div class="form-group d-flex slider-bloc row">
+                        <div class="row col-10">
+                          <label class="col-5">Profondeur</label>
+
+                          <div
+                            class="custom-slider mt-3 col-5"
+                            style="width: 90% !important; margin-top: -15px !important"
+                          >
+                            <ngx-slider
+                              [(value)]="inventoryValue"
+                              [(highValue)]="hightInventoryValue"
+                              [options]="inventoryOptions"
+                            ></ngx-slider>
+                          </div>
+                        </div>
+                        <select class="select-style input-form-control col-md-2">
+                          <option value="1">Et</option>
+                          <option value="0">Ou</option>
+                        </select>
+                      </div>
+                      <div class="form-group d-flex slider-bloc row">
+                        <div class="row col-10">
+                          <label class="col-5">N unité</label>
+
+                          <input
+                            type="text"
+                            class="form-control col-6"
+                            *ngIf="!showInventoryRange"
+                            placeholder="N° inventaire"
+                          />
+                        </div>
+                        <select class="select-style input-form-control col-md-2">
+                          <option value="1">Et</option>
+                          <option value="0">Ou</option>
+                        </select>
+                      </div>
+                      <div class="form-group d-flex slider-bloc row">
+                        <div class="row col-10">
+                          <label class="col-5">Oeuvres archivées</label>
+                          <select name="archive" class="select-style input-group col-6">
+                            <option value="sans oeuvres archivé">Sans oeuvres archivées</option>
+                            <option value="avec oeuvres archivé">Avec oeuvres archivées</option>
+                            <option value="uniquement oeuvres">Uniquement oeuvres</option>
+                          </select>
+                        </div>
+                        <select class="select-style input-form-control col-md-2">
+                          <option value="1">Et</option>
+                          <option value="0">Ou</option>
+                          <option value="2">Sauf</option>
+                        </select>
+                      </div>
                     </div>
+                    <div class="col-6" *ngIf="form1Advanced">
+                      <div class="form-group d-flex slider-bloc row">
+                        <div class="row col-10">
+                          <label class="col-5">Epoque</label>
 
-                    <div class="form-group d-flex slider-bloc row">
-                      <div class="row col-10">
-                        <label class="col-5">Hauteur</label>
+                          <ng-multiselect-dropdown
+                            class="select col-6"
+                            [placeholder]="'Choisir des  époques'"
+                            [settings]="dropdownSettings"
+                            [data]="WorkOfArtService.denominations"
+                            (onSelect)="onItemSelect($event)"
+                            (onSelectAll)="onSelectAll($event)"
+                          >
+                          </ng-multiselect-dropdown>
+                        </div>
+                        <select class="select-style input-form-control col-md-2">
+                          <option value="1">Et</option>
+                          <option value="0">Ou</option>
+                        </select>
+                      </div>
+                      <div class="form-group d-flex slider-bloc row">
+                        <div class="row col-10">
+                          <label class="col-5">Date de création</label>
 
-                        <div
-                          class="custom-slider mt-3 col-5"
-                          style="width: 90% !important; margin-top: -15px !important"
-                        >
-                          <ngx-slider
-                            [(value)]="inventoryValue"
-                            [(highValue)]="hightInventoryValue"
-                            [options]="inventoryOptions"
-                          ></ngx-slider>
+                          <input
+                            class="col-6 form-control"
+                            autocomplete="off"
+                            name="date"
+                            (bsValueChange)="onChange($event)"
+                            [bsConfig]="{ dateInputFormat: 'YYYY' }"
+                            bsDatepicker
+                            minMode="year"
+                            placeholder="YYYY"
+                          />
+                        </div>
+                        <select class="select-style input-form-control col-md-2">
+                          <option value="1">Et</option>
+                          <option value="0">Ou</option>
+                        </select>
+                      </div>
+
+                      <div class="form-group d-flex slider-bloc row">
+                        <div class="row col-10">
+                          <label class="col-5">Hauteur</label>
+
+                          <div
+                            class="custom-slider mt-3 col-5"
+                            style="width: 90% !important; margin-top: -15px !important"
+                          >
+                            <ngx-slider
+                              [(value)]="inventoryValue"
+                              [(highValue)]="hightInventoryValue"
+                              [options]="inventoryOptions"
+                            ></ngx-slider>
+                          </div>
+                        </div>
+                        <select class="select-style input-form-control col-md-2">
+                          <option value="1">Et</option>
+                          <option value="0">Ou</option>
+                        </select>
+                      </div>
+                      <div class="form-group d-flex slider-bloc row">
+                        <div class="row col-10">
+                          <label class="col-5">Largeur</label>
+
+                          <div
+                            class="custom-slider mt-3 col-5"
+                            style="width: 90% !important; margin-top: -15px !important"
+                          >
+                            <ngx-slider
+                              [(value)]="inventoryValue"
+                              [(highValue)]="hightInventoryValue"
+                              [options]="inventoryOptions"
+                            ></ngx-slider>
+                          </div>
+                        </div>
+                        <select class="select-style input-form-control col-md-2">
+                          <option value="1">Et</option>
+                          <option value="0">Ou</option>
+                        </select>
+                      </div>
+                      <div class="form-group d-flex slider-bloc row">
+                        <div class="row col-10">
+                          <label class="col-5">Largeur Tot</label>
+
+                          <div
+                            class="custom-slider mt-3 col-5"
+                            style="width: 90% !important; margin-top: -15px !important"
+                          >
+                            <ngx-slider
+                              [(value)]="inventoryValue"
+                              [(highValue)]="hightInventoryValue"
+                              [options]="inventoryOptions"
+                            ></ngx-slider>
+                          </div>
+                        </div>
+                        <select class="select-style input-form-control col-md-2">
+                          <option value="1">Et</option>
+                          <option value="0">Ou</option>
+                        </select>
+                      </div>
+                      <div class="form-group d-flex slider-bloc row">
+                        <div class="row col-10">
+                          <label class="col-5">Poids</label>
+
+                          <div
+                            class="custom-slider mt-3 col-5"
+                            style="width: 90% !important; margin-top: -15px !important"
+                          >
+                            <ngx-slider
+                              [(value)]="inventoryValue"
+                              [(highValue)]="hightInventoryValue"
+                              [options]="inventoryOptions"
+                            ></ngx-slider>
+                          </div>
+                        </div>
+                        <select class="select-style input-form-control col-md-2">
+                          <option value="1">Et</option>
+                          <option value="0">Ou</option>
+                        </select>
+                      </div>
+                      <div class="form-group slider-bloc row">
+                        <div class="row col-12">
+                          <label class="col-4">Mots descriptifs</label>
+
+                          <tag-input [modelAsStrings]="true"></tag-input>
                         </div>
                       </div>
-                      <select class="select-style input-form-control col-md-2">
-                        <option value="1">Et</option>
-                        <option value="0">Ou</option>
-                      </select>
                     </div>
-                    <div class="form-group d-flex slider-bloc row">
-                      <div class="row col-10">
-                        <label class="col-5">Largeur</label>
-
-                        <div
-                          class="custom-slider mt-3 col-5"
-                          style="width: 90% !important; margin-top: -15px !important"
-                        >
-                          <ngx-slider
-                            [(value)]="inventoryValue"
-                            [(highValue)]="hightInventoryValue"
-                            [options]="inventoryOptions"
-                          ></ngx-slider>
-                        </div>
-                      </div>
-                      <select class="select-style input-form-control col-md-2">
-                        <option value="1">Et</option>
-                        <option value="0">Ou</option>
-                      </select>
-                    </div>
-                    <div class="form-group d-flex slider-bloc row">
-                      <div class="row col-10">
-                        <label class="col-5">Largeur Tot</label>
-
-                        <div
-                          class="custom-slider mt-3 col-5"
-                          style="width: 90% !important; margin-top: -15px !important"
-                        >
-                          <ngx-slider
-                            [(value)]="inventoryValue"
-                            [(highValue)]="hightInventoryValue"
-                            [options]="inventoryOptions"
-                          ></ngx-slider>
-                        </div>
-                      </div>
-                      <select class="select-style input-form-control col-md-2">
-                        <option value="1">Et</option>
-                        <option value="0">Ou</option>
-                      </select>
-                    </div>
-                    <div class="form-group d-flex slider-bloc row">
-                      <div class="row col-10">
-                        <label class="col-5">Poids</label>
-
-                        <div
-                          class="custom-slider mt-3 col-5"
-                          style="width: 90% !important; margin-top: -15px !important"
-                        >
-                          <ngx-slider
-                            [(value)]="inventoryValue"
-                            [(highValue)]="hightInventoryValue"
-                            [options]="inventoryOptions"
-                          ></ngx-slider>
-                        </div>
-                      </div>
-                      <select class="select-style input-form-control col-md-2">
-                        <option value="1">Et</option>
-                        <option value="0">Ou</option>
-                      </select>
-                    </div>
-                    <div class="form-group slider-bloc row">
-                      <div class="row col-12">
-                        <label class="col-4">Mots descriptifs</label>
-
-                        <tag-input [modelAsStrings]="true"></tag-input>
-                      </div>
-                    </div>
-                  </div>
+                  </form>
                 </div>
               </form>
             </div>
@@ -560,7 +568,7 @@
                         class="select col-6"
                         [placeholder]="'Mode entrée'"
                         [settings]="dropdownSettings"
-                        formControlName="author"
+                        formControlName="auteurs"
                         [data]="WorkOfArtService.authors"
                         (onSelect)="onItemSelect($event)"
                         (onSelectAll)="onSelectAll($event)"
@@ -1102,7 +1110,7 @@
           </div>
         </div>
       </div>
-      <div class="datatable mt-4">
+      <div class="datatable mt-4" *ngIf="artWorksData">
         <div *ngIf="selectedRowCount > 1">
           <div class="mass-action-container">
             <i class="fas fa-share"></i>
@@ -1161,11 +1169,14 @@
         </div>
         <app-ng-data-table
           [columns]="columns"
-          [data]="oeuvreToShow"
+          [data]="artWorksData.results"
           (multipleSelectionEvent)="onRowsSelection($event)"
           [frozenCols]="frozenCols"
           [frozenWidth]="'200px'"
           [checkBoxSelection]="true"
+          [total]="artWorksData.totalQuantity"
+          (filterChange)="onDataTableFilterChange($event)"
+          [totalFiltred]="artWorksData.filteredQuantity"
         >
         </app-ng-data-table>
       </div>

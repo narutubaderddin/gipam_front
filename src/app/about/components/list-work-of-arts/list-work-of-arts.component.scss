@@ -222,17 +222,20 @@ input:checked + .slider:before {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
 }
-::ng-deep ng-multiselect-dropdown {
-  width: 100%;
-  margin-left: -15px;
-  .multiselect-dropdown {
-    width: 115% !important;
-    .dropdown-btn {
-      min-height: 30px;
-      height: fit-content;
+.slider-bloc {
+  ::ng-deep ng-multiselect-dropdown {
+    width: 100%;
+    margin-left: -15px;
+    .multiselect-dropdown {
+      width: 115% !important;
+      .dropdown-btn {
+        min-height: 30px;
+        height: fit-content;
+      }
     }
   }
 }
+
 .dropdown-container {
   .drop-bloc {
     margin-top: 11px;
