@@ -14,9 +14,9 @@ export class ItemImagesComponent implements OnInit {
   slide = 1;
   editType = false;
   photographiesForm: FormGroup;
-  photography: string;
+  photography: string = '';
   photographyDate: Date = new Date();
-  photographyType: any;
+  photographyType: any[] = [];
   types = [
     { name: 'Identification' },
     { name: 'Autre vue' },
@@ -25,10 +25,11 @@ export class ItemImagesComponent implements OnInit {
     { name: 'Ancien cliché' },
   ];
   fileToUpload: any;
-  imageName: any;
+  imageName: any = '';
   images: any = [];
   photographyInsertionNumber = 0;
   selectedPhotography = 1;
+  validate = true;
   get photographies(): FormArray {
     return this.photographiesForm.get('photographies') as FormArray;
   }
@@ -60,31 +61,38 @@ export class ItemImagesComponent implements OnInit {
       photographyName: [imageName, [Validators.required]],
     });
   }
-
+  editPhotographyForm(i: number, photography: string, photographyType: any, photographyDate: Date, imageName: string) {
+    this.photographies.value[i+1].photographyType = photographyType;
+    this.photographies.value[i+1].photographyDate = photographyDate;
+    this.photographies.value[i+1].photographyName = imageName;
+    this.photographies.value[i+1].photography = photography;
+    this.images[i].imageUrl = photography;
+    this.images[i].image = imageName;
+  }
   addPhotography(): void {
-    console.log(this.photographies.value.length);
-    if (this.selectedPhotography == this.photographies.value.length) {
-      this.images.push({
-        i: this.photographyInsertionNumber,
-        imageUrl: this.photography,
-        alt: 'description',
-        image: this.imageName,
-      });
-      this.photographies.push(
-        this.createPhotography(this.photography, this.photographyDate, this.photographyType, this.imageName)
-      );
+    if (!this.photography.length || !this.photographyType || !this.imageName.length) {
+      console.log(this.photographyType); 
+      this.validate = false;
     } else {
-      this.photographies.value[this.selectedPhotography + 1].photographyType = this.photographyType;
-      this.photographies.value[this.selectedPhotography + 1].photographyDate = this.photographyDate;
-      this.photographies.value[this.selectedPhotography + 1].photographyName = this.imageName;
-      this.photographies.value[this.selectedPhotography + 1].photography = this.photography;
-      this.images[this.selectedPhotography].imageUrl = this.photography;
-      this.images[this.selectedPhotography].image = this.imageName;
+      if (this.selectedPhotography == this.photographies.value.length) {
+        this.images.push({
+          i: this.photographyInsertionNumber,
+          imageUrl: this.photography,
+          alt: 'description',
+          image: this.imageName,
+        });
+        this.photographies.push(
+          this.createPhotography(this.photography, this.photographyDate, this.photographyType, this.imageName)
+        );
+      } else {
+        this.editPhotographyForm(this.selectedPhotography, this.photography,this.photographyType, this.photographyDate, this.imageName)
+      }
+      this.initData('', new Date());
+      this.photographyInsertionNumber++;
+      this.selectedPhotography = this.photographies.value.length;
+      this.validate = true;
     }
-    this.initData('', new Date());
-    this.photographyInsertionNumber++;
-    this.selectedPhotography = this.photographies.value.length;
-    console.log(this.photographies.value);
+    
   }
 
   handleFileInput(file: FileList) {
@@ -97,7 +105,6 @@ export class ItemImagesComponent implements OnInit {
     };
     reader.readAsDataURL(this.fileToUpload);
     reader.onloadend = (_event: any) => {
-      console.log(this.fileToUpload.name);
       this.imageName = this.fileToUpload.name;
     };
   }
@@ -129,9 +136,7 @@ export class ItemImagesComponent implements OnInit {
     this.file.nativeElement.click();
   }
   show(item: any) {
-    console.log(item);
     let data = this.photographies.value[item.i + 1];
-    console.log(data);
     this.initData(data.photography, data.photographyDate, data.photographyType, item.image);
     this.selectedPhotography = item.i;
   }

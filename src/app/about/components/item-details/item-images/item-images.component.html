@@ -111,7 +111,7 @@
           <div>
             <div>
               <div class="form-group col-md-12">
-                <label class="col-5">Photographie<span class="mandatory">*</span></label>
+                <label class="col-5">Photographie</label>
                 <div class="input-group input-group-sm upload-file">
                   <div class="input-group input-group-sm h-auto">
                     <input
@@ -129,10 +129,11 @@
                       </span>
                     </div>
                   </div>
+                  <span *ngIf="!validate && !photography.length" class="mandatory">Saisir une photo</span>
                 </div>
               </div>
               <div class="form-group col-md-12">
-                <label class="col-md-3">Date<span class="mandatory">*</span></label>
+                <label class="col-md-3">Date</label>
                 <p-calendar
                   class="col-md-12"
                   [style]="{ minWidth: '100%' }"
@@ -142,7 +143,7 @@
                 ></p-calendar>
               </div>
               <div class="form-group col-md-12">
-                <label class="col-md-3">Type<span class="mandatory">*</span></label>
+                <label class="col-md-3">Type</label>
                 <p-dropdown
                   class="col-md-12"
                   [style]="{ minWidth: '100%' }"
@@ -152,6 +153,7 @@
                   optionLabel="name"
                   [showClear]="false"
                 ></p-dropdown>
+                <span class="mandatory" *ngIf="!validate && !photographyType">Veuillez saisir un type</span>
               </div>
               <button class="btn add-action mb-2" (click)="addPhotography()">
                 <i class="fas fa-plus"></i>
