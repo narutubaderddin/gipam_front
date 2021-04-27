@@ -13,7 +13,7 @@ npm_install:
     - npm install --ignore-scripts
   only:
     - develop
-extranet_build:
+frontend_build:
   stage: deploy
   tags:
     - gipam-front
