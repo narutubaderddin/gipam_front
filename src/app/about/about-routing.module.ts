@@ -20,6 +20,8 @@ import { DepositTypesComponent } from '@app/about/components/tabs-ref/depositTyp
 import { ReportTypesComponent } from '@app/about/components/tabs-ref/reportTypes/reportTypes.component';
 import { ActionReportTypesComponent } from '@app/about/components/tabs-ref/actionReportTypes/actionReportTypes.component';
 import { CategoryComponent } from '@app/about/components/tabs-ref/category/category.component';
+import { EstablishmentsComponent } from '@app/about/components/tabs-ref/establishment/establishments.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -52,10 +54,19 @@ const routes: Routes = [
       { path: 'tab-ref-dénomination', component: DenominationsComponent },
       { path: 'tab-ref-style', component: StylesComponent },
       { path: 'tab-ref-matière', component: MaterialTechniqueComponent },
-      { path: 'tab-ref-type-déposant', component: DepositTypesComponent },
-      { path: 'tab-ref-type-constat', component: ReportTypesComponent },
-      { path: 'tab-ref-type-action-constat', component: ActionReportTypesComponent },
-      { path: 'tab-ref-categorie', component: CategoryComponent },
+      { path: 'tab-ref-type-déposant', component: DepositTypesComponent, data: { title: 'Liste des types déposant' } },
+      { path: 'tab-ref-type-constat', component: ReportTypesComponent, data: { title: 'Liste des types constat' } },
+      {
+        path: 'tab-ref-type-action-constat',
+        component: ActionReportTypesComponent,
+        data: { title: 'Liste des types action constat' },
+      },
+      { path: 'tab-ref-categorie', component: CategoryComponent, data: { title: 'Liste des catégories' } },
+      {
+        path: 'tab-ref-establishment',
+        component: EstablishmentsComponent,
+        data: { title: 'Liste des établissements' },
+      },
     ],
   },
 ];

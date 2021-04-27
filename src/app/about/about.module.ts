@@ -86,6 +86,7 @@ import { DepositTypesComponent } from '@app/about/components/tabs-ref/depositTyp
 import { ReportTypesComponent } from '@app/about/components/tabs-ref/reportTypes/reportTypes.component';
 import { ActionReportTypesComponent } from '@app/about/components/tabs-ref/actionReportTypes/actionReportTypes.component';
 import { CategoryComponent } from '@app/about/components/tabs-ref/category/category.component';
+import { EstablishmentsComponent } from '@app/about/components/tabs-ref/establishment/establishments.component';
 
 setTheme('bs4');
 
@@ -140,6 +141,7 @@ const ngWizardConfig: NgWizardConfig = {
     ReportTypesComponent,
     ActionReportTypesComponent,
     CategoryComponent,
+    EstablishmentsComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
