@@ -91,7 +91,6 @@
           (onSelectAll)="onSelectAll($event)"
         >
         </ng-multiselect-dropdown>
-
       </div>
 
       <div
@@ -105,18 +104,13 @@
           value="{{ editDenomination ? selectedDenomination : '' }}"
           formControlName="denomination"
         />
-
       </div>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-light cancel-btn" (click)="close()">Annuler</button>
-      <button type="submit" class="btn btn-light valid-btn" *ngIf="editDenomination">
-        Modifier
-      </button>
+      <button type="submit" class="btn btn-light valid-btn" *ngIf="editDenomination">Modifier</button>
       <button type="submit" class="btn btn-light valid-btn" *ngIf="addDenomination">Ajouter</button>
-      <button type="button" class="btn btn-light valid-btn" *ngIf="deleteDenomination">
-        Supprimer
-      </button>
+      <button type="button" class="btn btn-light valid-btn" *ngIf="deleteDenomination">Supprimer</button>
     </div>
   </form>
 </ng-template>
