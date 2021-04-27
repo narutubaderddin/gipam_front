@@ -99,17 +99,6 @@ $brdcr-hover-bgc: #cacaca; // #fff
       border-color: transparent;
       left: -1em;
     }
-    &:first-child {
-      &:hover,
-      &:focus {
-        &:before {
-          //border-color: $brdcr-hover-bgc $brdcr-hover-bgc $brdcr-hover-bgc $brdcr-hover-bgc;
-        }
-      }
-      &:before {
-        //border-color: $brdcr-bgc $brdcr-bgc $brdcr-bgc $brdcr-bgc;
-      }
-    }
     &:after {
       content: "";
       position: absolute;
@@ -391,6 +380,7 @@ button {
 }
 .mandatory {
   color: red;
+  font-size: 11px
 }
 
 //form control collapsed
@@ -663,6 +653,55 @@ textarea,
       border: solid $blue 2px !important;
       outline: 0 !important;
       box-shadow: none !important;
+    }
+  }
+}
+
+/** ngPrime css */
+p-dropdown,
+p-calendar {
+  &.col-md-12 {
+    padding-left: 0;
+  }
+}
+.p-dropdown,
+.p-calendar,
+.p-multiselect {
+  height: 30px;
+  line-height: 10px;
+
+}
+.p-dropdown {
+  .p-dropdown-label {
+    font-size: 12px;
+  }
+  .p-dropdown-panel {
+    .p-dropdown-items-wrapper {
+      font-size: 12px;
+    }
+  }
+}
+.p-multiselect {
+  .p-multiselect-label-container {
+    font-size: 12px;
+  }
+  .p-multiselect-panel {
+    .p-multiselect-header {
+      height: 30px;
+      .p-multiselect-filter-container {
+        input {
+          height: 24px;
+          font-size: 12px;
+        }
+      }
+    }
+    .p-multiselect-items-wrapper {
+      .p-multiselect-items {
+        font-size: 12px;
+        p-multiselectitem li{
+          height: 22px;
+        }
+      }
     }
   }
 }

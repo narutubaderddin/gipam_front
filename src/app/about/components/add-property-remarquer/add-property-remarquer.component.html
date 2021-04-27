@@ -1,3 +1,12 @@
+<p-dialog header=" " [modal]="true" [(visible)]="display">
+  Vous n'avez pas rempli tous les champs obligatoires !
+  <h5>Voulez-vous enregistrer la notice en mode bouillon ?</h5>
+
+  <ng-template pTemplate="footer">
+    <button class="btn-primary" style="font-size: 12px; background-color: lightgray">Annuler</button>
+    <button class="btn-primary" style="font-size: 12px; background-color: #00d6d4">Enregistrer</button>
+</ng-template>
+</p-dialog>
 <ng-wizard [config]="config" (stepChanged)="stepChanged($event)">
   <ng-wizard-step
     [title]="'1'"
@@ -6,7 +15,7 @@
     [canExit]="isValidFunctionReturnsBoolean.bind(this)"
   >
     <div class="d-flex flex-end justify-content-end pr-5">
-      <button class="btn-primary" style="font-size: 12px; background-color: #00d6d4">Enregistrer</button>
+      <button class="btn-primary" (click)="submit()" style="font-size: 12px; background-color: #00d6d4">Enregistrer</button>
     </div>
     <div class="container-fluid d-flex">
       <div class="second-bloc">
@@ -36,6 +45,7 @@
                                 <app-add-descriptions
                                   [addDepot]="createDepot"
                                   [addProperty]="true"
+                                  [descriptifForm]="descriptifForm"
                                 ></app-add-descriptions>
                               </ng-template>
                             </ng-container>

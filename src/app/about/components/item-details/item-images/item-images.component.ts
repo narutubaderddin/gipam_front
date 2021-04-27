@@ -13,47 +13,100 @@ export class ItemImagesComponent implements OnInit {
   @Input() add = false;
   slide = 1;
   editType = false;
-  photographyForm: FormGroup;
-  types = ['Identification', 'Autre vue', 'Détail', 'Etat', 'Ancien cliché'];
+  photographiesForm: FormGroup;
+  photography: string = '';
+  photographyDate: Date = new Date();
+  photographyType: any[] = [];
+  types = [
+    { name: 'Identification' },
+    { name: 'Autre vue' },
+    { name: 'Détail' },
+    { name: 'Etat' },
+    { name: 'Ancien cliché' },
+  ];
   fileToUpload: any;
-  imageUrl: any;
+  imageName: any = '';
+  images: any = [];
+  photographyInsertionNumber = 0;
+  selectedPhotography = 1;
+  validate = true;
   get photographies(): FormArray {
-    return this.photographyForm.get('photographies') as FormArray;
+    return this.photographiesForm.get('photographies') as FormArray;
   }
   constructor(private modalService: NgbModal, public fb: FormBuilder) {}
   ngOnInit(): void {
     this.initForm();
   }
   initForm() {
-    this.photographyForm = new FormGroup({
+    this.photographiesForm = new FormGroup({
       photographies: this.fb.array([this.createPhotography()]),
     });
   }
-  createPhotography(): FormGroup {
+  initData(photography?: string, photographyDate?: Date, photographyType?: any, imageName?: string) {
+    this.photography = photography;
+    this.photographyDate = photographyDate;
+    this.photographyType = photographyType;
+    this.imageName = imageName;
+  }
+  createPhotography(
+    photography?: string,
+    photographyDate?: Date,
+    photographyType?: any,
+    imageName?: string
+  ): FormGroup {
     return this.fb.group({
-      photographyDate: ['', [Validators.required]],
-      photography: ['', [Validators.required]],
-      photographyType: ['', [Validators.required]],
+      photographyDate: [photographyDate, [Validators.required]],
+      photography: [photography, [Validators.required]],
+      photographyType: [photographyType, [Validators.required]],
+      photographyName: [imageName, [Validators.required]],
     });
   }
-
+  editPhotographyForm(i: number, photography: string, photographyType: any, photographyDate: Date, imageName: string) {
+    this.photographies.value[i+1].photographyType = photographyType;
+    this.photographies.value[i+1].photographyDate = photographyDate;
+    this.photographies.value[i+1].photographyName = imageName;
+    this.photographies.value[i+1].photography = photography;
+    this.images[i].imageUrl = photography;
+    this.images[i].image = imageName;
+  }
   addPhotography(): void {
-    this.photographies.push(this.createPhotography());
+    if (!this.photography.length || !this.photographyType || !this.imageName.length) {
+      console.log(this.photographyType); 
+      this.validate = false;
+    } else {
+      if (this.selectedPhotography == this.photographies.value.length) {
+        this.images.push({
+          i: this.photographyInsertionNumber,
+          imageUrl: this.photography,
+          alt: 'description',
+          image: this.imageName,
+        });
+        this.photographies.push(
+          this.createPhotography(this.photography, this.photographyDate, this.photographyType, this.imageName)
+        );
+      } else {
+        this.editPhotographyForm(this.selectedPhotography, this.photography,this.photographyType, this.photographyDate, this.imageName)
+      }
+      this.initData('', new Date());
+      this.photographyInsertionNumber++;
+      this.selectedPhotography = this.photographies.value.length;
+      this.validate = true;
+    }
+    
   }
-  removePhotography(i: number) {
-    this.photographies.removeAt(i);
-  }
-  handleFileInput(file: FileList) {
-    console.log(file);
 
+  handleFileInput(file: FileList) {
     this.fileToUpload = file.item(0);
 
     //Show image preview
     let reader = new FileReader();
     reader.onload = (event: any) => {
-      this.imageUrl = event.target.result;
+      this.photography = event.target.result;
     };
     reader.readAsDataURL(this.fileToUpload);
+    reader.onloadend = (_event: any) => {
+      this.imageName = this.fileToUpload.name;
+    };
   }
   addImg() {
     const ngbModalOptions: NgbModalOptions = {
@@ -81,5 +134,10 @@ export class ItemImagesComponent implements OnInit {
   editPhotoType() {}
   addFile() {
     this.file.nativeElement.click();
+  }
+  show(item: any) {
+    let data = this.photographies.value[item.i + 1];
+    this.initData(data.photography, data.photographyDate, data.photographyType, item.image);
+    this.selectedPhotography = item.i;
   }
 }

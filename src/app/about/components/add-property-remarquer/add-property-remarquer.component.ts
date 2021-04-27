@@ -4,6 +4,7 @@ import { NgWizardConfig, NgWizardService, StepChangedArgs, StepValidationArgs, S
 import { of } from 'rxjs';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-add-property-remarquer',
@@ -15,7 +16,7 @@ export class AddPropertyRemarquerComponent implements OnInit {
 
   createDepot: false;
   createProperty: true;
-
+  descriptifForm : FormGroup;
   domains = this.WorkOfArtService.domaine;
   keyword = 'name';
   stepStates = {
@@ -24,7 +25,7 @@ export class AddPropertyRemarquerComponent implements OnInit {
     error: STEP_STATE.error,
     hidden: STEP_STATE.hidden,
   };
-
+  display = false;
   config: NgWizardConfig = {
     selected: 0,
     theme: THEME.dots,
@@ -47,11 +48,24 @@ export class AddPropertyRemarquerComponent implements OnInit {
   constructor(
     public WorkOfArtService: WorkOfArtService,
     private ngWizardService: NgWizardService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    public fb: FormBuilder
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.initDescriptifForm()
+  }
+  initDescriptifForm() {
+    this.descriptifForm = this.fb.group({
+      title: ['', Validators.required],
+      domain: ['', Validators.required],
+      denomination:['', Validators.required],
+      material:['', Validators.required],
+      unit_number:['', Validators.required],
+      items: []
 
+    });
+  }
   openVerticallyCentered(content: any) {
     this.modalService.open(content, { centered: true });
   }
@@ -116,5 +130,12 @@ export class AddPropertyRemarquerComponent implements OnInit {
 
   isValidFunctionReturnsObservable(args: StepValidationArgs) {
     return of(true);
+  }
+  submit() {
+    
+    if(!this.descriptifForm.valid) {
+      console.log(this.descriptifForm)
+      this.display = true;
+    }
   }
 }

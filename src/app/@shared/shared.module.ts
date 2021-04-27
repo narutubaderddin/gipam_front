@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AgGridModule } from 'ag-grid-angular';
@@ -36,6 +36,10 @@ import { ImageViewerComponent } from './components/datatables/image-viewer/image
 import { DomainsActionsRendererComponent } from './components/datatables/domains-actions-renderer/domains-actions-renderer.component';
 import { DenominationsActionsRendererComponent } from './components/datatables/denominations-actions-renderer/denominations-actions-renderer.component';
 import { FlashFormErrorsDirective } from './directives/flash-form-errors.directive';
+import { AddDescriptionsComponent } from './components/notice-blocs/add-descriptions/add-descriptions.component'
+import { MultiSelectModule } from 'primeng/multiselect';
+import { DropdownModule } from 'primeng/dropdown';
+import { StatusComponent } from './components/notice-blocs/status/status.component';
 
 @NgModule({
   imports: [
@@ -52,6 +56,8 @@ import { FlashFormErrorsDirective } from './directives/flash-form-errors.directi
     ReactiveFormsModule,
     TagInputModule,
     NgxHorizontalTimelineModule,
+    MultiSelectModule,
+    DropdownModule,
   ],
   declarations: [
     LoaderComponent,
@@ -80,6 +86,8 @@ import { FlashFormErrorsDirective } from './directives/flash-form-errors.directi
     DomainsActionsRendererComponent,
     DenominationsActionsRendererComponent,
     FlashFormErrorsDirective,
+    AddDescriptionsComponent,
+    StatusComponent
   ],
   exports: [
     LoaderComponent,
@@ -93,6 +101,8 @@ import { FlashFormErrorsDirective } from './directives/flash-form-errors.directi
     StatusBlocComponent,
     AccordionSectionComponent,
     FlashFormErrorsDirective,
+    AddDescriptionsComponent,
+    StatusComponent
   ],
 })
 export class SharedModule {}

@@ -16,6 +16,9 @@ h5 {
 input {
   height: 29px;
 }
+.input-group-prepend {
+  cursor: pointer;
+}
 .carousel-container {
   justify-content: space-evenly;
   .carousel {

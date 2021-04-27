@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-add-descriptions',
@@ -10,18 +11,19 @@ import { WorkOfArtService } from '@shared/services/work-of-art.service';
 export class AddDescriptionsComponent implements OnInit {
   domains: any;
   @Input() keyword: string;
-
   @Input() addDepot = false;
   @Input() addProperty = true;
+  @Input() descriptifForm : FormGroup;
   items: any = [];
   domain = '';
+  denominations: any;
   denomination: any;
   selectedDomain = '';
   isCollapsed = true;
   dropdownSettings: IDropdownSettings;
   autocompleteItems = ['Item1', 'item2', 'item3'];
 
-  constructor(public WorkOfArtService: WorkOfArtService) {}
+  constructor(public WorkOfArtService: WorkOfArtService, public fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.domains = this.WorkOfArtService.domaine;
@@ -35,13 +37,9 @@ export class AddDescriptionsComponent implements OnInit {
       allowSearchFilter: true,
     };
   }
+  get f() { return this.descriptifForm.controls; }
   onTagEdited(e: any) {
     console.log(e);
-  }
-  selectDomain(item: any) {
-    this.denomination = item.denominations;
-    this.selectedDomain = item.name;
-    console.log('selectedDomain', this.selectedDomain);
   }
   selectEvent(item: any) {}
 
@@ -58,15 +56,10 @@ export class AddDescriptionsComponent implements OnInit {
     this.isCollapsed = !this.isCollapsed;
   }
   onDomainSelect(item: any) {
-    // this.denominations = item.denominations;
-    this.denomination = item.denominations;
-    this.selectedDomain = item.name;
-    console.log('selectedDomain', this.selectedDomain);
-    console.log('Domain', this.domain);
-
-    console.log(item);
+    this.denominations = item.value.denominations;
+    this.selectedDomain = item.value.name;
   }
-  onItemSelect(item: any) {
+  onDenominationSelect(item: any) {
     this.denomination = item;
     console.log('item', item);
   }
