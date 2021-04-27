@@ -44,7 +44,7 @@ export class EstablishmentsComponent implements OnInit {
   deleteItems = false;
   editVisibility = false;
   dropdownSettings: IDropdownSettings;
-
+  disappearanceDate: string;
   active = true;
   dropdownList: any;
   itemLabel: any;
@@ -149,20 +149,6 @@ export class EstablishmentsComponent implements OnInit {
     config.keyboard = false;
   }
 
-  initForm() {
-    this.tabForm = this.fb.group({
-      label: [this.selectedItem ? this.selectedItem.label : '', [Validators.required]],
-      acronym: [this.selectedItem ? this.selectedItem.acronym : '', [Validators.required]],
-      startDate: [this.selectedItem ? this.selectedItem.startDate : '', [Validators.required]],
-      disappearanceDate: [this.selectedItem ? this.selectedItem.startDate : '', [Validators.required]],
-      ministry: [this.selectedMinistry, [Validators.required]],
-    });
-  }
-
-  get defaultHeaderParams() {
-    return this.defaultColDef.headerComponentParams;
-  }
-
   ngOnInit(): void {
     this.dropdownSettings = {
       singleSelection: true,
@@ -178,6 +164,25 @@ export class EstablishmentsComponent implements OnInit {
 
     this.filter =
       this.activatedRoute.snapshot.queryParams.filter && this.activatedRoute.snapshot.queryParams.filter.length > 0;
+  }
+
+  initForm() {
+    const startDate = this.datePipe.transform(this.selectedItem ? this.selectedItem.startDate : '', 'yyyy-MM-dd');
+    const disappearanceDate = this.datePipe.transform(
+      this.selectedItem ? this.selectedItem.disappearanceDate : '',
+      'yyyy-MM-dd'
+    );
+    this.tabForm = this.fb.group({
+      label: [this.selectedItem ? this.selectedItem.label : '', [Validators.required]],
+      acronym: [this.selectedItem ? this.selectedItem.acronym : '', [Validators.required]],
+      startDate: [startDate, [Validators.required]],
+      disappearanceDate: [disappearanceDate, [Validators.required]],
+      ministry: [this.selectedMinistry, [Validators.required]],
+    });
+  }
+
+  get defaultHeaderParams() {
+    return this.defaultColDef.headerComponentParams;
   }
 
   resetFilter() {}
