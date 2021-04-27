@@ -1,0 +1,11 @@
+::ng-deep span.p-inputswitch-slider {
+  background: green;
+}
+::ng-deep {
+  .p-selectbutton .p-button.p-highlight,
+  .p-selectbutton:hover .p-button.p-highlight:hover {
+    background: #689f38;
+    border-color: #689f38;
+    color: #ffffff;
+  }
+}

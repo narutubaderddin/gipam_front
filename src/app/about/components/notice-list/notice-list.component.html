@@ -38,36 +38,30 @@
               </div>
             </div>
           </div>
-          <!--          <div class="quick-filters d-flex">-->
-          <!--            <h6 class="text-quick-filter">Filtres rapides :</h6>-->
-          <!--            <div class="dropdown-container mb-2 mr-2 mb-sm-0">-->
-          <!--              <div class="d-inline-block drop-bloc">-->
-          <!--                <button  class=" btn dropdown-btn list quick-filter-btn" [class.active]="filter" (click)="resetFilter()">Notice En Cours</button>-->
-          <!--              </div>-->
-          <!--            </div>-->
-          <!--            <div>-->
-          <!--&lt;!&ndash;              <div class="dropdown-container mb-2 mr-2 mb-sm-0" style="margin: 3px 0 15px 0">&ndash;&gt;-->
-          <!--&lt;!&ndash;                <div class="d-inline-block drop-bloc">&ndash;&gt;-->
-          <!--&lt;!&ndash;                <span class="icon-stack d-flex" (click)="resetFilter()">&ndash;&gt;-->
-          <!--&lt;!&ndash;                  <i class="fas fa-filter"></i>&ndash;&gt;-->
-          <!--&lt;!&ndash;                  <i class="fas fa-times"></i>&ndash;&gt;-->
-          <!--&lt;!&ndash;                </span>&ndash;&gt;-->
-          <!--&lt;!&ndash;                </div>&ndash;&gt;-->
-          <!--&lt;!&ndash;              </div>&ndash;&gt;-->
-          <!--            </div>-->
-          <!--          </div>-->
           <div class="datatable mt-4">
-            <app-grid-wrapper
-              [columnDefs]="ColDef"
-              [rowData]="remarquers"
-              [frameworkComponents]="frameworkComponents"
-              [defaultColDef]="defaultColDef"
-              (gridReady)="onGridReady($event)"
-              [context]="this"
-              [paginationPageSize]="rowCount"
-              [gridOptions]="gridOptions"
-              [sizeToFit]="true"
-            ></app-grid-wrapper>
+            <div *ngIf="selectedItem">
+              <div class="mass-action-container">
+                <i class="fas fa-share"></i>
+                <button class="btn add-action" translate>
+                  <i class="fas fa-edit"></i>
+                  Modifier
+                </button>
+                <button class="btn add-action" translate>
+                  <i class="fas fa-trash-alt"></i>
+                  Supprimer
+                </button>
+              </div>
+            </div>
+            <app-ng-data-table
+              [columns]="columns"
+              [data]="remarquers"
+              [frozenCols]="[]"
+              [frozenWidth]="'0px'"
+              [singleSelect]="true"
+              (singleSelectionEvent)="onRowsSelection($event)"
+              [checkBoxSelection]="false"
+            >
+            </app-ng-data-table>
           </div>
         </div>
       </div>

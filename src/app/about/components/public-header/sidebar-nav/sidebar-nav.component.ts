@@ -28,24 +28,29 @@ export class SidebarNavComponent implements OnInit {
   }
 
   ngOnInit(): void {}
-  // set openMenu(value: string) {
-  // this.sharedService.collapseMenu = this.collapseMenu;
-  // }
+
   toggle() {
     this.collapseMenu = !this.collapseMenu;
-    // console.log('collapseMenu', this.collapseMenu);
+
     this.open.emit(this.collapseMenu);
     this.sharedService.collapseMenu = this.collapseMenu;
-    // console.log(this.sharedService.collapseMenu);
+  }
+  toggleClose() {
+    this.collapseMenu = true;
+
+    this.open.emit(this.collapseMenu);
+    this.sharedService.collapseMenu = this.collapseMenu;
   }
 
   home() {
     this.router.navigate(['accueil']);
     this.menu = 1;
+    this.toggleClose();
   }
   goToWorkOfArts() {
     this.menu = 2;
     this.router.navigate(['oeuvres-list']);
+    this.toggleClose();
   }
 
   logout() {
@@ -55,21 +60,68 @@ export class SidebarNavComponent implements OnInit {
   goToDomainsList() {
     this.menu = 3;
     this.router.navigate(['tab-ref-domaine']);
+    this.toggleClose();
   }
   goToDenominationsList() {
     this.menu = 3;
     this.router.navigate(['tab-ref-dénomination']);
+    this.toggleClose();
   }
   goToPoratil() {
     this.menu = 4;
     this.router.navigate(['portail']);
+    this.toggleClose();
   }
 
   goToRecolementList() {
     this.router.navigate(['recolements-list']);
+    this.toggleClose();
   }
   goToAlertList() {
     this.router.navigate(['alerts-list']);
+    this.toggleClose();
   }
-  goToDemandesList() {}
+  goToDemandesList() {
+    this.toggleClose();
+  }
+  goToStylesList() {
+    this.router.navigate(['tab-ref-style']);
+    this.toggleClose();
+  }
+  goToMaterialList() {
+    this.router.navigate(['tab-ref-matière']);
+    this.toggleClose();
+  }
+  goToEpoquesList() {
+    this.router.navigate(['tab-ref-époque']);
+    this.toggleClose();
+  }
+  goToDepositTypesList() {
+    this.router.navigate(['tab-ref-type-déposant']);
+    this.toggleClose();
+  }
+  goToReportTypesList() {
+    this.router.navigate(['tab-ref-type-constat']);
+    this.toggleClose();
+  }
+  goToActionReportTypesList() {
+    this.router.navigate(['tab-ref-type-action-constat']);
+    this.toggleClose();
+  }
+  goToCategoriesList() {
+    this.router.navigate(['tab-ref-categorie']);
+    this.toggleClose();
+  }
+  goToTypeMvtList() {
+    this.router.navigate(['tab-ref-type-mouvement']);
+    this.toggleClose();
+  }
+  goToTypeActtionMvtList() {
+    this.router.navigate(['tab-ref-type-action-mouvement']);
+    this.toggleClose();
+  }
+  goToReportSubTypesList() {
+    this.router.navigate(['tab-ref-sous-type-constat']);
+    this.toggleClose();
+  }
 }

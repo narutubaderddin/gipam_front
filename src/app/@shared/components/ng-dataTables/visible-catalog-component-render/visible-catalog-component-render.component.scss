@@ -1,0 +1,16 @@
+.visible {
+  border: 1px solid gray;
+  font-size: 15px;
+  padding: 2px;
+}
+.not-visible {
+  border: 1px solid gray;
+  font-size: 15px;
+  padding: 2px;
+  color: white;
+}
+.visible-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

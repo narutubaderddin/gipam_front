@@ -16,7 +16,7 @@ export class AddPropertyRemarquerComponent implements OnInit {
 
   createDepot: false;
   createProperty: true;
-  descriptifForm : FormGroup;
+  descriptifForm: FormGroup;
   domains = this.WorkOfArtService.domaine;
   keyword = 'name';
   stepStates = {
@@ -53,17 +53,16 @@ export class AddPropertyRemarquerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initDescriptifForm()
+    this.initDescriptifForm();
   }
   initDescriptifForm() {
     this.descriptifForm = this.fb.group({
       title: ['', Validators.required],
       domain: ['', Validators.required],
-      denomination:['', Validators.required],
-      material:['', Validators.required],
-      unit_number:['', Validators.required],
-      items: []
-
+      denomination: ['', Validators.required],
+      material: ['', Validators.required],
+      unit_number: ['', Validators.required],
+      items: [],
     });
   }
   openVerticallyCentered(content: any) {
@@ -132,9 +131,8 @@ export class AddPropertyRemarquerComponent implements OnInit {
     return of(true);
   }
   submit() {
-    
-    if(!this.descriptifForm.valid) {
-      console.log(this.descriptifForm)
+    if (!this.descriptifForm.valid) {
+      console.log(this.descriptifForm);
       this.display = true;
     }
   }

@@ -380,7 +380,7 @@ button {
 }
 .mandatory {
   color: red;
-  font-size: 11px
+  font-size: 11px;
 }
 
 //form control collapsed
@@ -656,6 +656,26 @@ textarea,
     }
   }
 }
+.mass-action-container {
+  background-color: rgba(0, 0, 0, 0.125);
+  display: inline-block;
+  height: 40px;
+  padding: 6px;
+  button {
+    margin-bottom: 0 !important;
+    .export-dropdown-bloc {
+      margin-top: -10px;
+      button {
+        height: 25px;
+        color: white;
+        &:focus,
+        &:active {
+          box-shadow: none;
+        }
+      }
+    }
+  }
+}
 
 /** ngPrime css */
 p-dropdown,
@@ -669,7 +689,6 @@ p-calendar {
 .p-multiselect {
   height: 30px;
   line-height: 10px;
-
 }
 .p-dropdown {
   .p-dropdown-label {
@@ -698,7 +717,7 @@ p-calendar {
     .p-multiselect-items-wrapper {
       .p-multiselect-items {
         font-size: 12px;
-        p-multiselectitem li{
+        p-multiselectitem li {
           height: 22px;
         }
       }

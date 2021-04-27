@@ -76,6 +76,20 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { TabsRefComponent } from './components/tabs-ref/tabs-ref.component';
 import { DomainsComponent } from './components/tabs-ref/domains/domains.component';
 import { DenominationsComponent } from './components/tabs-ref/denominations/denominations.component';
+import { RippleModule } from 'primeng/ripple';
+import { MessageService } from 'primeng/api';
+import { StylesComponent } from './components/tabs-ref/styles/styles.component';
+import { MaterialTechniqueComponent } from './components/tabs-ref/material-technique/material-technique.component';
+import { ModalTabsRefComponent } from './components/tabs-ref/modal-tabs-ref/modal-tabs-ref.component';
+import { EpoquesComponent } from './components/tabs-ref/epoques/epoques.component';
+import { DepositTypesComponent } from '@app/about/components/tabs-ref/depositTypes/depositTypes.component';
+import { ReportTypesComponent } from '@app/about/components/tabs-ref/reportTypes/reportTypes.component';
+import { ActionReportTypesComponent } from '@app/about/components/tabs-ref/actionReportTypes/actionReportTypes.component';
+import { CategoryComponent } from '@app/about/components/tabs-ref/category/category.component';
+import { TypeMvtComponent } from './components/tabs-ref/type-mvt/type-mvt.component';
+import { MovementActionTypesComponent } from './components/tabs-ref/movement-action-types/movement-action-types.component';
+import { ModalMvtActionTypesComponent } from './components/tabs-ref/movement-action-types/modal-mvt-action-types/modal-mvt-action-types.component';
+import { ReportSubTypesComponent } from './components/tabs-ref/report-sub-types/report-sub-types.component';
 import { GalleriaModule } from 'primeng/galleria';
 
 setTheme('bs4');
@@ -123,12 +137,25 @@ const ngWizardConfig: NgWizardConfig = {
     TabsRefComponent,
     DomainsComponent,
     DenominationsComponent,
+    StylesComponent,
+    MaterialTechniqueComponent,
+    ModalTabsRefComponent,
+    EpoquesComponent,
+    DepositTypesComponent,
+    ReportTypesComponent,
+    ActionReportTypesComponent,
+    CategoryComponent,
+    TypeMvtComponent,
+    MovementActionTypesComponent,
+    ModalMvtActionTypesComponent,
+    ReportSubTypesComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
     CommonModule,
     AboutRoutingModule,
     SharedModule,
+    RippleModule,
     NgWizardModule.forRoot(ngWizardConfig),
     NgFileDragDropModule,
     ReactiveFormsModule,
@@ -166,8 +193,8 @@ const ngWizardConfig: NgWizardConfig = {
     CheckboxModule,
     SelectButtonModule,
     GalleriaModule,
-    MultiSelectModule
+    MultiSelectModule,
   ],
-  providers: [MovementsService, , BsDatepickerConfig],
+  providers: [MovementsService, BsDatepickerConfig, MessageService],
 })
 export class AboutModule {}

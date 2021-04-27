@@ -1,297 +1,314 @@
 <form [formGroup]="descriptifForm">
-<div class="form-bloc">
-  <div class="col-md-6">
-    <div class="form-group  flex-wrap flex-sm-nowrap">
-      <label class="">Titre<span class="mandatory">*</span></label>
-      <input type="text" class="form-control value col-12 col-sm-7" formControlName="title">
-    </div>
-    <div *ngIf="descriptifForm.get('title').invalid && (descriptifForm.get('title').dirty || descriptifForm.get('title').touched)">
-      <div class="mandatory" *ngIf="descriptifForm.get('title').errors.required">
-        Veuillez saisir un titre.
+  <div class="form-bloc">
+    <div class="col-md-6">
+      <div class="form-group flex-wrap flex-sm-nowrap">
+        <label class="">Titre<span class="mandatory">*</span></label>
+        <input type="text" class="form-control value col-12 col-sm-7" formControlName="title" />
+      </div>
+      <div
+        *ngIf="
+          descriptifForm.get('title').invalid &&
+          (descriptifForm.get('title').dirty || descriptifForm.get('title').touched)
+        "
+      >
+        <div class="mandatory" *ngIf="descriptifForm.get('title').errors.required">Veuillez saisir un titre.</div>
       </div>
     </div>
-  </div>
 
-  <div class="col-md-6">
-    <div class="form-group  flex-wrap flex-sm-nowrap">
-      <label>Domaine<span class="mandatory">*</span></label>
-      <div class="autocomplete form-control value col-12 col-sm-7">
-        <p-dropdown
-                    class="col-md-12"
-                    [style]="{ minWidth: '100%' }"
-                    [options]="domains"
-                    formControlName="domain"
-                    placeholder="Choisir un domaine"
-                    optionLabel="name"
-                    [showClear]="false"
-                    (onChange)="onDomainSelect($event)"
-                  ></p-dropdown>
+    <div class="col-md-6">
+      <div class="form-group flex-wrap flex-sm-nowrap">
+        <label>Domaine<span class="mandatory">*</span></label>
+        <div class="autocomplete form-control value col-12 col-sm-7">
+          <p-dropdown
+            class="col-md-12"
+            [style]="{ minWidth: '100%' }"
+            [options]="domains"
+            formControlName="domain"
+            placeholder="Choisir un domaine"
+            optionLabel="name"
+            [showClear]="false"
+            (onChange)="onDomainSelect($event)"
+          ></p-dropdown>
+        </div>
       </div>
-    </div>
-    <div *ngIf="descriptifForm.get('domain').invalid && (descriptifForm.get('domain').dirty || descriptifForm.get('domain').touched)">
-      <div class="mandatory" *ngIf="descriptifForm.get('domain').errors.required">
-        Veuillez saisir un domaine
+      <div
+        *ngIf="
+          descriptifForm.get('domain').invalid &&
+          (descriptifForm.get('domain').dirty || descriptifForm.get('domain').touched)
+        "
+      >
+        <div class="mandatory" *ngIf="descriptifForm.get('domain').errors.required">Veuillez saisir un domaine</div>
       </div>
-    </div>
-  </div>
-  <div class=" col-md-6">
-    <div class="form-group flex-wrap flex-sm-nowrap">
-      <label class="-4">Dénomination<span class="mandatory">*</span></label>
-      <div class="autocomplete form-control value col-12 col-sm-7">
-        <p-dropdown
-                      class="col-md-12"
-                      [style]="{ minWidth: '100%' }"
-                      [options]="denominations"
-                      formControlName="denomination"
-                      placeholder="Choisir une dénomination"
-                      optionLabel="name"
-                      [showClear]="false"
-                      (onChange)="onDenominationSelect($event)"
-                    ></p-dropdown>
-      </div>
-  </div>
-  <div *ngIf="descriptifForm.get('denomination').invalid && (descriptifForm.get('denomination').dirty || descriptifForm.get('denomination').touched)">
-    <div class="mandatory" *ngIf="descriptifForm.get('denomination').errors.required">
-      Veuillez saisir une dénomination
-    </div>
-  </div>
-</div>
-  <div class="divider"></div>
-  <div class="form-group col-md-12 flex-wrap flex-wrap" style="max-width: 98%">
-    <label style="margin-right: -17%; width: 18%" class="col-sm-5">Auteurs</label>
-
-    <p-multiSelect class="select col-md-4 col-sm-7 p-sm-0 col-12" selectionLimit="5" [maxSelectedLabels]="2" 
-    [style]="{ width: '100%' }" [options]="WorkOfArtService.authors" formControlName="material" 
-    optionLabel="name" [filter]="true" defaultLabel="Sélectionner des auteurs">
-    </p-multiSelect>
-    <div class="col-md-4 col-12 p-sm-0 link value">
-      <a href="">Ajouter un nouvel auteur</a>
-    </div>
-  </div>
-  <div class="col-md-8"></div>
-  <div class="d-flex flex-wrap justify-content-between" *ngIf="selectedDomain">
-    <div class="divider"></div>
-    <div
-      class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-      *ngIf="
-      ![
-          'Art textile'
-        ].includes(selectedDomain)
-      "
-    >
-      <label class="">Hauteur</label>
-      <div class="d-flex value col-12 col-sm-7">
-        <input class="col-md-8 form-control" type="number" />
-        <select class="col-md-4 col-sm-4 form-control">
-          <option class="active">cm</option>
-          <option>m</option>
-        </select>
-      </div>
-    </div>
-    <div
-      class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-      *ngIf="
-      ![
-          'Sculpture',
-          'Luminaire',
-          'Pièce de musée',
-          'Horlogerie',
-          'Objet décoratif'
-        ].includes(selectedDomain)
-      "
-    >
-      <label class="">Largeur</label>
-      <div class="d-flex value col-12 col-sm-7">
-        <input class="col-md-8 form-control" type="number" />
-        <select class="col-md-4 col-sm-4 form-control">
-          <option class="active">cm</option>
-          <option>m</option>
-        </select>
-      </div>
-    </div>
-    <div
-      class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-      *ngIf="['Sculpture', 'Peinture'].includes(selectedDomain)"
-    >
-      <label class="">Largeur Tot </label>
-      <div class="d-flex value col-12 col-sm-7">
-        <input class="col-md-8 form-control" type="number" />
-        <select class="col-md-4 col-sm-4 form-control">
-          <option class="active">cm</option>
-          <option>m</option>
-        </select>
-      </div>
-    </div>
-    <div
-      class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-      *ngIf="['Peinture', 'Art graphique'].includes(selectedDomain)"
-    >
-      <label class="">Hauteur Tot</label>
-      <div class="d-flex value col-12 col-sm-7">
-        <input class="col-md-8 form-control" type="number" />
-        <select class="col-md-4 col-sm-4 form-control">
-          <option class="active">cm</option>
-          <option>m</option>
-        </select>
-      </div>
-    </div>
-    <div
-      class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-      *ngIf="!['Art graphique'].includes(selectedDomain) ">
-      <label class="">Longueur</label>
-      <div class="d-flex value col-12 col-sm-7" *ngIf="addProperty">
-        <input class="col-md-8 form-control" type="number" />
-        <select class="col-md-4 col-sm-4 form-control">
-          <option class="active">cm</option>
-          <option>m</option>
-        </select>
-      </div>
-    </div>
-    <div
-      class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-      *ngIf="['Sculpture', 'Mobilier Patrimonial', 'Objet décoratif'].includes(selectedDomain)"
-    >
-      <label class="">Profondeur</label>
-      <div class="d-flex value">
-        <input class="col-md-8 form-control col-12 col-sm-7" type="number" />
-        <select class="col-md-4 col-sm-4 form-control">
-          <option class="active">cm</option>
-          <option>m</option>
-        </select>
-      </div>
-    </div>
-    <div
-      class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-      *ngIf="['Peinture', 'Pièce de musée'].includes(selectedDomain)"
-    >
-      <label class="col-md-3">Poids</label>
-      <div class="d-flex value col-12 col-sm-7">
-        <input class="col-md-8 form-control" type="number" />
-        <select class="col-md-4 col-sm-4 form-control">
-          <option class="active">Kg</option>
-        </select>
-      </div>
-    </div>
-    <div
-      class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-      *ngIf="['Luminaire', 'Pièce de musée', 'Decor mural'].includes(selectedDomain)"
-    >
-      <label class="">Diamètre</label>
-      <div class="d-flex value col-12 col-sm-7">
-        <input class="col-md-8 form-control" type="number" />
-        <select class="col-md-4 form-control">
-          <option class="active">cm</option>
-          <option>m</option>
-        </select>
-      </div>
-    </div>
-    <div class="col-md-4"></div>
-    <div class="divider" ></div>
-    <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
-      <label class="">Epoque</label>
-      <div class="form-control autocomplete value col-12 col-sm-7">
-        <ng-autocomplete
-          placeholder="Epoque"
-          [data]="denominations"
-          [searchKeyword]="keyword"
-          (selected)="selectEvent($event)"
-          (inputChanged)="onChangeSearch($event)"
-          (inputFocused)="onFocused($event)"
-          [itemTemplate]="itemTemplate"
-          [notFoundTemplate]="notFoundTemplate"
-        >
-        </ng-autocomplete>
-        <ng-template #itemTemplate let-item>
-          <a [innerHTML]="item.name"></a>
-        </ng-template>
-        <ng-template #notFoundTemplate let-notFound>
-          <div [innerHTML]="notFound"></div>
-        </ng-template>
-      </div>
-    </div>
-    <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
-      <label class="">Style</label>
-      <div class="autocomplete form-control value col-12 col-sm-7">
-        <ng-autocomplete
-          placeholder="Style"
-          [data]="denomination"
-          [searchKeyword]="keyword"
-          (selected)="selectEvent($event)"
-          (inputChanged)="onChangeSearch($event)"
-          (inputFocused)="onFocused($event)"
-          [itemTemplate]="itemTemplate"
-          [notFoundTemplate]="notFoundTemplate"
-        >
-        </ng-autocomplete>
-        <ng-template #itemTemplate let-item>
-          <a [innerHTML]="item.name"></a>
-        </ng-template>
-        <ng-template #notFoundTemplate let-notFound>
-          <div [innerHTML]="notFound"></div>
-        </ng-template>
-      </div>
-    </div>
-    <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
-      <label class="">Date de création</label>
-      <input type="date" class="form-control value col-12 col-sm-7" />
     </div>
     <div class="col-md-6">
       <div class="form-group flex-wrap flex-sm-nowrap">
-        <label class="">Matières <span class="mandatory">*</span></label>
+        <label class="-4">Dénomination<span class="mandatory">*</span></label>
         <div class="autocomplete form-control value col-12 col-sm-7">
-          <p-multiSelect selectionLimit="5" [maxSelectedLabels]="2" [style]="{ width: '100%' }" [options]="denominations" formControlName="material" optionLabel="name" [filter]="true">
-          </p-multiSelect>
+          <p-dropdown
+            class="col-md-12"
+            [style]="{ minWidth: '100%' }"
+            [options]="denominations"
+            formControlName="denomination"
+            placeholder="Choisir une dénomination"
+            optionLabel="name"
+            [showClear]="false"
+            (onChange)="onDenominationSelect($event)"
+          ></p-dropdown>
         </div>
       </div>
-      <div *ngIf="descriptifForm.get('material').invalid && (descriptifForm.get('material').dirty || descriptifForm.get('material').touched)">
-        <div class="mandatory" *ngIf="descriptifForm.get('material').errors.required">
-          Veuillez saisir une matière/technique
+      <div
+        *ngIf="
+          descriptifForm.get('denomination').invalid &&
+          (descriptifForm.get('denomination').dirty || descriptifForm.get('denomination').touched)
+        "
+      >
+        <div class="mandatory" *ngIf="descriptifForm.get('denomination').errors.required">
+          Veuillez saisir une dénomination
         </div>
       </div>
-    </div>
-    <div
-      class="col-md-6"
-      *ngIf="['Art de la table', 'Objet décoratif'].includes(selectedDomain)"
-    >
-    <div class="form-group flex-wrap flex-sm-nowrap">
-      <label class="">Nombre unité<span class="mandatory">*</span></label>
-      <div class="d-flex value col-12 col-sm-7">
-        <input class="col-md-12 form-control" type="number" value="0"/>
-      </div>
-    </div>
-    <div *ngIf="descriptifForm.get('unit_number').invalid && (descriptifForm.get('unit_number').dirty || descriptifForm.get('unit_number').touched)">
-      <div class="mandatory" *ngIf="descriptifForm.get('unit_number').errors.required">
-        Veuillez saisir un nombre d'unité
-      </div>
-    </div>
     </div>
     <div class="divider"></div>
-    <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
-      <label>Marquage</label>
-      <input class="form-control value col-12 col-sm-7" placeholder="Marquage" />
+    <div class="form-group col-md-12 flex-wrap flex-wrap" style="max-width: 98%">
+      <label style="margin-right: -17%; width: 18%" class="col-sm-5">Auteurs</label>
+
+      <p-multiSelect
+        class="select col-md-4 col-sm-7 p-sm-0 col-12"
+        selectionLimit="5"
+        [maxSelectedLabels]="2"
+        [style]="{ width: '100%' }"
+        [options]="WorkOfArtService.authors"
+        formControlName="material"
+        optionLabel="name"
+        [filter]="true"
+        defaultLabel="Sélectionner des auteurs"
+      >
+      </p-multiSelect>
+      <div class="col-md-4 col-12 p-sm-0 link value">
+        <a href="">Ajouter un nouvel auteur</a>
+      </div>
     </div>
-    <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
-      <label>Signature inscription</label>
-      <input class="form-control value col-12 col-sm-7" placeholder="Signature inscription" />
-    </div>
-  
-    <div class="form-group d-flex align-items-center col-md-6">
-      <label class="">Mots descriptifs</label>
-      <tag-input
-        formControlName="items"
-        [editable]="true"
-        (onTagEdited)="onTagEdited($event)"
-        secondaryPlaceholder="Entrer mots descriptifs"
-        class="value"
-        placeholder=" +Mots descriptifs"
-      ></tag-input>
-    </div>
-    <div class="col-md-12">
-      <div class="d-flex form-group col-md-12 p-0">
-        <label>Commentaire</label>
-        <textarea type="text" class="form-control" placeholder="Commentaire ..."></textarea>
+    <div class="col-md-8"></div>
+    <div class="d-flex flex-wrap justify-content-between" *ngIf="selectedDomain">
+      <div class="divider"></div>
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="!['Art textile'].includes(selectedDomain)">
+        <label class="">Hauteur</label>
+        <div class="d-flex value col-12 col-sm-7">
+          <input class="col-md-8 form-control" type="number" />
+          <select class="col-md-4 col-sm-4 form-control">
+            <option class="active">cm</option>
+            <option>m</option>
+          </select>
+        </div>
+      </div>
+      <div
+        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
+        *ngIf="!['Sculpture', 'Luminaire', 'Pièce de musée', 'Horlogerie', 'Objet décoratif'].includes(selectedDomain)"
+      >
+        <label class="">Largeur</label>
+        <div class="d-flex value col-12 col-sm-7">
+          <input class="col-md-8 form-control" type="number" />
+          <select class="col-md-4 col-sm-4 form-control">
+            <option class="active">cm</option>
+            <option>m</option>
+          </select>
+        </div>
+      </div>
+      <div
+        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
+        *ngIf="['Sculpture', 'Peinture'].includes(selectedDomain)"
+      >
+        <label class="">Largeur Tot </label>
+        <div class="d-flex value col-12 col-sm-7">
+          <input class="col-md-8 form-control" type="number" />
+          <select class="col-md-4 col-sm-4 form-control">
+            <option class="active">cm</option>
+            <option>m</option>
+          </select>
+        </div>
+      </div>
+      <div
+        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
+        *ngIf="['Peinture', 'Art graphique'].includes(selectedDomain)"
+      >
+        <label class="">Hauteur Tot</label>
+        <div class="d-flex value col-12 col-sm-7">
+          <input class="col-md-8 form-control" type="number" />
+          <select class="col-md-4 col-sm-4 form-control">
+            <option class="active">cm</option>
+            <option>m</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="!['Art graphique'].includes(selectedDomain)">
+        <label class="">Longueur</label>
+        <div class="d-flex value col-12 col-sm-7" *ngIf="addProperty">
+          <input class="col-md-8 form-control" type="number" />
+          <select class="col-md-4 col-sm-4 form-control">
+            <option class="active">cm</option>
+            <option>m</option>
+          </select>
+        </div>
+      </div>
+      <div
+        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
+        *ngIf="['Sculpture', 'Mobilier Patrimonial', 'Objet décoratif'].includes(selectedDomain)"
+      >
+        <label class="">Profondeur</label>
+        <div class="d-flex value">
+          <input class="col-md-8 form-control col-12 col-sm-7" type="number" />
+          <select class="col-md-4 col-sm-4 form-control">
+            <option class="active">cm</option>
+            <option>m</option>
+          </select>
+        </div>
+      </div>
+      <div
+        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
+        *ngIf="['Peinture', 'Pièce de musée'].includes(selectedDomain)"
+      >
+        <label class="col-md-3">Poids</label>
+        <div class="d-flex value col-12 col-sm-7">
+          <input class="col-md-8 form-control" type="number" />
+          <select class="col-md-4 col-sm-4 form-control">
+            <option class="active">Kg</option>
+          </select>
+        </div>
+      </div>
+      <div
+        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
+        *ngIf="['Luminaire', 'Pièce de musée', 'Decor mural'].includes(selectedDomain)"
+      >
+        <label class="">Diamètre</label>
+        <div class="d-flex value col-12 col-sm-7">
+          <input class="col-md-8 form-control" type="number" />
+          <select class="col-md-4 form-control">
+            <option class="active">cm</option>
+            <option>m</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-4"></div>
+      <div class="divider"></div>
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
+        <label class="">Epoque</label>
+        <div class="form-control autocomplete value col-12 col-sm-7">
+          <ng-autocomplete
+            placeholder="Epoque"
+            [data]="denominations"
+            [searchKeyword]="keyword"
+            (selected)="selectEvent($event)"
+            (inputChanged)="onChangeSearch($event)"
+            (inputFocused)="onFocused($event)"
+            [itemTemplate]="itemTemplate"
+            [notFoundTemplate]="notFoundTemplate"
+          >
+          </ng-autocomplete>
+          <ng-template #itemTemplate let-item>
+            <a [innerHTML]="item.name"></a>
+          </ng-template>
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+        </div>
+      </div>
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
+        <label class="">Style</label>
+        <div class="autocomplete form-control value col-12 col-sm-7">
+          <ng-autocomplete
+            placeholder="Style"
+            [data]="denomination"
+            [searchKeyword]="keyword"
+            (selected)="selectEvent($event)"
+            (inputChanged)="onChangeSearch($event)"
+            (inputFocused)="onFocused($event)"
+            [itemTemplate]="itemTemplate"
+            [notFoundTemplate]="notFoundTemplate"
+          >
+          </ng-autocomplete>
+          <ng-template #itemTemplate let-item>
+            <a [innerHTML]="item.name"></a>
+          </ng-template>
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+        </div>
+      </div>
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
+        <label class="">Date de création</label>
+        <input type="date" class="form-control value col-12 col-sm-7" />
+      </div>
+      <div class="col-md-6">
+        <div class="form-group flex-wrap flex-sm-nowrap">
+          <label class="">Matières <span class="mandatory">*</span></label>
+          <div class="autocomplete form-control value col-12 col-sm-7">
+            <p-multiSelect
+              selectionLimit="5"
+              [maxSelectedLabels]="2"
+              [style]="{ width: '100%' }"
+              [options]="denominations"
+              formControlName="material"
+              optionLabel="name"
+              [filter]="true"
+            >
+            </p-multiSelect>
+          </div>
+        </div>
+        <div
+          *ngIf="
+            descriptifForm.get('material').invalid &&
+            (descriptifForm.get('material').dirty || descriptifForm.get('material').touched)
+          "
+        >
+          <div class="mandatory" *ngIf="descriptifForm.get('material').errors.required">
+            Veuillez saisir une matière/technique
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6" *ngIf="['Art de la table', 'Objet décoratif'].includes(selectedDomain)">
+        <div class="form-group flex-wrap flex-sm-nowrap">
+          <label class="">Nombre unité<span class="mandatory">*</span></label>
+          <div class="d-flex value col-12 col-sm-7">
+            <input class="col-md-12 form-control" type="number" value="0" />
+          </div>
+        </div>
+        <div
+          *ngIf="
+            descriptifForm.get('unit_number').invalid &&
+            (descriptifForm.get('unit_number').dirty || descriptifForm.get('unit_number').touched)
+          "
+        >
+          <div class="mandatory" *ngIf="descriptifForm.get('unit_number').errors.required">
+            Veuillez saisir un nombre d'unité
+          </div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
+        <label>Marquage</label>
+        <input class="form-control value col-12 col-sm-7" placeholder="Marquage" />
+      </div>
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
+        <label>Signature inscription</label>
+        <input class="form-control value col-12 col-sm-7" placeholder="Signature inscription" />
+      </div>
+
+      <div class="form-group d-flex align-items-center col-md-6">
+        <label class="">Mots descriptifs</label>
+        <tag-input
+          formControlName="items"
+          [editable]="true"
+          (onTagEdited)="onTagEdited($event)"
+          secondaryPlaceholder="Entrer mots descriptifs"
+          class="value"
+          placeholder=" +Mots descriptifs"
+        ></tag-input>
+      </div>
+      <div class="col-md-12">
+        <div class="d-flex form-group col-md-12 p-0">
+          <label>Commentaire</label>
+          <textarea type="text" class="form-control" placeholder="Commentaire ..."></textarea>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </form>

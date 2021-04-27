@@ -2,18 +2,9 @@ import { RemarquerDetailsLinkRendererComponent } from '@shared/components/datata
 import { Router } from '@angular/router';
 import { VisibleCatalogRendererComponent } from '@shared/components/datatables/visible-catalog-renderer/visible-catalog-renderer.component';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
-import {
-  ColDef,
-  ColumnApi,
-  GridApi,
-  ICellEditorParams,
-  Column,
-  GridOptions,
-  CellClickedEvent,
-  SelectionChangedEvent,
-} from 'ag-grid-community';
-import { Component, ElementRef, EventEmitter, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { ColDef, ColumnApi, GridApi, GridOptions, ICellEditorParams } from 'ag-grid-community';
+import { Component, ElementRef, EventEmitter, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ColumnFilterService, OPERATORS, TYPES } from '@shared/services/column-filter.service';
 import { ColumnFilterModel } from '@shared/models/column-filter-model';
 import { CustomHeaderRendererComponent } from '@app/@shared/components/datatables/custom-header-renderer/custom-header-renderer.component';
@@ -26,6 +17,7 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { ImageViewerComponent } from '@shared/components/datatables/image-viewer/image-viewer.component';
 import { DatePipe } from '@angular/common';
+import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 
 @Component({
   selector: 'app-list-work-of-arts',
@@ -35,8 +27,9 @@ import { DatePipe } from '@angular/common';
 })
 export class ListWorkOfArtsComponent implements OnInit {
   @ViewChildren('accordionSectionDOM', { read: ElementRef }) accordionsDOM: QueryList<ElementRef>;
+  @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
   isCollapsed = true;
-  showDatatable = false;
+  showDatatable = true;
   data = false;
   mode = 'liste';
   filterFormGroup: FormGroup;
@@ -80,8 +73,174 @@ export class ListWorkOfArtsComponent implements OnInit {
       });
     },
   };
-  oeuvres = this.WorkOfArtService.oeuvres[0].items;
 
+  oeuvres = this.WorkOfArtService.oeuvres[0].items;
+  frozenCols: any = [
+    {
+      header: 'N° inventaire',
+      field: 'id',
+      sortable: true,
+      filter: true,
+      filterType: 'text',
+      checkBoxSelection: false,
+      type: 'app-remarquer-details-link-render',
+    },
+  ];
+  columns: any[] = [
+    {
+      header: 'Titre',
+      field: 'titre',
+      type: 'key',
+      width: '150px',
+      filter: true,
+      filterType: 'text',
+      sortable: true,
+      isVisible: true,
+    },
+    {
+      header: 'Date création',
+      field: 'creationDate',
+      sortable: true,
+      width: '150px',
+      filter: true,
+      type: 'key',
+      filterType: 'range-date',
+      isVisible: true,
+    },
+    {
+      header: 'Domaine',
+      field: 'domaine',
+      sortable: true,
+      width: '150px',
+      filter: true,
+      filterType: 'multiselect',
+      placeholder: 'Choisir des Domaine',
+      selectData: this.WorkOfArtService.domaine,
+      type: 'key',
+      isVisible: true,
+    },
+    {
+      header: 'Dénomination',
+      field: 'denomination',
+      sortable: true,
+      width: '150px',
+      filter: true,
+      filterType: 'multiselect',
+      selectData: this.WorkOfArtService.denominations,
+      type: 'key',
+      isVisible: true,
+    },
+    {
+      header: 'Matière',
+      field: 'matiere',
+      sortable: true,
+      width: '150px',
+      filter: true,
+      filterType: 'text',
+      type: 'key',
+      isVisible: true,
+    },
+    {
+      header: 'Style',
+      field: 'style',
+      sortable: true,
+      width: '150px',
+      filter: true,
+      filterType: 'text',
+      type: 'key',
+      isVisible: true,
+    },
+    {
+      header: 'Epoque',
+      field: 'epoque',
+      width: '150px',
+      sortable: true,
+      filter: true,
+      filterType: 'text',
+      type: 'key',
+      isVisible: true,
+    },
+    {
+      header: 'Auteur',
+      field: 'author',
+      width: '150px',
+      sortable: true,
+      filter: true,
+      filterType: 'text',
+      type: 'key',
+      isVisible: true,
+    },
+    {
+      header: 'Type de Statut',
+      field: 'property',
+      cellRenderer: 'statusTypeRender',
+      width: '200px',
+      sortable: false,
+      filter: true,
+      type: 'app-status-component-render',
+      filterType: 'select',
+      selectData: this.WorkOfArtService.statusType,
+      isVisible: true,
+    },
+    {
+      header: 'deposant',
+      field: 'depositor',
+      width: '150px',
+      sortable: true,
+      filter: true,
+      filterType: 'text',
+      type: 'key',
+      isVisible: true,
+    },
+    {
+      header: 'photographie',
+      field: 'property',
+      cellRenderer: 'imageViewer',
+      width: '150px',
+      sortable: true,
+      filter: true,
+      type: 'key',
+      isVisible: true,
+    },
+    {
+      header: 'Dernier constat de présence',
+      field: 'author',
+      width: '150px',
+      sortable: true,
+      filter: true,
+      filterType: 'text',
+      type: 'key',
+      isVisible: true,
+    },
+    {
+      header: 'Dernière action liée au constat',
+      field: 'author',
+      width: '150px',
+      isVisible: true,
+    },
+    {
+      header: 'Dernier mouvement',
+      field: 'author',
+      width: '150px',
+      isVisible: true,
+    },
+    {
+      header: 'Dernière action liée au mouvement',
+      field: 'author',
+      width: '150px',
+      isVisible: true,
+    },
+    {
+      header: 'Visible catalogue',
+      field: 'visible',
+      cellRenderer: 'visibleRenderer',
+      sortable: false,
+      filter: false,
+      type: 'app-visible-catalog-component-render',
+      width: '150px',
+      isVisible: true,
+    },
+  ];
   ColDef: ColDef[] = [
     {
       cellClass: 'link',
@@ -198,13 +357,11 @@ export class ListWorkOfArtsComponent implements OnInit {
   inventoryOptions: Options;
   gridReady = false;
   currentColumnStates: any;
-  columns: any;
+
   currentFilters: ColumnFilterModel[] = [];
   currentOrderedFields: { column: string; direction: string }[] = [];
   paginatorLoading: boolean;
   oeuvreToShow: any;
-  oeuvrePerDomain: any;
-  selectedOeuvres: any[] = [];
   rowCount = 5;
   domaine: any;
   dropdownSettings: IDropdownSettings;
@@ -223,7 +380,9 @@ export class ListWorkOfArtsComponent implements OnInit {
   showForm4End = false;
   dynamic: boolean = false;
   modelDate = '2021';
+  visibleCol: any[] = [];
   items = ['oeuvre art', 'test'];
+
   constructor(
     private fb: FormBuilder,
     public columnFilterService: ColumnFilterService,
@@ -240,7 +399,6 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.oeuvreToShow = this.oeuvres;
     this.initFilterFormGroup();
     this.domaine = this.WorkOfArtService.domaine;
-    this.oeuvrePerDomain = this.WorkOfArtService.oeuvres;
     this.dropdownSettings = {
       singleSelection: false,
       idField: 'id',
@@ -250,6 +408,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       // itemsShowLimit: 2,
       allowSearchFilter: true,
     };
+    this.initVisibleCols(this.columns);
     this.form1 = new FormGroup({
       inventory: new FormControl(''),
       title: new FormControl(''),
@@ -310,12 +469,13 @@ export class ListWorkOfArtsComponent implements OnInit {
     }
   }
 
-  onHeaderToggle(column: Column): void {
-    // hide column and reset filters
-    this.gridColumnApi.setColumnVisible(column.getColId(), !column.isVisible());
-    // this.gridApi.sizeColumnsToFit();
-    this.gridApi.setFilterModel(null);
-    this.updateColumnsConfiguration('visibility');
+  onHeaderToggle(column: any, event: MouseEvent): void {
+    let localColumn = this.columns[column.index];
+    // @ts-ignore
+    localColumn['isVisible'] = event.target.checked;
+    this.columns.splice(column.index, 1);
+    this.columns.splice(column.index, 0, localColumn);
+    this.dataTableComponent.update(this.columns);
   }
 
   initFilterFormGroup() {
@@ -606,18 +766,20 @@ export class ListWorkOfArtsComponent implements OnInit {
       console.log(this.form1.value);
     }
   }
-  changeMode(mode: string) {
-    this.mode = mode;
-  }
-  selectedValues: string[] = [];
-  selectOeuvre(item: any, index: number) {
-    item.active = !item.active;
-    if (item.active) {
-      this.selectedOeuvres.push(item);
-    } else {
-      this.selectedOeuvres = this.selectedOeuvres.filter((oeuvre) => {
-        return oeuvre.id !== item.id;
-      });
+  onRowsSelection(data: any) {
+    if (Array.isArray(data)) {
+      this.selectedRowCount = data.length;
     }
+  }
+
+  private initVisibleCols(columns: any[]) {
+    this.columns.forEach((data, index) => {
+      this.visibleCol.push({
+        header: data.header,
+        field: data.field,
+        isVisible: true,
+        index: index,
+      });
+    });
   }
 }
