@@ -1,50 +1,43 @@
-import { Component, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalConfig, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
-import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
-
-import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
-import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 import { ModalTabsRefComponent } from '@app/about/components/tabs-ref/modal-tabs-ref/modal-tabs-ref.component';
 
 @Component({
-  selector: 'app-styles',
-  templateUrl: './styles.component.html',
-  styleUrls: ['./styles.component.scss'],
+  selector: 'app-epoques',
+  templateUrl: './epoques.component.html',
+  styleUrls: ['./epoques.component.scss'],
 })
-export class StylesComponent implements OnInit {
-  @ViewChild('content') modalRef: TemplateRef<any>;
-  @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
-  loading = true;
-  btnLoading: any = null;
-  myModal: any;
+export class EpoquesComponent implements OnInit {
+  dropdownSettings: IDropdownSettings;
+  dropdownList: any;
+  items: any;
+  active = true;
   selectedItem: string;
-  myForm: any;
   itemToEdit: any;
   itemToDelete: string;
-
+  myForm: any;
   editItem = false;
   addItem = false;
   deleteItems = false;
-  dropdownSettings: IDropdownSettings;
-
-  active = true;
-  dropdownList: any;
   itemLabel: any;
-
   filter: any;
   sortBy = 'id';
-  sort: string = 'asc';
+  sort = 'asc';
   totalFiltred: any;
   total: any;
-  limit = 5;
-  page = 1;
-  end: number;
-  start: number;
+  limit: any = '5';
+  page: any = '1';
+  start: any;
+  end: any;
+
+  loading: boolean = false;
   defaultColDef = {
     headerComponent: 'customHeader',
     sortable: true,
@@ -59,8 +52,6 @@ export class StylesComponent implements OnInit {
       type: TYPES.text,
     },
   };
-
-  items: any;
 
   columns = [
     {
@@ -82,7 +73,6 @@ export class StylesComponent implements OnInit {
   ];
 
   rowCount: any = 5;
-
   // filter = false;
 
   constructor(
@@ -90,8 +80,9 @@ export class StylesComponent implements OnInit {
     private modalService: NgbModal,
     private activatedRoute: ActivatedRoute,
     private simpleTabsRef: SimpleTabsRefService,
-    private fieldsService: FieldsService,
 
+    private fieldsService: FieldsService,
+    public fb: FormBuilder,
     config: NgbModalConfig,
     private messageService: MessageService
   ) {
@@ -102,20 +93,14 @@ export class StylesComponent implements OnInit {
   get defaultHeaderParams() {
     return this.defaultColDef.headerComponentParams;
   }
-
   ngOnInit(): void {
-    this.simpleTabsRef.tabRef = 'styles';
+    this.simpleTabsRef.tabRef = 'eras';
     this.getAllItems();
-
-    this.filter =
-      this.activatedRoute.snapshot.queryParams['filter'] &&
-      this.activatedRoute.snapshot.queryParams['filter'].length > 0;
   }
 
   resetFilter() {}
 
   openModal(item: any) {
-    this.btnLoading = null;
     if (!this.deleteItems) {
       if (item) {
         this.editItem = true;
@@ -125,15 +110,15 @@ export class StylesComponent implements OnInit {
         this.addItem = true;
       }
     }
-
     this.selectedItem = item.label;
+
     const ngbModalOptions: NgbModalOptions = {
       backdropClass: 'modal-container',
       centered: true,
     };
     const modalRef = this.modalService.open(ModalTabsRefComponent, ngbModalOptions);
     modalRef.componentInstance.fromParent = {
-      name: 'style',
+      name: 'époque',
       editItem: this.editItem,
       addItem: this.addItem,
       deleteItems: this.deleteItems,
@@ -152,7 +137,7 @@ export class StylesComponent implements OnInit {
           this.addItems(result);
         }
         if (this.editItem) {
-          this.editItems(result, this.itemToEdit.id);
+          this.editField(result, this.itemToEdit.id);
         }
         if (this.deleteItems) {
           this.deleteItem(this.itemToDelete);
@@ -164,27 +149,7 @@ export class StylesComponent implements OnInit {
     );
   }
 
-  submit() {
-    this.btnLoading = null;
-    const item = {
-      label: this.myForm.label,
-      active: this.myForm.active,
-    };
-    if (this.addItem) {
-      this.addItems(item);
-    }
-    if (this.editItem) {
-    }
-  }
-
-  close() {
-    this.editItem = false;
-    this.addItem = false;
-    this.deleteItems = false;
-  }
-
   deleteItem(data: any) {
-    this.btnLoading = null;
     this.deleteItems = true;
     this.itemToDelete = data;
     this.itemLabel = data.label;
@@ -192,7 +157,6 @@ export class StylesComponent implements OnInit {
   }
 
   actionMethod(e: any) {
-    console.log(e);
     switch (e.method) {
       case 'delete':
         this.deleteItem(e.item);
@@ -210,16 +174,14 @@ export class StylesComponent implements OnInit {
 
   getAllItems() {
     this.loading = true;
-
-    const params = {
+    const data = {
       limit: this.limit,
       page: this.page,
       'label[contains]': this.filter,
       sort_by: this.sortBy,
       sort: this.sort,
     };
-
-    this.simpleTabsRef.getAllItems(params).subscribe(
+    this.simpleTabsRef.getAllItems(data).subscribe(
       (result: any) => {
         this.items = result.results;
         this.totalFiltred = result.filteredQuantity;
@@ -234,68 +196,16 @@ export class StylesComponent implements OnInit {
     );
   }
 
-  setItems(data: any[]) {
-    this.items = [...data];
-  }
-
-  deleteItemss(item: any) {
-    this.btnLoading = '';
-    this.simpleTabsRef.deleteItem(item).subscribe(
-      (result: any) => {
-        this.close();
-        this.addSingle('success', 'Suppression', 'Style ' + item.label + ' supprimée avec succés');
-        this.getAllItems();
-      },
-      (error: any) => {
-        this.close();
-        if (error.error.code === 400) {
-          this.addSingle('error', 'Suppression', 'Style ' + item.label + ' admet une relation');
-        } else {
-          this.addSingle('error', 'Suppression', error.error.message);
-        }
-      }
-    );
-    this.btnLoading = false;
-  }
-
-  addItems(item: any) {
-    this.btnLoading = '';
-    this.simpleTabsRef.addItem(item).subscribe(
-      (result: any) => {
-        this.close();
-        this.addSingle('success', 'Ajout', 'Style ' + item.label + ' ajoutée avec succés');
-        this.getAllItems();
-      },
-      (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
-      }
-    );
-  }
-
   visibleItem(data: any) {
     data.active = !data.active;
+
     this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
       (result) => {
         if (data.active) {
-          this.addSingle('success', 'Activation', 'Style ' + data.label + ' activée avec succés');
+          this.addSingle('success', 'Activation', 'Epoque ' + data.label + ' activée avec succés');
         } else {
-          this.addSingle('success', 'Activation', 'Style ' + data.label + ' désactivée avec succés');
+          this.addSingle('success', 'Activation', 'Epoque ' + data.label + ' désactivée avec succés');
         }
-        this.getAllItems();
-      },
-
-      (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
-      }
-    );
-  }
-
-  editItems(item: any, id: number) {
-    this.btnLoading = '';
-    this.simpleTabsRef.editItem(item, id).subscribe(
-      (result) => {
-        this.close();
-        this.addSingle('success', 'Modification', 'Style ' + item.label + ' modifiée avec succés');
         this.getAllItems();
       },
 
@@ -307,41 +217,91 @@ export class StylesComponent implements OnInit {
 
   addSingle(type: string, sum: string, msg: string) {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
-    this.btnLoading = null;
   }
-
   pagination(e: any) {
-    if (e.page < this.total / parseInt(this.limit.toString(), 0)) {
+    if (e.page < this.total / parseInt(this.limit, 0)) {
       this.page = e.page + 1;
     } else {
-      this.page = this.total / parseInt(this.limit.toString(), 0);
+      this.page = (this.total / parseInt(this.limit, 0)).toString();
     }
+    // this.limit = e.rows;
+    // Math.min(e.rows, this.totalFiltred - e.page * e.rows).toString();
     this.getAllItems();
   }
-
   filters(e: any) {
     console.log(e);
     this.filter = e.label;
+
     this.getAllItems();
   }
-
   sortEvent(e: any) {
-    this.sortBy = 'label';
     if (e) {
-      this.sort = 'desc';
-      this.getAllItems();
-    } else {
       this.sort = 'asc';
       this.getAllItems();
+    } else {
+      this.sort = 'desc';
+      this.getAllItems();
     }
   }
-  search(input: string) {
-    if (input) {
-      this.filter = input;
-      this.getAllItems();
-      return;
+  paginationData(): void {
+    // this.dataTableComponent.handlePaginationInfo();
+  }
+  addItems(item: any) {
+    this.simpleTabsRef.addItem(item).subscribe(
+      (result: any) => {
+        this.close();
+        this.addSingle('success', 'Ajout', 'Epoque ' + item.label + ' ajoutée avec succés');
+        this.getAllItems();
+      },
+      (error) => {
+        this.addSingle('error', 'Ajout', error.error.message);
+      }
+    );
+  }
+  close() {
+    this.editItem = false;
+    this.addItem = false;
+    this.deleteItems = false;
+  }
+  submit() {
+    const item = {
+      label: this.myForm.label,
+      active: this.myForm.active,
+    };
+    if (this.addItem) {
+      this.addItems(item);
     }
-    this.filter = '';
-    this.getAllItems();
+    if (this.editItem) {
+    }
+  }
+  editField(item: any, id: number) {
+    this.simpleTabsRef.editItem(item, id).subscribe(
+      (result) => {
+        this.close();
+        this.addSingle('success', 'Modification', 'Epoque ' + item.label + ' modifiée avec succés');
+        this.getAllItems();
+      },
+
+      (error) => {
+        this.addSingle('error', 'Modification', error.error.message);
+      }
+    );
+  }
+  deleteItemss(item: any) {
+    this.simpleTabsRef.deleteItem(item).subscribe(
+      (result: any) => {
+        this.close();
+        this.addSingle('success', 'Suppression', 'Epoque ' + item.label + ' supprimée avec succés');
+        this.getAllItems();
+      },
+      (error: any) => {
+        this.close();
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Suppression', 'Epoque ' + item.label + ' admet une relation');
+        } else {
+          this.addSingle('error', 'Suppression', error.error.message);
+        }
+      }
+    );
   }
 }

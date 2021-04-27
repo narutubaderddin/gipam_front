@@ -61,6 +61,9 @@
               [total]="total"
               [page]="page"
               [limit]="limit"
+              [start]="start"
+              [end]="end"
+              [loading]="loading"
             >
             </app-ng-data-table>
           </div>
@@ -82,7 +85,36 @@
     </div>
     <div class="modal-body">
       <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer la matière / technique "{{ itemLabel }}" ?</div>
-
+      <!--      <div-->
+      <!--        class="form-group col-md-12 d-flex justify-content-between align-items-baseline"-->
+      <!--        *ngIf="editItem || addItem"-->
+      <!--      >-->
+      <!--        <label class="col-sm-3">Domaine<span class="mandatory"> *</span></label>-->
+      <!--        <ng-multiselect-dropdown-->
+      <!--          formControlName="field"-->
+      <!--          class="select col-sm-7 p-0"-->
+      <!--          [placeholder]="'Choisir domaine'"-->
+      <!--          [settings]="dropdownSettings"-->
+      <!--          [data]="domains"-->
+      <!--          (onSelect)="onDomainSelect($event)"-->
+      <!--        >-->
+      <!--        </ng-multiselect-dropdown>-->
+      <!--      </div>-->
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
+        <label class="col-sm-4">Dénomination<span class="mandatory"> *</span></label>
+        <ng-multiselect-dropdown
+          formControlName="denomination"
+          class="select col-sm-7 p-0"
+          [placeholder]="'Choisir ses dénominations'"
+          [settings]="dropdownSettings"
+          [data]="denominations"
+          (onSelect)="onSelect($event)"
+          (onDeSelect)="onDeSelect($event)"
+          (onSelectAll)="onSelectAll($event)"
+          (onDeSelectAll)="onDeSelectAll($event)"
+        >
+        </ng-multiselect-dropdown>
+      </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-3">Libellé<span class="mandatory"> *</span></label>
         <input
@@ -90,6 +122,15 @@
           class="form-control col-sm-7"
           value="{{ editItem ? selectedItem : '' }}"
           formControlName="material"
+        />
+      </div>
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
+        <label class="col-sm-3">Type</label>
+        <input
+          type="text"
+          class="form-control col-sm-7"
+          value="{{ editItem ? itemToEdit.type : '' }}"
+          formControlName="type"
         />
       </div>
       <div class="form-group col-md-12 d-flex align-items-baseline" *ngIf="addItem">

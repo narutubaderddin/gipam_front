@@ -1,8 +1,8 @@
 <div class="breadcrumb">
   <a href="accueil">Accueil</a>
-  <a href="tab-ref-categorie" class="selected-item">
+  <a href="tab-ref-domaine" class="selected-item">
     <i class="fas fa-chevron-right"></i>
-    Gestion des styles
+    Gestion des Epoques
   </a>
 </div>
 <div class="container-fluid">
@@ -13,7 +13,7 @@
           <div class="card">
             <div class="card-body">
               <ul class="d-flex">
-                <li class="col-md-12 selected-table"><i class="fas fa-tasks"></i><a>Gestion des styles</a></li>
+                <li class="col-md-12 selected-table"><i class="fas fa-tasks"></i><a>Gestion des Epoques</a></li>
               </ul>
             </div>
           </div>
@@ -27,17 +27,9 @@
                   type="search"
                   placeholder="Rechercher"
                   id="example-search-input"
-                  #searchBox
-                  (keyup.enter)="search(searchBox.value)"
-                  (blur)="search(searchBox.value)"
-                  (close)="search('')"
                 />
                 <span class="input-group-append">
-                  <button
-                    class="btn btn-outline-secondary border-left-0 border btn-search"
-                    type="button"
-                    (click)="search(searchBox.value)"
-                  >
+                  <button class="btn btn-outline-secondary border-left-0 border" type="button">
                     <i class="fa fa-search"></i>
                   </button>
                 </span>
@@ -45,7 +37,7 @@
               <div class="mr-3">
                 <button class="btn add-action" (click)="openModal('')">
                   <i class="fas fa-plus-circle mr-1"></i>
-                  Ajouter style
+                  Ajouter époque
                 </button>
               </div>
             </div>
@@ -53,7 +45,6 @@
           </div>
           <div class="datatable mt-4">
             <app-ng-data-table
-              [loading]="loading"
               (action)="actionMethod($event)"
               (pageChanged)="pagination($event)"
               (filterValue)="filters($event)"
@@ -68,8 +59,9 @@
               [total]="total"
               [page]="page"
               [limit]="limit"
-              [end]="end"
               [start]="start"
+              [end]="end"
+              [loading]="loading"
             >
             </app-ng-data-table>
           </div>

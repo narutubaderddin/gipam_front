@@ -2,7 +2,7 @@
   <a href="accueil">Accueil</a>
   <a href="tab-ref-categorie" class="selected-item">
     <i class="fas fa-chevron-right"></i>
-    Gestion des styles
+    Gestion des sous types constat
   </a>
 </div>
 <div class="container-fluid">
@@ -13,7 +13,7 @@
           <div class="card">
             <div class="card-body">
               <ul class="d-flex">
-                <li class="col-md-12 selected-table"><i class="fas fa-tasks"></i><a>Gestion des styles</a></li>
+                <li class="col-md-12 selected-table"><i class="fas fa-tasks"></i><a>Gestion sous types constat</a></li>
               </ul>
             </div>
           </div>
@@ -45,7 +45,7 @@
               <div class="mr-3">
                 <button class="btn add-action" (click)="openModal('')">
                   <i class="fas fa-plus-circle mr-1"></i>
-                  Ajouter style
+                  Ajouter un sous type constat
                 </button>
               </div>
             </div>
@@ -58,7 +58,7 @@
               (pageChanged)="pagination($event)"
               (filterValue)="filters($event)"
               (sort)="sortEvent($event)"
-              [component]="'tabRefStyle'"
+              [component]="'tabRefSousTypeConstat'"
               [columns]="columns"
               [frozenCols]="[]"
               [frozenWidth]="'0px'"

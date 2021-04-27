@@ -1,32 +1,28 @@
-import { Component, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
-import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { NgbModal, NgbModalConfig, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 
-import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
-import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { ModalMvtActionTypesComponent } from '@app/about/components/tabs-ref/movement-action-types/modal-mvt-action-types/modal-mvt-action-types.component';
 
 @Component({
-  selector: 'app-depositTypes',
-  templateUrl: './depositTypes.component.html',
-  styleUrls: ['./depositTypes.component.scss'],
+  selector: 'app-movement-action-types',
+  templateUrl: './movement-action-types.component.html',
+  styleUrls: ['./movement-action-types.component.scss'],
 })
-export class DepositTypesComponent implements OnInit {
-  @ViewChild('content') modalRef: TemplateRef<any>;
-  @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
-
-  btnLoading: any = null;
+export class MovementActionTypesComponent implements OnInit {
   loading = true;
+  btnLoading: any = null;
   myModal: any;
   selectedItem: string;
-
+  myForm: any;
   itemToEdit: any;
   itemToDelete: string;
-  tabForm: FormGroup;
+
   editItem = false;
   addItem = false;
   deleteItems = false;
@@ -37,8 +33,8 @@ export class DepositTypesComponent implements OnInit {
   itemLabel: any;
 
   filter: any;
-  sortBy = 'label';
-  sort: string = 'asc';
+  sortBy = 'id';
+  sort = 'asc';
   totalFiltred: any;
   total: any;
   limit = 5;
@@ -72,6 +68,14 @@ export class DepositTypesComponent implements OnInit {
       sortable: true,
     },
     {
+      header: 'Type mouvement',
+      type: 'key-array',
+      key_data: ['movementType', 'label'],
+      filter: true,
+      filterType: 'text',
+      sortable: true,
+    },
+    {
       header: 'Actions',
       field: 'action',
       type: 'app-actions-cell',
@@ -81,17 +85,13 @@ export class DepositTypesComponent implements OnInit {
     },
   ];
 
-  rowCount: any = 5;
-
-  // filter = false;
-
   constructor(
     private router: Router,
     private modalService: NgbModal,
     private activatedRoute: ActivatedRoute,
     private simpleTabsRef: SimpleTabsRefService,
     private fieldsService: FieldsService,
-    public fb: FormBuilder,
+
     config: NgbModalConfig,
     private messageService: MessageService
   ) {
@@ -99,57 +99,80 @@ export class DepositTypesComponent implements OnInit {
     config.keyboard = false;
   }
 
-  initForm() {
-    this.tabForm = this.fb.group({
-      style: [this.selectedItem, [Validators.required]],
-      active: [true],
-    });
-  }
-
   get defaultHeaderParams() {
     return this.defaultColDef.headerComponentParams;
   }
 
   ngOnInit(): void {
-    this.simpleTabsRef.tabRef = 'depositTypes';
+    this.simpleTabsRef.tabRef = 'movementActionTypes';
     this.getAllItems();
-    this.initForm();
 
     this.filter =
-      this.activatedRoute.snapshot.queryParams['filter'] &&
-      this.activatedRoute.snapshot.queryParams['filter'].length > 0;
+      this.activatedRoute.snapshot.queryParams.filter && this.activatedRoute.snapshot.queryParams.filter.length > 0;
   }
 
   resetFilter() {}
 
   openModal(item: any) {
     this.btnLoading = null;
-    if (item) {
-      this.editItem = true;
-      this.itemToEdit = item;
-      this.itemLabel = item.label;
-    } else {
-      this.addItem = true;
+    if (!this.deleteItems) {
+      if (item) {
+        this.editItem = true;
+        this.itemToEdit = item;
+        this.itemLabel = item.label;
+      } else {
+        this.addItem = true;
+      }
     }
 
-    // console.log(item);
     this.selectedItem = item.label;
+    const ngbModalOptions: NgbModalOptions = {
+      backdropClass: 'modal-container',
+      centered: true,
+    };
+    const modalRef = this.modalService.open(ModalMvtActionTypesComponent, ngbModalOptions);
+    modalRef.componentInstance.fromParent = {
+      name: 'type action mouvement',
+      editItem: this.editItem,
+      addItem: this.addItem,
+      deleteItems: this.deleteItems,
+      itemToDelete: this.itemToDelete,
+      itemToEdit: this.itemToEdit,
+      selectedItem: this.selectedItem,
+      active: this.active,
+    };
 
-    this.initForm();
-    this.myModal = this.modalService.open(this.modalRef, { centered: true });
+    modalRef.result.then(
+      (result) => {
+        if (result === 'delete') {
+          return this.deleteItemss(this.itemToDelete);
+        }
+        if (this.addItem) {
+          this.addItems(result);
+        }
+        if (this.editItem) {
+          this.editItems(result, this.itemToEdit.id);
+        }
+        if (this.deleteItems) {
+          this.deleteItem(this.itemToDelete);
+        }
+      },
+      (reason) => {
+        this.close();
+      }
+    );
   }
 
   submit() {
     this.btnLoading = null;
     const item = {
-      label: this.tabForm.value.style,
-      active: this.tabForm.value.active,
+      label: this.myForm.label,
+      active: this.myForm.active,
     };
     if (this.addItem) {
       this.addItems(item);
     }
     if (this.editItem) {
-      this.editField(item, this.itemToEdit.id);
     }
   }
 
@@ -157,9 +180,6 @@ export class DepositTypesComponent implements OnInit {
     this.editItem = false;
     this.addItem = false;
     this.deleteItems = false;
-
-    // this.myModal.close('Close click');
-    this.myModal.dismiss('Cross click');
   }
 
   deleteItem(data: any) {
@@ -167,7 +187,7 @@ export class DepositTypesComponent implements OnInit {
     this.deleteItems = true;
     this.itemToDelete = data;
     this.itemLabel = data.label;
-    this.myModal = this.modalService.open(this.modalRef, { centered: true });
+    this.openModal(data);
   }
 
   actionMethod(e: any) {
@@ -189,7 +209,7 @@ export class DepositTypesComponent implements OnInit {
 
   getAllItems() {
     this.loading = true;
-
+    this.simpleTabsRef.tabRef = 'movementActionTypes';
     const params = {
       limit: this.limit,
       page: this.page,
@@ -200,6 +220,7 @@ export class DepositTypesComponent implements OnInit {
 
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
+        console.log(result);
         this.items = result.results;
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
@@ -218,30 +239,34 @@ export class DepositTypesComponent implements OnInit {
   }
 
   deleteItemss(item: any) {
+    this.simpleTabsRef.tabRef = 'movementActionTypes';
     this.btnLoading = '';
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Suppression', 'Type déposant ' + item.label + ' supprimée avec succés');
+        this.addSingle('success', 'Suppression', 'Type action mouvement ' + item.label + ' supprimée avec succés');
         this.getAllItems();
       },
       (error: any) => {
         this.close();
         if (error.error.code === 400) {
-          this.addSingle('error', 'Suppression', 'Type déposant ' + item.label + ' admet une relation');
+          this.addSingle('error', 'Suppression', 'Type action mouvement ' + item.label + ' admet une relation');
         } else {
           this.addSingle('error', 'Suppression', error.error.message);
         }
       }
     );
+    this.btnLoading = false;
   }
 
   addItems(item: any) {
+    this.simpleTabsRef.tabRef = 'movementActionTypes';
     this.btnLoading = '';
+    console.log(item);
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Ajout', 'Type déposant ' + item.label + ' ajoutée avec succés');
+        this.addSingle('success', 'Ajout', 'Type action mouvement ' + item.label + ' ajoutée avec succés');
         this.getAllItems();
       },
       (error) => {
@@ -251,14 +276,14 @@ export class DepositTypesComponent implements OnInit {
   }
 
   visibleItem(data: any) {
+    this.simpleTabsRef.tabRef = 'movementActionTypes';
     data.active = !data.active;
-
     this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
       (result) => {
         if (data.active) {
-          this.addSingle('success', 'Activation', 'Type déposant ' + data.label + ' activée avec succés');
+          this.addSingle('success', 'Activation', 'Type action mouvement ' + data.label + ' activée avec succés');
         } else {
-          this.addSingle('success', 'Activation', 'Type déposant ' + data.label + ' désactivée avec succés');
+          this.addSingle('success', 'Activation', 'Type action mouvement ' + data.label + ' désactivée avec succés');
         }
         this.getAllItems();
       },
@@ -269,15 +294,15 @@ export class DepositTypesComponent implements OnInit {
     );
   }
 
-  editField(item: any, id: number) {
+  editItems(item: any, id: number) {
+    this.simpleTabsRef.tabRef = 'movementActionTypes';
     this.btnLoading = '';
     this.simpleTabsRef.editItem(item, id).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Modification', 'Type déposant ' + item.label + ' modifiée avec succés');
+        this.addSingle('success', 'Modification', 'Type action mouvement ' + item.label + ' modifiée avec succés');
         this.getAllItems();
       },
-
       (error) => {
         this.addSingle('error', 'Modification', error.error.message);
       }
@@ -290,6 +315,7 @@ export class DepositTypesComponent implements OnInit {
   }
 
   pagination(e: any) {
+    console.log('pagination');
     if (e.page < this.total / parseInt(this.limit.toString(), 0)) {
       this.page = e.page + 1;
     } else {
@@ -300,11 +326,13 @@ export class DepositTypesComponent implements OnInit {
 
   filters(e: any) {
     console.log(e);
+    this.page = 1;
     this.filter = e.label;
     this.getAllItems();
   }
 
   sortEvent(e: any) {
+    this.sortBy = 'label';
     if (e) {
       this.sort = 'desc';
       this.getAllItems();

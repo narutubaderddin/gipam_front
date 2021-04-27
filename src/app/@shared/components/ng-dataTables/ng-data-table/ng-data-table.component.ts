@@ -75,6 +75,7 @@ export class NgDataTableComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('columns', this.columns);
+
     this.key = this.columns[0]['field'];
     this.columns = this.columns.filter((col) => {
       if (Object.keys(col).indexOf('isVisible') == -1 || col.isVisible) {
@@ -103,6 +104,10 @@ export class NgDataTableComponent implements OnInit {
       unSelectAllText: 'Supprimer les sélections',
       allowSearchFilter: true,
     };
+    // pagination
+    if (!this.currentPage) {
+      this.currentPage = 1;
+    }
   }
 
   onChangePage(event: any) {
@@ -183,15 +188,30 @@ export class NgDataTableComponent implements OnInit {
     this.columns = columns;
     this.ngOnInit();
   }
+  updateData(data: any[]) {
+    this.data = data;
+    this.ngOnInit();
+  }
 
   onFilterChange(open: boolean) {
     if (!open) {
       this.filterValue.emit(this.form.value);
+
+      console.log(this.form.value);
     }
   }
 
   sortHeader() {
     this.asc = !this.asc;
     this.sort.emit(this.asc);
+  }
+  handlePaginationInfo() {
+    this.currentPage = this.currentPage ? this.currentPage : 1;
+    // calculate from data index
+    const from = (this.currentPage - 1) * this.limit + 1;
+    this.start = this.data.length && from ? from : 1;
+    // calculate to data index
+    const to = this.currentPage * this.limit;
+    this.end = this.data.length === this.limit && to ? to : this.total;
   }
 }

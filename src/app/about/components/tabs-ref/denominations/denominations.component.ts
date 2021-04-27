@@ -37,11 +37,15 @@ export class DenominationsComponent implements OnInit {
   itemLabel: any;
 
   filter: any;
+  sortBy = 'label';
   sort: string = 'asc';
   totalFiltred: any;
   total: any;
-  limit = '5';
-  page = '1';
+  limit = 5;
+  page = 1;
+  end: number;
+  start: number;
+  loading: boolean = false;
 
   frameworkComponents = {
     customHeader: CustomHeaderRendererComponent,
@@ -75,7 +79,6 @@ export class DenominationsComponent implements OnInit {
     },
     {
       header: 'Domaine',
-      field: 'field',
       type: 'key-array',
       key_data: ['field', 'label'],
       filter: true,
@@ -128,15 +131,9 @@ export class DenominationsComponent implements OnInit {
       singleSelection: true,
       idField: 'id',
       textField: 'label',
-      selectAllText: 'Sélectionner tout',
-      unSelectAllText: 'Supprimer les sélections',
       itemsShowLimit: 1,
       allowSearchFilter: true,
     };
-
-    this.filter =
-      this.activatedRoute.snapshot.queryParams['filter'] &&
-      this.activatedRoute.snapshot.queryParams['filter'].length > 0;
   }
 
   resetFilter() {}
@@ -196,7 +193,6 @@ export class DenominationsComponent implements OnInit {
     console.log(item);
     this.selectedDomain = item;
   }
-  onSelectAll(items: any) {}
 
   actionMethod(e: any) {
     console.log(e);
@@ -227,14 +223,23 @@ export class DenominationsComponent implements OnInit {
     );
   }
   getAllDenominations() {
+    this.loading = true;
     this.simpleTabsRef
-      .getAllItems({ limit: this.limit, page: this.page, 'label[contains]': this.filter, sort: this.sort })
+      .getAllItems({
+        limit: this.limit,
+        page: this.page,
+        'label[contains]': this.filter,
+        sort_by: this.sortBy,
+        sort: this.sort,
+      })
       .subscribe(
-        (result) => {
-          this.denominations = result;
-          this.totalFiltred = this.denominations.filteredQuantity;
-          this.total = this.denominations.totalQuantity;
-          this.denominations = this.denominations.results;
+        (result: any) => {
+          this.denominations = result.results;
+          this.totalFiltred = result.filteredQuantity;
+          this.total = result.totalQuantity;
+          this.start = (this.page - 1) * this.limit + 1;
+          this.end = (this.page - 1) * this.limit + this.denominations.length;
+          this.loading = false;
         },
         (error) => {
           this.addSingle('error', '', error.error.message);
@@ -307,16 +312,15 @@ export class DenominationsComponent implements OnInit {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
   }
   pagination(e: any) {
-    if (e.page < this.total / parseInt(this.limit, 0)) {
+    if (e.page < this.total / parseInt(this.limit.toString(), 0)) {
       this.page = e.page + 1;
     } else {
-      // this.page = Math.max(e.page, 1).toString();
-      this.page = (this.total / parseInt(this.limit, 0)).toString();
+      this.page = this.total / parseInt(this.limit.toString(), 0);
     }
-    this.limit = Math.min(e.rows, this.totalFiltred - e.page * e.rows).toString();
-    // this.start = e.first + 1;
+
     this.getAllDenominations();
   }
+
   filters(e: any) {
     console.log(e);
     this.filter = e.label;

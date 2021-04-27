@@ -23,7 +23,7 @@
           </div>
 
           <div class="col-1 col-md-2 align-self-center d-flex p-0">
-            <i class="fas fa-trash-alt delete" style="color: gray" (click)="removeBook(i)"></i>
+            <i class="fas fa-trash-alt delete" style="color: gray" (click)="removeBook(i)" *ngIf="i > 0"></i>
             <i class="add ml-3 mt-1 fas fa-plus" style="color: gray" (click)="addBook()"></i>
           </div>
         </div>
