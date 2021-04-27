@@ -21,6 +21,9 @@ import { DepositTypesComponent } from '@app/about/components/tabs-ref/depositTyp
 import { ReportTypesComponent } from '@app/about/components/tabs-ref/reportTypes/reportTypes.component';
 import { ActionReportTypesComponent } from '@app/about/components/tabs-ref/actionReportTypes/actionReportTypes.component';
 import { CategoryComponent } from '@app/about/components/tabs-ref/category/category.component';
+import { TypeMvtComponent } from '@app/about/components/tabs-ref/type-mvt/type-mvt.component';
+import { MovementActionTypesComponent } from '@app/about/components/tabs-ref/movement-action-types/movement-action-types.component';
+import { ReportSubTypesComponent } from '@app/about/components/tabs-ref/report-sub-types/report-sub-types.component';
 const routes: Routes = [
   {
     path: '',
@@ -58,6 +61,9 @@ const routes: Routes = [
       { path: 'tab-ref-type-constat', component: ReportTypesComponent },
       { path: 'tab-ref-type-action-constat', component: ActionReportTypesComponent },
       { path: 'tab-ref-categorie', component: CategoryComponent },
+      { path: 'tab-ref-type-mouvement', component: TypeMvtComponent },
+      { path: 'tab-ref-type-action-mouvement', component: MovementActionTypesComponent },
+      { path: 'tab-ref-sous-type-constat', component: ReportSubTypesComponent },
     ],
   },
 ];

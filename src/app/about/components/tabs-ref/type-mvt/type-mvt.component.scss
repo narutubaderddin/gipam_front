@@ -1,3 +1,9 @@
+.search i {
+  color: #868e96 !important;
+}
+.btn-search:hover i {
+  color: white !important;
+}
 .breadcrumb {
   a {
     &:before {
@@ -5,12 +11,6 @@
       border-width: 1.3em 0 1.3em 1em;
     }
   }
-}
-.search i {
-  color: #868e96 !important;
-}
-.btn-search:hover i {
-  color: white !important;
 }
 .header-table {
   border-left: white;

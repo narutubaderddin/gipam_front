@@ -112,4 +112,16 @@ export class SidebarNavComponent implements OnInit {
     this.router.navigate(['tab-ref-categorie']);
     this.toggleClose();
   }
+  goToTypeMvtList() {
+    this.router.navigate(['tab-ref-type-mouvement']);
+    this.toggleClose();
+  }
+  goToTypeActtionMvtList() {
+    this.router.navigate(['tab-ref-type-action-mouvement']);
+    this.toggleClose();
+  }
+  goToReportSubTypesList() {
+    this.router.navigate(['tab-ref-sous-type-constat']);
+    this.toggleClose();
+  }
 }

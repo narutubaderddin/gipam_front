@@ -88,6 +88,10 @@ import { DepositTypesComponent } from '@app/about/components/tabs-ref/depositTyp
 import { ReportTypesComponent } from '@app/about/components/tabs-ref/reportTypes/reportTypes.component';
 import { ActionReportTypesComponent } from '@app/about/components/tabs-ref/actionReportTypes/actionReportTypes.component';
 import { CategoryComponent } from '@app/about/components/tabs-ref/category/category.component';
+import { TypeMvtComponent } from './components/tabs-ref/type-mvt/type-mvt.component';
+import { MovementActionTypesComponent } from './components/tabs-ref/movement-action-types/movement-action-types.component';
+import { ModalMvtActionTypesComponent } from './components/tabs-ref/movement-action-types/modal-mvt-action-types/modal-mvt-action-types.component';
+import { ReportSubTypesComponent } from './components/tabs-ref/report-sub-types/report-sub-types.component';
 
 setTheme('bs4');
 
@@ -144,6 +148,10 @@ const ngWizardConfig: NgWizardConfig = {
     ReportTypesComponent,
     ActionReportTypesComponent,
     CategoryComponent,
+    TypeMvtComponent,
+    MovementActionTypesComponent,
+    ModalMvtActionTypesComponent,
+    ReportSubTypesComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [

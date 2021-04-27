@@ -1,24 +1,19 @@
-import { Component, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalConfig, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
-import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
-
-import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
-import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 import { ModalTabsRefComponent } from '@app/about/components/tabs-ref/modal-tabs-ref/modal-tabs-ref.component';
 
 @Component({
-  selector: 'app-styles',
-  templateUrl: './styles.component.html',
-  styleUrls: ['./styles.component.scss'],
+  selector: 'app-report-sub-types',
+  templateUrl: './report-sub-types.component.html',
+  styleUrls: ['./report-sub-types.component.scss'],
 })
-export class StylesComponent implements OnInit {
-  @ViewChild('content') modalRef: TemplateRef<any>;
-  @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
+export class ReportSubTypesComponent implements OnInit {
   loading = true;
   btnLoading: any = null;
   myModal: any;
@@ -38,7 +33,7 @@ export class StylesComponent implements OnInit {
 
   filter: any;
   sortBy = 'id';
-  sort: string = 'asc';
+  sort = 'asc';
   totalFiltred: any;
   total: any;
   limit = 5;
@@ -72,6 +67,14 @@ export class StylesComponent implements OnInit {
       sortable: true,
     },
     {
+      header: 'Type constat',
+      type: 'key-array',
+      key_data: ['reportType', 'label'],
+      filter: true,
+      filterType: 'text',
+      sortable: true,
+    },
+    {
       header: 'Actions',
       field: 'action',
       type: 'app-actions-cell',
@@ -80,10 +83,6 @@ export class StylesComponent implements OnInit {
       width: '300px',
     },
   ];
-
-  rowCount: any = 5;
-
-  // filter = false;
 
   constructor(
     private router: Router,
@@ -104,12 +103,11 @@ export class StylesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.simpleTabsRef.tabRef = 'styles';
+    this.simpleTabsRef.tabRef = 'reportSubTypes';
     this.getAllItems();
 
     this.filter =
-      this.activatedRoute.snapshot.queryParams['filter'] &&
-      this.activatedRoute.snapshot.queryParams['filter'].length > 0;
+      this.activatedRoute.snapshot.queryParams.filter && this.activatedRoute.snapshot.queryParams.filter.length > 0;
   }
 
   resetFilter() {}
@@ -133,7 +131,7 @@ export class StylesComponent implements OnInit {
     };
     const modalRef = this.modalService.open(ModalTabsRefComponent, ngbModalOptions);
     modalRef.componentInstance.fromParent = {
-      name: 'style',
+      name: 'sous type constat',
       editItem: this.editItem,
       addItem: this.addItem,
       deleteItems: this.deleteItems,
@@ -243,13 +241,13 @@ export class StylesComponent implements OnInit {
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Suppression', 'Style ' + item.label + ' supprimée avec succés');
+        this.addSingle('success', 'Suppression', 'Sous type constat ' + item.label + ' supprimée avec succés');
         this.getAllItems();
       },
       (error: any) => {
         this.close();
         if (error.error.code === 400) {
-          this.addSingle('error', 'Suppression', 'Style ' + item.label + ' admet une relation');
+          this.addSingle('error', 'Suppression', 'Sous type constat ' + item.label + ' admet une relation');
         } else {
           this.addSingle('error', 'Suppression', error.error.message);
         }
@@ -263,7 +261,7 @@ export class StylesComponent implements OnInit {
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Ajout', 'Style ' + item.label + ' ajoutée avec succés');
+        this.addSingle('success', 'Ajout', 'Sous type constat ' + item.label + ' ajoutée avec succés');
         this.getAllItems();
       },
       (error) => {
@@ -277,9 +275,9 @@ export class StylesComponent implements OnInit {
     this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
       (result) => {
         if (data.active) {
-          this.addSingle('success', 'Activation', 'Style ' + data.label + ' activée avec succés');
+          this.addSingle('success', 'Activation', 'Sous type constat ' + data.label + ' activée avec succés');
         } else {
-          this.addSingle('success', 'Activation', 'Style ' + data.label + ' désactivée avec succés');
+          this.addSingle('success', 'Activation', 'Sous type constat ' + data.label + ' désactivée avec succés');
         }
         this.getAllItems();
       },
@@ -295,7 +293,7 @@ export class StylesComponent implements OnInit {
     this.simpleTabsRef.editItem(item, id).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Modification', 'Style ' + item.label + ' modifiée avec succés');
+        this.addSingle('success', 'Modification', 'Sous type constat ' + item.label + ' modifiée avec succés');
         this.getAllItems();
       },
 

@@ -196,6 +196,8 @@ export class NgDataTableComponent implements OnInit {
   onFilterChange(open: boolean) {
     if (!open) {
       this.filterValue.emit(this.form.value);
+
+      console.log(this.form.value);
     }
   }
 
