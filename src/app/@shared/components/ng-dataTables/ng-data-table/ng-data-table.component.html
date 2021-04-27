@@ -17,6 +17,9 @@
       [totalRecords]="total"
       [resizableColumns]="true"
       [rowHover]="false"
+      sortMode="single"
+      [multiSortMeta]="sortMeta"
+      (onSort)="sortData($event)"
       class="p-datatable-gridlines p-datatable-sm"
     >
       <ng-template pTemplate="frozencolgroup" let-columns>
@@ -99,7 +102,7 @@
               *ngIf="col.sortable"
               [field]="col.header"
               [pSortableColumn]="col.sortable ? col.header : ''"
-              (click)="sortHeader()"
+              (click)="sortHeader(col.header, $event, col)"
             ></p-sortIcon>
 
             <i

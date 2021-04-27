@@ -34,14 +34,14 @@ export class MaterialTechniqueComponent implements OnInit {
   itemLabel: any;
   selectedDomain: any;
   filter: any;
-  sort: string = 'asc';
   totalFiltred: any;
   total: any;
   limit: any = '5';
   page: any = '1';
   start: any;
   end: any;
-
+  sortBy = 'label';
+  sort = 'asc';
   loading: boolean = false;
   items: any;
 
@@ -84,6 +84,11 @@ export class MaterialTechniqueComponent implements OnInit {
     },
   ];
 
+  fieldTraduction = {
+    label: 'Libellé',
+    denominations: 'Dénominations',
+    type: 'Type',
+  };
   rowCount: any = 5;
 
   constructor(
@@ -192,21 +197,26 @@ export class MaterialTechniqueComponent implements OnInit {
 
   getAllItems() {
     this.simpleTabsRef.tabRef = 'materialTechniques';
-    this.simpleTabsRef
-      .getAllItems({ limit: this.limit, page: this.page, 'label[contains]': this.filter, sort: this.sort })
-      .subscribe(
-        (result: any) => {
-          this.items = result.results;
-          this.totalFiltred = result.filteredQuantity;
-          this.total = result.totalQuantity;
-          this.start = (this.page - 1) * this.limit + 1;
-          this.end = (this.page - 1) * this.limit + this.items.length;
-          this.loading = false;
-        },
-        (error: any) => {
-          this.addSingle('error', '', error.error.message);
-        }
-      );
+    const params = {
+      limit: this.limit,
+      page: this.page,
+      'label[contains]': this.filter,
+      sort_by: this.sortBy,
+      sort: this.sort,
+    };
+    this.simpleTabsRef.getAllItems(params).subscribe(
+      (result: any) => {
+        this.items = result.results;
+        this.totalFiltred = result.filteredQuantity;
+        this.total = result.totalQuantity;
+        this.start = (this.page - 1) * this.limit + 1;
+        this.end = (this.page - 1) * this.limit + this.items.length;
+        this.loading = false;
+      },
+      (error: any) => {
+        this.addSingle('error', '', error.error.message);
+      }
+    );
   }
   deleteItemss(item: any) {
     this.simpleTabsRef.tabRef = 'materialTechniques';
@@ -292,9 +302,14 @@ export class MaterialTechniqueComponent implements OnInit {
     this.filter = e.label;
     this.getAllItems();
   }
+  getKeyByValue(object: any, value: any) {
+    return Object.keys(object).find((key) => object[key] === value);
+  }
   sortEvent(e: any) {
     console.log(e);
-    if (e) {
+    this.sortBy = this.getKeyByValue(this.fieldTraduction, e.field);
+
+    if (e.order == 1) {
       this.sort = 'asc';
       this.getAllItems();
     } else {

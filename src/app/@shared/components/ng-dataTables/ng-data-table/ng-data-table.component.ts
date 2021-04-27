@@ -45,6 +45,7 @@ export class NgDataTableComponent implements OnInit {
   @Input() checkBoxSelection: Boolean = false;
   @Input() frozenWidth: string = '250px';
   @Input() component: string;
+  @Input() sortMeta: [{ field: 'label'; order: -1 }, { field: 'field'; order: -1 }];
   @Output() filterValue: EventEmitter<any> = new EventEmitter();
   @Output() action: EventEmitter<any> = new EventEmitter();
   calendar_fr: any;
@@ -201,9 +202,14 @@ export class NgDataTableComponent implements OnInit {
     }
   }
 
-  sortHeader() {
+  sortHeader(item: any, e: any, col: any) {
+    console.log(item, e, col);
     this.asc = !this.asc;
     this.sort.emit(this.asc);
+  }
+  sortData(e: any) {
+    console.log(e);
+    this.sort.emit(e);
   }
   handlePaginationInfo() {
     this.currentPage = this.currentPage ? this.currentPage : 1;

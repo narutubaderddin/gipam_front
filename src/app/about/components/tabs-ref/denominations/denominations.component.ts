@@ -79,6 +79,7 @@ export class DenominationsComponent implements OnInit {
     },
     {
       header: 'Domaine',
+      field: 'field',
       type: 'key-array',
       key_data: ['field', 'label'],
       filter: true,
