@@ -102,15 +102,6 @@ input:checked + .slider:before {
     color: #0466c8;
   }
 }
-::ng-deep .tooltip-inner {
-  max-width: fit-content;
-  //text-align: left;
-  background-color: #fff;
-  color: #000;
-  border-radius: 30px;
-  box-shadow: 0 0 3px #00000040;
-  opacity: 1;
-}
 .header-dropdown {
   display: flex;
   flex-wrap: wrap;
@@ -719,4 +710,127 @@ input:checked + .slider:before {
   to {
     transform: scale(1);
   }
+}
+
+.card-columns {
+  column-gap: 0;
+  orphans: 2;
+  widows: 2;
+
+  .active {
+    /*border: solid 2px #2196f3;*/
+    border: solid 2px rgba(12, 17, 43, 0.8);
+    border-radius: 0.25rem;
+  }
+
+  /* This is where the magic happens */
+  input[type="checkbox"] {
+    position: absolute;
+    top: 0.3em;
+    left: 0.5em;
+  }
+
+  @media (pointer: coarse) {
+    input[type="checkbox"] {
+      height: 2em;
+      width: 2em;
+    }
+  }
+
+  /* Use z-index to make it accessible to keyboard navigation */
+  @media (hover: hover) {
+    input[type="checkbox"] {
+      z-index: -1;
+    }
+    .card:hover input[type="checkbox"],
+    input[type="checkbox"]:focus,
+    input[type="checkbox"]:checked {
+      z-index: auto;
+    }
+  }
+}
+
+@media (min-width: 34em) {
+  .card-columns {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+  }
+}
+
+@media (min-width: 48em) {
+  .card-columns {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+  }
+}
+
+@media (min-width: 62em) {
+  .card-columns {
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4;
+  }
+}
+
+@media (min-width: 75em) {
+  .card-columns {
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4;
+  }
+}
+
+.section-name {
+  strong {
+    display: flex;
+    flex-direction: row;
+  }
+
+  strong:after {
+    content: "";
+    flex: 1 1;
+    border-bottom: 0.1em solid #babfc7;
+    margin: auto auto auto 1%;
+  }
+}
+
+/*.check-card {
+  input[type="checkbox"] {
+    margin-left: 3%;
+  }
+}*/
+
+div.actions-oeuvre {
+  margin-top: 2%;
+}
+
+.tab-oeuvre-actions {
+  width: 100%;
+  text-align: center;
+}
+
+.search-header {
+  position: sticky;
+  top: 0;
+  z-index: 49;
+  background: #ffffff;
+  padding: 1% 0 1% 0;
+  ::ng-deep .tooltip-inner {
+    max-width: fit-content;
+    //text-align: left;
+    background-color: #fff;
+    color: #000;
+    border-radius: 30px;
+    box-shadow: 0 0 3px #00000040;
+    opacity: 1;
+  }
+}
+
+.is-property {
+  background: #d4d2d2;
+}
+.card-footer {
+  border-radius: 0px;
 }

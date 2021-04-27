@@ -27,6 +27,7 @@ export class WorkOfArtService {
         { id: 5, name: 'Peinture sur papier' },
         { id: 6, name: 'Photographie' },
       ],
+      active: true,
     },
     {
       id: 1,
@@ -36,6 +37,7 @@ export class WorkOfArtService {
         { id: 2, name: 'Pendule' },
         { id: 3, name: 'Régulateur' },
       ],
+      active: true,
     },
     {
       id: 2,
@@ -44,9 +46,10 @@ export class WorkOfArtService {
         { id: 1, name: 'Applique' },
         { id: 2, name: 'Chandelier' },
       ],
+      active: false,
     },
-    { id: 4, name: 'Object décoratif' },
-    { id: 5, name: 'Peinture' },
+    { id: 4, name: 'Object décoratif', active: true },
+    { id: 5, name: 'Peinture', active: false },
     {
       id: 6,
       name: 'Sculpture',
@@ -54,12 +57,22 @@ export class WorkOfArtService {
         { id: 1, name: 'Buste' },
         { id: 2, name: 'Relief' },
       ],
+      active: true,
     },
-    { id: 7, name: 'Art textile' },
-    { id: 8, name: 'Pièce de musée' },
-    { id: 9, name: 'Art de la table' },
-    { id: 10, name: 'Decor monumental' },
-    { id: 11, name: 'Archeologie' },
+    { id: 7, name: 'Art textile', active: true },
+    { id: 8, name: 'Pièce de musée', active: true },
+    {
+      id: 9,
+      name: 'Art de la table',
+      active: true,
+      denominations: [
+        { id: 1, name: 'Plat de service' },
+        { id: 2, name: 'Chauffe plat' },
+        { id: 2, name: 'Couverts' },
+      ],
+    },
+    { id: 10, name: 'Decor monumental', active: true },
+    { id: 11, name: 'Archeologie', active: false },
   ];
   denominations = [
     { id: 1, name: 'Affiche' },

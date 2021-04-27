@@ -1,5 +1,4 @@
 <div class="wrapper d-flex">
-  <!-- Sidebar  -->
   <nav
     id="sidebar"
     [class.active]="collapseMenu"
@@ -36,6 +35,54 @@
             <i class="far fa-object-group" style="font-size: 18px"></i>
             <span style="margin-left: 5px">Recherche</span>
           </a>
+        </div>
+      </li>
+      <li class="right-header list main_nav_list_item rapport" *ngIf="isAuthentiticated && isAdmin">
+        <div class="dropdown nav-menu" [class.nav-active]="menu == 3">
+          <a
+            href="#dropAdministration"
+            data-toggle="collapse"
+            aria-expanded="false"
+            class="dropdown-toggle"
+            type="button"
+            id="dropdownAdm"
+            aria-haspopup="true"
+          >
+            <i class="fas fa-user-shield" style="font-size: 18px"></i>
+            <span style="margin-left: 5px">Administration</span>
+          </a>
+          <ul class="collapse list-unstyled" id="dropAdministration">
+            <li class="right-header list main_nav_list_item rapport" *ngIf="isAuthentiticated">
+              <div class="dropdown nav-menu" [class.nav-active]="menu == 3">
+                <a
+                  href="#droptabs"
+                  data-toggle="collapse"
+                  aria-expanded="false"
+                  class="dropdown-toggle"
+                  type="button"
+                  id="dropdowtabs"
+                  aria-haspopup="true"
+                >
+                  Gestion des tables de réferences
+                </a>
+                <ul class="collapse list-unstyled" id="droptabs">
+                  <a class="dropdown-item" (click)="goToDomainsList()">Domaines</a>
+                  <a class="dropdown-item" (click)="goToDenominationsList()">Dénominations</a>
+                  <a class="dropdown-item" (click)="goToMaterialList()">Matières</a>
+                  <a class="dropdown-item" (click)="goToStylesList()">Styles</a>
+                  <a class="dropdown-item" (click)="goToEpoquesList()">Epoques</a>
+                  <a class="dropdown-item" (click)="goToDepositTypesList()">Types Déposants</a>
+                  <a class="dropdown-item" (click)="goToReportTypesList()">Types Constats</a>
+                  <!--                  <a class="dropdown-item" (click)="goToReportSubTypesList()">Sous Types Constats</a>-->
+                  <a class="dropdown-item" (click)="goToActionReportTypesList()">Types Actions Constats</a>
+                  <a class="dropdown-item" (click)="goToCategoriesList()">Catégories</a>
+                  <a class="dropdown-item" (click)="goToTypeMvtList()">Types Mouvements</a>
+                  <a class="dropdown-item" (click)="goToTypeActtionMvtList()">Types Actions Mouvements</a>
+                </ul>
+              </div>
+            </li>
+            <a class="dropdown-item" href="#">Paramétrage des alertes</a>
+          </ul>
         </div>
       </li>
 

@@ -1,4 +1,4 @@
-import { NgModule, Provider } from '@angular/core';
+import { NgModule, Provider, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AgGridModule } from 'ag-grid-angular';
@@ -33,6 +33,9 @@ import { AccordionSectionComponent } from './components/accordion-section/accord
 import { NgxHorizontalTimelineModule } from 'ngx-horizontal-timeline';
 import { FullWidthCellRendererComponent as FullWidthCellRenderer } from './components/datatables/full-width-cell-renderer/full-width-cell-renderer.component';
 import { ImageViewerComponent } from './components/datatables/image-viewer/image-viewer.component';
+import { DomainsActionsRendererComponent } from './components/datatables/domains-actions-renderer/domains-actions-renderer.component';
+import { DenominationsActionsRendererComponent } from './components/datatables/denominations-actions-renderer/denominations-actions-renderer.component';
+import { FlashFormErrorsDirective } from './directives/flash-form-errors.directive';
 import { NgDataTableComponent } from './components/ng-dataTables/ng-data-table/ng-data-table.component';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
@@ -48,6 +51,9 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectButtonRenderComponent } from './components/ng-dataTables/select-button-render/select-button-render.component';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { AddDescriptionsComponent } from './components/notice-blocs/add-descriptions/add-descriptions.component';
+import { DropdownModule } from 'primeng/dropdown';
+import { StatusComponent } from './components/notice-blocs/status/status.component';
 
 @NgModule({
   imports: [
@@ -74,6 +80,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     NgMultiSelectDropDownModule,
     MultiSelectModule,
     SelectButtonModule,
+    DropdownModule,
   ],
   declarations: [
     LoaderComponent,
@@ -99,11 +106,16 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     AccordionSectionComponent,
     FullWidthCellRenderer,
     ImageViewerComponent,
+    DomainsActionsRendererComponent,
+    DenominationsActionsRendererComponent,
+    FlashFormErrorsDirective,
     NgDataTableComponent,
     ActionsCellComponent,
     StatusTypeComponentRenderComponent,
     VisibleCatalogComponentRenderComponent,
     SelectButtonRenderComponent,
+    AddDescriptionsComponent,
+    StatusComponent,
   ],
   exports: [
     LoaderComponent,
@@ -116,7 +128,10 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     AuthorBlocComponent,
     StatusBlocComponent,
     AccordionSectionComponent,
+    FlashFormErrorsDirective,
     NgDataTableComponent,
+    AddDescriptionsComponent,
+    StatusComponent,
   ],
 })
 export class SharedModule {}

@@ -1,132 +1,184 @@
 <div class="row images-container">
-  <!--  <div class="col-12" style="display: flex; flex-direction: row-reverse; margin-bottom: 20px">-->
-
-  <!--  </div>-->
-  <div class="col-12 content" [formGroup]="photographyForm">
-    <h5 class="col-md-12 p-0" *ngIf="add">Ajouter photographies</h5>
-    <div class="d-flex carousel-container mb-4" *ngIf="!add">
-      <div class="d-flex justify-content-center flex-column">
-        <div class="pictures-list">
-          <img src="assets/images/573.jpg" alt="" />
-          <img src="assets/images/573a.jpg" alt="" />
-          <img src="assets/images/573b.jpg" alt="" />
-          <img src="assets/images/573.jpg" alt="" />
-          <img src="assets/images/573b.jpg" alt="" />
-          <img src="assets/images/573.jpg" alt="" />
+  <div *ngIf="!add">
+    <div class="col-12 content">
+      <div class="d-flex carousel-container mb-4" *ngIf="!add">
+        <div class="d-flex justify-content-center flex-column">
+          <div class="pictures-list">
+            <img src="assets/images/573.jpg" alt="" />
+            <img src="assets/images/573a.jpg" alt="" />
+            <img src="assets/images/573b.jpg" alt="" />
+            <img src="assets/images/573.jpg" alt="" />
+            <img src="assets/images/573b.jpg" alt="" />
+            <img src="assets/images/573.jpg" alt="" />
+          </div>
+          <div style="align-self: center; font-size: 25px; color: gainsboro">
+            <i class="fas fa-chevron-down"></i>
+          </div>
         </div>
-        <div style="align-self: center; font-size: 25px; color: gainsboro">
-          <i class="fas fa-chevron-down"></i>
-        </div>
-      </div>
-      <ngb-carousel class="carousel" (slide)="onChange($event)" [interval]="false">
-        <ng-template ngbSlide id="slide1">
-          <div class="picsum-img-wrapper">
-            <img src="assets/images/573.jpg" alt="Random first slide" />
-          </div>
-          <div class="carousel-caption">
-            <!--            <h3>10 seconds between slides...</h3>-->
-            <!--            <p>This carousel uses customized default values.</p>-->
-          </div>
-        </ng-template>
-        <ng-template ngbSlide id="slide2">
-          <div class="picsum-img-wrapper">
-            <img src="assets/images/573a.jpg" alt="Random second slide" />
-          </div>
-          <div class="carousel-caption">
-            <!--            <h3>No mouse events...</h3>-->
-            <!--            <p>This carousel doesn't pause or resume on mouse events</p>-->
-          </div>
-        </ng-template>
-        <ng-template ngbSlide id="slide3">
-          <div class="picsum-img-wrapper">
-            <img src="assets/images/573b.jpg" alt="Random third slide" />
-          </div>
-          <div class="carousel-caption">
-            <!--            <h3>No keyboard...</h3>-->
-            <!--            <p>This carousel uses customized default values.</p>-->
-          </div>
-        </ng-template>
-        <ng-template ngbSlide id="slide4">
-          <div class="picsum-img-wrapper">
-            <img src="assets/images/573.jpg" alt="Random fourth slide" />
-          </div>
-          <div class="carousel-caption">
-            <!--            <h3>And no wrap after last slide.</h3>-->
-            <!--            <p>This carousel uses customized default values.</p>-->
-          </div>
-        </ng-template>
-      </ngb-carousel>
-    </div>
-
-    <div class="more-details mt-2 pt-4">
-      <div class="" *ngIf="slide == 1">
-        <div class="form-group col-md-12" *ngIf="add">
-          <label class="col-5">Photographie</label>
-          <div class="input-group input-group-sm upload-file">
-            <input class="form-control" [hidden]="true" type="file" accept=".png .jpg" #fileSelect />
-            <input readonly class="form-control" placeholder="Choisir fichier..." />
-            <div class="input-group-prepend">
-              <span class="input-group-text" (click)="fileSelect.click()" translate> Parcourir </span>
+        <ngb-carousel class="carousel" (slide)="onChange($event)" [interval]="false">
+          <ng-template ngbSlide id="slide1">
+            <div class="picsum-img-wrapper">
+              <img src="assets/images/573.jpg" alt="Random first slide" />
             </div>
-          </div>
-        </div>
-        <div class="form-group col-md-12" *ngIf="add">
-          <label class="col-md-3">Date</label>
-          <input type="date" class="form-control col-md-12" />
-        </div>
-        <p *ngIf="!add">
-          <strong class="col-5">Date d'ajout </strong>
-          <span class="col-7" *ngIf="!add">12/02/2019</span>
-        </p>
-        <div class="form-group col-md-12" *ngIf="add">
-          <label class="col-md-3">Type</label>
-          <div class="autocomplete col-md-12">
-            <select formControlName="photographyType" style="font-size: 12px" class="col-12 p-1">
+            <div class="carousel-caption"></div>
+          </ng-template>
+          <ng-template ngbSlide id="slide2">
+            <div class="picsum-img-wrapper">
+              <img src="assets/images/573a.jpg" alt="Random second slide" />
+            </div>
+            <div class="carousel-caption"></div>
+          </ng-template>
+          <ng-template ngbSlide id="slide3">
+            <div class="picsum-img-wrapper">
+              <img src="assets/images/573b.jpg" alt="Random third slide" />
+            </div>
+            <div class="carousel-caption"></div>
+          </ng-template>
+          <ng-template ngbSlide id="slide4">
+            <div class="picsum-img-wrapper">
+              <img src="assets/images/573.jpg" alt="Random fourth slide" />
+            </div>
+            <div class="carousel-caption"></div>
+          </ng-template>
+        </ngb-carousel>
+      </div>
+
+      <div class="more-details mt-2 pt-4">
+        <div class="d-flex flex-wrap" *ngIf="slide == 1">
+          <p *ngIf="!add">
+            <strong class="col-5">Date d'ajout </strong>
+            <span class="col-7" *ngIf="!add">12/02/2019</span>
+          </p>
+          <p>
+            <strong class="col-5" *ngIf="!add">Type </strong>
+            <span class="col-6" *ngIf="!editType && !add">Identification</span>
+            <i class="far fa-edit col-1" (click)="editType = !editType" *ngIf="!editType && !add"></i>
+          </p>
+
+          <div class="col-12 pr-0" *ngIf="editType">
+            <select style="font-size: 12px" class="col-12 p-1">
               <option value="">--Choisissez un type de photographie--</option>
               <option *ngFor="let type of types" [value]="type">{{ type }}</option>
             </select>
-            <ng-template #itemTemplate let-item>
-              <a [innerHTML]="item.name"></a>
-            </ng-template>
-            <ng-template #notFoundTemplate let-notFound>
-              <div [innerHTML]="notFound"></div>
-            </ng-template>
+            <div class="d-flex justify-content-end col-12 p-0 mt-2 mb-2 edition-btn">
+              <button (click)="editType = !editType" class="mr-2">Annuler</button>
+              <button (click)="editPhotoType()">Valider</button>
+            </div>
           </div>
         </div>
-        <p>
-          <strong class="col-5" *ngIf="!add">Type </strong>
-          <span class="col-6" *ngIf="!editType && !add">Identification</span>
-          <i class="far fa-edit col-1" (click)="editType = !editType" *ngIf="!editType && !add"></i>
-        </p>
 
-        <div class="col-12 pr-0" *ngIf="editType">
-          <select formControlName="photographyType" style="font-size: 12px" class="col-12 p-1">
-            <option value="">--Choisissez un type de photographie--</option>
-            <option *ngFor="let type of types" [value]="type">{{ type }}</option>
-          </select>
-          <div class="d-flex justify-content-end col-12 p-0 mt-2 mb-2 edition-btn">
-            <button (click)="editType = !editType" class="mr-2">Annuler</button>
-            <button (click)="editPhotoType()">Valider</button>
+        <div class="" *ngIf="slide == 2">
+          <p><strong>Date d'ajout </strong><span> 16/04/2019</span></p>
+          <p><strong>Type </strong> <i class="far fa-edit"></i></p>
+        </div>
+        <div class="" *ngIf="slide == 3">
+          <p><strong>Date d'ajout </strong> <span>12/06/2019</span></p>
+          <p><strong>Type </strong> <span>Numérique</span><i class="far fa-edit"></i></p>
+        </div>
+        <div class="" *ngIf="slide == 4">
+          <p><strong>Date d'ajout </strong> <span>12/09/2019</span></p>
+          <p><strong>Type </strong> <span>Numérique</span><i class="far fa-edit"></i></p>
+        </div>
+        <button class="btn add-action mb-2" (click)="addImg()" *ngIf="!add">
+          <i class="fas fa-plus"></i>
+          Ajouter une photographie
+        </button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="add">
+    <div class="col-12 content">
+      <h5 class="col-md-12 pt-2">Ajouter photographies</h5>
+      <div class="more-details mt-2 pt-4">
+        <div class="d-flex flex-wrap">
+          <div class="d-flex carousel-container mb-4" *ngIf="images.length">
+            <p-galleria
+              [(value)]="images"
+              [containerStyle]="{ 'max-width': '400px' }"
+              [numVisible]="5"
+              [activeIndex]="images.length - 1"
+            >
+              <ng-template pTemplate="item" let-item>
+                <img width="100%" height="250" [src]="item.imageUrl" [alt]="item.alt" />
+              </ng-template>
+              <ng-template pTemplate="thumbnail" let-item>
+                <div class="p-grid p-nogutter p-justify-center">
+                  <img height="50" [src]="item.imageUrl" alt="" (click)="show(item)" />
+                </div>
+              </ng-template>
+            </p-galleria>
+          </div>
+          <div>
+            <div>
+              <div class="form-group col-md-12">
+                <label class="col-5">Photographie</label>
+                <div class="input-group input-group-sm upload-file">
+                  <div class="input-group input-group-sm h-auto">
+                    <input
+                      class="form-control"
+                      [hidden]="true"
+                      (change)="handleFileInput($event.target.files)"
+                      accept=".PNG,.png,.jpg,.JPG, .jpeg, .JPEG"
+                      type="file"
+                      #fileSelect
+                    />
+                    <input readonly class="form-control" [(ngModel)]="imageName" placeholder="Select file..." />
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" (click)="fileSelect.click()" translate>
+                        <i class="fas fa-upload mr-2"></i>Importer
+                      </span>
+                    </div>
+                  </div>
+                  <span *ngIf="!validate && !photography.length" class="mandatory">Saisir une photo</span>
+                </div>
+              </div>
+              <div class="form-group col-md-12">
+                <label class="col-md-3">Date</label>
+                <p-calendar
+                  class="col-md-12"
+                  [style]="{ minWidth: '100%' }"
+                  [(ngModel)]="photographyDate"
+                  [showIcon]="true"
+                  inputId="icon"
+                ></p-calendar>
+              </div>
+              <div class="form-group col-md-12">
+                <label class="col-md-3">Type</label>
+                <p-dropdown
+                  class="col-md-12"
+                  [style]="{ minWidth: '100%' }"
+                  [options]="types"
+                  [(ngModel)]="photographyType"
+                  placeholder="Choisir un type"
+                  optionLabel="name"
+                  [showClear]="false"
+                ></p-dropdown>
+                <span class="mandatory" *ngIf="!validate && !photographyType">Veuillez saisir un type</span>
+              </div>
+              <button class="btn add-action mb-2" (click)="addPhotography()">
+                <i class="fas fa-plus"></i>
+                Valider
+              </button>
+            </div>
           </div>
         </div>
       </div>
-
-      <div class="" *ngIf="slide == 2">
-        <p><strong>Date d'ajout </strong><span> 16/04/2019</span></p>
-        <p><strong>Type </strong> <i class="far fa-edit"></i></p>
-      </div>
-      <div class="" *ngIf="slide == 3">
-        <p><strong>Date d'ajout </strong> <span>12/06/2019</span></p>
-        <p><strong>Type </strong> <span>Numérique</span><i class="far fa-edit"></i></p>
-      </div>
-      <div class="" *ngIf="slide == 4">
-        <p><strong>Date d'ajout </strong> <span>12/09/2019</span></p>
-        <p><strong>Type </strong> <span>Numérique</span><i class="far fa-edit"></i></p>
-      </div>
-      <button class="form-control w-100 btn add-action mb-2" (click)="addImg()" *ngIf="!add">
-        <i class="fas fa-plus"></i>
-        Ajouter une photographie
-      </button>
+    </div>
+  </div>
+</div>
+<div class="form-group">
+  <div class="row col-sm-12">
+    <div class="form-group ml-0 col-sm-5" id="file">
+      <input
+        class="file-input"
+        type="file"
+        name="resume"
+        #file
+        (change)="handleFileInput($event.target.files)"
+        accept=".PNG,.png,.jpg,.JPG, .jpeg, .JPEG"
+        id="import-file"
+        hidden
+      />
     </div>
   </div>
 </div>

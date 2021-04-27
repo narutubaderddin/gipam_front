@@ -1,6 +1,7 @@
 <form [formGroup]="form">
   <div class="table-container card">
     <p-table
+      [loading]="loading"
       [value]="data"
       [dataKey]="key"
       [paginator]="false"
@@ -60,6 +61,7 @@
               [id]="'dropDowFilter-' + col.header"
               ngbDropdownToggle
             ></i>
+
             <div class="py-0 ng-dropdown" ngbDropdownMenu [attr.aria-labelledby]="'dropDowFilter-' + col.header">
               <div [ngSwitch]="col.filterType">
                 <input type="text" [placeholder]="col.header" (input)="filterHeader($event)" *ngSwitchCase="'text'" />
@@ -97,6 +99,7 @@
               *ngIf="col.sortable"
               [field]="col.header"
               [pSortableColumn]="col.sortable ? col.header : ''"
+              (click)="sortHeader()"
             ></p-sortIcon>
 
             <i
@@ -184,7 +187,12 @@
           </td>
           <td *ngFor="let col of columns">
             <span [ngSwitch]="col.type">
-              <app-actions-cell *ngSwitchCase="'app-actions-cell'" [value]="item[col.field]"></app-actions-cell>
+              <app-actions-cell
+                *ngSwitchCase="'app-actions-cell'"
+                [value]="item"
+                [component]="component"
+                (methodToEmit)="actionMethod($event)"
+              ></app-actions-cell>
               <app-status-type-component-render
                 *ngSwitchCase="'app-status-component-render'"
                 [value]="item[col.field]"
@@ -193,9 +201,22 @@
                 *ngSwitchCase="'app-visible-catalog-component-render'"
                 [value]="item[col.field]"
               ></app-visible-catalog-component-render>
+              <span *ngSwitchCase="'key-multiple-data'">
+                <span *ngFor="let Item of item[col.key_multiple_data[0]]; let i = index"
+                  >{{ Item[col.key_multiple_data[1]] }}
+                  <span *ngIf="i < item[col.key_multiple_data[0]].length - 1">,</span>
+                </span>
+              </span>
+              <span *ngSwitchCase="'key-array'"> {{ item[col.key_data[0]][col.key_data[1]] }} </span>
+
               <span *ngSwitchDefault> {{ item[col.field] }} </span>
             </span>
           </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6">{{ noDataMessage }}</td>
         </tr>
       </ng-template>
 
@@ -230,15 +251,17 @@
                 </ng-template>
               </p-table>
             </div>
-            ng
           </td>
         </tr>
       </ng-template>
     </p-table>
     <div style="position: relative; display: flex; flex-direction: row-reverse">
-      <p-paginator rows="5" (onPageChange)="onPageChange($event)" [totalRecords]="total"></p-paginator>
+      <p-paginator rows="5" (onPageChange)="onChangePage($event)" [totalRecords]="totalFiltred"></p-paginator>
       <span style="position: absolute; top: 3px; left: 12px; margin: 15px"
-        >Résultats de {{ start }} à {{ data.length }} / {{ totalFiltred }} (filtrés parmis {{ total }})
+        >Résultats
+        <span *ngIf="totalFiltred !== 0">de {{ start }} à {{ end }} / {{ totalFiltred }}</span>
+        <span *ngIf="totalFiltred === 0"> 0 éléments</span>
+        (filtrés parmis {{ total }})
       </span>
     </div>
   </div>

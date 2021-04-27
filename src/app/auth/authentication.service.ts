@@ -62,11 +62,11 @@ export class AuthenticationService {
     return throwError(error.error.message);
   }
 
-  getToken(): string {
+  getToken(): any {
     return this.localStorageService.get(TOKEN_KEY);
   }
 
-  setToken(token: string) {
+  setToken(token: any) {
     this.localStorageService.set(TOKEN_KEY, token);
   }
 
@@ -75,15 +75,22 @@ export class AuthenticationService {
   }
 
   isAuthenticated(): boolean {
-    return this.getToken() == 'true';
+    let currentToken = this.getToken();
+    console.log(currentToken);
+    return currentToken.token == 'true';
   }
-
+  isAdmin(): boolean {
+    let currentToken = this.getToken();
+    return currentToken.isAdmin;
+  }
   login(loginRequest: LoginContext): Observable<User> {
-    console.log(true);
-    this.setToken('true');
+    console.log(loginRequest['username'].includes('admin'));
+    let isAdmin = loginRequest['username'].includes('admin');
+    this.setToken({ token: 'true', isAdmin: isAdmin });
     this.authenticated = true;
     return this.http.post<any>('/login_check', loginRequest).pipe(
       map((data: any) => {
+        console.log(data);
         if (data.token) {
           this.currentUser = Object.assign({}, this.jwtService.decodeToken(data.token));
           this.setToken(data.token);

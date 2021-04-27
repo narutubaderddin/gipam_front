@@ -32,6 +32,8 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
   providers: [I18n, { provide: NgbDatepickerI18n, useClass: CustomDatepickerI18nService }],
 })
 export class NgDataTableComponent implements OnInit {
+  @Input() noDataMessage = 'Aucun élément à afficher';
+  @Input() loading = false;
   @Input() columns: any[];
   @Input() expandColumns: any[] = [];
   @Input() frozenCols: any[] = [];
@@ -42,12 +44,21 @@ export class NgDataTableComponent implements OnInit {
   @Input() total: number = 10;
   @Input() checkBoxSelection: Boolean = false;
   @Input() frozenWidth: string = '250px';
+  @Input() component: string;
+  @Output() filterValue: EventEmitter<any> = new EventEmitter();
+  @Output() action: EventEmitter<any> = new EventEmitter();
+  calendar_fr: any;
+  @Output() pageChanged = new EventEmitter();
+  @Output() sort = new EventEmitter();
   @Input() singleSelect: Boolean = false;
   @Input() expand: Boolean = false;
-
-  @Output() pageChanged = new EventEmitter();
+  @Input() page: any;
+  @Input() limit: any;
   @Output() singleSelectionEvent = new EventEmitter();
   @Output() multipleSelectionEvent = new EventEmitter();
+  asc: boolean = true;
+  currentPage: number;
+  paginationSize: number;
   @Output() filterChange = new EventEmitter();
 
   dropdownSettings: IDropdownSettings;
@@ -58,12 +69,14 @@ export class NgDataTableComponent implements OnInit {
   toDate: NgbDate | null = null;
   selectedRows: any[];
   form: FormGroup;
+
   constructor(calendar: NgbCalendar, public formBuilder: FormBuilder) {
     this.fromDate = calendar.getToday();
   }
 
   ngOnInit(): void {
-    this.data = this.data.slice(0, 5);
+    console.log('columns', this.columns);
+
     this.key = this.columns[0]['field'];
     this.form = this.formBuilder.group({});
     this.initForm(this.columns);
@@ -94,10 +107,23 @@ export class NgDataTableComponent implements OnInit {
       unSelectAllText: 'Supprimer les sélections',
       allowSearchFilter: true,
     };
+    // pagination
+    if (!this.currentPage) {
+      this.currentPage = 1;
+    }
   }
 
-  onPageChange(event: any) {
-    console.log(event);
+  onChangePage(event: any) {
+    this.pageChanged.emit(event);
+    this.currentPage = event.page + 1;
+    this.paginationSize = event.rows;
+    this.currentPage = this.currentPage ? this.currentPage : 1;
+    // calculate from data index
+    const from = event.first + 1;
+    this.start = (this.currentPage - 1) * this.paginationSize && from ? from : 1;
+    // calculate to data index
+    const to = this.currentPage * this.paginationSize;
+    this.end = Math.min(to, this.total);
   }
 
   filterHeader($event: Event) {
@@ -155,8 +181,18 @@ export class NgDataTableComponent implements OnInit {
     this.multipleSelectionEvent.emit(event);
   }
 
+  onChange() {}
+
+  actionMethod(e: any) {
+    this.action.emit(e);
+  }
+
   update(columns: any[]) {
     this.columns = columns;
+    this.ngOnInit();
+  }
+  updateData(data: any[]) {
+    this.data = data;
     this.ngOnInit();
   }
 
@@ -164,5 +200,19 @@ export class NgDataTableComponent implements OnInit {
     if (!open) {
       this.filterChange.emit(this.form.value);
     }
+  }
+
+  sortHeader() {
+    this.asc = !this.asc;
+    this.sort.emit(this.asc);
+  }
+  handlePaginationInfo() {
+    this.currentPage = this.currentPage ? this.currentPage : 1;
+    // calculate from data index
+    const from = (this.currentPage - 1) * this.limit + 1;
+    this.start = this.data.length && from ? from : 1;
+    // calculate to data index
+    const to = this.currentPage * this.limit;
+    this.end = this.data.length === this.limit && to ? to : this.total;
   }
 }
