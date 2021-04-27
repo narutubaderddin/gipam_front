@@ -92,6 +92,7 @@ import { ModalMvtActionTypesComponent } from './components/tabs-ref/movement-act
 import { ReportSubTypesComponent } from './components/tabs-ref/report-sub-types/report-sub-types.component';
 import { GalleriaModule } from 'primeng/galleria';
 import { ModalReportSubTypesComponent } from './components/tabs-ref/report-sub-types/modal-report-sub-types/modal-report-sub-types.component';
+import { EstablishmentsComponent } from '@app/about/components/tabs-ref/establishment/establishments.component';
 
 setTheme('bs4');
 
@@ -151,6 +152,7 @@ const ngWizardConfig: NgWizardConfig = {
     ModalMvtActionTypesComponent,
     ReportSubTypesComponent,
     ModalReportSubTypesComponent,
+    EstablishmentsComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [

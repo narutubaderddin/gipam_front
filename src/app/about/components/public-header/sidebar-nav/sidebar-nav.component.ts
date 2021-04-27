@@ -124,4 +124,8 @@ export class SidebarNavComponent implements OnInit {
     this.router.navigate(['tab-ref-sous-type-constat']);
     this.toggleClose();
   }
+  goToEstablishmentList() {
+    this.router.navigate(['tab-ref-establishment']);
+    this.toggleClose();
+  }
 }
