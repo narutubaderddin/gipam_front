@@ -202,11 +202,11 @@ export class NgDataTableComponent implements OnInit {
     }
   }
 
-  sortHeader(item: any, e: any, col: any) {
-    console.log(item, e, col);
-    this.asc = !this.asc;
-    this.sort.emit(this.asc);
-  }
+  // sortHeader(item: any, e: any, col: any) {
+  //   console.log(item, e, col);
+  //   this.asc = !this.asc;
+  //   this.sort.emit(this.asc);
+  // }
   sortData(e: any) {
     console.log(e);
     this.sort.emit(e);

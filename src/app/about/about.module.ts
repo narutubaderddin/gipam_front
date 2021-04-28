@@ -93,6 +93,7 @@ import { ReportSubTypesComponent } from './components/tabs-ref/report-sub-types/
 import { GalleriaModule } from 'primeng/galleria';
 import { ModalReportSubTypesComponent } from './components/tabs-ref/report-sub-types/modal-report-sub-types/modal-report-sub-types.component';
 import { EstablishmentsComponent } from '@app/about/components/tabs-ref/establishment/establishments.component';
+import { MinistryComponent } from './components/tabs-ref/ministry/ministry.component';
 
 setTheme('bs4');
 
@@ -153,6 +154,7 @@ const ngWizardConfig: NgWizardConfig = {
     ReportSubTypesComponent,
     ModalReportSubTypesComponent,
     EstablishmentsComponent,
+    MinistryComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [

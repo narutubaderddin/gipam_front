@@ -33,7 +33,7 @@ export class ModalMvtActionTypesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initForm();
+
     this.dropdownSettings = {
       singleSelection: true,
       textField: 'label',
@@ -51,11 +51,14 @@ export class ModalMvtActionTypesComponent implements OnInit {
     this.active = this.fromParent.active;
     this.selectedItem = this.fromParent.selectedItem;
     this.name = this.fromParent.name;
+    this.selectedMvtType=this.fromParent.selectedMvtType,
     console.log(this.selectedItem, this.editItem);
+
+    this.initForm();
   }
   initForm() {
     this.tabForm = this.fb.group({
-      movementType: [this.selectedItem, [Validators.required]],
+      movementType: [this.selectedMvtType, [Validators.required]],
       label: [this.selectedItem, [Validators.required]],
       active: [true],
     });

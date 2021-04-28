@@ -27,13 +27,13 @@ export class MovementActionTypesComponent implements OnInit {
   addItem = false;
   deleteItems = false;
   dropdownSettings: IDropdownSettings;
-
+  selectedMvtType: any;
   active = true;
   dropdownList: any;
   itemLabel: any;
 
   filter: any;
-  sortBy = 'id';
+  sortBy = '';
   sort = 'asc';
   totalFiltred: any;
   total: any;
@@ -57,7 +57,10 @@ export class MovementActionTypesComponent implements OnInit {
   };
 
   items: any;
-
+  fieldNames = {
+    label: 'Libellé',
+    movementType: 'Type mouvement',
+  };
   columns = [
     {
       header: 'Libellé',
@@ -72,9 +75,9 @@ export class MovementActionTypesComponent implements OnInit {
       field: 'movementType',
       type: 'key-array',
       key_data: ['movementType', 'label'],
-      filter: true,
+      filter: false,
       filterType: 'text',
-      sortable: true,
+      sortable: false,
     },
     {
       header: 'Actions',
@@ -121,7 +124,15 @@ export class MovementActionTypesComponent implements OnInit {
         this.editItem = true;
         this.itemToEdit = item;
         this.itemLabel = item.label;
+        this.selectedMvtType = [
+          {
+            id: item.movementType.id,
+            label: item.movementType.label,
+          },
+        ];
+        console.log('selectedMvtType', this.selectedMvtType)
       } else {
+        this.selectedMvtType = [];
         this.addItem = true;
       }
     }
@@ -141,6 +152,7 @@ export class MovementActionTypesComponent implements OnInit {
       itemToEdit: this.itemToEdit,
       selectedItem: this.selectedItem,
       active: this.active,
+      selectedMvtType:this.selectedMvtType,
     };
 
     modalRef.result.then(
@@ -332,13 +344,17 @@ export class MovementActionTypesComponent implements OnInit {
     this.getAllItems();
   }
 
+  getKeyByValue(object: any, value: any) {
+    return Object.keys(object).find((key) => object[key] === value);
+  }
+
   sortEvent(e: any) {
-    this.sortBy = 'label';
-    if (e) {
-      this.sort = 'desc';
+    this.sortBy = this.getKeyByValue(this.fieldNames, e.field);
+    if (e.order === 1) {
+      this.sort = 'asc';
       this.getAllItems();
     } else {
-      this.sort = 'asc';
+      this.sort = 'desc';
       this.getAllItems();
     }
   }

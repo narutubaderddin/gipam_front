@@ -40,7 +40,7 @@ export class MaterialTechniqueComponent implements OnInit {
   page: any = '1';
   start: any;
   end: any;
-  sortBy = 'label';
+  sortBy = '';
   sort = 'asc';
   loading: boolean = false;
   items: any;
@@ -60,9 +60,9 @@ export class MaterialTechniqueComponent implements OnInit {
       field: 'denominations',
       type: 'key-multiple-data',
       key_multiple_data: ['denominations', 'label'],
-      filter: true,
+      filter: false,
       filterType: 'text',
-      sortable: true,
+      sortable: false,
       scrollable: true,
     },
     {
@@ -204,6 +204,7 @@ export class MaterialTechniqueComponent implements OnInit {
       sort_by: this.sortBy,
       sort: this.sort,
     };
+    console.log(params);
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results;

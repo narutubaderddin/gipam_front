@@ -28,7 +28,7 @@ export class EpoquesComponent implements OnInit {
   deleteItems = false;
   itemLabel: any;
   filter: any;
-  sortBy = 'id';
+  sortBy = '';
   sort = 'asc';
   totalFiltred: any;
   total: any;
@@ -36,7 +36,9 @@ export class EpoquesComponent implements OnInit {
   page: any = '1';
   start: any;
   end: any;
-
+  fieldTraduction = {
+    label: 'Libellé',
+  };
   loading: boolean = false;
   defaultColDef = {
     headerComponent: 'customHeader',
@@ -234,8 +236,14 @@ export class EpoquesComponent implements OnInit {
 
     this.getAllItems();
   }
+  getKeyByValue(object: any, value: any) {
+    return Object.keys(object).find((key) => object[key] === value);
+  }
   sortEvent(e: any) {
-    if (e) {
+    console.log(e);
+    this.sortBy = this.getKeyByValue(this.fieldTraduction, e.field);
+
+    if (e.order == 1) {
       this.sort = 'asc';
       this.getAllItems();
     } else {
@@ -304,4 +312,5 @@ export class EpoquesComponent implements OnInit {
       }
     );
   }
+
 }

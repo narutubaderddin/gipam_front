@@ -37,7 +37,7 @@ export class DenominationsComponent implements OnInit {
   itemLabel: any;
 
   filter: any;
-  sortBy = 'label';
+  sortBy = '';
   sort: string = 'asc';
   totalFiltred: any;
   total: any;
@@ -46,6 +46,11 @@ export class DenominationsComponent implements OnInit {
   end: number;
   start: number;
   loading: boolean = false;
+
+  fieldTraduction = {
+    label: 'Libellé',
+    domaine: 'Domaine'
+  };
 
   frameworkComponents = {
     customHeader: CustomHeaderRendererComponent,
@@ -82,9 +87,9 @@ export class DenominationsComponent implements OnInit {
       field: 'field',
       type: 'key-array',
       key_data: ['field', 'label'],
-      filter: true,
+      filter: false,
       filterType: 'text',
-      sortable: true,
+      sortable: false,
     },
     {
       header: 'Actions',
@@ -327,9 +332,14 @@ export class DenominationsComponent implements OnInit {
     this.filter = e.label;
     this.getAllDenominations();
   }
+  getKeyByValue(object: any, value: any) {
+    return Object.keys(object).find((key) => object[key] === value);
+  }
   sortEvent(e: any) {
     console.log(e);
-    if (e) {
+    this.sortBy = this.getKeyByValue(this.fieldTraduction, e.field);
+
+    if (e.order == 1) {
       this.sort = 'asc';
       this.getAllDenominations();
     } else {
