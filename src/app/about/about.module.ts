@@ -14,7 +14,6 @@ import { AddActionModalComponent } from './components/item-details/actions/add-a
 import { EditActionModalComponent } from './components/item-details/actions/edit-action-modal/edit-action-modal.component';
 import { MovementsComponent } from './components/item-details/movements/movements.component';
 import { MovementsService } from '@app/about/components/item-details/movements/movements.service';
-import { ItemImagesComponent } from './components/item-details/item-images/item-images.component';
 import { AboutComponent } from '@app/about/about.component';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { ListWorkOfArtsComponent } from './components/list-work-of-arts/list-work-of-arts.component';
@@ -23,32 +22,26 @@ import { RequestComponent } from '@app/about/components/list-work-of-arts/reques
 import { PortailComponent } from './components/portail/portail.component';
 import { TreeviewModule } from 'ngx-treeview';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
-import { AddPropertyRemarquerComponent } from './components/add-property-remarquer/add-property-remarquer.component';
+import { AddRemarquerComponent } from './components/add-remarquer/add-remarquer.component';
 import { PortailItemDetailsComponent } from './components/portail-item-details/portail-item-details.component';
 import { PortailItemImageComponent } from './components/portail-item-details/portail-item-image/portail-item-image.component';
 import { ObservationsComponent } from './components/item-details/observations/observations.component';
-import { DescritifComponent } from './components/item-details/details/descritif/descritif.component';
-import { AuthorComponent } from './components/item-details/details/author/author.component';
+import { DescritifComponent } from './components/item-details/descritif/descritif.component';
 import { TagInputModule } from 'ngx-chips';
 import { ProofsInProgressComponent } from './components/administrator-home-page/proofs-in-progress/proofs-in-progress.component';
 import { Ng7BootstrapBreadcrumbModule } from 'ng7-bootstrap-breadcrumb';
 import { InProgressAlertsComponent } from './components/administrator-home-page/in-progress-alerts/in-progress-alerts.component';
-import { DepositorComponent } from './components/item-details/details/depositor/depositor.component';
 import { ProofsDetailsComponent } from './components/administrator-home-page/proofs-in-progress/proofs-details/proofs-details.component';
 import { PortailImgDetailsComponent } from './components/portail-item-details/portail-img-details/portail-img-details.component';
 import { SidebarNavComponent } from './components/public-header/sidebar-nav/sidebar-nav.component';
 import { DynamicComponent } from './components/item-details/dynamic/dynamic.component';
-import { AddImgModalComponent } from './components/item-details/item-images/add-img-modal/add-img-modal.component';
-import { AttachmentsComponent } from './components/item-details/attachments/attachments.component';
 import { NgxHorizontalTimelineModule } from 'ngx-horizontal-timeline';
-import { LinksComponent } from './components/item-details/links/links.component';
 import { LastMovementComponent } from './components/item-details/movements/last-movement/last-movement.component';
 import { NgImageSliderModule } from 'ng-image-slider';
 import { NgWizardModule, NgWizardConfig, THEME } from 'ng-wizard';
 import { FullWidthCellRendererComponent as FullWidthCellRenderer } from '@app/@shared/components/datatables/full-width-cell-renderer/full-width-cell-renderer.component';
 import { NoticeBeingCreatedComponent } from './components/administrator-home-page/notice-being-created/notice-being-created.component';
 import { NgFileDragDropModule } from 'ng-file-drag-drop';
-import { HypertextLinksComponent } from './components/item-details/links/hypertext-links/hypertext-links.component';
 import { BsDatepickerModule, BsDatepickerConfig, DatepickerModule } from 'ngx-bootstrap/datepicker';
 import { setTheme } from 'ngx-bootstrap/utils';
 import { NoticeListComponent } from './components/notice-list/notice-list.component';
@@ -109,30 +102,23 @@ const ngWizardConfig: NgWizardConfig = {
     AddActionModalComponent,
     EditActionModalComponent,
     MovementsComponent,
-    ItemImagesComponent,
     ListWorkOfArtsComponent,
     AdministratorHomePageComponent,
     RequestComponent,
     PortailComponent,
-    AddPropertyRemarquerComponent,
+    AddRemarquerComponent,
     PortailItemDetailsComponent,
     PortailItemImageComponent,
     ObservationsComponent,
     DescritifComponent,
-    AuthorComponent,
     ProofsInProgressComponent,
     InProgressAlertsComponent,
     ProofsDetailsComponent,
     PortailImgDetailsComponent,
-    DepositorComponent,
     SidebarNavComponent,
     DynamicComponent,
-    AddImgModalComponent,
-    AttachmentsComponent,
-    LinksComponent,
     LastMovementComponent,
     NoticeBeingCreatedComponent,
-    HypertextLinksComponent,
     NoticeListComponent,
     RecolementListComponent,
     AlertListComponent,
@@ -199,7 +185,6 @@ const ngWizardConfig: NgWizardConfig = {
     CheckboxModule,
     SelectButtonModule,
     GalleriaModule,
-    MultiSelectModule,
   ],
   providers: [MovementsService, BsDatepickerConfig, MessageService],
 })

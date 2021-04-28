@@ -1,3 +1,32 @@
+.attachement-container {
+  border: 1px solid #cecece;
+  border-radius: 1rem;
+  height: 330px;
+}
+.attachment {
+  font-size: 14px;
+  cursor: pointer;
+  i {
+    font-size: 18px;
+  }
+  .attachment-name {
+    width: 215px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    height: 18px;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  &.active {
+    background-color: #cecece;
+  }
+}
+.fa-trash {
+  color: #be3d4d;
+}
+.file-list {
+  overflow-y: scroll;
+}
 h5 {
   color: #347898;
   font-weight: 600;
@@ -81,6 +110,7 @@ h5 {
   color: #5687ae;
   line-height: 0.5;
   text-align: center;
+  cursor: pointer;
 }
 ::ng-deep .upload-file {
   .dropZone {
@@ -94,16 +124,6 @@ h5 {
     margin: 0 auto;
     min-height: 8rem;
     min-width: 8rem;
-
-    //input{
-    //  opacity: 0;
-    //  position: unset !important;
-    //  z-index: 2;
-    //  width: 100%;
-    //  height: 100%;
-    //  top: 0;
-    //  left: 0;
-    //}
   }
   img {
     width: 30px;

@@ -718,6 +718,13 @@ p-calendar {
   line-height: 10px;
 }
 .p-dropdown {
+  .p-dropdown-header {
+    .p-dropdown-filter-container {
+      .p-dropdown-filter {
+        height: 25px;
+      }
+    }
+  }
   .p-dropdown-label {
     font-size: 12px;
   }

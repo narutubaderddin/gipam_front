@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren, Inpu
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'angular2-notifications';
 import { SharedService } from '@shared/services/shared.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-item-details',
@@ -19,6 +20,7 @@ export class ItemDetailsComponent implements OnInit {
   type: string = 'depot';
   page: any = 2;
   edit = false;
+  depositStatusForm: FormGroup;
   moreDetails = ['19-01-2020', '23-02-2020', '01-03-2020', '25-03-2020', '20-04-2020'];
   // isCollapsed: boolean = false;
   dynamic: boolean = false;
@@ -33,7 +35,8 @@ export class ItemDetailsComponent implements OnInit {
   constructor(
     config: NgbCarouselConfig,
     private notificationsService: NotificationsService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private fb: FormBuilder
   ) {
     config.interval = 10000;
     config.wrap = false;
@@ -43,6 +46,7 @@ export class ItemDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.menuClosed;
+    this.initDepositStatusForm();
   }
 
   ngAfterViewInit() {
@@ -58,7 +62,12 @@ export class ItemDetailsComponent implements OnInit {
       this.sticky = false;
     }
   }
-
+  initDepositStatusForm() {
+    this.depositStatusForm = this.fb.group({
+      depositDate: [''],
+      stopNumber: [''],
+    });
+  }
   f1(e: any) {
     this.dynamic = e;
     console.log(this.dynamic);

@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { WorkOfArtService } from '@shared/services/work-of-art.service';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-status',
@@ -10,10 +12,13 @@ export class StatusComponent implements OnInit {
   @Input() keyword: string;
   @Input() edit = false;
   @Input() addProperty = false;
+  @Input() addDeposit = false;
+  @Input() propertyStatusForm: FormGroup;
+  @Input() depositStatusForm: FormGroup;
   isCollapsed = false;
   categories = ['Bien patrimonial exceptionnel', 'Bien patrimonial standard', 'Bien usuel', 'issu du 1% artistique'];
   modeEntree = ["Inscription rétrospective à l'inventaire", 'Don', 'Acquisition', "Cession / transfert d'affectation"];
-  constructor() {}
+  constructor(public WorkOfArtService: WorkOfArtService) {}
 
   ngOnInit(): void {}
   selectEvent(item: any) {}
