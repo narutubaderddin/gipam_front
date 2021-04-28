@@ -5,6 +5,7 @@
 }
 .attachment {
   font-size: 14px;
+  cursor: pointer;
   i {
     font-size: 18px;
   }
@@ -12,7 +13,12 @@
     width: 215px;
     text-overflow: ellipsis;
     overflow: hidden;
-    height: 20px;
+    height: 18px;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  &.active {
+    background-color: #cecece;
   }
 }
 .fa-trash {
@@ -104,6 +110,7 @@ h5 {
   color: #5687ae;
   line-height: 0.5;
   text-align: center;
+  cursor: pointer;
 }
 ::ng-deep .upload-file {
   .dropZone {

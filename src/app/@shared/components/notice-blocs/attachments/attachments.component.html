@@ -105,7 +105,7 @@
         </div>
         <div class="col-md-8 file-list" *ngIf="files">
           <div class="d-flex" *ngFor="let attachment of files; let i = index">
-            <span class="attachment d-flex" (click)="showItem(i)"
+            <span class="attachment d-flex" (click)="showItem(i)" [ngClass]="{ active: selectedAttachment === i }"
               ><i class="fas fa-file-alt mr-2"></i>
               <p class="attachment-name">{{ attachment.name }}</p></span
             >
