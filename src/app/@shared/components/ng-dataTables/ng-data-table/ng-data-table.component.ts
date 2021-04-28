@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
-import { NgbCalendar, NgbDate, NgbDatepickerI18n } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDate, NgbDateAdapter, NgbDatepickerI18n } from '@ng-bootstrap/ng-bootstrap';
 import { CustomDatepickerI18nService, I18n } from '@shared/services/custom-datepicker-i18n.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { pcalendar_fr } from '@shared/utils/p-calendar';
 
 @Component({
   selector: 'app-ng-data-table',
@@ -65,18 +66,23 @@ export class NgDataTableComponent implements OnInit {
   key: string;
   rangeDates: Date[];
   hoveredDate: NgbDate | null = null;
-  fromDate: NgbDate;
+  fromDate: NgbDate | null = null;
   toDate: NgbDate | null = null;
   selectedRows: any[];
   form: FormGroup;
+  dateFilterRange: { from: any; to: any; operator: any } = { from: null, to: null, operator: null };
+  selectedCol: any;
+  selectedOperator: any;
+  dateRangeSelected = false;
+  monthsToDisplay = 1;
 
-  constructor(calendar: NgbCalendar, public formBuilder: FormBuilder) {
+  constructor(private calendar: NgbCalendar, public formBuilder: FormBuilder) {
     this.fromDate = calendar.getToday();
   }
 
   ngOnInit(): void {
     console.log('columns', this.columns);
-
+    this.calendar_fr = pcalendar_fr;
     this.key = this.columns[0]['field'];
     this.columns = this.columns.filter((col) => {
       if (Object.keys(col).indexOf('isVisible') == -1 || col.isVisible) {

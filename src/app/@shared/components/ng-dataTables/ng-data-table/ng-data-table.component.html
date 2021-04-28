@@ -115,16 +115,29 @@
             <div class="py-0 ng-dropdown" ngbDropdownMenu [attr.aria-labelledby]="'dropDowFilter-' + col.header">
               <div [ngSwitch]="col.filterType">
                 <input type="text" [formControlName]="col.field" [placeholder]="col.header" *ngSwitchCase="'text'" />
-                <ngb-datepicker
+                <p-calendar
                   *ngSwitchCase="'range-date'"
-                  #dp
-                  (dateSelect)="onDateSelection($event)"
-                  [displayMonths]="2"
-                  [dayTemplate]="t"
                   [formControlName]="col.field"
-                  outsideDays="hidden"
+                  selectionMode="range"
+                  [readonlyInput]="true"
+                  [monthNavigator]="true"
+                  [yearNavigator]="true"
+                  dateFormat="dd/mm/yy"
+                  yearRange="1900:2100"
                 >
-                </ngb-datepicker>
+                  <p-footer>
+                    <select class="float-left">
+                      <option value="" selected></option>
+                      <option value="range">Intervalle</option>
+                      <option value="eq">=</option>
+                      <option value="gt">></option>
+                      <option value="lt"><</option>
+                      <option value="lte"><=</option>
+                      <option value="gte">>=</option>
+                    </select>
+                    <button class="btn add-action float-right">Annuler</button>
+                  </p-footer>
+                </p-calendar>
                 <select class="select-style w-100" *ngSwitchCase="'select'" [formControlName]="col.field">
                   <option value=""></option>
                   <option [value]="data.id" *ngFor="let data of col.selectData">{{ data.name }}</option>

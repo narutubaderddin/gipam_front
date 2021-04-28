@@ -54,6 +54,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { AddDescriptionsComponent } from './components/notice-blocs/add-descriptions/add-descriptions.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { StatusComponent } from './components/notice-blocs/status/status.component';
+import { DateCompareDirective } from './directives/date-compare.directive';
 
 @NgModule({
   imports: [
@@ -116,6 +117,7 @@ import { StatusComponent } from './components/notice-blocs/status/status.compone
     SelectButtonRenderComponent,
     AddDescriptionsComponent,
     StatusComponent,
+    DateCompareDirective,
   ],
   exports: [
     LoaderComponent,
@@ -132,6 +134,7 @@ import { StatusComponent } from './components/notice-blocs/status/status.compone
     NgDataTableComponent,
     AddDescriptionsComponent,
     StatusComponent,
+    DateCompareDirective,
   ],
 })
 export class SharedModule {}
