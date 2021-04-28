@@ -1,4 +1,4 @@
-import { NgModule, Component } from '@angular/core';
+import { NgModule, Provider, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AgGridModule } from 'ag-grid-angular';
@@ -37,7 +37,21 @@ import { DomainsActionsRendererComponent } from './components/datatables/domains
 import { DenominationsActionsRendererComponent } from './components/datatables/denominations-actions-renderer/denominations-actions-renderer.component';
 import { FlashFormErrorsDirective } from './directives/flash-form-errors.directive';
 import { AddDescriptionsComponent } from './components/notice-blocs/add-descriptions/add-descriptions.component';
+import { NgDataTableComponent } from './components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { TableModule } from 'primeng/table';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
+import { TooltipModule } from 'primeng/tooltip';
+import { CalendarModule } from 'primeng/calendar';
+import { PaginatorModule } from 'primeng/paginator';
+import { ActionsCellComponent } from './components/ng-dataTables/actions-cell/actions-cell.component';
+import { StatusTypeComponentRenderComponent } from './components/ng-dataTables/status-type-component-render/status-type-component-render.component';
+import { VisibleCatalogComponentRenderComponent } from './components/ng-dataTables/visible-catalog-component-render/visible-catalog-component-render.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { SelectButtonRenderComponent } from './components/ng-dataTables/select-button-render/select-button-render.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
 import { DropdownModule } from 'primeng/dropdown';
 import { StatusComponent } from './components/notice-blocs/status/status.component';
 import { AttachmentsComponent } from './components/notice-blocs/attachments/attachments.component';
@@ -45,7 +59,6 @@ import { AddImgModalComponent } from './components/notice-blocs/item-images/add-
 import { ItemImagesComponent } from './components/notice-blocs/item-images/item-images.component';
 import { LinksComponent } from './components/notice-blocs/links/links.component';
 import { HypertextLinksComponent } from './components/notice-blocs//links/hypertext-links/hypertext-links.component';
-import { CalendarModule } from 'primeng/calendar';
 import { GalleriaModule } from 'primeng/galleria';
 import { NgFileDragDropModule } from 'ng-file-drag-drop';
 
@@ -64,7 +77,16 @@ import { NgFileDragDropModule } from 'ng-file-drag-drop';
     ReactiveFormsModule,
     TagInputModule,
     NgxHorizontalTimelineModule,
+    TableModule,
+    InputTextModule,
+    ButtonModule,
+    RippleModule,
+    TooltipModule,
+    CalendarModule,
+    PaginatorModule,
+    NgMultiSelectDropDownModule,
     MultiSelectModule,
+    SelectButtonModule,
     DropdownModule,
     CalendarModule,
     GalleriaModule,
@@ -97,6 +119,11 @@ import { NgFileDragDropModule } from 'ng-file-drag-drop';
     DomainsActionsRendererComponent,
     DenominationsActionsRendererComponent,
     FlashFormErrorsDirective,
+    NgDataTableComponent,
+    ActionsCellComponent,
+    StatusTypeComponentRenderComponent,
+    VisibleCatalogComponentRenderComponent,
+    SelectButtonRenderComponent,
     AddDescriptionsComponent,
     StatusComponent,
     AttachmentsComponent,
@@ -117,6 +144,7 @@ import { NgFileDragDropModule } from 'ng-file-drag-drop';
     StatusBlocComponent,
     AccordionSectionComponent,
     FlashFormErrorsDirective,
+    NgDataTableComponent,
     AddDescriptionsComponent,
     StatusComponent,
     AttachmentsComponent,

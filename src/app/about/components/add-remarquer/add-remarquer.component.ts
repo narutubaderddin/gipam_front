@@ -4,7 +4,7 @@ import { NgWizardConfig, NgWizardService, StepChangedArgs, StepValidationArgs, S
 import { of } from 'rxjs';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-remarquer',
@@ -21,6 +21,7 @@ export class AddRemarquerComponent implements OnInit {
   depositStatusForm: FormGroup;
   addProperty = false;
   addDeposit = false;
+  descriptionTitle = '';
   domains = this.WorkOfArtService.domaine;
   keyword = 'name';
   stepStates = {
@@ -62,9 +63,11 @@ export class AddRemarquerComponent implements OnInit {
     if (type === 'propriété') {
       this.addProperty = true;
       this.addDeposit = false;
+      this.descriptionTitle = "Création d'une notice en propriété";
     } else {
       this.addDeposit = true;
       this.addProperty = false;
+      this.descriptionTitle = "Création d'une notice en dépôt";
     }
   }
 

@@ -41,7 +41,97 @@ export class AlertListComponent implements OnInit {
     suppressScrollOnNewData: true,
   };
   remarquers: any;
-
+  columns: any[] = [
+    {
+      header: 'N° inventaire',
+      field: 'reference',
+      type: 'app-remarquer-details-link-render',
+      width: '150px',
+      filter: true,
+      filterType: 'text',
+      sortable: true,
+    },
+    {
+      header: 'Titre',
+      field: 'titre',
+      type: 'key',
+      width: '150px',
+      filter: true,
+      filterType: 'text',
+      sortable: true,
+    },
+    {
+      header: 'Auteur',
+      field: 'author',
+      width: '150px',
+      sortable: true,
+      filter: true,
+      filterType: 'text',
+      type: 'key',
+    },
+    {
+      header: "Type d'action",
+      field: 'actiontype',
+      width: '150px',
+      sortable: true,
+      filter: true,
+      filterType: 'text',
+      type: 'key',
+    },
+    {
+      header: 'Date début',
+      field: 'startDate',
+      width: '150px',
+      sortable: true,
+      filter: true,
+      filterType: 'text',
+      type: 'key',
+    },
+    {
+      header: 'Date fin',
+      field: 'endDate',
+      width: '150px',
+      sortable: true,
+      filter: true,
+      filterType: 'text',
+      type: 'key',
+    },
+    {
+      header: 'Délai',
+      field: 'delai',
+      width: '150px',
+      sortable: true,
+      filter: true,
+      filterType: 'text',
+      type: 'key',
+    },
+    {
+      header: 'Statut',
+      field: 'status',
+      width: '150px',
+      sortable: true,
+      filter: true,
+      filterType: 'text',
+      type: 'key',
+    },
+    {
+      header: 'Créé par',
+      field: 'createdBy',
+      width: '150px',
+      sortable: true,
+      filter: true,
+      filterType: 'text',
+      type: 'key',
+    },
+    // {
+    //   headerName: 'Actions',
+    //   field: 'action',
+    //   cellRenderer: 'gridActionRenderer',
+    //   sortable: false,
+    //   filter: false,
+    //   width: 70,
+    // },
+  ];
   ColDef: ColDef[] = [
     {
       cellClass: 'link',
@@ -107,6 +197,7 @@ export class AlertListComponent implements OnInit {
   gridReady = false;
   rowCount: any = 5;
   filter: boolean = false;
+  selectedItem: any;
 
   constructor(
     private router: Router,
@@ -136,4 +227,8 @@ export class AlertListComponent implements OnInit {
   }
 
   resetFilter() {}
+
+  onRowsSelection(event: any) {
+    this.selectedItem = event.selectedRows;
+  }
 }

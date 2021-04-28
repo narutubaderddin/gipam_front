@@ -41,74 +41,92 @@ export class NoticeListComponent implements OnInit {
     suppressScrollOnNewData: true,
   };
   remarquers: any;
-
-  ColDef: ColDef[] = [
+  columns: any[] = [
     {
-      cellClass: 'link',
-      headerName: 'N° inventaire',
+      header: 'N° inventaire',
       field: 'id',
-      cellRenderer: 'detailsLink',
-      sortable: false,
-      filter: false,
-      width: 90,
+      type: 'app-remarquer-details-link-render',
+      width: '150px',
+      filter: true,
+      filterType: 'text',
+      sortable: true,
     },
     {
-      headerName: 'Titre',
+      header: 'Titre',
       field: 'titre',
+      type: 'key',
+      width: '150px',
+      filter: true,
+      filterType: 'text',
+      sortable: true,
     },
     {
-      headerName: 'Domaine',
+      header: 'Domaine',
       field: 'domaine',
-      headerComponentParams: {
-        ...this.defaultHeaderParams,
-        type: TYPES.list,
-        list: this.WorkOfArtService.domaine,
-        operator: OPERATORS.in,
-      },
+      sortable: true,
+      width: '150px',
+      filter: true,
+      filterType: 'multiselect',
+      placeholder: 'Choisir des Domaine',
+      selectData: this.WorkOfArtService.domaine,
+      type: 'key',
     },
     {
-      headerName: 'Dénomination',
+      header: 'Dénomination',
       field: 'denomination',
+      sortable: true,
+      width: '150px',
+      filter: true,
+      filterType: 'multiselect',
+      selectData: this.WorkOfArtService.denominations,
+      type: 'key',
     },
     {
-      headerName: 'Matière',
+      header: 'Matière',
       field: 'matiere',
+      sortable: true,
+      width: '150px',
+      filter: true,
+      filterType: 'text',
+      type: 'key',
     },
     {
-      headerName: 'Style',
+      header: 'Style',
       field: 'style',
+      sortable: true,
+      width: '150px',
+      filter: true,
+      filterType: 'text',
+      type: 'key',
     },
     {
-      headerName: 'Date création',
+      header: 'Date création',
       field: 'creationDate',
-      headerComponentParams: {
-        ...this.defaultHeaderParams,
-        type: TYPES.date,
-        operator: OPERATORS.in,
-      },
+      sortable: true,
+      width: '150px',
+      filter: true,
+      type: 'key',
+      filterType: 'range-date',
     },
     {
-      headerName: 'Type de Statut',
+      header: 'Type de Statut',
       field: 'property',
       cellRenderer: 'statusTypeRender',
-    },
-    {
-      headerName: 'Actions',
-      field: 'action',
-      cellRenderer: 'gridActionRenderer',
+      width: '200px',
       sortable: false,
-      filter: false,
-      width: 130,
+      filter: true,
+      type: 'app-status-component-render',
+      filterType: 'select',
+      selectData: this.WorkOfArtService.statusType,
     },
   ];
-  pinnedCols: string[] = ['action'];
-  leftPinnedCols: string[] = ['id'];
 
   gridApi: GridApi;
   gridColumnApi: ColumnApi;
   gridReady = false;
   rowCount: any = 5;
   filter: boolean = false;
+  selectedItem: any;
 
   constructor(
     private router: Router,
@@ -137,4 +155,8 @@ export class NoticeListComponent implements OnInit {
   }
 
   resetFilter() {}
+
+  onRowsSelection(event: any) {
+    this.selectedItem = event.selectedRows;
+  }
 }

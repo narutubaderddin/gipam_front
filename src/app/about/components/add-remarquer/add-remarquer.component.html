@@ -10,7 +10,7 @@
 <ng-wizard [config]="config" (stepChanged)="stepChanged($event)">
   <ng-wizard-step
     [title]="'1'"
-    [description]="'Création notice en proprieté'"
+    [description]="descriptionTitle"
     [canEnter]="isValidTypeBoolean"
     [canExit]="isValidFunctionReturnsBoolean.bind(this)"
   >
