@@ -544,17 +544,17 @@ ngb-datepicker {
         transition: box-shadow 0.2s;
         border: 1px solid transparent;
         font-size: 12px;
-        padding:0!important;
+        padding: 0 !important;
       }
     }
   }
 }
 
-
 .ui-calendar .ui-datepicker {
-  height : 200px;
+  height: 200px;
 }
-.ui-datepicker td span, .ui-datepicker td a {
+.ui-datepicker td span,
+.ui-datepicker td a {
   padding: 0px;
 }
 

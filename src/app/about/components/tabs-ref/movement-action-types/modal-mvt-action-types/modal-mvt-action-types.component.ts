@@ -33,7 +33,6 @@ export class ModalMvtActionTypesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
     this.dropdownSettings = {
       singleSelection: true,
       textField: 'label',
@@ -51,8 +50,7 @@ export class ModalMvtActionTypesComponent implements OnInit {
     this.active = this.fromParent.active;
     this.selectedItem = this.fromParent.selectedItem;
     this.name = this.fromParent.name;
-    this.selectedMvtType=this.fromParent.selectedMvtType,
-    console.log(this.selectedItem, this.editItem);
+    (this.selectedMvtType = this.fromParent.selectedMvtType), console.log(this.selectedItem, this.editItem);
 
     this.initForm();
   }

@@ -312,5 +312,4 @@ export class EpoquesComponent implements OnInit {
       }
     );
   }
-
 }

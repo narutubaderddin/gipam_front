@@ -130,7 +130,7 @@ export class MovementActionTypesComponent implements OnInit {
             label: item.movementType.label,
           },
         ];
-        console.log('selectedMvtType', this.selectedMvtType)
+        console.log('selectedMvtType', this.selectedMvtType);
       } else {
         this.selectedMvtType = [];
         this.addItem = true;
@@ -152,7 +152,7 @@ export class MovementActionTypesComponent implements OnInit {
       itemToEdit: this.itemToEdit,
       selectedItem: this.selectedItem,
       active: this.active,
-      selectedMvtType:this.selectedMvtType,
+      selectedMvtType: this.selectedMvtType,
     };
 
     modalRef.result.then(

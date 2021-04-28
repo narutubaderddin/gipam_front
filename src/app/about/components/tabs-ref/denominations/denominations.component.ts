@@ -49,7 +49,7 @@ export class DenominationsComponent implements OnInit {
 
   fieldTraduction = {
     label: 'Libellé',
-    domaine: 'Domaine'
+    domaine: 'Domaine',
   };
 
   frameworkComponents = {

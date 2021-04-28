@@ -1,23 +1,22 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {NgDataTableComponent} from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {IDropdownSettings} from 'ng-multiselect-dropdown';
-import {OPERATORS, TYPES} from '@shared/services/column-filter.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {NgbModal, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
-import {SimpleTabsRefService} from '@shared/services/simple-tabs-ref.service';
-import {FieldsService} from '@shared/services/fields.service';
-import {MessageService} from 'primeng/api';
-import {DatePipe} from '@angular/common';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
+import { FieldsService } from '@shared/services/fields.service';
+import { MessageService } from 'primeng/api';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-ministry',
   templateUrl: './ministry.component.html',
   styleUrls: ['./ministry.component.scss'],
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
 export class MinistryComponent implements OnInit {
-
   @ViewChild('content') modalRef: TemplateRef<any>;
   @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
 
@@ -44,7 +43,7 @@ export class MinistryComponent implements OnInit {
   dropdownList: any;
   itemLabel: any;
 
-  filter='';
+  filter = '';
   sortBy = '';
   sort = 'asc';
   totalFiltred: any;
@@ -106,7 +105,7 @@ export class MinistryComponent implements OnInit {
       sortable: true,
       width: '250px',
     },
-        {
+    {
       header: 'Actions',
       field: 'action',
       type: 'app-actions-cell',
@@ -120,7 +119,7 @@ export class MinistryComponent implements OnInit {
     name: 'Libellé',
     acronym: 'Sigle',
     startDate: 'Date début de validité',
-    disappearanceDate:'Date fin de validité'
+    disappearanceDate: 'Date fin de validité',
   };
   params = {
     limit: this.limit,
@@ -145,7 +144,6 @@ export class MinistryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.simpleTabsRef.tabRef = 'ministries';
     this.getAllItems();
     this.initForm();
@@ -201,8 +199,6 @@ export class MinistryComponent implements OnInit {
 
   onSelectAll(items: any) {}
 
-
-
   transformDateToDateTime(input: string, format: string, addTime: boolean = true) {
     // 1984-06-05 12:15:30
     if (input !== '' && input) {
@@ -235,7 +231,7 @@ export class MinistryComponent implements OnInit {
     this.editItem = false;
     this.addItem = false;
     this.deleteItems = false;
-    this.editVisibility=false;
+    this.editVisibility = false;
     this.myModal.dismiss('Cross click');
   }
 
@@ -302,11 +298,8 @@ export class MinistryComponent implements OnInit {
     return newItem;
   }
 
-
   getAllItems() {
     this.loading = true;
-
-
 
     this.simpleTabsRef.getAllItems(this.params).subscribe(
       (result: any) => {
@@ -327,7 +320,7 @@ export class MinistryComponent implements OnInit {
   }
 
   deleteItemss(item: any) {
-    console.log(item)
+    console.log(item);
     this.btnLoading = '';
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
@@ -399,16 +392,17 @@ export class MinistryComponent implements OnInit {
     // this.filter = e.label;
     // this.filter
 
-    Object.keys(e).map((key, index) =>{
-      if(e[key]) {
-        let newKey=key+'[contains]'
-        if(key.includes('Date')){
-           newKey = key+'[eq]';
+    Object.keys(e).map((key, index) => {
+      if (e[key]) {
+        let newKey = key + '[contains]';
+        if (key.includes('Date')) {
+          newKey = key + '[eq]';
         }
-        const addfilter= {[newKey]: e[key]}
+        const addfilter = { [newKey]: e[key] };
         this.params = {
-          ...this.params, ...addfilter
-        }
+          ...this.params,
+          ...addfilter,
+        };
       }
     });
     console.log(this.params);
@@ -420,20 +414,20 @@ export class MinistryComponent implements OnInit {
   }
 
   sortEvent(e: any) {
-    console.log(e)
+    console.log(e);
     this.sortBy = this.getKeyByValue(this.fieldNames, e.field);
     if (e.order === 1) {
       this.sort = 'asc';
     } else {
       this.sort = 'desc';
     }
-    this.params={
-      ... this.params,
+    this.params = {
+      ...this.params,
       sort: this.sort,
-      sort_by: this.sortBy
-    }
+      sort_by: this.sortBy,
+    };
     this.getAllItems();
-    console.log(this.params)
+    console.log(this.params);
   }
 
   search(input: string) {

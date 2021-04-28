@@ -132,5 +132,4 @@ export class SidebarNavComponent implements OnInit {
     this.router.navigate(['tab-ref-ministère']);
     this.toggleClose();
   }
-
 }

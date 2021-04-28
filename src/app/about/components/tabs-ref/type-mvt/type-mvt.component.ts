@@ -117,7 +117,6 @@ export class TypeMvtComponent implements OnInit {
         this.editItem = true;
         this.itemToEdit = item;
         this.itemLabel = item.label;
-
       } else {
         this.addItem = true;
       }
