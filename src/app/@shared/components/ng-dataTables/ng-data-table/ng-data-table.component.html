@@ -116,27 +116,29 @@
               <div [ngSwitch]="col.filterType">
                 <input type="text" [formControlName]="col.field" [placeholder]="col.header" *ngSwitchCase="'text'" />
                 <p-calendar
+                  #pcd
                   *ngSwitchCase="'range-date'"
                   [formControlName]="col.field"
-                  selectionMode="range"
                   [readonlyInput]="true"
                   [monthNavigator]="true"
                   [yearNavigator]="true"
+                  [numberOfMonths]="1"
+                  [selectionMode]="dateSelectionMode"
                   dateFormat="dd/mm/yy"
                   yearRange="1900:2100"
                   styleClass="dateTimeField"
 
+                  (onShow)="calendarShow(dd, col.field)"
                 >
                   <p-footer>
-                    <select class="float-left">
-                      <option value="" selected></option>
-                      <option value="range">Intervalle</option>
-                      <option value="eq">=</option>
-                      <option value="gt">></option>
-                      <option value="lt"><</option>
-                      <option value="lte"><=</option>
-                      <option value="gte">>=</option>
-                    </select>
+                    <p-dropdown
+                      #dd
+                      [options]="dateOperators"
+                      optionLabel="value"
+                      [formControlName]="col.field + 'Operator'"
+                      (onClick)="rangeChanged(dd, pcd)"
+                    >
+                    </p-dropdown>
                     <button class="btn add-action float-right">Annuler</button>
                   </p-footer>
                 </p-calendar>
