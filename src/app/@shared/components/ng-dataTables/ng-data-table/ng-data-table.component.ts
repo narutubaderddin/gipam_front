@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
 import { NgbCalendar, NgbDate, NgbDateAdapter, NgbDatepickerI18n } from '@ng-bootstrap/ng-bootstrap';
 import { CustomDatepickerI18nService, I18n } from '@shared/services/custom-datepicker-i18n.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { pcalendar_fr } from '@shared/utils/p-calendar';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Calendar } from 'primeng/calendar';
+import { Dropdown } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-ng-data-table',
@@ -72,8 +73,17 @@ export class NgDataTableComponent implements OnInit {
   dateFilterRange: { from: any; to: any; operator: any } = { from: null, to: null, operator: null };
   selectedCol: any;
   selectedOperator: any;
-  dateRangeSelected = false;
+  dateRangeMode = false;
   monthsToDisplay = 1;
+  dateSelectionMode = 'single';
+  dateOperators: any[] = [
+    { name: 'eq', value: '=' },
+    { name: 'lt', value: '<' },
+    { name: 'gt', value: '>' },
+    { name: 'lte', value: '<=' },
+    { name: 'gte', value: '>=' },
+    { name: 'range', value: 'intervalle' },
+  ];
 
   constructor(private calendar: NgbCalendar, public formBuilder: FormBuilder) {
     this.fromDate = calendar.getToday();
@@ -81,7 +91,6 @@ export class NgDataTableComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('columns', this.columns);
-    this.calendar_fr = pcalendar_fr;
     this.key = this.columns[0]['field'];
     this.columns = this.columns.filter((col) => {
       if (Object.keys(col).indexOf('isVisible') == -1 || col.isVisible) {
@@ -138,6 +147,9 @@ export class NgDataTableComponent implements OnInit {
     this.columns.forEach((col) => {
       if (col.filter) {
         this.form.addControl(col.field, new FormControl('', []));
+        if (col.filterType === 'range-date') {
+          this.form.addControl(col.field + 'Operator', new FormControl(''));
+        }
       }
     });
   }
@@ -194,6 +206,7 @@ export class NgDataTableComponent implements OnInit {
     this.columns = columns;
     this.ngOnInit();
   }
+
   updateData(data: any[]) {
     this.data = data;
     this.ngOnInit();
@@ -211,6 +224,7 @@ export class NgDataTableComponent implements OnInit {
     this.asc = !this.asc;
     this.sort.emit(this.asc);
   }
+
   handlePaginationInfo() {
     this.currentPage = this.currentPage ? this.currentPage : 1;
     // calculate from data index
@@ -219,5 +233,32 @@ export class NgDataTableComponent implements OnInit {
     // calculate to data index
     const to = this.currentPage * this.limit;
     this.end = this.data.length === this.limit && to ? to : this.total;
+  }
+
+  rangeChanged(dropdown: Dropdown, calendar?: Calendar) {
+    this.selectedOperator = dropdown.value;
+    if (dropdown.value.name === 'range') {
+      this.dateSelectionMode = 'range';
+      this.monthsToDisplay = 2;
+      this.dateRangeMode = true;
+      return;
+    }
+    calendar.writeValue(new Date());
+    this.dateSelectionMode = 'single';
+    this.dateRangeMode = false;
+    this.monthsToDisplay = 1;
+  }
+
+  calendarShow(dropdown: Dropdown, field: any) {
+    if (!dropdown.value) {
+      this.dateSelectionMode = 'single';
+      this.selectedOperator = 'eq';
+      this.form.value[field + 'Operator'] = { name: 'eq', value: '=' };
+      this.form.value[field] = new Date();
+    }
+  }
+
+  dateFilterSubmit(event: any) {
+    console.log(this.form.valid);
   }
 }
