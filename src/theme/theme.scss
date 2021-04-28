@@ -531,6 +531,33 @@ ngb-datepicker {
   height: 260px;
 }
 
+//ngprime datepicker
+.p-datepicker {
+  left: 0px !important;
+  table {
+    td {
+      padding: 0rem !important;
+      span {
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+        transition: box-shadow 0.2s;
+        border: 1px solid transparent;
+        font-size: 12px;
+        padding:0!important;
+      }
+    }
+  }
+}
+
+
+.ui-calendar .ui-datepicker {
+  height : 200px;
+}
+.ui-datepicker td span, .ui-datepicker td a {
+  padding: 0px;
+}
+
 /** slider css **/
 .ngx-slider .ngx-slider-pointer,
 .ngx-slider .ngx-slider-selection {

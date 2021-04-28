@@ -396,7 +396,7 @@ export class MinistryComponent implements OnInit {
     console.log('filter', e);
     this.page = 1;
     this.dataTableComponent.currentPage = 1;
-    this.filter = e.label;
+    // this.filter = e.label;
     // this.filter
 
     Object.keys(e).map((key, index) =>{
