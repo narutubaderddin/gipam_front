@@ -1,5 +1,5 @@
-import { Component, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -170,6 +170,7 @@ export class EstablishmentsComponent implements OnInit {
   }
 
   initForm() {
+    const msg = 'date début inférieur date fin';
     const startDate = this.datePipe.transform(this.selectedItem ? this.selectedItem.startDate : '', 'yyyy-MM-dd');
     const disappearanceDate = this.datePipe.transform(
       this.selectedItem ? this.selectedItem.disappearanceDate : '',
@@ -179,9 +180,22 @@ export class EstablishmentsComponent implements OnInit {
       label: [this.selectedItem ? this.selectedItem.label : '', [Validators.required]],
       acronym: [this.selectedItem ? this.selectedItem.acronym : '', [Validators.required]],
       startDate: [startDate, [Validators.required]],
-      disappearanceDate: [disappearanceDate, [Validators.required]],
+      disappearanceDate: [disappearanceDate, []],
       ministry: [this.selectedMinistry, [Validators.required]],
     });
+    this.tabForm.setValidators(this.ValidateDate());
+  }
+
+  ValidateDate(): ValidatorFn {
+    return (cc: FormGroup): ValidationErrors => {
+      if (!cc.get('startDate')) {
+        return null;
+      }
+      if (cc.get('startDate').value > cc.get('disappearanceDate').value) {
+        return { dateInvalid: 'Date début supérieur date fin' };
+      }
+      return null;
+    };
   }
 
   get defaultHeaderParams() {
@@ -405,6 +419,7 @@ export class EstablishmentsComponent implements OnInit {
         this.addSingle('success', 'Modification', 'Etablissement ' + item.label + ' modifiée avec succés');
         this.getAllItems();
         this.editItem = false;
+        this.editVisibility = false;
       },
 
       (error) => {
