@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalOptions, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
-import { AddImgModalComponent } from '@app/about/components/item-details/item-images/add-img-modal/add-img-modal.component';
+import { AddImgModalComponent } from '@shared/components/notice-blocs/item-images/add-img-modal/add-img-modal.component';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -11,9 +11,10 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class ItemImagesComponent implements OnInit {
   @ViewChild('file') file: any;
   @Input() add = false;
+  @Input() photographiesForm: FormGroup;
+
   slide = 1;
   editType = false;
-  photographiesForm: FormGroup;
   photography: string = '';
   photographyDate: Date = new Date();
   photographyType: any[] = [];
@@ -62,16 +63,16 @@ export class ItemImagesComponent implements OnInit {
     });
   }
   editPhotographyForm(i: number, photography: string, photographyType: any, photographyDate: Date, imageName: string) {
-    this.photographies.value[i+1].photographyType = photographyType;
-    this.photographies.value[i+1].photographyDate = photographyDate;
-    this.photographies.value[i+1].photographyName = imageName;
-    this.photographies.value[i+1].photography = photography;
+    this.photographies.value[i + 1].photographyType = photographyType;
+    this.photographies.value[i + 1].photographyDate = photographyDate;
+    this.photographies.value[i + 1].photographyName = imageName;
+    this.photographies.value[i + 1].photography = photography;
     this.images[i].imageUrl = photography;
     this.images[i].image = imageName;
   }
   addPhotography(): void {
     if (!this.photography.length || !this.photographyType || !this.imageName.length) {
-      console.log(this.photographyType); 
+      console.log(this.photographyType);
       this.validate = false;
     } else {
       if (this.selectedPhotography == this.photographies.value.length) {
@@ -85,14 +86,19 @@ export class ItemImagesComponent implements OnInit {
           this.createPhotography(this.photography, this.photographyDate, this.photographyType, this.imageName)
         );
       } else {
-        this.editPhotographyForm(this.selectedPhotography, this.photography,this.photographyType, this.photographyDate, this.imageName)
+        this.editPhotographyForm(
+          this.selectedPhotography,
+          this.photography,
+          this.photographyType,
+          this.photographyDate,
+          this.imageName
+        );
       }
       this.initData('', new Date());
       this.photographyInsertionNumber++;
       this.selectedPhotography = this.photographies.value.length;
       this.validate = true;
     }
-    
   }
 
   handleFileInput(file: FileList) {

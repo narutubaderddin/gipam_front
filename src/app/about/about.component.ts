@@ -22,6 +22,9 @@ export class AboutComponent implements OnInit {
     this.router.navigate(['oeuvres-list']);
   }
   createNotice() {
-    this.router.navigate(['creation-notice']);
+    this.router.navigate(['creation-notice', 'propriété']);
+  }
+  createDepositNotice() {
+    this.router.navigate(['creation-notice', 'dépôt']);
   }
 }

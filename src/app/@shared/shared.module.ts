@@ -36,10 +36,18 @@ import { ImageViewerComponent } from './components/datatables/image-viewer/image
 import { DomainsActionsRendererComponent } from './components/datatables/domains-actions-renderer/domains-actions-renderer.component';
 import { DenominationsActionsRendererComponent } from './components/datatables/denominations-actions-renderer/denominations-actions-renderer.component';
 import { FlashFormErrorsDirective } from './directives/flash-form-errors.directive';
-import { AddDescriptionsComponent } from './components/notice-blocs/add-descriptions/add-descriptions.component'
+import { AddDescriptionsComponent } from './components/notice-blocs/add-descriptions/add-descriptions.component';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
 import { StatusComponent } from './components/notice-blocs/status/status.component';
+import { AttachmentsComponent } from './components/notice-blocs/attachments/attachments.component';
+import { AddImgModalComponent } from './components/notice-blocs/item-images/add-img-modal/add-img-modal.component';
+import { ItemImagesComponent } from './components/notice-blocs/item-images/item-images.component';
+import { LinksComponent } from './components/notice-blocs/links/links.component';
+import { HypertextLinksComponent } from './components/notice-blocs//links/hypertext-links/hypertext-links.component';
+import { CalendarModule } from 'primeng/calendar';
+import { GalleriaModule } from 'primeng/galleria';
+import { NgFileDragDropModule } from 'ng-file-drag-drop';
 
 @NgModule({
   imports: [
@@ -58,6 +66,9 @@ import { StatusComponent } from './components/notice-blocs/status/status.compone
     NgxHorizontalTimelineModule,
     MultiSelectModule,
     DropdownModule,
+    CalendarModule,
+    GalleriaModule,
+    NgFileDragDropModule,
   ],
   declarations: [
     LoaderComponent,
@@ -87,7 +98,12 @@ import { StatusComponent } from './components/notice-blocs/status/status.compone
     DenominationsActionsRendererComponent,
     FlashFormErrorsDirective,
     AddDescriptionsComponent,
-    StatusComponent
+    StatusComponent,
+    AttachmentsComponent,
+    AddImgModalComponent,
+    ItemImagesComponent,
+    LinksComponent,
+    HypertextLinksComponent,
   ],
   exports: [
     LoaderComponent,
@@ -102,7 +118,12 @@ import { StatusComponent } from './components/notice-blocs/status/status.compone
     AccordionSectionComponent,
     FlashFormErrorsDirective,
     AddDescriptionsComponent,
-    StatusComponent
+    StatusComponent,
+    AttachmentsComponent,
+    AddImgModalComponent,
+    ItemImagesComponent,
+    LinksComponent,
+    HypertextLinksComponent,
   ],
 })
 export class SharedModule {}

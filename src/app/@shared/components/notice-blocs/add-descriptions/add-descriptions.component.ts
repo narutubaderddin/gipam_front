@@ -12,8 +12,7 @@ export class AddDescriptionsComponent implements OnInit {
   domains: any;
   @Input() keyword: string;
   @Input() addDepot = false;
-  @Input() addProperty = true;
-  @Input() descriptifForm : FormGroup;
+  @Input() descriptifForm: FormGroup;
   items: any = [];
   domain = '';
   denominations: any;
@@ -37,7 +36,9 @@ export class AddDescriptionsComponent implements OnInit {
       allowSearchFilter: true,
     };
   }
-  get f() { return this.descriptifForm.controls; }
+  get f() {
+    return this.descriptifForm.controls;
+  }
   onTagEdited(e: any) {
     console.log(e);
   }

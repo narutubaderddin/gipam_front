@@ -5,7 +5,7 @@
   <ng-template pTemplate="footer">
     <button class="btn-primary" style="font-size: 12px; background-color: lightgray">Annuler</button>
     <button class="btn-primary" style="font-size: 12px; background-color: #00d6d4">Enregistrer</button>
-</ng-template>
+  </ng-template>
 </p-dialog>
 <ng-wizard [config]="config" (stepChanged)="stepChanged($event)">
   <ng-wizard-step
@@ -15,7 +15,9 @@
     [canExit]="isValidFunctionReturnsBoolean.bind(this)"
   >
     <div class="d-flex flex-end justify-content-end pr-5">
-      <button class="btn-primary" (click)="submit()" style="font-size: 12px; background-color: #00d6d4">Enregistrer</button>
+      <button class="btn-primary" (click)="submit()" style="font-size: 12px; background-color: #00d6d4">
+        Enregistrer
+      </button>
     </div>
     <div class="container-fluid d-flex">
       <div class="second-bloc">
@@ -30,7 +32,11 @@
                     <div class="col-lg-4 col-md-12 col-sm-12 col-12 image-container">
                       <div class="detail-image">
                         <div class="col-md-12 d-flex p-0 img-wrapper mt-2 mt-sm-0">
-                          <app-item-images [add]="true" class="col-12"></app-item-images>
+                          <app-item-images
+                            [photographiesForm]="photographiesForm"
+                            [add]="true"
+                            class="col-12"
+                          ></app-item-images>
                         </div>
                       </div>
                     </div>
@@ -43,8 +49,7 @@
                               <a ngbNavLink><i class="far fa-file-alt mr-2"></i>Descriptifs physiques</a>
                               <ng-template ngbNavContent>
                                 <app-add-descriptions
-                                  [addDepot]="createDepot"
-                                  [addProperty]="true"
+                                  [addDepot]="false"
                                   [descriptifForm]="descriptifForm"
                                 ></app-add-descriptions>
                               </ng-template>
@@ -52,8 +57,13 @@
                             <ng-container ngbNavItem>
                               <a ngbNavLink><i class="fas fa-info-circle mr-2"></i>Descriptifs juridiques</a>
                               <ng-template ngbNavContent>
-                                <app-status [edit]="true" [addProperty]="true"></app-status>
-                                <app-depositor [edit]="true" *ngIf="createDepot"></app-depositor>
+                                <app-status
+                                  [edit]="true"
+                                  [depositStatusForm]="depositStatusForm"
+                                  [propertyStatusForm]="propertyStatusForm"
+                                  [addProperty]="addProperty"
+                                  [addDeposit]="addDeposit"
+                                ></app-status>
                               </ng-template>
                             </ng-container>
                           </nav>
@@ -64,7 +74,11 @@
                       <div class="d-flex col-12 p-0 flex-column">
                         <div class="d-flex col-12 p-0 mt-4 justify-content-between flex-column flex-md-row">
                           <div class="attachments-container mr-2 col-md-7 p-0">
-                            <app-attachments style="width: 100%" [add]="true"></app-attachments>
+                            <app-attachments
+                              [attachmentForm]="attachmentForm"
+                              style="width: 100%"
+                              [add]="true"
+                            ></app-attachments>
                           </div>
                           <div
                             class="attachments-container ml-2 col-md-5 p-0 d-flex flex-column flex-sm-row flex-md-column"
