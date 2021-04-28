@@ -124,7 +124,7 @@ export class MinistryComponent implements OnInit {
   params = {
     limit: this.limit,
     page: this.page,
-    'label[contains]': this.filter,
+    // 'label[contains]': this.filter,
     sort_by: this.sortBy,
     sort: this.sort,
   };
@@ -389,22 +389,44 @@ export class MinistryComponent implements OnInit {
     console.log('filter', e);
     this.page = 1;
     this.dataTableComponent.currentPage = 1;
-    // this.filter = e.label;
-    // this.filter
 
     Object.keys(e).map((key, index) => {
-      if (e[key]) {
-        let newKey = key + '[contains]';
-        if (key.includes('Date')) {
-          newKey = key + '[eq]';
+      if (e[key]!=='') {
+        if (key==('startDate')||(key=='disappearanceDate')) {
+          if(e[key+'Operator'].value=='intervalle'){  // cond <=> e.key+'Operator'=='intervalle'
+            const newKey1 = key + '[gte]';
+            const newKey2 = key + '[lte]';
+            const start=new Date(e[key][0]).toISOString()
+            const end=new Date(e[key][1]).toISOString()
+            const addfilter1 = { [newKey1]: start };
+            const addfilter2 = { [newKey2]: end };
+            this.params = {
+              ...this.params,
+              ...addfilter1,
+              ...addfilter2
+            };
+            console.log(this.params);
+          }else{
+            console.log('Operator',e[key+'Operator']);
+            const dateTransform=new Date(e[key]).toISOString();
+            const newKey = key + '['+e[key+'Operator'].name+']';  // eq <=> e.key+'Operator'
+            this.params = {
+              ...this.params,
+              [newKey]: dateTransform
+            };
+            console.log(this.params);
+          }
+        }else{
+          const newKey = key + '[contains]';
+          const addfilter= {[newKey]: e[key]}
+          this.params = {
+            ...this.params,
+            ...addfilter
+          }
         }
-        const addfilter = { [newKey]: e[key] };
-        this.params = {
-          ...this.params,
-          ...addfilter,
-        };
       }
     });
+
     console.log(this.params);
     this.getAllItems();
   }
