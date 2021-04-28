@@ -1,0 +1,41 @@
+<div class="col-md-12 pl-0">
+  <div class="col-md-12 p-0">
+    <h5 class="pl-0">Liens avec oeuvres</h5>
+
+    <ol class="rounded-list" *ngIf="!add">
+      <li>Fait partie de:</li>
+      <li>
+        <span><a href="#">149</a> | 22/01/2020 | Jean</span>
+      </li>
+      <li>
+        Composé de :
+        <ol>
+          <li>
+            <span><a href="#">149</a> | 22/01/2020 | Jean</span>
+          </li>
+          <li>
+            <span><a href="#">149</a> | 22/01/2020 | Jean</span>
+          </li>
+          <li>
+            <span><a href="#">149</a> | 22/01/2020 | Jean</span>
+          </li>
+        </ol>
+      </li>
+    </ol>
+  </div>
+
+  <ol class="mb-2" *ngIf="add">
+    <li class="mb-2">Fait partie de:</li>
+    <li>
+      <p-dropdown
+        class="select col-md-4 col-sm-7 p-sm-0 col-12"
+        [style]="{ width: '100%' }"
+        [options]="refs"
+        optionLabel=""
+        [filter]="true"
+        defaultLabel="Sélectionner un numéro d'inventaire"
+      >
+      </p-dropdown>
+    </li>
+  </ol>
+</div>

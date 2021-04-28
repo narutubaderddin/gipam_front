@@ -10,7 +10,6 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 export class LinksComponent implements OnInit {
   @Input() add: false;
   refs = [' 125', ' 222', ' 342'];
-  dropdownSettings: IDropdownSettings;
 
   columnDefs: ColDef[] = [
     {
@@ -66,20 +65,5 @@ export class LinksComponent implements OnInit {
   gridReady = false;
   constructor() {}
 
-  ngOnInit(): void {
-    // this.domains = this.WorkOfArtService.domaine;
-    this.dropdownSettings = {
-      singleSelection: false,
-      idField: 'id',
-      textField: 'name',
-      selectAllText: 'Sélectionner tout',
-      unSelectAllText: 'Supprimer les sélections',
-      itemsShowLimit: 1,
-      allowSearchFilter: true,
-    };
-  }
-  onItemSelect(item: any) {
-    console.log(item);
-  }
-  onSelectAll(items: any) {}
+  ngOnInit(): void {}
 }

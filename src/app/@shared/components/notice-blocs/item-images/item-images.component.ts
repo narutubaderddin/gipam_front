@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalOptions, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
-import { AddImgModalComponent } from '@app/about/components/item-details/item-images/add-img-modal/add-img-modal.component';
+import { AddImgModalComponent } from '@shared/components/notice-blocs/item-images/add-img-modal/add-img-modal.component';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -11,9 +11,10 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class ItemImagesComponent implements OnInit {
   @ViewChild('file') file: any;
   @Input() add = false;
+  @Input() photographiesForm: FormGroup;
+
   slide = 1;
   editType = false;
-  photographiesForm: FormGroup;
   photography: string = '';
   photographyDate: Date = new Date();
   photographyType: any[] = [];

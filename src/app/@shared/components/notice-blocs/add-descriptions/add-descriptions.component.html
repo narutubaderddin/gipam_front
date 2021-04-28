@@ -1,5 +1,11 @@
 <form [formGroup]="descriptifForm">
   <div class="form-bloc">
+    <div class="col-md-6" *ngIf="addDepot">
+      <div class="form-group flex-wrap flex-sm-nowrap">
+        <label class="">N inventaire</label>
+        <input type="text" class="form-control value col-12 col-sm-7" formControlName="title" />
+      </div>
+    </div>
     <div class="col-md-6">
       <div class="form-group flex-wrap flex-sm-nowrap">
         <label class="">Titre<span class="mandatory">*</span></label>
@@ -14,7 +20,6 @@
         <div class="mandatory" *ngIf="descriptifForm.get('title').errors.required">Veuillez saisir un titre.</div>
       </div>
     </div>
-
     <div class="col-md-6">
       <div class="form-group flex-wrap flex-sm-nowrap">
         <label>Domaine<span class="mandatory">*</span></label>
@@ -141,7 +146,7 @@
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="!['Art graphique'].includes(selectedDomain)">
         <label class="">Longueur</label>
-        <div class="d-flex value col-12 col-sm-7" *ngIf="addProperty">
+        <div class="d-flex value col-12 col-sm-7">
           <input class="col-md-8 form-control" type="number" />
           <select class="col-md-4 col-sm-4 form-control">
             <option class="active">cm</option>
