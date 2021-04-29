@@ -36,6 +36,7 @@ import { ImageViewerComponent } from './components/datatables/image-viewer/image
 import { DomainsActionsRendererComponent } from './components/datatables/domains-actions-renderer/domains-actions-renderer.component';
 import { DenominationsActionsRendererComponent } from './components/datatables/denominations-actions-renderer/denominations-actions-renderer.component';
 import { FlashFormErrorsDirective } from './directives/flash-form-errors.directive';
+import { AddDescriptionsComponent } from './components/notice-blocs/add-descriptions/add-descriptions.component';
 import { NgDataTableComponent } from './components/ng-dataTables/ng-data-table/ng-data-table.component';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
@@ -51,10 +52,16 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectButtonRenderComponent } from './components/ng-dataTables/select-button-render/select-button-render.component';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { AddDescriptionsComponent } from './components/notice-blocs/add-descriptions/add-descriptions.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { StatusComponent } from './components/notice-blocs/status/status.component';
 import { DateCompareDirective } from './directives/date-compare.directive';
+import { AttachmentsComponent } from './components/notice-blocs/attachments/attachments.component';
+import { AddImgModalComponent } from './components/notice-blocs/item-images/add-img-modal/add-img-modal.component';
+import { ItemImagesComponent } from './components/notice-blocs/item-images/item-images.component';
+import { LinksComponent } from './components/notice-blocs/links/links.component';
+import { HypertextLinksComponent } from './components/notice-blocs//links/hypertext-links/hypertext-links.component';
+import { GalleriaModule } from 'primeng/galleria';
+import { NgFileDragDropModule } from 'ng-file-drag-drop';
 
 @NgModule({
   imports: [
@@ -82,6 +89,9 @@ import { DateCompareDirective } from './directives/date-compare.directive';
     MultiSelectModule,
     SelectButtonModule,
     DropdownModule,
+    CalendarModule,
+    GalleriaModule,
+    NgFileDragDropModule,
   ],
   declarations: [
     LoaderComponent,
@@ -117,6 +127,11 @@ import { DateCompareDirective } from './directives/date-compare.directive';
     SelectButtonRenderComponent,
     AddDescriptionsComponent,
     StatusComponent,
+    AttachmentsComponent,
+    AddImgModalComponent,
+    ItemImagesComponent,
+    LinksComponent,
+    HypertextLinksComponent,
     DateCompareDirective,
   ],
   exports: [
@@ -134,6 +149,11 @@ import { DateCompareDirective } from './directives/date-compare.directive';
     NgDataTableComponent,
     AddDescriptionsComponent,
     StatusComponent,
+    AttachmentsComponent,
+    AddImgModalComponent,
+    ItemImagesComponent,
+    LinksComponent,
+    HypertextLinksComponent,
     DateCompareDirective,
   ],
 })

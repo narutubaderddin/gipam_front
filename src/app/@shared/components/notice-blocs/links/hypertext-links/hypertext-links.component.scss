@@ -1,5 +1,17 @@
 // liens hypertextes
-
+.hyperlink-container {
+  border: 1px solid #cecece;
+  border-radius: 1rem;
+  min-height: 212px;
+  max-height: 212px;
+  overflow: hidden;
+}
+.hyperlink-bloc {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  min-height: 212px;
+  max-height: 212px;
+}
 h5 {
   color: #347898 !important;
   font-weight: 600;

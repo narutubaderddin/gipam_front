@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DepositorComponent } from './depositor.component';
+import { AddRemarquerComponent } from './add-remarquer.component';
 
-describe('DepositorComponent', () => {
-  let component: DepositorComponent;
-  let fixture: ComponentFixture<DepositorComponent>;
+describe('AddRemarquerComponent', () => {
+  let component: AddRemarquerComponent;
+  let fixture: ComponentFixture<AddRemarquerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DepositorComponent],
+      declarations: [AddRemarquerComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DepositorComponent);
+    fixture = TestBed.createComponent(AddRemarquerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

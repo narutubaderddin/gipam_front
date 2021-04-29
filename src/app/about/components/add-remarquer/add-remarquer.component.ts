@@ -2,21 +2,26 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { NgWizardConfig, NgWizardService, StepChangedArgs, StepValidationArgs, STEP_STATE, THEME } from 'ng-wizard';
 import { of } from 'rxjs';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-add-property-remarquer',
-  templateUrl: './add-property-remarquer.component.html',
-  styleUrls: ['./add-property-remarquer.component.scss'],
+  selector: 'app-add-remarquer',
+  templateUrl: './add-remarquer.component.html',
+  styleUrls: ['./add-remarquer.component.scss'],
 })
-export class AddPropertyRemarquerComponent implements OnInit {
+export class AddRemarquerComponent implements OnInit {
   @ViewChild('content') ngTemplate: ElementRef;
 
-  createDepot: false;
-  createProperty: true;
   descriptifForm: FormGroup;
+  attachmentForm: FormGroup;
+  photographiesForm: FormGroup;
+  propertyStatusForm: FormGroup;
+  depositStatusForm: FormGroup;
+  addProperty = false;
+  addDeposit = false;
+  descriptionTitle = '';
   domains = this.WorkOfArtService.domaine;
   keyword = 'name';
   stepStates = {
@@ -49,11 +54,29 @@ export class AddPropertyRemarquerComponent implements OnInit {
     public WorkOfArtService: WorkOfArtService,
     private ngWizardService: NgWizardService,
     private modalService: NgbModal,
-    public fb: FormBuilder
-  ) {}
+    public fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    const type = this.route.snapshot.paramMap.get('type');
+    if (type === 'propriété') {
+      this.addProperty = true;
+      this.addDeposit = false;
+      this.descriptionTitle = "Création d'une notice en propriété";
+    } else {
+      this.addDeposit = true;
+      this.addProperty = false;
+      this.descriptionTitle = "Création d'une notice en dépôt";
+    }
+  }
 
   ngOnInit(): void {
     this.initDescriptifForm();
+    this.initPropertyStatusForm();
+    this.initDepositStatusForm();
+    this.initAttachmentForm();
+    this.initPhotographiesForm();
   }
   initDescriptifForm() {
     this.descriptifForm = this.fb.group({
@@ -63,6 +86,36 @@ export class AddPropertyRemarquerComponent implements OnInit {
       material: ['', Validators.required],
       unit_number: ['', Validators.required],
       items: [],
+    });
+  }
+  initPropertyStatusForm() {
+    this.propertyStatusForm = this.fb.group({
+      entryMode: [''],
+      entryDate: [''],
+      marking: [''],
+      category: [''],
+      registrationSignature: [''],
+      descriptiveWords: [''],
+      insuranceValue: [''],
+      insuranceValueDate: [''],
+      otherRegistrations: [''],
+      description: [''],
+    });
+  }
+  initDepositStatusForm() {
+    this.depositStatusForm = this.fb.group({
+      depositDate: [''],
+      stopNumber: [''],
+    });
+  }
+  initAttachmentForm() {
+    this.attachmentForm = new FormGroup({
+      attachments: this.fb.array([]),
+    });
+  }
+  initPhotographiesForm() {
+    this.photographiesForm = new FormGroup({
+      photographies: this.fb.array([]),
     });
   }
   openVerticallyCentered(content: any) {

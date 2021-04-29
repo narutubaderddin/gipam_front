@@ -12,7 +12,6 @@ export class AddDescriptionsComponent implements OnInit {
   domains: any;
   @Input() keyword: string;
   @Input() addDepot = false;
-  @Input() addProperty = true;
   @Input() descriptifForm: FormGroup;
   items: any = [];
   domain = '';
