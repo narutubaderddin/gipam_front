@@ -120,7 +120,9 @@
                   [monthNavigator]="true"
                   [yearNavigator]="true"
                   [numberOfMonths]="1"
-                  [selectionMode]="dateSelectionMode"
+                  [selectionMode]="
+                    col[col.field + '_operator'] && col[col.field + '_operator'].name === 'range' ? 'range' : 'single'
+                  "
                   dateFormat="dd/mm/yy"
                   yearRange="1900:2100"
                   (onShow)="calendarShow(pcd, dd, col.field)"
@@ -131,7 +133,7 @@
                       [options]="dateOperators"
                       optionLabel="value"
                       [formControlName]="col.field + '_operator'"
-                      (onChange)="rangeChanged(col.field, dd, pcd)"
+                      (onClick)="rangeChanged(col.field, dd, pcd)"
                     >
                     </p-dropdown>
                     <button class="btn add-action float-right" (click)="clearDateFilter(col.field, pcd, dd)">

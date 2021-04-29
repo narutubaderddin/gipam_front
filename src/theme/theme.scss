@@ -724,3 +724,27 @@ p-calendar {
     }
   }
 }
+
+::ng-deep .p-multiselect {
+  width: 100%;
+}
+::ng-deep .p-dropdown {
+  width: 100%;
+}
+.selectBlock {
+  padding: 0;
+}
+
+//ngprime datepicker
+.p-datepicker {
+  table {
+    td,
+    tr {
+      padding: 0 !important;
+      span {
+        height: 1.5rem;
+        font-size: 12px;
+      }
+    }
+  }
+}

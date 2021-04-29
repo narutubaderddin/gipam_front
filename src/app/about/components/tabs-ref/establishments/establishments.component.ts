@@ -34,8 +34,8 @@ export class EstablishmentsComponent implements OnInit {
       name: '';
     };
   };
-  ministries: any[] = [];
-  selectedMinistry: any[] = [];
+  relatedEntities: any[] = [];
+  selectedRelatedEntity: any[] = [];
   itemToEdit: any;
   itemToDelete: string;
   tabForm: FormGroup;
@@ -76,6 +76,7 @@ export class EstablishmentsComponent implements OnInit {
   dataTableSort: any = {};
   dataTableSearchBar: any = {};
   items: any;
+  today: string;
 
   columns = [
     {
@@ -165,8 +166,8 @@ export class EstablishmentsComponent implements OnInit {
     };
     this.simpleTabsRef.tabRef = 'establishments';
     this.getAllItems();
+    this.today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     this.initForm();
-
     this.filter =
       this.activatedRoute.snapshot.queryParams.filter && this.activatedRoute.snapshot.queryParams.filter.length > 0;
     console.log('ng on init filter', this.filter);
@@ -174,7 +175,10 @@ export class EstablishmentsComponent implements OnInit {
 
   initForm() {
     const msg = 'date début inférieur date fin';
-    const startDate = this.datePipe.transform(this.selectedItem ? this.selectedItem.startDate : '', 'yyyy-MM-dd');
+    const startDate = this.datePipe.transform(
+      this.selectedItem ? this.selectedItem.startDate : new Date(),
+      'yyyy-MM-dd'
+    );
     const disappearanceDate = this.datePipe.transform(
       this.selectedItem ? this.selectedItem.disappearanceDate : '',
       'yyyy-MM-dd'
@@ -184,7 +188,7 @@ export class EstablishmentsComponent implements OnInit {
       acronym: [this.selectedItem ? this.selectedItem.acronym : '', [Validators.required]],
       startDate: [startDate, [Validators.required]],
       disappearanceDate: [disappearanceDate, []],
-      ministry: [this.selectedMinistry, [Validators.required]],
+      ministry: [this.selectedRelatedEntity, [Validators.required]],
     });
     this.tabForm.setValidators(this.ValidateDate());
   }
@@ -212,7 +216,7 @@ export class EstablishmentsComponent implements OnInit {
     if (this.editItem || this.editVisibility) {
       this.itemToEdit = item;
       this.itemLabel = item.label;
-      this.selectedMinistry = [
+      this.selectedRelatedEntity = [
         {
           id: item.ministryId,
           name: item.ministryName,
@@ -220,32 +224,27 @@ export class EstablishmentsComponent implements OnInit {
       ];
     }
     if (this.editItem || this.addItem) {
-      this.getMinistries();
+      this.getRelatedEntity();
     }
     this.selectedItem = item;
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
 
-  onMinistrySelect(item: any) {
-    this.selectedMinistry = item;
+  onRelatedEntitySelect(item: any) {
+    console.log('ministry select', item);
+    this.selectedRelatedEntity = item;
   }
 
   onSelectAll(items: any) {}
 
-  getMinistries() {
+  getRelatedEntity(): any {
     const previousUrl = this.simpleTabsRef.tabRef;
-
     this.simpleTabsRef.tabRef = 'ministries';
 
-    this.simpleTabsRef.getAllItems({}).subscribe(
-      (result: any) => {
-        this.ministries = result.results;
-      },
-      (error: any) => {
-        this.addSingle('error', '', error.error.message);
-      }
-    );
+    this.simpleTabsRef.getAllItems({}).subscribe((result: any) => {
+      this.relatedEntities = result.results;
+    });
     this.simpleTabsRef.tabRef = previousUrl;
   }
 
@@ -281,6 +280,7 @@ export class EstablishmentsComponent implements OnInit {
     this.editItem = false;
     this.addItem = false;
     this.deleteItems = false;
+    this.editVisibility = false;
 
     // this.myModal.close('Close click');
     this.myModal.dismiss('Cross click');
@@ -305,7 +305,7 @@ export class EstablishmentsComponent implements OnInit {
   addItemAction() {
     this.addItem = true;
     this.selectedItem = null;
-    this.selectedMinistry = [];
+    this.selectedRelatedEntity = [];
     this.openModal('');
   }
 
@@ -445,8 +445,7 @@ export class EstablishmentsComponent implements OnInit {
 
   filters(e: any) {
     console.log('original filter', e);
-    this.dataTableFilter = e;
-    this.dataTableSearchBar = {};
+    this.dataTableFilter = Object.assign({}, e);
     this.page = 1;
     this.dataTableComponent.currentPage = 1;
     this.getAllItems();
@@ -462,19 +461,19 @@ export class EstablishmentsComponent implements OnInit {
     this.getAllItems();
   }
 
-  search(input: string) {
-    this.page = 1;
-
-    this.columns.forEach((col) => {
-      if (col.filter && col.filterType === 'text') {
-        if (input) {
-          this.dataTableFilter[col.field + '[contains]'] = input;
-        } else {
-          delete this.dataTableFilter[col.field + '[contains]'];
-        }
-      }
-    });
-
-    this.getAllItems();
-  }
+  // search(input: string) {
+  //   this.page = 1;
+  //
+  //   this.columns.forEach((col) => {
+  //     if (col.filter && col.filterType === 'text') {
+  //       if (input) {
+  //         this.dataTableFilter[col.field + '[contains]'] = input;
+  //       } else {
+  //         delete this.dataTableFilter[col.field + '[contains]'];
+  //       }
+  //     }
+  //   });
+  //
+  //   this.getAllItems();
+  // }
 }

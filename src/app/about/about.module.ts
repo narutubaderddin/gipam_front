@@ -91,7 +91,7 @@ import { MovementActionTypesComponent } from './components/tabs-ref/movement-act
 import { ModalMvtActionTypesComponent } from './components/tabs-ref/movement-action-types/modal-mvt-action-types/modal-mvt-action-types.component';
 import { ReportSubTypesComponent } from './components/tabs-ref/report-sub-types/report-sub-types.component';
 import { GalleriaModule } from 'primeng/galleria';
-import { EstablishmentsComponent } from '@app/about/components/tabs-ref/establishment/establishments.component';
+import { EstablishmentsComponent } from '@app/about/components/tabs-ref/establishments/establishments.component';
 
 setTheme('bs4');
 

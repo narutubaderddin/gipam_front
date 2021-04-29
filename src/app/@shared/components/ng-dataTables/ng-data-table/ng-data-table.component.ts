@@ -83,7 +83,7 @@ export class NgDataTableComponent implements OnInit {
     { name: 'gt', value: '>' },
     { name: 'lte', value: '<=' },
     { name: 'gte', value: '>=' },
-    { name: 'range', value: 'intervalle' },
+    // { name: 'range', value: 'intervalle' },
   ];
   filter: any = {};
   filterFormValues: any = {};
@@ -100,7 +100,7 @@ export class NgDataTableComponent implements OnInit {
     });
     this.form = this.formBuilder.group({});
     this.initForm(this.columns);
-    // this.filter = Object.assign({}, this.form.value);
+    this.filterFormValues = Object.assign({}, this.form.value);
     // console.log('filter', this.filter);
     this.expandColumns = [
       {
@@ -243,6 +243,7 @@ export class NgDataTableComponent implements OnInit {
   onFilterChange(open: boolean, col: any) {
     if (!open) {
       this.setFilter(col);
+      console.log('ng filter', this.filter);
       this.filterValue.emit(this.filter);
     }
   }
@@ -272,10 +273,16 @@ export class NgDataTableComponent implements OnInit {
 
   getDateFilter(field: string) {
     // console.log('form value', this.form.value);
-    if (!this.filterFormValues[field + '_operator'] || !this.filterFormValues[field]) {
+    if (
+      (!this.filterFormValues[field + '_operator'] && !this.filterFormValues[field]) ||
+      !this.filterFormValues[field]
+    ) {
       return;
     }
-    const operator = this.filterFormValues[field + '_operator'].name;
+    let operator = this.filterFormValues[field + '_operator'].name;
+    if (!this.filterFormValues[field + '_operator']) {
+      operator = 'eq';
+    }
     if (operator !== 'range') {
       this.filter[field + '[' + operator + ']'] = this.datePipe.transform(this.filterFormValues[field], 'yyyy-MM-dd');
       return;
@@ -301,32 +308,43 @@ export class NgDataTableComponent implements OnInit {
   rangeChanged(field: string, dropdown: Dropdown, calendar: Calendar) {
     if (dropdown.value.name === 'range') {
       this.dateSelectionMode = 'range';
+      this.form.value[field + '_operator'] = dropdown.value;
       this.monthsToDisplay = 2;
       return;
     }
     // this.form.value[field] = new Date();
     this.dateSelectionMode = 'single';
-    if (Array.isArray(this.form.value[field])) {
+    if (Array.isArray(this.filterFormValues[field])) {
       calendar.writeValue(new Date());
     }
     this.form.value[field] = calendar.value;
+    this.filterFormValues[field] = this.form.value[field];
+    this.form.value[field + '_operator'] = dropdown.value;
+    this.filterFormValues[field + '_operator'] = this.form.value[field + '_operator'];
     this.monthsToDisplay = 1;
   }
 
   calendarShow(calendar: Calendar, dropdown: Dropdown, field: string) {
     const fieldOperator = field + '_operator';
-    if (!this.form.value[fieldOperator]) {
+    if (!this.filterFormValues[fieldOperator]) {
       calendar.writeValue(new Date());
       this.form.value[field] = new Date();
+      this.filterFormValues[field] = new Date();
       this.dateSelectionMode = 'single';
       dropdown.writeValue({ name: 'eq', value: '=' });
       this.form.value[fieldOperator] = { name: 'eq', value: '=' };
+      this.filterFormValues[fieldOperator] = { name: 'eq', value: '=' };
+      return;
     }
+    this.form.value[fieldOperator] = dropdown.value;
+    this.filterFormValues[fieldOperator] = dropdown.value;
   }
 
   clearDateFilter(field: string, calendar: Calendar, dropdown: Dropdown) {
     this.form.value[field + '_operator'] = '';
+    this.filterFormValues[field + '_operator'] = '';
     this.form.value[field] = '';
+    this.filterFormValues[field] = '';
     calendar.writeValue('');
     dropdown.writeValue({ name: 'eq', value: '=' });
     calendar.toggle();
