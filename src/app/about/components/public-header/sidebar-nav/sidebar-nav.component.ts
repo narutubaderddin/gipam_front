@@ -132,4 +132,8 @@ export class SidebarNavComponent implements OnInit {
     this.router.navigate(['tab-ref-ministère']);
     this.toggleClose();
   }
+  goToBuildingsList(){
+    this.router.navigate(['tab-ref-bâtiment']);
+    this.toggleClose();
+  }
 }

@@ -26,6 +26,7 @@ import { TypeMvtComponent } from '@app/about/components/tabs-ref/type-mvt/type-m
 import { MovementActionTypesComponent } from '@app/about/components/tabs-ref/movement-action-types/movement-action-types.component';
 import { ReportSubTypesComponent } from '@app/about/components/tabs-ref/report-sub-types/report-sub-types.component';
 import { MinistryComponent } from '@app/about/components/tabs-ref/ministry/ministry.component';
+import {BuildingsComponent} from "@app/about/components/tabs-ref/buildings/buildings.component";
 const routes: Routes = [
   {
     path: '',
@@ -80,6 +81,7 @@ const routes: Routes = [
       { path: 'tab-ref-type-action-mouvement', component: MovementActionTypesComponent },
       { path: 'tab-ref-sous-type-constat', component: ReportSubTypesComponent },
       { path: 'tab-ref-ministère', component: MinistryComponent },
+      { path: 'tab-ref-bâtiment', component: BuildingsComponent },
     ],
   },
 ];

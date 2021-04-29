@@ -32,7 +32,7 @@ export class ReportSubTypesComponent implements OnInit {
   itemLabel: any;
 
   filter: any;
-  sortBy = '';
+  sortBy = 'label';
   sort = 'asc';
   totalFiltred: any;
   total: any;
@@ -74,9 +74,7 @@ export class ReportSubTypesComponent implements OnInit {
       field: 'reportType',
       type: 'key-array',
       key_data: ['reportType', 'label'],
-      filter: false,
-      filterType: 'text',
-      sortable: false,
+
     },
     {
       header: 'Actions',

@@ -1,22 +1,22 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {NgDataTableComponent} from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 import {FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
-import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
-import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
-import { FieldsService } from '@shared/services/fields.service';
-import { MessageService } from 'primeng/api';
-import { DatePipe } from '@angular/common';
+import {IDropdownSettings} from 'ng-multiselect-dropdown';
+import {OPERATORS, TYPES} from '@shared/services/column-filter.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {NgbModal, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
+import {SimpleTabsRefService} from '@shared/services/simple-tabs-ref.service';
+import {FieldsService} from '@shared/services/fields.service';
+import {MessageService} from 'primeng/api';
+import {DatePipe} from '@angular/common';
 
 @Component({
-  selector: 'app-ministry',
-  templateUrl: './ministry.component.html',
-  styleUrls: ['./ministry.component.scss'],
+  selector: 'app-buildings',
+  templateUrl: './buildings.component.html',
+  styleUrls: ['./buildings.component.scss'],
   providers: [DatePipe],
 })
-export class MinistryComponent implements OnInit {
+export class BuildingsComponent implements OnInit {
   @ViewChild('content') modalRef: TemplateRef<any>;
   @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
 
@@ -24,12 +24,26 @@ export class MinistryComponent implements OnInit {
   btnLoading: any = null;
   myModal: any;
   selectedItem: {
+    // label: '';
     name: '';
-    acronym: '';
+    address:'';
+    cedex: '';
+    distrib:'';
     startDate: '';
     disappearanceDate: '';
+    site: {
+      id: number;
+      label: '';
+    };
+    commune: {
+      id: number;
+      name: '';
+    };
   };
-  selectedMinistry: any[] = [];
+  sites: any[] = [];
+  communes: any[] = [];
+  selectedSite: any[] = [];
+  selectedCommune: any[] = [];
   itemToEdit: any;
   itemToDelete: string;
   tabForm: FormGroup;
@@ -44,7 +58,7 @@ export class MinistryComponent implements OnInit {
   itemLabel: any;
 
   filter = '';
-  sortBy = '';
+  sortBy = 'label';
   sort = 'asc';
   totalFiltred: any;
   total: any;
@@ -77,15 +91,48 @@ export class MinistryComponent implements OnInit {
       filter: true,
       filterType: 'text',
       sortable: true,
+      width: '300px',
     },
     {
-      header: 'Sigle',
-      field: 'acronym',
+      header: 'Adresse',
+      field: 'address',
       type: 'key',
       filter: true,
       filterType: 'text',
       sortable: true,
       width: '200px',
+    },
+    {
+      header: 'CEDEX',
+      field: 'cedex',
+      type: 'key',
+      filter: true,
+      filterType: 'text',
+      sortable: true,
+
+    },
+    {
+      header: 'Distrib',
+      field: 'distrib',
+      type: 'key',
+      filter: true,
+      filterType: 'text',
+      sortable: true,
+
+    },
+    {
+      header: 'Site',
+      field: 'site',
+      type: 'key-array',
+      key_data: ['site', 'label'],
+
+
+    },
+    {
+      header: 'Commune',
+      field: 'commune',
+      type: 'key-array',
+      key_data: ['commune', 'name'],
     },
     {
       header: 'Date début de validité',
@@ -94,7 +141,7 @@ export class MinistryComponent implements OnInit {
       filter: true,
       filterType: 'range-date',
       sortable: true,
-      width: '250px',
+      width: '200px',
     },
     {
       header: 'Date fin de validité',
@@ -103,7 +150,7 @@ export class MinistryComponent implements OnInit {
       filter: true,
       filterType: 'range-date',
       sortable: true,
-      width: '250px',
+      width: '200px',
     },
     {
       header: 'Actions',
@@ -144,7 +191,15 @@ export class MinistryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.simpleTabsRef.tabRef = 'ministries';
+    this.dropdownSettings = {
+      singleSelection: true,
+      idField: 'id',
+      textField: 'label',
+      itemsShowLimit: 5,
+      allowSearchFilter: true,
+      // maxHeight: 100,
+    };
+    this.simpleTabsRef.tabRef = 'buildings';
     this.getAllItems();
     this.initForm();
 
@@ -160,12 +215,78 @@ export class MinistryComponent implements OnInit {
     );
     this.tabForm = this.fb.group({
       label: [this.selectedItem ? this.selectedItem.name : '', [Validators.required]],
-      acronym: [this.selectedItem ? this.selectedItem.acronym : '', [Validators.required]],
+      address: [this.selectedItem ? this.selectedItem.address : '', [Validators.required]],
+      distrib: [this.selectedItem ? this.selectedItem.distrib : '', [Validators.required]],
+      cedex: [this.selectedItem ? this.selectedItem.cedex : '', [Validators.required]],
       startDate: [startDate, [Validators.required]],
       disappearanceDate: [disappearanceDate, [Validators.required]],
+      site: [this.selectedSite, [Validators.required]],
+      commune: [this.selectedCommune, [Validators.required]],
+
     });
+    console.log(this.selectedSite,this.selectedCommune)
+    console.log(this.selectedItem)
     this.tabForm.setValidators(this.ValidateDate());
   }
+
+
+  openModal(item: any) {
+    this.btnLoading = null;
+    if (this.editItem || this.addItem) {
+      this.getSites();
+      this.getCommunes();
+    }
+    if (this.editItem || this.editVisibility) {
+      // this.editVisibility=false;
+      this.itemToEdit = item;
+      this.itemLabel = item.label;
+      this.selectedSite = item.site ? item.site.name:''
+      this.selectedCommune = item.commune ? item.commune.name:''
+    }
+    this.selectedItem = item;
+    this.initForm();
+    this.myModal = this.modalService.open(this.modalRef, { centered: true });
+  }
+
+  onSiteSelect(item: any) {
+    this.selectedSite = item;
+  }
+  onCommuneSelect(item: any) {
+    this.selectedCommune = item;
+  }
+  getSites() {
+    const previousUrl = this.simpleTabsRef.tabRef;
+
+    this.simpleTabsRef.tabRef = 'sites';
+
+    this.simpleTabsRef.getAllItems({}).subscribe(
+      (result: any) => {
+        this.sites = result.results;
+        console.log('sites',this.sites)
+      },
+      (error: any) => {
+        this.addSingle('error', '', error.error.message);
+      }
+    );
+    this.simpleTabsRef.tabRef = previousUrl;
+  }
+  getCommunes() {
+    const previousUrl = this.simpleTabsRef.tabRef;
+
+    this.simpleTabsRef.tabRef = 'communes';
+
+    this.simpleTabsRef.getAllItems({}).subscribe(
+      (result: any) => {
+        this.communes = result.results;
+        console.log('communes',this.communes)
+      },
+      (error: any) => {
+        this.addSingle('error', '', error.error.message);
+      }
+    );
+    this.simpleTabsRef.tabRef = previousUrl;
+  }
+  onSelectAll(items: any) {}
 
   ValidateDate(): ValidatorFn {
     return (cc: FormGroup): ValidationErrors => {
@@ -179,24 +300,6 @@ export class MinistryComponent implements OnInit {
     };
   }
 
-  resetFilter() {}
-
-  openModal(item: any) {
-    this.btnLoading = null;
-    if (this.editItem || this.editVisibility) {
-      this.itemToEdit = item;
-      this.itemLabel = item.name;
-console.log(item, this.selectedItem);
-    }
-
-    this.selectedItem = item;
-    this.initForm();
-    this.myModal = this.modalService.open(this.modalRef, { centered: true });
-  }
-
-
-  onSelectAll(items: any) {}
-
   transformDateToDateTime(input: string, format: string, addTime: boolean = true) {
     // 1984-06-05 12:15:30
     if (input !== '' && input) {
@@ -208,6 +311,7 @@ console.log(item, this.selectedItem);
     return '';
   }
 
+
   submit() {
     this.btnLoading = null;
     const item = {
@@ -215,6 +319,7 @@ console.log(item, this.selectedItem);
       acronym: this.tabForm.value.acronym,
       startDate: this.transformDateToDateTime(this.tabForm.value.startDate, 'yyy-MM-dd'),
       disappearanceDate: this.transformDateToDateTime(this.tabForm.value.disappearanceDate, 'yyy-MM-dd'),
+      // ministry: this.tabForm.value.ministry[0].id,
     };
     if (this.addItem) {
       this.addItems(item);
@@ -251,7 +356,8 @@ console.log(item, this.selectedItem);
   addItemAction() {
     this.addItem = true;
     this.selectedItem = null;
-    this.selectedMinistry = [];
+    this.selectedSite = [];
+    this.selectedCommune=[];
     this.openModal('');
   }
 
@@ -260,6 +366,7 @@ console.log(item, this.selectedItem);
     this.deleteItems = true;
     this.itemToDelete = data;
     this.itemLabel = data.name;
+    console.log(this.itemLabel)
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
 
@@ -282,9 +389,13 @@ console.log(item, this.selectedItem);
     const newItem = {
       id: item.id,
       name: item.name,
-      acronym: item.acronym,
+      address: item.address,
+      cedex: item.cedex,
+      distrib: item.distrib,
       startDate: item.startDate,
       disappearanceDate: item.disappearanceDate,
+      site: item.site ? item.site : '',
+      commune: item.commune ? item.commune : '',
       active: true,
     };
     newItem.startDate = item.startDate ? this.datePipe.transform(item.startDate, 'yyyy/MM/dd') : null;
@@ -303,7 +414,7 @@ console.log(item, this.selectedItem);
         this.items = result.results.map((item: any) => {
           return this.convertItem(item);
         });
-        console.log(result);
+        console.log(result , this.items);
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
         this.start = (this.page - 1) * this.limit + 1;
@@ -322,14 +433,14 @@ console.log(item, this.selectedItem);
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Suppression', 'Ministère ' + item.name + ' supprimée avec succés');
+        this.addSingle('success', 'Suppression', 'Bâtiment ' + item.label + ' supprimée avec succés');
         this.getAllItems();
         this.deleteItems = false;
       },
       (error: any) => {
         this.close();
         if (error.error.code === 400) {
-          this.addSingle('error', 'Suppression', 'Ministère ' + item.name + ' admet une relation');
+          this.addSingle('error', 'Suppression', 'Bâtiment ' + item.label + ' admet une relation');
         } else {
           this.addSingle('error', 'Suppression', error.error.message);
         }
@@ -342,7 +453,7 @@ console.log(item, this.selectedItem);
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Ajout', 'Ministère ' + item.name + ' ajoutée avec succés');
+        this.addSingle('success', 'Ajout', 'Bâtiment ' + item.name + ' ajoutée avec succés');
         this.getAllItems();
         this.addItem = false;
       },
@@ -357,7 +468,7 @@ console.log(item, this.selectedItem);
     this.simpleTabsRef.editItem(item, id).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Modification', 'Ministère ' + item.name + ' modifiée avec succés');
+        this.addSingle('success', 'Modification', 'Bâtiment ' + item.name + ' modifiée avec succés');
         this.getAllItems();
         this.editItem = false;
       },
@@ -388,36 +499,43 @@ console.log(item, this.selectedItem);
     this.dataTableComponent.currentPage = 1;
 
     Object.keys(e).map((key, index) => {
-        if (key==('startDate')||(key=='disappearanceDate')) {
-          if(e[key+'Operator'].value=='intervalle'){  // cond <=> e.key+'Operator'=='intervalle'
-            const newKey1 = key + '[gte]';
-            const newKey2 = key + '[lte]';
+      // if (e[key]!=='') {
+      // Object.keys(this.params).map((key, index) => {
+      //   console.log(key);
+      // })
 
-            this.params = {
-              ...this.params,
-              [newKey1]: e[key]? new Date(e[key][0]).toISOString():'',
-              [newKey2]: e[key]? new Date(e[key][1]).toISOString():'',
-            };
-            console.log(this.params);
-          }
-          else{
-            console.log('Operator',e[key+'Operator']);
 
-            const newKey = key + '['+e[key+'Operator'].name+']';  // eq <=> e.key+'Operator'
-            this.params = {
-              ...this.params,
-              [newKey]: e[key]? new Date(e[key]).toISOString():'',
-            };
-            console.log(this.params);
-          }
-        }else{
-          const newKey = key + '[contains]';
+      if (key==('startDate')||(key=='disappearanceDate')) {
+        if(e[key+'Operator'].value=='intervalle'){  // cond <=> e.key+'Operator'=='intervalle'
+          const newKey1 = key + '[gte]';
+          const newKey2 = key + '[lte]';
+
           this.params = {
             ...this.params,
-            [newKey]: e[key]?e[key]:'',
-          }
+            [newKey1]: e[key]? new Date(e[key][0]).toISOString():'',
+            [newKey2]: e[key]? new Date(e[key][1]).toISOString():'',
+          };
+          console.log(this.params);
         }
+        else{
+          console.log('Operator',e[key+'Operator']);
 
+          const newKey = key + '['+e[key+'Operator'].name+']';  // eq <=> e.key+'Operator'
+          this.params = {
+            ...this.params,
+            [newKey]: e[key]? new Date(e[key]).toISOString():'',
+          };
+          console.log(this.params);
+        }
+      }else{
+        const newKey = key + '[contains]';
+        // const addfilter= {[newKey]: e[key]}
+        this.params = {
+          ...this.params,
+          [newKey]: e[key]?e[key]:'',
+        }
+      }
+      // }
     });
 
     console.log(this.params);

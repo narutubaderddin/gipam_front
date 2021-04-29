@@ -34,14 +34,15 @@ export class MaterialTechniqueComponent implements OnInit {
   itemLabel: any;
   selectedDomain: any;
   filter: any;
+  sort: string = 'asc';
+  sortBy = 'label';
   totalFiltred: any;
   total: any;
   limit: any = '5';
   page: any = '1';
   start: any;
   end: any;
-  sortBy = '';
-  sort = 'asc';
+
   loading: boolean = false;
   items: any;
 
@@ -60,9 +61,6 @@ export class MaterialTechniqueComponent implements OnInit {
       field: 'denominations',
       type: 'key-multiple-data',
       key_multiple_data: ['denominations', 'label'],
-      filter: false,
-      filterType: 'text',
-      sortable: false,
       scrollable: true,
     },
     {
@@ -84,11 +82,6 @@ export class MaterialTechniqueComponent implements OnInit {
     },
   ];
 
-  fieldTraduction = {
-    label: 'Libellé',
-    denominations: 'Dénominations',
-    type: 'Type',
-  };
   rowCount: any = 5;
 
   constructor(
@@ -197,27 +190,26 @@ export class MaterialTechniqueComponent implements OnInit {
 
   getAllItems() {
     this.simpleTabsRef.tabRef = 'materialTechniques';
-    const params = {
-      limit: this.limit,
-      page: this.page,
-      'label[contains]': this.filter,
-      sort_by: this.sortBy,
-      sort: this.sort,
-    };
-    console.log(params);
-    this.simpleTabsRef.getAllItems(params).subscribe(
-      (result: any) => {
-        this.items = result.results;
-        this.totalFiltred = result.filteredQuantity;
-        this.total = result.totalQuantity;
-        this.start = (this.page - 1) * this.limit + 1;
-        this.end = (this.page - 1) * this.limit + this.items.length;
-        this.loading = false;
-      },
-      (error: any) => {
-        this.addSingle('error', '', error.error.message);
-      }
-    );
+    this.simpleTabsRef
+      .getAllItems({
+        limit: this.limit,
+        page: this.page,
+        'label[contains]': this.filter,
+        sort_by: this.sortBy,
+        sort: this.sort })
+      .subscribe(
+        (result: any) => {
+          this.items = result.results;
+          this.totalFiltred = result.filteredQuantity;
+          this.total = result.totalQuantity;
+          this.start = (this.page - 1) * this.limit + 1;
+          this.end = (this.page - 1) * this.limit + this.items.length;
+          this.loading = false;
+        },
+        (error: any) => {
+          this.addSingle('error', '', error.error.message);
+        }
+      );
   }
   deleteItemss(item: any) {
     this.simpleTabsRef.tabRef = 'materialTechniques';
@@ -303,14 +295,9 @@ export class MaterialTechniqueComponent implements OnInit {
     this.filter = e.label;
     this.getAllItems();
   }
-  getKeyByValue(object: any, value: any) {
-    return Object.keys(object).find((key) => object[key] === value);
-  }
   sortEvent(e: any) {
     console.log(e);
-    this.sortBy = this.getKeyByValue(this.fieldTraduction, e.field);
-
-    if (e.order == 1) {
+    if (e) {
       this.sort = 'asc';
       this.getAllItems();
     } else {
@@ -347,3 +334,4 @@ export class MaterialTechniqueComponent implements OnInit {
     this.selectedDenominations = [];
   }
 }
+
