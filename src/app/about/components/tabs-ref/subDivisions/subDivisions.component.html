@@ -1,8 +1,8 @@
 <div class="breadcrumb">
   <a href="accueil">Accueil</a>
-  <a href="tab-ref-etablissement" class="selected-item">
+  <a href="tab-ref-sous-direction" class="selected-item">
     <i class="fas fa-chevron-right"></i>
-    Gestion des Etablissements
+    Gestion des Sous-directions
   </a>
 </div>
 <div class="container-fluid">
@@ -13,7 +13,7 @@
           <div class="card">
             <div class="card-body">
               <ul class="d-flex">
-                <li class="col-md-12 selected-table"><i class="fas fa-tasks"></i><a>Gestion des Etablissements</a></li>
+                <li class="col-md-12 selected-table"><i class="fas fa-tasks"></i><a>Gestion des Sous-directions</a></li>
               </ul>
             </div>
           </div>
@@ -45,7 +45,7 @@
               <div class="mr-3">
                 <button class="btn add-action" (click)="addItemAction()">
                   <i class="fas fa-plus-circle mr-1"></i>
-                  Ajouter Etablissement
+                  Ajouter Sous-direction
                 </button>
               </div>
             </div>
@@ -81,16 +81,16 @@
 <ng-template #content let-modal>
   <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
     <div class="modal-header">
-      <h4 class="modal-title" *ngIf="editItem">Modification de l'établissement "{{ itemLabel }}"</h4>
-      <h4 class="modal-title" *ngIf="addItem">Ajout d'un établissement</h4>
-      <h4 class="modal-title" *ngIf="deleteItems">Suppression de l'établissement "{{ itemLabel }}"</h4>
-      <h4 class="modal-title" *ngIf="editVisibility">Activer/Désactiver l'établissement "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="editItem">Modification de sous-direction "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="addItem">Ajout de sous-direction</h4>
+      <h4 class="modal-title" *ngIf="deleteItems">Suppression de sous-direction "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="editVisibility">Activer/Désactiver la sous-direction "{{ itemLabel }}"</h4>
       <button type="button" class="close" aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
-      <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer l'établissement "{{ itemLabel }}" ?</div>
+      <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer la sous-direction "{{ itemLabel }}" ?</div>
 
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-5">Libellé<span class="mandatory"> *</span></label>
@@ -111,43 +111,37 @@
         />
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-3">Ministère<span class="mandatory"> *</span></label>
-        <ng-multiselect-dropdown
-          formControlName="ministry"
-          class="select col-sm-7 p-0"
-          [placeholder]="'Choisir une ministère'"
-          [settings]="dropdownSettings"
-          [data]="ministries"
-          (onSelect)="onMinistrySelect($event)"
-          (onSelectAll)="onSelectAll($event)"
-        >
-        </ng-multiselect-dropdown>
-        <!--        <p-dropdown-->
-        <!--          styleClass="col-sm-7 p-0"-->
-        <!--          #dd-->
-        <!--          [options]="ministries"-->
-        <!--          optionLabel="name"-->
-        <!--          formControlName="ministry"-->
-        <!--          (onClick)="onMinistrySelect($event)"-->
-        <!--        ></p-dropdown>-->
+        <label class="col-sm-5">Etablissement<span class="mandatory"> *</span></label>
+        <div class="select col-sm-7 p-0">
+          <p-dropdown
+            [options]="relatedEntities"
+            optionLabel="label"
+            formControlName="establishment"
+            placeholder="Sélectionner un établissement"
+            emptyFilterMessage="Aucun résultat trouvé"
+            [virtualScroll]="true"
+            itemSize="10"
+            (onClick)="getRelatedEntity()"
+          ></p-dropdown>
+        </div>
       </div>
       <div
         class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
-        *ngIf="editItem || addItem || editVisibility"
+        *ngIf="addItem || editVisibility"
       >
         <label class="col-sm-5">Date début de validité<span class="mandatory"> *</span></label>
         <input type="date" name="datepicker" class="form-control date-input col-sm-7" formControlName="startDate" />
       </div>
       <div
         class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
-        *ngIf="editItem || addItem || editVisibility"
+        *ngIf="addItem || editVisibility"
       >
         <label class="col-sm-5">Date fin de validité</label>
         <input
           type="date"
           name="datepicker"
           class="form-control date-input col-sm-7"
-          formControlName="disappearanceDate"
+          formControlName="endDate"
           [class.ng-invalid]="tabForm.errors && tabForm.errors.dateInvalid"
         />
       </div>

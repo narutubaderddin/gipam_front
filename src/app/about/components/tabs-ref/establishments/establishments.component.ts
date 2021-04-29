@@ -35,7 +35,7 @@ export class EstablishmentsComponent implements OnInit {
     };
   };
   relatedEntities: any[] = [];
-  selectedRelatedEntity: any = {};
+  selectedRelatedEntity: any;
   itemToEdit: any;
   itemToDelete: string;
   tabForm: FormGroup;
@@ -188,7 +188,7 @@ export class EstablishmentsComponent implements OnInit {
       acronym: [this.selectedItem ? this.selectedItem.acronym : '', [Validators.required]],
       startDate: [startDate, [Validators.required]],
       disappearanceDate: [disappearanceDate, []],
-      ministry: [this.selectedRelatedEntity ? this.selectedRelatedEntity : { name: '' }, [Validators.required]],
+      ministry: [this.selectedRelatedEntity ? this.selectedRelatedEntity : '', [Validators.required]],
     });
     this.tabForm.setValidators(this.ValidateDate());
   }
@@ -221,7 +221,10 @@ export class EstablishmentsComponent implements OnInit {
         name: item.ministryName,
       };
     }
-    if (this.editItem || this.addItem) {
+    if (this.addItem) {
+      this.selectedRelatedEntity = null;
+    }
+    if (this.editItem || (this.addItem && !this.relatedEntities)) {
       this.getRelatedEntity();
     }
     this.selectedItem = item;
@@ -254,7 +257,6 @@ export class EstablishmentsComponent implements OnInit {
 
   submit() {
     this.btnLoading = null;
-    console.log('ministry ', this.tabForm.value.ministry);
     const item = {
       label: this.tabForm.value.label,
       acronym: this.tabForm.value.acronym,
@@ -300,7 +302,7 @@ export class EstablishmentsComponent implements OnInit {
     this.addItem = true;
     this.selectedItem = null;
     this.selectedRelatedEntity = {};
-    this.openModal('');
+    this.openModal(null);
   }
 
   deleteItem(data: any) {
@@ -462,9 +464,9 @@ export class EstablishmentsComponent implements OnInit {
     this.columns.forEach((col) => {
       if (col.filter && col.filterType === 'text') {
         if (input) {
-          this.dataTableFilter[col.field + '[contains]'] = input;
+          this.dataTableSearchBar[col.field + '[contains]'] = input;
         } else {
-          delete this.dataTableFilter[col.field + '[contains]'];
+          delete this.dataTableSearchBar[col.field + '[contains]'];
         }
       }
     });

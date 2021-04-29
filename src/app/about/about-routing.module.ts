@@ -25,6 +25,7 @@ import { EstablishmentsComponent } from '@app/about/components/tabs-ref/establis
 import { TypeMvtComponent } from '@app/about/components/tabs-ref/type-mvt/type-mvt.component';
 import { MovementActionTypesComponent } from '@app/about/components/tabs-ref/movement-action-types/movement-action-types.component';
 import { ReportSubTypesComponent } from '@app/about/components/tabs-ref/report-sub-types/report-sub-types.component';
+import { SubDivisionsComponent } from '@app/about/components/tabs-ref/subDivisions/subDivisions.component';
 const routes: Routes = [
   {
     path: '',
@@ -66,9 +67,14 @@ const routes: Routes = [
       },
       { path: 'tab-ref-categorie', component: CategoryComponent, data: { title: 'Liste des catégories' } },
       {
-        path: 'tab-ref-establishments',
+        path: 'tab-ref-etablissement',
         component: EstablishmentsComponent,
         data: { title: 'Liste des établissements' },
+      },
+      {
+        path: 'tab-ref-sous-direction',
+        component: SubDivisionsComponent,
+        data: { title: 'Liste des sous-directions' },
       },
       { path: 'tab-ref-époque', component: EpoquesComponent },
       { path: 'tab-ref-type-déposant', component: DepositTypesComponent },

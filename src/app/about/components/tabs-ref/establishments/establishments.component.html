@@ -119,6 +119,9 @@
             formControlName="ministry"
             placeholder="Sélectionner une ministère"
             emptyFilterMessage="Aucun résultat trouvé"
+            [virtualScroll]="true"
+            itemSize="30"
+            (onClick)="getRelatedEntity()"
           ></p-dropdown>
         </div>
       </div>
