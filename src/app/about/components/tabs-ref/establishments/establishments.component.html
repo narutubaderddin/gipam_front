@@ -122,16 +122,15 @@
         <!--          (onSelectAll)="onSelectAll($event)"-->
         <!--        >-->
         <!--        </ng-multiselect-dropdown>-->
-        <div class="col-sm-7 selectBlock">
-          <p-multiSelect
-            styleClass="selectBlock"
-            #dd
-            [options]="relatedEntities"
-            optionLabel="name"
-            formControlName="ministry"
-            (onClick)="onRelatedEntitySelect($event)"
-          ></p-multiSelect>
-        </div>
+
+        <p-dropdown
+          class="select col-sm-7 p-0"
+          [options]="relatedEntities"
+          optionLabel="name"
+          formControlName="ministry"
+          (onClick)="onRelatedEntitySelect($event)"
+          [style]="{ minWidth: '100%' }"
+        ></p-dropdown>
       </div>
       <div
         class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
