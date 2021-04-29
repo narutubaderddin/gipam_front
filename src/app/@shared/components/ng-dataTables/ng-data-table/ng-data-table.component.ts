@@ -1,12 +1,13 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
-import { NgbCalendar, NgbDate, NgbDateAdapter, NgbDatepickerI18n } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDate, NgbDatepickerI18n } from '@ng-bootstrap/ng-bootstrap';
 import { CustomDatepickerI18nService, I18n } from '@shared/services/custom-datepicker-i18n.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Calendar } from 'primeng/calendar';
 import { Dropdown } from 'primeng/dropdown';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-ng-data-table',
@@ -31,7 +32,7 @@ import { Dropdown } from 'primeng/dropdown';
       transition('* <=> *', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)')),
     ]),
   ],
-  providers: [I18n, { provide: NgbDatepickerI18n, useClass: CustomDatepickerI18nService }],
+  providers: [I18n, { provide: NgbDatepickerI18n, useClass: CustomDatepickerI18nService }, DatePipe],
 })
 export class NgDataTableComponent implements OnInit {
   @Input() noDataMessage = 'Aucun élément à afficher';
@@ -83,15 +84,15 @@ export class NgDataTableComponent implements OnInit {
     { name: 'gt', value: '>' },
     { name: 'lte', value: '<=' },
     { name: 'gte', value: '>=' },
-    { name: 'range', value: 'intervalle' },
+    // { name: 'range', value: 'intervalle' },
   ];
-
-  constructor(private calendar: NgbCalendar, public formBuilder: FormBuilder) {
+  filter: any = {};
+  filterFormValues: any = {};
+  constructor(private calendar: NgbCalendar, public formBuilder: FormBuilder, private datePipe: DatePipe) {
     this.fromDate = calendar.getToday();
   }
 
   ngOnInit(): void {
-    console.log('columns', this.columns);
     this.key = this.columns[0]['field'];
     this.columns = this.columns.filter((col) => {
       if (Object.keys(col).indexOf('isVisible') == -1 || col.isVisible) {
@@ -100,7 +101,8 @@ export class NgDataTableComponent implements OnInit {
     });
     this.form = this.formBuilder.group({});
     this.initForm(this.columns);
-    console.log(this.form.value);
+    this.filterFormValues = Object.assign({}, this.form.value);
+    // console.log('filter', this.filter);
     this.expandColumns = [
       {
         header: 'Numéro inventaire',
@@ -149,7 +151,8 @@ export class NgDataTableComponent implements OnInit {
       if (col.filter) {
         this.form.addControl(col.field, new FormControl('', []));
         if (col.filterType === 'range-date') {
-          this.form.addControl(col.field + 'Operator', new FormControl(''));
+          const colOperatorKey = col.field + '_operator';
+          this.form.addControl(colOperatorKey, new FormControl('', []));
         }
       }
     });
@@ -213,23 +216,27 @@ export class NgDataTableComponent implements OnInit {
     this.ngOnInit();
   }
 
-  onFilterChange(open: boolean) {
-    if (!open) {
-      this.filterValue.emit(this.form.value);
-
-      console.log(this.form.value);
+  sortHeader(column: any) {
+    let dir = 'asc';
+    this.asc = !this.asc;
+    if (this.asc) {
+      dir = 'desc';
+    } else {
+      dir = 'asc';
     }
+    const sort = {
+      sort_by: column.field,
+      sort: dir,
+    };
+    this.sort.emit(sort);
   }
-
-  // sortHeader(item: any, e: any, col: any) {
-  //   console.log(item, e, col);
-  //   this.asc = !this.asc;
-  //   this.sort.emit(this.asc);
+  // onFilterChange(open: boolean) {
+  //   if (!open) {
+  //     this.filterValue.emit(this.form.value);
+  //
+  //     console.log(this.form.value);
+  //   }
   // }
-  sortData(e: any) {
-    console.log(e);
-    this.sort.emit(e);
-  }
 
   handlePaginationInfo() {
     this.currentPage = this.currentPage ? this.currentPage : 1;
@@ -241,30 +248,113 @@ export class NgDataTableComponent implements OnInit {
     this.end = this.data.length === this.limit && to ? to : this.total;
   }
 
-  rangeChanged(dropdown: Dropdown, calendar?: Calendar) {
-    this.selectedOperator = dropdown.value;
-    if (dropdown.value.name === 'range') {
-      this.dateSelectionMode = 'range';
-      this.monthsToDisplay = 2;
-      this.dateRangeMode = true;
+  onFilterChange(open: boolean, col: any) {
+    if (!open) {
+      this.setFilter(col);
+      console.log('ng filter', this.filter);
+      this.filterValue.emit(this.filter);
+    }
+  }
+
+  setFilter(column: any) {
+    // here filterFormValues has the values of the form used for the filter because
+    // in some cases the form in the date picker is initialised
+    this.filter = {};
+    if (column.filterType === 'text') {
+      this.filterFormValues[column.field] = this.form.value[column.field];
+    }
+    if (column.filterType === 'range-date') {
+      this.filterFormValues[column.field] = this.form.value[column.field];
+      this.filterFormValues[column.field + '_operator'] = this.form.value[column.field + '_operator'];
+    }
+    this.columns.forEach((col) => {
+      if (col.filter && this.filterFormValues[col.field]) {
+        if (col.filterType === 'text') {
+          this.filter[col.field + '[contains]'] = this.filterFormValues[col.field];
+        }
+        if (col.filterType === 'range-date') {
+          this.getDateFilter(col.field);
+        }
+      }
+    });
+  }
+
+  getDateFilter(field: string) {
+    // console.log('form value', this.form.value);
+    if (
+      (!this.filterFormValues[field + '_operator'] && !this.filterFormValues[field]) ||
+      !this.filterFormValues[field]
+    ) {
       return;
     }
-    calendar.writeValue(new Date());
+    let operator = this.filterFormValues[field + '_operator'].name;
+    if (!this.filterFormValues[field + '_operator']) {
+      operator = 'eq';
+    }
+    if (operator !== 'range') {
+      this.filter[field + '[' + operator + ']'] = this.datePipe.transform(this.filterFormValues[field], 'yyyy-MM-dd');
+      return;
+    }
+    if (
+      operator === 'range' &&
+      Array.isArray(this.filterFormValues[field]) &&
+      this.filterFormValues[field].length === 2
+    ) {
+      const date1 = this.datePipe.transform(this.filterFormValues[field][0], 'yyyy-MM-dd');
+      const date2 = this.datePipe.transform(this.filterFormValues[field][1], 'yyyy-MM-dd');
+      if (!date1 || !date2) {
+        // the user could select one date for the range mode so we discard his changes
+        return;
+      }
+      this.filter[field + '[gt]'] = date1;
+      this.filter[field + '[lt]'] = date2;
+      return;
+    }
+    return;
+  }
+
+  rangeChanged(field: string, dropdown: Dropdown, calendar: Calendar) {
+    if (dropdown.value.name === 'range') {
+      this.dateSelectionMode = 'range';
+      this.form.value[field + '_operator'] = dropdown.value;
+      this.monthsToDisplay = 2;
+      return;
+    }
+    // this.form.value[field] = new Date();
     this.dateSelectionMode = 'single';
-    this.dateRangeMode = false;
+    if (Array.isArray(this.filterFormValues[field])) {
+      calendar.writeValue(new Date());
+    }
+    this.form.value[field] = calendar.value;
+    this.filterFormValues[field] = this.form.value[field];
+    this.form.value[field + '_operator'] = dropdown.value;
+    this.filterFormValues[field + '_operator'] = this.form.value[field + '_operator'];
     this.monthsToDisplay = 1;
   }
 
-  calendarShow(dropdown: Dropdown, field: any) {
-    if (!dropdown.value) {
-      this.dateSelectionMode = 'single';
-      this.selectedOperator = 'eq';
-      this.form.value[field + 'Operator'] = { name: 'eq', value: '=' };
+  calendarShow(calendar: Calendar, dropdown: Dropdown, field: string) {
+    const fieldOperator = field + '_operator';
+    if (!this.filterFormValues[fieldOperator]) {
+      calendar.writeValue(new Date());
       this.form.value[field] = new Date();
+      this.filterFormValues[field] = new Date();
+      this.dateSelectionMode = 'single';
+      dropdown.writeValue({ name: 'eq', value: '=' });
+      this.form.value[fieldOperator] = { name: 'eq', value: '=' };
+      this.filterFormValues[fieldOperator] = { name: 'eq', value: '=' };
+      return;
     }
+    this.form.value[fieldOperator] = dropdown.value;
+    this.filterFormValues[fieldOperator] = dropdown.value;
   }
 
-  dateFilterSubmit(event: any) {
-    console.log(this.form.valid);
+  clearDateFilter(field: string, calendar: Calendar, dropdown: Dropdown) {
+    this.form.value[field + '_operator'] = '';
+    this.filterFormValues[field + '_operator'] = '';
+    this.form.value[field] = '';
+    this.filterFormValues[field] = '';
+    calendar.writeValue('');
+    dropdown.writeValue({ name: 'eq', value: '=' });
+    calendar.toggle();
   }
 }

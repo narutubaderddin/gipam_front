@@ -92,7 +92,7 @@
             *ngFor="let col of columns; let index = index"
             ngbDropdown
             pResizableColumn
-            (openChange)="onFilterChange($event)"
+            (openChange)="onFilterChange($event, col)"
             placement="bottom-left"
             autoClose="outside"
             container="body"
@@ -102,7 +102,7 @@
               *ngIf="col.sortable"
               [field]="col.header"
               [pSortableColumn]="col.sortable ? col.header : ''"
-
+              (click)="sortHeader(col)"
             ></p-sortIcon>
 
             <i
@@ -123,23 +123,27 @@
                   [monthNavigator]="true"
                   [yearNavigator]="true"
                   [numberOfMonths]="1"
-                  [selectionMode]="dateSelectionMode"
+                  [selectionMode]="
+                    col[col.field + '_operator'] && col[col.field + '_operator'].name === 'range' ? 'range' : 'single'
+                  "
                   dateFormat="dd/mm/yy"
                   yearRange="1900:2100"
+                  (onShow)="calendarShow(pcd, dd, col.field)"
                   styleClass="dateTimeField"
                   placeholder="Date"
-                  (onShow)="calendarShow(dd, col.field)"
                 >
                   <p-footer>
                     <p-dropdown
                       #dd
                       [options]="dateOperators"
                       optionLabel="value"
-                      [formControlName]="col.field + 'Operator'"
-                      (onClick)="rangeChanged(dd, pcd)"
+                      [formControlName]="col.field + '_operator'"
+                      (onClick)="rangeChanged(col.field, dd, pcd)"
                     >
                     </p-dropdown>
-                    <button class="btn add-action float-right">Annuler</button>
+                    <button class="btn add-action float-right" (click)="clearDateFilter(col.field, pcd, dd)">
+                      Annuler
+                    </button>
                   </p-footer>
                 </p-calendar>
                 <select class="select-style w-100" *ngSwitchCase="'select'" [formControlName]="col.field">

@@ -34,8 +34,8 @@ export class EstablishmentsComponent implements OnInit {
       name: '';
     };
   };
-  ministries: any[] = [];
-  selectedMinistry: any[] = [];
+  relatedEntities: any[] = [];
+  selectedRelatedEntity: any = {};
   itemToEdit: any;
   itemToDelete: string;
   tabForm: FormGroup;
@@ -51,7 +51,7 @@ export class EstablishmentsComponent implements OnInit {
 
   filter: any;
   sortBy = 'label';
-  sort: string = 'asc';
+  sort = 'asc';
   totalFiltred: any;
   total: any;
   limit = 5;
@@ -72,8 +72,11 @@ export class EstablishmentsComponent implements OnInit {
       type: TYPES.text,
     },
   };
-
+  dataTableFilter: any = {};
+  dataTableSort: any = {};
+  dataTableSearchBar: any = {};
   items: any;
+  today: string;
 
   columns = [
     {
@@ -163,15 +166,19 @@ export class EstablishmentsComponent implements OnInit {
     };
     this.simpleTabsRef.tabRef = 'establishments';
     this.getAllItems();
+    this.today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     this.initForm();
-
     this.filter =
       this.activatedRoute.snapshot.queryParams.filter && this.activatedRoute.snapshot.queryParams.filter.length > 0;
+    console.log('ng on init filter', this.filter);
   }
 
   initForm() {
     const msg = 'date début inférieur date fin';
-    const startDate = this.datePipe.transform(this.selectedItem ? this.selectedItem.startDate : '', 'yyyy-MM-dd');
+    const startDate = this.datePipe.transform(
+      this.selectedItem ? this.selectedItem.startDate : new Date(),
+      'yyyy-MM-dd'
+    );
     const disappearanceDate = this.datePipe.transform(
       this.selectedItem ? this.selectedItem.disappearanceDate : '',
       'yyyy-MM-dd'
@@ -181,7 +188,7 @@ export class EstablishmentsComponent implements OnInit {
       acronym: [this.selectedItem ? this.selectedItem.acronym : '', [Validators.required]],
       startDate: [startDate, [Validators.required]],
       disappearanceDate: [disappearanceDate, []],
-      ministry: [this.selectedMinistry, [Validators.required]],
+      ministry: [this.selectedRelatedEntity ? this.selectedRelatedEntity : { name: '' }, [Validators.required]],
     });
     this.tabForm.setValidators(this.ValidateDate());
   }
@@ -209,40 +216,28 @@ export class EstablishmentsComponent implements OnInit {
     if (this.editItem || this.editVisibility) {
       this.itemToEdit = item;
       this.itemLabel = item.label;
-      this.selectedMinistry = [
-        {
-          id: item.ministryId,
-          name: item.ministryName,
-        },
-      ];
+      this.selectedRelatedEntity = {
+        id: item.ministryId,
+        name: item.ministryName,
+      };
     }
     if (this.editItem || this.addItem) {
-      this.getMinistries();
+      this.getRelatedEntity();
     }
     this.selectedItem = item;
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
 
-  onMinistrySelect(item: any) {
-    this.selectedMinistry = item;
-  }
-
   onSelectAll(items: any) {}
 
-  getMinistries() {
+  getRelatedEntity(): any {
     const previousUrl = this.simpleTabsRef.tabRef;
-
     this.simpleTabsRef.tabRef = 'ministries';
 
-    this.simpleTabsRef.getAllItems({}).subscribe(
-      (result: any) => {
-        this.ministries = result.results;
-      },
-      (error: any) => {
-        this.addSingle('error', '', error.error.message);
-      }
-    );
+    this.simpleTabsRef.getAllItems({}).subscribe((result: any) => {
+      this.relatedEntities = result.results;
+    });
     this.simpleTabsRef.tabRef = previousUrl;
   }
 
@@ -259,12 +254,13 @@ export class EstablishmentsComponent implements OnInit {
 
   submit() {
     this.btnLoading = null;
+    console.log('ministry ', this.tabForm.value.ministry);
     const item = {
       label: this.tabForm.value.label,
       acronym: this.tabForm.value.acronym,
       startDate: this.transformDateToDateTime(this.tabForm.value.startDate, 'yyy-MM-dd'),
       disappearanceDate: this.transformDateToDateTime(this.tabForm.value.disappearanceDate, 'yyy-MM-dd'),
-      ministry: this.tabForm.value.ministry[0].id,
+      ministry: this.tabForm.value.ministry.id,
     };
     if (this.addItem) {
       this.addItems(item);
@@ -278,6 +274,7 @@ export class EstablishmentsComponent implements OnInit {
     this.editItem = false;
     this.addItem = false;
     this.deleteItems = false;
+    this.editVisibility = false;
 
     // this.myModal.close('Close click');
     this.myModal.dismiss('Cross click');
@@ -302,7 +299,7 @@ export class EstablishmentsComponent implements OnInit {
   addItemAction() {
     this.addItem = true;
     this.selectedItem = null;
-    this.selectedMinistry = [];
+    this.selectedRelatedEntity = {};
     this.openModal('');
   }
 
@@ -350,15 +347,14 @@ export class EstablishmentsComponent implements OnInit {
 
   getAllItems() {
     this.loading = true;
-
-    const params = {
+    let params = {
       limit: this.limit,
       page: this.page,
-      'label[contains]': this.filter,
-      sort_by: this.sortBy,
-      sort: this.sort,
     };
-
+    params = Object.assign(params, this.dataTableFilter);
+    params = Object.assign(params, this.dataTableSort);
+    params = Object.assign(params, this.dataTableSearchBar);
+    console.log('http params', params);
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results.map((item: any) => {
@@ -443,10 +439,10 @@ export class EstablishmentsComponent implements OnInit {
   }
 
   filters(e: any) {
-    console.log('filter', e);
+    console.log('original filter', e);
+    this.dataTableFilter = Object.assign({}, e);
     this.page = 1;
     this.dataTableComponent.currentPage = 1;
-    this.filter = e.label;
     this.getAllItems();
   }
 
@@ -455,24 +451,24 @@ export class EstablishmentsComponent implements OnInit {
   }
 
   sortEvent(e: any) {
-    this.sortBy = this.getKeyByValue(this.fieldNames, e.field);
-    if (e.order === 1) {
-      this.sort = 'asc';
-      this.getAllItems();
-    } else {
-      this.sort = 'desc';
-      this.getAllItems();
-    }
+    console.log('sort', e);
+    this.dataTableSort = e;
+    this.getAllItems();
   }
 
   search(input: string) {
     this.page = 1;
-    if (input) {
-      this.filter = input;
-      this.getAllItems();
-      return;
-    }
-    this.filter = '';
+
+    this.columns.forEach((col) => {
+      if (col.filter && col.filterType === 'text') {
+        if (input) {
+          this.dataTableFilter[col.field + '[contains]'] = input;
+        } else {
+          delete this.dataTableFilter[col.field + '[contains]'];
+        }
+      }
+    });
+
     this.getAllItems();
   }
 }

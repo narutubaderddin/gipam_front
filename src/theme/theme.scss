@@ -721,6 +721,9 @@ p-calendar {
   line-height: 10px;
 }
 .p-dropdown {
+  /*general for [style]="maxWidth=100%, minWidth=100%,"*/
+  max-width: 100%;
+  min-width: 100%;
   .p-dropdown-header {
     .p-dropdown-filter-container {
       .p-dropdown-filter {
@@ -732,9 +735,15 @@ p-calendar {
     font-size: 12px;
   }
   .p-dropdown-panel {
+    left: 0 !important;
     .p-dropdown-items-wrapper {
       font-size: 12px;
     }
+  }
+  /*For elements with long text*/
+  .p-dropdown-item {
+    white-space: normal;
+    line-height: 1.5em;
   }
 }
 .p-multiselect {
@@ -757,6 +766,20 @@ p-calendar {
         p-multiselectitem li {
           height: 22px;
         }
+      }
+    }
+  }
+}
+
+//ngprime datepicker
+.p-datepicker {
+  table {
+    td,
+    tr {
+      padding: 0 !important;
+      span {
+        height: 1.5rem;
+        font-size: 12px;
       }
     }
   }
