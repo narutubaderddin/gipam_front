@@ -51,7 +51,7 @@ export class EstablishmentsComponent implements OnInit {
 
   filter: any;
   sortBy = 'label';
-  sort: string = 'asc';
+  sort = 'asc';
   totalFiltred: any;
   total: any;
   limit = 5;
@@ -72,7 +72,9 @@ export class EstablishmentsComponent implements OnInit {
       type: TYPES.text,
     },
   };
-
+  dataTableFilter: any = {};
+  dataTableSort: any = {};
+  dataTableSearchBar: any = {};
   items: any;
 
   columns = [
@@ -167,6 +169,7 @@ export class EstablishmentsComponent implements OnInit {
 
     this.filter =
       this.activatedRoute.snapshot.queryParams.filter && this.activatedRoute.snapshot.queryParams.filter.length > 0;
+    console.log('ng on init filter', this.filter);
   }
 
   initForm() {
@@ -350,15 +353,13 @@ export class EstablishmentsComponent implements OnInit {
 
   getAllItems() {
     this.loading = true;
-
-    const params = {
+    let params = {
       limit: this.limit,
       page: this.page,
-      'label[contains]': this.filter,
-      sort_by: this.sortBy,
-      sort: this.sort,
     };
-
+    params = Object.assign(params, this.dataTableFilter);
+    params = Object.assign(params, this.dataTableSort);
+    console.log('http params', params);
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results.map((item: any) => {
@@ -443,10 +444,11 @@ export class EstablishmentsComponent implements OnInit {
   }
 
   filters(e: any) {
-    console.log('filter', e);
+    console.log('original filter', e);
+    this.dataTableFilter = e;
+    this.dataTableSearchBar = {};
     this.page = 1;
     this.dataTableComponent.currentPage = 1;
-    this.filter = e.label;
     this.getAllItems();
   }
 
@@ -455,24 +457,24 @@ export class EstablishmentsComponent implements OnInit {
   }
 
   sortEvent(e: any) {
-    this.sortBy = this.getKeyByValue(this.fieldNames, e.field);
-    if (e.order === 1) {
-      this.sort = 'asc';
-      this.getAllItems();
-    } else {
-      this.sort = 'desc';
-      this.getAllItems();
-    }
+    console.log('sort', e);
+    this.dataTableSort = e;
+    this.getAllItems();
   }
 
   search(input: string) {
     this.page = 1;
-    if (input) {
-      this.filter = input;
-      this.getAllItems();
-      return;
-    }
-    this.filter = '';
+
+    this.columns.forEach((col) => {
+      if (col.filter && col.filterType === 'text') {
+        if (input) {
+          this.dataTableFilter[col.field + '[contains]'] = input;
+        } else {
+          delete this.dataTableFilter[col.field + '[contains]'];
+        }
+      }
+    });
+
     this.getAllItems();
   }
 }

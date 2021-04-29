@@ -99,7 +99,7 @@
               *ngIf="col.sortable"
               [field]="col.header"
               [pSortableColumn]="col.sortable ? col.header : ''"
-              (click)="sortHeader()"
+              (click)="sortHeader(col)"
             ></p-sortIcon>
 
             <i
@@ -123,7 +123,7 @@
                   [selectionMode]="dateSelectionMode"
                   dateFormat="dd/mm/yy"
                   yearRange="1900:2100"
-                  (onShow)="calendarShow(dd, col.field)"
+                  (onShow)="calendarShow(pcd, dd, col.field)"
                 >
                   <p-footer>
                     <p-dropdown
