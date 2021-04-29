@@ -111,26 +111,16 @@
         />
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-3">Ministère<span class="mandatory"> *</span></label>
-        <!--        <ng-multiselect-dropdown-->
-        <!--          formControlName="ministry"-->
-        <!--          class="select col-sm-7 p-0"-->
-        <!--          [placeholder]="'Choisir une ministère'"-->
-        <!--          [settings]="dropdownSettings"-->
-        <!--          [data]="relatedEntities"-->
-        <!--          (onSelect)="onRelatedEntitySelect($event)"-->
-        <!--          (onSelectAll)="onSelectAll($event)"-->
-        <!--        >-->
-        <!--        </ng-multiselect-dropdown>-->
-
-        <p-dropdown
-          class="select col-sm-7 p-0"
-          [options]="relatedEntities"
-          optionLabel="name"
-          formControlName="ministry"
-          (onClick)="onRelatedEntitySelect($event)"
-          [style]="{ minWidth: '100%' }"
-        ></p-dropdown>
+        <label class="col-sm-5">Ministère<span class="mandatory"> *</span></label>
+        <div class="select col-sm-7 p-0">
+          <p-dropdown
+            [options]="relatedEntities"
+            optionLabel="name"
+            formControlName="ministry"
+            placeholder="Sélectionner une ministère"
+            emptyFilterMessage="Aucun résultat trouvé"
+          ></p-dropdown>
+        </div>
       </div>
       <div
         class="form-group col-md-12 d-flex justify-content-between align-items-baseline"

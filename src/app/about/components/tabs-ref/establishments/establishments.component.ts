@@ -35,7 +35,7 @@ export class EstablishmentsComponent implements OnInit {
     };
   };
   relatedEntities: any[] = [];
-  selectedRelatedEntity: any[] = [];
+  selectedRelatedEntity: any = {};
   itemToEdit: any;
   itemToDelete: string;
   tabForm: FormGroup;
@@ -188,7 +188,7 @@ export class EstablishmentsComponent implements OnInit {
       acronym: [this.selectedItem ? this.selectedItem.acronym : '', [Validators.required]],
       startDate: [startDate, [Validators.required]],
       disappearanceDate: [disappearanceDate, []],
-      ministry: [this.selectedRelatedEntity, [Validators.required]],
+      ministry: [this.selectedRelatedEntity ? this.selectedRelatedEntity : { name: '' }, [Validators.required]],
     });
     this.tabForm.setValidators(this.ValidateDate());
   }
@@ -216,12 +216,10 @@ export class EstablishmentsComponent implements OnInit {
     if (this.editItem || this.editVisibility) {
       this.itemToEdit = item;
       this.itemLabel = item.label;
-      this.selectedRelatedEntity = [
-        {
-          id: item.ministryId,
-          name: item.ministryName,
-        },
-      ];
+      this.selectedRelatedEntity = {
+        id: item.ministryId,
+        name: item.ministryName,
+      };
     }
     if (this.editItem || this.addItem) {
       this.getRelatedEntity();
@@ -229,11 +227,6 @@ export class EstablishmentsComponent implements OnInit {
     this.selectedItem = item;
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
-  }
-
-  onRelatedEntitySelect(item: any) {
-    console.log('ministry select', item);
-    this.selectedRelatedEntity = item;
   }
 
   onSelectAll(items: any) {}
@@ -261,12 +254,13 @@ export class EstablishmentsComponent implements OnInit {
 
   submit() {
     this.btnLoading = null;
+    console.log('ministry ', this.tabForm.value.ministry);
     const item = {
       label: this.tabForm.value.label,
       acronym: this.tabForm.value.acronym,
       startDate: this.transformDateToDateTime(this.tabForm.value.startDate, 'yyy-MM-dd'),
       disappearanceDate: this.transformDateToDateTime(this.tabForm.value.disappearanceDate, 'yyy-MM-dd'),
-      ministry: this.tabForm.value.ministry[0].id,
+      ministry: this.tabForm.value.ministry.id,
     };
     if (this.addItem) {
       this.addItems(item);
@@ -305,7 +299,7 @@ export class EstablishmentsComponent implements OnInit {
   addItemAction() {
     this.addItem = true;
     this.selectedItem = null;
-    this.selectedRelatedEntity = [];
+    this.selectedRelatedEntity = {};
     this.openModal('');
   }
 
@@ -359,6 +353,7 @@ export class EstablishmentsComponent implements OnInit {
     };
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
+    params = Object.assign(params, this.dataTableSearchBar);
     console.log('http params', params);
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
@@ -461,19 +456,19 @@ export class EstablishmentsComponent implements OnInit {
     this.getAllItems();
   }
 
-  // search(input: string) {
-  //   this.page = 1;
-  //
-  //   this.columns.forEach((col) => {
-  //     if (col.filter && col.filterType === 'text') {
-  //       if (input) {
-  //         this.dataTableFilter[col.field + '[contains]'] = input;
-  //       } else {
-  //         delete this.dataTableFilter[col.field + '[contains]'];
-  //       }
-  //     }
-  //   });
-  //
-  //   this.getAllItems();
-  // }
+  search(input: string) {
+    this.page = 1;
+
+    this.columns.forEach((col) => {
+      if (col.filter && col.filterType === 'text') {
+        if (input) {
+          this.dataTableFilter[col.field + '[contains]'] = input;
+        } else {
+          delete this.dataTableFilter[col.field + '[contains]'];
+        }
+      }
+    });
+
+    this.getAllItems();
+  }
 }
