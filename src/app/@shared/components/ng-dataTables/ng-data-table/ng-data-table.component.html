@@ -89,7 +89,7 @@
             *ngFor="let col of columns; let index = index"
             ngbDropdown
             pResizableColumn
-            (openChange)="onFilterChange($event)"
+            (openChange)="onFilterChange($event, col)"
             placement="bottom-left"
             autoClose="outside"
             container="body"
@@ -130,11 +130,13 @@
                       #dd
                       [options]="dateOperators"
                       optionLabel="value"
-                      [formControlName]="col.field + 'Operator'"
-                      (onClick)="rangeChanged(dd, pcd)"
+                      [formControlName]="col.field + '_operator'"
+                      (onChange)="rangeChanged(col.field, dd, pcd)"
                     >
                     </p-dropdown>
-                    <button class="btn add-action float-right">Annuler</button>
+                    <button class="btn add-action float-right" (click)="clearDateFilter(col.field, pcd, dd)">
+                      Annuler
+                    </button>
                   </p-footer>
                 </p-calendar>
                 <select class="select-style w-100" *ngSwitchCase="'select'" [formControlName]="col.field">

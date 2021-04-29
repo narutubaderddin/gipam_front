@@ -84,6 +84,7 @@ export class NgDataTableComponent implements OnInit {
     { name: 'gte', value: '>=' },
     { name: 'range', value: 'intervalle' },
   ];
+  filter: any = {};
 
   constructor(private calendar: NgbCalendar, public formBuilder: FormBuilder) {
     this.fromDate = calendar.getToday();
@@ -99,7 +100,8 @@ export class NgDataTableComponent implements OnInit {
     });
     this.form = this.formBuilder.group({});
     this.initForm(this.columns);
-    console.log(this.form.value);
+    // this.filter = Object.assign({}, this.form.value);
+    // console.log('filter', this.filter);
     this.expandColumns = [
       {
         header: 'Numéro inventaire',
@@ -148,7 +150,8 @@ export class NgDataTableComponent implements OnInit {
       if (col.filter) {
         this.form.addControl(col.field, new FormControl('', []));
         if (col.filterType === 'range-date') {
-          this.form.addControl(col.field + 'Operator', new FormControl(''));
+          const colOperatorKey = col.field + '_operator';
+          this.form.addControl(colOperatorKey, new FormControl('', []));
         }
       }
     });
@@ -212,11 +215,18 @@ export class NgDataTableComponent implements OnInit {
     this.ngOnInit();
   }
 
-  onFilterChange(open: boolean) {
+  onFilterChange(open: boolean, col: any) {
     if (!open) {
-      this.filterValue.emit(this.form.value);
+      this.setFilter(col);
+      const filterValue = Object.assign({}, this.form.value);
+      this.filterValue.emit(this.filter);
+    }
+  }
 
-      console.log(this.form.value);
+  setFilter(col: any) {
+    this.filter[col.field] = this.form.value[col.field];
+    if (col.filterType === 'range-date') {
+      this.filter[col.field + '_operator'] = this.form.value[col.field + '_operator'];
     }
   }
 
@@ -235,8 +245,7 @@ export class NgDataTableComponent implements OnInit {
     this.end = this.data.length === this.limit && to ? to : this.total;
   }
 
-  rangeChanged(dropdown: Dropdown, calendar?: Calendar) {
-    this.selectedOperator = dropdown.value;
+  rangeChanged(field: string, dropdown: Dropdown, calendar?: Calendar) {
     if (dropdown.value.name === 'range') {
       this.dateSelectionMode = 'range';
       this.monthsToDisplay = 2;
@@ -244,21 +253,34 @@ export class NgDataTableComponent implements OnInit {
       return;
     }
     calendar.writeValue(new Date());
+    // this.form.value[field] = new Date();
     this.dateSelectionMode = 'single';
     this.dateRangeMode = false;
     this.monthsToDisplay = 1;
   }
 
-  calendarShow(dropdown: Dropdown, field: any) {
-    if (!dropdown.value) {
+  calendarShow(dropdown: Dropdown, field: string) {
+    const fieldOperator = field + '_operator';
+    if (!this.form.value[fieldOperator]) {
       this.dateSelectionMode = 'single';
-      this.selectedOperator = 'eq';
-      this.form.value[field + 'Operator'] = { name: 'eq', value: '=' };
+      this.form.value[fieldOperator] = { name: 'eq', value: '=' };
       this.form.value[field] = new Date();
     }
   }
 
+  clearDateFilter(field: string, calendar: Calendar, dropdown: Dropdown) {
+    this.form.value[field + '_operator'] = '';
+    this.form.value[field] = '';
+    calendar.writeValue('');
+    dropdown.writeValue({ name: 'eq', value: '=' });
+    calendar.toggle();
+  }
+
   dateFilterSubmit(event: any) {
     console.log(this.form.valid);
+    const filter = {
+      'startDate[lt]': '12/12/2020',
+      'endDate[lt]': '12/12/2020',
+    };
   }
 }
