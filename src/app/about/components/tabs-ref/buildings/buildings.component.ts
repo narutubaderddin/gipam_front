@@ -24,7 +24,6 @@ export class BuildingsComponent implements OnInit {
   btnLoading: any = null;
   myModal: any;
   selectedItem: {
-    // label: '';
     name: '';
     address:'';
     cedex: '';
@@ -66,22 +65,12 @@ export class BuildingsComponent implements OnInit {
   page = 1;
   end: number;
   start: number;
-  defaultColDef = {
-    headerComponent: 'customHeader',
-    sortable: true,
-    filter: true,
-    resizable: true,
-    headerValueGetter: (params: any) => {
-      return params.colDef.headerName;
-    },
-    headerComponentParams: {
-      menuIcon: 'fa-filter',
-      operator: OPERATORS.like,
-      type: TYPES.text,
-    },
-  };
 
+  dataTableFilter: any = {};
+  dataTableSort: any = {};
+  dataTableSearchBar: any = {};
   items: any;
+  today: string;
 
   columns = [
     {
@@ -168,13 +157,7 @@ export class BuildingsComponent implements OnInit {
     startDate: 'Date début de validité',
     disappearanceDate: 'Date fin de validité',
   };
-  params = {
-    limit: this.limit,
-    page: this.page,
-    // 'label[contains]': this.filter,
-    sort_by: this.sortBy,
-    sort: this.sort,
-  };
+
   constructor(
     private router: Router,
     private modalService: NgbModal,
@@ -191,16 +174,10 @@ export class BuildingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dropdownSettings = {
-      singleSelection: true,
-      idField: 'id',
-      textField: 'label',
-      itemsShowLimit: 5,
-      allowSearchFilter: true,
-      // maxHeight: 100,
-    };
+
     this.simpleTabsRef.tabRef = 'buildings';
     this.getAllItems();
+    this.today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     this.initForm();
 
     // this.filter =
@@ -215,17 +192,15 @@ export class BuildingsComponent implements OnInit {
     );
     this.tabForm = this.fb.group({
       label: [this.selectedItem ? this.selectedItem.name : '', [Validators.required]],
-      address: [this.selectedItem ? this.selectedItem.address : '', [Validators.required]],
-      distrib: [this.selectedItem ? this.selectedItem.distrib : '', [Validators.required]],
+      address: [this.selectedItem ? this.selectedItem.address : '', []],
+      distrib: [this.selectedItem ? this.selectedItem.distrib : '', []],
       cedex: [this.selectedItem ? this.selectedItem.cedex : '', [Validators.required]],
       startDate: [startDate, [Validators.required]],
-      disappearanceDate: [disappearanceDate, [Validators.required]],
+      disappearanceDate: [disappearanceDate, []],
       site: [this.selectedSite, [Validators.required]],
       commune: [this.selectedCommune, [Validators.required]],
 
     });
-    console.log(this.selectedSite,this.selectedCommune)
-    console.log(this.selectedItem)
     this.tabForm.setValidators(this.ValidateDate());
   }
 
@@ -237,11 +212,11 @@ export class BuildingsComponent implements OnInit {
       this.getCommunes();
     }
     if (this.editItem || this.editVisibility) {
-      // this.editVisibility=false;
       this.itemToEdit = item;
       this.itemLabel = item.label;
-      this.selectedSite = item.site ? item.site.name:''
+      this.selectedSite = item.site ? item.site.label:''
       this.selectedCommune = item.commune ? item.commune.name:''
+
     }
     this.selectedItem = item;
     this.initForm();
@@ -316,10 +291,13 @@ export class BuildingsComponent implements OnInit {
     this.btnLoading = null;
     const item = {
       name: this.tabForm.value.label,
-      acronym: this.tabForm.value.acronym,
+      address: this.tabForm.value.address,
+      cedex: this.tabForm.value.cedex,
+      distrib: this.tabForm.value.distrib,
+      site: this.tabForm.value.site.id,
+      commune: this.tabForm.value.commune.id,
       startDate: this.transformDateToDateTime(this.tabForm.value.startDate, 'yyy-MM-dd'),
       disappearanceDate: this.transformDateToDateTime(this.tabForm.value.disappearanceDate, 'yyy-MM-dd'),
-      // ministry: this.tabForm.value.ministry[0].id,
     };
     if (this.addItem) {
       this.addItems(item);
@@ -408,8 +386,17 @@ export class BuildingsComponent implements OnInit {
 
   getAllItems() {
     this.loading = true;
+    let params = {
+      limit: this.limit,
+      page: this.page,
+      ort_by:this.sortBy,
+      sort: this.sort
+    };
+    params = Object.assign(params, this.dataTableFilter);
+    params = Object.assign(params, this.dataTableSort);
+    params = Object.assign(params, this.dataTableSearchBar);
 
-    this.simpleTabsRef.getAllItems(this.params).subscribe(
+    this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results.map((item: any) => {
           return this.convertItem(item);
@@ -433,14 +420,14 @@ export class BuildingsComponent implements OnInit {
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Suppression', 'Bâtiment ' + item.label + ' supprimée avec succés');
+        this.addSingle('success', 'Suppression', 'Bâtiment ' + item.name + ' supprimée avec succés');
         this.getAllItems();
         this.deleteItems = false;
       },
       (error: any) => {
         this.close();
         if (error.error.code === 400) {
-          this.addSingle('error', 'Suppression', 'Bâtiment ' + item.label + ' admet une relation');
+          this.addSingle('error', 'Suppression', 'Bâtiment ' + item.name + ' admet une relation');
         } else {
           this.addSingle('error', 'Suppression', error.error.message);
         }
@@ -450,6 +437,7 @@ export class BuildingsComponent implements OnInit {
 
   addItems(item: any) {
     this.btnLoading = '';
+    console.log(item);
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
@@ -494,51 +482,10 @@ export class BuildingsComponent implements OnInit {
   }
 
   filters(e: any) {
-    console.log('filter', e);
+    console.log('original filter', e);
+    this.dataTableFilter = Object.assign({}, e);
     this.page = 1;
     this.dataTableComponent.currentPage = 1;
-
-    Object.keys(e).map((key, index) => {
-      // if (e[key]!=='') {
-      // Object.keys(this.params).map((key, index) => {
-      //   console.log(key);
-      // })
-
-
-      if (key==('startDate')||(key=='disappearanceDate')) {
-        if(e[key+'Operator'].value=='intervalle'){  // cond <=> e.key+'Operator'=='intervalle'
-          const newKey1 = key + '[gte]';
-          const newKey2 = key + '[lte]';
-
-          this.params = {
-            ...this.params,
-            [newKey1]: e[key]? new Date(e[key][0]).toISOString():'',
-            [newKey2]: e[key]? new Date(e[key][1]).toISOString():'',
-          };
-          console.log(this.params);
-        }
-        else{
-          console.log('Operator',e[key+'Operator']);
-
-          const newKey = key + '['+e[key+'Operator'].name+']';  // eq <=> e.key+'Operator'
-          this.params = {
-            ...this.params,
-            [newKey]: e[key]? new Date(e[key]).toISOString():'',
-          };
-          console.log(this.params);
-        }
-      }else{
-        const newKey = key + '[contains]';
-        // const addfilter= {[newKey]: e[key]}
-        this.params = {
-          ...this.params,
-          [newKey]: e[key]?e[key]:'',
-        }
-      }
-      // }
-    });
-
-    console.log(this.params);
     this.getAllItems();
   }
 
@@ -547,30 +494,24 @@ export class BuildingsComponent implements OnInit {
   }
 
   sortEvent(e: any) {
-    console.log(e);
-    this.sortBy = this.getKeyByValue(this.fieldNames, e.field);
-    if (e.order === 1) {
-      this.sort = 'asc';
-    } else {
-      this.sort = 'desc';
-    }
-    this.params = {
-      ...this.params,
-      sort: this.sort,
-      sort_by: this.sortBy,
-    };
+    console.log('sort', e);
+    this.dataTableSort = e;
     this.getAllItems();
-    console.log(this.params);
   }
 
   search(input: string) {
     this.page = 1;
-    if (input) {
-      this.filter = input;
-      this.getAllItems();
-      return;
-    }
-    this.filter = '';
+
+    this.columns.forEach((col) => {
+      if (col.filter && col.filterType === 'text') {
+        if (input) {
+          this.dataTableFilter[col.field + '[contains]'] = input;
+        } else {
+          delete this.dataTableFilter[col.field + '[contains]'];
+        }
+      }
+    });
+
     this.getAllItems();
   }
 }

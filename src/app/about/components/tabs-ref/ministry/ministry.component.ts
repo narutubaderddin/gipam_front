@@ -43,8 +43,8 @@ export class MinistryComponent implements OnInit {
   dropdownList: any;
   itemLabel: any;
 
-  filter = '';
-  sortBy = '';
+  filter : any;
+  sortBy = 'label';
   sort = 'asc';
   totalFiltred: any;
   total: any;
@@ -52,22 +52,12 @@ export class MinistryComponent implements OnInit {
   page = 1;
   end: number;
   start: number;
-  defaultColDef = {
-    headerComponent: 'customHeader',
-    sortable: true,
-    filter: true,
-    resizable: true,
-    headerValueGetter: (params: any) => {
-      return params.colDef.headerName;
-    },
-    headerComponentParams: {
-      menuIcon: 'fa-filter',
-      operator: OPERATORS.like,
-      type: TYPES.text,
-    },
-  };
 
+  dataTableFilter: any = {};
+  dataTableSort: any = {};
+  dataTableSearchBar: any = {};
   items: any;
+  today: string;
 
   columns = [
     {
@@ -121,13 +111,7 @@ export class MinistryComponent implements OnInit {
     startDate: 'Date début de validité',
     disappearanceDate: 'Date fin de validité',
   };
-  params = {
-    limit: this.limit,
-    page: this.page,
-    // 'label[contains]': this.filter,
-    sort_by: this.sortBy,
-    sort: this.sort,
-  };
+
   constructor(
     private router: Router,
     private modalService: NgbModal,
@@ -147,7 +131,7 @@ export class MinistryComponent implements OnInit {
     this.simpleTabsRef.tabRef = 'ministries';
     this.getAllItems();
     this.initForm();
-
+    this.today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     // this.filter =
     //   this.activatedRoute.snapshot.queryParams.filter && this.activatedRoute.snapshot.queryParams.filter.length > 0;
   }
@@ -162,7 +146,7 @@ export class MinistryComponent implements OnInit {
       label: [this.selectedItem ? this.selectedItem.name : '', [Validators.required]],
       acronym: [this.selectedItem ? this.selectedItem.acronym : '', [Validators.required]],
       startDate: [startDate, [Validators.required]],
-      disappearanceDate: [disappearanceDate, [Validators.required]],
+      disappearanceDate: [disappearanceDate, []],
     });
     this.tabForm.setValidators(this.ValidateDate());
   }
@@ -186,7 +170,6 @@ export class MinistryComponent implements OnInit {
     if (this.editItem || this.editVisibility) {
       this.itemToEdit = item;
       this.itemLabel = item.name;
-console.log(item, this.selectedItem);
     }
 
     this.selectedItem = item;
@@ -297,8 +280,19 @@ console.log(item, this.selectedItem);
 
   getAllItems() {
     this.loading = true;
+    let params = {
+      limit: this.limit,
+      page: this.page,
+      sort_by:this.sortBy,
+      sort: this.sort
+    };
+    params = Object.assign(params, this.dataTableFilter);
+    params = Object.assign(params, this.dataTableSort);
+    params = Object.assign(params, this.dataTableSearchBar);
 
-    this.simpleTabsRef.getAllItems(this.params).subscribe(
+    console.log('params', params);
+
+    this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results.map((item: any) => {
           return this.convertItem(item);
@@ -317,7 +311,7 @@ console.log(item, this.selectedItem);
   }
 
   deleteItemss(item: any) {
-    console.log(item);
+
     this.btnLoading = '';
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
@@ -383,76 +377,32 @@ console.log(item, this.selectedItem);
   }
 
   filters(e: any) {
-    console.log('filter', e);
+    console.log('original filter', e);
+    this.dataTableFilter = Object.assign({}, e);
     this.page = 1;
     this.dataTableComponent.currentPage = 1;
-
-    Object.keys(e).map((key, index) => {
-        if (key==('startDate')||(key=='disappearanceDate')) {
-          if(e[key+'Operator'].value=='intervalle'){  // cond <=> e.key+'Operator'=='intervalle'
-            const newKey1 = key + '[gte]';
-            const newKey2 = key + '[lte]';
-
-            this.params = {
-              ...this.params,
-              [newKey1]: e[key]? new Date(e[key][0]).toISOString():'',
-              [newKey2]: e[key]? new Date(e[key][1]).toISOString():'',
-            };
-            console.log(this.params);
-          }
-          else{
-            console.log('Operator',e[key+'Operator']);
-
-            const newKey = key + '['+e[key+'Operator'].name+']';  // eq <=> e.key+'Operator'
-            this.params = {
-              ...this.params,
-              [newKey]: e[key]? new Date(e[key]).toISOString():'',
-            };
-            console.log(this.params);
-          }
-        }else{
-          const newKey = key + '[contains]';
-          this.params = {
-            ...this.params,
-            [newKey]: e[key]?e[key]:'',
-          }
-        }
-
-    });
-
-    console.log(this.params);
     this.getAllItems();
-  }
-
-  getKeyByValue(object: any, value: any) {
-    return Object.keys(object).find((key) => object[key] === value);
   }
 
   sortEvent(e: any) {
-    console.log(e);
-    this.sortBy = this.getKeyByValue(this.fieldNames, e.field);
-    if (e.order === 1) {
-      this.sort = 'asc';
-    } else {
-      this.sort = 'desc';
-    }
-    this.params = {
-      ...this.params,
-      sort: this.sort,
-      sort_by: this.sortBy,
-    };
+    console.log('sort', e);
+    this.dataTableSort = e;
     this.getAllItems();
-    console.log(this.params);
   }
 
   search(input: string) {
     this.page = 1;
-    if (input) {
-      this.filter = input;
-      this.getAllItems();
-      return;
-    }
-    this.filter = '';
+
+    this.columns.forEach((col) => {
+      if (col.filter && col.filterType === 'text') {
+        if (input) {
+          this.dataTableFilter[col.field + '[contains]'] = input;
+        } else {
+          delete this.dataTableFilter[col.field + '[contains]'];
+        }
+      }
+    });
+
     this.getAllItems();
   }
 }

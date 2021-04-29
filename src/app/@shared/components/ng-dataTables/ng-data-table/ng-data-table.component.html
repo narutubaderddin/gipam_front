@@ -19,9 +19,10 @@
       [rowHover]="false"
       sortMode="single"
       [multiSortMeta]="sortMeta"
-      (onSort)="sortData($event)"
+
       class="p-datatable-gridlines p-datatable-sm"
     >
+
       <ng-template pTemplate="frozencolgroup" let-columns>
         <colgroup>
           <col *ngIf="checkBoxSelection || singleSelect || expand" style="width: 3em" />
