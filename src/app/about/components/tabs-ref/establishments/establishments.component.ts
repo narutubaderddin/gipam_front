@@ -202,7 +202,7 @@ export class EstablishmentsComponent implements OnInit {
       if (!cc.get('startDate')) {
         return null;
       }
-      if (cc.get('startDate').value > cc.get('disappearanceDate').value) {
+      if (cc.get('startDate').value >= cc.get('disappearanceDate').value) {
         return { dateInvalid: 'Date début supérieur date fin' };
       }
       return null;
@@ -252,9 +252,15 @@ export class EstablishmentsComponent implements OnInit {
     const previousUrl = this.simpleTabsRef.tabRef;
     this.simpleTabsRef.tabRef = 'ministries';
 
-    this.simpleTabsRef.getAllItems({}).subscribe((result: any) => {
-      this.relatedEntities = result.results;
-    });
+    this.simpleTabsRef.getAllItems({}).subscribe(
+      (result: any) => {
+        this.relatedEntities = result.results;
+        this.dataTableComponent.error = false;
+      },
+      (error: any) => {
+        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
+      }
+    );
     this.simpleTabsRef.tabRef = previousUrl;
   }
 
@@ -262,9 +268,14 @@ export class EstablishmentsComponent implements OnInit {
     const previousUrl = this.simpleTabsRef.tabRef;
     this.simpleTabsRef.tabRef = 'establishmentsTypes';
 
-    this.simpleTabsRef.getAllItems({}).subscribe((result: any) => {
-      this.types = result.results;
-    });
+    this.simpleTabsRef.getAllItems({}).subscribe(
+      (result: any) => {
+        this.types = result.results;
+      },
+      (error: any) => {
+        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
+      }
+    );
     this.simpleTabsRef.tabRef = previousUrl;
   }
 
@@ -301,8 +312,6 @@ export class EstablishmentsComponent implements OnInit {
     this.addItem = false;
     this.deleteItems = false;
     this.editVisibility = false;
-
-    // this.myModal.close('Close click');
     this.myModal.dismiss('Cross click');
   }
 
@@ -365,9 +374,9 @@ export class EstablishmentsComponent implements OnInit {
       typeLabel: item.type ? item.type.label : '',
       active: true,
     };
-    newItem.startDate = item.startDate ? this.datePipe.transform(item.startDate, 'yyyy/MM/dd') : null;
-    newItem.disappearanceDate = item.disappearanceDate
-      ? this.datePipe.transform(item.disappearanceDate, 'yyyy/MM/dd')
+    newItem.startDate = newItem.startDate ? this.datePipe.transform(newItem.startDate, 'yyyy/MM/dd') : null;
+    newItem.disappearanceDate = newItem.disappearanceDate
+      ? this.datePipe.transform(newItem.disappearanceDate, 'yyyy/MM/dd')
       : null;
     newItem.active = this.isActive(newItem.disappearanceDate);
     return newItem;
@@ -382,7 +391,6 @@ export class EstablishmentsComponent implements OnInit {
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
     params = Object.assign(params, this.dataTableSearchBar);
-    console.log('http params', params);
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results.map((item: any) => {
@@ -401,7 +409,7 @@ export class EstablishmentsComponent implements OnInit {
         this.total = 0;
         this.dataTableComponent.error = true;
         this.loading = false;
-        this.addSingle('error', 'Erreur Technique', 'Code: ' + error.error.code + ' Message: ' + error.error.message);
+        this.addSingle('error', 'Erreur Technique', 'Message: ' + error.error.message);
       }
     );
   }
@@ -473,36 +481,20 @@ export class EstablishmentsComponent implements OnInit {
   }
 
   filters(e: any) {
-    console.log('original filter', e);
     this.dataTableFilter = Object.assign({}, e);
     this.page = 1;
     this.dataTableComponent.currentPage = 1;
     this.getAllItems();
   }
 
-  getKeyByValue(object: any, value: any) {
-    return Object.keys(object).find((key) => object[key] === value);
-  }
-
   sortEvent(e: any) {
-    console.log('sort', e);
     this.dataTableSort = e;
     this.getAllItems();
   }
 
   search(input: string) {
     this.page = 1;
-
-    this.columns.forEach((col) => {
-      if (col.filter && col.filterType === 'text') {
-        if (input) {
-          this.dataTableSearchBar[col.field + '[contains]'] = input;
-        } else {
-          delete this.dataTableSearchBar[col.field + '[contains]'];
-        }
-      }
-    });
-
+    this.dataTableSearchBar = { search: input };
     this.getAllItems();
   }
 }
