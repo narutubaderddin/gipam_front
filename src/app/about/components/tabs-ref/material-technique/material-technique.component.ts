@@ -35,6 +35,7 @@ export class MaterialTechniqueComponent implements OnInit {
   selectedDomain: any;
   filter: any;
   sort: string = 'asc';
+  sortBy = 'label';
   totalFiltred: any;
   total: any;
   limit: any = '5';
@@ -60,9 +61,6 @@ export class MaterialTechniqueComponent implements OnInit {
       field: 'denominations',
       type: 'key-multiple-data',
       key_multiple_data: ['denominations', 'label'],
-      filter: true,
-      filterType: 'text',
-      sortable: true,
       scrollable: true,
     },
     {
@@ -193,7 +191,13 @@ export class MaterialTechniqueComponent implements OnInit {
   getAllItems() {
     this.simpleTabsRef.tabRef = 'materialTechniques';
     this.simpleTabsRef
-      .getAllItems({ limit: this.limit, page: this.page, 'label[contains]': this.filter, sort: this.sort })
+      .getAllItems({
+        limit: this.limit,
+        page: this.page,
+        'label[contains]': this.filter,
+        sort_by: this.sortBy,
+        sort: this.sort,
+      })
       .subscribe(
         (result: any) => {
           this.items = result.results;

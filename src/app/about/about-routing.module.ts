@@ -25,6 +25,8 @@ import { EstablishmentsComponent } from '@app/about/components/tabs-ref/establis
 import { TypeMvtComponent } from '@app/about/components/tabs-ref/type-mvt/type-mvt.component';
 import { MovementActionTypesComponent } from '@app/about/components/tabs-ref/movement-action-types/movement-action-types.component';
 import { ReportSubTypesComponent } from '@app/about/components/tabs-ref/report-sub-types/report-sub-types.component';
+import { MinistryComponent } from '@app/about/components/tabs-ref/ministry/ministry.component';
+import { BuildingsComponent } from '@app/about/components/tabs-ref/buildings/buildings.component';
 import { SubDivisionsComponent } from '@app/about/components/tabs-ref/subDivisions/subDivisions.component';
 import { RegionsComponent } from '@app/about/components/tabs-ref/regions/regions.component';
 const routes: Routes = [
@@ -86,6 +88,8 @@ const routes: Routes = [
       { path: 'tab-ref-type-mouvement', component: TypeMvtComponent },
       { path: 'tab-ref-type-action-mouvement', component: MovementActionTypesComponent },
       { path: 'tab-ref-sous-type-constat', component: ReportSubTypesComponent },
+      { path: 'tab-ref-ministère', component: MinistryComponent },
+      { path: 'tab-ref-bâtiment', component: BuildingsComponent },
     ],
   },
 ];

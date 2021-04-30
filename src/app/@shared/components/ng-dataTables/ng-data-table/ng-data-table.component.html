@@ -17,6 +17,8 @@
       [totalRecords]="total"
       [resizableColumns]="true"
       [rowHover]="false"
+      sortMode="single"
+      [multiSortMeta]="sortMeta"
       class="p-datatable-gridlines p-datatable-sm"
     >
       <ng-template pTemplate="frozencolgroup" let-columns>
@@ -128,6 +130,8 @@
                   dateFormat="dd/mm/yy"
                   yearRange="1900:2100"
                   (onShow)="calendarShow(pcd, dd, col.field)"
+                  styleClass="dateTimeField"
+                  placeholder="Date"
                 >
                   <p-footer>
                     <hr style="color: #6c757d" />

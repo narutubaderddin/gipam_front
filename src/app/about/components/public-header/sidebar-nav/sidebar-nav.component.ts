@@ -116,7 +116,7 @@ export class SidebarNavComponent implements OnInit {
     this.router.navigate(['tab-ref-type-mouvement']);
     this.toggleClose();
   }
-  goToTypeActtionMvtList() {
+  goToTypeActionMvtList() {
     this.router.navigate(['tab-ref-type-action-mouvement']);
     this.toggleClose();
   }
@@ -134,6 +134,14 @@ export class SidebarNavComponent implements OnInit {
   }
   goToRegionList() {
     this.router.navigate(['tab-ref-region']);
+    this.toggleClose();
+  }
+  goToMinistryList() {
+    this.router.navigate(['tab-ref-ministère']);
+    this.toggleClose();
+  }
+  goToBuildingsList() {
+    this.router.navigate(['tab-ref-bâtiment']);
     this.toggleClose();
   }
 }

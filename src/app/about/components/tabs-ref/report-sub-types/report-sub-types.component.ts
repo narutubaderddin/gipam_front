@@ -6,7 +6,7 @@ import { NgbModal, NgbModalConfig, NgbModalOptions } from '@ng-bootstrap/ng-boot
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
-import { ModalTabsRefComponent } from '@app/about/components/tabs-ref/modal-tabs-ref/modal-tabs-ref.component';
+import { ModalReportSubTypesComponent } from '@app/about/components/tabs-ref/report-sub-types/modal-report-sub-types/modal-report-sub-types.component';
 
 @Component({
   selector: 'app-report-sub-types',
@@ -32,7 +32,7 @@ export class ReportSubTypesComponent implements OnInit {
   itemLabel: any;
 
   filter: any;
-  sortBy = 'id';
+  sortBy = 'label';
   sort = 'asc';
   totalFiltred: any;
   total: any;
@@ -56,7 +56,10 @@ export class ReportSubTypesComponent implements OnInit {
   };
 
   items: any;
-
+  fieldTraduction: any = {
+    label: 'Libellé',
+    reportType: 'Type constat',
+  };
   columns = [
     {
       header: 'Libellé',
@@ -68,11 +71,9 @@ export class ReportSubTypesComponent implements OnInit {
     },
     {
       header: 'Type constat',
+      field: 'reportType',
       type: 'key-array',
       key_data: ['reportType', 'label'],
-      filter: true,
-      filterType: 'text',
-      sortable: true,
     },
     {
       header: 'Actions',
@@ -129,7 +130,7 @@ export class ReportSubTypesComponent implements OnInit {
       backdropClass: 'modal-container',
       centered: true,
     };
-    const modalRef = this.modalService.open(ModalTabsRefComponent, ngbModalOptions);
+    const modalRef = this.modalService.open(ModalReportSubTypesComponent, ngbModalOptions);
     modalRef.componentInstance.fromParent = {
       name: 'sous type constat',
       editItem: this.editItem,
@@ -208,7 +209,7 @@ export class ReportSubTypesComponent implements OnInit {
 
   getAllItems() {
     this.loading = true;
-
+    this.simpleTabsRef.tabRef = 'reportSubTypes';
     const params = {
       limit: this.limit,
       page: this.page,
@@ -237,6 +238,7 @@ export class ReportSubTypesComponent implements OnInit {
   }
 
   deleteItemss(item: any) {
+    this.simpleTabsRef.tabRef = 'reportSubTypes';
     this.btnLoading = '';
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
@@ -257,6 +259,7 @@ export class ReportSubTypesComponent implements OnInit {
   }
 
   addItems(item: any) {
+    this.simpleTabsRef.tabRef = 'reportSubTypes';
     this.btnLoading = '';
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
@@ -271,6 +274,7 @@ export class ReportSubTypesComponent implements OnInit {
   }
 
   visibleItem(data: any) {
+    this.simpleTabsRef.tabRef = 'reportSubTypes';
     data.active = !data.active;
     this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
       (result) => {
@@ -289,6 +293,7 @@ export class ReportSubTypesComponent implements OnInit {
   }
 
   editItems(item: any, id: number) {
+    this.simpleTabsRef.tabRef = 'reportSubTypes';
     this.btnLoading = '';
     this.simpleTabsRef.editItem(item, id).subscribe(
       (result) => {
@@ -322,14 +327,18 @@ export class ReportSubTypesComponent implements OnInit {
     this.filter = e.label;
     this.getAllItems();
   }
-
+  getKeyByValue(object: any, value: any) {
+    return Object.keys(object).find((key) => object[key] === value);
+  }
   sortEvent(e: any) {
-    this.sortBy = 'label';
-    if (e) {
-      this.sort = 'desc';
+    console.log(e);
+    this.sortBy = this.getKeyByValue(this.fieldTraduction, e.field);
+
+    if (e.order == 1) {
+      this.sort = 'asc';
       this.getAllItems();
     } else {
-      this.sort = 'asc';
+      this.sort = 'desc';
       this.getAllItems();
     }
   }
