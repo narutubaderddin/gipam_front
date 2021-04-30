@@ -33,10 +33,15 @@ export class EstablishmentsComponent implements OnInit {
       id: number;
       name: '';
     };
+    type: {
+      id: number;
+      label: '';
+    };
   };
   relatedEntities: any[] = [];
   types: any[] = [];
   selectedRelatedEntity: any;
+  selectedType: any;
   itemToEdit: any;
   itemToDelete: string;
   tabForm: FormGroup;
@@ -96,6 +101,11 @@ export class EstablishmentsComponent implements OnInit {
       filterType: 'text',
       sortable: true,
       width: '100px',
+    },
+    {
+      header: 'Type',
+      field: 'typeLabel',
+      type: 'key',
     },
     {
       header: 'Date début de validité',
@@ -182,6 +192,7 @@ export class EstablishmentsComponent implements OnInit {
       startDate: [startDate, [Validators.required]],
       disappearanceDate: [disappearanceDate, []],
       ministry: [this.selectedRelatedEntity ? this.selectedRelatedEntity : '', [Validators.required]],
+      type: [this.selectedType ? this.selectedType : '', []],
     });
     this.tabForm.setValidators(this.ValidateDate());
   }
@@ -213,9 +224,14 @@ export class EstablishmentsComponent implements OnInit {
         id: item.ministryId,
         name: item.ministryName,
       };
+      this.selectedType = {
+        id: item.typeId,
+        label: item.typeLabel,
+      };
     }
     if (this.addItem) {
       this.selectedRelatedEntity = null;
+      this.selectedType = null;
     }
     if (this.editItem || this.addItem) {
       if (this.relatedEntities.length === 0) {
@@ -345,6 +361,8 @@ export class EstablishmentsComponent implements OnInit {
       disappearanceDate: item.disappearanceDate,
       ministryId: item.ministry ? item.ministry.id : '',
       ministryName: item.ministry ? item.ministry.name : '',
+      typeId: item.type ? item.type.id : '',
+      typeLabel: item.type ? item.type.label : '',
       active: true,
     };
     newItem.startDate = item.startDate ? this.datePipe.transform(item.startDate, 'yyyy/MM/dd') : null;
