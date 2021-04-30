@@ -93,6 +93,7 @@ import { ReportSubTypesComponent } from './components/tabs-ref/report-sub-types/
 import { GalleriaModule } from 'primeng/galleria';
 import { ArtWorksPipe } from '@app/about/pipes/art-works.pipe';
 import { ArtWorksDataPipe } from '@app/about/pipes/art-works-data.pipe';
+import { FormValuePipe } from './pipes/form-value.pipe';
 
 setTheme('bs4');
 
@@ -153,6 +154,7 @@ const ngWizardConfig: NgWizardConfig = {
     MovementActionTypesComponent,
     ModalMvtActionTypesComponent,
     ReportSubTypesComponent,
+    FormValuePipe,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [

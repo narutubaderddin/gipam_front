@@ -75,8 +75,6 @@ export class NgDataTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('columns', this.columns);
-
     this.key = this.columns[0]['field'];
     this.form = this.formBuilder.group({});
     this.initForm(this.columns);

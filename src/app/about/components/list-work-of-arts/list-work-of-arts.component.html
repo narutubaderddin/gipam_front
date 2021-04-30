@@ -41,9 +41,11 @@
           class="d-inline-block drop-bloc"
         >
           <ng-template #TemplateForm1>
-            <p *ngFor="let value of form1Values; let index = index">
-              <span>{{ value }}</span>
-            </p>
+            <div class="width:500px">
+              <p *ngFor="let value of form1Values; let index = index">
+                <span>{{ value | formValue }}</span>
+              </p>
+            </div>
           </ng-template>
           <button
             class="btn dropdown-btn list quick-filter-btn"
@@ -63,7 +65,7 @@
             >
               <div class="mt-3">
                 <p *ngFor="let value of form1Values; let index = index">
-                  <span *ngIf="index < 4">{{ value }}</span>
+                  <span *ngIf="index < 4">{{ value | formValue }}</span>
                 </p>
                 <p *ngIf="showForm1End">...</p>
               </div>
@@ -121,45 +123,67 @@
                       />
                     </div>
                     <div class="form-group d-flex slider-bloc row">
-                      <label for="denomination" class="col-5">Auteurs</label>
-                      <ng-multiselect-dropdown
-                        class="select col-6"
-                        [placeholder]="'Choisir des auteurs'"
-                        [settings]="dropdownSettings"
-                        formControlName="auteurs"
-                        [data]="WorkOfArtService.authors"
-                        (onSelect)="onItemSelect($event)"
-                        (onSelectAll)="onSelectAll($event)"
-                      >
-                      </ng-multiselect-dropdown>
+                      <label for="author" class="col-5">Auteurs</label>
+                      <div class="col-6 multiSelectBlock">
+                        <p-multiSelect
+                          [options]="authorData"
+                          id="author"
+                          itemSize="30"
+                          [virtualScroll]="true"
+                          formControlName="auteurs"
+                          emptyFilterMessage="Aucun résultat trouvé"
+                          defaultLabel="Choisir des auteurs"
+                          optionLabel="name"
+                          display="chip"
+                        ></p-multiSelect>
+                      </div>
+
+                      <!--                      <ng-multiselect-dropdown-->
+                      <!--                        class="select col-6"-->
+                      <!--                        [placeholder]="'Choisir des auteurs'"-->
+                      <!--                        [settings]="dropdownSettings"-->
+                      <!--                        formControlName="auteurs"-->
+                      <!--                        [data]="WorkOfArtService.authors"-->
+                      <!--                        (onSelect)="onItemSelect($event)"-->
+                      <!--                        (onSelectAll)="onSelectAll($event)"-->
+                      <!--                      >-->
+                      <!--                      </ng-multiselect-dropdown>-->
                     </div>
                   </div>
                   <div class="col-6 mt-3">
                     <div class="form-group d-flex slider-bloc row">
-                      <label for="domaine" class="col-5">Domaine </label>
-                      <ng-multiselect-dropdown
-                        class="select col-6 w-100"
-                        formControlName="domaine"
-                        [placeholder]="'Choisir ses domaines'"
-                        [settings]="dropdownSettings"
-                        [data]="domaine"
-                        (onSelect)="onDomainSelect($event)"
-                        (onSelectAll)="onSelectAll($event)"
-                      >
-                      </ng-multiselect-dropdown>
+                      <label for="domaine" class="col-5">Domaine</label>
+                      <div class="col-6 multiSelectBlock">
+                        <p-multiSelect
+                          (onPanelHide)="onMultiselectChange('domaine')"
+                          itemSize="30"
+                          [virtualScroll]="true"
+                          [options]="domainData"
+                          id="domaine"
+                          formControlName="domaine"
+                          emptyFilterMessage="Aucun résultat trouvé"
+                          defaultLabel="Choisir ses domaines"
+                          optionLabel="name"
+                          display="chip"
+                        ></p-multiSelect>
+                      </div>
                     </div>
                     <div class="form-group d-flex slider-bloc row">
                       <label for="denomination" class="col-5">Dénomination</label>
-                      <ng-multiselect-dropdown
-                        class="select col-6"
-                        [placeholder]="'Choisir des dénominations'"
-                        formControlName="denomination"
-                        [settings]="dropdownSettings"
-                        [data]="WorkOfArtService.denominations"
-                        (onSelect)="onItemSelect($event)"
-                        (onSelectAll)="onSelectAll($event)"
-                      >
-                      </ng-multiselect-dropdown>
+                      <div class="col-6 multiSelectBlock">
+                        <p-multiSelect
+                          (onPanelHide)="onMultiselectChange('denomination')"
+                          itemSize="30"
+                          [virtualScroll]="true"
+                          [options]="denominationData"
+                          id="denomination"
+                          formControlName="denomination"
+                          emptyFilterMessage="Aucun résultat trouvé"
+                          defaultLabel="Choisir des dénominations"
+                          optionLabel="name"
+                          display="chip"
+                        ></p-multiSelect>
+                      </div>
                     </div>
                   </div>
                   <div class="d-flex advanced-search-label mb-3 col-12" (click)="form1Advanced = !form1Advanced">
@@ -171,48 +195,82 @@
                     <div class="col-6" *ngIf="form1Advanced">
                       <div class="form-group d-flex slider-bloc row">
                         <div class="row col-10">
-                          <label class="col-5">Matières/technique</label>
+                          <label for="materialTechnique" class="col-5">Matières/technique</label>
+                          <div class="multiSelectBlock col-6">
+                            <p-multiSelect
+                              itemSize="30"
+                              [virtualScroll]="true"
+                              [options]="materialTechniquesData"
+                              id="materialTechnique"
+                              formControlName="materialTechnique"
+                              emptyFilterMessage="Aucun résultat trouvé"
+                              defaultLabel="Choisir des matières"
+                              optionLabel="name"
+                              display="chip"
+                            ></p-multiSelect>
+                          </div>
 
-                          <ng-multiselect-dropdown
-                            class="select col-6"
-                            [placeholder]="'Choisir des matières'"
-                            formControlName="materialTechnique"
-                            [settings]="dropdownSettings"
-                            [data]="WorkOfArtService.denominations"
-                            (onSelect)="onItemSelect($event)"
-                            (onSelectAll)="onSelectAll($event)"
-                          >
-                          </ng-multiselect-dropdown>
+                          <!--                          <ng-multiselect-dropdown-->
+                          <!--                            class="select col-6"-->
+                          <!--                            [placeholder]="'Choisir des matières'"-->
+                          <!--                            formControlName="materialTechnique"-->
+                          <!--                            [settings]="dropdownSettings"-->
+                          <!--                            [data]="WorkOfArtService.denominations"-->
+                          <!--                            (onSelect)="onItemSelect($event)"-->
+                          <!--                            (onSelectAll)="onSelectAll($event)"-->
+                          <!--                          >-->
+                          <!--                          </ng-multiselect-dropdown>-->
                         </div>
-                        <select
-                          class="select-style d-flex slider-bloc col-md-2"
-                          formControlName="materialTechniqueOperator"
-                        >
-                          <option value="and">Et</option>
-                          <option value="or">Ou</option>
-                          <option value="not">sauf</option>
-                        </select>
+                        <div class="col-md-2 multiSelectBlock">
+                          <p-dropdown
+                            [options]="operatorData"
+                            formControlName="materialTechniqueOperator"
+                            optionLabel="name"
+                            optionValue="id"
+                          ></p-dropdown>
+                        </div>
+                        <!--                        <select-->
+                        <!--                          class="select-style d-flex slider-bloc col-md-2"-->
+                        <!--                          formControlName="materialTechniqueOperator"-->
+                        <!--                        >-->
+                        <!--                          <option value="and">Et</option>-->
+                        <!--                          <option value="or">Ou</option>-->
+                        <!--                          <option value="not">sauf</option>-->
+                        <!--                        </select>-->
                       </div>
-                      <div class="form-group d-flex slider-bloc row">
+                      <div class="form-group d-flex slider-bloc row" *ngIf="styleData">
                         <div class="row col-10">
-                          <label class="col-5">Style</label>
-
-                          <ng-multiselect-dropdown
-                            class="select col-6"
-                            formControlName="style"
-                            [placeholder]="'Choisir des Styles'"
-                            [settings]="dropdownSettings"
-                            [data]="WorkOfArtService.denominations"
-                            (onSelect)="onItemSelect($event)"
-                            (onSelectAll)="onSelectAll($event)"
-                          >
-                          </ng-multiselect-dropdown>
+                          <label for="style" class="col-5">Style</label>
+                          <div class="multiSelectBlock col-6">
+                            <p-multiSelect
+                              [options]="styleData"
+                              id="style"
+                              formControlName="style"
+                              emptyFilterMessage="Aucun résultat trouvé"
+                              defaultLabel="Choisir des Styles"
+                              optionLabel="name"
+                              display="chip"
+                            ></p-multiSelect>
+                          </div>
+                          <!--                          <ng-multiselect-dropdown-->
+                          <!--                            class="select col-6"-->
+                          <!--                            formControlName="style"-->
+                          <!--                            [placeholder]="'Choisir des Styles'"-->
+                          <!--                            [settings]="dropdownSettings"-->
+                          <!--                            [data]="styleData"-->
+                          <!--                            (onSelect)="onItemSelect($event)"-->
+                          <!--                            (onSelectAll)="onSelectAll($event)"-->
+                          <!--                          >-->
+                          <!--                          </ng-multiselect-dropdown>-->
                         </div>
-                        <select class="select-style input-form-control col-md-2" formControlName="styleOperator">
-                          <option value="and">Et</option>
-                          <option value="or">Ou</option>
-                          <option value="not">Sauf</option>
-                        </select>
+                        <div class="col-md-2 multiSelectBlock">
+                          <p-dropdown
+                            [options]="operatorData"
+                            formControlName="styleOperator"
+                            optionLabel="name"
+                            optionValue="id"
+                          ></p-dropdown>
+                        </div>
                       </div>
                       <div class="form-group d-flex slider-bloc row">
                         <div class="row col-10">
@@ -226,11 +284,14 @@
                             ></ngx-slider>
                           </div>
                         </div>
-                        <select class="select-style input-form-control col-md-2" formControlName="lengthOperator">
-                          <option value="and">Et</option>
-                          <option value="or">Ou</option>
-                          <option value="not">Sauf</option>
-                        </select>
+                        <div class="col-md-2 multiSelectBlock">
+                          <p-dropdown
+                            [options]="operatorData"
+                            formControlName="lengthOperator"
+                            optionLabel="name"
+                            optionValue="id"
+                          ></p-dropdown>
+                        </div>
                       </div>
                       <div class="form-group d-flex slider-bloc row">
                         <div class="row col-10">
@@ -241,16 +302,20 @@
                             style="width: 90% !important; margin-top: -15px !important"
                           >
                             <ngx-slider
-                              [(value)]="inventoryValue"
-                              [(highValue)]="hightInventoryValue"
+                              [(value)]="dataSlider['heightTotal']['value']"
+                              [(highValue)]="dataSlider['heightTotal']['heightValue']"
                               [options]="inventoryOptions"
                             ></ngx-slider>
                           </div>
                         </div>
-                        <select class="select-style input-form-control col-md-2">
-                          <option value="1">Et</option>
-                          <option value="0">Ou</option>
-                        </select>
+                        <div class="col-md-2 multiSelectBlock">
+                          <p-dropdown
+                            [options]="operatorData"
+                            formControlName="heightOperator"
+                            optionLabel="name"
+                            optionValue="id"
+                          ></p-dropdown>
+                        </div>
                       </div>
                       <div class="form-group d-flex slider-bloc row">
                         <div class="row col-10">
@@ -261,16 +326,20 @@
                             style="width: 90% !important; margin-top: -15px !important"
                           >
                             <ngx-slider
-                              [(value)]="inventoryValue"
-                              [(highValue)]="hightInventoryValue"
+                              [(value)]="dataSlider['lengthTotal']['value']"
+                              [(highValue)]="dataSlider['lengthTotal']['heightValue']"
                               [options]="inventoryOptions"
                             ></ngx-slider>
                           </div>
                         </div>
-                        <select class="select-style input-form-control col-md-2">
-                          <option value="1">Et</option>
-                          <option value="0">Ou</option>
-                        </select>
+                        <div class="col-md-2 multiSelectBlock">
+                          <p-dropdown
+                            [options]="operatorData"
+                            formControlName="lengthTotalOperator"
+                            optionLabel="name"
+                            optionValue="id"
+                          ></p-dropdown>
+                        </div>
                       </div>
                       <div class="form-group d-flex slider-bloc row">
                         <div class="row col-10">
@@ -281,16 +350,20 @@
                             style="width: 90% !important; margin-top: -15px !important"
                           >
                             <ngx-slider
-                              [(value)]="inventoryValue"
-                              [(highValue)]="hightInventoryValue"
+                              [(value)]="dataSlider['depth']['value']"
+                              [(highValue)]="dataSlider['depth']['heightValue']"
                               [options]="inventoryOptions"
                             ></ngx-slider>
                           </div>
                         </div>
-                        <select class="select-style input-form-control col-md-2">
-                          <option value="1">Et</option>
-                          <option value="0">Ou</option>
-                        </select>
+                        <div class="col-md-2 multiSelectBlock">
+                          <p-dropdown
+                            [options]="operatorData"
+                            formControlName="depthOperator"
+                            optionLabel="name"
+                            optionValue="id"
+                          ></p-dropdown>
+                        </div>
                       </div>
                       <div class="form-group d-flex slider-bloc row">
                         <div class="row col-10">
@@ -303,46 +376,56 @@
                             placeholder="N° inventaire"
                           />
                         </div>
-                        <select class="select-style input-form-control col-md-2">
-                          <option value="1">Et</option>
-                          <option value="0">Ou</option>
-                        </select>
+                        <div class="col-md-2 multiSelectBlock">
+                          <p-dropdown [options]="operatorData" optionLabel="name" optionValue="id"></p-dropdown>
+                        </div>
                       </div>
                       <div class="form-group d-flex slider-bloc row">
                         <div class="row col-10">
                           <label class="col-5">Oeuvres archivées</label>
-                          <select name="archive" class="select-style input-group col-6">
-                            <option value="sans oeuvres archivé">Sans oeuvres archivées</option>
-                            <option value="avec oeuvres archivé">Avec oeuvres archivées</option>
-                            <option value="uniquement oeuvres">Uniquement oeuvres</option>
-                          </select>
+                          <div class="multiSelectBlock col-6">
+                            <p-dropdown [options]="artWorkSelectData" optionLabel="name" optionValue="id"></p-dropdown>
+                          </div>
+
+                          <!--                          <select name="archive" class="select-style input-group col-6">-->
+                          <!--                            <option value="sans oeuvres archivé">Sans oeuvres archivées</option>-->
+                          <!--                            <option value="avec oeuvres archivé">Avec oeuvres archivées</option>-->
+                          <!--                            <option value="uniquement oeuvres">Uniquement oeuvres</option>-->
+                          <!--                          </select>-->
                         </div>
-                        <select class="select-style input-form-control col-md-2">
-                          <option value="1">Et</option>
-                          <option value="0">Ou</option>
-                          <option value="2">Sauf</option>
-                        </select>
+                        <div class="col-md-2 multiSelectBlock">
+                          <p-dropdown [options]="operatorData" optionLabel="name" optionValue="id"></p-dropdown>
+                        </div>
                       </div>
                     </div>
                     <div class="col-6" *ngIf="form1Advanced">
                       <div class="form-group d-flex slider-bloc row">
                         <div class="row col-10">
                           <label class="col-5">Epoque</label>
-
-                          <ng-multiselect-dropdown
-                            class="select col-6"
-                            [placeholder]="'Choisir des  époques'"
-                            [settings]="dropdownSettings"
-                            [data]="WorkOfArtService.denominations"
-                            (onSelect)="onItemSelect($event)"
-                            (onSelectAll)="onSelectAll($event)"
-                          >
-                          </ng-multiselect-dropdown>
+                          <div class="multiSelectBlock col-6">
+                            <p-multiSelect
+                              [options]="eraData"
+                              id="era"
+                              formControlName="style"
+                              emptyFilterMessage="Aucun résultat trouvé"
+                              defaultLabel="Choisir des époques"
+                              optionLabel="name"
+                              display="chip"
+                            ></p-multiSelect>
+                          </div>
+                          <!--                          <ng-multiselect-dropdown-->
+                          <!--                            class="select col-6"-->
+                          <!--                            [placeholder]="'Choisir des  époques'"-->
+                          <!--                            [settings]="dropdownSettings"-->
+                          <!--                            [data]="WorkOfArtService.denominations"-->
+                          <!--                            (onSelect)="onItemSelect($event)"-->
+                          <!--                            (onSelectAll)="onSelectAll($event)"-->
+                          <!--                          >-->
+                          <!--                          </ng-multiselect-dropdown>-->
                         </div>
-                        <select class="select-style input-form-control col-md-2">
-                          <option value="1">Et</option>
-                          <option value="0">Ou</option>
-                        </select>
+                        <div class="col-md-2 multiSelectBlock">
+                          <p-dropdown [options]="operatorData" optionLabel="name" optionValue="id"></p-dropdown>
+                        </div>
                       </div>
                       <div class="form-group d-flex slider-bloc row">
                         <div class="row col-10">
@@ -359,10 +442,9 @@
                             placeholder="YYYY"
                           />
                         </div>
-                        <select class="select-style input-form-control col-md-2">
-                          <option value="1">Et</option>
-                          <option value="0">Ou</option>
-                        </select>
+                        <div class="col-md-2 multiSelectBlock">
+                          <p-dropdown [options]="operatorData" optionLabel="name" optionValue="id"></p-dropdown>
+                        </div>
                       </div>
 
                       <div class="form-group d-flex slider-bloc row">
@@ -374,16 +456,20 @@
                             style="width: 90% !important; margin-top: -15px !important"
                           >
                             <ngx-slider
-                              [(value)]="inventoryValue"
-                              [(highValue)]="hightInventoryValue"
+                              [(value)]="dataSlider['height']['value']"
+                              [(highValue)]="dataSlider['height']['heightValue']"
                               [options]="inventoryOptions"
                             ></ngx-slider>
                           </div>
                         </div>
-                        <select class="select-style input-form-control col-md-2">
-                          <option value="1">Et</option>
-                          <option value="0">Ou</option>
-                        </select>
+                        <div class="col-md-2 multiSelectBlock">
+                          <p-dropdown
+                            [options]="operatorData"
+                            formControlName="heightOperator"
+                            optionLabel="name"
+                            optionValue="id"
+                          ></p-dropdown>
+                        </div>
                       </div>
                       <div class="form-group d-flex slider-bloc row">
                         <div class="row col-10">
@@ -394,16 +480,20 @@
                             style="width: 90% !important; margin-top: -15px !important"
                           >
                             <ngx-slider
-                              [(value)]="inventoryValue"
-                              [(highValue)]="hightInventoryValue"
+                              [(value)]="dataSlider['width']['value']"
+                              [(highValue)]="dataSlider['width']['heightValue']"
                               [options]="inventoryOptions"
                             ></ngx-slider>
                           </div>
                         </div>
-                        <select class="select-style input-form-control col-md-2">
-                          <option value="1">Et</option>
-                          <option value="0">Ou</option>
-                        </select>
+                        <div class="col-md-2 multiSelectBlock">
+                          <p-dropdown
+                            [options]="operatorData"
+                            formControlName="widthOperator"
+                            optionLabel="name"
+                            optionValue="id"
+                          ></p-dropdown>
+                        </div>
                       </div>
                       <div class="form-group d-flex slider-bloc row">
                         <div class="row col-10">
@@ -414,16 +504,20 @@
                             style="width: 90% !important; margin-top: -15px !important"
                           >
                             <ngx-slider
-                              [(value)]="inventoryValue"
-                              [(highValue)]="hightInventoryValue"
+                              [(value)]="dataSlider['widthtTotal']['value']"
+                              [(highValue)]="dataSlider['widthtTotal']['heightValue']"
                               [options]="inventoryOptions"
                             ></ngx-slider>
                           </div>
                         </div>
-                        <select class="select-style input-form-control col-md-2">
-                          <option value="1">Et</option>
-                          <option value="0">Ou</option>
-                        </select>
+                        <div class="col-md-2 multiSelectBlock">
+                          <p-dropdown
+                            [options]="operatorData"
+                            formControlName="widthTotalOperator"
+                            optionLabel="name"
+                            optionValue="id"
+                          ></p-dropdown>
+                        </div>
                       </div>
                       <div class="form-group d-flex slider-bloc row">
                         <div class="row col-10">
@@ -434,15 +528,16 @@
                             style="width: 90% !important; margin-top: -15px !important"
                           >
                             <ngx-slider
-                              [(value)]="inventoryValue"
-                              [(highValue)]="hightInventoryValue"
+                              [(value)]="dataSlider['weight']['value']"
+                              [(highValue)]="dataSlider['weight']['heightValue']"
                               [options]="inventoryOptions"
                             ></ngx-slider>
                           </div>
                         </div>
-                        <select class="select-style input-form-control col-md-2">
-                          <option value="1">Et</option>
-                          <option value="0">Ou</option>
+                        <select class="select-style input-form-control col-md-2" formControlName="weightOperator">
+                          <option value="and">Et</option>
+                          <option value="or">Ou</option>
+                          <option value="not">Sauf</option>
                         </select>
                       </div>
                       <div class="form-group slider-bloc row">
@@ -509,43 +604,76 @@
                 <div class="col-12 pt-1 row">
                   <div class="col-6 mt-3">
                     <div class="form-group d-flex slider-bloc row">
-                      <label for="domaine" class="col-5">Type De Status </label>
-                      <ng-multiselect-dropdown
-                        class="select col-6 w-100"
-                        formControlName="domaine"
-                        [placeholder]="'Dépôt'"
-                        [settings]="dropdownSettings"
-                        [data]="WorkOfArtService.statusType"
-                        (onSelect)="onDomainSelect($event)"
-                        (onSelectAll)="onSelectAll($event)"
-                      >
-                      </ng-multiselect-dropdown>
+                      <label for="statusType" class="col-5">Type De Status </label>
+                      <div class="multiSelectBlock col-6">
+                        <p-multiSelect
+                          [options]="WorkOfArtService.statusType"
+                          id="statusType"
+                          emptyFilterMessage="Aucun résultat trouvé"
+                          defaultLabel="Choisir un type de status"
+                          optionLabel="name"
+                          display="chip"
+                        ></p-multiSelect>
+                      </div>
+                      <!--                      <ng-multiselect-dropdown-->
+                      <!--                        class="select col-6 w-100"-->
+                      <!--                        formControlName="domaine"-->
+                      <!--                        [placeholder]="'Dépôt'"-->
+                      <!--                        [settings]="dropdownSettings"-->
+                      <!--                        [data]="WorkOfArtService.statusType"-->
+                      <!--                        (onSelect)="onDomainSelect($event)"-->
+                      <!--                        (onSelectAll)="onSelectAll($event)"-->
+                      <!--                      >-->
+                      <!--                      </ng-multiselect-dropdown>-->
                     </div>
                     <div class="form-group d-flex slider-bloc row">
-                      <label for="denomination" class="col-5">Catégorie</label>
-                      <ng-multiselect-dropdown
-                        class="select col-6"
-                        [placeholder]="'Choisir une catégorie'"
-                        formControlName="denomination"
-                        [settings]="dropdownSettings"
-                        [data]="WorkOfArtService.denominations"
-                        (onSelect)="onItemSelect($event)"
-                        (onSelectAll)="onSelectAll($event)"
-                      >
-                      </ng-multiselect-dropdown>
+                      <label for="categorie" class="col-5">Catégorie</label>
+                      <div class="multiSelectBlock col-6">
+                        <p-multiSelect
+                          [options]="categoriesData"
+                          id="categorie"
+                          emptyFilterMessage="Aucun résultat trouvé"
+                          defaultLabel="Choisir une catégorie"
+                          optionLabel="name"
+                          display="chip"
+                        ></p-multiSelect>
+                      </div>
+                      <!--                      <ng-multiselect-dropdown-->
+                      <!--                        class="select col-6"-->
+                      <!--                        [placeholder]="'Choisir une catégorie'"-->
+                      <!--                        formControlName="denomination"-->
+                      <!--                        [settings]="dropdownSettings"-->
+                      <!--                        [data]="WorkOfArtService.denominations"-->
+                      <!--                        (onSelect)="onItemSelect($event)"-->
+                      <!--                        (onSelectAll)="onSelectAll($event)"-->
+                      <!--                      >-->
+                      <!--                      </ng-multiselect-dropdown>-->
                     </div>
                     <div class="form-group d-flex slider-bloc row">
                       <label for="denomination" class="col-5">Déposants</label>
-                      <ng-multiselect-dropdown
-                        class="select col-6"
-                        [placeholder]="'Choisir un déposant'"
-                        formControlName="denomination"
-                        [settings]="dropdownSettings"
-                        [data]="WorkOfArtService.depositor"
-                        (onSelect)="onItemSelect($event)"
-                        (onSelectAll)="onSelectAll($event)"
-                      >
-                      </ng-multiselect-dropdown>
+                      <div class="multiSelectBlock col-6">
+                        <p-multiSelect
+                          [options]="depositorsData"
+                          id="depositor"
+                          [virtualScroll]="true"
+                          itemSize="30"
+                          emptyFilterMessage="Aucun résultat trouvé"
+                          defaultLabel="Choisir un déposant"
+                          optionLabel="name"
+                          display="chip"
+                        ></p-multiSelect>
+                      </div>
+
+                      <!--                      <ng-multiselect-dropdown-->
+                      <!--                        class="select col-6"-->
+                      <!--                        [placeholder]="'Choisir un déposant'"-->
+                      <!--                        formControlName="denomination"-->
+                      <!--                        [settings]="dropdownSettings"-->
+                      <!--                        [data]="WorkOfArtService.depositor"-->
+                      <!--                        (onSelect)="onItemSelect($event)"-->
+                      <!--                        (onSelectAll)="onSelectAll($event)"-->
+                      <!--                      >-->
+                      <!--                      </ng-multiselect-dropdown>-->
                     </div>
                   </div>
                   <div class="col-6 mt-3">
@@ -631,30 +759,54 @@
                 <div class="col-12 pt-1 row">
                   <div class="col-6 mt-3">
                     <div class="form-group d-flex slider-bloc row">
-                      <label for="domaine" class="col-5">Type de mouvement </label>
-                      <ng-multiselect-dropdown
-                        class="select col-6 w-100"
-                        [placeholder]="'Choisir types de mouvement'"
-                        [settings]="dropdownSettings"
-                        formControlName="mouvement"
-                        [data]="domaine"
-                        (onSelect)="onDomainSelect($event)"
-                        (onSelectAll)="onSelectAll($event)"
-                      >
-                      </ng-multiselect-dropdown>
+                      <label for="mvt_type" class="col-5">Type de mouvement </label>
+                      <div class="multiSelectBlock col-6">
+                        <p-multiSelect
+                          [options]="movementTypesData"
+                          id="mvt_type"
+                          [virtualScroll]="true"
+                          itemSize="30"
+                          emptyFilterMessage="Aucun résultat trouvé"
+                          defaultLabel="Choisir un types de mouvement"
+                          optionLabel="name"
+                          display="chip"
+                        ></p-multiSelect>
+                      </div>
+                      <!--                      <ng-multiselect-dropdown-->
+                      <!--                        class="select col-6 w-100"-->
+                      <!--                        [placeholder]="'Choisir types de mouvement'"-->
+                      <!--                        [settings]="dropdownSettings"-->
+                      <!--                        formControlName="mouvement"-->
+                      <!--                        [data]="domaine"-->
+                      <!--                        (onSelect)="onDomainSelect($event)"-->
+                      <!--                        (onSelectAll)="onSelectAll($event)"-->
+                      <!--                      >-->
+                      <!--                      </ng-multiselect-dropdown>-->
                     </div>
                     <div class="form-group d-flex slider-bloc row">
                       <label for="domaine" class="col-5">Type action mouvement </label>
-                      <ng-multiselect-dropdown
-                        class="select col-6 w-100"
-                        [placeholder]="'Choisir types d\'action de mouvement'"
-                        [settings]="dropdownSettings"
-                        formControlName="mouvementAction"
-                        [data]="domaine"
-                        (onSelect)="onDomainSelect($event)"
-                        (onSelectAll)="onSelectAll($event)"
-                      >
-                      </ng-multiselect-dropdown>
+                      <div class="multiSelectBlock col-6">
+                        <p-multiSelect
+                          [options]="movementActionTypesData"
+                          id="mvt_type"
+                          [virtualScroll]="true"
+                          itemSize="30"
+                          emptyFilterMessage="Aucun résultat trouvé"
+                          defaultLabel="Choisir un types de mouvement"
+                          optionLabel="name"
+                          display="chip"
+                        ></p-multiSelect>
+                      </div>
+                      <!--                      <ng-multiselect-dropdown-->
+                      <!--                        class="select col-6 w-100"-->
+                      <!--                        [placeholder]="'Choisir types d\'action de mouvement'"-->
+                      <!--                        [settings]="dropdownSettings"-->
+                      <!--                        formControlName="mouvementAction"-->
+                      <!--                        [data]="domaine"-->
+                      <!--                        (onSelect)="onDomainSelect($event)"-->
+                      <!--                        (onSelectAll)="onSelectAll($event)"-->
+                      <!--                      >-->
+                      <!--                      </ng-multiselect-dropdown>-->
                     </div>
                     <div class="form-group mt-4 d-flex align-items-center">
                       <label class="mt-2">Titre de perception demandé </label>
@@ -1110,7 +1262,7 @@
           </div>
         </div>
       </div>
-      <div class="datatable mt-4" *ngIf="artWorksData">
+      <div class="datatable mt-4" *ngIf="showDatatable && artWorksData">
         <div *ngIf="selectedRowCount > 1">
           <div class="mass-action-container">
             <i class="fas fa-share"></i>
@@ -1175,6 +1327,11 @@
           [frozenWidth]="'200px'"
           [checkBoxSelection]="true"
           [total]="artWorksData.totalQuantity"
+          [page]="artWorksData.page"
+          [limit]="limit"
+          [end]="end"
+          [start]="start"
+          [loading]="loading"
           (filterChange)="onDataTableFilterChange($event)"
           [totalFiltred]="artWorksData.filteredQuantity"
         >

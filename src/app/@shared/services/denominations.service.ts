@@ -19,7 +19,6 @@ export class DenominationsService {
   // Get All Denominations
   getAllDenominations(data: any): Observable<any> {
     let params = new HttpParams();
-
     Object.keys(data).forEach((key) => {
       if (data[key]) {
         params = params.append(key, data[key]);

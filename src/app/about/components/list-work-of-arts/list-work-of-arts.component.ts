@@ -9,7 +9,7 @@ import { ColumnFilterService, OPERATORS, TYPES } from '@shared/services/column-f
 import { ColumnFilterModel } from '@shared/models/column-filter-model';
 import { CustomHeaderRendererComponent } from '@app/@shared/components/datatables/custom-header-renderer/custom-header-renderer.component';
 import { first } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { GridActionRendererComponent } from '@app/@shared/components/datatables/grid-action-renderer/grid-action-renderer.component';
 import { StatusTypeRenderComponent } from '@shared/components/datatables/status-type-render/status-type-render.component';
 import { Options } from '@angular-slider/ngx-slider';
@@ -20,6 +20,11 @@ import { DatePipe } from '@angular/common';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 import { ArtWorkService } from '@app/about/services/art-work.service';
 import ArtWorksDataModel from '@app/about/models/art-works-model';
+import { FieldsService } from '@shared/services/fields.service';
+import { DenominationsService } from '@shared/services/denominations.service';
+import { StylesService } from '@shared/services/styles.service';
+import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
+import { MaterialTechniqueService } from '@shared/services/material-technique.service';
 
 @Component({
   selector: 'app-list-work-of-arts',
@@ -35,46 +40,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   data = false;
   mode = 'liste';
   filterFormGroup: FormGroup;
-  columnDropped = new EventEmitter();
-  columnDroppedSubscription: Subscription;
   showInventoryRange = false;
-  frameworkComponents = {
-    customHeader: CustomHeaderRendererComponent,
-    gridActionRenderer: GridActionRendererComponent,
-    visibleRenderer: VisibleCatalogRendererComponent,
-    detailsLink: RemarquerDetailsLinkRendererComponent,
-    statusTypeRender: StatusTypeRenderComponent,
-    imageViewer: ImageViewerComponent,
-  };
-  defaultColDef = {
-    headerComponent: 'customHeader',
-    sortable: true,
-    filter: true,
-    resizable: true,
-    headerValueGetter: (params: any) => {
-      return params.colDef.headerName;
-    },
-    headerComponentParams: {
-      menuIcon: 'fa-filter',
-      operator: OPERATORS.like,
-      type: TYPES.text,
-    },
-  };
-  gridOptions: GridOptions = {
-    suppressLoadingOverlay: false,
-    suppressScrollOnNewData: true,
-    onDragStopped: () => {
-      this.columnDropped.next();
-    },
-    onColumnMoved: (_) => {
-      if (this.columnDroppedSubscription) {
-        this.columnDroppedSubscription.unsubscribe();
-      }
-      this.columnDroppedSubscription = this.columnDropped.pipe(first()).subscribe(() => {
-        this.updateColumnsConfiguration();
-      });
-    },
-  };
 
   oeuvres = this.WorkOfArtService.oeuvres[0].items;
   frozenCols: any = [
@@ -243,129 +209,21 @@ export class ListWorkOfArtsComponent implements OnInit {
       isVisible: true,
     },
   ];
-  ColDef: ColDef[] = [
-    {
-      cellClass: 'link',
-      headerName: 'N° inventaire',
-      field: 'id',
-      cellRenderer: 'detailsLink',
-      checkboxSelection: true,
-      headerCheckboxSelection: true,
-      sortable: false,
-      filter: false,
-      width: 70,
-    },
-    {
-      headerName: 'Titre',
-      field: 'titre',
-    },
-    {
-      headerName: 'Date création',
-      field: 'creationDate',
-      width: 100,
-      headerComponentParams: {
-        ...this.defaultHeaderParams,
-        type: TYPES.date,
-        operator: OPERATORS.in,
-      },
-    },
-    {
-      headerName: 'Domaine',
-      field: 'domaine',
-      width: 100,
-      headerComponentParams: {
-        ...this.defaultHeaderParams,
-        type: TYPES.list,
-        list: this.WorkOfArtService.domaine,
-        operator: OPERATORS.in,
-      },
-    },
-    {
-      headerName: 'Dénomination',
-      field: 'denomination',
-      width: 100,
-    },
-    {
-      headerName: 'Matière',
-      field: 'matiere',
-      width: 120,
-    },
-    {
-      headerName: 'Style',
-      field: 'style',
-      width: 100,
-    },
-    {
-      headerName: 'Epoque',
-      field: 'epoque',
-      width: 90,
-    },
-    {
-      headerName: 'Auteur',
-      field: 'author',
-      width: 90,
-    },
-    {
-      headerName: 'Type de Statut',
-      field: 'property',
-      cellRenderer: 'statusTypeRender',
-      width: 180,
-    },
-    {
-      headerName: 'deposant',
-      field: 'depositor',
-      width: 100,
-    },
-    {
-      headerName: 'photographie',
-      field: 'property',
-      cellRenderer: 'imageViewer',
-      width: 100,
-    },
-    {
-      headerName: 'Dernier constat de présence',
-      field: 'author',
-      width: 100,
-    },
-    {
-      headerName: 'Dernière action liée au constat',
-      field: 'author',
-      width: 100,
-    },
-    {
-      headerName: 'Dernier mouvement',
-      field: 'author',
-      width: 90,
-    },
-    {
-      headerName: 'Dernière action liée au mouvement',
-      field: 'author',
-      width: 90,
-    },
-    {
-      headerName: 'Visible catalogue',
-      field: 'visible',
-      cellRenderer: 'visibleRenderer',
-      sortable: false,
-      filter: false,
-      width: 100,
-    },
-  ];
-  pinnedCols: string[] = [];
-  leftPinnedCols: string[] = ['id'];
   selectedRowCount = 0;
   gridApi: GridApi;
   gridColumnApi: ColumnApi;
   inventoryOptions: Options;
   gridReady = false;
-  currentColumnStates: any;
   dataSlider: any = {
     length: { value: 0, heightValue: 0 },
-    heightTot: { value: 0, heightValue: 0 },
+    height: { value: 0, heightValue: 0 },
+    width: { value: 0, heightValue: 0 },
+    depth: { value: 0, heightValue: 0 },
+    weight: { value: 0, heightValue: 0 },
+    lengthTotal: { value: 0, heightValue: 0 },
+    heightTotal: { value: 0, heightValue: 0 },
+    widthtTotal: { value: 0, heightValue: 0 },
   };
-  currentFilters: ColumnFilterModel[] = [];
-  currentOrderedFields: { column: string; direction: string }[] = [];
-  paginatorLoading: boolean;
   oeuvreToShow: any;
   rowCount = 5;
   domaine: any;
@@ -388,8 +246,34 @@ export class ListWorkOfArtsComponent implements OnInit {
   visibleCol: any[] = [];
   items = ['oeuvre art', 'test'];
   artWorksData: ArtWorksDataModel;
+  limit = 5;
+  end: number;
+  start: number;
+  loading: boolean = false;
   headerFilter: any = {};
   advancedForm1: FormGroup;
+  domainData: any[] = [];
+  denominationData: any[] = [];
+  styleData: any[] = [];
+  authorData: any[] = [];
+  categoriesData: any[] = [];
+  depositorsData: any[] = [];
+  movementTypesData: any[] = [];
+  movementActionTypesData: any[] = [];
+  reportTypesData: any[] = [];
+  reportActionTypesData: any[] = [];
+  materialTechniquesData: any[] = [];
+  eraData: any[] = [];
+  operatorData = [
+    { name: 'Et', id: 'and' },
+    { name: 'Ou', id: 'or' },
+    { name: 'Sauf', id: 'not' },
+  ];
+  artWorkSelectData = [
+    { name: 'Sans oeuvres archivée', id: '' },
+    { name: 'Avec oeuvres archivées', id: '' },
+    { name: 'Uniquement oeuvres', id: '' },
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -397,12 +281,14 @@ export class ListWorkOfArtsComponent implements OnInit {
     public WorkOfArtService: WorkOfArtService,
     private datePipe: DatePipe,
     private router: Router,
-    private artWorkService: ArtWorkService
+    private artWorkService: ArtWorkService,
+    private fieldService: FieldsService,
+    private denominationsService: DenominationsService,
+    private styleService: StylesService,
+    private simpleTabsRefService: SimpleTabsRefService,
+    private materialTechniqueService: MaterialTechniqueService
   ) {}
 
-  get defaultHeaderParams() {
-    return this.defaultColDef.headerComponentParams;
-  }
   initData(filter: any, advancedFilter: any, headerFilters: any = {}) {
     this.artWorkService
       .getArtWorksData(filter, advancedFilter, headerFilters)
@@ -410,8 +296,10 @@ export class ListWorkOfArtsComponent implements OnInit {
         this.artWorksData = artWorksData;
       });
   }
+
   ngOnInit(): void {
-    this.initData({}, {}, this.headerFilter);
+    // this.initData({}, {}, this.headerFilter);
+    this.initFilterData();
     this.oeuvreToShow = this.oeuvres;
     this.initFilterFormGroup();
     this.domaine = this.WorkOfArtService.domaine;
@@ -440,6 +328,20 @@ export class ListWorkOfArtsComponent implements OnInit {
       styleOperator: new FormControl('and'),
       length: new FormControl(''),
       lengthOperator: new FormControl('and'),
+      lengthTotal: new FormControl(''),
+      lengthTotalOperator: new FormControl('and'),
+      heightTotal: new FormControl(''),
+      heightTotalOperator: new FormControl('and'),
+      widthTotal: new FormControl(''),
+      widthTotalOperator: new FormControl('and'),
+      depth: new FormControl(''),
+      depthOperator: new FormControl('and'),
+      weight: new FormControl(''),
+      weightOperator: new FormControl('and'),
+      height: new FormControl(''),
+      heightOperator: new FormControl('and'),
+      width: new FormControl(''),
+      widthOperator: new FormControl('and'),
     });
     this.form2 = new FormGroup({
       mouvement: new FormControl(''),
@@ -467,30 +369,10 @@ export class ListWorkOfArtsComponent implements OnInit {
       correspondant: new FormControl(''),
     });
     this.onChanges();
-    this.gridOptions.tooltipShowDelay = 0;
     this.inventoryOptions = {
       floor: 0,
       ceil: 9999,
     };
-  }
-
-  onGridReady(params: ICellEditorParams) {
-    this.gridApi = params.api;
-    this.gridColumnApi = params.columnApi;
-    this.gridReady = true;
-    this.currentColumnStates = this.gridColumnApi.getColumnState();
-
-    this.columns = this.gridColumnApi.getAllColumns();
-    this.columns.splice(0, 2);
-  }
-
-  onRowSelected(event: any) {
-    if (event.node.selected == true) {
-      this.selectedRowCount++;
-    }
-    if (event.node.selected == false) {
-      this.selectedRowCount--;
-    }
   }
 
   onHeaderToggle(column: any, event: MouseEvent): void {
@@ -506,7 +388,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     const forms = this.formatFormsData({}, [this.form1.value, this.form2.value, this.form3.value, this.form4.value]);
     const advancedForms = this.formatAdvancedData({}, [this.advancedForm1.value]);
     this.headerFilter = this.formatFormsData({}, [headersFilter]);
-    this.initData(forms, advancedForms, this.headerFilter);
+    // this.initData(forms, advancedForms, this.headerFilter);
   }
 
   initFilterFormGroup() {
@@ -514,76 +396,6 @@ export class ListWorkOfArtsComponent implements OnInit {
       titre: '',
     });
   }
-
-  updateColumnsConfiguration(type: string = 'position') {
-    let successMessage: string;
-    let errorMessage: string;
-    if (type === 'position') {
-      successMessage = 'actions.update_column_order_success';
-      errorMessage = 'actions.update_column_order_error';
-    } else {
-      successMessage = 'actions.update_column_order_visibility_success';
-      errorMessage = 'actions.update_column_order_visibility_error';
-    }
-    this.currentColumnStates = this.gridColumnApi.getColumnState();
-  }
-
-  updateFilteredData(columnFilters: ColumnFilterModel[]) {
-    this.currentFilters = this.columnFilterService.updateCurrentFilter(this.currentFilters, columnFilters);
-    columnFilters.forEach((value: any) => {
-      this.oeuvreToShow = this.oeuvreToShow.filter((oeuvre: any) => {
-        let column = value.column;
-        if (value.value instanceof Array) {
-          return oeuvre[column].toUpperCase().includes(value.value[0].toUpperCase());
-        } else {
-          return oeuvre[column].toUpperCase().includes(value.value.toUpperCase());
-        }
-      });
-    });
-  }
-
-  updateSortedData(column: string, direction: string) {
-    this.currentOrderedFields = [{ column, direction }];
-  }
-
-  getOrdersData(page: number = 1) {
-    this.paginatorLoading = true;
-    if (this.gridApi) {
-      this.gridApi.showLoadingOverlay();
-    }
-  }
-
-  search(event?: any) {
-    if (event.target.value.length > 0) {
-      this.oeuvreToShow = this.oeuvres.filter((x: any) =>
-        x.titre.toUpperCase().includes(event.target.value.toUpperCase())
-      );
-    } else {
-      this.oeuvreToShow = this.oeuvres;
-    }
-  }
-
-  resetFilter() {
-    this.oeuvreToShow = this.oeuvres;
-  }
-
-  openCollapse() {
-    this.isCollapsed = !this.isCollapsed;
-  }
-
-  onCellClicked(event: any) {
-    if (event.column.colId == 'FirstName') {
-      // only first column clicked
-      // execute the action as you want here in on click of hyperlink
-    }
-  }
-
-  //add movable objects
-  addPropertyMovableObject() {
-    this.router.navigate(['creation-notice']);
-  }
-
-  addDepositMovableObject() {}
 
   //validate request value
   inventoryValue = 0;
@@ -596,26 +408,6 @@ export class ListWorkOfArtsComponent implements OnInit {
   form1Advanced: boolean = false;
   form3Advanced: boolean = false;
 
-  onValidateRequest(value: boolean) {
-    if (value) {
-      this.showDatatable = true;
-      this.isCollapsed = false;
-      this.collapse();
-    }
-  }
-
-  onRowCountChange(event: Event) {
-    // @ts-ignore
-    this.rowCount = event.target.value;
-    this.gridApi.paginationSetPageSize(Number(this.rowCount));
-  }
-
-  collapse() {
-    this.accordionsDOM.forEach((el) => {
-      el.nativeElement.querySelector('.btn-collapse').click();
-    });
-  }
-
   onSelectAll(items: any) {}
 
   onDomainSelect(item: any) {}
@@ -625,6 +417,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   onValueChange(event: any) {
     this.inventaire = event.target.value + event.key;
   }
+
   formatFormsData(data: any, values: any[]) {
     values.forEach((value) => {
       data = this.getDataFromForm(data, value);
@@ -638,10 +431,14 @@ export class ListWorkOfArtsComponent implements OnInit {
     });
     return data;
   }
+
   getDataFromAdvancedForm(data: any, value: any) {
     Object.keys(value).forEach((key) => {
       if (!key.includes('Operator')) {
-        if (value[key] != '' || ['length'].includes(key)) {
+        if (
+          value[key] != '' ||
+          ['length', 'height', 'width', 'depth', 'weight', 'lengthTotal', 'heightTotal', 'widthtTotal'].includes(key)
+        ) {
           let keyValue;
           switch (key) {
             case 'style':
@@ -655,13 +452,18 @@ export class ListWorkOfArtsComponent implements OnInit {
               keyValue = result;
               break;
             case 'length':
-              console.log(this.dataSlider['length']['value'] <= this.dataSlider['length']['heightValue']);
-              console.log(this.dataSlider['length']['heightValue'] > 0);
+            case 'height':
+            case 'width':
+            case 'depth':
+            case 'weight':
+            case 'lengthTotal':
+            case 'heightTotal':
+            case 'widthtTotal':
               if (
-                this.dataSlider['length']['value'] <= this.dataSlider['length']['heightValue'] &&
-                this.dataSlider['length']['heightValue'] > 0
+                this.dataSlider[key]['value'] <= this.dataSlider[key]['heightValue'] &&
+                this.dataSlider[key]['heightValue'] > 0
               ) {
-                keyValue = [this.dataSlider['length']['value'], this.dataSlider['length']['heightValue']];
+                keyValue = [this.dataSlider[key]['value'], this.dataSlider[key]['heightValue']];
               }
               break;
             default:
@@ -676,6 +478,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     });
     return data;
   }
+
   getDataFromForm(data: any, value: any) {
     Object.keys(value).forEach((key) => {
       switch (key) {
@@ -710,6 +513,8 @@ export class ListWorkOfArtsComponent implements OnInit {
   }
 
   onToggel(event: any, form: string) {
+    // console.log(this.advancedForm1.value);
+    // return false;
     switch (form) {
       case 'form1':
         this.firstSearchDrop = event;
@@ -883,6 +688,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       console.log(this.form1.value);
     }
   }
+
   onRowsSelection(data: any) {
     if (Array.isArray(data)) {
       this.selectedRowCount = data.length;
@@ -898,5 +704,110 @@ export class ListWorkOfArtsComponent implements OnInit {
         index: index,
       });
     });
+  }
+
+  getTabRefData(result: any[]) {
+    let items: any[] = [];
+    result.forEach((item: any) => {
+      if (item.hasOwnProperty('label')) {
+        items.push({ id: item.id, name: item.label });
+      } else {
+        items.push({ id: item.id, name: item.name });
+      }
+    });
+    return items;
+  }
+
+  initFilterData() {
+    const data = {
+      page: 1,
+      'active[eq]': 1,
+    };
+    forkJoin([
+      this.fieldService.getAllFields(data),
+      this.denominationsService.getAllDenominations(data),
+      this.styleService.getAllItems(data),
+      this.simpleTabsRefService.getAllItems(data, 'materialTechniques'),
+      this.simpleTabsRefService.getAllItems(data, 'eras'),
+      this.simpleTabsRefService.getAllItems(data, 'authors'),
+      this.simpleTabsRefService.getAllItems(data, 'propertyStatusCategories'),
+      this.simpleTabsRefService.getAllItems(data, 'depositors'),
+      this.simpleTabsRefService.getAllItems(data, 'movementTypes'),
+      this.simpleTabsRefService.getAllItems(data, 'movementActionTypes'),
+    ]).subscribe(
+      ([
+        fieldsResults,
+        denominationResults,
+        styleResults,
+        materialTechniquesResults,
+        eraResults,
+        authorResults,
+        categoriesResults,
+        depositorsResults,
+        movementTypesResults,
+        movementActionTypesResults,
+      ]) => {
+        this.domainData = this.getTabRefData(fieldsResults['results']);
+        this.denominationData = this.getTabRefData(denominationResults['results']);
+        this.styleData = this.getTabRefData(styleResults['results']);
+        this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
+        this.authorData = this.getTabRefData(authorResults['results']);
+        this.categoriesData = this.getTabRefData(categoriesResults['results']);
+        this.depositorsData = this.getTabRefData(depositorsResults['results']);
+        this.eraData = this.getTabRefData(eraResults['results']);
+        this.movementTypesData = this.getTabRefData(movementTypesResults['results']);
+        this.movementActionTypesData = this.getTabRefData(movementActionTypesResults['results']);
+      }
+    );
+  }
+
+  resetFilter() {}
+
+  search(event: any) {}
+
+  onMultiselectChange(key = 'domaine') {
+    let selectedData = this.form1.get(key).value;
+    let selectedDataId: any[] = [];
+    if (Array.isArray(selectedData)) {
+      selectedData.forEach((selectedDataValue: any) => {
+        selectedDataId.push(selectedDataValue.id);
+      });
+    }
+
+    const apiData = {
+      page: 1,
+      'active[eq]': 1,
+    };
+    switch (key) {
+      case 'domaine':
+        let materialApiData = Object.assign({}, apiData);
+        apiData['field[in]'] = JSON.stringify(selectedDataId);
+        materialApiData['field'] = JSON.stringify(selectedDataId);
+        console.log(materialApiData);
+        forkJoin([
+          this.denominationsService.getAllDenominations(apiData),
+          this.materialTechniqueService.getFilteredMaterialTechnique(materialApiData),
+        ]).subscribe(([denominationResults, materialTechniquesResults]) => {
+          this.denominationData = this.getTabRefData(denominationResults['results']);
+          this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
+        });
+        break;
+      case 'denomination':
+        apiData['denomination'] = JSON.stringify(selectedDataId);
+        selectedData = this.form1.get('domaine').value;
+        selectedDataId = [];
+        if (Array.isArray(selectedData)) {
+          selectedData.forEach((selectedDataValue: any) => {
+            selectedDataId.push(selectedDataValue.id);
+          });
+        }
+
+        apiData['field'] = JSON.stringify(selectedDataId);
+        this.materialTechniqueService.getFilteredMaterialTechnique(apiData).subscribe((materialTechniquesResults) => {
+          this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
+        });
+
+        break;
+    }
   }
 }
