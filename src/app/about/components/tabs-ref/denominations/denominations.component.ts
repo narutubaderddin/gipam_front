@@ -71,7 +71,7 @@ export class DenominationsComponent implements OnInit {
     },
   };
 
-  denominations: any;
+  denominations: any=[];
 
   columns = [
     {
