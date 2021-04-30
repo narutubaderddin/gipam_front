@@ -87,7 +87,6 @@ export class DenominationsComponent implements OnInit {
       field: 'field',
       type: 'key-array',
       key_data: ['field', 'label'],
-
     },
     {
       header: 'Actions',

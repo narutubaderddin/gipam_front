@@ -90,6 +90,8 @@ import { ModalReportSubTypesComponent } from './components/tabs-ref/report-sub-t
 import { MinistryComponent } from './components/tabs-ref/ministry/ministry.component';
 import { BuildingsComponent } from './components/tabs-ref/buildings/buildings.component';
 import { CommunesComponent } from './components/tabs-ref/communes/communes.component';
+import { SubDivisionsComponent } from '@app/about/components/tabs-ref/subDivisions/subDivisions.component';
+import { RegionsComponent } from '@app/about/components/tabs-ref/regions/regions.component';
 
 setTheme('bs4');
 
@@ -145,6 +147,8 @@ const ngWizardConfig: NgWizardConfig = {
     EstablishmentsComponent,
     MinistryComponent,
     BuildingsComponent,
+    SubDivisionsComponent,
+    RegionsComponent,
     CommunesComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],

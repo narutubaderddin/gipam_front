@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
-import {FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -43,7 +43,7 @@ export class MinistryComponent implements OnInit {
   dropdownList: any;
   itemLabel: any;
 
-  filter : any;
+  filter: any;
   sortBy = 'label';
   sort = 'asc';
   totalFiltred: any;
@@ -177,7 +177,6 @@ export class MinistryComponent implements OnInit {
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
 
-
   onSelectAll(items: any) {}
 
   transformDateToDateTime(input: string, format: string, addTime: boolean = true) {
@@ -283,8 +282,8 @@ export class MinistryComponent implements OnInit {
     let params = {
       limit: this.limit,
       page: this.page,
-      sort_by:this.sortBy,
-      sort: this.sort
+      sort_by: this.sortBy,
+      sort: this.sort,
     };
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
@@ -311,7 +310,6 @@ export class MinistryComponent implements OnInit {
   }
 
   deleteItemss(item: any) {
-
     this.btnLoading = '';
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {

@@ -28,6 +28,8 @@ import { ReportSubTypesComponent } from '@app/about/components/tabs-ref/report-s
 import { MinistryComponent } from '@app/about/components/tabs-ref/ministry/ministry.component';
 import {BuildingsComponent} from '@app/about/components/tabs-ref/buildings/buildings.component';
 import {CommunesComponent} from "@app/about/components/tabs-ref/communes/communes.component";
+import { SubDivisionsComponent } from '@app/about/components/tabs-ref/subDivisions/subDivisions.component';
+import { RegionsComponent } from '@app/about/components/tabs-ref/regions/regions.component';
 const routes: Routes = [
   {
     path: '',
@@ -69,15 +71,21 @@ const routes: Routes = [
       },
       { path: 'tab-ref-categorie', component: CategoryComponent, data: { title: 'Liste des catégories' } },
       {
-        path: 'tab-ref-establishments',
+        path: 'tab-ref-etablissement',
         component: EstablishmentsComponent,
         data: { title: 'Liste des établissements' },
       },
+      {
+        path: 'tab-ref-sous-direction',
+        component: SubDivisionsComponent,
+        data: { title: 'Liste des sous-directions' },
+      },
+      {
+        path: 'tab-ref-region',
+        component: RegionsComponent,
+        data: { title: 'Liste des régions' },
+      },
       { path: 'tab-ref-époque', component: EpoquesComponent },
-      { path: 'tab-ref-type-déposant', component: DepositTypesComponent },
-      { path: 'tab-ref-type-constat', component: ReportTypesComponent },
-      { path: 'tab-ref-type-action-constat', component: ActionReportTypesComponent },
-      { path: 'tab-ref-categorie', component: CategoryComponent },
       { path: 'tab-ref-type-mouvement', component: TypeMvtComponent },
       { path: 'tab-ref-type-action-mouvement', component: MovementActionTypesComponent },
       { path: 'tab-ref-sous-type-constat', component: ReportSubTypesComponent },

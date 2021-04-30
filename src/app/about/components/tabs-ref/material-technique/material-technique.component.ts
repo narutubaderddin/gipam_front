@@ -196,7 +196,8 @@ export class MaterialTechniqueComponent implements OnInit {
         page: this.page,
         'label[contains]': this.filter,
         sort_by: this.sortBy,
-        sort: this.sort })
+        sort: this.sort,
+      })
       .subscribe(
         (result: any) => {
           this.items = result.results;
@@ -334,4 +335,3 @@ export class MaterialTechniqueComponent implements OnInit {
     this.selectedDenominations = [];
   }
 }
-
