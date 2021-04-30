@@ -117,8 +117,8 @@
                   *ngSwitchCase="'range-date'"
                   [formControlName]="col.field"
                   [readonlyInput]="true"
-                  [monthNavigator]="false"
-                  [yearNavigator]="false"
+                  [monthNavigator]="true"
+                  [yearNavigator]="true"
                   [numberOfMonths]="1"
                   [selectionMode]="
                     col[col.field + '_operator'] && col[col.field + '_operator'].name === 'range' ? 'range' : 'single'

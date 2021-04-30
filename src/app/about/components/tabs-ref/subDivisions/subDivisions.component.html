@@ -117,11 +117,12 @@
             [options]="relatedEntities"
             optionLabel="label"
             formControlName="establishment"
-            placeholder="Sélectionner un établissement"
+            [placeholder]="selectedRelatedEntity ? selectedRelatedEntity.label : 'Sélectionner un établissement'"
             emptyFilterMessage="Aucun résultat trouvé"
+            [filter]="true"
+            [filterBy]="'label'"
             [virtualScroll]="true"
-            itemSize="10"
-            (onClick)="getRelatedEntity()"
+            itemSize="5"
           ></p-dropdown>
         </div>
       </div>

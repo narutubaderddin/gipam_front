@@ -35,6 +35,7 @@ export class EstablishmentsComponent implements OnInit {
     };
   };
   relatedEntities: any[] = [];
+  types: any[] = [];
   selectedRelatedEntity: any;
   itemToEdit: any;
   itemToDelete: string;
@@ -130,15 +131,7 @@ export class EstablishmentsComponent implements OnInit {
     },
   ];
 
-  fieldNames = {
-    label: 'Libellé',
-    denominations: 'Dénominations',
-    type: 'Type',
-  };
-
   rowCount: any = 5;
-
-  // filter = false;
 
   constructor(
     private router: Router,
@@ -224,8 +217,13 @@ export class EstablishmentsComponent implements OnInit {
     if (this.addItem) {
       this.selectedRelatedEntity = null;
     }
-    if (this.editItem || (this.addItem && !this.relatedEntities)) {
-      this.getRelatedEntity();
+    if (this.editItem || this.addItem) {
+      if (this.relatedEntities.length === 0) {
+        this.getRelatedEntity();
+      }
+      if (this.types.length === 0) {
+        this.getTypes();
+      }
     }
     this.selectedItem = item;
     this.initForm();
@@ -240,6 +238,16 @@ export class EstablishmentsComponent implements OnInit {
 
     this.simpleTabsRef.getAllItems({}).subscribe((result: any) => {
       this.relatedEntities = result.results;
+    });
+    this.simpleTabsRef.tabRef = previousUrl;
+  }
+
+  getTypes(): any {
+    const previousUrl = this.simpleTabsRef.tabRef;
+    this.simpleTabsRef.tabRef = 'establishmentsTypes';
+
+    this.simpleTabsRef.getAllItems({}).subscribe((result: any) => {
+      this.types = result.results;
     });
     this.simpleTabsRef.tabRef = previousUrl;
   }

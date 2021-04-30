@@ -10,6 +10,7 @@ import { MessageService } from 'primeng/api';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 import { DatePipe } from '@angular/common';
+import { Dropdown } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-establishments',
@@ -28,7 +29,7 @@ export class SubDivisionsComponent implements OnInit {
     label: '';
     acronym: '';
     startDate: '';
-    disappearanceDate: '';
+    endDate: '';
     ministry: {
       id: number;
       name: '';
@@ -50,8 +51,6 @@ export class SubDivisionsComponent implements OnInit {
   itemLabel: any;
 
   filter: any;
-  sortBy = 'label';
-  sort = 'asc';
   totalFiltred: any;
   total: any;
   limit = 5;
@@ -107,7 +106,7 @@ export class SubDivisionsComponent implements OnInit {
     },
     {
       header: 'Date fin de validité',
-      field: 'disappearanceDate',
+      field: 'endDate',
       type: 'key',
       filter: true,
       filterType: 'range-date',
@@ -115,8 +114,8 @@ export class SubDivisionsComponent implements OnInit {
       width: '200px',
     },
     {
-      header: 'Ministère',
-      field: 'ministryName',
+      header: 'Etablissement',
+      field: 'relatedEntityName',
       type: 'key',
       width: '380px',
     },
@@ -129,16 +128,6 @@ export class SubDivisionsComponent implements OnInit {
       width: '100px',
     },
   ];
-
-  fieldNames = {
-    label: 'Libellé',
-    denominations: 'Dénominations',
-    type: 'Type',
-  };
-
-  rowCount: any = 5;
-
-  // filter = false;
 
   constructor(
     private router: Router,
@@ -179,10 +168,7 @@ export class SubDivisionsComponent implements OnInit {
       this.selectedItem ? this.selectedItem.startDate : new Date(),
       'yyyy-MM-dd'
     );
-    const disappearanceDate = this.datePipe.transform(
-      this.selectedItem ? this.selectedItem.disappearanceDate : '',
-      'yyyy-MM-dd'
-    );
+    const disappearanceDate = this.datePipe.transform(this.selectedItem ? this.selectedItem.endDate : '', 'yyyy-MM-dd');
     this.tabForm = this.fb.group({
       label: [this.selectedItem ? this.selectedItem.label : '', [Validators.required]],
       acronym: [this.selectedItem ? this.selectedItem.acronym : '', [Validators.required]],
@@ -198,8 +184,8 @@ export class SubDivisionsComponent implements OnInit {
       if (!cc.get('startDate')) {
         return null;
       }
-      if (cc.get('startDate').value > cc.get('endDate').value) {
-        return { dateInvalid: 'Date début supérieur date fin' };
+      if (cc.get('startDate').value >= cc.get('endDate').value) {
+        return { dateInvalid: 'Date début supérieur ou égale date fin' };
       }
       return null;
     };
@@ -218,14 +204,15 @@ export class SubDivisionsComponent implements OnInit {
       this.itemLabel = item.label;
       this.selectedRelatedEntity = {
         id: item.relatedEntityId,
-        name: item.relatedEntityName,
+        label: item.relatedEntityName,
       };
     }
     if (this.addItem) {
       this.selectedRelatedEntity = null;
     }
-    if (this.editItem || (this.addItem && !this.relatedEntities)) {
-      this.getRelatedEntity();
+    console.log('relatedEntity edit', this.selectedRelatedEntity);
+    if ((this.editItem || this.addItem) && this.relatedEntities.length === 0) {
+      this.getRelatedEntityList();
     }
     this.selectedItem = item;
     this.initForm();
@@ -234,12 +221,13 @@ export class SubDivisionsComponent implements OnInit {
 
   onSelectAll(items: any) {}
 
-  getRelatedEntity(): any {
+  getRelatedEntityList(): any {
     const previousUrl = this.simpleTabsRef.tabRef;
     this.simpleTabsRef.tabRef = 'establishments';
 
     this.simpleTabsRef.getAllItems({}).subscribe((result: any) => {
       this.relatedEntities = result.results;
+      console.log('establishments lenght', this.relatedEntities.length);
     });
     this.simpleTabsRef.tabRef = previousUrl;
   }
@@ -261,7 +249,7 @@ export class SubDivisionsComponent implements OnInit {
       label: this.tabForm.value.label,
       acronym: this.tabForm.value.acronym,
       startDate: this.transformDateToDateTime(this.tabForm.value.startDate, 'yyy-MM-dd'),
-      disappearanceDate: this.transformDateToDateTime(this.tabForm.value.disappearanceDate, 'yyy-MM-dd'),
+      endDate: this.transformDateToDateTime(this.tabForm.value.endDate, 'yyy-MM-dd'),
       establishment: this.tabForm.value.establishment.id,
     };
     if (this.addItem) {
@@ -336,7 +324,7 @@ export class SubDivisionsComponent implements OnInit {
       startDate: item.startDate,
       endDate: item.disappearanceDate,
       relatedEntityId: item.establishment ? item.establishment.id : '',
-      relatedEntityName: item.establishment ? item.establishment.name : '',
+      relatedEntityName: item.establishment ? item.establishment.label : '',
       active: true,
     };
     newItem.startDate = item.startDate ? this.datePipe.transform(item.startDate, 'yyyy/MM/dd') : null;
