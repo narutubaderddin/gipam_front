@@ -14,11 +14,11 @@ import { Dropdown } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-establishments',
-  templateUrl: './subDivisions.component.html',
-  styleUrls: ['./subDivisions.component.scss'],
+  templateUrl: './regions.component.html',
+  styleUrls: ['./regions.component.scss'],
   providers: [DatePipe],
 })
-export class SubDivisionsComponent implements OnInit {
+export class RegionsComponent implements OnInit {
   @ViewChild('content') modalRef: TemplateRef<any>;
   @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
 
@@ -26,17 +26,11 @@ export class SubDivisionsComponent implements OnInit {
   btnLoading: any = null;
   myModal: any;
   selectedItem: {
-    label: '';
-    acronym: '';
+    name: '';
     startDate: '';
-    endDate: '';
-    ministry: {
-      id: number;
-      name: '';
-    };
+    disappearanceDate: '';
   };
   relatedEntities: any[] = [];
-  selectedRelatedEntity: any;
   itemToEdit: any;
   itemToDelete: string;
   tabForm: FormGroup;
@@ -79,21 +73,12 @@ export class SubDivisionsComponent implements OnInit {
 
   columns = [
     {
-      header: 'Libellé',
-      field: 'label',
+      header: 'Nom',
+      field: 'name',
       type: 'key',
       filter: true,
       filterType: 'text',
       sortable: true,
-    },
-    {
-      header: 'Sigle',
-      field: 'acronym',
-      type: 'key',
-      filter: true,
-      filterType: 'text',
-      sortable: true,
-      width: '100px',
     },
     {
       header: 'Date début de validité',
@@ -106,18 +91,12 @@ export class SubDivisionsComponent implements OnInit {
     },
     {
       header: 'Date fin de validité',
-      field: 'endDate',
+      field: 'disappearanceDate',
       type: 'key',
       filter: true,
       filterType: 'range-date',
       sortable: true,
       width: '200px',
-    },
-    {
-      header: 'Etablissement',
-      field: 'relatedEntityName',
-      type: 'key',
-      width: '380px',
     },
     {
       header: 'Actions',
@@ -153,13 +132,12 @@ export class SubDivisionsComponent implements OnInit {
       allowSearchFilter: true,
       // maxHeight: 100,
     };
-    this.simpleTabsRef.tabRef = 'subDivisions';
+    this.simpleTabsRef.tabRef = 'regions';
     this.getAllItems();
     this.today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     this.initForm();
     this.filter =
       this.activatedRoute.snapshot.queryParams.filter && this.activatedRoute.snapshot.queryParams.filter.length > 0;
-    console.log('ng on init filter', this.filter);
   }
 
   initForm() {
@@ -168,13 +146,14 @@ export class SubDivisionsComponent implements OnInit {
       this.selectedItem ? this.selectedItem.startDate : new Date(),
       'yyyy-MM-dd'
     );
-    const disappearanceDate = this.datePipe.transform(this.selectedItem ? this.selectedItem.endDate : '', 'yyyy-MM-dd');
+    const disappearanceDate = this.datePipe.transform(
+      this.selectedItem ? this.selectedItem.disappearanceDate : '',
+      'yyyy-MM-dd'
+    );
     this.tabForm = this.fb.group({
-      label: [this.selectedItem ? this.selectedItem.label : '', [Validators.required]],
-      acronym: [this.selectedItem ? this.selectedItem.acronym : '', [Validators.required]],
+      name: [this.selectedItem ? this.selectedItem.name : '', [Validators.required]],
       startDate: [startDate, [Validators.required]],
       endDate: [disappearanceDate, []],
-      establishment: [this.selectedRelatedEntity ? this.selectedRelatedEntity : '', [Validators.required]],
     });
     this.tabForm.setValidators(this.ValidateDate());
   }
@@ -201,35 +180,11 @@ export class SubDivisionsComponent implements OnInit {
     this.btnLoading = null;
     if (this.editItem || this.editVisibility) {
       this.itemToEdit = item;
-      this.itemLabel = item.label;
-      this.selectedRelatedEntity = {
-        id: item.relatedEntityId,
-        label: item.relatedEntityName,
-      };
-    }
-    if (this.addItem) {
-      this.selectedRelatedEntity = null;
-    }
-    console.log('relatedEntity edit', this.selectedRelatedEntity);
-    if ((this.editItem || this.addItem) && this.relatedEntities.length === 0) {
-      this.getRelatedEntityList();
+      this.itemLabel = item.name;
     }
     this.selectedItem = item;
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
-  }
-
-  onSelectAll(items: any) {}
-
-  getRelatedEntityList(): any {
-    const previousUrl = this.simpleTabsRef.tabRef;
-    this.simpleTabsRef.tabRef = 'establishments';
-
-    this.simpleTabsRef.getAllItems({}).subscribe((result: any) => {
-      this.relatedEntities = result.results;
-      console.log('establishments lenght', this.relatedEntities.length);
-    });
-    this.simpleTabsRef.tabRef = previousUrl;
   }
 
   transformDateToDateTime(input: string, format: string, addTime: boolean = true) {
@@ -246,11 +201,9 @@ export class SubDivisionsComponent implements OnInit {
   submit() {
     this.btnLoading = null;
     const item = {
-      label: this.tabForm.value.label,
-      acronym: this.tabForm.value.acronym,
+      name: this.tabForm.value.name,
       startDate: this.transformDateToDateTime(this.tabForm.value.startDate, 'yyy-MM-dd'),
-      endDate: this.transformDateToDateTime(this.tabForm.value.endDate, 'yyy-MM-dd'),
-      establishment: this.tabForm.value.establishment.id,
+      disappearanceDate: this.transformDateToDateTime(this.tabForm.value.endDate, 'yyy-MM-dd'),
     };
     if (this.addItem) {
       this.addItems(item);
@@ -289,7 +242,6 @@ export class SubDivisionsComponent implements OnInit {
   addItemAction() {
     this.addItem = true;
     this.selectedItem = null;
-    this.selectedRelatedEntity = {};
     this.openModal(null);
   }
 
@@ -317,19 +269,19 @@ export class SubDivisionsComponent implements OnInit {
   }
 
   convertItem(item: any) {
+    console.log(item);
     const newItem = {
       id: item.id,
-      label: item.label,
-      acronym: item.acronym,
+      name: item.name,
       startDate: item.startDate,
-      endDate: item.disappearanceDate,
-      relatedEntityId: item.establishment ? item.establishment.id : '',
-      relatedEntityName: item.establishment ? item.establishment.label : '',
+      disappearanceDate: item.disappearanceDate,
       active: true,
     };
     newItem.startDate = item.startDate ? this.datePipe.transform(item.startDate, 'yyyy/MM/dd') : null;
-    newItem.endDate = item.endDate ? this.datePipe.transform(item.endDate, 'yyyy/MM/dd') : null;
-    newItem.active = this.isActive(newItem.endDate);
+    newItem.disappearanceDate = item.disappearanceDate
+      ? this.datePipe.transform(item.disappearanceDate, 'yyyy/MM/dd')
+      : null;
+    newItem.active = this.isActive(newItem.disappearanceDate);
     return newItem;
   }
 
@@ -348,6 +300,7 @@ export class SubDivisionsComponent implements OnInit {
         this.items = result.results.map((item: any) => {
           return this.convertItem(item);
         });
+        console.log('items', this.items);
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
         this.start = (this.page - 1) * this.limit + 1;
@@ -371,14 +324,14 @@ export class SubDivisionsComponent implements OnInit {
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Suppression', 'Sous Direction ' + item.label + ' supprimée avec succés');
+        this.addSingle('success', 'Suppression', 'Region ' + item.label + ' supprimée avec succés');
         this.getAllItems();
         this.deleteItems = false;
       },
       (error: any) => {
         this.close();
         if (error.error.code === 400) {
-          this.addSingle('error', 'Suppression', 'Sous Direction ' + item.label + ' admet une relation');
+          this.addSingle('error', 'Suppression', 'Region ' + item.label + ' admet une relation');
         } else {
           this.addSingle('error', 'Suppression', error.error.message);
         }
@@ -391,7 +344,7 @@ export class SubDivisionsComponent implements OnInit {
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Ajout', 'Sous Direction ' + item.label + ' ajoutée avec succés');
+        this.addSingle('success', 'Ajout', 'Region ' + item.label + ' ajoutée avec succés');
         this.getAllItems();
         this.addItem = false;
       },
@@ -406,7 +359,7 @@ export class SubDivisionsComponent implements OnInit {
     this.simpleTabsRef.editItem(item, id).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Modification', 'Sous Direction ' + item.label + ' modifiée avec succés');
+        this.addSingle('success', 'Modification', 'Region ' + item.label + ' modifiée avec succés');
         this.getAllItems();
         this.editItem = false;
         this.editVisibility = false;
@@ -433,7 +386,6 @@ export class SubDivisionsComponent implements OnInit {
   }
 
   filters(e: any) {
-    console.log('original filter', e);
     this.dataTableFilter = Object.assign({}, e);
     this.page = 1;
     this.dataTableComponent.currentPage = 1;
@@ -441,14 +393,12 @@ export class SubDivisionsComponent implements OnInit {
   }
 
   sortEvent(e: any) {
-    console.log('sort', e);
     this.dataTableSort = e;
     this.getAllItems();
   }
 
   search(input: string) {
     this.page = 1;
-
     this.columns.forEach((col) => {
       if (col.filter && col.filterType === 'text') {
         if (input) {

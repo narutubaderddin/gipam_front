@@ -132,4 +132,8 @@ export class SidebarNavComponent implements OnInit {
     this.router.navigate(['tab-ref-sous-direction']);
     this.toggleClose();
   }
+  goToRegionList() {
+    this.router.navigate(['tab-ref-region']);
+    this.toggleClose();
+  }
 }

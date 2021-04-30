@@ -81,9 +81,9 @@ export class EstablishmentsComponent implements OnInit {
   dataTableFilter: any = {};
   dataTableSort: any = {};
   dataTableSearchBar: any = {};
-  items: any;
+  items: any[] = [];
   today: string;
-
+  error = false;
   columns = [
     {
       header: 'Libellé',
@@ -393,9 +393,15 @@ export class EstablishmentsComponent implements OnInit {
         this.start = (this.page - 1) * this.limit + 1;
         this.end = (this.page - 1) * this.limit + this.items.length;
         this.loading = false;
+        this.dataTableComponent.error = false;
       },
       (error: any) => {
-        this.addSingle('error', '', error.error.message);
+        this.items = [];
+        this.totalFiltred = 0;
+        this.total = 0;
+        this.dataTableComponent.error = true;
+        this.loading = false;
+        this.addSingle('error', 'Erreur Technique', 'Code: ' + error.error.code + ' Message: ' + error.error.message);
       }
     );
   }

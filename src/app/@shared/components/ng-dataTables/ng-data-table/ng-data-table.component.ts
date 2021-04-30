@@ -35,6 +35,8 @@ import { DatePipe } from '@angular/common';
   providers: [I18n, { provide: NgbDatepickerI18n, useClass: CustomDatepickerI18nService }, DatePipe],
 })
 export class NgDataTableComponent implements OnInit {
+  @Input() error = false;
+  @Input() errorMessage = 'Une erreur technique est survenue';
   @Input() noDataMessage = 'Aucun élément à afficher';
   @Input() loading = false;
   @Input() columns: any[];

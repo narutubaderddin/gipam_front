@@ -237,7 +237,8 @@
       </ng-template>
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="6">{{ noDataMessage }}</td>
+          <td colspan="100%" *ngIf="data.length === 0 && !error">{{ noDataMessage }}</td>
+          <td colspan="100%" *ngIf="error">{{ errorMessage }}</td>
         </tr>
       </ng-template>
 

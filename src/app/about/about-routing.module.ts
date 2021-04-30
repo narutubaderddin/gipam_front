@@ -26,6 +26,7 @@ import { TypeMvtComponent } from '@app/about/components/tabs-ref/type-mvt/type-m
 import { MovementActionTypesComponent } from '@app/about/components/tabs-ref/movement-action-types/movement-action-types.component';
 import { ReportSubTypesComponent } from '@app/about/components/tabs-ref/report-sub-types/report-sub-types.component';
 import { SubDivisionsComponent } from '@app/about/components/tabs-ref/subDivisions/subDivisions.component';
+import { RegionsComponent } from '@app/about/components/tabs-ref/regions/regions.component';
 const routes: Routes = [
   {
     path: '',
@@ -76,11 +77,12 @@ const routes: Routes = [
         component: SubDivisionsComponent,
         data: { title: 'Liste des sous-directions' },
       },
+      {
+        path: 'tab-ref-region',
+        component: RegionsComponent,
+        data: { title: 'Liste des régions' },
+      },
       { path: 'tab-ref-époque', component: EpoquesComponent },
-      { path: 'tab-ref-type-déposant', component: DepositTypesComponent },
-      { path: 'tab-ref-type-constat', component: ReportTypesComponent },
-      { path: 'tab-ref-type-action-constat', component: ActionReportTypesComponent },
-      { path: 'tab-ref-categorie', component: CategoryComponent },
       { path: 'tab-ref-type-mouvement', component: TypeMvtComponent },
       { path: 'tab-ref-type-action-mouvement', component: MovementActionTypesComponent },
       { path: 'tab-ref-sous-type-constat', component: ReportSubTypesComponent },
