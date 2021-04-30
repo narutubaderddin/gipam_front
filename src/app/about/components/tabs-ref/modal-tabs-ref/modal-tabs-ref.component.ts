@@ -23,8 +23,6 @@ export class ModalTabsRefComponent implements OnInit {
   constructor(public fb: FormBuilder, public activeModal: NgbActiveModal) {}
 
   ngOnInit(): void {
-    this.initForm();
-
     this.addItem = this.fromParent.addItem;
     this.deleteItems = this.fromParent.deleteItems;
     this.editItem = this.fromParent.editItem;
@@ -34,6 +32,7 @@ export class ModalTabsRefComponent implements OnInit {
     this.selectedItem = this.fromParent.selectedItem;
     this.name = this.fromParent.name;
     console.log(this.selectedItem, this.editItem);
+    this.initForm();
   }
   initForm() {
     this.tabForm = this.fb.group({

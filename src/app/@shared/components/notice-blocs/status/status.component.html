@@ -1,53 +1,116 @@
 <div class="form-bloc">
   <h5 class="col-md-12"><i class="far fa-calendar-alt"></i> Status</h5>
-  <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
-    <label class="">Date de dépôt</label>
-    <input type="date" class="form-control value col-12 col-sm-7" *ngIf="edit" />
-    <div class="value" *ngIf="!edit">12/01/2020</div>
-  </div>
-  <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
-    <label class="">N° arrêt</label>
-    <input type="number" class="form-control value col-12 col-sm-7" *ngIf="edit" placeholder="N° arrêt" />
-    <p class="value" *ngIf="!edit">11111</p>
-  </div>
-  <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
-    <label class="col-sm-4">Valeur assurance</label>
-    <input type="number" class="form-control value col-12 col-sm-7" *ngIf="edit" placeholder="Valeur d'assurance" />
-    <p class="value" *ngIf="!edit">111111</p>
-  </div>
-  <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
-    <label class="col-sm-4">Date d'assurrance</label>
-    <input type="date" class="form-control value col-12 col-sm-7" *ngIf="edit" placeholder="Date d'assurrance" />
-    <div class="value" *ngIf="!edit">12/01/2020</div>
-  </div>
+  <div class="form-bloc pl-0" *ngIf="addDeposit">
+    <div class="form-bloc pl-0" *ngIf="addDeposit" [formGroup]="depositStatusForm">
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
+        <label class="">Date de dépôt</label>
+        <input type="date" class="form-control value col-12 col-sm-7" *ngIf="edit" formControlName="depositDate" />
+        <div class="value" *ngIf="!edit">12/01/2020</div>
+      </div>
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
+        <label class="">N° arrêt</label>
+        <input
+          type="number"
+          class="form-control value col-12 col-sm-7"
+          *ngIf="edit"
+          formControlName="stopNumber"
+          placeholder="N° arrêt"
+        />
+        <p class="value" *ngIf="!edit">11111</p>
+      </div>
+    </div>
 
-  <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="addProperty">
-    <label class="col-sm-4">Mode Entrée</label>
-    <div class="d-flex value col-12 col-sm-7 p-0">
-      <select class="col-md-12 form-control">
-        <option class="active">--choisir Mode Entrée--</option>
-        <option *ngFor="let mode of modeEntree">{{ mode }}</option>
-      </select>
+    <div class="form-group col-md-12 flex-wrap flex-sm-nowrap">
+      <div class="form-group col-md-8 pl-0">
+        <label style="" class="">Déposant</label>
+        <p-multiSelect
+          *ngIf="edit"
+          class="select col-md-7 col-sm-7 p-sm-0 col-12"
+          selectionLimit="5"
+          [maxSelectedLabels]="2"
+          [style]="{ width: '100%' }"
+          [options]="WorkOfArtService.depositor"
+          optionLabel="name"
+          [filter]="true"
+          defaultLabel="Sélectionner des déposants"
+        >
+        </p-multiSelect>
+        <div class="value" *ngIf="!edit">Déposant 1</div>
+      </div>
+      <div class="col-md-4 link" *ngIf="edit">
+        <a href="">Ajouter un nouveau déposant</a>
+      </div>
     </div>
   </div>
-  <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="addProperty">
-    <label class="col-sm-4">Date de création</label>
-    <input type="date" class="form-control value col-12 col-sm-7 p-0" *ngIf="edit" />
-    <div class="value" *ngIf="!edit">12/01/2020</div>
-  </div>
-  <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="addProperty">
-    <label class="col-sm-4">Catégorie de bien</label>
-    <div class="d-flex value col-12 col-sm-7 p-0" *ngIf="addProperty">
-      <select class="col-md-12 form-control">
-        <option class="active">--choisir une catégorie--</option>
-        <option *ngFor="let category of categories">{{ category }}</option>
-      </select>
+  <div class="form-bloc pl-0" *ngIf="addProperty" [formGroup]="propertyStatusForm">
+    <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
+      <label class="col-sm-4">Valeur assurance</label>
+      <input
+        type="number"
+        class="form-control value col-12 col-sm-7"
+        placeholder="Valeur d'assurance"
+        *ngIf="edit"
+        formControlName="insuranceValue"
+      />
+      <p class="value" *ngIf="!edit">111111</p>
     </div>
-  </div>
-  <div class="col-md-12">
-    <div class="d-flex form-group col-md-12 p-0">
-      <label>Commentaire</label>
-      <textarea type="text" class="form-control" placeholder="Commentaire ..." *ngIf="addProperty"></textarea>
+    <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
+      <label class="col-sm-4">Date d'assurrance</label>
+      <input
+        type="date"
+        class="form-control value col-12 col-sm-7"
+        placeholder="Date d'assurrance"
+        *ngIf="edit"
+        formControlName="insuranceValueDate"
+      />
+      <div class="value" *ngIf="!edit">12/01/2020</div>
+    </div>
+
+    <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
+      <label class="col-sm-4">Mode Entrée</label>
+      <div class="d-flex value col-12 col-sm-7 p-0">
+        <p-dropdown
+          class="select col-md-12 col-sm-12 p-sm-0 col-12"
+          [style]="{ width: '100%' }"
+          [options]="modeEntree"
+          optionLabel=""
+          [filter]="true"
+          defaultLabel="Sélectionner un mode d'entrée"
+          formControlName="entryMode"
+        >
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
+      <label class="col-sm-4">Date d'entrée</label>
+      <input type="date" class="form-control value col-12 col-sm-7 p-0" *ngIf="edit" formControlName="entryDate" />
+      <div class="value" *ngIf="!edit">12/01/2020</div>
+    </div>
+    <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
+      <label class="col-sm-4">Catégorie de bien</label>
+      <div class="d-flex value col-12 col-sm-7 p-0">
+        <p-dropdown
+          class="select col-md-12 col-sm-12 p-sm-0 col-12"
+          [style]="{ width: '100%' }"
+          [options]="categories"
+          optionLabel=""
+          [filter]="true"
+          defaultLabel="Sélectionner une catégorie de bien"
+          formControlName="category"
+        >
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="d-flex form-group col-md-12 p-0">
+        <label>Commentaire</label>
+        <textarea
+          type="text"
+          class="form-control"
+          placeholder="Commentaire ..."
+          formControlName="description"
+        ></textarea>
+      </div>
     </div>
   </div>
 </div>

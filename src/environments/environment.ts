@@ -17,7 +17,6 @@ export const environment = {
   serverUrl: env.api_url,
   defaultLanguage: 'fr-FR',
   supportedLanguages: ['en-US', 'fr-FR'],
-  baseUrl: 'http://gipam.local/gipam-backend/',
 };
 
 /*

@@ -25,7 +25,6 @@ export class ActionsCellComponent implements OnInit {
   }
 
   ChangeVisibility(e: any) {
-    this.active = !this.active;
     this.methodToEmit.emit({ method: 'visibility', item: this.value });
   }
   delete() {

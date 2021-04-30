@@ -9,7 +9,6 @@ import { MessageService } from 'primeng/api';
 
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
-import { NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: 'app-actionReportTypes',
@@ -94,7 +93,7 @@ export class ActionReportTypesComponent implements OnInit {
     private fieldsService: FieldsService,
     public fb: FormBuilder,
     config: NgbModalConfig,
-    private notificationService: NotificationsService
+    private messageService: MessageService
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
@@ -285,14 +284,7 @@ export class ActionReportTypesComponent implements OnInit {
   }
 
   addSingle(type: string, sum: string, msg: string) {
-    if (type === 'error') {
-      this.notificationService.error(sum, msg);
-      return;
-    }
-    if (type === 'success') {
-      this.notificationService.success(sum, msg);
-      return;
-    }
+    this.messageService.add({ severity: type, summary: sum, detail: msg });
     this.btnLoading = null;
   }
 

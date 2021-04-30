@@ -72,8 +72,11 @@
                         <ng-container ngbNavItem>
                           <a ngbNavLink><i class="fas fa-info-circle mr-2"></i>Descriptifs juridiques</a>
                           <ng-template ngbNavContent>
-                            <app-status [edit]="edit"></app-status>
-                            <app-depositor [edit]="edit"></app-depositor>
+                            <app-status
+                              [edit]="edit"
+                              [depositStatusForm]="depositStatusForm"
+                              [addDeposit]="true"
+                            ></app-status>
                           </ng-template>
                         </ng-container>
                       </nav>

@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '@env/environment';
 
-const baseUrl = environment.baseUrl;
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json',
@@ -24,19 +23,19 @@ export class SimpleTabsRefService {
         params = params.append(key, data[key]);
       }
     });
-    return this.http.get<any[]>(baseUrl + `api/${tabRefName}/`, { params });
+    return this.http.get<any[]>(`/${tabRefName}/`, { params });
   }
 
   deleteItem(denomination: any): Observable<any> {
-    return this.http.delete<any>(baseUrl + `api/${this.tabRef}/${denomination.id}`, httpOptions);
+    return this.http.delete<any>(`/${this.tabRef}/${denomination.id}`, httpOptions);
   }
 
   addItem(denomination: any): Observable<any> {
-    return this.http.post<any>(baseUrl + `api/${this.tabRef}/`, denomination, httpOptions);
+    return this.http.post<any>(`/${this.tabRef}/`, denomination, httpOptions);
   }
 
   editItem(denomination: any, id: number): Observable<any> {
     console.log(id);
-    return this.http.put(baseUrl + `api/${this.tabRef}/${id}`, denomination, httpOptions);
+    return this.http.put(`/${this.tabRef}/${id}`, denomination, httpOptions);
   }
 }
