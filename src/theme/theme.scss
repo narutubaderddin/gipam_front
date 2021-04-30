@@ -773,32 +773,3 @@ p-calendar {
     }
   }
 }
-
-//ngprime datepicker
-.p-datepicker {
-  top: 0 !important;
-  table {
-    td,
-    tr {
-      padding: 0 !important;
-      span {
-        height: 2.5rem;
-        width: 2.5rem;
-        font-size: 12px;
-      }
-    }
-    th {
-      padding: 0.5rem 0.5rem 0.5rem 1rem;
-    }
-    td > span.p-highlight {
-      color: white;
-      background: #0080ff;
-    }
-  }
-}
-
-.datepicker-reset {
-  font-size: 12px;
-  background-color: #0080ff;
-  color: white;
-}
