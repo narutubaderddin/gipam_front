@@ -33,9 +33,15 @@ export class EstablishmentsComponent implements OnInit {
       id: number;
       name: '';
     };
+    type: {
+      id: number;
+      label: '';
+    };
   };
   relatedEntities: any[] = [];
-  selectedRelatedEntity: any = {};
+  types: any[] = [];
+  selectedRelatedEntity: any;
+  selectedType: any;
   itemToEdit: any;
   itemToDelete: string;
   tabForm: FormGroup;
@@ -75,9 +81,9 @@ export class EstablishmentsComponent implements OnInit {
   dataTableFilter: any = {};
   dataTableSort: any = {};
   dataTableSearchBar: any = {};
-  items: any;
+  items: any[] = [];
   today: string;
-
+  error = false;
   columns = [
     {
       header: 'Libellé',
@@ -95,6 +101,11 @@ export class EstablishmentsComponent implements OnInit {
       filterType: 'text',
       sortable: true,
       width: '100px',
+    },
+    {
+      header: 'Type',
+      field: 'typeLabel',
+      type: 'key',
     },
     {
       header: 'Date début de validité',
@@ -130,15 +141,7 @@ export class EstablishmentsComponent implements OnInit {
     },
   ];
 
-  fieldNames = {
-    label: 'Libellé',
-    denominations: 'Dénominations',
-    type: 'Type',
-  };
-
   rowCount: any = 5;
-
-  // filter = false;
 
   constructor(
     private router: Router,
@@ -188,7 +191,8 @@ export class EstablishmentsComponent implements OnInit {
       acronym: [this.selectedItem ? this.selectedItem.acronym : '', [Validators.required]],
       startDate: [startDate, [Validators.required]],
       disappearanceDate: [disappearanceDate, []],
-      ministry: [this.selectedRelatedEntity ? this.selectedRelatedEntity : { name: '' }, [Validators.required]],
+      ministry: [this.selectedRelatedEntity ? this.selectedRelatedEntity : '', [Validators.required]],
+      type: [this.selectedType ? this.selectedType : '', []],
     });
     this.tabForm.setValidators(this.ValidateDate());
   }
@@ -220,9 +224,22 @@ export class EstablishmentsComponent implements OnInit {
         id: item.ministryId,
         name: item.ministryName,
       };
+      this.selectedType = {
+        id: item.typeId,
+        label: item.typeLabel,
+      };
+    }
+    if (this.addItem) {
+      this.selectedRelatedEntity = null;
+      this.selectedType = null;
     }
     if (this.editItem || this.addItem) {
-      this.getRelatedEntity();
+      if (this.relatedEntities.length === 0) {
+        this.getRelatedEntity();
+      }
+      if (this.types.length === 0) {
+        this.getTypes();
+      }
     }
     this.selectedItem = item;
     this.initForm();
@@ -241,6 +258,16 @@ export class EstablishmentsComponent implements OnInit {
     this.simpleTabsRef.tabRef = previousUrl;
   }
 
+  getTypes(): any {
+    const previousUrl = this.simpleTabsRef.tabRef;
+    this.simpleTabsRef.tabRef = 'establishmentsTypes';
+
+    this.simpleTabsRef.getAllItems({}).subscribe((result: any) => {
+      this.types = result.results;
+    });
+    this.simpleTabsRef.tabRef = previousUrl;
+  }
+
   transformDateToDateTime(input: string, format: string, addTime: boolean = true) {
     // 1984-06-05 12:15:30
     if (input !== '' && input) {
@@ -254,7 +281,6 @@ export class EstablishmentsComponent implements OnInit {
 
   submit() {
     this.btnLoading = null;
-    console.log('ministry ', this.tabForm.value.ministry);
     const item = {
       label: this.tabForm.value.label,
       acronym: this.tabForm.value.acronym,
@@ -300,7 +326,7 @@ export class EstablishmentsComponent implements OnInit {
     this.addItem = true;
     this.selectedItem = null;
     this.selectedRelatedEntity = {};
-    this.openModal('');
+    this.openModal(null);
   }
 
   deleteItem(data: any) {
@@ -335,6 +361,8 @@ export class EstablishmentsComponent implements OnInit {
       disappearanceDate: item.disappearanceDate,
       ministryId: item.ministry ? item.ministry.id : '',
       ministryName: item.ministry ? item.ministry.name : '',
+      typeId: item.type ? item.type.id : '',
+      typeLabel: item.type ? item.type.label : '',
       active: true,
     };
     newItem.startDate = item.startDate ? this.datePipe.transform(item.startDate, 'yyyy/MM/dd') : null;
@@ -365,9 +393,15 @@ export class EstablishmentsComponent implements OnInit {
         this.start = (this.page - 1) * this.limit + 1;
         this.end = (this.page - 1) * this.limit + this.items.length;
         this.loading = false;
+        this.dataTableComponent.error = false;
       },
       (error: any) => {
-        this.addSingle('error', '', error.error.message);
+        this.items = [];
+        this.totalFiltred = 0;
+        this.total = 0;
+        this.dataTableComponent.error = true;
+        this.loading = false;
+        this.addSingle('error', 'Erreur Technique', 'Code: ' + error.error.code + ' Message: ' + error.error.message);
       }
     );
   }
@@ -462,9 +496,9 @@ export class EstablishmentsComponent implements OnInit {
     this.columns.forEach((col) => {
       if (col.filter && col.filterType === 'text') {
         if (input) {
-          this.dataTableFilter[col.field + '[contains]'] = input;
+          this.dataTableSearchBar[col.field + '[contains]'] = input;
         } else {
-          delete this.dataTableFilter[col.field + '[contains]'];
+          delete this.dataTableSearchBar[col.field + '[contains]'];
         }
       }
     });

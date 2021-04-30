@@ -534,13 +534,13 @@ ngb-datepicker {
 //ngprime datepicker
 .p-datepicker {
   left: 0px !important;
-  .p-datepicker-title{
-    width:100%;
+  .p-datepicker-title {
+    width: 100%;
     .p-datepicker-month,
-    .p-datepicker-year{
+    .p-datepicker-year {
       width: 48%;
       font-size: 12px;
-      margin-right:0!important;;
+      margin-right: 0 !important;
     }
   }
 
@@ -559,11 +559,10 @@ ngb-datepicker {
     }
   }
 }
-p-footer{
+p-footer {
   display: flex;
   justify-content: space-between;
 }
-
 
 /** slider css **/
 .ngx-slider .ngx-slider-pointer,
@@ -770,20 +769,6 @@ p-calendar {
         p-multiselectitem li {
           height: 22px;
         }
-      }
-    }
-  }
-}
-
-//ngprime datepicker
-.p-datepicker {
-  table {
-    td,
-    tr {
-      padding: 0 !important;
-      span {
-        height: 1.5rem;
-        font-size: 12px;
       }
     }
   }

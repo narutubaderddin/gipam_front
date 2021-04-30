@@ -19,10 +19,8 @@
       [rowHover]="false"
       sortMode="single"
       [multiSortMeta]="sortMeta"
-
       class="p-datatable-gridlines p-datatable-sm"
     >
-
       <ng-template pTemplate="frozencolgroup" let-columns>
         <colgroup>
           <col *ngIf="checkBoxSelection || singleSelect || expand" style="width: 3em" />
@@ -127,6 +125,8 @@
                   [selectionMode]="
                     col[col.field + '_operator'] && col[col.field + '_operator'].name === 'range' ? 'range' : 'single'
                   "
+                  [showOtherMonths]="true"
+                  [showIcon]="true"
                   dateFormat="dd/mm/yy"
                   yearRange="1900:2100"
                   (onShow)="calendarShow(pcd, dd, col.field)"
@@ -134,17 +134,22 @@
                   placeholder="Date"
                 >
                   <p-footer>
-                    <p-dropdown
-                      #dd
-                      [options]="dateOperators"
-                      optionLabel="value"
-                      [formControlName]="col.field + '_operator'"
-                      (onClick)="rangeChanged(col.field, dd, pcd)"
-                    >
-                    </p-dropdown>
-                    <button class="btn add-action float-right" (click)="clearDateFilter(col.field, pcd, dd)">
-                      Annuler
-                    </button>
+                    <hr style="color: #6c757d" />
+                    <div class="col-md-12 d-flex justify-content-between align-items-baseline">
+                      <div class="select">
+                        <p-dropdown
+                          #dd
+                          [options]="dateOperators"
+                          optionLabel="value"
+                          [formControlName]="col.field + '_operator'"
+                          (onClick)="rangeChanged(col.field, dd, pcd)"
+                        >
+                        </p-dropdown>
+                      </div>
+                      <button class="btn btn-light cancel-btn" (click)="clearDateFilter(col.field, pcd, dd)">
+                        Annuler
+                      </button>
+                    </div>
                   </p-footer>
                 </p-calendar>
                 <select class="select-style w-100" *ngSwitchCase="'select'" [formControlName]="col.field">
@@ -236,7 +241,8 @@
       </ng-template>
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="6">{{ noDataMessage }}</td>
+          <td colspan="100%" *ngIf="data.length === 0 && !error">{{ noDataMessage }}</td>
+          <td colspan="100%" *ngIf="error">{{ errorMessage }}</td>
         </tr>
       </ng-template>
 

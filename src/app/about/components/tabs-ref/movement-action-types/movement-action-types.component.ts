@@ -75,7 +75,6 @@ export class MovementActionTypesComponent implements OnInit {
       field: 'movementType',
       type: 'key-array',
       key_data: ['movementType', 'label'],
-
     },
     {
       header: 'Actions',

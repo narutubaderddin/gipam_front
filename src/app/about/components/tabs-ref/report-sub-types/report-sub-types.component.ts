@@ -74,7 +74,6 @@ export class ReportSubTypesComponent implements OnInit {
       field: 'reportType',
       type: 'key-array',
       key_data: ['reportType', 'label'],
-
     },
     {
       header: 'Actions',
