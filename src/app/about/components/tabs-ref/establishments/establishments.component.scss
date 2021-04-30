@@ -1,3 +1,11 @@
+.search i {
+  color: #868e96 !important;
+}
+
+.btn-search:hover i {
+  color: white !important;
+}
+
 .breadcrumb {
   a {
     &:before {
@@ -6,30 +14,30 @@
     }
   }
 }
-.search i {
-  color: #868e96 !important;
-}
-.btn-search:hover i {
-  color: white !important;
-}
+
 .header-table {
   border-left: white;
 }
+
 .selected-table {
   background-color: #f8f9fa !important;
   color: #2e74a8;
+
   a {
     color: #2e74a8 !important;
   }
 }
+
 .selected-page {
   background-color: #be3d4d;
   margin: -4.516px 0px 0px 0px;
   height: 8px;
 }
+
 ::ng-deep .tooltip-inner {
   width: 400px;
 }
+
 .floating-add-button {
   .label-container {
     position: fixed;
@@ -92,12 +100,15 @@
     height: 60px;
     width: 60px;
     display: block;
+
     span {
       font-size: 0;
     }
   }
+
   .add-prop-notice:hover {
     width: 300px !important;
+
     span {
       font-size: 18px !important;
     }
@@ -113,11 +124,13 @@
     margin-top: 18px;
     margin-left: 4px;
   }
+
   ul {
     display: flex;
     flex-direction: column;
     place-items: flex-end;
   }
+
   a#menu-share + ul {
     visibility: hidden;
   }
@@ -173,6 +186,7 @@
     }
   }
 }
+
 .container-fluid {
   .body {
     .vl {
@@ -181,6 +195,7 @@
       margin-top: -20px;
       margin-bottom: -20px;
     }
+
     .sidebar {
       .card {
         box-shadow: 0 0px 4px rgba(0, 0, 0, 0.19), 0 3px 15px rgba(0, 0, 0, 0.23);
@@ -188,14 +203,17 @@
         background-color: #f0efef;
         border: 1px solid white;
         margin-bottom: 25px;
+
         .card-body {
           padding: 0;
         }
       }
+
       ul {
         list-style: none;
         padding: 0;
         margin-bottom: 0;
+
         li {
           padding: 10px;
           background-color: #dcdcdc;
@@ -203,28 +221,34 @@
           text-align: center;
           font-weight: bold;
           cursor: pointer;
+
           &:hover,
           &:active {
             background-color: #c0c0c0;
           }
+
           a {
             font-size: 18px;
             color: #1f2b50;
           }
+
           i {
             margin-right: 10px;
           }
         }
       }
     }
+
     .datagrid-bloc {
       padding: 10px;
       box-shadow: 0 0px 4px rgba(0, 0, 0, 0.19), 0 3px 10px rgba(0, 0, 0, 0.23);
       border-radius: 0;
       border: 1px solid white;
+
       .search-add-section {
         justify-content: space-between;
       }
+
       .search-add-section-div {
         display: flex;
         justify-content: flex-end;
@@ -233,6 +257,7 @@
       }
     }
   }
+
   @media (max-width: 420px) {
     flex-wrap: wrap;
     .body {
@@ -241,22 +266,26 @@
     }
   }
 }
+
 .dropdown-container {
   .drop-bloc {
     margin-top: 11px;
 
     .export-button {
       border: none;
+
       &::after {
         display: none;
       }
     }
+
     button {
       height: 30px;
       border: 1px solid #00d6d4;
       line-height: 0;
       border-radius: 12px;
       font-size: 12px;
+
       &:focus,
       &:active {
         outline: none;
@@ -264,12 +293,15 @@
       }
     }
   }
+
   i {
     font-size: 20px;
   }
+
   .list::after {
     display: none;
   }
+
   button:hover,
   button:active,
   button:focus,
@@ -283,6 +315,7 @@
   color: #00d6d4;
   font-weight: bold;
 }
+
 .text-quick-filter {
   height: 25px;
   margin-top: 16px;
@@ -302,21 +335,26 @@
   background-color: white;
   border: none;
 }
+
 .modal-header,
 .modal-footer {
   border: none;
 }
+
 label {
   font-size: 14px !important;
   color: #838a90;
   font-weight: 600;
 }
+
 .valid-btn {
   background-color: #00d6d4;
 }
+
 .cancel-btn {
   background-color: #6c7681c9;
 }
+
 .btn {
   color: white;
   font-size: 12px;
@@ -378,6 +416,7 @@ input:checked + .slider:before {
   -ms-transform: translateX(26px);
   transform: translateX(26px);
 }
+
 .slider.round {
   border-radius: 34px;
 }
@@ -385,17 +424,20 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
 .btn-slider {
   font-size: 0.8rem;
   display: flex;
   align-self: self-end;
   margin: 0 !important;
+
   label {
     align-self: center;
     margin-left: 0.5rem;
     font-weight: 600;
     color: gray;
   }
+
   label.active {
     color: #0466c8;
   }

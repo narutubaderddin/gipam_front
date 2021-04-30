@@ -531,6 +531,40 @@ ngb-datepicker {
   height: 260px;
 }
 
+//ngprime datepicker
+.p-datepicker {
+  left: 0px !important;
+  .p-datepicker-title{
+    width:100%;
+    .p-datepicker-month,
+    .p-datepicker-year{
+      width: 48%;
+      font-size: 12px;
+      margin-right:0!important;;
+    }
+  }
+
+  table {
+    td {
+      padding: 0rem !important;
+      span {
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+        transition: box-shadow 0.2s;
+        border: 1px solid transparent;
+        font-size: 12px;
+        padding: 0 !important;
+      }
+    }
+  }
+}
+p-footer{
+  display: flex;
+  justify-content: space-between;
+}
+
+
 /** slider css **/
 .ngx-slider .ngx-slider-pointer,
 .ngx-slider .ngx-slider-selection {
@@ -691,6 +725,9 @@ p-calendar {
   line-height: 10px;
 }
 .p-dropdown {
+  /*general for [style]="maxWidth=100%, minWidth=100%,"*/
+  max-width: 100%;
+  min-width: 100%;
   .p-dropdown-header {
     .p-dropdown-filter-container {
       .p-dropdown-filter {
@@ -702,9 +739,15 @@ p-calendar {
     font-size: 12px;
   }
   .p-dropdown-panel {
+    left: 0 !important;
     .p-dropdown-items-wrapper {
       font-size: 12px;
     }
+  }
+  /*For elements with long text*/
+  .p-dropdown-item {
+    white-space: normal;
+    line-height: 1.5em;
   }
 }
 .p-multiselect {
@@ -727,6 +770,20 @@ p-calendar {
         p-multiselectitem li {
           height: 22px;
         }
+      }
+    }
+  }
+}
+
+//ngprime datepicker
+.p-datepicker {
+  table {
+    td,
+    tr {
+      padding: 0 !important;
+      span {
+        height: 1.5rem;
+        font-size: 12px;
       }
     }
   }

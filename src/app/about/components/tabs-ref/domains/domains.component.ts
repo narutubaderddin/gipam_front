@@ -43,9 +43,11 @@ export class DomainsComponent implements OnInit {
   page: any = '1';
   start: any;
   end: any;
-  sortBy = 'id';
+  sortBy = '';
   sort: string = 'asc';
-
+  fieldTraduction = {
+    label: 'Libellé',
+  };
   loading: boolean = false;
   frameworkComponents = {
     customHeader: CustomHeaderRendererComponent,
@@ -258,9 +260,14 @@ export class DomainsComponent implements OnInit {
     this.filter = e.label;
     this.getAllFeilds();
   }
+  getKeyByValue(object: any, value: any) {
+    return Object.keys(object).find((key) => object[key] === value);
+  }
   sortEvent(e: any) {
     console.log(e);
-    if (e) {
+    this.sortBy = this.getKeyByValue(this.fieldTraduction, e.field);
+
+    if (e.order == 1) {
       this.sort = 'asc';
       this.getAllFeilds();
     } else {

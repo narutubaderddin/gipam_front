@@ -1,15 +1,15 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 
 @Component({
-  selector: 'app-modal-mvt-action-types',
-  templateUrl: './modal-mvt-action-types.component.html',
-  styleUrls: ['./modal-mvt-action-types.component.scss'],
+  selector: 'app-modal-report-sub-types',
+  templateUrl: './modal-report-sub-types.component.html',
+  styleUrls: ['./modal-report-sub-types.component.scss'],
 })
-export class ModalMvtActionTypesComponent implements OnInit {
+export class ModalReportSubTypesComponent implements OnInit {
   @Output() passEntry: EventEmitter<any> = new EventEmitter();
   @Input() fromParent: any;
   addItem: boolean;
@@ -24,7 +24,7 @@ export class ModalMvtActionTypesComponent implements OnInit {
   name: string;
   dropdownSettings: IDropdownSettings;
   dropdownList: any;
-  mvtTypes: any;
+  reportTypes: any;
   selectedMvtType: any;
   constructor(
     public fb: FormBuilder,
@@ -33,6 +33,7 @@ export class ModalMvtActionTypesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.initForm();
     this.dropdownSettings = {
       singleSelection: true,
       textField: 'label',
@@ -40,7 +41,7 @@ export class ModalMvtActionTypesComponent implements OnInit {
       itemsShowLimit: 1,
       allowSearchFilter: true,
     };
-    this.getAllMvtTypes();
+    this.getAllReportTypes();
 
     this.addItem = this.fromParent.addItem;
     this.deleteItems = this.fromParent.deleteItems;
@@ -50,13 +51,11 @@ export class ModalMvtActionTypesComponent implements OnInit {
     this.active = this.fromParent.active;
     this.selectedItem = this.fromParent.selectedItem;
     this.name = this.fromParent.name;
-    (this.selectedMvtType = this.fromParent.selectedMvtType), console.log(this.selectedItem, this.editItem);
-
-    this.initForm();
+    console.log(this.selectedItem, this.editItem);
   }
   initForm() {
     this.tabForm = this.fb.group({
-      movementType: [this.selectedMvtType, [Validators.required]],
+      reportType: [this.selectedItem, [Validators.required]],
       label: [this.selectedItem, [Validators.required]],
       active: [true],
     });
@@ -64,7 +63,7 @@ export class ModalMvtActionTypesComponent implements OnInit {
 
   submit() {
     const item = {
-      movementType: this.tabForm.value.movementType[0].id,
+      reportType: this.tabForm.value.reportType[0].id,
       label: this.tabForm.value.label,
       active: this.tabForm.value.active,
     };
@@ -80,13 +79,13 @@ export class ModalMvtActionTypesComponent implements OnInit {
     this.deleteItems = false;
     this.activeModal.dismiss();
   }
-  getAllMvtTypes() {
-    this.simpleTabsRef.tabRef = 'movementTypes';
+  getAllReportTypes() {
+    this.simpleTabsRef.tabRef = 'reportTypes';
     const params = {};
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
-        this.mvtTypes = result.results;
-        console.log(this.mvtTypes);
+        this.reportTypes = result.results;
+        console.log(this.reportTypes);
       },
       (error: any) => {
         console.log('error', error.error.message);

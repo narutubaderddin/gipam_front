@@ -17,8 +17,12 @@
       [totalRecords]="total"
       [resizableColumns]="true"
       [rowHover]="false"
+      sortMode="single"
+      [multiSortMeta]="sortMeta"
+
       class="p-datatable-gridlines p-datatable-sm"
     >
+
       <ng-template pTemplate="frozencolgroup" let-columns>
         <colgroup>
           <col *ngIf="checkBoxSelection || singleSelect || expand" style="width: 3em" />
@@ -89,7 +93,7 @@
             *ngFor="let col of columns; let index = index"
             ngbDropdown
             pResizableColumn
-            (openChange)="onFilterChange($event)"
+            (openChange)="onFilterChange($event, col)"
             placement="bottom-left"
             autoClose="outside"
             container="body"
@@ -99,7 +103,7 @@
               *ngIf="col.sortable"
               [field]="col.header"
               [pSortableColumn]="col.sortable ? col.header : ''"
-              (click)="sortHeader()"
+              (click)="sortHeader(col)"
             ></p-sortIcon>
 
             <i
@@ -112,16 +116,37 @@
             <div class="py-0 ng-dropdown" ngbDropdownMenu [attr.aria-labelledby]="'dropDowFilter-' + col.header">
               <div [ngSwitch]="col.filterType">
                 <input type="text" [formControlName]="col.field" [placeholder]="col.header" *ngSwitchCase="'text'" />
-                <ngb-datepicker
+                <p-calendar
+                  #pcd
                   *ngSwitchCase="'range-date'"
-                  #dp
-                  (dateSelect)="onDateSelection($event)"
-                  [displayMonths]="2"
-                  [dayTemplate]="t"
                   [formControlName]="col.field"
-                  outsideDays="hidden"
+                  [readonlyInput]="true"
+                  [monthNavigator]="true"
+                  [yearNavigator]="true"
+                  [numberOfMonths]="1"
+                  [selectionMode]="
+                    col[col.field + '_operator'] && col[col.field + '_operator'].name === 'range' ? 'range' : 'single'
+                  "
+                  dateFormat="dd/mm/yy"
+                  yearRange="1900:2100"
+                  (onShow)="calendarShow(pcd, dd, col.field)"
+                  styleClass="dateTimeField"
+                  placeholder="Date"
                 >
-                </ngb-datepicker>
+                  <p-footer>
+                    <p-dropdown
+                      #dd
+                      [options]="dateOperators"
+                      optionLabel="value"
+                      [formControlName]="col.field + '_operator'"
+                      (onClick)="rangeChanged(col.field, dd, pcd)"
+                    >
+                    </p-dropdown>
+                    <button class="btn add-action float-right" (click)="clearDateFilter(col.field, pcd, dd)">
+                      Annuler
+                    </button>
+                  </p-footer>
+                </p-calendar>
                 <select class="select-style w-100" *ngSwitchCase="'select'" [formControlName]="col.field">
                   <option value=""></option>
                   <option [value]="data.id" *ngFor="let data of col.selectData">{{ data.name }}</option>
