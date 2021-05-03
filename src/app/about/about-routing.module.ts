@@ -29,6 +29,8 @@ import { MinistryComponent } from '@app/about/components/tabs-ref/ministry/minis
 import { BuildingsComponent } from '@app/about/components/tabs-ref/buildings/buildings.component';
 import { SubDivisionsComponent } from '@app/about/components/tabs-ref/subDivisions/subDivisions.component';
 import { RegionsComponent } from '@app/about/components/tabs-ref/regions/regions.component';
+import { ServicesComponent } from '@app/about/components/tabs-ref/services/services.component';
+import { SitesComponent } from '@app/about/components/tabs-ref/sites/sites.component';
 const routes: Routes = [
   {
     path: '',
@@ -90,6 +92,16 @@ const routes: Routes = [
       { path: 'tab-ref-sous-type-constat', component: ReportSubTypesComponent },
       { path: 'tab-ref-ministère', component: MinistryComponent },
       { path: 'tab-ref-bâtiment', component: BuildingsComponent },
+      {
+        path: 'tab-ref-service',
+        component: ServicesComponent,
+        data: { title: 'Liste des services' },
+      },
+      {
+        path: 'tab-ref-site',
+        component: SitesComponent,
+        data: { title: 'Liste des sites' },
+      },
     ],
   },
 ];

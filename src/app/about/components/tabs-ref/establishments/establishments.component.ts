@@ -3,13 +3,12 @@ import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn,
 import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
-import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 import { DatePipe } from '@angular/common';
+import { datePickerDateFormat, dateTimeFormat, towDatesCompare, viewDateFormat } from '@shared/utils/helpers';
 
 @Component({
   selector: 'app-establishments',
@@ -49,7 +48,6 @@ export class EstablishmentsComponent implements OnInit {
   addItem = false;
   deleteItems = false;
   editVisibility = false;
-  dropdownSettings: IDropdownSettings;
   disappearanceDate: string;
   active = true;
   dropdownList: any;
@@ -110,7 +108,7 @@ export class EstablishmentsComponent implements OnInit {
     {
       header: 'Date début de validité',
       field: 'startDate',
-      type: 'key',
+      type: 'date',
       filter: true,
       filterType: 'range-date',
       sortable: true,
@@ -119,7 +117,7 @@ export class EstablishmentsComponent implements OnInit {
     {
       header: 'Date fin de validité',
       field: 'disappearanceDate',
-      type: 'key',
+      type: 'date',
       filter: true,
       filterType: 'range-date',
       sortable: true,
@@ -144,11 +142,9 @@ export class EstablishmentsComponent implements OnInit {
   rowCount: any = 5;
 
   constructor(
-    private router: Router,
     private modalService: NgbModal,
     private activatedRoute: ActivatedRoute,
     private simpleTabsRef: SimpleTabsRefService,
-    private fieldsService: FieldsService,
     public fb: FormBuilder,
     config: NgbModalConfig,
     private messageService: MessageService,
@@ -159,32 +155,22 @@ export class EstablishmentsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dropdownSettings = {
-      singleSelection: true,
-      idField: 'id',
-      textField: 'name',
-      itemsShowLimit: 5,
-      allowSearchFilter: true,
-      // maxHeight: 100,
-    };
     this.simpleTabsRef.tabRef = 'establishments';
     this.getAllItems();
-    this.today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     this.initForm();
     this.filter =
       this.activatedRoute.snapshot.queryParams.filter && this.activatedRoute.snapshot.queryParams.filter.length > 0;
-    console.log('ng on init filter', this.filter);
   }
 
   initForm() {
     const msg = 'date début inférieur date fin';
     const startDate = this.datePipe.transform(
       this.selectedItem ? this.selectedItem.startDate : new Date(),
-      'yyyy-MM-dd'
+      datePickerDateFormat
     );
     const disappearanceDate = this.datePipe.transform(
       this.selectedItem ? this.selectedItem.disappearanceDate : '',
-      'yyyy-MM-dd'
+      datePickerDateFormat
     );
     this.tabForm = this.fb.group({
       label: [this.selectedItem ? this.selectedItem.label : '', [Validators.required]],
@@ -194,19 +180,7 @@ export class EstablishmentsComponent implements OnInit {
       ministry: [this.selectedRelatedEntity ? this.selectedRelatedEntity : '', [Validators.required]],
       type: [this.selectedType ? this.selectedType : '', []],
     });
-    this.tabForm.setValidators(this.ValidateDate());
-  }
-
-  ValidateDate(): ValidatorFn {
-    return (cc: FormGroup): ValidationErrors => {
-      if (!cc.get('startDate')) {
-        return null;
-      }
-      if (cc.get('startDate').value > cc.get('disappearanceDate').value) {
-        return { dateInvalid: 'Date début supérieur date fin' };
-      }
-      return null;
-    };
+    this.tabForm.setValidators(towDatesCompare('startDate', 'disappearanceDate'));
   }
 
   get defaultHeaderParams() {
@@ -246,47 +220,47 @@ export class EstablishmentsComponent implements OnInit {
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
 
-  onSelectAll(items: any) {}
-
   getRelatedEntity(): any {
     const previousUrl = this.simpleTabsRef.tabRef;
     this.simpleTabsRef.tabRef = 'ministries';
 
-    this.simpleTabsRef.getAllItems({}).subscribe((result: any) => {
-      this.relatedEntities = result.results;
-    });
+    this.simpleTabsRef.getAllItems({}).subscribe(
+      (result: any) => {
+        this.relatedEntities = result.results;
+        this.dataTableComponent.error = false;
+      },
+      (error: any) => {
+        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
+      }
+    );
     this.simpleTabsRef.tabRef = previousUrl;
   }
 
   getTypes(): any {
     const previousUrl = this.simpleTabsRef.tabRef;
-    this.simpleTabsRef.tabRef = 'establishmentsTypes';
+    this.simpleTabsRef.tabRef = 'establishmentTypes';
 
-    this.simpleTabsRef.getAllItems({}).subscribe((result: any) => {
-      this.types = result.results;
-    });
-    this.simpleTabsRef.tabRef = previousUrl;
-  }
-
-  transformDateToDateTime(input: string, format: string, addTime: boolean = true) {
-    // 1984-06-05 12:15:30
-    if (input !== '' && input) {
-      if (addTime) {
-        return this.datePipe.transform(input, format) + ' 00:00:00';
+    this.simpleTabsRef.getAllItems({}).subscribe(
+      (result: any) => {
+        this.types = result.results;
+      },
+      (error: any) => {
+        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
       }
-      return this.datePipe.transform(input, format);
-    }
-    return '';
+    );
+    this.simpleTabsRef.tabRef = previousUrl;
   }
 
   submit() {
     this.btnLoading = null;
+
     const item = {
       label: this.tabForm.value.label,
       acronym: this.tabForm.value.acronym,
-      startDate: this.transformDateToDateTime(this.tabForm.value.startDate, 'yyy-MM-dd'),
-      disappearanceDate: this.transformDateToDateTime(this.tabForm.value.disappearanceDate, 'yyy-MM-dd'),
+      startDate: this.datePipe.transform(this.tabForm.value.startDate, dateTimeFormat),
+      disappearanceDate: this.datePipe.transform(this.tabForm.value.disappearanceDate, dateTimeFormat),
       ministry: this.tabForm.value.ministry.id,
+      type: this.tabForm.value.type.id,
     };
     if (this.addItem) {
       this.addItems(item);
@@ -301,8 +275,6 @@ export class EstablishmentsComponent implements OnInit {
     this.addItem = false;
     this.deleteItems = false;
     this.editVisibility = false;
-
-    // this.myModal.close('Close click');
     this.myModal.dismiss('Cross click');
   }
 
@@ -348,7 +320,7 @@ export class EstablishmentsComponent implements OnInit {
   }
 
   isActive(endDate: string) {
-    const today = this.datePipe.transform(new Date(), 'yyyy/MM/dd');
+    const today = this.datePipe.transform(new Date(), datePickerDateFormat);
     return !(endDate !== '' && endDate && endDate <= today);
   }
 
@@ -365,10 +337,6 @@ export class EstablishmentsComponent implements OnInit {
       typeLabel: item.type ? item.type.label : '',
       active: true,
     };
-    newItem.startDate = item.startDate ? this.datePipe.transform(item.startDate, 'yyyy/MM/dd') : null;
-    newItem.disappearanceDate = item.disappearanceDate
-      ? this.datePipe.transform(item.disappearanceDate, 'yyyy/MM/dd')
-      : null;
     newItem.active = this.isActive(newItem.disappearanceDate);
     return newItem;
   }
@@ -379,10 +347,11 @@ export class EstablishmentsComponent implements OnInit {
       limit: this.limit,
       page: this.page,
     };
+
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
     params = Object.assign(params, this.dataTableSearchBar);
-    console.log('http params', params);
+
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results.map((item: any) => {
@@ -401,7 +370,7 @@ export class EstablishmentsComponent implements OnInit {
         this.total = 0;
         this.dataTableComponent.error = true;
         this.loading = false;
-        this.addSingle('error', 'Erreur Technique', 'Code: ' + error.error.code + ' Message: ' + error.error.message);
+        this.addSingle('error', 'Erreur Technique', 'Message: ' + error.error.message);
       }
     );
   }
@@ -473,36 +442,20 @@ export class EstablishmentsComponent implements OnInit {
   }
 
   filters(e: any) {
-    console.log('original filter', e);
-    this.dataTableFilter = Object.assign({}, e);
+    this.dataTableFilter = Object.assign({}, this.simpleTabsRef.prepareFilter(e));
     this.page = 1;
     this.dataTableComponent.currentPage = 1;
     this.getAllItems();
   }
 
-  getKeyByValue(object: any, value: any) {
-    return Object.keys(object).find((key) => object[key] === value);
-  }
-
   sortEvent(e: any) {
-    console.log('sort', e);
     this.dataTableSort = e;
     this.getAllItems();
   }
 
   search(input: string) {
     this.page = 1;
-
-    this.columns.forEach((col) => {
-      if (col.filter && col.filterType === 'text') {
-        if (input) {
-          this.dataTableSearchBar[col.field + '[contains]'] = input;
-        } else {
-          delete this.dataTableSearchBar[col.field + '[contains]'];
-        }
-      }
-    });
-
+    this.dataTableSearchBar = { search: input };
     this.getAllItems();
   }
 }
