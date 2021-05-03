@@ -38,4 +38,22 @@ export class SimpleTabsRefService {
     console.log(id);
     return this.http.put(`/${this.tabRef}/${id}`, denomination, httpOptions);
   }
+
+  prepareFilter(dTFilter: any) {
+    let filter = {};
+    Object.keys(dTFilter).forEach((key) => {
+      if (dTFilter[key].type === 'text') {
+        filter[key + '[contains]'] = dTFilter[key].value;
+      }
+      if (dTFilter[key].type === 'range-date') {
+        if (dTFilter[key].operator === 'range') {
+          filter[key + '[gt]'] = dTFilter[key].value[0];
+          filter[key + '[lt]'] = dTFilter[key].value[1];
+        } else {
+          filter[key + '[' + dTFilter[key].operator + ']'] = dTFilter[key].value;
+        }
+      }
+    });
+    return filter;
+  }
 }

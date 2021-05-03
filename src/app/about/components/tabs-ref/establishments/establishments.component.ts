@@ -260,6 +260,7 @@ export class EstablishmentsComponent implements OnInit {
       startDate: this.datePipe.transform(this.tabForm.value.startDate, dateTimeFormat),
       disappearanceDate: this.datePipe.transform(this.tabForm.value.disappearanceDate, dateTimeFormat),
       ministry: this.tabForm.value.ministry.id,
+      type: this.tabForm.value.type.id,
     };
     if (this.addItem) {
       this.addItems(item);
@@ -346,9 +347,11 @@ export class EstablishmentsComponent implements OnInit {
       limit: this.limit,
       page: this.page,
     };
+
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
     params = Object.assign(params, this.dataTableSearchBar);
+
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results.map((item: any) => {
@@ -439,7 +442,7 @@ export class EstablishmentsComponent implements OnInit {
   }
 
   filters(e: any) {
-    this.dataTableFilter = Object.assign({}, e);
+    this.dataTableFilter = Object.assign({}, this.simpleTabsRef.prepareFilter(e));
     this.page = 1;
     this.dataTableComponent.currentPage = 1;
     this.getAllItems();
