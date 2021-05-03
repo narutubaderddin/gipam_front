@@ -521,7 +521,7 @@
         >
           <ng-template #TemplateForm1>
             <p *ngFor="let value of form1Values; let index = index">
-              <span>{{ value }}</span>
+              <span>{{ value | formValue }}</span>
             </p>
           </ng-template>
           <button
@@ -668,7 +668,7 @@
         >
           <ng-template #TemplateForm2>
             <p *ngFor="let value of form2Values; let index = index">
-              <span>{{ value }}</span>
+              <span>{{ value | formValue }}</span>
             </p>
           </ng-template>
           <button
@@ -689,7 +689,7 @@
             >
               <div class="mt-3">
                 <p *ngFor="let value of form2Values; let index = index">
-                  <span *ngIf="index < 4">{{ value }}</span>
+                  <span *ngIf="index < 4">{{ value | formValue }}</span>
                 </p>
                 <p *ngIf="showForm2End">...</p>
               </div>
@@ -793,7 +793,7 @@
         >
           <ng-template #TemplateForm3>
             <p *ngFor="let value of form3Values; let index = index">
-              <span>{{ value }}</span>
+              <span>{{ value | formValue }}</span>
             </p>
           </ng-template>
           <button

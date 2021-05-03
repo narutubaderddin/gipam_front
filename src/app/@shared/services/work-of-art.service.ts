@@ -11,7 +11,7 @@ export class WorkOfArtService {
       name: 'Dépôt ',
     },
     {
-      id: 'proprite',
+      id: 'propriete',
       name: 'Prorièté ',
     },
   ];

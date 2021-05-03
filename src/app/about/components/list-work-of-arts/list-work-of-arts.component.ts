@@ -201,8 +201,6 @@ export class ListWorkOfArtsComponent implements OnInit {
     ]);
     const advancedForms = this.formatAdvancedData({}, [this.advancedForm1.value]);
     this.headerFilter = this.formatFormsData({}, [headersFilter], true);
-    console.log(this.headerFilter);
-    return false;
     this.initData(forms, advancedForms, this.headerFilter, 1);
   }
 
@@ -347,6 +345,7 @@ export class ListWorkOfArtsComponent implements OnInit {
         case 'mouvementAction':
         case 'constat':
         case 'constatAction':
+        case 'status':
           if (Array.isArray(value[key])) {
             value[key].forEach((item: any) => {
               result.push(item['id']);
@@ -369,14 +368,6 @@ export class ListWorkOfArtsComponent implements OnInit {
             });
           }
           data['auteurs'] = result;
-          break;
-        case 'status':
-          if (Array.isArray(value[key])) {
-            value[key].forEach((item: any) => {
-              result.push(item['name']);
-            });
-          }
-          data[key] = result;
           break;
         case 'id':
           if (
@@ -748,10 +739,10 @@ export class ListWorkOfArtsComponent implements OnInit {
       this.depotStatus = false;
       this.propStatus = false;
       event.value.forEach((item: any) => {
-        if (item.id == 0) {
+        if (item.id == 'depot') {
           this.depotStatus = true;
         }
-        if (item.id == 1) {
+        if (item.id == 'propriete') {
           this.propStatus = true;
         }
       });
