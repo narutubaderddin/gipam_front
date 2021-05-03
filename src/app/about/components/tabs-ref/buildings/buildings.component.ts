@@ -221,7 +221,7 @@ export class BuildingsComponent implements OnInit {
 
     this.simpleTabsRef.tabRef = 'sites';
 
-    this.simpleTabsRef.getAllItems({}).subscribe(
+    this.simpleTabsRef.getAllItems({limit:'10'}).subscribe(
       (result: any) => {
         this.sites = result.results;
         console.log('sites', this.sites);
@@ -238,7 +238,7 @@ export class BuildingsComponent implements OnInit {
 
     this.simpleTabsRef.tabRef = 'communes';
 
-    this.simpleTabsRef.getAllItems({}).subscribe(
+    this.simpleTabsRef.getAllItems({limit:'100'}).subscribe(
       (result: any) => {
         this.communes = result.results;
         console.log('communes', this.communes);
@@ -474,8 +474,7 @@ export class BuildingsComponent implements OnInit {
   }
 
   filters(e: any) {
-
-    this.dataTableFilter = Object.assign({}, e);
+    this.dataTableFilter = Object.assign({}, this.simpleTabsRef.prepareFilter(e));
     this.page = 1;
     this.dataTableComponent.currentPage = 1;
     this.getAllItems();

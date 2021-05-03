@@ -51,8 +51,8 @@ export class ModalReportSubTypesComponent implements OnInit {
     this.active = this.fromParent.active;
     this.selectedItem = this.fromParent.selectedItem;
     this.name = this.fromParent.name;
-    this.selectedreportType = this.fromParent.selectedreportType ;
-    console.log(this.selectedItem, this.editItem);
+    this.selectedreportType = this.fromParent.selectedReportType ;
+    // console.log(this.selectedItem, this.editItem, this.selectedreportType);
   }
   initForm() {
     this.tabForm = this.fb.group({

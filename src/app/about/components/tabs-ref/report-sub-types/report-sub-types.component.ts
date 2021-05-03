@@ -134,10 +134,10 @@ export class ReportSubTypesComponent implements OnInit {
       itemToDelete: this.itemToDelete,
       itemToEdit: this.itemToEdit,
       selectedItem: this.selectedItem,
-      selectedreportType: this.selectedreportType,
+      selectedReportType: this.selectedreportType,
       active: this.active,
     };
-
+console.log(this.selectedreportType)
     modalRef.result.then(
       (result) => {
         if (result === 'delete') {
@@ -325,7 +325,7 @@ export class ReportSubTypesComponent implements OnInit {
   }
 
   filters(e: any) {
-    this.dataTableFilter = Object.assign({}, e);
+    this.dataTableFilter = Object.assign({}, this.simpleTabsRef.prepareFilter(e));
     this.page = 1;
     this.dataTableComponent.currentPage = 1;
     this.getAllItems();

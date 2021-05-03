@@ -314,8 +314,7 @@ export class MaterialTechniqueComponent implements OnInit {
   }
 
   filters(e: any) {
-
-    this.dataTableFilter = Object.assign({}, e);
+    this.dataTableFilter = Object.assign({}, this.simpleTabsRef.prepareFilter(e));
     this.page = 1;
     this.dataTableComponent.currentPage = 1;
     this.getAllItems();
@@ -350,7 +349,9 @@ export class MaterialTechniqueComponent implements OnInit {
     );
   }
   onSelect(item: any) {
-    this.selectedDenominations.push(item.id);
+    console.log(item)
+    console.log(this.tabForm.value.denomination);
+    this.tabForm.value.denomination.map((el:any)=> this.selectedDenominations.push(el.id));
   }
   public onDeSelect(item: any) {
     this.selectedDenominations = this.selectedDenominations.filter((denomination: any) => {

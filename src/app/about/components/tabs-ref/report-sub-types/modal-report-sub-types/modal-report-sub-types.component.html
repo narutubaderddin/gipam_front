@@ -10,6 +10,17 @@
     </div>
     <div class="modal-body">
       <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer "{{ itemToDelete.label }}" ?</div>
+
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
+        <label class="col-sm-5">Libellé<span class="mandatory"> *</span></label>
+        <input
+          type="text"
+          class="form-control col-sm-7"
+          value="{{ editItem ? selectedItem : '' }}"
+          formControlName="label"
+        />
+      </div>
+
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-5">Type constat<span class="mandatory"> *</span></label>
 
@@ -25,15 +36,7 @@
           ></p-dropdown>
         </div>
       </div>
-      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Libellé<span class="mandatory"> *</span></label>
-        <input
-          type="text"
-          class="form-control col-sm-7"
-          value="{{ editItem ? selectedItem : '' }}"
-          formControlName="label"
-        />
-      </div>
+
       <div class="form-group col-md-12 d-flex align-items-baseline" *ngIf="addItem">
         <label class="col-sm-5">visibilité<span class="mandatory"> *</span></label>
         <div class="btn-slider mr-2 col-3" *ngIf="active">

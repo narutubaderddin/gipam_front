@@ -240,8 +240,7 @@ export class EpoquesComponent implements OnInit {
   }
 
   filters(e: any) {
-
-    this.dataTableFilter = Object.assign({}, e);
+    this.dataTableFilter = Object.assign({}, this.simpleTabsRef.prepareFilter(e));
     this.page = 1;
     this.dataTableComponent.currentPage = 1;
     this.getAllItems();
