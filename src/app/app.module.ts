@@ -17,6 +17,8 @@ import { LocalStorageModule } from 'angular-2-local-storage';
 import { AboutModule } from '@app/about/about.module';
 import { HomeModule } from '@app/home/home.module';
 import { NotificationAnimationType, SimpleNotificationsModule } from 'angular2-notifications';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from '@app/auth/token.interceptor';
 
 @NgModule({
   imports: [
@@ -50,7 +52,13 @@ import { NotificationAnimationType, SimpleNotificationsModule } from 'angular2-n
     // must be imported as the last module as it contains the fallback route
   ],
   declarations: [AppComponent],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

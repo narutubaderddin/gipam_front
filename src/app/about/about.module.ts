@@ -78,6 +78,11 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { TabsRefComponent } from './components/tabs-ref/tabs-ref.component';
 import { DomainsComponent } from './components/tabs-ref/domains/domains.component';
 import { DenominationsComponent } from './components/tabs-ref/denominations/denominations.component';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {FieldService} from '@shared/services/field.service';
+import {InfiniteScrollModule} from 'ngx-infinite-scroll';
+import {RadioButtonModule} from 'primeng/radiobutton';
+
 
 setTheme('bs4');
 
@@ -168,7 +173,10 @@ const ngWizardConfig: NgWizardConfig = {
     TooltipModule,
     CheckboxModule,
     SelectButtonModule,
+    ProgressSpinnerModule,
+    InfiniteScrollModule,
+    RadioButtonModule
   ],
-  providers: [MovementsService, , BsDatepickerConfig],
+  providers: [MovementsService, , BsDatepickerConfig, FieldService],
 })
 export class AboutModule {}

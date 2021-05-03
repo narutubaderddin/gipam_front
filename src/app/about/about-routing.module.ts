@@ -22,7 +22,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'accueil', pathMatch: 'full' },
       { path: 'accueil', component: AdministratorHomePageComponent, data: { title: 'Accueil' } },
       { path: 'details', component: ItemDetailsComponent },
-      { path: 'portail-details', component: PortailItemDetailsComponent },
+      { path: 'portail-details/:id', component: PortailItemDetailsComponent },
       {
         path: 'oeuvres-list',
         component: ListWorkOfArtsComponent,
