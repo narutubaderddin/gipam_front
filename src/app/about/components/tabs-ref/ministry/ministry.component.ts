@@ -289,7 +289,6 @@ export class MinistryComponent implements OnInit {
     params = Object.assign(params, this.dataTableSort);
     params = Object.assign(params, this.dataTableSearchBar);
 
-    console.log('params', params);
 
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
@@ -304,7 +303,12 @@ export class MinistryComponent implements OnInit {
         this.loading = false;
       },
       (error: any) => {
-        this.addSingle('error', '', error.error.message);
+        this.items = [];
+        this.totalFiltred = 0;
+        this.total = 0;
+        this.dataTableComponent.error = true;
+        this.loading = false;
+        this.addSingle('error', 'Erreur Technique', error.error.message);
       }
     );
   }
@@ -375,15 +379,13 @@ export class MinistryComponent implements OnInit {
   }
 
   filters(e: any) {
-    console.log('original filter', e);
-    this.dataTableFilter = Object.assign({}, e);
+    this.dataTableFilter = Object.assign({}, this.simpleTabsRef.prepareFilter(e));
     this.page = 1;
     this.dataTableComponent.currentPage = 1;
     this.getAllItems();
   }
 
   sortEvent(e: any) {
-    console.log('sort', e);
     this.dataTableSort = e;
     this.getAllItems();
   }
@@ -391,16 +393,12 @@ export class MinistryComponent implements OnInit {
   search(input: string) {
     this.page = 1;
 
-    this.columns.forEach((col) => {
-      if (col.filter && col.filterType === 'text') {
-        if (input) {
-          this.dataTableFilter[col.field + '[contains]'] = input;
-        } else {
-          delete this.dataTableFilter[col.field + '[contains]'];
-        }
-      }
-    });
-
+    this.dataTableSearchBar= {'search': input};
     this.getAllItems();
+  }
+  ClearSearch(event: Event, input:string) {
+    if(!event['inputType']){
+      this.search(input);
+    }
   }
 }

@@ -26,9 +26,12 @@ import { TypeMvtComponent } from '@app/about/components/tabs-ref/type-mvt/type-m
 import { MovementActionTypesComponent } from '@app/about/components/tabs-ref/movement-action-types/movement-action-types.component';
 import { ReportSubTypesComponent } from '@app/about/components/tabs-ref/report-sub-types/report-sub-types.component';
 import { MinistryComponent } from '@app/about/components/tabs-ref/ministry/ministry.component';
-import { BuildingsComponent } from '@app/about/components/tabs-ref/buildings/buildings.component';
+import {BuildingsComponent} from '@app/about/components/tabs-ref/buildings/buildings.component';
+import {CommunesComponent} from "@app/about/components/tabs-ref/communes/communes.component";
 import { SubDivisionsComponent } from '@app/about/components/tabs-ref/subDivisions/subDivisions.component';
 import { RegionsComponent } from '@app/about/components/tabs-ref/regions/regions.component';
+import {DepartmentsComponent} from "@app/about/components/tabs-ref/departments/departments.component";
+import {LocalisationTypeComponent} from "@app/about/components/tabs-ref/localisation-type/localisation-type.component";
 import { ServicesComponent } from '@app/about/components/tabs-ref/services/services.component';
 import { SitesComponent } from '@app/about/components/tabs-ref/sites/sites.component';
 const routes: Routes = [
@@ -44,7 +47,7 @@ const routes: Routes = [
         path: 'oeuvres-list',
         component: ListWorkOfArtsComponent,
         data: {
-          title: "Liste des oeuvres d'art",
+          title: 'Liste des oeuvres d\'art',
         },
       },
       {
@@ -92,6 +95,10 @@ const routes: Routes = [
       { path: 'tab-ref-sous-type-constat', component: ReportSubTypesComponent },
       { path: 'tab-ref-ministère', component: MinistryComponent },
       { path: 'tab-ref-bâtiment', component: BuildingsComponent },
+      { path: 'tab-ref-commune', component: CommunesComponent },
+      { path: 'tab-ref-departement', component: DepartmentsComponent },
+      { path: 'tab-ref-type-localisation', component: LocalisationTypeComponent },
+
       {
         path: 'tab-ref-service',
         component: ServicesComponent,
