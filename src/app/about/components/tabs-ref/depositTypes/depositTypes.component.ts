@@ -60,7 +60,10 @@ export class DepositTypesComponent implements OnInit {
     },
   };
 
-  items: any;
+  dataTableFilter: any = {};
+  dataTableSort: any = {};
+  dataTableSearchBar: any = {};
+  items: any[] = [];
 
   columns = [
     {
@@ -189,15 +192,13 @@ export class DepositTypesComponent implements OnInit {
 
   getAllItems() {
     this.loading = true;
-
-    const params = {
+    let params = {
       limit: this.limit,
       page: this.page,
-      'label[contains]': this.filter,
-      sort_by: this.sortBy,
-      sort: this.sort,
     };
-
+    params = Object.assign(params, this.dataTableFilter);
+    params = Object.assign(params, this.dataTableSort);
+    params = Object.assign(params, this.dataTableSearchBar);
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results;
@@ -305,27 +306,26 @@ export class DepositTypesComponent implements OnInit {
   }
 
   filters(e: any) {
-    console.log(e);
-    this.filter = e.label;
+    this.dataTableFilter = Object.assign({}, this.simpleTabsRef.prepareFilter(e));
+    this.page = 1;
+    this.dataTableComponent.currentPage = 1;
     this.getAllItems();
   }
 
   sortEvent(e: any) {
-    if (e) {
-      this.sort = 'desc';
-      this.getAllItems();
-    } else {
-      this.sort = 'asc';
-      this.getAllItems();
-    }
-  }
-  search(input: string) {
-    if (input) {
-      this.filter = input;
-      this.getAllItems();
-      return;
-    }
-    this.filter = '';
+    this.dataTableSort = e;
     this.getAllItems();
+  }
+
+  search(input: string) {
+    this.page = 1;
+    this.dataTableSearchBar = { search: input };
+    this.getAllItems();
+  }
+
+  ClearSearch(event: any, input: string) {
+    if (!event.inputType) {
+      this.search(input);
+    }
   }
 }

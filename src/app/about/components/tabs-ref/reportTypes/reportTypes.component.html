@@ -29,8 +29,7 @@
                   id="example-search-input"
                   #searchBox
                   (keyup.enter)="search(searchBox.value)"
-                  (blur)="search(searchBox.value)"
-                  (close)="search('')"
+                  (input)="ClearSearch($event, searchBox.value)"
                 />
                 <span class="input-group-append">
                   <button
