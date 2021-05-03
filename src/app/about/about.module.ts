@@ -92,6 +92,8 @@ import { BuildingsComponent } from './components/tabs-ref/buildings/buildings.co
 import { ArtWorksPipe } from '@app/about/pipes/art-works.pipe';
 import { ArtWorksDataPipe } from '@app/about/pipes/art-works-data.pipe';
 import { FormValuePipe } from './pipes/form-value.pipe';
+import { SubDivisionsComponent } from '@app/about/components/tabs-ref/subDivisions/subDivisions.component';
+import { RegionsComponent } from '@app/about/components/tabs-ref/regions/regions.component';
 
 setTheme('bs4');
 
@@ -149,6 +151,8 @@ const ngWizardConfig: NgWizardConfig = {
     EstablishmentsComponent,
     MinistryComponent,
     BuildingsComponent,
+    SubDivisionsComponent,
+    RegionsComponent,
     FormValuePipe,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
