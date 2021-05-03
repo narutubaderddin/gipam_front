@@ -66,6 +66,7 @@ export class NgDataTableComponent implements OnInit {
   asc: boolean = true;
   currentPage: number;
   paginationSize: number;
+  @Output() filterChange = new EventEmitter();
 
   dropdownSettings: IDropdownSettings;
   key: string;
@@ -91,6 +92,7 @@ export class NgDataTableComponent implements OnInit {
   ];
   filter: any = {};
   filterFormValues: any = {};
+
   viewDateFormat = viewDateFormat;
 
   constructor(private calendar: NgbCalendar, public formBuilder: FormBuilder, private datePipe: DatePipe) {
@@ -102,23 +104,25 @@ export class NgDataTableComponent implements OnInit {
     this.columns = this.columns.filter((col) => {
       if (Object.keys(col).indexOf('isVisible') == -1 || col.isVisible) {
         return col;
+      } else {
+        this.form.removeControl(col.field);
       }
     });
     this.form = this.formBuilder.group({});
     this.initForm(this.columns);
     this.filterFormValues = Object.assign({}, this.form.value);
     // console.log('filter', this.filter);
-    this.expandColumns = [
-      {
-        header: 'Numéro inventaire',
-        field: 'id',
-      },
-      {
-        header: '',
-        field: 'select',
-        type: 'app-select-button-render',
-      },
-    ];
+    // this.expandColumns = [
+    //   {
+    //     header: 'Numéro inventaire',
+    //     field: 'id'
+    //   },
+    //   {
+    //     header: '',
+    //     field: 'select',
+    //     type: 'app-select-button-render'
+    //   }
+    // ];
     this.dropdownSettings = {
       singleSelection: false,
       idField: 'id',
@@ -148,7 +152,8 @@ export class NgDataTableComponent implements OnInit {
 
   filterHeader($event: Event) {
     // @ts-ignore
-    console.log($event.target.value);
+    // console.log(this.form.value);
+    this.filterValue.emit(this.form.value);
   }
 
   initForm(colomns: any[]) {
@@ -220,6 +225,12 @@ export class NgDataTableComponent implements OnInit {
     this.data = data;
     this.ngOnInit();
   }
+
+  // onFilterChange(open: boolean) {
+  //   if (!open) {
+  //     this.filterChange.emit(this.form.value);
+  //   }
+  // }
 
   sortHeader(column: any) {
     let dir = 'asc';
