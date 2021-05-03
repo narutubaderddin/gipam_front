@@ -57,6 +57,7 @@
     "ngx-bootstrap": "^6.2.0",
     "ngx-chips": "^2.2.2",
     "ngx-horizontal-timeline": "^0.0.6",
+    "ngx-infinite-scroll": "^10.0.1",
     "ngx-pagination": "^5.0.0",
     "ngx-treeview": "^10.0.2",
     "primeicons": "^4.1.0",
