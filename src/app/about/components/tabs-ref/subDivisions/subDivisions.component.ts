@@ -11,6 +11,7 @@ import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 import { DatePipe } from '@angular/common';
 import { Dropdown } from 'primeng/dropdown';
+import { datePickerDateFormat, dateTimeFormat, towDatesCompare, viewDateFormat } from '@shared/utils/helpers';
 
 @Component({
   selector: 'app-establishments',
@@ -44,7 +45,6 @@ export class SubDivisionsComponent implements OnInit {
   addItem = false;
   deleteItems = false;
   editVisibility = false;
-  dropdownSettings: IDropdownSettings;
   disappearanceDate: string;
   active = true;
   dropdownList: any;
@@ -74,8 +74,7 @@ export class SubDivisionsComponent implements OnInit {
   dataTableFilter: any = {};
   dataTableSort: any = {};
   dataTableSearchBar: any = {};
-  items: any;
-  today: string;
+  items: any[] = [];
 
   columns = [
     {
@@ -98,7 +97,7 @@ export class SubDivisionsComponent implements OnInit {
     {
       header: 'Date début de validité',
       field: 'startDate',
-      type: 'key',
+      type: 'date',
       filter: true,
       filterType: 'range-date',
       sortable: true,
@@ -107,7 +106,7 @@ export class SubDivisionsComponent implements OnInit {
     {
       header: 'Date fin de validité',
       field: 'endDate',
-      type: 'key',
+      type: 'date',
       filter: true,
       filterType: 'range-date',
       sortable: true,
@@ -145,30 +144,23 @@ export class SubDivisionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dropdownSettings = {
-      singleSelection: true,
-      idField: 'id',
-      textField: 'name',
-      itemsShowLimit: 5,
-      allowSearchFilter: true,
-      // maxHeight: 100,
-    };
     this.simpleTabsRef.tabRef = 'subDivisions';
     this.getAllItems();
-    this.today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     this.initForm();
     this.filter =
       this.activatedRoute.snapshot.queryParams.filter && this.activatedRoute.snapshot.queryParams.filter.length > 0;
-    console.log('ng on init filter', this.filter);
   }
 
   initForm() {
     const msg = 'date début inférieur date fin';
     const startDate = this.datePipe.transform(
       this.selectedItem ? this.selectedItem.startDate : new Date(),
-      'yyyy-MM-dd'
+      datePickerDateFormat
     );
-    const disappearanceDate = this.datePipe.transform(this.selectedItem ? this.selectedItem.endDate : '', 'yyyy-MM-dd');
+    const disappearanceDate = this.datePipe.transform(
+      this.selectedItem ? this.selectedItem.endDate : '',
+      datePickerDateFormat
+    );
     this.tabForm = this.fb.group({
       label: [this.selectedItem ? this.selectedItem.label : '', [Validators.required]],
       acronym: [this.selectedItem ? this.selectedItem.acronym : '', [Validators.required]],
@@ -176,26 +168,8 @@ export class SubDivisionsComponent implements OnInit {
       endDate: [disappearanceDate, []],
       establishment: [this.selectedRelatedEntity ? this.selectedRelatedEntity : '', [Validators.required]],
     });
-    this.tabForm.setValidators(this.ValidateDate());
+    this.tabForm.setValidators(towDatesCompare('startDate', 'endDate'));
   }
-
-  ValidateDate(): ValidatorFn {
-    return (cc: FormGroup): ValidationErrors => {
-      if (!cc.get('startDate')) {
-        return null;
-      }
-      if (cc.get('startDate').value >= cc.get('endDate').value) {
-        return { dateInvalid: 'Date début supérieur ou égale date fin' };
-      }
-      return null;
-    };
-  }
-
-  get defaultHeaderParams() {
-    return this.defaultColDef.headerComponentParams;
-  }
-
-  resetFilter() {}
 
   openModal(item: any) {
     this.btnLoading = null;
@@ -210,7 +184,6 @@ export class SubDivisionsComponent implements OnInit {
     if (this.addItem) {
       this.selectedRelatedEntity = null;
     }
-    console.log('relatedEntity edit', this.selectedRelatedEntity);
     if ((this.editItem || this.addItem) && this.relatedEntities.length === 0) {
       this.getRelatedEntityList();
     }
@@ -219,28 +192,14 @@ export class SubDivisionsComponent implements OnInit {
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
 
-  onSelectAll(items: any) {}
-
   getRelatedEntityList(): any {
     const previousUrl = this.simpleTabsRef.tabRef;
     this.simpleTabsRef.tabRef = 'establishments';
 
     this.simpleTabsRef.getAllItems({}).subscribe((result: any) => {
       this.relatedEntities = result.results;
-      console.log('establishments lenght', this.relatedEntities.length);
     });
     this.simpleTabsRef.tabRef = previousUrl;
-  }
-
-  transformDateToDateTime(input: string, format: string, addTime: boolean = true) {
-    // 1984-06-05 12:15:30
-    if (input !== '' && input) {
-      if (addTime) {
-        return this.datePipe.transform(input, format) + ' 00:00:00';
-      }
-      return this.datePipe.transform(input, format);
-    }
-    return '';
   }
 
   submit() {
@@ -248,8 +207,8 @@ export class SubDivisionsComponent implements OnInit {
     const item = {
       label: this.tabForm.value.label,
       acronym: this.tabForm.value.acronym,
-      startDate: this.transformDateToDateTime(this.tabForm.value.startDate, 'yyy-MM-dd'),
-      endDate: this.transformDateToDateTime(this.tabForm.value.endDate, 'yyy-MM-dd'),
+      startDate: this.datePipe.transform(this.tabForm.value.startDate, dateTimeFormat),
+      endDate: this.datePipe.transform(this.tabForm.value.endDate, dateTimeFormat),
       establishment: this.tabForm.value.establishment.id,
     };
     if (this.addItem) {
@@ -312,7 +271,7 @@ export class SubDivisionsComponent implements OnInit {
   }
 
   isActive(endDate: string) {
-    const today = this.datePipe.transform(new Date(), 'yyyy/MM/dd');
+    const today = this.datePipe.transform(new Date(), datePickerDateFormat);
     return !(endDate !== '' && endDate && endDate <= today);
   }
 
@@ -322,13 +281,11 @@ export class SubDivisionsComponent implements OnInit {
       label: item.label,
       acronym: item.acronym,
       startDate: item.startDate,
-      endDate: item.disappearanceDate,
+      endDate: item.endDate,
       relatedEntityId: item.establishment ? item.establishment.id : '',
       relatedEntityName: item.establishment ? item.establishment.label : '',
       active: true,
     };
-    newItem.startDate = item.startDate ? this.datePipe.transform(item.startDate, 'yyyy/MM/dd') : null;
-    newItem.endDate = item.endDate ? this.datePipe.transform(item.endDate, 'yyyy/MM/dd') : null;
     newItem.active = this.isActive(newItem.endDate);
     return newItem;
   }
@@ -361,7 +318,7 @@ export class SubDivisionsComponent implements OnInit {
         this.total = 0;
         this.dataTableComponent.error = true;
         this.loading = false;
-        this.addSingle('error', 'Erreur Technique', 'Code: ' + error.error.code + ' Message: ' + error.error.message);
+        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
       }
     );
   }
@@ -433,7 +390,6 @@ export class SubDivisionsComponent implements OnInit {
   }
 
   filters(e: any) {
-    console.log('original filter', e);
     this.dataTableFilter = Object.assign({}, e);
     this.page = 1;
     this.dataTableComponent.currentPage = 1;
@@ -441,24 +397,13 @@ export class SubDivisionsComponent implements OnInit {
   }
 
   sortEvent(e: any) {
-    console.log('sort', e);
     this.dataTableSort = e;
     this.getAllItems();
   }
 
   search(input: string) {
     this.page = 1;
-
-    this.columns.forEach((col) => {
-      if (col.filter && col.filterType === 'text') {
-        if (input) {
-          this.dataTableSearchBar[col.field + '[contains]'] = input;
-        } else {
-          delete this.dataTableSearchBar[col.field + '[contains]'];
-        }
-      }
-    });
-
+    this.dataTableSearchBar = { search: input };
     this.getAllItems();
   }
 }

@@ -123,7 +123,9 @@
                   [yearNavigator]="true"
                   [numberOfMonths]="1"
                   [selectionMode]="
-                    col[col.field + '_operator'] && col[col.field + '_operator'].name === 'range' ? 'range' : 'single'
+                    form.value[col.field + '_operator'] && form.value[col.field + '_operator'].name === 'range'
+                      ? 'range'
+                      : 'single'
                   "
                   [showOtherMonths]="true"
                   [showIcon]="true"
@@ -146,7 +148,7 @@
                         >
                         </p-dropdown>
                       </div>
-                      <button class="btn btn-light cancel-btn" (click)="clearDateFilter(col.field, pcd, dd)">
+                      <button class="btn btn-light btn-sm cancel-btn" (click)="clearDateFilter(col.field, pcd, dd)">
                         Annuler
                       </button>
                     </div>
@@ -233,6 +235,7 @@
                 </span>
               </span>
               <span *ngSwitchCase="'key-array'"> {{ item[col.key_data[0]][col.key_data[1]] }} </span>
+              <span *ngSwitchCase="'date'"> {{ item[col.field] | date: viewDateFormat }} </span>
 
               <span *ngSwitchDefault> {{ item[col.field] }} </span>
             </span>

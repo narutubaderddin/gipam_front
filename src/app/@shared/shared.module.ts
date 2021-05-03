@@ -54,7 +54,6 @@ import { SelectButtonRenderComponent } from './components/ng-dataTables/select-b
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { DropdownModule } from 'primeng/dropdown';
 import { StatusComponent } from './components/notice-blocs/status/status.component';
-import { DateCompareDirective } from './directives/date-compare.directive';
 import { AttachmentsComponent } from './components/notice-blocs/attachments/attachments.component';
 import { AddImgModalComponent } from './components/notice-blocs/item-images/add-img-modal/add-img-modal.component';
 import { ItemImagesComponent } from './components/notice-blocs/item-images/item-images.component';
@@ -132,7 +131,6 @@ import { NgFileDragDropModule } from 'ng-file-drag-drop';
     ItemImagesComponent,
     LinksComponent,
     HypertextLinksComponent,
-    DateCompareDirective,
   ],
   exports: [
     LoaderComponent,
@@ -154,7 +152,6 @@ import { NgFileDragDropModule } from 'ng-file-drag-drop';
     ItemImagesComponent,
     LinksComponent,
     HypertextLinksComponent,
-    DateCompareDirective,
   ],
 })
 export class SharedModule {}
