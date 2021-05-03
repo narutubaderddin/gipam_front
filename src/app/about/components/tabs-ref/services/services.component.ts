@@ -12,11 +12,11 @@ import { datePickerDateFormat, dateTimeFormat, towDatesCompare, viewDateFormat }
 
 @Component({
   selector: 'app-establishments',
-  templateUrl: './establishments.component.html',
-  styleUrls: ['./establishments.component.scss'],
+  templateUrl: './services.component.html',
+  styleUrls: ['./services.component.scss'],
   providers: [DatePipe],
 })
-export class EstablishmentsComponent implements OnInit {
+export class ServicesComponent implements OnInit {
   @ViewChild('content') modalRef: TemplateRef<any>;
   @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
 
@@ -40,7 +40,6 @@ export class EstablishmentsComponent implements OnInit {
   relatedEntities: any[] = [];
   types: any[] = [];
   selectedRelatedEntity: any;
-  selectedType: any;
   itemToEdit: any;
   itemToDelete: string;
   tabForm: FormGroup;
@@ -54,8 +53,6 @@ export class EstablishmentsComponent implements OnInit {
   itemLabel: any;
 
   filter: any;
-  sortBy = 'label';
-  sort = 'asc';
   totalFiltred: any;
   total: any;
   limit = 5;
@@ -101,11 +98,6 @@ export class EstablishmentsComponent implements OnInit {
       width: '100px',
     },
     {
-      header: 'Type',
-      field: 'typeLabel',
-      type: 'key',
-    },
-    {
       header: 'Date début de validité',
       field: 'startDate',
       type: 'date',
@@ -124,7 +116,7 @@ export class EstablishmentsComponent implements OnInit {
       width: '200px',
     },
     {
-      header: 'Ministère',
+      header: 'Sous-direction',
       field: 'ministryName',
       type: 'key',
       width: '380px',
@@ -155,7 +147,7 @@ export class EstablishmentsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.simpleTabsRef.tabRef = 'establishments';
+    this.simpleTabsRef.tabRef = 'services';
     this.getAllItems();
     this.initForm();
     this.filter =
@@ -177,8 +169,7 @@ export class EstablishmentsComponent implements OnInit {
       acronym: [this.selectedItem ? this.selectedItem.acronym : '', [Validators.required]],
       startDate: [startDate, [Validators.required]],
       disappearanceDate: [disappearanceDate, []],
-      ministry: [this.selectedRelatedEntity ? this.selectedRelatedEntity : '', [Validators.required]],
-      type: [this.selectedType ? this.selectedType : '', []],
+      subDivision: [this.selectedRelatedEntity ? this.selectedRelatedEntity : '', [Validators.required]],
     });
     this.tabForm.setValidators(towDatesCompare('startDate', 'disappearanceDate'));
   }
@@ -198,21 +189,13 @@ export class EstablishmentsComponent implements OnInit {
         id: item.ministryId,
         name: item.ministryName,
       };
-      this.selectedType = {
-        id: item.typeId,
-        label: item.typeLabel,
-      };
     }
     if (this.addItem) {
       this.selectedRelatedEntity = null;
-      this.selectedType = null;
     }
     if (this.editItem || this.addItem) {
       if (this.relatedEntities.length === 0) {
         this.getRelatedEntity();
-      }
-      if (this.types.length === 0) {
-        this.getTypes();
       }
     }
     this.selectedItem = item;
@@ -222,27 +205,12 @@ export class EstablishmentsComponent implements OnInit {
 
   getRelatedEntity(): any {
     const previousUrl = this.simpleTabsRef.tabRef;
-    this.simpleTabsRef.tabRef = 'ministries';
+    this.simpleTabsRef.tabRef = 'subDivisions';
 
     this.simpleTabsRef.getAllItems({}).subscribe(
       (result: any) => {
         this.relatedEntities = result.results;
         this.dataTableComponent.error = false;
-      },
-      (error: any) => {
-        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
-      }
-    );
-    this.simpleTabsRef.tabRef = previousUrl;
-  }
-
-  getTypes(): any {
-    const previousUrl = this.simpleTabsRef.tabRef;
-    this.simpleTabsRef.tabRef = 'establishmentTypes';
-
-    this.simpleTabsRef.getAllItems({}).subscribe(
-      (result: any) => {
-        this.types = result.results;
       },
       (error: any) => {
         this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
@@ -259,7 +227,7 @@ export class EstablishmentsComponent implements OnInit {
       acronym: this.tabForm.value.acronym,
       startDate: this.datePipe.transform(this.tabForm.value.startDate, dateTimeFormat),
       disappearanceDate: this.datePipe.transform(this.tabForm.value.disappearanceDate, dateTimeFormat),
-      ministry: this.tabForm.value.ministry.id,
+      subDivision: this.tabForm.value.subDivision.id,
     };
     if (this.addItem) {
       this.addItems(item);
@@ -330,10 +298,8 @@ export class EstablishmentsComponent implements OnInit {
       acronym: item.acronym,
       startDate: item.startDate,
       disappearanceDate: item.disappearanceDate,
-      ministryId: item.ministry ? item.ministry.id : '',
-      ministryName: item.ministry ? item.ministry.name : '',
-      typeId: item.type ? item.type.id : '',
-      typeLabel: item.type ? item.type.label : '',
+      subDivisionId: item.subDivision ? item.subDivision.id : '',
+      subDivisionName: item.subDivision ? item.subDivision.name : '',
       active: true,
     };
     newItem.active = this.isActive(newItem.disappearanceDate);
@@ -377,14 +343,14 @@ export class EstablishmentsComponent implements OnInit {
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Suppression', 'Etablissement ' + item.label + ' supprimée avec succés');
+        this.addSingle('success', 'Suppression', 'Service ' + item.label + ' supprimée avec succés');
         this.getAllItems();
         this.deleteItems = false;
       },
       (error: any) => {
         this.close();
         if (error.error.code === 400) {
-          this.addSingle('error', 'Suppression', 'Etablissement ' + item.label + ' admet une relation');
+          this.addSingle('error', 'Suppression', 'Service ' + item.label + ' admet une relation');
         } else {
           this.addSingle('error', 'Suppression', error.error.message);
         }
@@ -397,7 +363,7 @@ export class EstablishmentsComponent implements OnInit {
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Ajout', 'Etablissement ' + item.label + ' ajoutée avec succés');
+        this.addSingle('success', 'Ajout', 'Service ' + item.label + ' ajoutée avec succés');
         this.getAllItems();
         this.addItem = false;
       },
@@ -412,7 +378,7 @@ export class EstablishmentsComponent implements OnInit {
     this.simpleTabsRef.editItem(item, id).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Modification', 'Etablissement ' + item.label + ' modifiée avec succés');
+        this.addSingle('success', 'Modification', 'Service ' + item.label + ' modifiée avec succés');
         this.getAllItems();
         this.editItem = false;
         this.editVisibility = false;

@@ -8,6 +8,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Calendar } from 'primeng/calendar';
 import { Dropdown } from 'primeng/dropdown';
 import { DatePipe } from '@angular/common';
+import { viewDateFormat } from '@shared/utils/helpers';
 
 @Component({
   selector: 'app-ng-data-table',
@@ -90,6 +91,8 @@ export class NgDataTableComponent implements OnInit {
   ];
   filter: any = {};
   filterFormValues: any = {};
+  viewDateFormat = viewDateFormat;
+
   constructor(private calendar: NgbCalendar, public formBuilder: FormBuilder, private datePipe: DatePipe) {
     this.fromDate = calendar.getToday();
   }
@@ -320,12 +323,17 @@ export class NgDataTableComponent implements OnInit {
       this.dateSelectionMode = 'range';
       this.form.value[field + '_operator'] = dropdown.value;
       this.monthsToDisplay = 2;
+      console.log('range');
       return;
     }
     // this.form.value[field] = new Date();
     this.dateSelectionMode = 'single';
     if (Array.isArray(this.filterFormValues[field])) {
       calendar.writeValue(new Date());
+      this.form.value[field] = new Date();
+      this.form.value[field + '_operator'] = dropdown.value;
+      this.filterFormValues[field + '_operator'] = this.form.value[field + '_operator'];
+      console.log('changed', calendar.value);
     }
     this.form.value[field] = calendar.value;
     this.filterFormValues[field] = this.form.value[field];

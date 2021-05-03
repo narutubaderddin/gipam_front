@@ -3,20 +3,23 @@ import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn,
 import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 import { DatePipe } from '@angular/common';
+import { Dropdown } from 'primeng/dropdown';
 import { datePickerDateFormat, dateTimeFormat, towDatesCompare, viewDateFormat } from '@shared/utils/helpers';
 
 @Component({
   selector: 'app-establishments',
-  templateUrl: './establishments.component.html',
-  styleUrls: ['./establishments.component.scss'],
+  templateUrl: './sites.component.html',
+  styleUrls: ['./sites.component.scss'],
   providers: [DatePipe],
 })
-export class EstablishmentsComponent implements OnInit {
+export class SitesComponent implements OnInit {
   @ViewChild('content') modalRef: TemplateRef<any>;
   @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
 
@@ -25,22 +28,10 @@ export class EstablishmentsComponent implements OnInit {
   myModal: any;
   selectedItem: {
     label: '';
-    acronym: '';
     startDate: '';
     disappearanceDate: '';
-    ministry: {
-      id: number;
-      name: '';
-    };
-    type: {
-      id: number;
-      label: '';
-    };
   };
   relatedEntities: any[] = [];
-  types: any[] = [];
-  selectedRelatedEntity: any;
-  selectedType: any;
   itemToEdit: any;
   itemToDelete: string;
   tabForm: FormGroup;
@@ -54,8 +45,6 @@ export class EstablishmentsComponent implements OnInit {
   itemLabel: any;
 
   filter: any;
-  sortBy = 'label';
-  sort = 'asc';
   totalFiltred: any;
   total: any;
   limit = 5;
@@ -79,9 +68,9 @@ export class EstablishmentsComponent implements OnInit {
   dataTableFilter: any = {};
   dataTableSort: any = {};
   dataTableSearchBar: any = {};
-  items: any[] = [];
+  items: any;
   today: string;
-  error = false;
+
   columns = [
     {
       header: 'Libellé',
@@ -90,20 +79,6 @@ export class EstablishmentsComponent implements OnInit {
       filter: true,
       filterType: 'text',
       sortable: true,
-    },
-    {
-      header: 'Sigle',
-      field: 'acronym',
-      type: 'key',
-      filter: true,
-      filterType: 'text',
-      sortable: true,
-      width: '100px',
-    },
-    {
-      header: 'Type',
-      field: 'typeLabel',
-      type: 'key',
     },
     {
       header: 'Date début de validité',
@@ -124,12 +99,6 @@ export class EstablishmentsComponent implements OnInit {
       width: '200px',
     },
     {
-      header: 'Ministère',
-      field: 'ministryName',
-      type: 'key',
-      width: '380px',
-    },
-    {
       header: 'Actions',
       field: 'action',
       type: 'app-actions-cell',
@@ -139,12 +108,12 @@ export class EstablishmentsComponent implements OnInit {
     },
   ];
 
-  rowCount: any = 5;
-
   constructor(
+    private router: Router,
     private modalService: NgbModal,
     private activatedRoute: ActivatedRoute,
     private simpleTabsRef: SimpleTabsRefService,
+    private fieldsService: FieldsService,
     public fb: FormBuilder,
     config: NgbModalConfig,
     private messageService: MessageService,
@@ -155,7 +124,7 @@ export class EstablishmentsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.simpleTabsRef.tabRef = 'establishments';
+    this.simpleTabsRef.tabRef = 'sites';
     this.getAllItems();
     this.initForm();
     this.filter =
@@ -163,7 +132,6 @@ export class EstablishmentsComponent implements OnInit {
   }
 
   initForm() {
-    const msg = 'date début inférieur date fin';
     const startDate = this.datePipe.transform(
       this.selectedItem ? this.selectedItem.startDate : new Date(),
       datePickerDateFormat
@@ -174,13 +142,10 @@ export class EstablishmentsComponent implements OnInit {
     );
     this.tabForm = this.fb.group({
       label: [this.selectedItem ? this.selectedItem.label : '', [Validators.required]],
-      acronym: [this.selectedItem ? this.selectedItem.acronym : '', [Validators.required]],
       startDate: [startDate, [Validators.required]],
-      disappearanceDate: [disappearanceDate, []],
-      ministry: [this.selectedRelatedEntity ? this.selectedRelatedEntity : '', [Validators.required]],
-      type: [this.selectedType ? this.selectedType : '', []],
+      endDate: [disappearanceDate, []],
     });
-    this.tabForm.setValidators(towDatesCompare('startDate', 'disappearanceDate'));
+    this.tabForm.setValidators(towDatesCompare('startDate', 'endDate'));
   }
 
   get defaultHeaderParams() {
@@ -194,72 +159,18 @@ export class EstablishmentsComponent implements OnInit {
     if (this.editItem || this.editVisibility) {
       this.itemToEdit = item;
       this.itemLabel = item.label;
-      this.selectedRelatedEntity = {
-        id: item.ministryId,
-        name: item.ministryName,
-      };
-      this.selectedType = {
-        id: item.typeId,
-        label: item.typeLabel,
-      };
-    }
-    if (this.addItem) {
-      this.selectedRelatedEntity = null;
-      this.selectedType = null;
-    }
-    if (this.editItem || this.addItem) {
-      if (this.relatedEntities.length === 0) {
-        this.getRelatedEntity();
-      }
-      if (this.types.length === 0) {
-        this.getTypes();
-      }
     }
     this.selectedItem = item;
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
 
-  getRelatedEntity(): any {
-    const previousUrl = this.simpleTabsRef.tabRef;
-    this.simpleTabsRef.tabRef = 'ministries';
-
-    this.simpleTabsRef.getAllItems({}).subscribe(
-      (result: any) => {
-        this.relatedEntities = result.results;
-        this.dataTableComponent.error = false;
-      },
-      (error: any) => {
-        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
-      }
-    );
-    this.simpleTabsRef.tabRef = previousUrl;
-  }
-
-  getTypes(): any {
-    const previousUrl = this.simpleTabsRef.tabRef;
-    this.simpleTabsRef.tabRef = 'establishmentTypes';
-
-    this.simpleTabsRef.getAllItems({}).subscribe(
-      (result: any) => {
-        this.types = result.results;
-      },
-      (error: any) => {
-        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
-      }
-    );
-    this.simpleTabsRef.tabRef = previousUrl;
-  }
-
   submit() {
     this.btnLoading = null;
-
     const item = {
       label: this.tabForm.value.label,
-      acronym: this.tabForm.value.acronym,
       startDate: this.datePipe.transform(this.tabForm.value.startDate, dateTimeFormat),
-      disappearanceDate: this.datePipe.transform(this.tabForm.value.disappearanceDate, dateTimeFormat),
-      ministry: this.tabForm.value.ministry.id,
+      disappearanceDate: this.datePipe.transform(this.tabForm.value.endDate, dateTimeFormat),
     };
     if (this.addItem) {
       this.addItems(item);
@@ -296,7 +207,6 @@ export class EstablishmentsComponent implements OnInit {
   addItemAction() {
     this.addItem = true;
     this.selectedItem = null;
-    this.selectedRelatedEntity = {};
     this.openModal(null);
   }
 
@@ -319,7 +229,7 @@ export class EstablishmentsComponent implements OnInit {
   }
 
   isActive(endDate: string) {
-    const today = this.datePipe.transform(new Date(), datePickerDateFormat);
+    const today = this.datePipe.transform(new Date(), viewDateFormat);
     return !(endDate !== '' && endDate && endDate <= today);
   }
 
@@ -327,13 +237,8 @@ export class EstablishmentsComponent implements OnInit {
     const newItem = {
       id: item.id,
       label: item.label,
-      acronym: item.acronym,
       startDate: item.startDate,
       disappearanceDate: item.disappearanceDate,
-      ministryId: item.ministry ? item.ministry.id : '',
-      ministryName: item.ministry ? item.ministry.name : '',
-      typeId: item.type ? item.type.id : '',
-      typeLabel: item.type ? item.type.label : '',
       active: true,
     };
     newItem.active = this.isActive(newItem.disappearanceDate);
@@ -349,11 +254,13 @@ export class EstablishmentsComponent implements OnInit {
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
     params = Object.assign(params, this.dataTableSearchBar);
+    console.log('http params', params);
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results.map((item: any) => {
           return this.convertItem(item);
         });
+        console.log('items', this.items);
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
         this.start = (this.page - 1) * this.limit + 1;
@@ -367,7 +274,7 @@ export class EstablishmentsComponent implements OnInit {
         this.total = 0;
         this.dataTableComponent.error = true;
         this.loading = false;
-        this.addSingle('error', 'Erreur Technique', 'Message: ' + error.error.message);
+        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
       }
     );
   }
@@ -377,14 +284,14 @@ export class EstablishmentsComponent implements OnInit {
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Suppression', 'Etablissement ' + item.label + ' supprimée avec succés');
+        this.addSingle('success', 'Suppression', 'Site ' + item.label + ' supprimée avec succés');
         this.getAllItems();
         this.deleteItems = false;
       },
       (error: any) => {
         this.close();
         if (error.error.code === 400) {
-          this.addSingle('error', 'Suppression', 'Etablissement ' + item.label + ' admet une relation');
+          this.addSingle('error', 'Suppression', 'Site ' + item.label + ' admet une relation');
         } else {
           this.addSingle('error', 'Suppression', error.error.message);
         }
@@ -397,7 +304,7 @@ export class EstablishmentsComponent implements OnInit {
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Ajout', 'Etablissement ' + item.label + ' ajoutée avec succés');
+        this.addSingle('success', 'Ajout', 'Site ' + item.label + ' ajoutée avec succés');
         this.getAllItems();
         this.addItem = false;
       },
@@ -412,7 +319,7 @@ export class EstablishmentsComponent implements OnInit {
     this.simpleTabsRef.editItem(item, id).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Modification', 'Etablissement ' + item.label + ' modifiée avec succés');
+        this.addSingle('success', 'Modification', 'Site ' + item.label + ' modifiée avec succés');
         this.getAllItems();
         this.editItem = false;
         this.editVisibility = false;

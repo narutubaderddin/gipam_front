@@ -11,6 +11,7 @@ import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 import { DatePipe } from '@angular/common';
 import { Dropdown } from 'primeng/dropdown';
+import { datePickerDateFormat, dateTimeFormat, towDatesCompare, viewDateFormat } from '@shared/utils/helpers';
 
 @Component({
   selector: 'app-establishments',
@@ -38,7 +39,6 @@ export class RegionsComponent implements OnInit {
   addItem = false;
   deleteItems = false;
   editVisibility = false;
-  dropdownSettings: IDropdownSettings;
   disappearanceDate: string;
   active = true;
   dropdownList: any;
@@ -83,7 +83,7 @@ export class RegionsComponent implements OnInit {
     {
       header: 'Date début de validité',
       field: 'startDate',
-      type: 'key',
+      type: 'date',
       filter: true,
       filterType: 'range-date',
       sortable: true,
@@ -92,7 +92,7 @@ export class RegionsComponent implements OnInit {
     {
       header: 'Date fin de validité',
       field: 'disappearanceDate',
-      type: 'key',
+      type: 'date',
       filter: true,
       filterType: 'range-date',
       sortable: true,
@@ -124,17 +124,8 @@ export class RegionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dropdownSettings = {
-      singleSelection: true,
-      idField: 'id',
-      textField: 'name',
-      itemsShowLimit: 5,
-      allowSearchFilter: true,
-      // maxHeight: 100,
-    };
     this.simpleTabsRef.tabRef = 'regions';
     this.getAllItems();
-    this.today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     this.initForm();
     this.filter =
       this.activatedRoute.snapshot.queryParams.filter && this.activatedRoute.snapshot.queryParams.filter.length > 0;
@@ -144,30 +135,18 @@ export class RegionsComponent implements OnInit {
     const msg = 'date début inférieur date fin';
     const startDate = this.datePipe.transform(
       this.selectedItem ? this.selectedItem.startDate : new Date(),
-      'yyyy-MM-dd'
+      datePickerDateFormat
     );
     const disappearanceDate = this.datePipe.transform(
       this.selectedItem ? this.selectedItem.disappearanceDate : '',
-      'yyyy-MM-dd'
+      datePickerDateFormat
     );
     this.tabForm = this.fb.group({
       name: [this.selectedItem ? this.selectedItem.name : '', [Validators.required]],
       startDate: [startDate, [Validators.required]],
       endDate: [disappearanceDate, []],
     });
-    this.tabForm.setValidators(this.ValidateDate());
-  }
-
-  ValidateDate(): ValidatorFn {
-    return (cc: FormGroup): ValidationErrors => {
-      if (!cc.get('startDate')) {
-        return null;
-      }
-      if (cc.get('startDate').value >= cc.get('endDate').value) {
-        return { dateInvalid: 'Date début supérieur ou égale date fin' };
-      }
-      return null;
-    };
+    this.tabForm.setValidators(towDatesCompare('startDate', 'endDate'));
   }
 
   get defaultHeaderParams() {
@@ -187,23 +166,12 @@ export class RegionsComponent implements OnInit {
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
 
-  transformDateToDateTime(input: string, format: string, addTime: boolean = true) {
-    // 1984-06-05 12:15:30
-    if (input !== '' && input) {
-      if (addTime) {
-        return this.datePipe.transform(input, format) + ' 00:00:00';
-      }
-      return this.datePipe.transform(input, format);
-    }
-    return '';
-  }
-
   submit() {
     this.btnLoading = null;
     const item = {
       name: this.tabForm.value.name,
-      startDate: this.transformDateToDateTime(this.tabForm.value.startDate, 'yyy-MM-dd'),
-      disappearanceDate: this.transformDateToDateTime(this.tabForm.value.endDate, 'yyy-MM-dd'),
+      startDate: this.datePipe.transform(this.tabForm.value.startDate, dateTimeFormat),
+      disappearanceDate: this.datePipe.transform(this.tabForm.value.endDate, dateTimeFormat),
     };
     if (this.addItem) {
       this.addItems(item);
@@ -218,8 +186,6 @@ export class RegionsComponent implements OnInit {
     this.addItem = false;
     this.deleteItems = false;
     this.editVisibility = false;
-
-    // this.myModal.close('Close click');
     this.myModal.dismiss('Cross click');
   }
 
@@ -264,7 +230,7 @@ export class RegionsComponent implements OnInit {
   }
 
   isActive(endDate: string) {
-    const today = this.datePipe.transform(new Date(), 'yyyy/MM/dd');
+    const today = this.datePipe.transform(new Date(), datePickerDateFormat);
     return !(endDate !== '' && endDate && endDate <= today);
   }
 
@@ -277,10 +243,6 @@ export class RegionsComponent implements OnInit {
       disappearanceDate: item.disappearanceDate,
       active: true,
     };
-    newItem.startDate = item.startDate ? this.datePipe.transform(item.startDate, 'yyyy/MM/dd') : null;
-    newItem.disappearanceDate = item.disappearanceDate
-      ? this.datePipe.transform(item.disappearanceDate, 'yyyy/MM/dd')
-      : null;
     newItem.active = this.isActive(newItem.disappearanceDate);
     return newItem;
   }
@@ -314,7 +276,7 @@ export class RegionsComponent implements OnInit {
         this.total = 0;
         this.dataTableComponent.error = true;
         this.loading = false;
-        this.addSingle('error', 'Erreur Technique', 'Code: ' + error.error.code + ' Message: ' + error.error.message);
+        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
       }
     );
   }
@@ -399,16 +361,7 @@ export class RegionsComponent implements OnInit {
 
   search(input: string) {
     this.page = 1;
-    this.columns.forEach((col) => {
-      if (col.filter && col.filterType === 'text') {
-        if (input) {
-          this.dataTableSearchBar[col.field + '[contains]'] = input;
-        } else {
-          delete this.dataTableSearchBar[col.field + '[contains]'];
-        }
-      }
-    });
-
+    this.dataTableSearchBar = { search: input };
     this.getAllItems();
   }
 }

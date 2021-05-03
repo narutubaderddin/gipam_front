@@ -81,10 +81,6 @@ export class ActionReportTypesComponent implements OnInit {
     },
   ];
 
-  rowCount: any = 5;
-
-  // filter = false;
-
   constructor(
     private router: Router,
     private modalService: NgbModal,
@@ -131,10 +127,7 @@ export class ActionReportTypesComponent implements OnInit {
     } else {
       this.addItem = true;
     }
-
-    // console.log(item);
     this.selectedItem = item.label;
-
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
@@ -157,8 +150,6 @@ export class ActionReportTypesComponent implements OnInit {
     this.editItem = false;
     this.addItem = false;
     this.deleteItems = false;
-
-    // this.myModal.close('Close click');
     this.myModal.dismiss('Cross click');
   }
 
@@ -214,7 +205,7 @@ export class ActionReportTypesComponent implements OnInit {
         this.total = 0;
         this.dataTableComponent.error = true;
         this.loading = false;
-        this.addSingle('error', 'Erreur Technique', 'Code: ' + error.error.code + ' Message: ' + error.error.message);
+        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
       }
     );
   }
@@ -310,7 +301,6 @@ export class ActionReportTypesComponent implements OnInit {
   }
 
   sortEvent(e: any) {
-    console.log('sort', e);
     if (e) {
       this.sort = 'desc';
       this.getAllItems();
