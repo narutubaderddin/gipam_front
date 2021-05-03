@@ -92,6 +92,8 @@ import { BuildingsComponent } from './components/tabs-ref/buildings/buildings.co
 import { CommunesComponent } from './components/tabs-ref/communes/communes.component';
 import { SubDivisionsComponent } from '@app/about/components/tabs-ref/subDivisions/subDivisions.component';
 import { RegionsComponent } from '@app/about/components/tabs-ref/regions/regions.component';
+import { DepartmentsComponent } from './components/tabs-ref/departments/departments.component';
+import { LocalisationTypeComponent } from './components/tabs-ref/localisation-type/localisation-type.component';
 
 setTheme('bs4');
 
@@ -150,6 +152,8 @@ const ngWizardConfig: NgWizardConfig = {
     SubDivisionsComponent,
     RegionsComponent,
     CommunesComponent,
+    DepartmentsComponent,
+    LocalisationTypeComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [

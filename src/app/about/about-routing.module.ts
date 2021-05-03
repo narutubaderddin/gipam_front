@@ -30,6 +30,8 @@ import {BuildingsComponent} from '@app/about/components/tabs-ref/buildings/build
 import {CommunesComponent} from "@app/about/components/tabs-ref/communes/communes.component";
 import { SubDivisionsComponent } from '@app/about/components/tabs-ref/subDivisions/subDivisions.component';
 import { RegionsComponent } from '@app/about/components/tabs-ref/regions/regions.component';
+import {DepartmentsComponent} from "@app/about/components/tabs-ref/departments/departments.component";
+import {LocalisationTypeComponent} from "@app/about/components/tabs-ref/localisation-type/localisation-type.component";
 const routes: Routes = [
   {
     path: '',
@@ -92,6 +94,9 @@ const routes: Routes = [
       { path: 'tab-ref-ministère', component: MinistryComponent },
       { path: 'tab-ref-bâtiment', component: BuildingsComponent },
       { path: 'tab-ref-commune', component: CommunesComponent },
+      { path: 'tab-ref-departement', component: DepartmentsComponent },
+      { path: 'tab-ref-type-localisation', component: LocalisationTypeComponent },
+
     ],
   },
 ];
