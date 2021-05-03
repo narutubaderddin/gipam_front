@@ -130,9 +130,6 @@ export class CommunesComponent implements OnInit {
     this.getAllItems();
     this.today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     this.initForm();
-    this.filter =
-      this.activatedRoute.snapshot.queryParams.filter && this.activatedRoute.snapshot.queryParams.filter.length > 0;
-    console.log('ng on init filter', this.filter);
   }
 
   initForm() {
@@ -173,8 +170,11 @@ export class CommunesComponent implements OnInit {
     if (this.editItem || this.editVisibility) {
       this.itemToEdit = item;
       this.itemLabel = item.name;
-      console.log(item);
-      this.selectedRelatedEntity = item.department ? item.department.name:''
+
+      this.selectedRelatedEntity = item.region ? {
+        name:item.region.name,
+        id:item.region.id
+      } : {};
 
     }
     if (this.editItem || this.addItem) {
@@ -184,8 +184,9 @@ export class CommunesComponent implements OnInit {
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
-  onSiteSelect(item: any) {
+  onDepartmentSelect(item: any) {
     this.selectedRelatedEntity = item;
+    console.log(item)
   }
   onSelectAll(items: any) {}
 
@@ -195,6 +196,7 @@ export class CommunesComponent implements OnInit {
 
     this.simpleTabsRef.getAllItems({}).subscribe((result: any) => {
       this.relatedEntities = result.results;
+      console.log('relatedEntities',this.relatedEntities)
     });
     this.simpleTabsRef.tabRef = previousUrl;
   }
@@ -212,7 +214,7 @@ export class CommunesComponent implements OnInit {
 
   submit() {
     this.btnLoading = null;
-    console.log('ministry ', this.tabForm.value.ministry);
+
     const item = {
       name: this.tabForm.value.label,
       startDate: this.transformDateToDateTime(this.tabForm.value.startDate, 'yyy-MM-dd'),
@@ -313,7 +315,7 @@ export class CommunesComponent implements OnInit {
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
     params = Object.assign(params, this.dataTableSearchBar);
-    console.log('http params', params);
+
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results.map((item: any) => {
@@ -326,7 +328,12 @@ export class CommunesComponent implements OnInit {
         this.loading = false;
       },
       (error: any) => {
-        this.addSingle('error', '', error.error.message);
+        this.items = [];
+        this.totalFiltred = 0;
+        this.total = 0;
+        this.dataTableComponent.error = true;
+        this.loading = false;
+        this.addSingle('error', 'Erreur Technique', error.error.message);
       }
     );
   }
@@ -398,19 +405,14 @@ export class CommunesComponent implements OnInit {
   }
 
   filters(e: any) {
-    console.log('original filter', e);
+
     this.dataTableFilter = Object.assign({}, e);
     this.page = 1;
     this.dataTableComponent.currentPage = 1;
     this.getAllItems();
   }
 
-  getKeyByValue(object: any, value: any) {
-    return Object.keys(object).find((key) => object[key] === value);
-  }
-
   sortEvent(e: any) {
-    console.log('sort', e);
     this.dataTableSort = e;
     this.getAllItems();
   }
@@ -418,17 +420,13 @@ export class CommunesComponent implements OnInit {
   search(input: string) {
     this.page = 1;
 
-    this.columns.forEach((col) => {
-      if (col.filter && col.filterType === 'text') {
-        if (input) {
-          this.dataTableFilter[col.field + '[contains]'] = input;
-        } else {
-          delete this.dataTableFilter[col.field + '[contains]'];
-        }
-      }
-    });
-
+   this.dataTableSearchBar= {'search': input};
     this.getAllItems();
+  }
+  ClearSearch(event: Event, input:string) {
+    if(!event['inputType']){
+      this.search(input);
+    }
   }
 
 }

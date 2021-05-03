@@ -7,6 +7,7 @@ import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 import { DenominationsService } from '@shared/services/denominations.service';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
+import {NgDataTableComponent} from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 
 @Component({
   selector: 'app-material-technique',
@@ -15,6 +16,7 @@ import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 })
 export class MaterialTechniqueComponent implements OnInit {
   @ViewChild('content') modalRef: TemplateRef<any>;
+  @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
 
   myModal: any;
   selectedItem: string;
@@ -43,8 +45,12 @@ export class MaterialTechniqueComponent implements OnInit {
   start: any;
   end: any;
 
-  loading: boolean = false;
-  items: any;
+  loading = true;
+  btnLoading: any = null;
+  dataTableFilter: any = {};
+  dataTableSort: any = {};
+  dataTableSearchBar: any = {};
+  items: any[]=[];
 
   columns = [
     {
@@ -128,6 +134,7 @@ export class MaterialTechniqueComponent implements OnInit {
   resetFilter() {}
 
   openModal(item: any) {
+    this.btnLoading = null;
     this.selectedDenominations = [];
     if (item) {
       this.editItem = true;
@@ -143,7 +150,8 @@ export class MaterialTechniqueComponent implements OnInit {
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
   submit() {
-    console.log(this.tabForm.value.denomination, this.tabForm.value.field);
+    this.btnLoading = null;
+
     const item = {
       label: this.tabForm.value.material,
       type: this.tabForm.value.type,
@@ -165,6 +173,7 @@ export class MaterialTechniqueComponent implements OnInit {
     this.myModal.dismiss('Cross click');
   }
   deleteItem(data: any) {
+    this.btnLoading = null;
     this.deleteItems = true;
     this.itemToDelete = data;
     this.itemLabel = data.label;
@@ -190,30 +199,40 @@ export class MaterialTechniqueComponent implements OnInit {
 
   getAllItems() {
     this.simpleTabsRef.tabRef = 'materialTechniques';
-    this.simpleTabsRef
-      .getAllItems({
-        limit: this.limit,
-        page: this.page,
-        'label[contains]': this.filter,
-        sort_by: this.sortBy,
-        sort: this.sort,
-      })
-      .subscribe(
-        (result: any) => {
-          this.items = result.results;
-          this.totalFiltred = result.filteredQuantity;
-          this.total = result.totalQuantity;
-          this.start = (this.page - 1) * this.limit + 1;
-          this.end = (this.page - 1) * this.limit + this.items.length;
-          this.loading = false;
-        },
-        (error: any) => {
-          this.addSingle('error', '', error.error.message);
-        }
-      );
+    this.loading = true;
+    let params = {
+      limit: this.limit,
+      page: this.page,
+      sort_by:this.sortBy,
+      sort: this.sort
+    };
+    params = Object.assign(params, this.dataTableFilter);
+    params = Object.assign(params, this.dataTableSort);
+    params = Object.assign(params, this.dataTableSearchBar);
+
+    this.simpleTabsRef.getAllItems(params).subscribe(
+      (result: any) => {
+        this.items = result.results;
+        this.totalFiltred = result.filteredQuantity;
+        this.total = result.totalQuantity;
+        this.start = (this.page - 1) * this.limit + 1;
+        this.end = (this.page - 1) * this.limit + this.items.length;
+        this.loading = false;
+      },
+      (error: any) => {
+        this.items = [];
+        this.totalFiltred = 0;
+        this.total = 0;
+        this.dataTableComponent.error = true;
+        this.loading = false;
+        this.addSingle('error', 'Erreur Technique', error.error.message);
+      }
+    );
   }
   deleteItemss(item: any) {
     this.simpleTabsRef.tabRef = 'materialTechniques';
+
+    this.btnLoading = '';
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
         this.close();
@@ -232,6 +251,7 @@ export class MaterialTechniqueComponent implements OnInit {
   }
   addItems(item: any) {
     console.log(item);
+    this.btnLoading = '';
     this.simpleTabsRef.tabRef = 'materialTechniques';
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
@@ -263,6 +283,7 @@ export class MaterialTechniqueComponent implements OnInit {
     );
   }
   editItems(item: any, id: number) {
+    this.btnLoading = '';
     console.log(item);
     this.simpleTabsRef.tabRef = 'materialTechniques';
     this.simpleTabsRef.editItem(item, id).subscribe(
@@ -281,6 +302,7 @@ export class MaterialTechniqueComponent implements OnInit {
 
   addSingle(type: string, sum: string, msg: string) {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
+    this.btnLoading = null;
   }
   pagination(e: any) {
     if (e.page < this.total / parseInt(this.limit.toString(), 0)) {
@@ -292,18 +314,26 @@ export class MaterialTechniqueComponent implements OnInit {
   }
 
   filters(e: any) {
-    console.log(e);
-    this.filter = e.label;
+
+    this.dataTableFilter = Object.assign({}, e);
+    this.page = 1;
+    this.dataTableComponent.currentPage = 1;
     this.getAllItems();
   }
+
   sortEvent(e: any) {
-    console.log(e);
-    if (e) {
-      this.sort = 'asc';
-      this.getAllItems();
-    } else {
-      this.sort = 'desc';
-      this.getAllItems();
+    this.dataTableSort = e;
+    this.getAllItems();
+  }
+
+  search(input: string) {
+    this.page = 1;
+    this.dataTableSearchBar= {'search': input};
+    this.getAllItems();
+  }
+  ClearSearch(event: Event, input:string) {
+    if(!event['inputType']){
+      this.search(input);
     }
   }
 
@@ -334,4 +364,6 @@ export class MaterialTechniqueComponent implements OnInit {
   public onDeSelectAll(items: any) {
     this.selectedDenominations = [];
   }
+
+
 }

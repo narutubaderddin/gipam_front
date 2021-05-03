@@ -29,8 +29,8 @@
                   id="example-search-input"
                   #searchBox
                   (keyup.enter)="search(searchBox.value)"
-                  (blur)="search(searchBox.value)"
-                  (close)="search('')"
+
+                  (input)="ClearSearch($event, searchBox.value )"
                 />
                 <span class="input-group-append">
                   <button
@@ -109,10 +109,11 @@
             [options]="relatedEntities"
             optionLabel="name"
             formControlName="department"
-            placeholder="Sélectionner un département"
+            placeholder="{{selectedRelatedEntity&&editItem ? selectedRelatedEntity.name : 'Sélectionner un département'}}"
             emptyFilterMessage="Aucun résultat trouvé"
-            (onChange)="onSiteSelect($event)"
-            dataKey="{{selectedRelatedEntity}}"
+            (onChange)="onDepartmentSelect($event)"
+            [filter]="true"
+            [filterBy]="'name'"
           ></p-dropdown>
         </div>
       </div>

@@ -27,11 +27,22 @@
                 <input
                   class="form-control py-2 border-right-0 border search-form-control"
                   type="search"
-                  value="Rechercher"
+                  placeholder="Rechercher"
                   id="example-search-input"
+                  #searchBox
+                  (keyup.enter)="search(searchBox.value)"
+
+                  (input)="ClearSearch($event, searchBox.value )"
                 />
+                <span *ngIf="searchBox.value.length > 0"
+                      (click)="search('')"
+                      class="fa fa-close" ></span>
                 <span class="input-group-append">
-                  <button class="btn btn-outline-secondary border-left-0 border" type="button">
+                  <button
+                    class="btn btn-outline-secondary border-left-0 border btn-search"
+                    type="button"
+                    (click)="search(searchBox.value)"
+                  >
                     <i class="fa fa-search"></i>
                   </button>
                 </span>
@@ -85,21 +96,6 @@
     </div>
     <div class="modal-body">
       <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer la matière / technique "{{ itemLabel }}" ?</div>
-      <!--      <div-->
-      <!--        class="form-group col-md-12 d-flex justify-content-between align-items-baseline"-->
-      <!--        *ngIf="editItem || addItem"-->
-      <!--      >-->
-      <!--        <label class="col-sm-3">Domaine<span class="mandatory"> *</span></label>-->
-      <!--        <ng-multiselect-dropdown-->
-      <!--          formControlName="field"-->
-      <!--          class="select col-sm-7 p-0"-->
-      <!--          [placeholder]="'Choisir domaine'"-->
-      <!--          [settings]="dropdownSettings"-->
-      <!--          [data]="domains"-->
-      <!--          (onSelect)="onDomainSelect($event)"-->
-      <!--        >-->
-      <!--        </ng-multiselect-dropdown>-->
-      <!--      </div>-->
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-4">Dénomination<span class="mandatory"> *</span></label>
         <ng-multiselect-dropdown

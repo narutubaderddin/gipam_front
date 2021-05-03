@@ -27,9 +27,14 @@
                   type="search"
                   placeholder="Rechercher"
                   id="example-search-input"
+                  #searchBox
+                  (keyup.enter)="search(searchBox.value)"
+                  (input)="ClearSearch($event, searchBox.value)"
                 />
                 <span class="input-group-append">
-                  <button class="btn btn-outline-secondary border-left-0 border" type="button">
+                  <button class="btn btn-outline-secondary border-left-0 border"
+                          type="button"
+                          (click)="search(searchBox.value)">
                     <i class="fa fa-search"></i>
                   </button>
                 </span>
@@ -49,7 +54,7 @@
               (pageChanged)="pagination($event)"
               (filterValue)="filters($event)"
               (sort)="sortEvent($event)"
-              [component]="'tabRefStyle'"
+              [component]="'tabRefEras'"
               [columns]="columns"
               [frozenCols]="[]"
               [frozenWidth]="'0px'"

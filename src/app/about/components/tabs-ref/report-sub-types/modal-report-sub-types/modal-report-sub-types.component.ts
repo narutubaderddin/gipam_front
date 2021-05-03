@@ -25,7 +25,7 @@ export class ModalReportSubTypesComponent implements OnInit {
   dropdownSettings: IDropdownSettings;
   dropdownList: any;
   reportTypes: any;
-  selectedMvtType: any;
+  selectedreportType: any;
   constructor(
     public fb: FormBuilder,
     public activeModal: NgbActiveModal,
@@ -51,6 +51,7 @@ export class ModalReportSubTypesComponent implements OnInit {
     this.active = this.fromParent.active;
     this.selectedItem = this.fromParent.selectedItem;
     this.name = this.fromParent.name;
+    this.selectedreportType = this.fromParent.selectedreportType ;
     console.log(this.selectedItem, this.editItem);
   }
   initForm() {
@@ -93,7 +94,7 @@ export class ModalReportSubTypesComponent implements OnInit {
     );
   }
   onMvtTypesSelect(item: any) {
-    this.selectedMvtType = item;
+    this.selectedreportType = item;
     console.log(item);
   }
 }

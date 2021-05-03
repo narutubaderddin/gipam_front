@@ -1,8 +1,8 @@
 <div class="breadcrumb">
   <a href="accueil">Accueil</a>
-  <a href="tab-ref-ministère" class="selected-item">
+  <a href="tab-ref-department" class="selected-item">
     <i class="fas fa-chevron-right"></i>
-    Gestion des Ministères
+    Gestion des départements
   </a>
 </div>
 <div class="container-fluid">
@@ -13,7 +13,7 @@
           <div class="card">
             <div class="card-body">
               <ul class="d-flex">
-                <li class="col-md-12 selected-table"><i class="fas fa-tasks"></i><a>Gestion des Ministères</a></li>
+                <li class="col-md-12 selected-table"><i class="fas fa-tasks"></i><a>Gestion des départements</a></li>
               </ul>
             </div>
           </div>
@@ -45,7 +45,7 @@
               <div class="mr-3">
                 <button class="btn add-action" (click)="addItemAction()">
                   <i class="fas fa-plus-circle mr-1"></i>
-                  Ajouter Ministère
+                  Ajouter Département
                 </button>
               </div>
             </div>
@@ -81,50 +81,53 @@
 <ng-template #content let-modal>
   <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
     <div class="modal-header">
-      <h4 class="modal-title" *ngIf="editItem">Modification d'une Ministère</h4>
-      <h4 class="modal-title" *ngIf="addItem">Ajout d'une Ministère</h4>
-      <h4 class="modal-title" *ngIf="deleteItems">Suppression d'une Ministère</h4>
-      <h4 class="modal-title" *ngIf="editVisibility">Activation / désactivation d'une Ministère</h4>
+      <h4 class="modal-title" *ngIf="editItem">Modification de département "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="addItem">Ajout d'un département</h4>
+      <h4 class="modal-title" *ngIf="deleteItems">Suppression de département "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="editVisibility">Activer/Désactiver le département "{{ itemLabel }}"</h4>
       <button type="button" class="close" aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
-      <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer la Ministère "{{ itemLabel }}" ?</div>
+      <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer le département "{{ itemLabel }}" ?</div>
 
-      <div
-        class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
-        *ngIf="editItem || addItem || editVisibility"
-      >
-        <label class="col-sm-5">Libellé<span class="mandatory" *ngIf="!editVisibility"> *</span></label>
-        <input
-          type="text"
-          class="form-control col-sm-7"
-          value="{{ editItem || editVisibility ? selectedItem.name : '' }}"
-          formControlName="label"
-          [readOnly]="editVisibility"
-        />
-      </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Sigle<span class="mandatory"> *</span></label>
+        <label class="col-sm-5">Libellé<span class="mandatory"> *</span></label>
         <input
           type="text"
           class="form-control col-sm-7"
-          value="{{ editItem ? selectedItem.acronym : '' }}"
-          formControlName="acronym"
+          value="{{ editItem ? selectedItem.name : '' }}"
+          formControlName="label"
         />
       </div>
 
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
+        <label class="col-sm-5">Région<span class="mandatory"> *</span></label>
+        <div class="select col-sm-7 p-0">
+          <p-dropdown
+            [options]="relatedEntities"
+            optionLabel="name"
+            formControlName="region"
+            placeholder="{{selectedRelatedEntity&&editItem ? selectedRelatedEntity.name : 'Sélectionner une région'}}"
+            emptyFilterMessage="Aucun résultat trouvé"
+            (onChange)="onRegionSelect($event)"
+
+            [filter]="true"
+            [filterBy]="'name'"
+          ></p-dropdown>
+        </div>
+      </div>
       <div
         class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
-        *ngIf="editItem || addItem || editVisibility"
+        *ngIf="addItem || editVisibility"
       >
         <label class="col-sm-5">Date début de validité<span class="mandatory"> *</span></label>
         <input type="date" name="datepicker" class="form-control date-input col-sm-7" formControlName="startDate" />
       </div>
       <div
         class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
-        *ngIf="editItem || addItem || editVisibility"
+        *ngIf="addItem || editVisibility"
       >
         <label class="col-sm-5">Date fin de validité</label>
         <input
@@ -162,3 +165,5 @@
   </form>
 </ng-template>
 <p-toast></p-toast>
+
+

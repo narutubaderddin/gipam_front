@@ -1,25 +1,23 @@
-import { Component, EventEmitter, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { CustomHeaderRendererComponent } from '@shared/components/datatables/custom-header-renderer/custom-header-renderer.component';
-import { DomainsActionsRendererComponent } from '@shared/components/datatables/domains-actions-renderer/domains-actions-renderer.component';
-import { ColumnApi, GridApi, GridOptions, ICellEditorParams } from 'ag-grid-community';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {NgDataTableComponent} from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import {FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
+import {IDropdownSettings} from 'ng-multiselect-dropdown';
+import {ActivatedRoute, Router} from '@angular/router';
 import {NgbModal, NgbModalConfig, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { ColumnFilterModel } from '@shared/models/column-filter-model';
-import { FieldsService } from '@shared/services/fields.service';
-import { MessageService } from 'primeng/api';
-import {NgDataTableComponent} from "@shared/components/ng-dataTables/ng-data-table/ng-data-table.component";
-import {IDropdownSettings} from "ng-multiselect-dropdown";
-import {SimpleTabsRefService} from "@shared/services/simple-tabs-ref.service";
-import {ModalTabsRefComponent} from "@app/about/components/tabs-ref/modal-tabs-ref/modal-tabs-ref.component";
+import {SimpleTabsRefService} from '@shared/services/simple-tabs-ref.service';
+import {FieldsService} from '@shared/services/fields.service';
+import {MessageService} from 'primeng/api';
+import {DatePipe} from '@angular/common';
+import {ModalTabsRefComponent} from '@app/about/components/tabs-ref/modal-tabs-ref/modal-tabs-ref.component';
 
 @Component({
-  selector: 'app-domains',
-  templateUrl: './domains.component.html',
-  styleUrls: ['./domains.component.scss'],
+  selector: 'app-localisation-type',
+  templateUrl: './localisation-type.component.html',
+  styleUrls: ['./localisation-type.component.scss'],
+  providers: [DatePipe]
 })
-export class DomainsComponent implements OnInit {
+export class LocalisationTypeComponent implements OnInit {
+
   @ViewChild(NgDataTableComponent, {static: false}) dataTableComponent: NgDataTableComponent;
 
   myForm: any;
@@ -75,6 +73,7 @@ export class DomainsComponent implements OnInit {
     },
   ];
 
+  rowCount: any = 5;
 
   constructor(
     private router: Router,
@@ -85,13 +84,14 @@ export class DomainsComponent implements OnInit {
     public fb: FormBuilder,
     config: NgbModalConfig,
     private messageService: MessageService,
+    private datePipe: DatePipe
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
   }
 
   ngOnInit(): void {
-    this.simpleTabsRef.tabRef = 'fields';
+    this.simpleTabsRef.tabRef = 'locationTypes';
     this.getAllItems();
   }
 
@@ -115,7 +115,7 @@ export class DomainsComponent implements OnInit {
     };
     const modalRef = this.modalService.open(ModalTabsRefComponent, ngbModalOptions);
     modalRef.componentInstance.fromParent = {
-      name: 'domaine',
+      name: 'type localisation',
       editItem: this.editItem,
       addItem: this.addItem,
       deleteItems: this.deleteItems,
@@ -210,9 +210,9 @@ export class DomainsComponent implements OnInit {
     this.simpleTabsRef.editItem({label: data.label, active: data.active}, data.id).subscribe(
       (result) => {
         if (data.active) {
-          this.addSingle('success', 'Activation', 'Domaine ' + data.label + ' activée avec succés');
+          this.addSingle('success', 'Activation', 'Type localisation ' + data.label + ' activée avec succés');
         } else {
-          this.addSingle('success', 'Activation', 'Domaine ' + data.label + ' désactivée avec succés');
+          this.addSingle('success', 'Activation', 'Type localisation ' + data.label + ' désactivée avec succés');
         }
         this.getAllItems();
       },
@@ -258,12 +258,6 @@ export class DomainsComponent implements OnInit {
     this.getAllItems();
   }
 
-  ClearSearch(event: Event, input:string) {
-    if(!event['inputType']){
-      this.search(input);
-    }
-  }
-
   paginationData(): void {
     // this.dataTableComponent.handlePaginationInfo();
   }
@@ -273,7 +267,7 @@ export class DomainsComponent implements OnInit {
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Ajout', 'Domaine ' + item.label + ' ajoutée avec succés');
+        this.addSingle('success', 'Ajout', 'Type localisation ' + item.label + ' ajoutée avec succés');
         this.getAllItems();
       },
       (error) => {
@@ -306,7 +300,7 @@ export class DomainsComponent implements OnInit {
     this.simpleTabsRef.editItem(item, id).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Modification', 'Domaine ' + item.label + ' modifiée avec succés');
+        this.addSingle('success', 'Modification', 'Type localisation ' + item.label + ' modifiée avec succés');
         this.getAllItems();
       },
 
@@ -321,13 +315,13 @@ export class DomainsComponent implements OnInit {
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Suppression', 'Domaine ' + item.label + ' supprimée avec succés');
+        this.addSingle('success', 'Suppression', 'Type localisation ' + item.label + ' supprimée avec succés');
         this.getAllItems();
       },
       (error: any) => {
         this.close();
         if (error.error.code === 400) {
-          this.addSingle('error', 'Suppression', 'Domaine ' + item.label + ' admet une relation');
+          this.addSingle('error', 'Suppression', 'Type localisation ' + item.label + ' admet une relation');
         } else {
           this.addSingle('error', 'Suppression', error.error.message);
         }

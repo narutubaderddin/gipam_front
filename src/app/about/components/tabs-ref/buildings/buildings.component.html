@@ -29,8 +29,8 @@
                   id="example-search-input"
                   #searchBox
                   (keyup.enter)="search(searchBox.value)"
-                  (blur)="search(searchBox.value)"
-                  (close)="search('')"
+
+                  (input)="ClearSearch($event, searchBox.value )"
                 />
                 <span class="input-group-append">
                   <button
@@ -148,6 +148,7 @@
             [showClear]="false"
             (onChange)="onSiteSelect($event)"
             dataKey="{{ selectedSite }}"
+            [filter]="true"
           ></p-dropdown>
         </div>
       </div>
@@ -164,9 +165,12 @@
             [showClear]="false"
             (onChange)="onCommuneSelect($event)"
             dataKey="{{ selectedCommune }}"
+            [filter]="true"
           ></p-dropdown>
         </div>
       </div>
+
+
       <div
         class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
         *ngIf="editItem || addItem || editVisibility"

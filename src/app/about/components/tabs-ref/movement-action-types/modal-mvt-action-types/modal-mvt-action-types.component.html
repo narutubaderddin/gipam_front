@@ -1,9 +1,9 @@
 <div class="modal-content">
   <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
     <div class="modal-header">
-      <h4 class="modal-title" *ngIf="editItem">Modification de {{ name }}</h4>
+      <h4 class="modal-title" *ngIf="editItem">Modification de {{ name }} "{{ itemToEdit.label }}"</h4>
       <h4 class="modal-title" *ngIf="addItem">Ajout de {{ name }}</h4>
-      <h4 class="modal-title" *ngIf="deleteItems">Suppression de {{ name }}</h4>
+      <h4 class="modal-title" *ngIf="deleteItems">Suppression de {{ name }} "{{ itemToDelete.label }}"</h4>
       <button type="button" class="close" aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -12,15 +12,18 @@
       <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer "{{ itemToDelete.label }}" ?</div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-5">Type mouvement<span class="mandatory"> *</span></label>
-        <ng-multiselect-dropdown
-          formControlName="movementType"
-          class="select col-sm-7 p-0"
-          [placeholder]="'Choisir type mouvement'"
-          [settings]="dropdownSettings"
-          [data]="mvtTypes"
-          (onSelect)="onMvtTypesSelect($event)"
-        >
-        </ng-multiselect-dropdown>
+
+        <div class="select col-sm-7 p-0">
+          <p-dropdown
+            [options]="mvtTypes"
+            optionLabel="label"
+            formControlName="movementType"
+            [placeholder]="selectedMvtType&&editItem ? selectedMvtType.label : 'Sélectionner un type mouvement'"
+            emptyFilterMessage="Aucun résultat trouvé"
+            (onChange)="onMvtTypesSelect($event)"
+            [filter]="true"
+          ></p-dropdown>
+        </div>
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-5">Libellé<span class="mandatory"> *</span></label>

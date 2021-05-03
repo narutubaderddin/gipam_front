@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
@@ -8,6 +8,7 @@ import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 import { ModalTabsRefComponent } from '@app/about/components/tabs-ref/modal-tabs-ref/modal-tabs-ref.component';
+import {NgDataTableComponent} from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 
 @Component({
   selector: 'app-type-mvt',
@@ -15,6 +16,7 @@ import { ModalTabsRefComponent } from '@app/about/components/tabs-ref/modal-tabs
   styleUrls: ['./type-mvt.component.scss'],
 })
 export class TypeMvtComponent implements OnInit {
+  @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
   loading = true;
   btnLoading: any = null;
   myModal: any;
@@ -33,7 +35,7 @@ export class TypeMvtComponent implements OnInit {
   itemLabel: any;
 
   filter: any;
-  sortBy = 'id';
+  sortBy = 'label';
   sort: string = 'asc';
   totalFiltred: any;
   total: any;
@@ -41,22 +43,11 @@ export class TypeMvtComponent implements OnInit {
   page = 1;
   end: number;
   start: number;
-  defaultColDef = {
-    headerComponent: 'customHeader',
-    sortable: true,
-    filter: true,
-    resizable: true,
-    headerValueGetter: (params: any) => {
-      return params.colDef.headerName;
-    },
-    headerComponentParams: {
-      menuIcon: 'fa-filter',
-      operator: OPERATORS.like,
-      type: TYPES.text,
-    },
-  };
 
-  items: any;
+  dataTableFilter: any = {};
+  dataTableSort: any = {};
+  dataTableSearchBar: any = {};
+  items: any[]=[];
 
   columns = [
     {
@@ -95,17 +86,12 @@ export class TypeMvtComponent implements OnInit {
     config.keyboard = false;
   }
 
-  get defaultHeaderParams() {
-    return this.defaultColDef.headerComponentParams;
-  }
+
 
   ngOnInit(): void {
     this.simpleTabsRef.tabRef = 'movementTypes';
     this.getAllItems();
 
-    this.filter =
-      this.activatedRoute.snapshot.queryParams['filter'] &&
-      this.activatedRoute.snapshot.queryParams['filter'].length > 0;
   }
 
   resetFilter() {}
@@ -206,18 +192,20 @@ export class TypeMvtComponent implements OnInit {
 
   getAllItems() {
     this.loading = true;
-
-    const params = {
+    let params = {
       limit: this.limit,
       page: this.page,
-      'label[contains]': this.filter,
-      sort_by: this.sortBy,
-      sort: this.sort,
+      sort_by:this.sortBy,
+      sort: this.sort
     };
-
+    params = Object.assign(params, this.dataTableFilter);
+    params = Object.assign(params, this.dataTableSort);
+    params = Object.assign(params, this.dataTableSearchBar);
+    console.log('http params', params);
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results;
+
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
         this.start = (this.page - 1) * this.limit + 1;
@@ -225,10 +213,16 @@ export class TypeMvtComponent implements OnInit {
         this.loading = false;
       },
       (error: any) => {
-        this.addSingle('error', '', error.error.message);
+        this.items = [];
+        this.totalFiltred = 0;
+        this.total = 0;
+        this.dataTableComponent.error = true;
+        this.loading = false;
+        this.addSingle('error', 'Erreur Technique', error.error.message);
       }
     );
   }
+
 
   setItems(data: any[]) {
     this.items = [...data];
@@ -316,28 +310,25 @@ export class TypeMvtComponent implements OnInit {
   }
 
   filters(e: any) {
-    console.log(e);
-    this.filter = e.label;
+    this.dataTableFilter = Object.assign({}, e);
+    this.page = 1;
+    this.dataTableComponent.currentPage = 1;
     this.getAllItems();
   }
 
   sortEvent(e: any) {
-    this.sortBy = 'label';
-    if (e) {
-      this.sort = 'desc';
-      this.getAllItems();
-    } else {
-      this.sort = 'asc';
-      this.getAllItems();
-    }
-  }
-  search(input: string) {
-    if (input) {
-      this.filter = input;
-      this.getAllItems();
-      return;
-    }
-    this.filter = '';
+    this.dataTableSort = e;
     this.getAllItems();
+  }
+
+  search(input: string) {
+    this.page = 1;
+    this.dataTableSearchBar= {'search': input};
+    this.getAllItems();
+  }
+  ClearSearch(event: Event, input :string) {
+    if(!event['inputType']){
+      this.search(input);
+    }
   }
 }

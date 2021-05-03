@@ -1,8 +1,8 @@
 <div class="breadcrumb">
   <a href="accueil">Accueil</a>
-  <a href="tab-ref-categorie" class="selected-item">
+  <a href="tab-ref-department" class="selected-item">
     <i class="fas fa-chevron-right"></i>
-    Gestion des types mouvements
+    Gestion de Type localisation
   </a>
 </div>
 <div class="container-fluid">
@@ -13,8 +13,8 @@
           <div class="card">
             <div class="card-body">
               <ul class="d-flex">
-                <li class="col-md-12 selected-table">
-                  <i class="fas fa-tasks"></i><a>Gestion des types mouvements</a>
+                <li class="col-md-12 selected-table"><i class="fas fa-tasks">
+                </i><a>Gestion de Type localisation</a>
                 </li>
               </ul>
             </div>
@@ -31,8 +31,8 @@
                   id="example-search-input"
                   #searchBox
                   (keyup.enter)="search(searchBox.value)"
-
-                  (input)="ClearSearch($event, searchBox.value)"
+                  (blur)="search(searchBox.value)"
+                  (close)="search('')"
                 />
                 <span class="input-group-append">
                   <button
@@ -47,7 +47,7 @@
               <div class="mr-3">
                 <button class="btn add-action" (click)="openModal('')">
                   <i class="fas fa-plus-circle mr-1"></i>
-                  Ajouter type mouvement
+                  Ajouter Type localisation
                 </button>
               </div>
             </div>
@@ -60,7 +60,7 @@
               (pageChanged)="pagination($event)"
               (filterValue)="filters($event)"
               (sort)="sortEvent($event)"
-              [component]="'tabRefTypeMvt'"
+              [component]="'tabRefStyle'"
               [columns]="columns"
               [frozenCols]="[]"
               [frozenWidth]="'0px'"
@@ -82,3 +82,6 @@
 </div>
 
 <p-toast></p-toast>
+
+
+
