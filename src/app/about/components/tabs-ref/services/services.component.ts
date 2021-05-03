@@ -405,7 +405,7 @@ export class ServicesComponent implements OnInit {
   }
 
   filters(e: any) {
-    this.dataTableFilter = Object.assign({}, e);
+    this.dataTableFilter = Object.assign({}, this.simpleTabsRef.prepareFilter(e));
     this.page = 1;
     this.dataTableComponent.currentPage = 1;
     this.getAllItems();
@@ -420,5 +420,11 @@ export class ServicesComponent implements OnInit {
     this.page = 1;
     this.dataTableSearchBar = { search: input };
     this.getAllItems();
+  }
+
+  ClearSearch(event: any, input: string) {
+    if (!event.inputType) {
+      this.search(input);
+    }
   }
 }
