@@ -86,14 +86,19 @@ import { ReportSubTypesComponent } from './components/tabs-ref/report-sub-types/
 import { GalleriaModule } from 'primeng/galleria';
 import { EstablishmentsComponent } from '@app/about/components/tabs-ref/establishments/establishments.component';
 import { ModalReportSubTypesComponent } from './components/tabs-ref/report-sub-types/modal-report-sub-types/modal-report-sub-types.component';
-// import { EstablishmentsComponent } from '@app/about/components/tabs-ref/establishment/establishments.component';
+// import { ServicesComponent } from '@app/about/components/tabs-ref/establishment/establishments.component';
 import { MinistryComponent } from './components/tabs-ref/ministry/ministry.component';
 import { BuildingsComponent } from './components/tabs-ref/buildings/buildings.component';
 import { CommunesComponent } from './components/tabs-ref/communes/communes.component';
+import { ArtWorksPipe } from '@app/about/pipes/art-works.pipe';
+import { ArtWorksDataPipe } from '@app/about/pipes/art-works-data.pipe';
+import { FormValuePipe } from './pipes/form-value.pipe';
 import { SubDivisionsComponent } from '@app/about/components/tabs-ref/subDivisions/subDivisions.component';
 import { RegionsComponent } from '@app/about/components/tabs-ref/regions/regions.component';
 import { DepartmentsComponent } from './components/tabs-ref/departments/departments.component';
 import { LocalisationTypeComponent } from './components/tabs-ref/localisation-type/localisation-type.component';
+import { ServicesComponent } from '@app/about/components/tabs-ref/services/services.component';
+import { SitesComponent } from '@app/about/components/tabs-ref/sites/sites.component';
 
 setTheme('bs4');
 
@@ -117,6 +122,8 @@ const ngWizardConfig: NgWizardConfig = {
     PortailItemDetailsComponent,
     PortailItemImageComponent,
     ObservationsComponent,
+    ArtWorksPipe,
+    ArtWorksDataPipe,
     DescritifComponent,
     ProofsInProgressComponent,
     InProgressAlertsComponent,
@@ -151,6 +158,9 @@ const ngWizardConfig: NgWizardConfig = {
     BuildingsComponent,
     SubDivisionsComponent,
     RegionsComponent,
+    ServicesComponent,
+    SitesComponent,
+    FormValuePipe,
     CommunesComponent,
     DepartmentsComponent,
     LocalisationTypeComponent,
@@ -199,6 +209,6 @@ const ngWizardConfig: NgWizardConfig = {
     SelectButtonModule,
     GalleriaModule,
   ],
-  providers: [MovementsService, BsDatepickerConfig, MessageService],
+  providers: [MovementsService, BsDatepickerConfig, MessageService, ArtWorksDataPipe, ArtWorksPipe],
 })
 export class AboutModule {}

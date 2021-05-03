@@ -15,11 +15,11 @@ import { datePickerDateFormat, dateTimeFormat, towDatesCompare, viewDateFormat }
 
 @Component({
   selector: 'app-establishments',
-  templateUrl: './regions.component.html',
-  styleUrls: ['./regions.component.scss'],
+  templateUrl: './sites.component.html',
+  styleUrls: ['./sites.component.scss'],
   providers: [DatePipe],
 })
-export class RegionsComponent implements OnInit {
+export class SitesComponent implements OnInit {
   @ViewChild('content') modalRef: TemplateRef<any>;
   @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
 
@@ -27,7 +27,7 @@ export class RegionsComponent implements OnInit {
   btnLoading: any = null;
   myModal: any;
   selectedItem: {
-    name: '';
+    label: '';
     startDate: '';
     disappearanceDate: '';
   };
@@ -73,8 +73,8 @@ export class RegionsComponent implements OnInit {
 
   columns = [
     {
-      header: 'Nom',
-      field: 'name',
+      header: 'Libellé',
+      field: 'label',
       type: 'key',
       filter: true,
       filterType: 'text',
@@ -124,7 +124,7 @@ export class RegionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.simpleTabsRef.tabRef = 'regions';
+    this.simpleTabsRef.tabRef = 'sites';
     this.getAllItems();
     this.initForm();
     this.filter =
@@ -132,7 +132,6 @@ export class RegionsComponent implements OnInit {
   }
 
   initForm() {
-    const msg = 'date début inférieur date fin';
     const startDate = this.datePipe.transform(
       this.selectedItem ? this.selectedItem.startDate : new Date(),
       datePickerDateFormat
@@ -142,7 +141,7 @@ export class RegionsComponent implements OnInit {
       datePickerDateFormat
     );
     this.tabForm = this.fb.group({
-      name: [this.selectedItem ? this.selectedItem.name : '', [Validators.required]],
+      label: [this.selectedItem ? this.selectedItem.label : '', [Validators.required]],
       startDate: [startDate, [Validators.required]],
       endDate: [disappearanceDate, []],
     });
@@ -159,7 +158,7 @@ export class RegionsComponent implements OnInit {
     this.btnLoading = null;
     if (this.editItem || this.editVisibility) {
       this.itemToEdit = item;
-      this.itemLabel = item.name;
+      this.itemLabel = item.label;
     }
     this.selectedItem = item;
     this.initForm();
@@ -169,7 +168,7 @@ export class RegionsComponent implements OnInit {
   submit() {
     this.btnLoading = null;
     const item = {
-      name: this.tabForm.value.name,
+      label: this.tabForm.value.label,
       startDate: this.datePipe.transform(this.tabForm.value.startDate, dateTimeFormat),
       disappearanceDate: this.datePipe.transform(this.tabForm.value.endDate, dateTimeFormat),
     };
@@ -230,15 +229,14 @@ export class RegionsComponent implements OnInit {
   }
 
   isActive(endDate: string) {
-    const today = this.datePipe.transform(new Date(), datePickerDateFormat);
+    const today = this.datePipe.transform(new Date(), viewDateFormat);
     return !(endDate !== '' && endDate && endDate <= today);
   }
 
   convertItem(item: any) {
-    console.log(item);
     const newItem = {
       id: item.id,
-      name: item.name,
+      label: item.label,
       startDate: item.startDate,
       disappearanceDate: item.disappearanceDate,
       active: true,
@@ -286,14 +284,14 @@ export class RegionsComponent implements OnInit {
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Suppression', 'Region ' + item.label + ' supprimée avec succés');
+        this.addSingle('success', 'Suppression', 'Site ' + item.label + ' supprimée avec succés');
         this.getAllItems();
         this.deleteItems = false;
       },
       (error: any) => {
         this.close();
         if (error.error.code === 400) {
-          this.addSingle('error', 'Suppression', 'Region ' + item.label + ' admet une relation');
+          this.addSingle('error', 'Suppression', 'Site ' + item.label + ' admet une relation');
         } else {
           this.addSingle('error', 'Suppression', error.error.message);
         }
@@ -306,7 +304,7 @@ export class RegionsComponent implements OnInit {
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Ajout', 'Region ' + item.label + ' ajoutée avec succés');
+        this.addSingle('success', 'Ajout', 'Site ' + item.label + ' ajoutée avec succés');
         this.getAllItems();
         this.addItem = false;
       },
@@ -321,7 +319,7 @@ export class RegionsComponent implements OnInit {
     this.simpleTabsRef.editItem(item, id).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Modification', 'Region ' + item.label + ' modifiée avec succés');
+        this.addSingle('success', 'Modification', 'Site ' + item.label + ' modifiée avec succés');
         this.getAllItems();
         this.editItem = false;
         this.editVisibility = false;

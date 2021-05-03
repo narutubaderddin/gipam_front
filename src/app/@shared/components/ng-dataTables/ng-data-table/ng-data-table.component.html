@@ -29,9 +29,9 @@
       </ng-template>
       <ng-template pTemplate="colgroup" let-columns>
         <colgroup>
-          <col *ngIf="checkBoxSelection" style="width: 3em" />
-          <col *ngIf="singleSelect" style="width: 2em" />
-          <col *ngIf="expand" style="width: 4em" />
+          <col *ngIf="checkBoxSelection && frozenCols.length == 0" style="width: 3em" />
+          <col *ngIf="singleSelect && frozenCols.length == 0" style="width: 2em" />
+          <col *ngIf="expand && frozenCols.length == 0" style="width: 4em" />
           <col *ngFor="let col of columns" [style.width]="col.width" />
         </colgroup>
       </ng-template>
@@ -123,7 +123,9 @@
                   [yearNavigator]="true"
                   [numberOfMonths]="1"
                   [selectionMode]="
-                    col[col.field + '_operator'] && col[col.field + '_operator'].name === 'range' ? 'range' : 'single'
+                    form.value[col.field + '_operator'] && form.value[col.field + '_operator'].name === 'range'
+                      ? 'range'
+                      : 'single'
                   "
                   [showOtherMonths]="true"
                   [showIcon]="true"
@@ -146,27 +148,33 @@
                         >
                         </p-dropdown>
                       </div>
-                      <button class="btn btn-light cancel-btn" (click)="clearDateFilter(col.field, pcd, dd)">
+                      <button class="btn btn-light btn-sm cancel-btn" (click)="clearDateFilter(col.field, pcd, dd)">
                         Annuler
                       </button>
                     </div>
                   </p-footer>
                 </p-calendar>
-                <select class="select-style w-100" *ngSwitchCase="'select'" [formControlName]="col.field">
-                  <option value=""></option>
-                  <option [value]="data.id" *ngFor="let data of col.selectData">{{ data.name }}</option>
-                </select>
-
-                <ng-multiselect-dropdown
-                  [placeholder]="col.placeholder ? col.placeholder : ''"
-                  *ngSwitchCase="'multiselect'"
-                  [settings]="dropdownSettings"
-                  [data]="col.selectData"
+                <p-dropdown
+                  [options]="col.selectData"
+                  [id]="col.field + '_id'"
+                  *ngSwitchCase="'select'"
                   [formControlName]="col.field"
-                  (onSelect)="onItemSelect($event)"
-                  (onSelectAll)="onSelectAll($event)"
-                >
-                </ng-multiselect-dropdown>
+                  optionLabel="name"
+                  optionValue="id"
+                ></p-dropdown>
+                <!--                <select class="select-style w-100" *ngSwitchCase="'select'" [formControlName]="col.field">-->
+                <!--                  <option value=""></option>-->
+                <!--                  <option [value]="data.id" *ngFor="let data of col.selectData">{{ data.name }}</option>-->
+                <!--                </select>-->
+                <p-multiSelect
+                  [options]="col.selectData"
+                  [virtualScroll]="true"
+                  [formControlName]="col.field"
+                  emptyFilterMessage="Aucun résultat trouvé"
+                  optionLabel="name"
+                  display="chip"
+                  *ngSwitchCase="'multiselect'"
+                ></p-multiSelect>
               </div>
             </div>
           </th>
@@ -233,6 +241,7 @@
                 </span>
               </span>
               <span *ngSwitchCase="'key-array'"> {{ item[col.key_data[0]][col.key_data[1]] }} </span>
+              <span *ngSwitchCase="'date'"> {{ item[col.field] | date: viewDateFormat }} </span>
 
               <span *ngSwitchDefault> {{ item[col.field] }} </span>
             </span>
