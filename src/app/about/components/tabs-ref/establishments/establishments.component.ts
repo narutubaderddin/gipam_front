@@ -442,6 +442,7 @@ export class EstablishmentsComponent implements OnInit {
   }
 
   filters(e: any) {
+    console.log(e);
     this.dataTableFilter = Object.assign({}, this.simpleTabsRef.prepareFilter(e));
     this.page = 1;
     this.dataTableComponent.currentPage = 1;
@@ -457,5 +458,11 @@ export class EstablishmentsComponent implements OnInit {
     this.page = 1;
     this.dataTableSearchBar = { search: input };
     this.getAllItems();
+  }
+
+  ClearSearch(event: any, input: string) {
+    if (!event.inputType) {
+      this.search(input);
+    }
   }
 }
