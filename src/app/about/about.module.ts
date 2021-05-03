@@ -89,6 +89,9 @@ import { ModalReportSubTypesComponent } from './components/tabs-ref/report-sub-t
 // import { ServicesComponent } from '@app/about/components/tabs-ref/establishment/establishments.component';
 import { MinistryComponent } from './components/tabs-ref/ministry/ministry.component';
 import { BuildingsComponent } from './components/tabs-ref/buildings/buildings.component';
+import { ArtWorksPipe } from '@app/about/pipes/art-works.pipe';
+import { ArtWorksDataPipe } from '@app/about/pipes/art-works-data.pipe';
+import { FormValuePipe } from './pipes/form-value.pipe';
 import { SubDivisionsComponent } from '@app/about/components/tabs-ref/subDivisions/subDivisions.component';
 import { RegionsComponent } from '@app/about/components/tabs-ref/regions/regions.component';
 import { ServicesComponent } from '@app/about/components/tabs-ref/services/services.component';
@@ -116,6 +119,8 @@ const ngWizardConfig: NgWizardConfig = {
     PortailItemDetailsComponent,
     PortailItemImageComponent,
     ObservationsComponent,
+    ArtWorksPipe,
+    ArtWorksDataPipe,
     DescritifComponent,
     ProofsInProgressComponent,
     InProgressAlertsComponent,
@@ -152,6 +157,7 @@ const ngWizardConfig: NgWizardConfig = {
     RegionsComponent,
     ServicesComponent,
     SitesComponent,
+    FormValuePipe,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
@@ -197,6 +203,6 @@ const ngWizardConfig: NgWizardConfig = {
     SelectButtonModule,
     GalleriaModule,
   ],
-  providers: [MovementsService, BsDatepickerConfig, MessageService],
+  providers: [MovementsService, BsDatepickerConfig, MessageService, ArtWorksDataPipe, ArtWorksPipe],
 })
 export class AboutModule {}

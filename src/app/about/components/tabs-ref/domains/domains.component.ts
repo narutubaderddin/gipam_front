@@ -256,8 +256,10 @@ export class DomainsComponent implements OnInit {
   }
 
   filters(e: any) {
-    console.log(e);
-    this.filter = e.label;
+    // console.log(e);
+    // this.filter = e.label;
+    // console.log(Object.keys(e));
+    // return false;
     this.getAllFeilds();
   }
   getKeyByValue(object: any, value: any) {

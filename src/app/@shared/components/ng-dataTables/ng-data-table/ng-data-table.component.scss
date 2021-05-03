@@ -54,11 +54,11 @@
   }
   .p-datatable-scrollable-wrapper {
     overflow: auto;
-    min-height: 320px;
+    height: 320px;
   }
   ng-multiselect-dropdown {
     width: 100%;
-    margin-top: -15px;
+    //margin-top: -15px;
     .multiselect-dropdown {
       width: 100% !important;
       margin-top: -15px;

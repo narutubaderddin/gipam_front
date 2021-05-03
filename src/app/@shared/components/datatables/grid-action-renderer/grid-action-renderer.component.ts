@@ -1,10 +1,10 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams, IAfterGuiAttachedParams } from 'ag-grid-community';
-import { ProofsInProgressComponent } from '@app/about/components/administrator-home-page/proofs-in-progress/proofs-in-progress.component';
+// import { ProofsInProgressComponent } from '@app/about/components/administrator-home-page/proofs-in-progress/proofs-in-progress.component';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
-import { InProgressAlertsComponent } from '@app/about/components/administrator-home-page/in-progress-alerts/in-progress-alerts.component';
-import { ProofsDetailsComponent } from '@app/about/components/administrator-home-page/proofs-in-progress/proofs-details/proofs-details.component';
+// import { InProgressAlertsComponent } from '@app/about/components/administrator-home-page/in-progress-alerts/in-progress-alerts.component';
+// import { ProofsDetailsComponent } from '@app/about/components/administrator-home-page/proofs-in-progress/proofs-details/proofs-details.component';
 
 @Component({
   selector: 'app-grid-action-renderer',
@@ -28,16 +28,16 @@ export class GridActionRendererComponent implements ICellRendererAngularComp, On
   }
 
   ngOnInit(): void {
-    if (this.params.context.parentComponent instanceof ProofsInProgressComponent) {
-      this.actions = 'proof';
-    } else if (this.params.context.parentComponent instanceof InProgressAlertsComponent) {
-      this.actions = 'alert';
-    } else if (this.params.context.parentComponent instanceof ProofsDetailsComponent) {
-      this.actions = 'proofDetails';
-      this.checked = this.params.data.Recole;
-    } else {
-      this.actions = 'search';
-    }
+    // if (this.params.context.parentComponent instanceof ProofsInProgressComponent) {
+    //   this.actions = 'proof';
+    // } else if (this.params.context.parentComponent instanceof InProgressAlertsComponent) {
+    //   this.actions = 'alert';
+    // } else if (this.params.context.parentComponent instanceof ProofsDetailsComponent) {
+    //   this.actions = 'proofDetails';
+    //   this.checked = this.params.data.Recole;
+    // } else {
+    //   this.actions = 'search';
+    // }
   }
   showDetails() {
     this.params.context.parentComponent.methodFromParent(
