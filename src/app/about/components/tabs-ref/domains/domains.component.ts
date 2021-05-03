@@ -188,6 +188,7 @@ export class DomainsComponent implements OnInit {
       sort_by: this.sortBy,
       sort: this.sort,
     };
+    console.log(data);
     this.feildsService.getAllFields(data).subscribe(
       (result: any) => {
         this.domains = result.results;
@@ -256,8 +257,10 @@ export class DomainsComponent implements OnInit {
   }
 
   filters(e: any) {
-    console.log(e);
-    this.filter = e.label;
+    // console.log(e);
+    // this.filter = e.label;
+    // console.log(Object.keys(e));
+    // return false;
     this.getAllFeilds();
   }
   getKeyByValue(object: any, value: any) {

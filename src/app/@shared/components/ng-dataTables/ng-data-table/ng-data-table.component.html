@@ -145,21 +145,27 @@
                     </button>
                   </p-footer>
                 </p-calendar>
-                <select class="select-style w-100" *ngSwitchCase="'select'" [formControlName]="col.field">
-                  <option value=""></option>
-                  <option [value]="data.id" *ngFor="let data of col.selectData">{{ data.name }}</option>
-                </select>
-
-                <ng-multiselect-dropdown
-                  [placeholder]="col.placeholder ? col.placeholder : ''"
+                <p-dropdown
+                  [options]="col.selectData"
+                  [id]="col.field + '_id'"
+                  *ngSwitchCase="'select'"
+                  [formControlName]="col.field"
+                  optionLabel="name"
+                  optionValue="id"
+                ></p-dropdown>
+                <!--                <select class="select-style w-100" *ngSwitchCase="'select'" [formControlName]="col.field">-->
+                <!--                  <option value=""></option>-->
+                <!--                  <option [value]="data.id" *ngFor="let data of col.selectData">{{ data.name }}</option>-->
+                <!--                </select>-->
+                <p-multiSelect
+                  [options]="col.selectData"
+                  [virtualScroll]="true"
+                  [formControlName]="col.field"
+                  emptyFilterMessage="Aucun résultat trouvé"
+                  optionLabel="name"
+                  display="chip"
                   *ngSwitchCase="'multiselect'"
-                  [settings]="dropdownSettings"
-                  [data]="col.selectData"
-                  [formControl]="form.controls[col.field]"
-                  (onSelect)="onItemSelect($event)"
-                  (onSelectAll)="onSelectAll($event)"
-                >
-                </ng-multiselect-dropdown>
+                ></p-multiSelect>
               </div>
             </div>
           </th>

@@ -9,7 +9,7 @@ export class MaterialTechniqueService {
   constructor(private http: HttpClient) {}
 
   getFilteredMaterialTechnique(data: any): Observable<any> {
-    const url = 'searchByFieldAndDenomination';
+    const url = 'findByCriteria';
     let params = new HttpParams();
     Object.keys(data).forEach((key) => {
       if (data[key]) {

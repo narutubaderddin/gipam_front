@@ -12,7 +12,9 @@ export class ArtWorksModel {
     public field?: string,
     public movements?: any[],
     public status?: any,
-    public creationDate?: string
+    public depositor?: string,
+    public creationDate?: string,
+    public visible?: boolean
   ) {}
 }
 

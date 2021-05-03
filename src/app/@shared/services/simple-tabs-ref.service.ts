@@ -25,7 +25,16 @@ export class SimpleTabsRefService {
     });
     return this.http.get<any[]>(`/${tabRefName}/`, { params });
   }
-
+  getItemsByCriteria(data: any, tabRefName: string = null): Observable<any> {
+    let params = new HttpParams();
+    tabRefName = tabRefName == null ? this.tabRef : tabRefName;
+    Object.keys(data).forEach((key) => {
+      if (data[key]) {
+        params = params.append(key, data[key]);
+      }
+    });
+    return this.http.get<any[]>(`/${tabRefName}/findByCriteria/`, { params });
+  }
   deleteItem(denomination: any): Observable<any> {
     return this.http.delete<any>(`/${this.tabRef}/${denomination.id}`, httpOptions);
   }

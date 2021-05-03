@@ -10,7 +10,7 @@ export class ArtWorksPipe implements PipeTransform {
     const authors: any[] = value.authors;
     let authorText = '';
     authors.forEach((value, index) => {
-      authorText += value.firstName + ' ' + value.lastName;
+      authorText += value.label;
       if (index < value.length) {
         authorText += ',';
       }
@@ -27,8 +27,10 @@ export class ArtWorksPipe implements PipeTransform {
       value?.denomination?.label,
       value?.field?.label,
       value.mouvements,
-      value.status,
-      value.creationDate
+      value.status?.statusType == 'DepositStatus' ? 'Dépôt' : 'Propriété',
+      value.status?.depsitorName,
+      value.creationDate,
+      value.visible
     );
   }
 }

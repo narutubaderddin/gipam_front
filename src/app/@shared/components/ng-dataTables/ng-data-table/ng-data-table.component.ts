@@ -89,6 +89,7 @@ export class NgDataTableComponent implements OnInit {
   ];
   filter: any = {};
   filterFormValues: any = {};
+
   constructor(private calendar: NgbCalendar, public formBuilder: FormBuilder, private datePipe: DatePipe) {
     this.fromDate = calendar.getToday();
   }
@@ -106,17 +107,17 @@ export class NgDataTableComponent implements OnInit {
     this.initForm(this.columns);
     this.filterFormValues = Object.assign({}, this.form.value);
     // console.log('filter', this.filter);
-    this.expandColumns = [
-      {
-        header: 'Numéro inventaire',
-        field: 'id',
-      },
-      {
-        header: '',
-        field: 'select',
-        type: 'app-select-button-render',
-      },
-    ];
+    // this.expandColumns = [
+    //   {
+    //     header: 'Numéro inventaire',
+    //     field: 'id'
+    //   },
+    //   {
+    //     header: '',
+    //     field: 'select',
+    //     type: 'app-select-button-render'
+    //   }
+    // ];
     this.dropdownSettings = {
       singleSelection: false,
       idField: 'id',
@@ -146,7 +147,8 @@ export class NgDataTableComponent implements OnInit {
 
   filterHeader($event: Event) {
     // @ts-ignore
-    console.log($event.target.value);
+    // console.log(this.form.value);
+    this.filterValue.emit(this.form.value);
   }
 
   initForm(colomns: any[]) {
@@ -259,9 +261,11 @@ export class NgDataTableComponent implements OnInit {
 
   onFilterChange(open: boolean, col: any) {
     if (!open) {
-      this.setFilter(col);
-      console.log('ng filter', this.filter);
-      this.filterValue.emit(this.filter);
+      // this.setFilter(col);
+      // console.log('ng filter', this.filter);
+      // this.filterValue.emit(this.filter);
+      this.filterValue.emit(this.form.value);
+      // console.log(this.form.value);
     }
   }
 

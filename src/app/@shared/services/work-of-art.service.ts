@@ -7,11 +7,11 @@ import { TreeviewItem } from 'ngx-treeview';
 export class WorkOfArtService {
   statusType = [
     {
-      id: 0,
+      id: 'depot',
       name: 'Dépôt ',
     },
     {
-      id: 1,
+      id: 'proprite',
       name: 'Prorièté ',
     },
   ];
