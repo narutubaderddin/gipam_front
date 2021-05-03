@@ -159,7 +159,6 @@ export class ListWorkOfArtsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.initData({}, {}, this.headerFilter);
     this.initFilterData();
     this.oeuvreToShow = this.oeuvres;
     this.initFilterFormGroup();
