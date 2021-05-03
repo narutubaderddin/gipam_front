@@ -188,7 +188,6 @@ export class DomainsComponent implements OnInit {
       sort_by: this.sortBy,
       sort: this.sort,
     };
-    console.log(data);
     this.feildsService.getAllFields(data).subscribe(
       (result: any) => {
         this.domains = result.results;

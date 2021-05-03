@@ -200,7 +200,9 @@ export class ListWorkOfArtsComponent implements OnInit {
       this.formStatus.value,
     ]);
     const advancedForms = this.formatAdvancedData({}, [this.advancedForm1.value]);
-    this.headerFilter = this.formatFormsData({}, [headersFilter]);
+    this.headerFilter = this.formatFormsData({}, [headersFilter], true);
+    console.log(this.headerFilter);
+    return false;
     this.initData(forms, advancedForms, this.headerFilter, 1);
   }
 
@@ -231,10 +233,17 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.inventaire = event.target.value + event.key;
   }
 
-  formatFormsData(data: any, values: any[]) {
-    values.forEach((value) => {
-      data = this.getDataFromForm(data, value);
-    });
+  formatFormsData(data: any, values: any[], header = false) {
+    if (header) {
+      values.forEach((value) => {
+        data = this.getDataFromHeadersForm(data, value);
+      });
+    } else {
+      values.forEach((value) => {
+        data = this.getDataFromForm(data, value);
+      });
+    }
+
     return data;
   }
 
@@ -244,14 +253,44 @@ export class ListWorkOfArtsComponent implements OnInit {
     });
     return data;
   }
+  getDataFromHeadersForm(data: any, value: any) {
+    console.log(value);
+    Object.keys(value).forEach((key) => {
+      let result: any[] = [];
+      switch (key) {
+        case 'domaine':
+        case 'denomination':
+        case 'materialTechnique':
+        case 'style':
+        case 'era':
+        case 'field':
+        case 'status':
+          if (Array.isArray(value[key]['value'])) {
+            value[key]['value'].forEach((item: any) => {
+              result.push(item['id']);
+            });
+          }
+          data[key] = result;
+          break;
+        case 'authors':
+          if (Array.isArray(value[key]['value'])) {
+            value[key]['value'].forEach((item: any) => {
+              result.push(item['id']);
+            });
+          }
+          data['auteurs'] = result;
+          break;
+        default:
+          data[key] = value[key]['value'];
+          break;
+      }
+    });
+    return data;
+  }
 
   getDataFromAdvancedForm(data: any, value: any) {
     Object.keys(value).forEach((key) => {
       if (!key.includes('Operator')) {
-        // if (
-        //   value[key] != '' ||
-        //   ['length', 'height', 'width', 'depth', 'weight', 'lengthTotal', 'heightTotal', 'widthtTotal'].includes(key)
-        // ) {
         let keyValue;
         switch (key) {
           case 'style':
@@ -289,7 +328,6 @@ export class ListWorkOfArtsComponent implements OnInit {
         } else {
           data[key] = { value: '', operator: value[key + 'Operator'] };
         }
-        // }
       }
     });
     return data;
@@ -384,7 +422,7 @@ export class ListWorkOfArtsComponent implements OnInit {
         this.formStatus.value,
       ]);
       let advancedData = this.formatAdvancedData({}, [this.advancedForm1.value]);
-      this.headerFilter = this.formatFormsData({}, [this.headerFilter]);
+      this.headerFilter = this.formatFormsData({}, [this.headerFilter], true);
       this.initData(data, advancedData, this.headerFilter);
     }
   }
@@ -999,7 +1037,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       this.formStatus.value,
     ]);
     let advancedData = this.formatAdvancedData({}, [this.advancedForm1.value]);
-    this.headerFilter = this.formatFormsData({}, [this.headerFilter]);
+    this.headerFilter = this.formatFormsData({}, [this.headerFilter], true);
     this.initData(data, advancedData, this.headerFilter, this.artWorksData.page);
   }
 
