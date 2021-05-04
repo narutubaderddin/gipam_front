@@ -1,9 +1,9 @@
 <div class="modal-content">
   <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
     <div class="modal-header">
-      <h4 class="modal-title" *ngIf="editItem">Modification de {{ name }}</h4>
+      <h4 class="modal-title" *ngIf="editItem">Modification de {{ name }} "{{selectedItem}}"</h4>
       <h4 class="modal-title" *ngIf="addItem">Ajout de {{ name }}</h4>
-      <h4 class="modal-title" *ngIf="deleteItems">Suppression de {{ name }}</h4>
+      <h4 class="modal-title" *ngIf="deleteItems">Suppression de {{ name }} "{{selectedItem}}"</h4>
       <button type="button" class="close" aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -36,13 +36,18 @@
 
     <div class="modal-footer">
       <button type="button" class="btn btn-light cancel-btn" (click)="close()">Annuler</button>
-      <button type="submit" class="btn btn-light valid-btn" *ngIf="editItem" [attr.disabled]="btnLoading">
+      <button type="submit" class="btn btn-light valid-btn"
+              *ngIf="editItem" [attr.disabled]="btnLoading">
         Modifier
       </button>
-      <button type="submit" class="btn btn-light valid-btn" *ngIf="addItem" [attr.disabled]="btnLoading">
+      <button type="submit" class="btn btn-light valid-btn"
+              *ngIf="addItem" [attr.disabled]="btnLoading">
         Ajouter
       </button>
-      <button type="button" class="btn btn-light valid-btn" *ngIf="deleteItems" (click)="deleteItem()">
+      <button type="button" class="btn btn-light valid-btn"
+              *ngIf="deleteItems"
+              [attr.disabled]="btnLoading"
+              (click)="deleteItem()">
         Supprimer
       </button>
     </div>

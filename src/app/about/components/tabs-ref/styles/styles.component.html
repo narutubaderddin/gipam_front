@@ -1,6 +1,6 @@
 <div class="breadcrumb">
   <a href="accueil">Accueil</a>
-  <a href="tab-ref-categorie" class="selected-item">
+  <a href="tab-ref-type-mouvement" class="selected-item">
     <i class="fas fa-chevron-right"></i>
     Gestion des styles
   </a>
@@ -29,15 +29,12 @@
                   id="example-search-input"
                   #searchBox
                   (keyup.enter)="search(searchBox.value)"
-                  (blur)="search(searchBox.value)"
-                  (close)="search('')"
+                  (input)="ClearSearch($event, searchBox.value)"
                 />
                 <span class="input-group-append">
-                  <button
-                    class="btn btn-outline-secondary border-left-0 border btn-search"
-                    type="button"
-                    (click)="search(searchBox.value)"
-                  >
+                  <button class="btn btn-outline-secondary border-left-0 border"
+                          type="button"
+                          (click)="search(searchBox.value)">
                     <i class="fa fa-search"></i>
                   </button>
                 </span>

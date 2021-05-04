@@ -299,7 +299,6 @@ export class SubDivisionsComponent implements OnInit {
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
     params = Object.assign(params, this.dataTableSearchBar);
-    console.log('http params', params);
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results.map((item: any) => {
@@ -390,7 +389,7 @@ export class SubDivisionsComponent implements OnInit {
   }
 
   filters(e: any) {
-    this.dataTableFilter = Object.assign({}, e);
+    this.dataTableFilter = Object.assign({}, this.simpleTabsRef.prepareFilter(e));
     this.page = 1;
     this.dataTableComponent.currentPage = 1;
     this.getAllItems();
@@ -405,5 +404,11 @@ export class SubDivisionsComponent implements OnInit {
     this.page = 1;
     this.dataTableSearchBar = { search: input };
     this.getAllItems();
+  }
+
+  ClearSearch(event: any, input: string) {
+    if (!event.inputType) {
+      this.search(input);
+    }
   }
 }
