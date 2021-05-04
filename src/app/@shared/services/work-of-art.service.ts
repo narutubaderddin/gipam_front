@@ -671,10 +671,10 @@ export class WorkOfArtService {
       filter += '&mode[eq]=' + filterObj.mode;
     }
     filter += '&sort_by=field';
-    return this.http.get('/api/artWorks/search?' + filter);
+    return this.http.get('/artWorks/search?' + filter);
   }
 
   getOeuvreDetails(id: string): Observable<any> {
-    return this.http.get('/api/artWorks/' + id);
+    return this.http.get('/artWorks/' + id);
   }
 }
