@@ -123,10 +123,20 @@ export class EstablishmentsComponent implements OnInit {
       sortable: true,
       width: '200px',
     },
+    // {
+    //   header: 'Ministère',
+    //   field: 'ministryName',
+    //   type: 'key',
+    //   width: '380px',
+    // },
     {
       header: 'Ministère',
-      field: 'ministryName',
-      type: 'key',
+      field: 'ministry',
+      type: 'key-array',
+      key_data: ['ministry', 'name'],
+      filter: true,
+      filterType: 'text',
+      sortable: true,
       width: '380px',
     },
     {
@@ -195,8 +205,8 @@ export class EstablishmentsComponent implements OnInit {
       this.itemToEdit = item;
       this.itemLabel = item.label;
       this.selectedRelatedEntity = {
-        id: item.ministryId,
-        name: item.ministryName,
+        id: item.ministry.id,
+        name: item.ministry.name,
       };
       this.selectedType = {
         id: item.typeId,
@@ -226,7 +236,7 @@ export class EstablishmentsComponent implements OnInit {
 
     this.simpleTabsRef.getAllItems({}).subscribe(
       (result: any) => {
-        this.relatedEntities = result.results;
+        this.relatedEntities = result.results.filter((value: any) => this.isActive(value.disappearanceDate));
         this.dataTableComponent.error = false;
       },
       (error: any) => {
@@ -242,7 +252,7 @@ export class EstablishmentsComponent implements OnInit {
 
     this.simpleTabsRef.getAllItems({}).subscribe(
       (result: any) => {
-        this.types = result.results;
+        this.types = result.results.filter((value: any) => value.active === true);
       },
       (error: any) => {
         this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
@@ -324,23 +334,6 @@ export class EstablishmentsComponent implements OnInit {
     return !(endDate !== '' && endDate && endDate <= today);
   }
 
-  convertItem(item: any) {
-    const newItem = {
-      id: item.id,
-      label: item.label,
-      acronym: item.acronym,
-      startDate: item.startDate,
-      disappearanceDate: item.disappearanceDate,
-      ministryId: item.ministry ? item.ministry.id : '',
-      ministryName: item.ministry ? item.ministry.name : '',
-      typeId: item.type ? item.type.id : '',
-      typeLabel: item.type ? item.type.label : '',
-      active: true,
-    };
-    newItem.active = this.isActive(newItem.disappearanceDate);
-    return newItem;
-  }
-
   getAllItems() {
     this.loading = true;
     let params = {
@@ -351,11 +344,11 @@ export class EstablishmentsComponent implements OnInit {
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
     params = Object.assign(params, this.dataTableSearchBar);
-
+    console.log('params', params);
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results.map((item: any) => {
-          return this.convertItem(item);
+          return Object.assign({ active: this.isActive(item.disappearanceDate) }, item);
         });
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
@@ -442,7 +435,6 @@ export class EstablishmentsComponent implements OnInit {
   }
 
   filters(e: any) {
-    console.log(e);
     this.dataTableFilter = Object.assign({}, this.simpleTabsRef.prepareFilter(e));
     this.page = 1;
     this.dataTableComponent.currentPage = 1;
@@ -456,7 +448,10 @@ export class EstablishmentsComponent implements OnInit {
 
   search(input: string) {
     this.page = 1;
-    this.dataTableSearchBar = { search: input };
+    this.dataTableSearchBar = {};
+    if (input !== '') {
+      this.dataTableSearchBar = { search: input };
+    }
     this.getAllItems();
   }
 
