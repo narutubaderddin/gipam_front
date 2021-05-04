@@ -17,6 +17,7 @@ import { LocalStorageModule } from 'angular-2-local-storage';
 import { AboutModule } from '@app/about/about.module';
 import { HomeModule } from '@app/home/home.module';
 import { NotificationAnimationType, SimpleNotificationsModule } from 'angular2-notifications';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
   imports: [

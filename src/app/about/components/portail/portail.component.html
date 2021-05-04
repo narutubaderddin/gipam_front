@@ -5,7 +5,7 @@
         <div class="title-bloc col-md-12">
           <div class="left-title-bloc">
             <h1 class="title">Catalogue des biens culturels</h1>
-            <p>254 Biens culturels</p>
+            <p>{{ filteredQuantity }} Biens culturels</p>
           </div>
           <div class="sort-bloc">
             <strong class="d-inline p-2">Trié par:</strong>
@@ -133,7 +133,7 @@
                                 <tr *ngFor="let oeuvre of selectedOeuvre; let index = index">
                                   <td>
                                     <figure class="itemside align-items-center">
-                                      <div class="aside"><img [src]="oeuvre.image" class="img-sm" /></div>
+                                      <div class="aside"><img src="assets/images/2.jpg" class="img-sm" /></div>
                                       <figcaption class="info">
                                         <a class="title text-dark" data-abc="true">{{ oeuvre.titre }}</a>
                                         <!--<p class="text-muted small">SIZE: L <br> Brand: MAXTRA</p>-->
@@ -188,8 +188,15 @@
         <div class="col-md-12">
           <div class="mt-2 wrap">
             <div class="form-group search">
-              <input type="text" class="form-control w-100" placeholder="Rechercher …" />
-              <button type="submit" class="searchButton">
+              <input
+                type="text"
+                class="form-control w-100"
+                placeholder="Rechercher …"
+                [(ngModel)]="searchOeuvre"
+                (input)="initSearch()"
+                (keyup.enter)="searchQuery()"
+              />
+              <button type="submit" class="searchButton" (click)="searchQuery()">
                 <i class="fa fa-search"></i>
               </button>
             </div>
@@ -254,19 +261,31 @@
                   </div>
                 </div>
               </div>
-              <div class="dropdown d-inline p-2tr" ngbDropdown #myDrop="ngbDropdown">
+              <div
+                id="top"
+                ngbDropdown
+                placement="bottom-left"
+                autoClose="outside"
+                container="dropdown-container"
+                (openChange)="onToggel($event, 'formHeight')"
+                class="d-inline-block drop-bloc d-inline p-2"
+                #heightDropdown="ngbDropdown"
+              >
+                <ng-template #TemplateForm1>
+                  <p *ngFor="let value of formDomainsValues; let index = index">
+                    <span>{{ value }}</span>
+                  </p>
+                </ng-template>
                 <button
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
                   class="btn dropdown-btn list quick-filter-btn"
-                  id="dropdownMenuHauteur"
+                  id="dropDownSearch1"
                   ngbDropdownToggle
                   (click)="resetFilter()"
                 >
                   <span>
                     <i class="fas fa-text-height" style="color: #1f2b50"></i>
                     Hauteur
+                    <i class="fa fa-sort-down" *ngIf="!firstSearchDrop && formDomainsValues.length > 0"></i>
                   </span>
                   <div placement="right">
                     <div class="mt-3" *ngIf="highValue">
@@ -277,13 +296,8 @@
                     </div>
                   </div>
                 </button>
-                <div
-                  class="dropdown-menu"
-                  aria-labelledby="dropdownMenuHauteur"
-                  style="width: 400px !important"
-                  #matSelect
-                >
-                  <div class="columns-dropdown">
+                <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropDownSearch1" style="width: 400px">
+                  <div class="columns-dropdown" style="width: 100% !important">
                     <form [formGroup]="form1">
                       <div class="pt-1 col-12">
                         <div class="form-group col-11">
@@ -312,19 +326,30 @@
                   </div>
                 </div>
               </div>
-              <div class="dropdown d-inline p-2" ngbDropdown>
+              <div
+                ngbDropdown
+                placement="bottom-left"
+                autoClose="outside"
+                container="dropdown-container"
+                (openChange)="onToggel($event, 'form1')"
+                class="d-inline-block drop-bloc d-inline p-2"
+                #domainesDropdown="ngbDropdown"
+              >
+                <ng-template #TemplateForm1>
+                  <p *ngFor="let value of formDomainsValues; let index = index">
+                    <span>{{ value }}</span>
+                  </p>
+                </ng-template>
                 <button
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
                   class="btn dropdown-btn list quick-filter-btn"
-                  id="dropdownMenuLargeur"
+                  id="dropDownSearch1"
                   ngbDropdownToggle
                   (click)="resetFilter()"
                 >
                   <span>
                     <i class="fas fa-text-width" style="color: #1f2b50"></i>
                     Largeur
+                    <i class="fa fa-sort-down" *ngIf="!firstSearchDrop && formDomainsValues.length > 0"></i>
                   </span>
                   <div placement="right">
                     <div class="mt-3" *ngIf="highValue1">
@@ -334,13 +359,8 @@
                     </div>
                   </div>
                 </button>
-                <div
-                  class="dropdown-menu"
-                  aria-labelledby="dropdownMenuLargeur"
-                  style="width: 400px !important"
-                  #matSelect
-                >
-                  <div class="columns-dropdown">
+                <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropDownSearch1" style="width: 400px">
+                  <div class="columns-dropdown" style="width: 100% !important">
                     <form [formGroup]="form1">
                       <div class="pt-1 col-12">
                         <div class="form-group col-11">
@@ -369,21 +389,32 @@
                   </div>
                 </div>
               </div>
-              <div class="dropdown d-inline p-2" ngbDropdown>
+              <div
+                ngbDropdown
+                placement="bottom-left"
+                autoClose="outside"
+                container="dropdown-container"
+                (openChange)="onToggel($event, 'form1')"
+                class="d-inline-block drop-bloc d-inline p-2"
+                #domainesDropdown="ngbDropdown"
+              >
+                <ng-template #TemplateForm1>
+                  <p *ngFor="let value of formDomainsValues; let index = index">
+                    <span>{{ value }}</span>
+                  </p>
+                </ng-template>
                 <button
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
                   class="btn dropdown-btn list quick-filter-btn"
-                  id="dropdownMenuPoids"
+                  id="dropDownSearch1"
                   ngbDropdownToggle
                   (click)="resetFilter()"
                 >
                   <span>
                     <i class="fas fa-weight" style="color: #1f2b50"></i>
                     Poids
+                    <i class="fa fa-sort-down" *ngIf="!firstSearchDrop && formDomainsValues.length > 0"></i>
                   </span>
-                  <div>
+                  <div placement="right">
                     <div class="mt-3" *ngIf="highValue3">
                       <p>
                         <span>Min: {{ value3 }} kg - Max:{{ highValue3 }} kg </span>
@@ -392,8 +423,8 @@
                     </div>
                   </div>
                 </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuPoids" style="width: 400px !important">
-                  <div class="columns-dropdown">
+                <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropDownSearch1" style="width: 400px">
+                  <div class="columns-dropdown" style="width: 100% !important">
                     <form [formGroup]="form1">
                       <div class="pt-1 col-12">
                         <div class="form-group col-11">
@@ -422,64 +453,253 @@
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div *ngFor="let section of oeuvreToShow; let index = index" style="margin-top: 2%">
-        <div class="col-12 section-name">
-          <strong>{{ section.name }}</strong>
-        </div>
-        <div class="col-md-12" style="margin-top: 1%">
-          <div class="card-columns">
-            <div
-              class="picture-bloc-images card shadow p-3 items-bloc item"
-              style="margin-bottom: 0"
-              *ngFor="let items of section.items"
-              (click)="details(items.visible, items.image)"
-            >
-              <div class="card-block flip">
-                <img class="card-img-top img-fluid" [src]="items.image" alt="Card image cap" />
-                <strong>{{ items.titre }}</strong>
-                <ul>
-                  <li>{{ items.auteur }}</li>
-                  <li>
-                    <i
-                      class="fa fa-eye icon"
-                      aria-hidden="true"
-                      ngbTooltip="Voir plus de détails"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                    >
-                    </i>
-                  </li>
-                  <li *ngIf="!items.isDemanded; else removeOuvre" class="shopping">
-                    <i
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      ngbTooltip="Ajouter au panier"
-                      class="fa fa-shopping-basket icon"
-                      aria-hidden="true"
-                      (click)="addToBasket($event, items)"
-                    ></i>
-                  </li>
-                  <ng-template #removeOuvre>
-                    <li class="shopping">
-                      <i
-                        placement="top"
-                        ngbTooltip="Retirer du panier"
-                        class="far fa-trash-alt icon-delete"
-                        aria-hidden="true"
-                        (click)="removeFromBasket($event, items)"
-                      ></i>
-                    </li>
-                  </ng-template>
-                </ul>
+              <div
+                ngbDropdown
+                placement="bottom-left"
+                autoClose="outside"
+                container="dropdown-container"
+                (openChange)="onToggel($event, 'formMode')"
+                class="d-inline-block drop-bloc d-inline p-2"
+                #domainesDropdown="ngbDropdown"
+              >
+                <ng-template #TemplateForm1>
+                  <p *ngFor="let value of formModesValues; let index = index">
+                    <span>{{ value }}</span>
+                  </p>
+                </ng-template>
+                <button
+                  class="btn dropdown-btn list quick-filter-btn"
+                  id="dropDownSearch1"
+                  ngbDropdownToggle
+                  (click)="resetFilter()"
+                >
+                  <span>
+                    <i class="fab fa-buromobelexperte" style="color: #1f2b50"></i>
+                    Mode
+                    <i class="fa fa-sort-down" *ngIf="!firstSearchDrop && formDomainsValues.length > 0"></i>
+                  </span>
+                  <div placement="right" *ngIf="mode">
+                    <div class="mt-3">
+                      <p *ngFor="let value of formModesValues; let index = index">
+                        <span>{{ value }}</span>
+                      </p>
+                      <p *ngIf="showForm1End">...</p>
+                    </div>
+                  </div>
+                </button>
+                <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropDownSearch1" style="width: 400px">
+                  <div class="columns-dropdown" style="width: 100% !important">
+                    <form [formGroup]="form1">
+                      <div class="pt-1 col-12">
+                        <div class="form-group col-11">
+                          <div class="filters mt-2 filter-bloc">
+                            <h5>Mode d'affichage</h5>
+                            <div class="row">
+                              <div class="col-12">
+                                <ngx-treeview
+                                  [config]="config"
+                                  [items]="modes"
+                                  (selectedChange)="formModesValues = $event"
+                                  (filterChange)="onFilterChange($event)"
+                                >
+                                </ngx-treeview>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <div class="loading-spinner" *ngIf="loading; else listOeuvres">
+        <p-progressSpinner></p-progressSpinner>
+      </div>
+      <ng-template #listOeuvres>
+        <div class="no-art-works" *ngIf="filteredQuantity==0">
+          <div class="alert alert-warning" role="alert">
+            Aucun bien culturel
+          </div>
+        </div>
+        <div
+          class="search-results"
+          infinite-scroll
+          [infiniteScrollDistance]="scrollDistance"
+          [infiniteScrollUpDistance]="scrollUpDistance"
+          [infiniteScrollThrottle]="throttle"
+          [fromRoot]="false"
+          (scrolled)="onScrollDown($event)"
+          (scrolledUp)="onUp($event)"
+        >
+          <div *ngIf="loadingScrollUp" class="scroll-loading">
+            <p-progressSpinner></p-progressSpinner>
+          </div>
+          <div *ngFor="let section of oeuvres; let index = index" style="margin-top: 2%">
+            <div class="col-12 section-name">
+              <strong>{{ section.title }}</strong>
+            </div>
+            <div class="col-md-12" style="margin-top: 1%">
+              <div class="card-columns">
+                <div
+                  class="picture-bloc-images card shadow p-3 items-bloc item"
+                  style="margin-bottom: 0"
+                  *ngFor="let items of section.items"
+                  (click)="details(items.visible, items.image, items.id)"
+                >
+                  <div class="card-block flip">
+                    <!--<div *ngFor="let attachment of items.attachments">
+                    <img
+                      *ngIf="attachment.principleImage"
+                      class="card-img-top img-fluid"
+                      [src]="attachment.link"
+                      alt="Card image cap"
+                    />
+                  </div>-->
+                    <img class="card-img-top img-fluid" src="assets/images/2.jpg" alt="Card image cap" />
+                    <strong>{{ items.title }}</strong>
+                    <ul>
+                      <li *ngFor="let author of items.authors">{{ author.firstName }} {{ author.lastName }}</li>
+                      <li>
+                        <i
+                          class="fa fa-eye icon"
+                          aria-hidden="true"
+                          ngbTooltip="Voir plus de détails"
+                          data-toggle="tooltip"
+                          data-placement="top"
+                        >
+                        </i>
+                      </li>
+                      <li *ngIf="!items.isDemanded; else removeOuvre" class="shopping">
+                        <i
+                          data-toggle="tooltip"
+                          data-placement="top"
+                          ngbTooltip="Ajouter au panier"
+                          class="fa fa-shopping-basket icon"
+                          aria-hidden="true"
+                          (click)="addToBasket($event, items)"
+                        ></i>
+                      </li>
+                      <ng-template #removeOuvre>
+                        <li class="shopping">
+                          <i
+                            placement="top"
+                            ngbTooltip="Retirer du panier"
+                            class="far fa-trash-alt icon-delete"
+                            aria-hidden="true"
+                            (click)="removeFromBasket($event, items)"
+                          ></i>
+                        </li>
+                      </ng-template>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="loadingScroll" class="scroll-loading" style="margin-bottom: 10%">
+            <p-progressSpinner></p-progressSpinner>
+          </div>
+        </div>
+      </ng-template>
+
+      <!--<div class="loading-spinner" *ngIf="loading;else listOeuvres">
+        <p-progressSpinner></p-progressSpinner>
+      </div>
+      <ng-template #listOeuvres>
+        <div class="no-art-works" *ngIf="nbrOeuvre==0">
+          <div class="alert alert-warning" role="alert">
+            Aucun bien culturel
+          </div>
+        </div>
+        <div  *ngFor="let section of oeuvres; let index = index" style="margin-top: 2%">
+          <div class="col-12 section-name">
+            <strong>{{ section.title }}</strong>
+          </div>
+          <div class="col-md-12" style="margin-top: 1%">
+            <div class="card-columns">
+              <div
+                class="picture-bloc-images card shadow p-3 items-bloc item"
+                style="margin-bottom: 0"
+                *ngFor="let items of section.items"
+                (click)="details(items.visible, items.image, items.id)"
+              >
+                <div class="card-block flip">
+                  &lt;!&ndash;<div *ngFor="let attachment of items.attachments">
+                    <img
+                      *ngIf="attachment.principleImage"
+                      class="card-img-top img-fluid"
+                      [src]="attachment.link"
+                      alt="Card image cap"
+                    />
+                  </div>&ndash;&gt;
+                  <img
+                    class="card-img-top img-fluid"
+                    src="assets/images/2.jpg"
+                    alt="Card image cap"
+                  />
+                  <strong>{{ items.title }}</strong>
+                  <ul>
+                    <li *ngFor="let author of items.authors">{{ author.firstName }} {{ author.lastName }}</li>
+                    <li>
+                      <i
+                        class="fa fa-eye icon"
+                        aria-hidden="true"
+                        ngbTooltip="Voir plus de détails"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                      >
+                      </i>
+                    </li>
+                    <li *ngIf="!items.isDemanded; else removeOuvre" class="shopping">
+                      <i
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        ngbTooltip="Ajouter au panier"
+                        class="fa fa-shopping-basket icon"
+                        aria-hidden="true"
+                        (click)="addToBasket($event, items)"
+                      ></i>
+                    </li>
+                    <ng-template #removeOuvre>
+                      <li class="shopping">
+                        <i
+                          placement="top"
+                          ngbTooltip="Retirer du panier"
+                          class="far fa-trash-alt icon-delete"
+                          aria-hidden="true"
+                          (click)="removeFromBasket($event, items)"
+                        ></i>
+                      </li>
+                    </ng-template>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>-->
     </div>
   </div>
 </div>
+
+<ng-template #contentDeleteOeuvre let-modal>
+  <form appFlashFormErrors class="modal-remove">
+    <div class="modal-header">
+      <h4 class="modal-title">Retirer du panier</h4>
+      <button type="button" class="close" aria-label="Close" (click)="closeDeleteOeuvre()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="col-md-12">Voulez-vous retirer l'oeuvre "{{ oeuvreToBeremoved.title }}" du panier ?</div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light cancel-btn-delete" (click)="closeDeleteOeuvre()">Annuler</button>
+      <button type="button" class="btn btn-light valid-btn" (click)="submitDeleteOeuvre()">Supprimer</button>
+    </div>
+  </form>
+</ng-template>

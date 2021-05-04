@@ -927,3 +927,62 @@ img {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
 }
+.loading-spinner {
+  margin-left: 40%;
+  margin-top: 6%;
+}
+
+.scroll-loading {
+  margin-left: 40%;
+}
+
+form.modal-remove {
+  .modal-title {
+    color: #0ec7c6;
+    font-size: 16px;
+    font-weight: 700;
+    background-color: white;
+    border: none;
+  }
+  .modal-header,
+  .modal-footer {
+    border: none;
+  }
+  label {
+    font-size: 14px !important;
+    color: #838a90;
+    font-weight: 600;
+  }
+  .valid-btn {
+    background-color: #00d6d4;
+  }
+  .cancel-btn-delete {
+    background-color: #6c7681c9;
+  }
+  .btn {
+    color: white;
+    font-size: 12px;
+    padding: 0.4rem 1rem;
+  }
+}
+.no-art-works {
+  text-align: center;
+  //margin-top: 8%;
+  margin: 8% 30% 0 30%;
+}
+div.mode {
+  i {
+    margin: 0.2% 1% 0.2% 1%;
+    border: 1px solid;
+  }
+}
+
+.example-viewport {
+  height: 200px;
+  width: 200px;
+  border: 1px solid black;
+}
+
+.example-item {
+  height: 50px;
+}
