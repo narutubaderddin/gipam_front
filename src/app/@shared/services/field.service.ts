@@ -8,6 +8,6 @@ import { Observable } from 'rxjs';
 export class FieldService {
   constructor(private http: HttpClient) {}
   getFields(): Observable<any> {
-    return this.http.get('http://localhost:8000/api/fields');
+    return this.http.get('/api/fields');
   }
 }
