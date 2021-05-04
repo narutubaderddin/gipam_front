@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Provider, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AgGridModule } from 'ag-grid-angular';
@@ -36,6 +36,31 @@ import { ImageViewerComponent } from './components/datatables/image-viewer/image
 import { DomainsActionsRendererComponent } from './components/datatables/domains-actions-renderer/domains-actions-renderer.component';
 import { DenominationsActionsRendererComponent } from './components/datatables/denominations-actions-renderer/denominations-actions-renderer.component';
 import { FlashFormErrorsDirective } from './directives/flash-form-errors.directive';
+import { AddDescriptionsComponent } from './components/notice-blocs/add-descriptions/add-descriptions.component';
+import { NgDataTableComponent } from './components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { TableModule } from 'primeng/table';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
+import { TooltipModule } from 'primeng/tooltip';
+import { CalendarModule } from 'primeng/calendar';
+import { PaginatorModule } from 'primeng/paginator';
+import { ActionsCellComponent } from './components/ng-dataTables/actions-cell/actions-cell.component';
+import { StatusTypeComponentRenderComponent } from './components/ng-dataTables/status-type-component-render/status-type-component-render.component';
+import { VisibleCatalogComponentRenderComponent } from './components/ng-dataTables/visible-catalog-component-render/visible-catalog-component-render.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { SelectButtonRenderComponent } from './components/ng-dataTables/select-button-render/select-button-render.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { DropdownModule } from 'primeng/dropdown';
+import { StatusComponent } from './components/notice-blocs/status/status.component';
+import { AttachmentsComponent } from './components/notice-blocs/attachments/attachments.component';
+import { AddImgModalComponent } from './components/notice-blocs/item-images/add-img-modal/add-img-modal.component';
+import { ItemImagesComponent } from './components/notice-blocs/item-images/item-images.component';
+import { LinksComponent } from './components/notice-blocs/links/links.component';
+import { HypertextLinksComponent } from './components/notice-blocs//links/hypertext-links/hypertext-links.component';
+import { GalleriaModule } from 'primeng/galleria';
+import { NgFileDragDropModule } from 'ng-file-drag-drop';
 
 @NgModule({
   imports: [
@@ -52,6 +77,20 @@ import { FlashFormErrorsDirective } from './directives/flash-form-errors.directi
     ReactiveFormsModule,
     TagInputModule,
     NgxHorizontalTimelineModule,
+    TableModule,
+    InputTextModule,
+    ButtonModule,
+    RippleModule,
+    TooltipModule,
+    CalendarModule,
+    PaginatorModule,
+    NgMultiSelectDropDownModule,
+    MultiSelectModule,
+    SelectButtonModule,
+    DropdownModule,
+    CalendarModule,
+    GalleriaModule,
+    NgFileDragDropModule,
   ],
   declarations: [
     LoaderComponent,
@@ -80,6 +119,18 @@ import { FlashFormErrorsDirective } from './directives/flash-form-errors.directi
     DomainsActionsRendererComponent,
     DenominationsActionsRendererComponent,
     FlashFormErrorsDirective,
+    NgDataTableComponent,
+    ActionsCellComponent,
+    StatusTypeComponentRenderComponent,
+    VisibleCatalogComponentRenderComponent,
+    SelectButtonRenderComponent,
+    AddDescriptionsComponent,
+    StatusComponent,
+    AttachmentsComponent,
+    AddImgModalComponent,
+    ItemImagesComponent,
+    LinksComponent,
+    HypertextLinksComponent,
   ],
   exports: [
     LoaderComponent,
@@ -93,6 +144,14 @@ import { FlashFormErrorsDirective } from './directives/flash-form-errors.directi
     StatusBlocComponent,
     AccordionSectionComponent,
     FlashFormErrorsDirective,
+    NgDataTableComponent,
+    AddDescriptionsComponent,
+    StatusComponent,
+    AttachmentsComponent,
+    AddImgModalComponent,
+    ItemImagesComponent,
+    LinksComponent,
+    HypertextLinksComponent,
   ],
 })
 export class SharedModule {}

@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
-import {Component, HostListener, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import { Component, HostListener, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
-import {TreeviewConfig, TreeviewItem} from 'ngx-treeview';
+import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
 import { LabelType, Options } from '@angular-slider/ngx-slider';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
@@ -11,7 +11,7 @@ import {
   NgbDateParserFormatter,
   NgbCalendar,
 } from '@ng-bootstrap/ng-bootstrap';
-import {FieldService} from '@shared/services/field.service';
+import { FieldService } from '@shared/services/field.service';
 
 @Component({
   selector: 'app-portail',
@@ -25,9 +25,9 @@ export class PortailComponent implements OnInit {
   filter = false;
   keyword = 'name';
   selectedOeuvre: any[] = [];
-  domains : any = [];
-  selectedModes : any;
-  modes : any = [];
+  domains: any = [];
+  selectedModes: any;
+  modes: any = [];
 
   @ViewChild('contentDeleteOeuvre')
   private modalRefDeleteOeuvre: TemplateRef<any>;
@@ -84,7 +84,7 @@ export class PortailComponent implements OnInit {
   };
   inventoryValue = 0;
   hightInventoryValue = 60;
-  nbrElmPerPage = 50;
+  nbrElmPerPage = 40;
   pageUp = 0;
   inventoryOptions: Options;
   dynamic: boolean = false;
@@ -103,24 +103,24 @@ export class PortailComponent implements OnInit {
     private modalService: NgbModal,
     public formatter: NgbDateParserFormatter,
     private calendar: NgbCalendar,
-    private fieldService: FieldService,
+    private fieldService: FieldService
   ) {
     this.modes = [
       new TreeviewItem({
-        text: "Portait",
-        value: "Portait",
+        text: 'Portait',
+        value: 'Portait',
         collapsed: true,
         children: [],
         checked: false,
       }),
       new TreeviewItem({
-        text: "Paysage",
-        value: "Paysage",
+        text: 'Paysage',
+        value: 'Paysage',
         collapsed: true,
         children: [],
         checked: false,
-      })
-    ]
+      }),
+    ];
   }
 
   ngOnInit(): void {
@@ -164,8 +164,8 @@ export class PortailComponent implements OnInit {
   onFilterChange(value: string): void {
     console.log('filter:', value);
   }
-  details(visible: any, source: string,id : string) {
-   this.router.navigate(['portail-details',id]);
+  details(visible: any, source: string, id: string) {
+    this.router.navigate(['portail-details', id]);
   }
 
   onSearchClick() {}
@@ -174,13 +174,13 @@ export class PortailComponent implements OnInit {
     switch (form) {
       case 'form1':
         this.firstSearchDrop = event;
-        if(!event) {
+        if (!event) {
           this.resetSearch();
           this.getOeuvres();
         }
         break;
       case 'formMode':
-        if(!event){
+        if (!event) {
           this.mode = this.selectedMode = this.formModesValues;
           this.resetSearch();
           this.getOeuvres();
@@ -245,7 +245,7 @@ export class PortailComponent implements OnInit {
     item.isDemanded = true;
     this.selectedOeuvre.push(item);
   }
-  oeuvreToBeremoved : any;
+  oeuvreToBeremoved: any;
   removeFromBasket(event: any, item: any) {
     event.stopPropagation();
     this.oeuvreToBeremoved = item;
@@ -271,22 +271,23 @@ export class PortailComponent implements OnInit {
   loading: boolean = false;
   loadingScroll: boolean = false;
   loadingScrollUp: boolean = false;
-  errorMessage:any;
+  errorMessage: any;
   groups: any;
-  nbrOeuvre : number = null
-  totalOeuvres : number = null
-  listOeuvres : any = [];
+  nbrOeuvre: number = null;
+  totalOeuvres: number = null;
+  filteredQuantity: number = null;
+  listOeuvres: any = [];
 
   private orderOeuvresByDomains(response: any) {
-    this.nbrOeuvre = response.filteredQuantity;
     this.totalOeuvres = response.totalQuantity;
+    this.filteredQuantity = response.filteredQuantity;
     this.listOeuvres = [...this.listOeuvres, ...response.results];
-    this.oeuvres=[];
-    let results: any = this.listOeuvres.filter((oeuvre:any) => {
+    this.oeuvres = [];
+    let results: any = this.listOeuvres.filter((oeuvre: any) => {
       return oeuvre.field !== null;
     });
     this.groups = results.reduce((r: any, a: any) => {
-       r[a.field.label] = [...(r[a.field.label] || []), a];
+      r[a.field.label] = [...(r[a.field.label] || []), a];
       return r;
     }, {});
     for (let group in this.groups) {
@@ -295,71 +296,69 @@ export class PortailComponent implements OnInit {
         items: this.groups[group],
       });
     }
-    document.getElementById( 'top' ).scrollIntoView();
+    document.getElementById('top').scrollIntoView();
   }
 
   searchOeuvre: any;
 
-  uniq(a:any) {
+  uniq(a: any) {
     return Array.from(new Set(a));
   }
-
 
   getOeuvres() {
     this.loading = this.page == 1;
     this.loadingScroll = this.page != 1;
     const height = {
-      min : this.value,
-      max : this.highValue
-    }
+      min: this.value,
+      max: this.highValue,
+    };
     const width = {
-      min : this.value1,
-      max : this.highValue1
-    }
+      min: this.value1,
+      max: this.highValue1,
+    };
     const weight = {
-      min : this.value3,
-      max : this.highValue3
-    }
-    let fields :any  = [];
-    let denoms :any = [];
-    this.formDomainsValues.forEach((elmId:any)=>{
-      this.fields.forEach((fld:any)=>{
-        if(fld.label == elmId || fld.id == elmId){
+      min: this.value3,
+      max: this.highValue3,
+    };
+    let fields: any = [];
+    let denoms: any = [];
+    this.formDomainsValues.forEach((elmId: any) => {
+      this.fields.forEach((fld: any) => {
+        if (fld.label == elmId || fld.id == elmId) {
           fields.push(fld.id);
-        }else {
-          fld.denominations.forEach((denom:any)=>{
-            if(denom.value === elmId){
+        } else {
+          fld.denominations.forEach((denom: any) => {
+            if (denom.value === elmId) {
               denoms.push(denom.id);
               fields.push(fld.id);
             }
           });
         }
-
-      })
+      });
     });
     fields = this.uniq(fields);
     let page = this.page;
-    if(this.direction == "up"){
+    if (this.direction == 'up') {
       this.loadingScrollUp = true;
       page = this.pageUp;
     }
-    let mode =  null;
-    if(this.formModesValues && this.formModesValues.length==1){
+    let mode = null;
+    if (this.formModesValues && this.formModesValues.length == 1) {
       mode = this.formModesValues[0];
     }
     let filter = {
-      height:height,
-      width:width,
-      weight:weight,
-      fields:fields,
-      denoms:denoms,
-      search : this.searchOeuvre,
-      mode:mode ,
-      page:page
-    }
+      height: height,
+      width: width,
+      weight: weight,
+      fields: fields,
+      denoms: denoms,
+      search: this.searchOeuvre,
+      mode: mode,
+      page: page,
+    };
     this.WorkOfArtService.getOeuvres(filter).subscribe(
       (response) => {
-        this.orderOeuvresByDomains(response,scroll);
+        this.orderOeuvresByDomains(response);
       },
       (error) => {
         //error() callback
@@ -371,23 +370,23 @@ export class PortailComponent implements OnInit {
       }
     );
   }
-  initSearch(){
-    if(this.searchOeuvre===""){
+  initSearch() {
+    if (this.searchOeuvre === '') {
       this.page = 1;
       this.getOeuvres();
     }
   }
 
-  fields : any = [];
+  fields: any = [];
   public getFields() {
     this.errorMessage = '';
     this.fieldService.getFields().subscribe(
       (response) => {
         this.fields = response.results;
-        this.fields.forEach((field:any)=>{
-          field.denominations = field.denominations.map((denom:any)=>{
-            return {id: denom.id, text: denom.label, value: denom.label, checked: false }
-          })
+        this.fields.forEach((field: any) => {
+          field.denominations = field.denominations.map((denom: any) => {
+            return { id: denom.id, text: denom.label, value: denom.label, checked: false };
+          });
           this.domains.push(
             new TreeviewItem({
               text: field.label,
@@ -396,8 +395,8 @@ export class PortailComponent implements OnInit {
               children: field.denominations,
               checked: false,
             })
-          )
-        })
+          );
+        });
       },
       (error) => {
         //error() callback
@@ -410,48 +409,48 @@ export class PortailComponent implements OnInit {
     );
   }
 
-  mode : string = null;
-  selectedMode : string = null;
-  changeMode(mode:any){
+  mode: any = null;
+  selectedMode: any = null;
+  changeMode(mode: any) {
     this.selectedMode = mode;
   }
-  resetMode(){
+  resetMode() {
     this.selectedMode = null;
   }
 
   throttle = 300;
   scrollDistance = 2;
   scrollUpDistance = 1;
-  direction = "";
+  direction = '';
   modalOpen = false;
 
-  onScrollDown(ev:any) {
+  onScrollDown(ev: any) {
     this.page++;
-    if(this.listOeuvres.length>=this.nbrElmPerPage) {
+    console.log("this.page");
+    console.log(this.page);
+    if (this.listOeuvres.length >= this.nbrElmPerPage) {
       this.getOeuvres();
     }
-    this.direction = "down";
+    this.direction = 'down';
   }
 
-  onUp(ev:any) {
-    this.direction = "up";
+  onUp(ev: any) {
+    this.direction = 'up';
     /*if(this.page >= 1) {
       this.getOeuvres();
     }*/
   }
 
-
   toggleModal() {
     this.modalOpen = !this.modalOpen;
   }
 
-  searchQuery(){
+  searchQuery() {
     this.resetSearch();
     this.getOeuvres();
   }
-  resetSearch(){
-    this.oeuvres = this.listOeuvres =[];
+  resetSearch() {
+    this.oeuvres = this.listOeuvres = [];
     this.page = 1;
   }
-
 }

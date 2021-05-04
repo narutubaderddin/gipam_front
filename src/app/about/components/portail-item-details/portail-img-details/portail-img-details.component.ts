@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {WorkOfArtService} from '@shared/services/work-of-art.service';
+import { WorkOfArtService } from '@shared/services/work-of-art.service';
 
 @Component({
   selector: 'app-portail-img-details',
@@ -11,11 +11,11 @@ export class PortailImgDetailsComponent implements OnInit {
   source: string;
   showMore: boolean;
 
-  constructor(private route: ActivatedRoute,private workOfArtService: WorkOfArtService) {}
+  constructor(private route: ActivatedRoute, private workOfArtService: WorkOfArtService) {}
   isCollapsed: boolean = true;
   artWorkId: string;
   artWork: any;
-  loading : boolean = false;
+  loading: boolean = false;
   ngOnInit(): void {
     this.artWorkId = this.route.snapshot.paramMap.get('id');
     this.loading = true;

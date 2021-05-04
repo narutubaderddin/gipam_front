@@ -52,13 +52,7 @@ import { TokenInterceptor } from '@app/auth/token.interceptor';
     // must be imported as the last module as it contains the fallback route
   ],
   declarations: [AppComponent],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true,
-    },
-  ],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

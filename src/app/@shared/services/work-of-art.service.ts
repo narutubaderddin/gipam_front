@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TreeviewItem } from 'ngx-treeview';
-import {HttpClient, HttpParameterCodec, HttpParams} from '@angular/common/http';
+import { HttpClient, HttpParameterCodec, HttpParams } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
@@ -10,11 +10,11 @@ import { Observable } from 'rxjs';
 export class WorkOfArtService {
   statusType = [
     {
-      id: 0,
+      id: 'depot',
       name: 'Dépôt ',
     },
     {
-      id: 1,
+      id: 'propriete',
       name: 'Prorièté ',
     },
   ];
@@ -64,7 +64,16 @@ export class WorkOfArtService {
     },
     { id: 7, name: 'Art textile', active: true },
     { id: 8, name: 'Pièce de musée', active: true },
-    { id: 9, name: 'Art de la table', active: true },
+    {
+      id: 9,
+      name: 'Art de la table',
+      active: true,
+      denominations: [
+        { id: 1, name: 'Plat de service' },
+        { id: 2, name: 'Chauffe plat' },
+        { id: 2, name: 'Couverts' },
+      ],
+    },
     { id: 10, name: 'Decor monumental', active: true },
     { id: 11, name: 'Archeologie', active: false },
   ];
@@ -619,54 +628,53 @@ export class WorkOfArtService {
     ];
   }
   constructor(private http: HttpClient) {}
-  getOeuvres(filterObj:any): Observable<any> {
-    let filter : string = `limit=40&page=${filterObj.page}`;
-    if(filterObj.search){
-      filter+="&search[eq]="+filterObj.search;
+  getOeuvres(filterObj: any): Observable<any> {
+    let filter: string = `limit=40&page=${filterObj.page}`;
+    if (filterObj.search) {
+      filter += '&searchArt[eq]=' + filterObj.search;
     }
-    if(filterObj.height){
-      if(filterObj.height.min>0){
-        filter+="&height[gte]="+filterObj.height.min;
+    if (filterObj.height) {
+      if (filterObj.height.min > 0) {
+        filter += '&height[gte]=' + filterObj.height.min;
       }
-      if(filterObj.height.max>0){
-        filter+="&height[lte]="+filterObj.height.max;
-      }
-    }
-    if(filterObj.width){
-      if(filterObj.width.max>0){
-        filter+="&width[lte]="+filterObj.width.max;
-      }
-      if(filterObj.width.min>0){
-        filter+="&width[gte]="+filterObj.width.min;
+      if (filterObj.height.max > 0) {
+        filter += '&height[lte]=' + filterObj.height.max;
       }
     }
-    if(filterObj.weight){
-      if(filterObj.weight.min>0){
-        filter+="&weight[gte]="+filterObj.weight.min;
+    if (filterObj.width) {
+      if (filterObj.width.max > 0) {
+        filter += '&width[lte]=' + filterObj.width.max;
       }
-      if(filterObj.weight.max>0){
-        filter+="&weight[lte]="+filterObj.weight.max;
-      }
-    }
-    if(filterObj.fields){
-      if(filterObj.fields.length>0){
-        filter+="&field[in]="+"["+filterObj.fields+"]";
+      if (filterObj.width.min > 0) {
+        filter += '&width[gte]=' + filterObj.width.min;
       }
     }
-    if(filterObj.denoms){
-      if(filterObj.denoms.length>0){
-        filter+="&denomination[in]="+"["+filterObj.denoms+"]";
+    if (filterObj.weight) {
+      if (filterObj.weight.min > 0) {
+        filter += '&weight[gte]=' + filterObj.weight.min;
+      }
+      if (filterObj.weight.max > 0) {
+        filter += '&weight[lte]=' + filterObj.weight.max;
       }
     }
-    if(filterObj.mode){
-      filter+="&mode[eq]="+filterObj.mode;
+    if (filterObj.fields) {
+      if (filterObj.fields.length > 0) {
+        filter += '&field[in]=' + '[' + filterObj.fields + ']';
+      }
     }
-    filter+="&sort_by=field";
-    return this.http.get('http://localhost:8000/api/art-work/search?'+filter);
+    if (filterObj.denoms) {
+      if (filterObj.denoms.length > 0) {
+        filter += '&denomination[in]=' + '[' + filterObj.denoms + ']';
+      }
+    }
+    if (filterObj.mode) {
+      filter += '&mode[eq]=' + filterObj.mode;
+    }
+    filter += '&sort_by=field';
+    return this.http.get('http://localhost:8000/api/artWorks/search?' + filter);
   }
 
-
-  getOeuvreDetails(id:string): Observable<any> {
-    return this.http.get('http://localhost:8000/api/art-work/'+id);
+  getOeuvreDetails(id: string): Observable<any> {
+    return this.http.get('http://localhost:8000/api/artWorks/' + id);
   }
 }

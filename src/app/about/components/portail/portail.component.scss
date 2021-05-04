@@ -222,7 +222,7 @@ ngx-treeview {
       .form-check {
         display: flex;
         align-items: center;
-        justify-content: start;
+        justify-content: flex-start;
         width: 100%;
         padding: 3% 0;
         .form-check-label {
@@ -927,16 +927,16 @@ img {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
 }
-.loading-spinner{
+.loading-spinner {
   margin-left: 40%;
   margin-top: 6%;
 }
 
-.scroll-loading{
+.scroll-loading {
   margin-left: 40%;
 }
 
-form.modal-remove{
+form.modal-remove {
   .modal-title {
     color: #0ec7c6;
     font-size: 16px;
@@ -965,13 +965,13 @@ form.modal-remove{
     padding: 0.4rem 1rem;
   }
 }
-.no-art-works{
+.no-art-works {
   text-align: center;
   //margin-top: 8%;
   margin: 8% 30% 0 30%;
 }
-div.mode{
-  i{
+div.mode {
+  i {
     margin: 0.2% 1% 0.2% 1%;
     border: 1px solid;
   }

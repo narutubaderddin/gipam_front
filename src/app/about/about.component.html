@@ -2,8 +2,13 @@
   <div class="row w-100">
     <div class="col-8">
       <div class="form-group">
-        <button type="text" class="form-control w-100" (click)="onSearchClick()">
-          <i class="fa fa-search" style="position: relative; left: -8px"></i>Recherche
+        <button
+          type="text"
+          class="form-control w-100"
+          (click)="onSearchClick()"
+          style="background-color: #00d6d4; color: white"
+        >
+          <i class="fa fa-search" style="position: relative; left: -8px"></i>Acceder au Recherche des oeuvres d'art
         </button>
       </div>
     </div>
@@ -23,7 +28,11 @@
               <i class="fas fa-plus-circle mr-1"></i>
               Création notice en proprieté
             </li>
-            <li class="list-group-item" style="background-color: #4583af; color: white; font-size: 12px">
+            <li
+              class="list-group-item"
+              style="background-color: #4583af; color: white; font-size: 12px"
+              (click)="createDepositNotice()"
+            >
               <i class="fas fa-plus-circle mr-1"></i>
               Création notice en dépôt
             </li>
@@ -32,17 +41,12 @@
       </div>
     </div>
     <div class="col-2">
-      <!--      <div class="user-avatar"></div>-->
       <div class="right-header list main_nav_list_item mt-2" style="float: right">
         <div class="dropdown" style="left: -5%; color: #6d8292">
           <a type="button" id="dropdownuserButton" style="font-size: 20px">
             <i class="fas fa-user-circle"></i>
             <span class="ml-2">Claire ROSSET</span>
           </a>
-          <!--          <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownuserButton">-->
-          <!--            <h6 class="dropdown-header"><span translate>Role</span> <b> Gestionnaire SOA</b></h6>-->
-          <!--            <div class="dropdown-divider"></div>-->
-          <!--          </div>-->
         </div>
       </div>
     </div>

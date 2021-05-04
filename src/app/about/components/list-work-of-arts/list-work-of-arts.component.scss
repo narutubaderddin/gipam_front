@@ -1,18 +1,22 @@
 h6 {
   font-size: 14px;
 }
+
 input::placeholder {
   font-size: 11px;
 }
+
 .container-fluid {
   .body {
     .add-export-bloc {
       justify-content: space-between;
+
       .add-bloc {
         .add-button {
           margin-right: 10px;
         }
       }
+
       .export-bloc {
         .excel {
           width: 35px;
@@ -21,14 +25,17 @@ input::placeholder {
         }
       }
     }
+
     .filter-bloc {
       justify-content: flex-end;
+
       .search-panel {
         padding: 0;
       }
     }
   }
 }
+
 // switch btn
 .switch {
   position: relative;
@@ -80,6 +87,7 @@ input:checked + .slider:before {
   -ms-transform: translateX(26px);
   transform: translateX(26px);
 }
+
 .slider.round {
   border-radius: 34px;
 }
@@ -87,26 +95,31 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
 .btn-slider {
   font-size: 0.8rem;
   display: flex;
   align-self: self-end;
   margin: 0 !important;
+
   label {
     align-self: center;
     margin-left: 0.5rem;
     font-weight: 600;
     color: gray;
   }
+
   label.active {
     color: #0466c8;
   }
 }
+
 .header-dropdown {
   display: flex;
   flex-wrap: wrap;
   width: 300px;
 }
+
 .columns-dropdown {
   .column-check {
     border-bottom: solid #ccc 1px;
@@ -117,6 +130,7 @@ input:checked + .slider:before {
       color: #fff;
       background-color: rgba(36, 52, 61, 0.5);
     }
+
     input[type="radio"],
     input[type="checkbox"] {
       box-sizing: border-box;
@@ -128,52 +142,40 @@ input:checked + .slider:before {
     }
   }
 }
+
 .advanced-search-label {
   color: #0472d3;
   cursor: pointer;
+
   i {
     margin: 4px;
   }
 }
+
 .list-group-item {
   padding: 10px 20px;
   font-size: 14px;
   cursor: pointer;
+
   i {
     margin-right: 10px;
   }
+
   &:hover {
     background-color: #a6a6a6;
   }
 }
+
 .checkbox-container {
   font-size: 12px;
 }
-.mass-action-container {
-  background-color: rgba(0, 0, 0, 0.125);
-  display: inline-block;
-  height: 40px;
-  padding: 6px;
-  button {
-    margin-bottom: 0 !important;
-    .export-dropdown-bloc {
-      margin-top: -10px;
-      button {
-        height: 25px;
-        color: white;
-        &:focus,
-        &:active {
-          box-shadow: none;
-        }
-      }
-    }
-  }
-}
+
 .custom-slider {
   width: 100%;
   padding: 0;
   margin-top: 5px;
 }
+
 .search-container {
   button {
     height: fit-content !important;
@@ -200,19 +202,23 @@ input:checked + .slider:before {
       color: black !important;
       outline: none;
       box-shadow: none;
+
       i {
         color: black !important;
       }
     }
   }
+
   .form-control {
     width: 25px !important;
   }
 }
+
 .search {
   width: 100%;
   position: relative;
   display: flex;
+
   input {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
@@ -232,30 +238,39 @@ input:checked + .slider:before {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
 }
-::ng-deep ng-multiselect-dropdown {
-  width: 100%;
-  margin-left: -15px;
-  .multiselect-dropdown {
-    width: 115% !important;
-    .dropdown-btn {
-      min-height: 30px;
-      height: fit-content;
+
+.slider-bloc {
+  ::ng-deep ng-multiselect-dropdown {
+    width: 100%;
+    margin-left: -15px;
+
+    .multiselect-dropdown {
+      width: 115% !important;
+
+      .dropdown-btn {
+        min-height: 30px;
+        height: fit-content;
+      }
     }
   }
 }
+
 .dropdown-container {
   .drop-bloc {
     margin-top: 11px;
 
     .export-button {
       border: none;
+
       i {
         color: #0466c8;
       }
+
       &::after {
         color: white;
       }
     }
+
     button {
       height: 30px;
       border: 1px solid #00d6d4;
@@ -263,6 +278,7 @@ input:checked + .slider:before {
       border-radius: 12px;
       font-size: 12px;
       min-width: 20vh;
+
       &:focus,
       &:active {
         outline: none;
@@ -270,37 +286,46 @@ input:checked + .slider:before {
       }
     }
   }
+
   i {
     font-size: 20px;
   }
+
   .list::after {
     display: none;
   }
+
   button:hover,
   button:active,
   button:focus {
     background-color: #0466c8;
     color: white;
+
     i {
       color: white;
     }
   }
 }
+
 .headers-btn {
   background-color: #0466c8;
   color: white !important;
   border-color: #0466c8 !important;
+
   i {
     //background-color: white;
   }
+
   &:hover {
     border-color: #0466c8 !important;
   }
 }
+
 .quick-filter-btn {
   color: #00d6d4;
   font-weight: bold;
 }
+
 .text-quick-filter {
   height: 25px;
   margin-top: 16px;
@@ -312,33 +337,39 @@ input:checked + .slider:before {
   justify-content: space-between;
   width: 100%;
 }
+
 .picture-mode {
   .picture {
     border: 1px solid #407ca8;
     color: #407ca8;
   }
+
   .list {
     border: 1px solid #407ca8;
     color: white;
     background-color: #407ca8;
   }
 }
+
 .list-mode {
   .picture {
     border: 1px solid #407ca8;
     color: white;
     background-color: #407ca8;
   }
+
   .list {
     border: 1px solid #407ca8;
     color: #407ca8;
   }
 }
+
 .picture-mode,
 .list-mode {
   i {
     font-size: 14px;
   }
+
   button {
     border: 1px solid #407ca8;
     color: #407ca8;
@@ -348,10 +379,12 @@ input:checked + .slider:before {
     padding-left: 9px;
     margin-right: 0px;
     border-radius: 0;
+
     &:hover {
       color: white;
       background-color: #407ca8;
     }
+
     &:focus,
     &:active {
       outline: none;
@@ -372,6 +405,14 @@ input:checked + .slider:before {
   color: #1d2124;
 }
 
+::ng-deep .p-multiselect {
+  width: 100%;
+}
+
+.multiSelectBlock {
+  padding: 0;
+}
+
 .request {
   width: 100%;
   height: 40px;
@@ -387,6 +428,7 @@ input:checked + .slider:before {
     margin-bottom: 0;
     font-weight: bold;
   }
+
   &:after {
     font-family: "Font Awesome 5 Free", serif;
     font-weight: 900;
@@ -399,6 +441,7 @@ input:checked + .slider:before {
     right: 85px;
   }
 }
+
 .non-collapsed::after {
   transform: rotate(-90deg);
 }
@@ -408,9 +451,11 @@ input:checked + .slider:before {
   width: 100%;
   padding: 6.5px 7px;
 }
+
 .cons-mvt {
   justify-content: flex-end;
 }
+
 .floating-add-button {
   .label-container {
     position: fixed;
@@ -473,12 +518,15 @@ input:checked + .slider:before {
     height: 40px;
     width: 40px;
     display: block;
+
     span {
       font-size: 0;
     }
   }
+
   .add-prop-notice:hover {
     width: 300px !important;
+
     span {
       font-size: 18px !important;
     }
@@ -494,11 +542,13 @@ input:checked + .slider:before {
     margin-top: 13px;
     margin-left: 4px;
   }
+
   ul {
     display: flex;
     flex-direction: column;
     place-items: flex-end;
   }
+
   a#menu-share + ul {
     visibility: hidden;
   }
@@ -557,36 +607,43 @@ input:checked + .slider:before {
 
 .icon-stack {
   cursor: pointer;
+
   .fa-times {
     margin-left: -10px;
     color: red;
     padding-top: 4px;
   }
 }
+
 .selected-page {
   background-color: #5a4b5f;
   margin: -4.516px 0px 0px 0px;
   height: 8px;
 }
+
 .add-action {
   height: 30px;
   line-height: 0;
   font-size: 14px;
   margin-bottom: 10px;
 }
+
 .mass-action {
   margin-bottom: 10px;
   margin-left: 5%;
 }
+
 .mass-action-container {
   .add-action:hover {
     border-color: #2972a7;
     color: white !important;
   }
 }
+
 .form-control {
   height: 30px !important;
 }
+
 .slider-bloc {
   ::ng-deep {
     .ngx-slider .ngx-slider-pointer {
@@ -596,25 +653,31 @@ input:checked + .slider:before {
       outline: none;
       top: -5px;
     }
+
     .ngx-slider .ngx-slider-pointer:after {
       display: none;
     }
+
     .ngx-slider-selection {
       background: #00d6d4 !important;
       font-size: 15px;
     }
+
     .ngx-slider .ngx-slider-bubble {
       font-size: 11.5px;
       color: gray;
     }
   }
 }
+
 .search-form {
   font-size: 12px;
+
   .form-control {
     height: 25px !important;
   }
 }
+
 .select-style {
   padding: 0;
   border: 1px solid #ccc;
@@ -627,6 +690,7 @@ input:checked + .slider:before {
   background: #fff;
   position: relative;
 }
+
 .select-style select {
   padding: 5px 8px;
   width: 130%;
@@ -638,6 +702,7 @@ input:checked + .slider:before {
   -moz-appearance: none;
   appearance: none;
 }
+
 .select-style:after {
   top: 50%;
   left: 85%;
@@ -651,12 +716,15 @@ input:checked + .slider:before {
   margin-top: -2px;
   z-index: 100;
 }
+
 .select-style select:focus {
   outline: none;
 }
+
 #image-viewer {
   display: none;
 }
+
 /* The Modal (background) */
 #image-viewer.active {
   display: flex;
@@ -671,6 +739,7 @@ input:checked + .slider:before {
   background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.9);
 }
+
 .modal-content {
   margin: auto;
   display: block;
@@ -692,22 +761,26 @@ input:checked + .slider:before {
   margin: 2rem;
   font-size: 25px;
 }
+
 #image-viewer .close:hover,
 #image-viewer .close:focus {
   color: #9fffeb;
   text-decoration: none;
   cursor: pointer;
 }
+
 .img-viewer {
   height: 90px;
   width: auto;
   z-index: 120;
 }
+
 .img-viewer:hover {
   height: 250px;
   animation-name: zoom;
   animation-duration: 0.6s;
 }
+
 .img-content {
   z-index: 130;
   margin: auto;
@@ -719,6 +792,7 @@ input:checked + .slider:before {
   width: auto;
   border: none;
 }
+
 @keyframes zoom {
   from {
     transform: scale(0.95);
@@ -833,6 +907,7 @@ div.actions-oeuvre {
   z-index: 49;
   background: #ffffff;
   padding: 1% 0 1% 0;
+
   ::ng-deep .tooltip-inner {
     max-width: fit-content;
     //text-align: left;
@@ -847,6 +922,7 @@ div.actions-oeuvre {
 .is-property {
   background: #d4d2d2;
 }
+
 .card-footer {
   border-radius: 0px;
 }

@@ -5,7 +5,7 @@
         <div class="title-bloc col-md-12">
           <div class="left-title-bloc">
             <h1 class="title">Catalogue des biens culturels</h1>
-            <p>{{nbrOeuvre}} Biens culturels</p>
+            <p>{{ filteredQuantity }} Biens culturels</p>
           </div>
           <div class="sort-bloc">
             <strong class="d-inline p-2">Trié par:</strong>
@@ -287,9 +287,7 @@
                     Hauteur
                     <i class="fa fa-sort-down" *ngIf="!firstSearchDrop && formDomainsValues.length > 0"></i>
                   </span>
-                  <div
-                    placement="right"
-                  >
+                  <div placement="right">
                     <div class="mt-3" *ngIf="highValue">
                       <p>
                         <span>Min: {{ value }} cm - Max:{{ highValue }} cm </span>
@@ -353,9 +351,7 @@
                     Largeur
                     <i class="fa fa-sort-down" *ngIf="!firstSearchDrop && formDomainsValues.length > 0"></i>
                   </span>
-                  <div
-                    placement="right"
-                  >
+                  <div placement="right">
                     <div class="mt-3" *ngIf="highValue1">
                       <p>
                         <span>Min: {{ value1 }} cm - Max:{{ highValue1 }} cm </span>
@@ -418,9 +414,7 @@
                     Poids
                     <i class="fa fa-sort-down" *ngIf="!firstSearchDrop && formDomainsValues.length > 0"></i>
                   </span>
-                  <div
-                    placement="right"
-                  >
+                  <div placement="right">
                     <div class="mt-3" *ngIf="highValue3">
                       <p>
                         <span>Min: {{ value3 }} kg - Max:{{ highValue3 }} kg </span>
@@ -484,10 +478,7 @@
                     Mode
                     <i class="fa fa-sort-down" *ngIf="!firstSearchDrop && formDomainsValues.length > 0"></i>
                   </span>
-                  <div
-                    placement="right"
-                    *ngIf="mode"
-                  >
+                  <div placement="right" *ngIf="mode">
                     <div class="mt-3">
                       <p *ngFor="let value of formModesValues; let index = index">
                         <span>{{ value }}</span>
@@ -525,35 +516,42 @@
           </div>
         </div>
       </div>
-      <div class="loading-spinner" *ngIf="loading;else listOeuvres">
+      <div class="loading-spinner" *ngIf="loading; else listOeuvres">
         <p-progressSpinner></p-progressSpinner>
       </div>
       <ng-template #listOeuvres>
-      <div class="search-results"
-           infinite-scroll
-           [infiniteScrollDistance]="scrollDistance"
-           [infiniteScrollUpDistance]="scrollUpDistance"
-           [infiniteScrollThrottle]="throttle"
-           [fromRoot]="false"
-           (scrolled)="onScrollDown()"
-           (scrolledUp)="onUp()">
-        <div *ngIf="loadingScrollUp" class="scroll-loading">
-          <p-progressSpinner></p-progressSpinner>
-        </div>
-        <div  *ngFor="let section of oeuvres; let index = index" style="margin-top: 2%">
-          <div class="col-12 section-name">
-            <strong>{{ section.title }}</strong>
+        <div class="no-art-works" *ngIf="filteredQuantity==0">
+          <div class="alert alert-warning" role="alert">
+            Aucun bien culturel
           </div>
-          <div class="col-md-12" style="margin-top: 1%">
-            <div class="card-columns">
-              <div
-                class="picture-bloc-images card shadow p-3 items-bloc item"
-                style="margin-bottom: 0"
-                *ngFor="let items of section.items"
-                (click)="details(items.visible, items.image, items.id)"
-              >
-                <div class="card-block flip">
-                  <!--<div *ngFor="let attachment of items.attachments">
+        </div>
+        <div
+          class="search-results"
+          infinite-scroll
+          [infiniteScrollDistance]="scrollDistance"
+          [infiniteScrollUpDistance]="scrollUpDistance"
+          [infiniteScrollThrottle]="throttle"
+          [fromRoot]="false"
+          (scrolled)="onScrollDown()"
+          (scrolledUp)="onUp()"
+        >
+          <div *ngIf="loadingScrollUp" class="scroll-loading">
+            <p-progressSpinner></p-progressSpinner>
+          </div>
+          <div *ngFor="let section of oeuvres; let index = index" style="margin-top: 2%">
+            <div class="col-12 section-name">
+              <strong>{{ section.title }}</strong>
+            </div>
+            <div class="col-md-12" style="margin-top: 1%">
+              <div class="card-columns">
+                <div
+                  class="picture-bloc-images card shadow p-3 items-bloc item"
+                  style="margin-bottom: 0"
+                  *ngFor="let items of section.items"
+                  (click)="details(items.visible, items.image, items.id)"
+                >
+                  <div class="card-block flip">
+                    <!--<div *ngFor="let attachment of items.attachments">
                     <img
                       *ngIf="attachment.principleImage"
                       class="card-img-top img-fluid"
@@ -561,55 +559,51 @@
                       alt="Card image cap"
                     />
                   </div>-->
-                  <img
-                    class="card-img-top img-fluid"
-                    src="assets/images/2.jpg"
-                    alt="Card image cap"
-                  />
-                  <strong>{{ items.title }}</strong>
-                  <ul>
-                    <li *ngFor="let author of items.authors">{{ author.firstName }} {{ author.lastName }}</li>
-                    <li>
-                      <i
-                        class="fa fa-eye icon"
-                        aria-hidden="true"
-                        ngbTooltip="Voir plus de détails"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                      >
-                      </i>
-                    </li>
-                    <li *ngIf="!items.isDemanded; else removeOuvre" class="shopping">
-                      <i
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        ngbTooltip="Ajouter au panier"
-                        class="fa fa-shopping-basket icon"
-                        aria-hidden="true"
-                        (click)="addToBasket($event, items)"
-                      ></i>
-                    </li>
-                    <ng-template #removeOuvre>
-                      <li class="shopping">
+                    <img class="card-img-top img-fluid" src="assets/images/2.jpg" alt="Card image cap" />
+                    <strong>{{ items.title }}</strong>
+                    <ul>
+                      <li *ngFor="let author of items.authors">{{ author.firstName }} {{ author.lastName }}</li>
+                      <li>
                         <i
-                          placement="top"
-                          ngbTooltip="Retirer du panier"
-                          class="far fa-trash-alt icon-delete"
+                          class="fa fa-eye icon"
                           aria-hidden="true"
-                          (click)="removeFromBasket($event, items)"
+                          ngbTooltip="Voir plus de détails"
+                          data-toggle="tooltip"
+                          data-placement="top"
+                        >
+                        </i>
+                      </li>
+                      <li *ngIf="!items.isDemanded; else removeOuvre" class="shopping">
+                        <i
+                          data-toggle="tooltip"
+                          data-placement="top"
+                          ngbTooltip="Ajouter au panier"
+                          class="fa fa-shopping-basket icon"
+                          aria-hidden="true"
+                          (click)="addToBasket($event, items)"
                         ></i>
                       </li>
-                    </ng-template>
-                  </ul>
+                      <ng-template #removeOuvre>
+                        <li class="shopping">
+                          <i
+                            placement="top"
+                            ngbTooltip="Retirer du panier"
+                            class="far fa-trash-alt icon-delete"
+                            aria-hidden="true"
+                            (click)="removeFromBasket($event, items)"
+                          ></i>
+                        </li>
+                      </ng-template>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+          <div *ngIf="loadingScroll" class="scroll-loading" style="margin-bottom: 10%">
+            <p-progressSpinner></p-progressSpinner>
+          </div>
         </div>
-        <div *ngIf="loadingScroll" class="scroll-loading" style="margin-bottom: 10%">
-          <p-progressSpinner></p-progressSpinner>
-        </div>
-      </div>
       </ng-template>
 
       <!--<div class="loading-spinner" *ngIf="loading;else listOeuvres">
@@ -693,7 +687,7 @@
 </div>
 
 <ng-template #contentDeleteOeuvre let-modal>
-  <form appFlashFormErrors  class="modal-remove">
+  <form appFlashFormErrors class="modal-remove">
     <div class="modal-header">
       <h4 class="modal-title">Retirer du panier</h4>
       <button type="button" class="close" aria-label="Close" (click)="closeDeleteOeuvre()">
@@ -701,8 +695,7 @@
       </button>
     </div>
     <div class="modal-body">
-      <div class="col-md-12" >Voulez-vous retirer l'oeuvre "{{oeuvreToBeremoved.title}}" du panier ?</div>
-
+      <div class="col-md-12">Voulez-vous retirer l'oeuvre "{{ oeuvreToBeremoved.title }}" du panier ?</div>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-light cancel-btn-delete" (click)="closeDeleteOeuvre()">Annuler</button>
