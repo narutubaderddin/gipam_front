@@ -3,16 +3,16 @@ import { CustomHeaderRendererComponent } from '@shared/components/datatables/cus
 import { DomainsActionsRendererComponent } from '@shared/components/datatables/domains-actions-renderer/domains-actions-renderer.component';
 import { ColumnApi, GridApi, GridOptions, ICellEditorParams } from 'ag-grid-community';
 import { ActivatedRoute, Router } from '@angular/router';
-import {NgbModal, NgbModalConfig, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalConfig, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ColumnFilterModel } from '@shared/models/column-filter-model';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
-import {NgDataTableComponent} from "@shared/components/ng-dataTables/ng-data-table/ng-data-table.component";
-import {IDropdownSettings} from "ng-multiselect-dropdown";
-import {SimpleTabsRefService} from "@shared/services/simple-tabs-ref.service";
-import {ModalTabsRefComponent} from "@app/about/components/tabs-ref/modal-tabs-ref/modal-tabs-ref.component";
+import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
+import { ModalTabsRefComponent } from '@app/about/components/tabs-ref/modal-tabs-ref/modal-tabs-ref.component';
 
 @Component({
   selector: 'app-domains',
@@ -20,7 +20,7 @@ import {ModalTabsRefComponent} from "@app/about/components/tabs-ref/modal-tabs-r
   styleUrls: ['./domains.component.scss'],
 })
 export class DomainsComponent implements OnInit {
-  @ViewChild(NgDataTableComponent, {static: false}) dataTableComponent: NgDataTableComponent;
+  @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
 
   myForm: any;
   loading = true;
@@ -75,7 +75,6 @@ export class DomainsComponent implements OnInit {
     },
   ];
 
-
   constructor(
     private router: Router,
     private modalService: NgbModal,
@@ -84,7 +83,7 @@ export class DomainsComponent implements OnInit {
     private fieldsService: FieldsService,
     public fb: FormBuilder,
     config: NgbModalConfig,
-    private messageService: MessageService,
+    private messageService: MessageService
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
@@ -94,7 +93,6 @@ export class DomainsComponent implements OnInit {
     this.simpleTabsRef.tabRef = 'fields';
     this.getAllItems();
   }
-
 
   openModal(item: any) {
     this.btnLoading = null;
@@ -123,7 +121,7 @@ export class DomainsComponent implements OnInit {
       itemToEdit: this.itemToEdit,
       selectedItem: this.selectedItem,
       itemLabel: this.itemLabel,
-      btnLoading : this.btnLoading,
+      btnLoading: this.btnLoading,
       active: this.active,
     };
 
@@ -177,8 +175,8 @@ export class DomainsComponent implements OnInit {
     let params = {
       limit: this.limit,
       page: this.page,
-      sort_by:this.sortBy,
-      sort: this.sort
+      sort_by: this.sortBy,
+      sort: this.sort,
     };
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
@@ -207,7 +205,7 @@ export class DomainsComponent implements OnInit {
   visibleItem(data: any) {
     data.active = !data.active;
 
-    this.simpleTabsRef.editItem({label: data.label, active: data.active}, data.id).subscribe(
+    this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
       (result) => {
         if (data.active) {
           this.addSingle('success', 'Activation', 'Domaine ' + data.label + ' activée avec succés');
@@ -224,9 +222,8 @@ export class DomainsComponent implements OnInit {
   }
 
   addSingle(type: string, sum: string, msg: string) {
-    this.messageService.add({severity: type, summary: sum, detail: msg});
+    this.messageService.add({ severity: type, summary: sum, detail: msg });
     this.btnLoading = null;
-
   }
 
   pagination(e: any) {
@@ -253,12 +250,12 @@ export class DomainsComponent implements OnInit {
   search(input: string) {
     this.page = 1;
 
-    this.dataTableSearchBar = {'search': input};
+    this.dataTableSearchBar = { search: input };
     this.getAllItems();
   }
 
-  ClearSearch(event: Event, input:string) {
-    if(!event['inputType']){
+  ClearSearch(event: Event, input: string) {
+    if (!event['inputType']) {
       this.search(input);
     }
   }

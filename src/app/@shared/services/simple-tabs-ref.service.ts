@@ -62,7 +62,26 @@ export class SimpleTabsRefService {
           filter[key + '[' + dTFilter[key].operator + ']'] = dTFilter[key].value;
         }
       }
+      if (dTFilter[key].type === 'multiselect') {
+        let values: any[] = [];
+        dTFilter[key].value.forEach((item: any) => {
+          values.push(item.id);
+        });
+        filter[key + '[in]'] = JSON.stringify(values);
+      }
     });
     return filter;
+  }
+
+  getTabRefFilterData(result: any[]) {
+    let items: any[] = [];
+    result.forEach((item: any) => {
+      if (item.hasOwnProperty('label')) {
+        items.push({ id: item.id, name: item.label });
+      } else {
+        items.push({ id: item.id, name: item.name });
+      }
+    });
+    return items;
   }
 }

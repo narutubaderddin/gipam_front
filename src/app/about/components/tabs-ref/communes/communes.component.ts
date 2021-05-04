@@ -1,23 +1,22 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {NgDataTableComponent} from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
-import {FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
-import {IDropdownSettings} from 'ng-multiselect-dropdown';
-import {OPERATORS, TYPES} from '@shared/services/column-filter.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {NgbModal, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
-import {SimpleTabsRefService} from '@shared/services/simple-tabs-ref.service';
-import {FieldsService} from '@shared/services/fields.service';
-import {MessageService} from 'primeng/api';
-import {DatePipe} from '@angular/common';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
+import { FieldsService } from '@shared/services/fields.service';
+import { MessageService } from 'primeng/api';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-communes',
   templateUrl: './communes.component.html',
   styleUrls: ['./communes.component.scss'],
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
 export class CommunesComponent implements OnInit {
-
   @ViewChild('content') modalRef: TemplateRef<any>;
   @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
 
@@ -96,7 +95,6 @@ export class CommunesComponent implements OnInit {
       field: 'department',
       type: 'key-array',
       key_data: ['department', 'name'],
-
     },
     {
       header: 'Actions',
@@ -171,11 +169,12 @@ export class CommunesComponent implements OnInit {
       this.itemToEdit = item;
       this.itemLabel = item.name;
 
-      this.selectedRelatedEntity = item.region ? {
-        name:item.region.name,
-        id:item.region.id
-      } : {};
-
+      this.selectedRelatedEntity = item.region
+        ? {
+            name: item.region.name,
+            id: item.region.id,
+          }
+        : {};
     }
     if (this.editItem || this.addItem) {
       this.getRelatedEntity();
@@ -186,7 +185,7 @@ export class CommunesComponent implements OnInit {
   }
   onDepartmentSelect(item: any) {
     this.selectedRelatedEntity = item;
-    console.log(item)
+    console.log(item);
   }
   onSelectAll(items: any) {}
 
@@ -196,7 +195,7 @@ export class CommunesComponent implements OnInit {
 
     this.simpleTabsRef.getAllItems({}).subscribe((result: any) => {
       this.relatedEntities = result.results;
-      console.log('relatedEntities',this.relatedEntities)
+      console.log('relatedEntities', this.relatedEntities);
     });
     this.simpleTabsRef.tabRef = previousUrl;
   }
@@ -260,7 +259,7 @@ export class CommunesComponent implements OnInit {
   addItemAction() {
     this.addItem = true;
     this.selectedItem = null;
-    this.selectedRelatedEntity =[];
+    this.selectedRelatedEntity = [];
     this.openModal('');
   }
 
@@ -309,8 +308,8 @@ export class CommunesComponent implements OnInit {
     let params = {
       limit: this.limit,
       page: this.page,
-      sort_by:this.sortBy,
-      sort: this.sort
+      sort_by: this.sortBy,
+      sort: this.sort,
     };
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
@@ -419,13 +418,12 @@ export class CommunesComponent implements OnInit {
   search(input: string) {
     this.page = 1;
 
-   this.dataTableSearchBar= {'search': input};
+    this.dataTableSearchBar = { search: input };
     this.getAllItems();
   }
-  ClearSearch(event: Event, input:string) {
-    if(!event['inputType']){
+  ClearSearch(event: Event, input: string) {
+    if (!event['inputType']) {
       this.search(input);
     }
   }
-
 }
