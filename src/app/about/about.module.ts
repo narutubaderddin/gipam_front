@@ -99,6 +99,7 @@ import { DepartmentsComponent } from './components/tabs-ref/departments/departme
 import { LocalisationTypeComponent } from './components/tabs-ref/localisation-type/localisation-type.component';
 import { ServicesComponent } from '@app/about/components/tabs-ref/services/services.component';
 import { SitesComponent } from '@app/about/components/tabs-ref/sites/sites.component';
+import { CorrespondentsComponent } from './components/tabs-ref/correspondents/correspondents.component';
 
 setTheme('bs4');
 
@@ -164,6 +165,7 @@ const ngWizardConfig: NgWizardConfig = {
     CommunesComponent,
     DepartmentsComponent,
     LocalisationTypeComponent,
+    CorrespondentsComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [

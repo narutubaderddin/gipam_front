@@ -34,6 +34,7 @@ import {DepartmentsComponent} from "@app/about/components/tabs-ref/departments/d
 import {LocalisationTypeComponent} from "@app/about/components/tabs-ref/localisation-type/localisation-type.component";
 import { ServicesComponent } from '@app/about/components/tabs-ref/services/services.component';
 import { SitesComponent } from '@app/about/components/tabs-ref/sites/sites.component';
+import {CorrespondentsComponent} from "@app/about/components/tabs-ref/correspondents/correspondents.component";
 const routes: Routes = [
   {
     path: '',
@@ -109,6 +110,7 @@ const routes: Routes = [
         component: SitesComponent,
         data: { title: 'Liste des sites' },
       },
+      { path: 'tab-ref-correspondant', component: CorrespondentsComponent },
     ],
   },
 ];

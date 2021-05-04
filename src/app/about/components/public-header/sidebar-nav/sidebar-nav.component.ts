@@ -164,4 +164,8 @@ export class SidebarNavComponent implements OnInit {
     this.router.navigate(['tab-ref-site']);
     this.toggleClose();
   }
+  goToCorrespondentsList(){
+    this.router.navigate(['tab-ref-correspondant']);
+    this.toggleClose();
+  }
 }
