@@ -1,6 +1,6 @@
 <div class="breadcrumb">
   <a href="accueil">Accueil</a>
-  <a href="tab-ref-categorie" class="selected-item">
+  <a href="tab-ref-sous-type-constat" class="selected-item">
     <i class="fas fa-chevron-right"></i>
     Gestion des sous types constat
   </a>
@@ -29,8 +29,7 @@
                   id="example-search-input"
                   #searchBox
                   (keyup.enter)="search(searchBox.value)"
-                  (blur)="search(searchBox.value)"
-                  (close)="search('')"
+                  (input)="ClearSearch($event, searchBox.value)"
                 />
                 <span class="input-group-append">
                   <button

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 import { ModalReportSubTypesComponent } from '@app/about/components/tabs-ref/report-sub-types/modal-report-sub-types/modal-report-sub-types.component';
+import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 
 @Component({
   selector: 'app-report-sub-types',
@@ -14,6 +15,8 @@ import { ModalReportSubTypesComponent } from '@app/about/components/tabs-ref/rep
   styleUrls: ['./report-sub-types.component.scss'],
 })
 export class ReportSubTypesComponent implements OnInit {
+  @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
+
   loading = true;
   btnLoading: any = null;
   myModal: any;
@@ -40,26 +43,15 @@ export class ReportSubTypesComponent implements OnInit {
   page = 1;
   end: number;
   start: number;
-  defaultColDef = {
-    headerComponent: 'customHeader',
-    sortable: true,
-    filter: true,
-    resizable: true,
-    headerValueGetter: (params: any) => {
-      return params.colDef.headerName;
-    },
-    headerComponentParams: {
-      menuIcon: 'fa-filter',
-      operator: OPERATORS.like,
-      type: TYPES.text,
-    },
-  };
 
-  items: any;
-  fieldTraduction: any = {
-    label: 'Libellé',
-    reportType: 'Type constat',
-  };
+  dataTableFilter: any = {};
+  dataTableSort: any = {};
+  dataTableSearchBar: any = {};
+
+  items: any[] = [];
+
+  selectedreportType: any;
+
   columns = [
     {
       header: 'Libellé',
@@ -99,10 +91,6 @@ export class ReportSubTypesComponent implements OnInit {
     config.keyboard = false;
   }
 
-  get defaultHeaderParams() {
-    return this.defaultColDef.headerComponentParams;
-  }
-
   ngOnInit(): void {
     this.simpleTabsRef.tabRef = 'reportSubTypes';
     this.getAllItems();
@@ -120,6 +108,10 @@ export class ReportSubTypesComponent implements OnInit {
         this.editItem = true;
         this.itemToEdit = item;
         this.itemLabel = item.label;
+        this.selectedreportType = {
+          id: item.reportType.id,
+          label: item.reportType.label,
+        };
       } else {
         this.addItem = true;
       }
@@ -139,9 +131,10 @@ export class ReportSubTypesComponent implements OnInit {
       itemToDelete: this.itemToDelete,
       itemToEdit: this.itemToEdit,
       selectedItem: this.selectedItem,
+      selectedReportType: this.selectedreportType,
       active: this.active,
     };
-
+    console.log(this.selectedreportType);
     modalRef.result.then(
       (result) => {
         if (result === 'delete') {
@@ -209,15 +202,16 @@ export class ReportSubTypesComponent implements OnInit {
 
   getAllItems() {
     this.loading = true;
-    this.simpleTabsRef.tabRef = 'reportSubTypes';
-    const params = {
+    let params = {
       limit: this.limit,
       page: this.page,
-      'label[contains]': this.filter,
       sort_by: this.sortBy,
       sort: this.sort,
     };
-
+    params = Object.assign(params, this.dataTableFilter);
+    params = Object.assign(params, this.dataTableSort);
+    params = Object.assign(params, this.dataTableSearchBar);
+    console.log('http params', params);
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results;
@@ -228,7 +222,12 @@ export class ReportSubTypesComponent implements OnInit {
         this.loading = false;
       },
       (error: any) => {
-        this.addSingle('error', '', error.error.message);
+        this.items = [];
+        this.totalFiltred = 0;
+        this.total = 0;
+        this.dataTableComponent.error = true;
+        this.loading = false;
+        this.addSingle('error', 'Erreur Technique', error.error.message);
       }
     );
   }
@@ -323,32 +322,25 @@ export class ReportSubTypesComponent implements OnInit {
   }
 
   filters(e: any) {
-    console.log(e);
-    this.filter = e.label;
+    this.dataTableFilter = Object.assign({}, this.simpleTabsRef.prepareFilter(e));
+    this.page = 1;
+    this.dataTableComponent.currentPage = 1;
     this.getAllItems();
   }
-  getKeyByValue(object: any, value: any) {
-    return Object.keys(object).find((key) => object[key] === value);
-  }
-  sortEvent(e: any) {
-    console.log(e);
-    this.sortBy = this.getKeyByValue(this.fieldTraduction, e.field);
 
-    if (e.order == 1) {
-      this.sort = 'asc';
-      this.getAllItems();
-    } else {
-      this.sort = 'desc';
-      this.getAllItems();
-    }
-  }
-  search(input: string) {
-    if (input) {
-      this.filter = input;
-      this.getAllItems();
-      return;
-    }
-    this.filter = '';
+  sortEvent(e: any) {
+    this.dataTableSort = e;
     this.getAllItems();
+  }
+
+  search(input: string) {
+    this.page = 1;
+    this.dataTableSearchBar = { search: input };
+    this.getAllItems();
+  }
+  ClearSearch(event: Event, input: string) {
+    if (!event['inputType']) {
+      this.search(input);
+    }
   }
 }

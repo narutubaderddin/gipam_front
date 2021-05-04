@@ -1,6 +1,6 @@
 <div class="breadcrumb">
   <a href="accueil">Accueil</a>
-  <a href="tab-ref-etablissement" class="selected-item">
+  <a href="tab-ref-ministère" class="selected-item">
     <i class="fas fa-chevron-right"></i>
     Gestion des Ministères
   </a>
@@ -29,8 +29,7 @@
                   id="example-search-input"
                   #searchBox
                   (keyup.enter)="search(searchBox.value)"
-                  (blur)="search(searchBox.value)"
-                  (close)="search('')"
+                  (input)="ClearSearch($event, searchBox.value)"
                 />
                 <span class="input-group-append">
                   <button
@@ -81,10 +80,12 @@
 <ng-template #content let-modal>
   <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
     <div class="modal-header">
-      <h4 class="modal-title" *ngIf="editItem">Modification d'une Ministère</h4>
-      <h4 class="modal-title" *ngIf="addItem">Ajout d'une Ministère</h4>
-      <h4 class="modal-title" *ngIf="deleteItems">Suppression d'une Ministère</h4>
-      <h4 class="modal-title" *ngIf="editVisibility">Activation / désactivation d'une Ministère</h4>
+      <h4 class="modal-title" *ngIf="editItem">Modification de la Ministère "{{ itemToEdit.name }}"</h4>
+      <h4 class="modal-title" *ngIf="addItem">Ajout de Ministère</h4>
+      <h4 class="modal-title" *ngIf="deleteItems">Suppression de la Ministère "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="editVisibility">
+        Activation / désactivation de la Ministère "{{ itemToEdit.name }}"
+      </h4>
       <button type="button" class="close" aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
       </button>

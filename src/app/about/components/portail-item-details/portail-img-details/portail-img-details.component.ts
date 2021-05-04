@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { WorkOfArtService } from '@shared/services/work-of-art.service';
 
 @Component({
   selector: 'app-portail-img-details',
@@ -10,14 +11,29 @@ export class PortailImgDetailsComponent implements OnInit {
   source: string;
   showMore: boolean;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private workOfArtService: WorkOfArtService) {}
   isCollapsed: boolean = true;
+  artWorkId: string;
+  artWork: any;
+  loading: boolean = false;
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
-      this.source = params.source;
-      this.showMore = JSON.parse(params.show);
-      console.log(this.source, this.showMore);
-    });
+    this.artWorkId = this.route.snapshot.paramMap.get('id');
+    this.loading = true;
+    this.workOfArtService.getOeuvreDetails(this.artWorkId).subscribe(
+      (response) => {
+        console.log(response);
+        this.artWork = response;
+        this.loading = false;
+      },
+      (error) => {
+        //error() callback
+        this.loading = false;
+      },
+      () => {
+        //complete() callback
+        this.loading = false;
+      }
+    );
   }
   showDetails(e: any) {
     this.showMore = e;

@@ -1,6 +1,6 @@
 <div class="breadcrumb">
   <a href="accueil">Accueil</a>
-  <a href="tab-ref-etablissement" class="selected-item">
+  <a href="tab-ref-bâtiment" class="selected-item">
     <i class="fas fa-chevron-right"></i>
     Gestion des Bâtiments
   </a>
@@ -29,8 +29,7 @@
                   id="example-search-input"
                   #searchBox
                   (keyup.enter)="search(searchBox.value)"
-                  (blur)="search(searchBox.value)"
-                  (close)="search('')"
+                  (input)="ClearSearch($event, searchBox.value)"
                 />
                 <span class="input-group-append">
                   <button
@@ -81,10 +80,12 @@
 <ng-template #content let-modal>
   <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
     <div class="modal-header">
-      <h4 class="modal-title" *ngIf="editItem">Modification de bâtiment</h4>
+      <h4 class="modal-title" *ngIf="editItem">Modification de bâtiment "{{ selectedItem.name }}"</h4>
       <h4 class="modal-title" *ngIf="addItem">Ajout de bâtiment</h4>
-      <h4 class="modal-title" *ngIf="deleteItems">Suppression de bâtiment</h4>
-      <h4 class="modal-title" *ngIf="editVisibility">Activation / désactivation de bâtiment</h4>
+      <h4 class="modal-title" *ngIf="deleteItems">Suppression de bâtiment "{{ selectedItem.name }}"</h4>
+      <h4 class="modal-title" *ngIf="editVisibility">
+        Activation / désactivation de bâtiment "{{ selectedItem.name }}"
+      </h4>
       <button type="button" class="close" aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -146,6 +147,7 @@
             [showClear]="false"
             (onChange)="onSiteSelect($event)"
             dataKey="{{ selectedSite }}"
+            [filter]="true"
           ></p-dropdown>
         </div>
       </div>
@@ -162,9 +164,11 @@
             [showClear]="false"
             (onChange)="onCommuneSelect($event)"
             dataKey="{{ selectedCommune }}"
+            [filter]="true"
           ></p-dropdown>
         </div>
       </div>
+
       <div
         class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
         *ngIf="editItem || addItem || editVisibility"

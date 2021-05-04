@@ -3,12 +3,16 @@ import { CustomHeaderRendererComponent } from '@shared/components/datatables/cus
 import { DomainsActionsRendererComponent } from '@shared/components/datatables/domains-actions-renderer/domains-actions-renderer.component';
 import { ColumnApi, GridApi, GridOptions, ICellEditorParams } from 'ag-grid-community';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalConfig, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ColumnFilterModel } from '@shared/models/column-filter-model';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
+import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
+import { ModalTabsRefComponent } from '@app/about/components/tabs-ref/modal-tabs-ref/modal-tabs-ref.component';
 
 @Component({
   selector: 'app-domains',
@@ -16,45 +20,43 @@ import { MessageService } from 'primeng/api';
   styleUrls: ['./domains.component.scss'],
 })
 export class DomainsComponent implements OnInit {
-  @ViewChild('content')
-  modalRef: TemplateRef<any>;
-  // @Input() pageChanged;
-  myModal: any;
-  selectedDomain: string;
-  domainToDelete: string;
-  domainToEdit: any;
-  DomainForm: FormGroup;
-  editDomain = false;
-  addDomain = false;
-  deleteDomain = false;
-  active = true;
+  @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
 
-  domains: any;
-  columnDropped = new EventEmitter();
-  columnDroppedSubscription: Subscription;
-  currentColumnStates: any;
-  currentFilters: ColumnFilterModel[] = [];
-  currentOrderedFields: { column: string; direction: string }[] = [];
+  myForm: any;
+  loading = true;
+  btnLoading: any = null;
+  myModal: any;
+  selectedItem: {};
+  itemToEdit: any;
+  itemToDelete: string;
+  tabForm: FormGroup;
+  editItem = false;
+  addItem = false;
+  deleteItems = false;
+  editVisibility = false;
+  dropdownSettings: IDropdownSettings;
+  disappearanceDate: string;
+  active = true;
+  dropdownList: any;
   itemLabel: any;
+
   filter: any;
+  sortBy = 'label';
+  sort = 'asc';
   totalFiltred: any;
   total: any;
-  limit: any = '5';
-  page: any = '1';
-  start: any;
-  end: any;
-  sortBy = '';
-  sort: string = 'asc';
-  fieldTraduction = {
-    label: 'Libellé',
-  };
-  loading: boolean = false;
-  frameworkComponents = {
-    customHeader: CustomHeaderRendererComponent,
-    gridActionRenderer: DomainsActionsRendererComponent,
-  };
+  limit = 5;
+  page = 1;
+  end: number;
+  start: number;
 
-  columns: any[] = [
+  dataTableFilter: any = {};
+  dataTableSort: any = {};
+  dataTableSearchBar: any = {};
+  items: any;
+  today: string;
+
+  columns = [
     {
       header: 'Libellé',
       field: 'label',
@@ -63,9 +65,9 @@ export class DomainsComponent implements OnInit {
       filterType: 'text',
       sortable: true,
     },
-
     {
       header: 'Actions',
+      field: 'action',
       type: 'app-actions-cell',
       sortable: false,
       filter: false,
@@ -73,94 +75,83 @@ export class DomainsComponent implements OnInit {
     },
   ];
 
-  rowCount: any = 5;
-  // filter = false;
-
   constructor(
     private router: Router,
     private modalService: NgbModal,
     private activatedRoute: ActivatedRoute,
-    private messageService: MessageService,
-    private feildsService: FieldsService,
+    private simpleTabsRef: SimpleTabsRefService,
+    private fieldsService: FieldsService,
     public fb: FormBuilder,
-    config: NgbModalConfig
+    config: NgbModalConfig,
+    private messageService: MessageService
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
   }
 
-  initForm() {
-    this.DomainForm = this.fb.group({
-      label: [this.selectedDomain, [Validators.required]],
-      active: [true],
-    });
-  }
-
   ngOnInit(): void {
-    this.getAllFeilds();
-    this.initForm();
-
-    this.filter =
-      this.activatedRoute.snapshot.queryParams.filter && this.activatedRoute.snapshot.queryParams.filter.length > 0;
+    this.simpleTabsRef.tabRef = 'fields';
+    this.getAllItems();
   }
 
-  resetFilter() {}
-
-  openModal(domain: any) {
-    if (domain) {
-      this.editDomain = true;
-      this.domainToEdit = domain;
-      this.itemLabel = domain.label;
-    } else {
-      this.addDomain = true;
+  openModal(item: any) {
+    this.btnLoading = null;
+    if (!this.deleteItems) {
+      if (item) {
+        this.editItem = true;
+        this.itemToEdit = item;
+        this.itemLabel = item.label;
+      } else {
+        this.addItem = true;
+      }
     }
+    this.selectedItem = item.label;
 
-    this.selectedDomain = domain.label;
-    this.initForm();
-    this.myModal = this.modalService.open(this.modalRef, { centered: true });
-  }
-  submit() {
-    if (this.addDomain) {
-      this.addField(this.DomainForm.value);
-    }
-    if (this.editDomain) {
-      const field = {
-        // id: this.domainToEdit.id,
-        label: this.DomainForm.value.label,
-        active: this.domainToEdit.active,
-      };
-      this.editField(field, this.domainToEdit.id);
-    }
-  }
-  close() {
-    this.editDomain = false;
-    this.addDomain = false;
-    this.deleteDomain = false;
+    const ngbModalOptions: NgbModalOptions = {
+      backdropClass: 'modal-container',
+      centered: true,
+    };
+    const modalRef = this.modalService.open(ModalTabsRefComponent, ngbModalOptions);
+    modalRef.componentInstance.fromParent = {
+      name: 'domaine',
+      editItem: this.editItem,
+      addItem: this.addItem,
+      deleteItems: this.deleteItems,
+      itemToDelete: this.itemToDelete,
+      itemToEdit: this.itemToEdit,
+      selectedItem: this.selectedItem,
+      itemLabel: this.itemLabel,
+      btnLoading: this.btnLoading,
+      active: this.active,
+    };
 
-    this.myModal.close('Close click');
-    this.myModal.dismiss('Cross click');
-  }
-  visibleDomain(data: any) {
-    data.active = !data.active;
-    this.feildsService.editField({ label: data.label, active: data.active }, data.id).subscribe(
+    modalRef.result.then(
       (result) => {
-        if (data.active) {
-          this.addSingle('success', 'Activation', 'Domaine activée avec succés');
-        } else {
-          this.addSingle('success', 'Activation', 'Domaine désactivée avec succés');
+        if (result === 'delete') {
+          return this.deleteItemss(this.itemToDelete);
         }
-        this.getAllFeilds();
+        if (this.addItem) {
+          this.addItems(result);
+        }
+        if (this.editItem) {
+          this.editField(result, this.itemToEdit.id);
+        }
+        if (this.deleteItems) {
+          this.deleteItem(this.itemToDelete);
+        }
       },
-      (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
+      (reason) => {
+        this.close();
       }
     );
   }
+
   deleteItem(data: any) {
-    this.deleteDomain = true;
-    this.domainToDelete = data;
+    this.btnLoading = null;
+    this.deleteItems = true;
+    this.itemToDelete = data;
     this.itemLabel = data.label;
-    this.myModal = this.modalService.open(this.modalRef, { centered: true });
+    this.openModal(data);
   }
 
   actionMethod(e: any) {
@@ -172,109 +163,171 @@ export class DomainsComponent implements OnInit {
         this.openModal(e.item);
         break;
       case 'visibility':
-        this.visibleDomain(e.item);
+        this.visibleItem(e.item);
         break;
       default:
         this.close();
     }
   }
 
-  getAllFeilds() {
+  getAllItems() {
     this.loading = true;
-    const data = {
+    let params = {
       limit: this.limit,
       page: this.page,
-      'label[contains]': this.filter,
       sort_by: this.sortBy,
       sort: this.sort,
     };
-    this.feildsService.getAllFields(data).subscribe(
+    params = Object.assign(params, this.dataTableFilter);
+    params = Object.assign(params, this.dataTableSort);
+    params = Object.assign(params, this.dataTableSearchBar);
+
+    this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
-        this.domains = result.results;
+        this.items = result.results;
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
         this.start = (this.page - 1) * this.limit + 1;
-        this.end = (this.page - 1) * this.limit + this.domains.length;
+        this.end = (this.page - 1) * this.limit + this.items.length;
         this.loading = false;
       },
-      (error) => {
-        this.addSingle('error', '', error.error.message);
+      (error: any) => {
+        this.items = [];
+        this.totalFiltred = 0;
+        this.total = 0;
+        this.dataTableComponent.error = true;
+        this.loading = false;
+        this.addSingle('error', 'Erreur Technique', error.error.message);
       }
     );
   }
-  deleteField(field: any) {
-    this.feildsService.deleteField(field).subscribe(
+
+  visibleItem(data: any) {
+    data.active = !data.active;
+
+    this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
       (result) => {
-        this.close();
-        this.addSingle('success', 'Suppression', 'Domaine ' + field.label + ' supprimé avec succés');
-        this.getAllFeilds();
-      },
-      (error) => {
-        this.close();
-        if (error.error.code === 400) {
-          this.addSingle('error', 'Suppression', 'Domaine ' + field.label + ' admet une relation');
+        if (data.active) {
+          this.addSingle('success', 'Activation', 'Domaine ' + data.label + ' activée avec succés');
         } else {
-          this.addSingle('error', 'Suppression', error.error.message);
+          this.addSingle('success', 'Activation', 'Domaine ' + data.label + ' désactivée avec succés');
         }
-      }
-    );
-  }
-  addField(field: any) {
-    this.feildsService.addField(field).subscribe(
-      (result) => {
-        this.close();
-        this.addSingle('success', 'Ajout', 'Domaine ' + field.label + ' ajoutée avec succés');
-        this.getAllFeilds();
+        this.getAllItems();
       },
-      (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
-      }
-    );
-  }
-  editField(field: any, id: number) {
-    this.feildsService.editField(field, id).subscribe(
-      (result) => {
-        this.close();
-        this.addSingle('success', 'Modification', 'Domaine ' + field.label + ' modifié avec succés');
-        this.getAllFeilds();
-      },
+
       (error) => {
         this.addSingle('error', 'Modification', error.error.message);
       }
     );
   }
+
   addSingle(type: string, sum: string, msg: string) {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
+    this.btnLoading = null;
   }
+
   pagination(e: any) {
     if (e.page < this.total / parseInt(this.limit.toString(), 0)) {
       this.page = e.page + 1;
     } else {
       this.page = this.total / parseInt(this.limit.toString(), 0);
     }
-    this.getAllFeilds();
+    this.getAllItems();
   }
 
   filters(e: any) {
-    // console.log(e);
-    // this.filter = e.label;
-    // console.log(Object.keys(e));
-    // return false;
-    this.getAllFeilds();
+    this.dataTableFilter = Object.assign({}, this.simpleTabsRef.prepareFilter(e));
+    this.page = 1;
+    this.dataTableComponent.currentPage = 1;
+    this.getAllItems();
   }
-  getKeyByValue(object: any, value: any) {
-    return Object.keys(object).find((key) => object[key] === value);
-  }
-  sortEvent(e: any) {
-    console.log(e);
-    this.sortBy = this.getKeyByValue(this.fieldTraduction, e.field);
 
-    if (e.order == 1) {
-      this.sort = 'asc';
-      this.getAllFeilds();
-    } else {
-      this.sort = 'desc';
-      this.getAllFeilds();
+  sortEvent(e: any) {
+    this.dataTableSort = e;
+    this.getAllItems();
+  }
+
+  search(input: string) {
+    this.page = 1;
+
+    this.dataTableSearchBar = { search: input };
+    this.getAllItems();
+  }
+
+  ClearSearch(event: Event, input: string) {
+    if (!event['inputType']) {
+      this.search(input);
     }
+  }
+
+  paginationData(): void {
+    // this.dataTableComponent.handlePaginationInfo();
+  }
+
+  addItems(item: any) {
+    this.btnLoading = '';
+    this.simpleTabsRef.addItem(item).subscribe(
+      (result: any) => {
+        this.close();
+        this.addSingle('success', 'Ajout', 'Domaine ' + item.label + ' ajoutée avec succés');
+        this.getAllItems();
+      },
+      (error) => {
+        this.addSingle('error', 'Ajout', error.error.message);
+      }
+    );
+  }
+
+  close() {
+    this.editItem = false;
+    this.addItem = false;
+    this.deleteItems = false;
+  }
+
+  submit() {
+    this.btnLoading = null;
+    const item = {
+      label: this.myForm.label,
+      active: this.myForm.active,
+    };
+    if (this.addItem) {
+      this.addItems(item);
+    }
+    if (this.editItem) {
+    }
+  }
+
+  editField(item: any, id: number) {
+    this.btnLoading = '';
+    this.simpleTabsRef.editItem(item, id).subscribe(
+      (result) => {
+        this.close();
+        this.addSingle('success', 'Modification', 'Domaine ' + item.label + ' modifiée avec succés');
+        this.getAllItems();
+      },
+
+      (error) => {
+        this.addSingle('error', 'Modification', error.error.message);
+      }
+    );
+  }
+
+  deleteItemss(item: any) {
+    this.btnLoading = '';
+    this.simpleTabsRef.deleteItem(item).subscribe(
+      (result: any) => {
+        this.close();
+        this.addSingle('success', 'Suppression', 'Domaine ' + item.label + ' supprimée avec succés');
+        this.getAllItems();
+      },
+      (error: any) => {
+        this.close();
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Suppression', 'Domaine ' + item.label + ' admet une relation');
+        } else {
+          this.addSingle('error', 'Suppression', error.error.message);
+        }
+      }
+    );
   }
 }

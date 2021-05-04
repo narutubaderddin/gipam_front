@@ -1,104 +1,146 @@
 <div class="content">
   <div class="header mb-md-5">
     <h2>
-      <p><strong>Titre de la sculpture</strong></p>
+      <p>
+        <strong>{{ artWork?.title }}</strong>
+      </p>
     </h2>
   </div>
-  <div class="d-flex">
-    <div class="d-flex picture">
-      <div class="principal-picture">
-        <div class="d-flex justify-content-space-between" style="width: 50%">
-          <div class="d-flex principal-img justify-content-center">
-            <img class="img-fluid" src="{{ source }}" alt="" />
-          </div>
-          <div *ngIf="showMore && isCollapsed" class="show-details" (click)="isCollapsed = !isCollapsed">
-            <a
-              class="float"
-              style="background-color: #00d6d4 !important; color: #fff; font-size: 20px"
-              (click)="isCollapsed = !isCollapsed"
-              [attr.aria-expanded]="!isCollapsed"
-              title="Détails"
-            >
-              <i *ngIf="isCollapsed" class="fas fa-angle-double-left"></i>
-            </a>
-          </div>
-          <div *ngIf="showMore && !isCollapsed" class="show-details" (click)="isCollapsed = !isCollapsed">
-            <a
-              class="float"
-              style="background-color: #00d6d4 !important; color: #fff; font-size: 20px"
-              (click)="isCollapsed = !isCollapsed"
-              [attr.aria-expanded]="!isCollapsed"
-              title="Détails"
-            >
-              <i *ngIf="!isCollapsed" class="fas fa-angle-double-right"></i>
-            </a>
-          </div>
-        </div>
-        <div
-          *ngIf="showMore"
-          class="img-details d-flex justify-content-between bg-white align-items-center"
-          [ngClass]="isCollapsed ? 'img-details-show' : 'img-details-hide'"
-          style="width: 50%"
-        >
-          <div *ngIf="!isCollapsed" class="show-details" (click)="isCollapsed = !isCollapsed">
-            <a
-              class="float"
-              style="background-color: #00d6d4 !important; color: #fff; font-size: 20px"
-              (click)="isCollapsed = !isCollapsed"
-              [attr.aria-expanded]="!isCollapsed"
-              title="Détails"
-            >
-              <i *ngIf="!isCollapsed" class="fas fa-angle-double-right"></i>
-            </a>
-          </div>
-          <div *ngIf="isCollapsed" class="show-details" (click)="isCollapsed = !isCollapsed">
-            <a
-              class="float"
-              style="background-color: #00d6d4 !important; color: #fff; font-size: 20px"
-              (click)="isCollapsed = !isCollapsed"
-              [attr.aria-expanded]="!isCollapsed"
-              title="Détails"
-            >
-              <i *ngIf="isCollapsed" class="fas fa-angle-double-left"></i>
-            </a>
-          </div>
-          <div class="img-details sidebar d-flex justify-content-center bg-white align-items-center">
-            <app-portail-item-image></app-portail-item-image>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="more-details pocket">
-      <div class="more-details-content">
-        <div class="details-header">
-          <h4 class="mb-md-4">
-            <p><strong>Détails</strong></p>
-          </h4>
-          <a>
-            <i class="fas fa-file-export" title="Exporter"></i>
-            <span>Exporter</span>
-          </a>
-        </div>
-        <div class="d-flex">
-          <div class="info info-block mr-2">
-            <p>Domaine<strong>Peinture</strong></p>
-            <p>Auteur<strong>Simmen Henri</strong></p>
-            <p>Nombre<strong>1</strong></p>
-            <p>Matière<strong>Moulage</strong></p>
-          </div>
-          <div class="info info-block ml-2">
-            <p>Dénomination<strong>Tableau</strong></p>
-            <p>Epoque<strong>Années 80</strong></p>
-            <p>Style<strong>style</strong></p>
-            <p>Poids<strong>2 kg</strong></p>
-          </div>
-        </div>
-        <div class="info mt-3">
-          <p>Dimensions<strong>82.5CM X 54.9CM X 94CM</strong></p>
-          <p>Référence portée sur l'oeuvre<strong>MF 737</strong></p>
-          <p>Mots descriptifs<strong>description de l'oeuvre d'art</strong></p>
-        </div>
-      </div>
-    </div>
+  <div class="loading-spinner" *ngIf="loading; else oeuvreDetails">
+    <p-progressSpinner></p-progressSpinner>
   </div>
+  <ng-template #oeuvreDetails>
+    <div class="d-flex">
+      <div class="d-flex picture">
+        <div class="principal-picture">
+          <div class="d-flex justify-content-space-between" style="width: 50%">
+            <div class="d-flex principal-img justify-content-center">
+              <img class="img-fluid" src="assets/images/2.jpg" alt="" />
+            </div>
+            <div *ngIf="showMore && isCollapsed" class="show-details" (click)="isCollapsed = !isCollapsed">
+              <a
+                class="float"
+                style="background-color: #00d6d4 !important; color: #fff; font-size: 20px"
+                (click)="isCollapsed = !isCollapsed"
+                [attr.aria-expanded]="!isCollapsed"
+                title="Détails"
+              >
+                <i *ngIf="isCollapsed" class="fas fa-angle-double-left"></i>
+              </a>
+            </div>
+            <div *ngIf="showMore && !isCollapsed" class="show-details" (click)="isCollapsed = !isCollapsed">
+              <a
+                class="float"
+                style="background-color: #00d6d4 !important; color: #fff; font-size: 20px"
+                (click)="isCollapsed = !isCollapsed"
+                [attr.aria-expanded]="!isCollapsed"
+                title="Détails"
+              >
+                <i *ngIf="!isCollapsed" class="fas fa-angle-double-right"></i>
+              </a>
+            </div>
+          </div>
+          <div
+            *ngIf="showMore"
+            class="img-details d-flex justify-content-between bg-white align-items-center"
+            [ngClass]="isCollapsed ? 'img-details-show' : 'img-details-hide'"
+            style="width: 50%"
+          >
+            <div *ngIf="!isCollapsed" class="show-details" (click)="isCollapsed = !isCollapsed">
+              <a
+                class="float"
+                style="background-color: #00d6d4 !important; color: #fff; font-size: 20px"
+                (click)="isCollapsed = !isCollapsed"
+                [attr.aria-expanded]="!isCollapsed"
+                title="Détails"
+              >
+                <i *ngIf="!isCollapsed" class="fas fa-angle-double-right"></i>
+              </a>
+            </div>
+            <div *ngIf="isCollapsed" class="show-details" (click)="isCollapsed = !isCollapsed">
+              <a
+                class="float"
+                style="background-color: #00d6d4 !important; color: #fff; font-size: 20px"
+                (click)="isCollapsed = !isCollapsed"
+                [attr.aria-expanded]="!isCollapsed"
+                title="Détails"
+              >
+                <i *ngIf="isCollapsed" class="fas fa-angle-double-left"></i>
+              </a>
+            </div>
+            <div class="img-details sidebar d-flex justify-content-center bg-white align-items-center">
+              <app-portail-item-image></app-portail-item-image>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="more-details pocket">
+        <div class="more-details-content">
+          <div class="details-header">
+            <h4 class="mb-md-4">
+              <p><strong>Détails</strong></p>
+            </h4>
+            <a>
+              <i class="fas fa-file-export" title="Exporter"></i>
+              <span>Exporter</span>
+            </a>
+          </div>
+          <div class="d-flex">
+            <div class="info info-block mr-2">
+              <p>
+                Domaine<strong>{{ artWork?.field?.label }}</strong>
+              </p>
+              <p>
+                Auteurs<strong *ngFor="let author of artWork.authors; let index = index"
+                  >{{ author.firstName }} {{ author.lastName }}
+                  <strong *ngIf="index < artWork.length"> ,</strong>
+                </strong>
+              </p>
+              <p>
+                Nombre<strong>{{ artWork.numberOfUnit }}</strong> <strong *ngIf="!artWork.numberOfUnit">-</strong>
+              </p>
+              <p>
+                Matière<strong>{{ artWork?.materialTechnique?.label }}</strong>
+                <strong *ngIf="!artWork.materialTechnique">-</strong>
+              </p>
+            </div>
+            <div class="info info-block ml-2">
+              <p>
+                Dénomination<strong>{{ artWork?.denomination?.label }}</strong
+                ><strong *ngIf="!artWork.denomination">-</strong>
+              </p>
+              <p>Epoque<strong>-</strong></p>
+              <p>
+                Style<strong>{{ artWork.style?.label }}</strong>
+                <strong *ngIf="!artWork.style">-</strong>
+              </p>
+              <p>
+                Poids<strong
+                  >{{ artWork.weight }}
+                  <strong *ngIf="!artWork.weight">-</strong>
+                </strong>
+              </p>
+            </div>
+          </div>
+          <div class="info mt-3">
+            <p>
+              Dimensions<!--<strong>82.5CM X 54.9CM X 94CM</strong>-->
+              <strong *ngIf="artWork.length" placement="top" ngbTooltip="Longeur">{{ artWork.length }} CM</strong>
+              <strong *ngIf="artWork.length && (artWork.width || artWork.height)"> X </strong>
+              <strong *ngIf="artWork.width" placement="top" ngbTooltip="Largeur">{{ artWork.width }} CM</strong>
+              <strong *ngIf="artWork.width && artWork.height"> X </strong>
+              <strong *ngIf="artWork.height" placement="top" ngbTooltip="Hauteur">{{ artWork.height }} CM</strong>
+            </p>
+            <p>
+              Référence portée sur l'oeuvre<strong>{{ artWork.id }}</strong>
+            </p>
+            <p>
+              Mots descriptifs<strong>{{ artWork.description }}</strong
+              ><strong *ngIf="!artWork.description">-</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
 </div>

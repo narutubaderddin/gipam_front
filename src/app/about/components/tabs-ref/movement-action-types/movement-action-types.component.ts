@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,6 +8,7 @@ import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 
 import { ModalMvtActionTypesComponent } from '@app/about/components/tabs-ref/movement-action-types/modal-mvt-action-types/modal-mvt-action-types.component';
+import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 
 @Component({
   selector: 'app-movement-action-types',
@@ -15,6 +16,8 @@ import { ModalMvtActionTypesComponent } from '@app/about/components/tabs-ref/mov
   styleUrls: ['./movement-action-types.component.scss'],
 })
 export class MovementActionTypesComponent implements OnInit {
+  @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
+
   loading = true;
   btnLoading: any = null;
   myModal: any;
@@ -41,20 +44,10 @@ export class MovementActionTypesComponent implements OnInit {
   page = 1;
   end: number;
   start: number;
-  defaultColDef = {
-    headerComponent: 'customHeader',
-    sortable: true,
-    filter: true,
-    resizable: true,
-    headerValueGetter: (params: any) => {
-      return params.colDef.headerName;
-    },
-    headerComponentParams: {
-      menuIcon: 'fa-filter',
-      operator: OPERATORS.like,
-      type: TYPES.text,
-    },
-  };
+
+  dataTableFilter: any = {};
+  dataTableSort: any = {};
+  dataTableSearchBar: any = {};
 
   items: any;
   fieldNames = {
@@ -100,10 +93,6 @@ export class MovementActionTypesComponent implements OnInit {
     config.keyboard = false;
   }
 
-  get defaultHeaderParams() {
-    return this.defaultColDef.headerComponentParams;
-  }
-
   ngOnInit(): void {
     this.simpleTabsRef.tabRef = 'movementActionTypes';
     this.getAllItems();
@@ -121,12 +110,10 @@ export class MovementActionTypesComponent implements OnInit {
         this.editItem = true;
         this.itemToEdit = item;
         this.itemLabel = item.label;
-        this.selectedMvtType = [
-          {
-            id: item.movementType.id,
-            label: item.movementType.label,
-          },
-        ];
+        this.selectedMvtType = {
+          id: item.movementType.id,
+          label: item.movementType.label,
+        };
         console.log('selectedMvtType', this.selectedMvtType);
       } else {
         this.selectedMvtType = [];
@@ -149,6 +136,7 @@ export class MovementActionTypesComponent implements OnInit {
       itemToEdit: this.itemToEdit,
       selectedItem: this.selectedItem,
       active: this.active,
+      btnLoading: this.btnLoading,
       selectedMvtType: this.selectedMvtType,
     };
 
@@ -220,13 +208,15 @@ export class MovementActionTypesComponent implements OnInit {
   getAllItems() {
     this.loading = true;
     this.simpleTabsRef.tabRef = 'movementActionTypes';
-    const params = {
+    let params = {
       limit: this.limit,
       page: this.page,
-      'label[contains]': this.filter,
-      sort_by: this.sortBy,
+      ort_by: this.sortBy,
       sort: this.sort,
     };
+    params = Object.assign(params, this.dataTableFilter);
+    params = Object.assign(params, this.dataTableSort);
+    params = Object.assign(params, this.dataTableSearchBar);
 
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
@@ -239,7 +229,12 @@ export class MovementActionTypesComponent implements OnInit {
         this.loading = false;
       },
       (error: any) => {
-        this.addSingle('error', '', error.error.message);
+        this.items = [];
+        this.totalFiltred = 0;
+        this.total = 0;
+        this.dataTableComponent.error = true;
+        this.loading = false;
+        this.addSingle('error', 'Erreur Technique', error.error.message);
       }
     );
   }
@@ -335,33 +330,25 @@ export class MovementActionTypesComponent implements OnInit {
   }
 
   filters(e: any) {
-    console.log(e);
+    this.dataTableFilter = Object.assign({}, this.simpleTabsRef.prepareFilter(e));
     this.page = 1;
-    this.filter = e.label;
+    this.dataTableComponent.currentPage = 1;
     this.getAllItems();
-  }
-
-  getKeyByValue(object: any, value: any) {
-    return Object.keys(object).find((key) => object[key] === value);
   }
 
   sortEvent(e: any) {
-    this.sortBy = this.getKeyByValue(this.fieldNames, e.field);
-    if (e.order === 1) {
-      this.sort = 'asc';
-      this.getAllItems();
-    } else {
-      this.sort = 'desc';
-      this.getAllItems();
-    }
-  }
-  search(input: string) {
-    if (input) {
-      this.filter = input;
-      this.getAllItems();
-      return;
-    }
-    this.filter = '';
+    this.dataTableSort = e;
     this.getAllItems();
+  }
+
+  search(input: string) {
+    this.page = 1;
+    this.dataTableSearchBar = { search: input };
+    this.getAllItems();
+  }
+  ClearSearch(event: Event, input: string) {
+    if (!event['inputType']) {
+      this.search(input);
+    }
   }
 }

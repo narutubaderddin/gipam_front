@@ -1,8 +1,8 @@
 <div class="breadcrumb">
   <a href="accueil">Accueil</a>
-  <a href="tab-ref-dénomination" class="selected-item">
+  <a href="tab-ref-commune" class="selected-item">
     <i class="fas fa-chevron-right"></i>
-    Gestion des Dénominations
+    Gestion des Communes
   </a>
 </div>
 <div class="container-fluid">
@@ -13,7 +13,7 @@
           <div class="card">
             <div class="card-body">
               <ul class="d-flex">
-                <li class="col-md-12 selected-table"><i class="fas fa-tasks"></i><a>Gestion des Dénominations</a></li>
+                <li class="col-md-12 selected-table"><i class="fas fa-tasks"></i><a>Gestion des Communes</a></li>
               </ul>
             </div>
           </div>
@@ -27,17 +27,24 @@
                   type="search"
                   placeholder="Rechercher"
                   id="example-search-input"
+                  #searchBox
+                  (keyup.enter)="search(searchBox.value)"
+                  (input)="ClearSearch($event, searchBox.value)"
                 />
                 <span class="input-group-append">
-                  <button class="btn btn-outline-secondary border-left-0 border" type="button">
+                  <button
+                    class="btn btn-outline-secondary border-left-0 border btn-search"
+                    type="button"
+                    (click)="search(searchBox.value)"
+                  >
                     <i class="fa fa-search"></i>
                   </button>
                 </span>
               </div>
               <div class="mr-3">
-                <button class="btn add-action" (click)="openModal('')">
+                <button class="btn add-action" (click)="addItemAction()">
                   <i class="fas fa-plus-circle mr-1"></i>
-                  Ajouter Dénomination
+                  Ajouter Commune
                 </button>
               </div>
             </div>
@@ -45,23 +52,23 @@
           </div>
           <div class="datatable mt-4">
             <app-ng-data-table
+              [loading]="loading"
               (action)="actionMethod($event)"
               (pageChanged)="pagination($event)"
               (filterValue)="filters($event)"
               (sort)="sortEvent($event)"
-              [component]="'tabRefDenomination'"
+              [component]="'tabRefStyle'"
               [columns]="columns"
-              [data]="items"
               [frozenCols]="[]"
               [frozenWidth]="'0px'"
               [checkBoxSelection]="false"
+              [data]="items"
               [totalFiltred]="totalFiltred"
               [total]="total"
               [page]="page"
               [limit]="limit"
               [end]="end"
               [start]="start"
-              [loading]="loading"
             >
             </app-ng-data-table>
           </div>
@@ -70,65 +77,88 @@
     </div>
   </div>
 </div>
-
 <ng-template #content let-modal>
   <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
     <div class="modal-header">
-      <h4 class="modal-title" *ngIf="editItem">Modification de dénomination "{{ itemToEdit.label }}"</h4>
-      <h4 class="modal-title" *ngIf="addItem">Ajout de dénomination</h4>
-      <h4 class="modal-title" *ngIf="deleteItems">Suppression de dénomination "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="editItem">Modification de la commune "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="addItem">Ajout d'une commune</h4>
+      <h4 class="modal-title" *ngIf="deleteItems">Suppression de la commune "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="editVisibility">Activer/Désactiver la commune "{{ itemLabel }}"</h4>
       <button type="button" class="close" aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
-      <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer la dénomination "{{ itemLabel }}" ?</div>
+      <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer la commune "{{ itemLabel }}" ?</div>
 
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-3">Libellé<span class="mandatory"> *</span></label>
+        <label class="col-sm-5">Libellé<span class="mandatory"> *</span></label>
         <input
           type="text"
           class="form-control col-sm-7"
-          value="{{ editItem ? itemToEdit.label : '' }}"
+          value="{{ editItem ? selectedItem.name : '' }}"
           formControlName="label"
         />
       </div>
 
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-3">Domaine<span class="mandatory"> *</span></label>
+        <label class="col-sm-5">Département<span class="mandatory"> *</span></label>
         <div class="select col-sm-7 p-0">
           <p-dropdown
             [options]="relatedEntities"
-            optionLabel="label"
-            formControlName="field"
+            optionLabel="name"
+            formControlName="department"
             placeholder="{{
-              selectedRelatedEntity && editItem ? selectedRelatedEntity.label : 'Sélectionner un domaine'
+              selectedRelatedEntity && editItem ? selectedRelatedEntity.name : 'Sélectionner un département'
             }}"
             emptyFilterMessage="Aucun résultat trouvé"
-            (onChange)="onFieldSelect($event)"
+            (onChange)="onDepartmentSelect($event)"
             [filter]="true"
-            [filterBy]="'label'"
+            [filterBy]="'name'"
           ></p-dropdown>
         </div>
       </div>
-
-      <div class="form-group col-md-12 d-flex align-items-baseline" *ngIf="addItem">
-        <label class="col-sm-5">visibilité<span class="mandatory"> *</span></label>
-        <div class="btn-slider mr-2 col-3" *ngIf="active">
-          <label [class.active]="active"></label>
-          <label class="switch">
-            <input type="checkbox" [checked]="true" formControlName="active" />
-            <span class="slider round"></span>
-          </label>
-          <label [class.active]="!active"></label>
-        </div>
+      <div
+        class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
+        *ngIf="addItem || editVisibility"
+      >
+        <label class="col-sm-5">Date début de validité<span class="mandatory"> *</span></label>
+        <input type="date" name="datepicker" class="form-control date-input col-sm-7" formControlName="startDate" />
+      </div>
+      <div
+        class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
+        *ngIf="addItem || editVisibility"
+      >
+        <label class="col-sm-5">Date fin de validité</label>
+        <input
+          type="date"
+          name="datepicker"
+          class="form-control date-input col-sm-7"
+          formControlName="disappearanceDate"
+          [class.ng-invalid]="tabForm.errors && tabForm.errors.dateInvalid"
+        />
       </div>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-light cancel-btn" (click)="close()">Annuler</button>
-      <button type="submit" class="btn btn-light valid-btn" *ngIf="editItem">Modifier</button>
-      <button type="submit" class="btn btn-light valid-btn" *ngIf="addItem">Ajouter</button>
-      <button type="button" class="btn btn-light valid-btn" *ngIf="deleteItems" (click)="deleteItemss(itemToDelete)">
+      <button
+        type="submit"
+        class="btn btn-light valid-btn"
+        *ngIf="editItem || editVisibility"
+        [attr.disabled]="btnLoading"
+      >
+        Modifier
+      </button>
+      <button type="submit" class="btn btn-light valid-btn" *ngIf="addItem" [attr.disabled]="btnLoading">
+        Ajouter
+      </button>
+      <button
+        type="button"
+        class="btn btn-light valid-btn"
+        *ngIf="deleteItems"
+        (click)="deleteItemss(itemToDelete)"
+        [attr.disabled]="btnLoading"
+      >
         Supprimer
       </button>
     </div>

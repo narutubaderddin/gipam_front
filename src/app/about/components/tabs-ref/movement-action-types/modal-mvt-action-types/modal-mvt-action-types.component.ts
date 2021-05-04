@@ -33,13 +33,6 @@ export class ModalMvtActionTypesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dropdownSettings = {
-      singleSelection: true,
-      textField: 'label',
-      idField: 'id',
-      itemsShowLimit: 1,
-      allowSearchFilter: true,
-    };
     this.getAllMvtTypes();
 
     this.addItem = this.fromParent.addItem;
@@ -50,8 +43,10 @@ export class ModalMvtActionTypesComponent implements OnInit {
     this.active = this.fromParent.active;
     this.selectedItem = this.fromParent.selectedItem;
     this.name = this.fromParent.name;
-    (this.selectedMvtType = this.fromParent.selectedMvtType), console.log(this.selectedItem, this.editItem);
-
+    this.btnLoading = this.fromParent.btnLoading;
+    this.selectedMvtType = this.fromParent.selectedMvtType;
+    console.log('selectedItem', this.selectedItem, this.editItem);
+    console.log('selectedMvtType', this.selectedMvtType);
     this.initForm();
   }
   initForm() {
@@ -64,7 +59,7 @@ export class ModalMvtActionTypesComponent implements OnInit {
 
   submit() {
     const item = {
-      movementType: this.tabForm.value.movementType[0].id,
+      movementType: this.tabForm.value.movementType.id,
       label: this.tabForm.value.label,
       active: this.tabForm.value.active,
     };
@@ -75,6 +70,8 @@ export class ModalMvtActionTypesComponent implements OnInit {
     this.activeModal.close('delete');
   }
   close() {
+    this.selectedMvtType = {};
+    this.selectedItem = '';
     this.editItem = false;
     this.addItem = false;
     this.deleteItems = false;
@@ -93,8 +90,13 @@ export class ModalMvtActionTypesComponent implements OnInit {
       }
     );
   }
+  // onMvtTypesSelect(item: any) {
+  //   this.selectedMvtType = item;
+  //   console.log(item);
+  // }
   onMvtTypesSelect(item: any) {
     this.selectedMvtType = item;
-    console.log(item);
+    console.log('item', item);
+    console.log(this.selectedItem);
   }
 }

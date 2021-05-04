@@ -89,14 +89,21 @@ import { ModalReportSubTypesComponent } from './components/tabs-ref/report-sub-t
 // import { ServicesComponent } from '@app/about/components/tabs-ref/establishment/establishments.component';
 import { MinistryComponent } from './components/tabs-ref/ministry/ministry.component';
 import { BuildingsComponent } from './components/tabs-ref/buildings/buildings.component';
+import { CommunesComponent } from './components/tabs-ref/communes/communes.component';
 import { ArtWorksPipe } from '@app/about/pipes/art-works.pipe';
 import { ArtWorksDataPipe } from '@app/about/pipes/art-works-data.pipe';
 import { FormValuePipe } from './pipes/form-value.pipe';
 import { SubDivisionsComponent } from '@app/about/components/tabs-ref/subDivisions/subDivisions.component';
 import { RegionsComponent } from '@app/about/components/tabs-ref/regions/regions.component';
+import { DepartmentsComponent } from './components/tabs-ref/departments/departments.component';
+import { LocalisationTypeComponent } from './components/tabs-ref/localisation-type/localisation-type.component';
 import { ServicesComponent } from '@app/about/components/tabs-ref/services/services.component';
 import { SitesComponent } from '@app/about/components/tabs-ref/sites/sites.component';
 import { EstablishmentTypesComponent } from '@app/about/components/tabs-ref/establishmentTypes/establishmentTypes.component';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { FieldService } from '@shared/services/field.service';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 setTheme('bs4');
 
@@ -160,6 +167,9 @@ const ngWizardConfig: NgWizardConfig = {
     ServicesComponent,
     SitesComponent,
     FormValuePipe,
+    CommunesComponent,
+    DepartmentsComponent,
+    LocalisationTypeComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
@@ -204,7 +214,10 @@ const ngWizardConfig: NgWizardConfig = {
     CheckboxModule,
     SelectButtonModule,
     GalleriaModule,
+    ProgressSpinnerModule,
+    InfiniteScrollModule,
+    RadioButtonModule,
   ],
-  providers: [MovementsService, BsDatepickerConfig, MessageService, ArtWorksDataPipe, ArtWorksPipe],
+  providers: [MovementsService, BsDatepickerConfig, MessageService, ArtWorksDataPipe, ArtWorksPipe, FieldService],
 })
 export class AboutModule {}

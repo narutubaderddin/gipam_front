@@ -1,22 +1,22 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalConfig, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
-import { ModalTabsRefComponent } from '@app/about/components/tabs-ref/modal-tabs-ref/modal-tabs-ref.component';
-import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 import { DatePipe } from '@angular/common';
+import { ModalTabsRefComponent } from '@app/about/components/tabs-ref/modal-tabs-ref/modal-tabs-ref.component';
 
 @Component({
-  selector: 'app-epoques',
-  templateUrl: './epoques.component.html',
-  styleUrls: ['./epoques.component.scss'],
+  selector: 'app-localisation-type',
+  templateUrl: './localisation-type.component.html',
+  styleUrls: ['./localisation-type.component.scss'],
+  providers: [DatePipe],
 })
-export class EpoquesComponent implements OnInit {
+export class LocalisationTypeComponent implements OnInit {
   @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
 
   myForm: any;
@@ -82,14 +82,15 @@ export class EpoquesComponent implements OnInit {
     private fieldsService: FieldsService,
     public fb: FormBuilder,
     config: NgbModalConfig,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private datePipe: DatePipe
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
   }
 
   ngOnInit(): void {
-    this.simpleTabsRef.tabRef = 'eras';
+    this.simpleTabsRef.tabRef = 'locationTypes';
     this.getAllItems();
   }
 
@@ -112,7 +113,7 @@ export class EpoquesComponent implements OnInit {
     };
     const modalRef = this.modalService.open(ModalTabsRefComponent, ngbModalOptions);
     modalRef.componentInstance.fromParent = {
-      name: "l'époque",
+      name: 'type localisation',
       editItem: this.editItem,
       addItem: this.addItem,
       deleteItems: this.deleteItems,
@@ -207,9 +208,9 @@ export class EpoquesComponent implements OnInit {
     this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
       (result) => {
         if (data.active) {
-          this.addSingle('success', 'Activation', 'Epoque ' + data.label + ' activée avec succés');
+          this.addSingle('success', 'Activation', 'Type localisation ' + data.label + ' activée avec succés');
         } else {
-          this.addSingle('success', 'Activation', 'Epoque ' + data.label + ' désactivée avec succés');
+          this.addSingle('success', 'Activation', 'Type localisation ' + data.label + ' désactivée avec succés');
         }
         this.getAllItems();
       },
@@ -253,12 +254,6 @@ export class EpoquesComponent implements OnInit {
     this.getAllItems();
   }
 
-  ClearSearch(event: Event, input: string) {
-    if (!event['inputType']) {
-      this.search(input);
-    }
-  }
-
   paginationData(): void {
     // this.dataTableComponent.handlePaginationInfo();
   }
@@ -268,7 +263,7 @@ export class EpoquesComponent implements OnInit {
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Ajout', 'Epoque ' + item.label + ' ajoutée avec succés');
+        this.addSingle('success', 'Ajout', 'Type localisation ' + item.label + ' ajoutée avec succés');
         this.getAllItems();
       },
       (error) => {
@@ -301,7 +296,7 @@ export class EpoquesComponent implements OnInit {
     this.simpleTabsRef.editItem(item, id).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Modification', 'Epoque ' + item.label + ' modifiée avec succés');
+        this.addSingle('success', 'Modification', 'Type localisation ' + item.label + ' modifiée avec succés');
         this.getAllItems();
       },
 
@@ -316,13 +311,13 @@ export class EpoquesComponent implements OnInit {
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Suppression', 'Epoque ' + item.label + ' supprimée avec succés');
+        this.addSingle('success', 'Suppression', 'Type localisation ' + item.label + ' supprimée avec succés');
         this.getAllItems();
       },
       (error: any) => {
         this.close();
         if (error.error.code === 400) {
-          this.addSingle('error', 'Suppression', 'Epoque ' + item.label + ' admet une relation');
+          this.addSingle('error', 'Suppression', 'Type localisation ' + item.label + ' admet une relation');
         } else {
           this.addSingle('error', 'Suppression', error.error.message);
         }
