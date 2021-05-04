@@ -108,6 +108,7 @@ export class NgDataTableComponent implements OnInit {
         this.form.removeControl(col.field);
       }
     });
+    console.log('refreched');
     this.form = this.formBuilder.group({});
     this.initForm(this.columns);
     this.filterFormValues = Object.assign({}, this.form.value);

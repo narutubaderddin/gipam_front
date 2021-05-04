@@ -113,7 +113,7 @@
         <label class="col-sm-5">Type<span class="mandatory"> *</span></label>
         <div class="select col-sm-7 p-0">
           <p-dropdown
-            [options]="types"
+            [options]="activeTypes"
             optionLabel="label"
             formControlName="type"
             [placeholder]="selectedType ? selectedType.label : 'Sélectionner un type'"
@@ -129,7 +129,7 @@
         <label class="col-sm-5">Ministère<span class="mandatory"> *</span></label>
         <div class="select col-sm-7 p-0">
           <p-dropdown
-            [options]="relatedEntities"
+            [options]="activeRelatedEntities"
             optionLabel="name"
             formControlName="ministry"
             [placeholder]="selectedRelatedEntity ? selectedRelatedEntity.name : 'Sélectionner une ministère'"

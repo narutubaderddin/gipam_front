@@ -240,7 +240,9 @@
                   <span *ngIf="i < item[col.key_multiple_data[0]].length - 1">,</span>
                 </span>
               </span>
-              <span *ngSwitchCase="'key-array'"> {{ item[col.key_data[0]][col.key_data[1]] }} </span>
+              <span *ngSwitchCase="'key-array'">
+                {{ item[col.key_data[0]] ? item[col.key_data[0]][col.key_data[1]] : '' }}
+              </span>
               <span *ngSwitchCase="'date'"> {{ item[col.field] | date: viewDateFormat }} </span>
 
               <span *ngSwitchDefault> {{ item[col.field] }} </span>
