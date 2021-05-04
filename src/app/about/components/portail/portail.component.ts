@@ -426,8 +426,6 @@ export class PortailComponent implements OnInit {
 
   onScrollDown(ev: any) {
     this.page++;
-    console.log("this.page");
-    console.log(this.page);
     if (this.listOeuvres.length >= this.nbrElmPerPage) {
       this.getOeuvres();
     }

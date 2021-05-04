@@ -532,8 +532,8 @@
           [infiniteScrollUpDistance]="scrollUpDistance"
           [infiniteScrollThrottle]="throttle"
           [fromRoot]="false"
-          (scrolled)="onScrollDown()"
-          (scrolledUp)="onUp()"
+          (scrolled)="onScrollDown($event)"
+          (scrolledUp)="onUp($event)"
         >
           <div *ngIf="loadingScrollUp" class="scroll-loading">
             <p-progressSpinner></p-progressSpinner>
