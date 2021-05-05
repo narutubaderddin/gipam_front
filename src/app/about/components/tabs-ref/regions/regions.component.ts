@@ -234,19 +234,6 @@ export class RegionsComponent implements OnInit {
     return !(endDate !== '' && endDate && endDate <= today);
   }
 
-  convertItem(item: any) {
-    console.log(item);
-    const newItem = {
-      id: item.id,
-      name: item.name,
-      startDate: item.startDate,
-      disappearanceDate: item.disappearanceDate,
-      active: true,
-    };
-    newItem.active = this.isActive(newItem.disappearanceDate);
-    return newItem;
-  }
-
   getAllItems() {
     this.loading = true;
     let params = {
@@ -256,13 +243,11 @@ export class RegionsComponent implements OnInit {
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
     params = Object.assign(params, this.dataTableSearchBar);
-    console.log('http params', params);
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results.map((item: any) => {
-          return this.convertItem(item);
+          return Object.assign({ active: this.isActive(item.disappearanceDate) }, item);
         });
-        console.log('items', this.items);
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
         this.start = (this.page - 1) * this.limit + 1;
@@ -361,7 +346,10 @@ export class RegionsComponent implements OnInit {
 
   search(input: string) {
     this.page = 1;
-    this.dataTableSearchBar = { search: input };
+    this.dataTableSearchBar = {};
+    if (input !== '') {
+      this.dataTableSearchBar = { search: input };
+    }
     this.getAllItems();
   }
 

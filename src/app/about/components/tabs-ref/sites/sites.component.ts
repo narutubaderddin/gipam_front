@@ -229,20 +229,8 @@ export class SitesComponent implements OnInit {
   }
 
   isActive(endDate: string) {
-    const today = this.datePipe.transform(new Date(), viewDateFormat);
+    const today = this.datePipe.transform(new Date(), datePickerDateFormat);
     return !(endDate !== '' && endDate && endDate <= today);
-  }
-
-  convertItem(item: any) {
-    const newItem = {
-      id: item.id,
-      label: item.label,
-      startDate: item.startDate,
-      disappearanceDate: item.disappearanceDate,
-      active: true,
-    };
-    newItem.active = this.isActive(newItem.disappearanceDate);
-    return newItem;
   }
 
   getAllItems() {
@@ -254,11 +242,10 @@ export class SitesComponent implements OnInit {
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
     params = Object.assign(params, this.dataTableSearchBar);
-    console.log('http params', params);
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results.map((item: any) => {
-          return this.convertItem(item);
+          return Object.assign({ active: this.isActive(item.disappearanceDate) }, item);
         });
         console.log('items', this.items);
         this.totalFiltred = result.filteredQuantity;
@@ -359,7 +346,10 @@ export class SitesComponent implements OnInit {
 
   search(input: string) {
     this.page = 1;
-    this.dataTableSearchBar = { search: input };
+    this.dataTableSearchBar = {};
+    if (input !== '') {
+      this.dataTableSearchBar = { search: input };
+    }
     this.getAllItems();
   }
 

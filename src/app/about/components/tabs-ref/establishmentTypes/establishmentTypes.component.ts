@@ -9,11 +9,14 @@ import { MessageService } from 'primeng/api';
 
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { datePickerDateFormat, dateTimeFormat, towDatesCompare } from '@shared/utils/helpers';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-establishmentTypes',
   templateUrl: './establishmentTypes.component.html',
   styleUrls: ['./establishmentTypes.component.scss'],
+  providers: [DatePipe],
 })
 export class EstablishmentTypesComponent implements OnInit {
   @ViewChild('content') modalRef: TemplateRef<any>;
@@ -22,13 +25,14 @@ export class EstablishmentTypesComponent implements OnInit {
   loading = true;
   btnLoading: any = null;
   myModal: any;
-  selectedItem: string;
+  selectedItem: any;
 
   itemToEdit: any;
   itemToDelete: string;
   tabForm: FormGroup;
   editItem = false;
   addItem = false;
+  editVisibility = false;
   deleteItems = false;
   dropdownSettings: IDropdownSettings;
 
@@ -73,6 +77,24 @@ export class EstablishmentTypesComponent implements OnInit {
       sortable: true,
     },
     {
+      header: 'Date début de validité',
+      field: 'startDate',
+      type: 'date',
+      filter: true,
+      filterType: 'range-date',
+      sortable: true,
+      width: '200px',
+    },
+    {
+      header: 'Date fin de validité',
+      field: 'disappearanceDate',
+      type: 'date',
+      filter: true,
+      filterType: 'range-date',
+      sortable: true,
+      width: '200px',
+    },
+    {
       header: 'Actions',
       field: 'action',
       type: 'app-actions-cell',
@@ -90,17 +112,28 @@ export class EstablishmentTypesComponent implements OnInit {
     private fieldsService: FieldsService,
     public fb: FormBuilder,
     config: NgbModalConfig,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private datePipe: DatePipe
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
   }
 
   initForm() {
+    const startDate = this.datePipe.transform(
+      this.selectedItem ? this.selectedItem.startDate : new Date(),
+      datePickerDateFormat
+    );
+    const disappearanceDate = this.datePipe.transform(
+      this.selectedItem ? this.selectedItem.disappearanceDate : '',
+      datePickerDateFormat
+    );
     this.tabForm = this.fb.group({
-      style: [this.selectedItem, [Validators.required]],
-      active: [true],
+      label: [this.selectedItem ? this.selectedItem.label : '', [Validators.required]],
+      startDate: [startDate, [Validators.required]],
+      disappearanceDate: [disappearanceDate, []],
     });
+    this.tabForm.setValidators(towDatesCompare('startDate', 'disappearanceDate'));
   }
 
   get defaultHeaderParams() {
@@ -121,14 +154,11 @@ export class EstablishmentTypesComponent implements OnInit {
 
   openModal(item: any) {
     this.btnLoading = null;
-    if (item) {
-      this.editItem = true;
+    if (this.editItem || this.editVisibility) {
       this.itemToEdit = item;
       this.itemLabel = item.label;
-    } else {
-      this.addItem = true;
     }
-    this.selectedItem = item.label;
+    this.selectedItem = item;
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
@@ -136,13 +166,14 @@ export class EstablishmentTypesComponent implements OnInit {
   submit() {
     this.btnLoading = null;
     const item = {
-      label: this.tabForm.value.style,
-      active: this.tabForm.value.active,
+      label: this.tabForm.value.label,
+      startDate: this.datePipe.transform(this.tabForm.value.startDate, dateTimeFormat),
+      disappearanceDate: this.datePipe.transform(this.tabForm.value.disappearanceDate, dateTimeFormat),
     };
     if (this.addItem) {
       this.addItems(item);
     }
-    if (this.editItem) {
+    if (this.editItem || this.editVisibility) {
       this.editField(item, this.itemToEdit.id);
     }
   }
@@ -151,6 +182,7 @@ export class EstablishmentTypesComponent implements OnInit {
     this.editItem = false;
     this.addItem = false;
     this.deleteItems = false;
+    this.editVisibility = false;
     this.myModal.dismiss('Cross click');
   }
 
@@ -162,20 +194,41 @@ export class EstablishmentTypesComponent implements OnInit {
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
 
+  editItemAction(item: any) {
+    this.editItem = true;
+    this.openModal(item);
+  }
+
+  changeVisibilityAction(item: any) {
+    this.editVisibility = true;
+    this.openModal(item);
+  }
+
+  addItemAction() {
+    this.addItem = true;
+    this.selectedItem = null;
+    this.openModal(null);
+  }
+
   actionMethod(e: any) {
     switch (e.method) {
       case 'delete':
         this.deleteItem(e.item);
         break;
       case 'edit':
-        this.openModal(e.item);
+        this.editItemAction(e.item);
         break;
       case 'visibility':
-        this.visibleItem(e.item);
+        this.changeVisibilityAction(e.item);
         break;
       default:
         this.close();
     }
+  }
+
+  isActive(endDate: string) {
+    const today = this.datePipe.transform(new Date(), datePickerDateFormat);
+    return !(endDate !== '' && endDate && endDate <= today);
   }
 
   getAllItems() {
@@ -189,7 +242,9 @@ export class EstablishmentTypesComponent implements OnInit {
     params = Object.assign(params, this.dataTableSearchBar);
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
-        this.items = result.results;
+        this.items = result.results.map((item: any) => {
+          return Object.assign({ active: this.isActive(item.disappearanceDate) }, item);
+        });
         console.log('items', this.items);
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
@@ -246,24 +301,6 @@ export class EstablishmentTypesComponent implements OnInit {
     );
   }
 
-  visibleItem(data: any) {
-    data.active = !data.active;
-    this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
-      (result) => {
-        if (data.active) {
-          this.addSingle('success', 'Activation', 'Type établissement ' + data.label + ' activée avec succés');
-        } else {
-          this.addSingle('success', 'Activation', 'Type établissement ' + data.label + ' désactivée avec succés');
-        }
-        this.getAllItems();
-      },
-
-      (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
-      }
-    );
-  }
-
   editField(item: any, id: number) {
     this.btnLoading = '';
     this.simpleTabsRef.editItem(item, id).subscribe(
@@ -271,8 +308,9 @@ export class EstablishmentTypesComponent implements OnInit {
         this.close();
         this.addSingle('success', 'Modification', 'Type établissement ' + item.label + ' modifiée avec succés');
         this.getAllItems();
+        this.editItem = false;
+        this.editVisibility = false;
       },
-
       (error) => {
         this.addSingle('error', 'Modification', error.error.message);
       }
