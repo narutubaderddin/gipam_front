@@ -12,6 +12,7 @@ import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-t
 import { DatePipe } from '@angular/common';
 import { Dropdown } from 'primeng/dropdown';
 import { datePickerDateFormat, dateTimeFormat, towDatesCompare, viewDateFormat } from '@shared/utils/helpers';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-establishments',
@@ -37,6 +38,7 @@ export class SubDivisionsComponent implements OnInit {
     };
   };
   relatedEntities: any[] = [];
+  activeRelatedEntities: any[] = [];
   selectedRelatedEntity: any;
   itemToEdit: any;
   itemToDelete: string;
@@ -75,7 +77,18 @@ export class SubDivisionsComponent implements OnInit {
   dataTableSort: any = {};
   dataTableSearchBar: any = {};
   items: any[] = [];
-
+  relatedEntityColumn = {
+    header: 'Etablissement',
+    field: 'establishment',
+    type: 'key-array',
+    key_data: ['establishment', 'label'],
+    filter: true,
+    filterType: 'multiselect',
+    placeholder: 'Choisir des établisssement',
+    selectData: this.relatedEntities,
+    sortable: true,
+    width: '380px',
+  };
   columns = [
     {
       header: 'Libellé',
@@ -112,12 +125,7 @@ export class SubDivisionsComponent implements OnInit {
       sortable: true,
       width: '200px',
     },
-    {
-      header: 'Etablissement',
-      field: 'relatedEntityName',
-      type: 'key',
-      width: '380px',
-    },
+    this.relatedEntityColumn,
     {
       header: 'Actions',
       field: 'action',
@@ -144,11 +152,28 @@ export class SubDivisionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.initFilterData();
     this.simpleTabsRef.tabRef = 'subDivisions';
     this.getAllItems();
     this.initForm();
     this.filter =
       this.activatedRoute.snapshot.queryParams.filter && this.activatedRoute.snapshot.queryParams.filter.length > 0;
+  }
+
+  initFilterData() {
+    const data = {};
+    forkJoin([this.simpleTabsRef.getAllItems(data, 'subDivisions')]).subscribe(
+      ([relatedEntitiesResults]) => {
+        this.relatedEntities = this.simpleTabsRef.getTabRefFilterData(relatedEntitiesResults['results']);
+        this.activeRelatedEntities = relatedEntitiesResults['results'].filter((value: any) =>
+          this.isActive(value.disappearanceDate)
+        );
+        this.relatedEntityColumn.selectData = this.relatedEntities;
+      },
+      (error: any) => {
+        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
+      }
+    );
   }
 
   initForm() {
@@ -184,22 +209,9 @@ export class SubDivisionsComponent implements OnInit {
     if (this.addItem) {
       this.selectedRelatedEntity = null;
     }
-    if ((this.editItem || this.addItem) && this.relatedEntities.length === 0) {
-      this.getRelatedEntityList();
-    }
     this.selectedItem = item;
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
-  }
-
-  getRelatedEntityList(): any {
-    const previousUrl = this.simpleTabsRef.tabRef;
-    this.simpleTabsRef.tabRef = 'establishments';
-
-    this.simpleTabsRef.getAllItems({}).subscribe((result: any) => {
-      this.relatedEntities = result.results;
-    });
-    this.simpleTabsRef.tabRef = previousUrl;
   }
 
   submit() {
@@ -224,8 +236,6 @@ export class SubDivisionsComponent implements OnInit {
     this.addItem = false;
     this.deleteItems = false;
     this.editVisibility = false;
-
-    // this.myModal.close('Close click');
     this.myModal.dismiss('Cross click');
   }
 
@@ -275,21 +285,6 @@ export class SubDivisionsComponent implements OnInit {
     return !(endDate !== '' && endDate && endDate <= today);
   }
 
-  convertItem(item: any) {
-    const newItem = {
-      id: item.id,
-      label: item.label,
-      acronym: item.acronym,
-      startDate: item.startDate,
-      endDate: item.endDate,
-      relatedEntityId: item.establishment ? item.establishment.id : '',
-      relatedEntityName: item.establishment ? item.establishment.label : '',
-      active: true,
-    };
-    newItem.active = this.isActive(newItem.endDate);
-    return newItem;
-  }
-
   getAllItems() {
     this.loading = true;
     let params = {
@@ -302,7 +297,7 @@ export class SubDivisionsComponent implements OnInit {
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results.map((item: any) => {
-          return this.convertItem(item);
+          return Object.assign({ active: this.isActive(item.endDate) }, item);
         });
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
@@ -352,7 +347,8 @@ export class SubDivisionsComponent implements OnInit {
         this.addItem = false;
       },
       (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
+        this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        this.btnLoading = null;
       }
     );
   }
@@ -369,7 +365,8 @@ export class SubDivisionsComponent implements OnInit {
       },
 
       (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
+        this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        this.btnLoading = null;
       }
     );
   }
@@ -402,7 +399,10 @@ export class SubDivisionsComponent implements OnInit {
 
   search(input: string) {
     this.page = 1;
-    this.dataTableSearchBar = { search: input };
+    this.dataTableSearchBar = {};
+    if (input !== '') {
+      this.dataTableSearchBar = { search: input };
+    }
     this.getAllItems();
   }
 

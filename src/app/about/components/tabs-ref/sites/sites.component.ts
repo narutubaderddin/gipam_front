@@ -247,7 +247,6 @@ export class SitesComponent implements OnInit {
         this.items = result.results.map((item: any) => {
           return Object.assign({ active: this.isActive(item.disappearanceDate) }, item);
         });
-        console.log('items', this.items);
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
         this.start = (this.page - 1) * this.limit + 1;
@@ -296,7 +295,8 @@ export class SitesComponent implements OnInit {
         this.addItem = false;
       },
       (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
+        this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        this.btnLoading = null;
       }
     );
   }
@@ -311,9 +311,9 @@ export class SitesComponent implements OnInit {
         this.editItem = false;
         this.editVisibility = false;
       },
-
       (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
+        this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        this.btnLoading = null;
       }
     );
   }

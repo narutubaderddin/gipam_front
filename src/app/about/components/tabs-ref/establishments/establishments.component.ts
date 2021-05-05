@@ -110,6 +110,7 @@ export class EstablishmentsComponent implements OnInit {
     filterType: 'multiselect',
     placeholder: 'Choisir des Types',
     selectData: this.types,
+    sortable: true,
   };
 
   constructor(
@@ -126,6 +127,7 @@ export class EstablishmentsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.simpleTabsRef.tabRef = 'establishments';
     this.initColumnsDefinition();
     this.initFilterData();
     this.getAllItems();
@@ -245,12 +247,12 @@ export class EstablishmentsComponent implements OnInit {
       this.itemToEdit = item;
       this.itemLabel = item.label;
       this.selectedRelatedEntity = {
-        id: item.ministry.id,
-        name: item.ministry.name,
+        id: item.ministry ? item.ministry.id : '',
+        name: item.ministry ? item.ministry.name : '',
       };
       this.selectedType = {
-        id: item.typeId,
-        label: item.typeLabel,
+        id: item.type ? item.type.id : '',
+        label: item.type ? item.type.label : '',
       };
     }
     if (this.addItem) {
@@ -341,7 +343,6 @@ export class EstablishmentsComponent implements OnInit {
       limit: this.limit,
       page: this.page,
     };
-
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
     params = Object.assign(params, this.dataTableSearchBar);
@@ -398,7 +399,8 @@ export class EstablishmentsComponent implements OnInit {
         this.addItem = false;
       },
       (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
+        this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        this.btnLoading = null;
       }
     );
   }
@@ -415,7 +417,8 @@ export class EstablishmentsComponent implements OnInit {
       },
 
       (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
+        this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        this.btnLoading = null;
       }
     );
   }
