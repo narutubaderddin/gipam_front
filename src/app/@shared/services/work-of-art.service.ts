@@ -690,7 +690,7 @@ export class WorkOfArtService {
     return this._selectedArtWorks;
   }
 
-  setSelectedArtWorks(items) {
+  setSelectedArtWorks(items:any) {
     this._selectedArtWorks = items;
     localStorage.setItem('selectedArtWorks',JSON.stringify(this._selectedArtWorks));
   }
