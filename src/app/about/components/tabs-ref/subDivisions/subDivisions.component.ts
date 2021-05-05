@@ -15,7 +15,7 @@ import { datePickerDateFormat, dateTimeFormat, towDatesCompare, viewDateFormat }
 import { forkJoin } from 'rxjs';
 
 @Component({
-  selector: 'app-establishments',
+  selector: 'app-subDivisions',
   templateUrl: './subDivisions.component.html',
   styleUrls: ['./subDivisions.component.scss'],
   providers: [DatePipe],
@@ -162,7 +162,7 @@ export class SubDivisionsComponent implements OnInit {
 
   initFilterData() {
     const data = {};
-    forkJoin([this.simpleTabsRef.getAllItems(data, 'subDivisions')]).subscribe(
+    forkJoin([this.simpleTabsRef.getAllItems(data, 'establishments')]).subscribe(
       ([relatedEntitiesResults]) => {
         this.relatedEntities = this.simpleTabsRef.getTabRefFilterData(relatedEntitiesResults['results']);
         this.activeRelatedEntities = relatedEntitiesResults['results'].filter((value: any) =>
@@ -202,8 +202,8 @@ export class SubDivisionsComponent implements OnInit {
       this.itemToEdit = item;
       this.itemLabel = item.label;
       this.selectedRelatedEntity = {
-        id: item.relatedEntityId,
-        label: item.relatedEntityName,
+        id: item.establishment ? item.establishment.id : '',
+        label: item.establishment ? item.establishment.label : '',
       };
     }
     if (this.addItem) {

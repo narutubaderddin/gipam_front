@@ -787,3 +787,7 @@ p-calendar {
   max-width: 10rem;
   min-width: 10rem;
 }
+
+.p-toast-top-right {
+  z-index: 1055 !important;
+}
