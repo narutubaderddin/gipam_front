@@ -35,7 +35,8 @@ import { LocalisationTypeComponent } from '@app/about/components/tabs-ref/locali
 import { ServicesComponent } from '@app/about/components/tabs-ref/services/services.component';
 import { SitesComponent } from '@app/about/components/tabs-ref/sites/sites.component';
 import { EstablishmentTypesComponent } from '@app/about/components/tabs-ref/establishmentTypes/establishmentTypes.component';
-import {CorrespondentsComponent} from "@app/about/components/tabs-ref/correspondents/correspondents.component";
+import { CorrespondentsComponent } from '@app/about/components/tabs-ref/correspondents/correspondents.component';
+import {ResponsibleComponent} from "@app/about/components/tabs-ref/responsible/responsible.component";
 const routes: Routes = [
   {
     path: '',
@@ -117,6 +118,8 @@ const routes: Routes = [
         data: { title: 'Liste des sites' },
       },
       { path: 'tab-ref-correspondant', component: CorrespondentsComponent },
+      { path: 'tab-ref-responsable', component: ResponsibleComponent },
+
     ],
   },
 ];

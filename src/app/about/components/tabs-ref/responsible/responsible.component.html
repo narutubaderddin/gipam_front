@@ -1,8 +1,8 @@
 <div class="breadcrumb">
   <a href="accueil">Accueil</a>
-  <a href="tab-ref-correspondant" class="selected-item">
+  <a href="tab-ref-responsable" class="selected-item">
     <i class="fas fa-chevron-right"></i>
-    Gestion des Correspondants
+    Gestion des Responsables
   </a>
 </div>
 <div class="container-fluid">
@@ -13,7 +13,7 @@
           <div class="card">
             <div class="card-body">
               <ul class="d-flex">
-                <li class="col-md-12 selected-table"><i class="fas fa-tasks"></i><a>Gestion des Correspondants</a></li>
+                <li class="col-md-12 selected-table"><i class="fas fa-tasks"></i><a>Gestion des Responsables</a></li>
               </ul>
             </div>
           </div>
@@ -44,7 +44,7 @@
               <div class="mr-3">
                 <button class="btn add-action" (click)="addItemAction()">
                   <i class="fas fa-plus-circle mr-1"></i>
-                  Ajouter Correspondant
+                  Ajouter Responsable
                 </button>
               </div>
             </div>
@@ -81,21 +81,21 @@
   <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
     <div class="modal-header">
       <h4 class="modal-title" *ngIf="editItem">
-        Modification de correspondant "{{ itemLabel }}"
+        Modification de responsable "{{ itemLabel }}"
       </h4>
-      <h4 class="modal-title" *ngIf="addItem">Ajout de correspondant</h4>
+      <h4 class="modal-title" *ngIf="addItem">Ajout de responsable</h4>
       <h4 class="modal-title" *ngIf="deleteItems">
-        Suppression de correspondant "{{ itemLabel }}"
+        Suppression de responsable "{{ itemLabel }}"
       </h4>
       <h4 class="modal-title" *ngIf="editVisibility">
-        Activation / désactivation de correspondant " {{ itemLabel }}"
+        Activation / désactivation de responsable " {{ itemLabel }}"
       </h4>
       <button type="button" class="close" aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
-      <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer le correspondant "{{ itemLabel }}" ?</div>
+      <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer le responsable "{{ itemLabel }}" ?</div>
 
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-5">Nom<span class="mandatory"> *</span></label>
@@ -115,15 +115,7 @@
           formControlName="lastName"
         />
       </div>
-      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Fonction</label>
-        <input
-          type="text"
-          class="form-control col-sm-7"
-          value="{{ editItem ? selectedItem.function : '' }}"
-          formControlName="function"
-        />
-      </div>
+
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-5">Téléphone</label>
         <input
@@ -163,57 +155,20 @@
         />
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Etablissement</label>
+        <label class="col-sm-5">Bâtiments</label>
         <div class="autocomplete form-control value col-12 col-sm-7">
-          <p-dropdown
+          <p-multiSelect
+            [options]="activeBuildings"
             class="col-md-7 p-0"
-            [style]="{ minWidth: '100%' }"
-            [options]="activeEstablishments"
-            formControlName="establishment"
-            placeholder="Choisir un établissement"
+            formControlName="buildings"
             optionLabel="name"
-            [showClear]="false"
-            (onChange)="onEstablishmentSelect($event)"
-            [placeholder]="selectedEstablishment && editItem ? selectedEstablishment : 'Sélectionner un établissement'"
-            [filter]="true"
-          ></p-dropdown>
+            display="chip"
+            [placeholder]="selectedBuildings && editItem ?
+            selectedBuildings: 'Sélectionner des bâtiments'"
+            >
+          </p-multiSelect>
         </div>
-      </div>
-      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Sous direction</label>
-        <div class="autocomplete form-control value col-12 col-sm-7">
-          <p-dropdown
-            class="col-md-7 p-0"
-            [style]="{ minWidth: '100%' }"
-            [options]="activeSubDivisions"
-            optionLabel="name"
-            formControlName="subDivision"
-            placeholder="Choisir une sous direction"
-            [showClear]="false"
-            (onChange)="onSubDivisionSelect($event)"
-            [placeholder]="selectedSubDivision && editItem ? selectedSubDivision : 'Sélectionner une sous direction'"
-            [filter]="true"
-          ></p-dropdown>
-        </div>
-      </div>
-      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Service</label>
-        <div class="autocomplete form-control value col-12 col-sm-7">
-          <p-dropdown
-            class="col-md-7 p-0"
-            [style]="{ minWidth: '100%' }"
-            [options]="activeServices"
-            optionLabel="name"
-            formControlName="service"
-            placeholder="Choisir un service"
-            [showClear]="false"
-            (onChange)="onServiceSelect($event)"
-            [placeholder]="selectedService && editItem ? selectedService : 'Sélectionner un service'"
-            [filter]="true"
-          ></p-dropdown>
-        </div>
-      </div>
-
+    </div>
       <div
         class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
         *ngIf="editItem || addItem || editVisibility"
@@ -262,3 +217,4 @@
   </form>
 </ng-template>
 <p-toast></p-toast>
+
