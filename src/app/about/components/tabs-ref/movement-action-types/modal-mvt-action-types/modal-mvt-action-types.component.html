@@ -29,7 +29,7 @@
             [options]="mvtTypes"
             optionLabel="label"
             formControlName="movementType"
-            [placeholder]="selectedMvtType&&editItem ? selectedMvtType.label : 'Sélectionner un type mouvement'"
+            [placeholder]="selectedMvtType && editItem ? selectedMvtType.label : 'Sélectionner un type mouvement'"
             emptyFilterMessage="Aucun résultat trouvé"
             (onChange)="onMvtTypesSelect($event)"
             [filter]="true"

@@ -1,24 +1,23 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {NgDataTableComponent} from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
-import {FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
-import {IDropdownSettings} from 'ng-multiselect-dropdown';
-import {ActivatedRoute, Router} from '@angular/router';
-import {NgbModal, NgbModalConfig, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
-import {SimpleTabsRefService} from '@shared/services/simple-tabs-ref.service';
-import {FieldsService} from '@shared/services/fields.service';
-import {MessageService} from 'primeng/api';
-import {DatePipe} from '@angular/common';
-import {ModalTabsRefComponent} from '@app/about/components/tabs-ref/modal-tabs-ref/modal-tabs-ref.component';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal, NgbModalConfig, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
+import { FieldsService } from '@shared/services/fields.service';
+import { MessageService } from 'primeng/api';
+import { DatePipe } from '@angular/common';
+import { ModalTabsRefComponent } from '@app/about/components/tabs-ref/modal-tabs-ref/modal-tabs-ref.component';
 
 @Component({
   selector: 'app-localisation-type',
   templateUrl: './localisation-type.component.html',
   styleUrls: ['./localisation-type.component.scss'],
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
 export class LocalisationTypeComponent implements OnInit {
-
-  @ViewChild(NgDataTableComponent, {static: false}) dataTableComponent: NgDataTableComponent;
+  @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
 
   myForm: any;
   loading = true;
@@ -95,7 +94,6 @@ export class LocalisationTypeComponent implements OnInit {
     this.getAllItems();
   }
 
-
   openModal(item: any) {
     this.btnLoading = null;
     if (!this.deleteItems) {
@@ -123,7 +121,7 @@ export class LocalisationTypeComponent implements OnInit {
       itemToEdit: this.itemToEdit,
       selectedItem: this.selectedItem,
       itemLabel: this.itemLabel,
-      btnLoading : this.btnLoading,
+      btnLoading: this.btnLoading,
       active: this.active,
     };
 
@@ -177,8 +175,8 @@ export class LocalisationTypeComponent implements OnInit {
     let params = {
       limit: this.limit,
       page: this.page,
-      sort_by:this.sortBy,
-      sort: this.sort
+      sort_by: this.sortBy,
+      sort: this.sort,
     };
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
@@ -207,7 +205,7 @@ export class LocalisationTypeComponent implements OnInit {
   visibleItem(data: any) {
     data.active = !data.active;
 
-    this.simpleTabsRef.editItem({label: data.label, active: data.active}, data.id).subscribe(
+    this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
       (result) => {
         if (data.active) {
           this.addSingle('success', 'Activation', 'Type localisation ' + data.label + ' activée avec succés');
@@ -224,9 +222,8 @@ export class LocalisationTypeComponent implements OnInit {
   }
 
   addSingle(type: string, sum: string, msg: string) {
-    this.messageService.add({severity: type, summary: sum, detail: msg});
+    this.messageService.add({ severity: type, summary: sum, detail: msg });
     this.btnLoading = null;
-
   }
 
   pagination(e: any) {
@@ -253,7 +250,7 @@ export class LocalisationTypeComponent implements OnInit {
   search(input: string) {
     this.page = 1;
 
-    this.dataTableSearchBar = {'search': input};
+    this.dataTableSearchBar = { search: input };
     this.getAllItems();
   }
 

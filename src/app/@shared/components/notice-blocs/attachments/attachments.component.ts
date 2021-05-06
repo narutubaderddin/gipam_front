@@ -18,6 +18,8 @@ export class AttachmentsComponent implements OnInit {
   selectedAttachment = 0;
   attachmentInsertionNumber = 0;
   addedFile: any;
+  edit = false;
+  display = false;
 
   slide = 1;
   types = ['type 1', 'type 2', 'type 3'];
@@ -70,6 +72,12 @@ export class AttachmentsComponent implements OnInit {
       type: 'type',
       creator: 'Jean',
     },
+    {
+      title: 'details.pdf',
+      date: '01/01/2020',
+      type: 'type',
+      creator: 'Jean',
+    },
   ];
 
   defaultColDef = {
@@ -112,6 +120,7 @@ export class AttachmentsComponent implements OnInit {
   }
 
   validate() {
+    console.log(this.attachments)
     if (!this.addedFile || !this.attachmentType) {
       this.validation = false;
     } else {
@@ -125,28 +134,19 @@ export class AttachmentsComponent implements OnInit {
       this.attachmentInsertionNumber++;
       this.selectedAttachment = this.attachments.value.length;
       this.validation = true;
+      this.edit = false;
+      this.display = false;
     }
   }
 
-  showItem(index: number) {
-    let data = this.attachments.value[index];
+  showItem(attachment: any) {
+    let data = attachment;
     this.initData(data.attachment, data.attachmentType);
-    this.selectedAttachment = index;
+    this.selectedAttachment = 0;
+    this.edit = true;
   }
-  onChange(event: NgbSlideEvent) {
-    switch (event.current) {
-      case 'slide1':
-        this.slide = 1;
-        break;
-      case 'slide2':
-        this.slide = 2;
-        break;
-      case 'slide3':
-        this.slide = 3;
-        break;
-      case 'slide4':
-        this.slide = 4;
-        break;
-    }
+
+   addAttachment() {
+    this.display = true;
   }
 }

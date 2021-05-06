@@ -29,8 +29,7 @@
                   id="example-search-input"
                   #searchBox
                   (keyup.enter)="search(searchBox.value)"
-
-                  (input)="ClearSearch($event, searchBox.value )"
+                  (input)="ClearSearch($event, searchBox.value)"
                 />
                 <span class="input-group-append">
                   <button
@@ -81,10 +80,12 @@
 <ng-template #content let-modal>
   <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
     <div class="modal-header">
-      <h4 class="modal-title" *ngIf="editItem">Modification de la Ministère "{{itemToEdit.name}}"</h4>
+      <h4 class="modal-title" *ngIf="editItem">Modification de la Ministère "{{ itemToEdit.name }}"</h4>
       <h4 class="modal-title" *ngIf="addItem">Ajout de Ministère</h4>
-      <h4 class="modal-title" *ngIf="deleteItems">Suppression de la Ministère "{{itemLabel}}"</h4>
-      <h4 class="modal-title" *ngIf="editVisibility">Activation / désactivation de la Ministère "{{itemToEdit.name}}"</h4>
+      <h4 class="modal-title" *ngIf="deleteItems">Suppression de la Ministère "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="editVisibility">
+        Activation / désactivation de la Ministère "{{ itemToEdit.name }}"
+      </h4>
       <button type="button" class="close" aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
       </button>
