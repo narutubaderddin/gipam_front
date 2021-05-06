@@ -99,6 +99,7 @@ import { DepartmentsComponent } from './components/tabs-ref/departments/departme
 import { LocalisationTypeComponent } from './components/tabs-ref/localisation-type/localisation-type.component';
 import { ServicesComponent } from '@app/about/components/tabs-ref/services/services.component';
 import { SitesComponent } from '@app/about/components/tabs-ref/sites/sites.component';
+import { EstablishmentTypesComponent } from '@app/about/components/tabs-ref/establishmentTypes/establishmentTypes.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FieldService } from '@shared/services/field.service';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -159,6 +160,7 @@ const ngWizardConfig: NgWizardConfig = {
     ReportSubTypesComponent,
     ModalReportSubTypesComponent,
     EstablishmentsComponent,
+    EstablishmentTypesComponent,
     MinistryComponent,
     BuildingsComponent,
     SubDivisionsComponent,

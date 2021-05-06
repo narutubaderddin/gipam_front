@@ -34,6 +34,7 @@ import { DepartmentsComponent } from '@app/about/components/tabs-ref/departments
 import { LocalisationTypeComponent } from '@app/about/components/tabs-ref/localisation-type/localisation-type.component';
 import { ServicesComponent } from '@app/about/components/tabs-ref/services/services.component';
 import { SitesComponent } from '@app/about/components/tabs-ref/sites/sites.component';
+import { EstablishmentTypesComponent } from '@app/about/components/tabs-ref/establishmentTypes/establishmentTypes.component';
 const routes: Routes = [
   {
     path: '',
@@ -78,6 +79,11 @@ const routes: Routes = [
         path: 'tab-ref-etablissement',
         component: EstablishmentsComponent,
         data: { title: 'Liste des établissements' },
+      },
+      {
+        path: 'tab-ref-type-etablissement',
+        component: EstablishmentTypesComponent,
+        data: { title: 'Liste des types établissement' },
       },
       {
         path: 'tab-ref-sous-direction',

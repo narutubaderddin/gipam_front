@@ -9,6 +9,7 @@ import { Calendar } from 'primeng/calendar';
 import { Dropdown } from 'primeng/dropdown';
 import { DatePipe } from '@angular/common';
 import { viewDateFormat } from '@shared/utils/helpers';
+import { SortIcon } from 'primeng/table';
 
 @Component({
   selector: 'app-ng-data-table',
@@ -88,7 +89,7 @@ export class NgDataTableComponent implements OnInit {
     { name: 'gt', value: '>' },
     { name: 'lte', value: '<=' },
     { name: 'gte', value: '>=' },
-    // { name: 'range', value: 'intervalle' },
+    { name: 'range', value: 'intervalle' },
   ];
   filter: any = {};
   filterFormValues: any = {};
@@ -232,28 +233,22 @@ export class NgDataTableComponent implements OnInit {
   //   }
   // }
 
-  sortHeader(column: any) {
-    let dir = 'asc';
-    this.asc = !this.asc;
-    if (this.asc) {
-      dir = 'desc';
-    } else {
+  sortHeader(sortIcon: SortIcon, column: any) {
+    let dir;
+    if (sortIcon.sortOrder === 1) {
       dir = 'asc';
+    } else {
+      dir = 'desc';
     }
     const sort = {
       sort_by: column.field,
       sort: dir,
     };
+    if (column.type === 'key-array') {
+      sort.sort_by = column.key_data[0] + '_' + column.key_data[1];
+    }
     this.sort.emit(sort);
   }
-
-  // onFilterChange(open: boolean) {
-  //   if (!open) {
-  //     this.filterValue.emit(this.form.value);
-  //
-  //     console.log(this.form.value);
-  //   }
-  // }
 
   handlePaginationInfo() {
     this.currentPage = this.currentPage ? this.currentPage : 1;

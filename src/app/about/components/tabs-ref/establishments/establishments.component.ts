@@ -9,6 +9,7 @@ import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 import { DatePipe } from '@angular/common';
 import { datePickerDateFormat, dateTimeFormat, towDatesCompare, viewDateFormat } from '@shared/utils/helpers';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-establishments',
@@ -38,7 +39,9 @@ export class EstablishmentsComponent implements OnInit {
     };
   };
   relatedEntities: any[] = [];
+  activeRelatedEntities: any[] = [];
   types: any[] = [];
+  activeTypes: any[] = [];
   selectedRelatedEntity: any;
   selectedType: any;
   itemToEdit: any;
@@ -82,64 +85,33 @@ export class EstablishmentsComponent implements OnInit {
   items: any[] = [];
   today: string;
   error = false;
-  columns = [
-    {
-      header: 'Libellé',
-      field: 'label',
-      type: 'key',
-      filter: true,
-      filterType: 'text',
-      sortable: true,
-    },
-    {
-      header: 'Sigle',
-      field: 'acronym',
-      type: 'key',
-      filter: true,
-      filterType: 'text',
-      sortable: true,
-      width: '100px',
-    },
-    {
-      header: 'Type',
-      field: 'typeLabel',
-      type: 'key',
-    },
-    {
-      header: 'Date début de validité',
-      field: 'startDate',
-      type: 'date',
-      filter: true,
-      filterType: 'range-date',
-      sortable: true,
-      width: '200px',
-    },
-    {
-      header: 'Date fin de validité',
-      field: 'disappearanceDate',
-      type: 'date',
-      filter: true,
-      filterType: 'range-date',
-      sortable: true,
-      width: '200px',
-    },
-    {
-      header: 'Ministère',
-      field: 'ministryName',
-      type: 'key',
-      width: '380px',
-    },
-    {
-      header: 'Actions',
-      field: 'action',
-      type: 'app-actions-cell',
-      sortable: false,
-      filter: false,
-      width: '100px',
-    },
-  ];
+  columns: any[];
 
   rowCount: any = 5;
+
+  relatedEntityColumn = {
+    header: 'Ministère',
+    field: 'ministry',
+    type: 'key-array',
+    key_data: ['ministry', 'name'],
+    filter: true,
+    filterType: 'multiselect',
+    placeholder: 'Choisir des Ministères',
+    selectData: this.relatedEntities,
+    sortable: true,
+    width: '380px',
+  };
+  relatedTypeColumn = {
+    header: 'Type',
+    field: 'type',
+    type: 'key-array',
+    key_data: ['type', 'label'],
+    filter: true,
+    filterType: 'multiselect',
+    placeholder: 'Choisir des Types',
+    selectData: this.types,
+    sortable: true,
+  };
 
   constructor(
     private modalService: NgbModal,
@@ -156,6 +128,8 @@ export class EstablishmentsComponent implements OnInit {
 
   ngOnInit(): void {
     this.simpleTabsRef.tabRef = 'establishments';
+    this.initColumnsDefinition();
+    this.initFilterData();
     this.getAllItems();
     this.initForm();
     this.filter =
@@ -178,9 +152,87 @@ export class EstablishmentsComponent implements OnInit {
       startDate: [startDate, [Validators.required]],
       disappearanceDate: [disappearanceDate, []],
       ministry: [this.selectedRelatedEntity ? this.selectedRelatedEntity : '', [Validators.required]],
-      type: [this.selectedType ? this.selectedType : '', []],
+      type: [this.selectedType ? this.selectedType : '', [Validators.required]],
     });
     this.tabForm.setValidators(towDatesCompare('startDate', 'disappearanceDate'));
+  }
+
+  initColumnsDefinition() {
+    this.columns = [
+      {
+        header: 'Libellé',
+        field: 'label',
+        type: 'key',
+        filter: true,
+        filterType: 'text',
+        sortable: true,
+      },
+      {
+        header: 'Sigle',
+        field: 'acronym',
+        type: 'key',
+        filter: true,
+        filterType: 'text',
+        sortable: true,
+        width: '100px',
+      },
+      this.relatedTypeColumn,
+      {
+        header: 'Date début de validité',
+        field: 'startDate',
+        type: 'date',
+        filter: true,
+        filterType: 'range-date',
+        sortable: true,
+        width: '200px',
+      },
+      {
+        header: 'Date fin de validité',
+        field: 'disappearanceDate',
+        type: 'date',
+        filter: true,
+        filterType: 'range-date',
+        sortable: true,
+        width: '200px',
+      },
+      this.relatedEntityColumn,
+      {
+        header: 'Actions',
+        field: 'action',
+        type: 'app-actions-cell',
+        sortable: false,
+        filter: false,
+        width: '100px',
+      },
+    ];
+  }
+
+  initFilterData() {
+    const data = {
+      page: 1,
+      'active[eq]': 1,
+      serializer_group: JSON.stringify(['response', 'short']),
+    };
+    forkJoin([
+      this.simpleTabsRef.getAllItems(data, 'ministries'),
+      this.simpleTabsRef.getAllItems(data, 'establishmentTypes'),
+    ]).subscribe(
+      ([relatedEntitiesResults, relatedTypesResults]) => {
+        this.relatedEntities = this.simpleTabsRef.getTabRefFilterData(relatedEntitiesResults['results']);
+        this.activeRelatedEntities = relatedEntitiesResults['results'].filter((value: any) =>
+          this.isActive(value.disappearanceDate)
+        );
+        this.types = this.simpleTabsRef.getTabRefFilterData(relatedTypesResults['results']);
+        this.activeTypes = relatedTypesResults['results'].filter((value: any) =>
+          this.isActive(value.disappearanceDate)
+        );
+        this.relatedEntityColumn.selectData = this.relatedEntities;
+        this.relatedTypeColumn.selectData = this.types;
+      },
+      (error: any) => {
+        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
+      }
+    );
   }
 
   get defaultHeaderParams() {
@@ -195,60 +247,21 @@ export class EstablishmentsComponent implements OnInit {
       this.itemToEdit = item;
       this.itemLabel = item.label;
       this.selectedRelatedEntity = {
-        id: item.ministryId,
-        name: item.ministryName,
+        id: item.ministry ? item.ministry.id : '',
+        name: item.ministry ? item.ministry.name : '',
       };
       this.selectedType = {
-        id: item.typeId,
-        label: item.typeLabel,
+        id: item.type ? item.type.id : '',
+        label: item.type ? item.type.label : '',
       };
     }
     if (this.addItem) {
       this.selectedRelatedEntity = null;
       this.selectedType = null;
     }
-    if (this.editItem || this.addItem) {
-      if (this.relatedEntities.length === 0) {
-        this.getRelatedEntity();
-      }
-      if (this.types.length === 0) {
-        this.getTypes();
-      }
-    }
     this.selectedItem = item;
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
-  }
-
-  getRelatedEntity(): any {
-    const previousUrl = this.simpleTabsRef.tabRef;
-    this.simpleTabsRef.tabRef = 'ministries';
-
-    this.simpleTabsRef.getAllItems({}).subscribe(
-      (result: any) => {
-        this.relatedEntities = result.results;
-        this.dataTableComponent.error = false;
-      },
-      (error: any) => {
-        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
-      }
-    );
-    this.simpleTabsRef.tabRef = previousUrl;
-  }
-
-  getTypes(): any {
-    const previousUrl = this.simpleTabsRef.tabRef;
-    this.simpleTabsRef.tabRef = 'establishmentTypes';
-
-    this.simpleTabsRef.getAllItems({}).subscribe(
-      (result: any) => {
-        this.types = result.results;
-      },
-      (error: any) => {
-        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
-      }
-    );
-    this.simpleTabsRef.tabRef = previousUrl;
   }
 
   submit() {
@@ -324,38 +337,19 @@ export class EstablishmentsComponent implements OnInit {
     return !(endDate !== '' && endDate && endDate <= today);
   }
 
-  convertItem(item: any) {
-    const newItem = {
-      id: item.id,
-      label: item.label,
-      acronym: item.acronym,
-      startDate: item.startDate,
-      disappearanceDate: item.disappearanceDate,
-      ministryId: item.ministry ? item.ministry.id : '',
-      ministryName: item.ministry ? item.ministry.name : '',
-      typeId: item.type ? item.type.id : '',
-      typeLabel: item.type ? item.type.label : '',
-      active: true,
-    };
-    newItem.active = this.isActive(newItem.disappearanceDate);
-    return newItem;
-  }
-
   getAllItems() {
     this.loading = true;
     let params = {
       limit: this.limit,
       page: this.page,
     };
-
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
     params = Object.assign(params, this.dataTableSearchBar);
-
-    this.simpleTabsRef.getAllItems(params).subscribe(
+    this.simpleTabsRef.getAllItems(params, 'establishments').subscribe(
       (result: any) => {
         this.items = result.results.map((item: any) => {
-          return this.convertItem(item);
+          return Object.assign({ active: this.isActive(item.disappearanceDate) }, item);
         });
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
@@ -405,7 +399,8 @@ export class EstablishmentsComponent implements OnInit {
         this.addItem = false;
       },
       (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
+        this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        this.btnLoading = null;
       }
     );
   }
@@ -422,7 +417,8 @@ export class EstablishmentsComponent implements OnInit {
       },
 
       (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
+        this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        this.btnLoading = null;
       }
     );
   }
@@ -442,7 +438,6 @@ export class EstablishmentsComponent implements OnInit {
   }
 
   filters(e: any) {
-    console.log(e);
     this.dataTableFilter = Object.assign({}, this.simpleTabsRef.prepareFilter(e));
     this.page = 1;
     this.dataTableComponent.currentPage = 1;
@@ -456,7 +451,10 @@ export class EstablishmentsComponent implements OnInit {
 
   search(input: string) {
     this.page = 1;
-    this.dataTableSearchBar = { search: input };
+    this.dataTableSearchBar = {};
+    if (input !== '') {
+      this.dataTableSearchBar = { search: input };
+    }
     this.getAllItems();
   }
 
