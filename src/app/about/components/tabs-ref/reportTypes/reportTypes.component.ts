@@ -252,7 +252,8 @@ export class ReportTypesComponent implements OnInit {
         this.getAllItems();
       },
       (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
+        this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        this.btnLoading = null;
       }
     );
   }
@@ -285,7 +286,8 @@ export class ReportTypesComponent implements OnInit {
       },
 
       (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
+        this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        this.btnLoading = null;
       }
     );
   }
@@ -318,7 +320,10 @@ export class ReportTypesComponent implements OnInit {
 
   search(input: string) {
     this.page = 1;
-    this.dataTableSearchBar = { search: input };
+    this.dataTableSearchBar = {};
+    if (input !== '') {
+      this.dataTableSearchBar = { search: input };
+    }
     this.getAllItems();
   }
 
