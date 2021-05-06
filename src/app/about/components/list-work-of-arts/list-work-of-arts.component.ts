@@ -1134,67 +1134,71 @@ export class ListWorkOfArtsComponent implements OnInit {
   }
 
   onGeographicLocationChange(event: any, key: string) {
-    let data = {
-      page: 1,
-      'active[eq]': 1,
-      serializer_group: JSON.stringify(['response', 'short']),
-      search: event.query,
-    };
+    if (event.query.length > 2) {
+      let data = {
+        page: 1,
+        'active[eq]': 1,
+        serializer_group: JSON.stringify(['response', 'short']),
+        search: event.query,
+      };
 
-    let keys = [];
-    switch (key) {
-      case 'departement':
-        keys = [{ formKey: 'region', tabName: 'departments' }];
-        let departementDataApi = Object.assign({}, data);
-        keys.forEach((keysData) => {
-          departementDataApi = this.getAPisItems(departementDataApi, this.form4, keysData.formKey);
-        });
-        this.simpleTabsRefService.getItemsByCriteria(departementDataApi, 'departments').subscribe((departementData) => {
-          this.departmentsData = this.getTabRefData(departementData['results']);
-        });
-        break;
-      case 'communes':
-        keys = [
-          { formKey: 'departement', tabName: 'communes' },
-          { formKey: 'region', tabName: 'departments' },
-        ];
-        let communeDataApi = Object.assign({}, data);
-        keys.forEach((keysData) => {
-          communeDataApi = this.getAPisItems(communeDataApi, this.form4, keysData.formKey);
-        });
-        this.simpleTabsRefService.getItemsByCriteria(communeDataApi, 'communes').subscribe((communeData) => {
-          this.communesData = this.getTabRefData(communeData['results']);
-        });
-        break;
-      case 'batiment':
-        keys = [
-          { formKey: 'departement', tabName: 'communes' },
-          { formKey: 'region', tabName: 'departments' },
-          { formKey: 'communes', tabName: 'sites' },
-        ];
-        let buildingDataApi = Object.assign({}, data);
-        keys.forEach((keysData) => {
-          buildingDataApi = this.getAPisItems(buildingDataApi, this.form4, keysData.formKey);
-        });
-        this.simpleTabsRefService.getItemsByCriteria(buildingDataApi, 'buildings').subscribe((buildingData) => {
-          this.buildingData = this.getTabRefData(buildingData['results']);
-        });
-        break;
-      case 'sites':
-        keys = [
-          { formKey: 'departement', tabName: 'communes' },
-          { formKey: 'region', tabName: 'departments' },
-          { formKey: 'communes', tabName: 'sites' },
-          { formKey: 'batiment', tabName: 'buildings' },
-        ];
-        let siteDataApi = Object.assign({}, data);
-        keys.forEach((keysData) => {
-          siteDataApi = this.getAPisItems(siteDataApi, this.form4, keysData.formKey);
-        });
-        this.simpleTabsRefService.getItemsByCriteria(siteDataApi, 'sites').subscribe((siteDataApi) => {
-          this.siteData = this.getTabRefData(siteDataApi['results']);
-        });
-        break;
+      let keys = [];
+      switch (key) {
+        case 'departement':
+          keys = [{ formKey: 'region', tabName: 'departments' }];
+          let departementDataApi = Object.assign({}, data);
+          keys.forEach((keysData) => {
+            departementDataApi = this.getAPisItems(departementDataApi, this.form4, keysData.formKey);
+          });
+          this.simpleTabsRefService
+            .getItemsByCriteria(departementDataApi, 'departments')
+            .subscribe((departementData) => {
+              this.departmentsData = this.getTabRefData(departementData['results']);
+            });
+          break;
+        case 'communes':
+          keys = [
+            { formKey: 'departement', tabName: 'communes' },
+            { formKey: 'region', tabName: 'departments' },
+          ];
+          let communeDataApi = Object.assign({}, data);
+          keys.forEach((keysData) => {
+            communeDataApi = this.getAPisItems(communeDataApi, this.form4, keysData.formKey);
+          });
+          this.simpleTabsRefService.getItemsByCriteria(communeDataApi, 'communes').subscribe((communeData) => {
+            this.communesData = this.getTabRefData(communeData['results']);
+          });
+          break;
+        case 'batiment':
+          keys = [
+            { formKey: 'departement', tabName: 'communes' },
+            { formKey: 'region', tabName: 'departments' },
+            { formKey: 'communes', tabName: 'sites' },
+          ];
+          let buildingDataApi = Object.assign({}, data);
+          keys.forEach((keysData) => {
+            buildingDataApi = this.getAPisItems(buildingDataApi, this.form4, keysData.formKey);
+          });
+          this.simpleTabsRefService.getItemsByCriteria(buildingDataApi, 'buildings').subscribe((buildingData) => {
+            this.buildingData = this.getTabRefData(buildingData['results']);
+          });
+          break;
+        case 'sites':
+          keys = [
+            { formKey: 'departement', tabName: 'communes' },
+            { formKey: 'region', tabName: 'departments' },
+            { formKey: 'communes', tabName: 'sites' },
+            { formKey: 'batiment', tabName: 'buildings' },
+          ];
+          let siteDataApi = Object.assign({}, data);
+          keys.forEach((keysData) => {
+            siteDataApi = this.getAPisItems(siteDataApi, this.form4, keysData.formKey);
+          });
+          this.simpleTabsRefService.getItemsByCriteria(siteDataApi, 'sites').subscribe((siteDataApi) => {
+            this.siteData = this.getTabRefData(siteDataApi['results']);
+          });
+          break;
+      }
     }
   }
 
