@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
@@ -8,18 +8,16 @@ import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 import { ModalTabsRefComponent } from '@app/about/components/tabs-ref/modal-tabs-ref/modal-tabs-ref.component';
-import {NgDataTableComponent} from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
-import {DatePipe} from '@angular/common';
+import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-epoques',
   templateUrl: './epoques.component.html',
   styleUrls: ['./epoques.component.scss'],
-
 })
 export class EpoquesComponent implements OnInit {
-
-  @ViewChild(NgDataTableComponent, {static: false}) dataTableComponent: NgDataTableComponent;
+  @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
 
   myForm: any;
   loading = true;
@@ -84,8 +82,7 @@ export class EpoquesComponent implements OnInit {
     private fieldsService: FieldsService,
     public fb: FormBuilder,
     config: NgbModalConfig,
-    private messageService: MessageService,
-
+    private messageService: MessageService
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
@@ -95,7 +92,6 @@ export class EpoquesComponent implements OnInit {
     this.simpleTabsRef.tabRef = 'eras';
     this.getAllItems();
   }
-
 
   openModal(item: any) {
     this.btnLoading = null;
@@ -116,7 +112,7 @@ export class EpoquesComponent implements OnInit {
     };
     const modalRef = this.modalService.open(ModalTabsRefComponent, ngbModalOptions);
     modalRef.componentInstance.fromParent = {
-      name: 'l\'époque',
+      name: "l'époque",
       editItem: this.editItem,
       addItem: this.addItem,
       deleteItems: this.deleteItems,
@@ -124,7 +120,7 @@ export class EpoquesComponent implements OnInit {
       itemToEdit: this.itemToEdit,
       selectedItem: this.selectedItem,
       itemLabel: this.itemLabel,
-      btnLoading : this.btnLoading,
+      btnLoading: this.btnLoading,
       active: this.active,
     };
 
@@ -178,8 +174,8 @@ export class EpoquesComponent implements OnInit {
     let params = {
       limit: this.limit,
       page: this.page,
-      sort_by:this.sortBy,
-      sort: this.sort
+      sort_by: this.sortBy,
+      sort: this.sort,
     };
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
@@ -208,7 +204,7 @@ export class EpoquesComponent implements OnInit {
   visibleItem(data: any) {
     data.active = !data.active;
 
-    this.simpleTabsRef.editItem({label: data.label, active: data.active}, data.id).subscribe(
+    this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
       (result) => {
         if (data.active) {
           this.addSingle('success', 'Activation', 'Epoque ' + data.label + ' activée avec succés');
@@ -225,9 +221,8 @@ export class EpoquesComponent implements OnInit {
   }
 
   addSingle(type: string, sum: string, msg: string) {
-    this.messageService.add({severity: type, summary: sum, detail: msg});
+    this.messageService.add({ severity: type, summary: sum, detail: msg });
     this.btnLoading = null;
-
   }
 
   pagination(e: any) {
@@ -254,12 +249,12 @@ export class EpoquesComponent implements OnInit {
   search(input: string) {
     this.page = 1;
 
-    this.dataTableSearchBar = {'search': input};
+    this.dataTableSearchBar = { search: input };
     this.getAllItems();
   }
 
-  ClearSearch(event: Event, input:string) {
-    if(!event['inputType']){
+  ClearSearch(event: Event, input: string) {
+    if (!event['inputType']) {
       this.search(input);
     }
   }
@@ -335,4 +330,3 @@ export class EpoquesComponent implements OnInit {
     );
   }
 }
-

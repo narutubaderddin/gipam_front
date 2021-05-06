@@ -1,9 +1,9 @@
 <div class="modal-content">
   <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
     <div class="modal-header">
-      <h4 class="modal-title" *ngIf="editItem">Modification de {{ name }} "{{itemToEdit.label}}"</h4>
+      <h4 class="modal-title" *ngIf="editItem">Modification de {{ name }} "{{ itemToEdit.label }}"</h4>
       <h4 class="modal-title" *ngIf="addItem">Ajout de {{ name }}</h4>
-      <h4 class="modal-title" *ngIf="deleteItems">Suppression de {{ name }} "{{itemToDelete.label}}"</h4>
+      <h4 class="modal-title" *ngIf="deleteItems">Suppression de {{ name }} "{{ itemToDelete.label }}"</h4>
       <button type="button" class="close" aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -29,7 +29,7 @@
             [options]="reportTypes"
             optionLabel="label"
             formControlName="reportType"
-            [placeholder]="selectedreportType&&editItem ? selectedreportType.label : 'Sélectionner un type constat'"
+            [placeholder]="selectedreportType && editItem ? selectedreportType.label : 'Sélectionner un type constat'"
             emptyFilterMessage="Aucun résultat trouvé"
             (onChange)="onMvtTypesSelect($event)"
             [filter]="true"

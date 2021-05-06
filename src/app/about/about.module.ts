@@ -103,6 +103,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FieldService } from '@shared/services/field.service';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 setTheme('bs4');
 
@@ -215,6 +216,7 @@ const ngWizardConfig: NgWizardConfig = {
     ProgressSpinnerModule,
     InfiniteScrollModule,
     RadioButtonModule,
+    AutoCompleteModule,
   ],
   providers: [MovementsService, BsDatepickerConfig, MessageService, ArtWorksDataPipe, ArtWorksPipe, FieldService],
 })

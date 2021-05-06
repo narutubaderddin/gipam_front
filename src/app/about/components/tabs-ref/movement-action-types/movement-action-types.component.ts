@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,7 +8,7 @@ import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 
 import { ModalMvtActionTypesComponent } from '@app/about/components/tabs-ref/movement-action-types/modal-mvt-action-types/modal-mvt-action-types.component';
-import {NgDataTableComponent} from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 
 @Component({
   selector: 'app-movement-action-types',
@@ -110,11 +110,10 @@ export class MovementActionTypesComponent implements OnInit {
         this.editItem = true;
         this.itemToEdit = item;
         this.itemLabel = item.label;
-        this.selectedMvtType =
-          {
-            id: item.movementType.id,
-            label: item.movementType.label,
-          };
+        this.selectedMvtType = {
+          id: item.movementType.id,
+          label: item.movementType.label,
+        };
         console.log('selectedMvtType', this.selectedMvtType);
       } else {
         this.selectedMvtType = [];
@@ -137,7 +136,7 @@ export class MovementActionTypesComponent implements OnInit {
       itemToEdit: this.itemToEdit,
       selectedItem: this.selectedItem,
       active: this.active,
-      btnLoading:this.btnLoading,
+      btnLoading: this.btnLoading,
       selectedMvtType: this.selectedMvtType,
     };
 
@@ -344,11 +343,11 @@ export class MovementActionTypesComponent implements OnInit {
 
   search(input: string) {
     this.page = 1;
-    this.dataTableSearchBar= {'search': input};
+    this.dataTableSearchBar = { search: input };
     this.getAllItems();
   }
-  ClearSearch(event: Event, input:string) {
-    if(!event['inputType']){
+  ClearSearch(event: Event, input: string) {
+    if (!event['inputType']) {
       this.search(input);
     }
   }
