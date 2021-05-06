@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class WorkOfArtService {
+  private _selectedArtWorks: any[] = [];
   statusType = [
     {
       id: 'depot',
@@ -676,5 +677,21 @@ export class WorkOfArtService {
 
   getOeuvreDetails(id: string): Observable<any> {
     return this.http.get('/artWorks/' + id);
+  }
+  addSelectedArtWorks(item: any) {
+    this._selectedArtWorks.push(item);
+    localStorage.setItem('selectedArtWorks', JSON.stringify(this._selectedArtWorks));
+  }
+
+  getSelectedArtWorks(): any[] {
+    if (localStorage.getItem('selectedArtWorks')) {
+      this._selectedArtWorks = JSON.parse(localStorage.getItem('selectedArtWorks'));
+    }
+    return this._selectedArtWorks;
+  }
+
+  setSelectedArtWorks(items: any) {
+    this._selectedArtWorks = items;
+    localStorage.setItem('selectedArtWorks', JSON.stringify(this._selectedArtWorks));
   }
 }

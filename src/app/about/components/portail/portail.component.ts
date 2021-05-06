@@ -121,6 +121,7 @@ export class PortailComponent implements OnInit {
         checked: false,
       }),
     ];
+    this.selectedOeuvre = this.WorkOfArtService.getSelectedArtWorks();
   }
 
   ngOnInit(): void {
@@ -201,19 +202,19 @@ export class PortailComponent implements OnInit {
   resetWeight(id: string) {
     this.highValue3 = 0;
     this.value3 = 0;
-    this.getOeuvres();
+    //this.getOeuvres();
     document.getElementById(id).click();
   }
   resetHeight(id: string) {
     this.highValue = 0;
     this.value = 0;
-    this.getOeuvres();
+    //this.getOeuvres();
     document.getElementById(id).click();
   }
   resetWidth(id: string) {
     this.highValue1 = 0;
     this.value1 = 0;
-    this.getOeuvres();
+    //this.getOeuvres();
     document.getElementById(id).click();
   }
 
@@ -243,7 +244,7 @@ export class PortailComponent implements OnInit {
   addToBasket(event: any, item: any) {
     event.stopPropagation();
     item.isDemanded = true;
-    this.selectedOeuvre.push(item);
+    this.WorkOfArtService.addSelectedArtWorks(item);
   }
   oeuvreToBeremoved: any;
   removeFromBasket(event: any, item: any) {
@@ -257,6 +258,7 @@ export class PortailComponent implements OnInit {
     this.selectedOeuvre = this.selectedOeuvre.filter((oeuvre) => {
       return oeuvre.id !== this.oeuvreToBeremoved.id;
     });
+    this.WorkOfArtService.setSelectedArtWorks(this.selectedOeuvre);
     this.modalDeleteOeuvre.close('');
   }
   closeDeleteOeuvre() {
@@ -284,6 +286,9 @@ export class PortailComponent implements OnInit {
     this.listOeuvres = [...this.listOeuvres, ...response.results];
     this.oeuvres = [];
     let results: any = this.listOeuvres.filter((oeuvre: any) => {
+      if (this.selectedOeuvre.find((elm) => elm.id == oeuvre.id)) {
+        oeuvre.isDemanded = true;
+      }
       return oeuvre.field !== null;
     });
     this.groups = results.reduce((r: any, a: any) => {
