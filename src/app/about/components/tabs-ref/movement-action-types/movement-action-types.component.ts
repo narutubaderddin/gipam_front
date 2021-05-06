@@ -9,6 +9,7 @@ import { MessageService } from 'primeng/api';
 
 import { ModalMvtActionTypesComponent } from '@app/about/components/tabs-ref/movement-action-types/modal-mvt-action-types/modal-mvt-action-types.component';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import {forkJoin} from 'rxjs';
 
 @Component({
   selector: 'app-movement-action-types',
@@ -45,10 +46,22 @@ export class MovementActionTypesComponent implements OnInit {
   end: number;
   start: number;
 
+  relatedEntities:any[]=[];
+  activeRelatedEntities:any[]=[];
   dataTableFilter: any = {};
   dataTableSort: any = {};
   dataTableSearchBar: any = {};
-
+  RelatedEntityColumn={
+    header: 'Type mouvement',
+    field: 'movementType',
+    type: 'key-array',
+    key_data: ['movementType', 'label'],
+    filter: true,
+    filterType: 'multiselect',
+    placeholder: 'Type mouvement',
+    selectData: this.relatedEntities,
+    sortable: true,
+  }
   items: any;
   fieldNames = {
     label: 'Libellé',
@@ -63,12 +76,7 @@ export class MovementActionTypesComponent implements OnInit {
       filterType: 'text',
       sortable: true,
     },
-    {
-      header: 'Type mouvement',
-      field: 'movementType',
-      type: 'key-array',
-      key_data: ['movementType', 'label'],
-    },
+    this.RelatedEntityColumn,
     {
       header: 'Actions',
       field: 'action',
@@ -96,13 +104,40 @@ export class MovementActionTypesComponent implements OnInit {
   ngOnInit(): void {
     this.simpleTabsRef.tabRef = 'movementActionTypes';
     this.getAllItems();
-
+    this.initFilterData();
     this.filter =
       this.activatedRoute.snapshot.queryParams.filter && this.activatedRoute.snapshot.queryParams.filter.length > 0;
   }
+  initFilterData() {
+    const previousUrl = this.simpleTabsRef.tabRef;
+    const data = {
+      page: 1,
+      'active[eq]': 1,
+      serializer_group: JSON.stringify(['response', 'short']),
+    };
+    forkJoin([
+      this.simpleTabsRef.getAllItems(data, 'movementTypes'),
+    ]).subscribe(
+      ([relatedServicesResults]) => {
+        this.relatedEntities = this.simpleTabsRef.getTabRefFilterData(relatedServicesResults['results']);
+        this.activeRelatedEntities= this.simpleTabsRef.getTabRefFilterData(relatedServicesResults['results']
+          .filter((value: any) => {
+            return value.active===true
+          })
+        );
 
+        this.RelatedEntityColumn.selectData = this.relatedEntities;
+      },
+      (error: any) => {
+        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
+      }
+    );
+    this.simpleTabsRef.tabRef = previousUrl;
+  }
   resetFilter() {}
-
+  isActive(active: string) {
+    return active;
+  }
   openModal(item: any) {
     this.btnLoading = null;
     if (!this.deleteItems) {
@@ -138,6 +173,7 @@ export class MovementActionTypesComponent implements OnInit {
       active: this.active,
       btnLoading: this.btnLoading,
       selectedMvtType: this.selectedMvtType,
+      activeRelatedEntities: this.activeRelatedEntities
     };
 
     modalRef.result.then(

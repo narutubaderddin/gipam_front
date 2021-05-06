@@ -27,11 +27,11 @@
         <div class="select col-sm-7 p-0">
           <p-dropdown
             [options]="reportTypes"
-            optionLabel="label"
+            optionLabel="name"
             formControlName="reportType"
             [placeholder]="selectedreportType && editItem ? selectedreportType.label : 'Sélectionner un type constat'"
             emptyFilterMessage="Aucun résultat trouvé"
-            (onChange)="onMvtTypesSelect($event)"
+            (onChange)="onReportTypesSelect($event)"
             [filter]="true"
           ></p-dropdown>
         </div>

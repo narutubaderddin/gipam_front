@@ -8,6 +8,7 @@ import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 import { ModalReportSubTypesComponent } from '@app/about/components/tabs-ref/report-sub-types/modal-report-sub-types/modal-report-sub-types.component';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import {forkJoin} from "rxjs";
 
 @Component({
   selector: 'app-report-sub-types',
@@ -49,8 +50,21 @@ export class ReportSubTypesComponent implements OnInit {
   dataTableSearchBar: any = {};
 
   items: any[] = [];
-
+  relatedEntities: any[] = [];
+  activeRelatedEntities: any[] = [];
   selectedreportType: any;
+
+  relatedEntityColumn= {
+    header: 'Type constat',
+    field: 'reportType',
+    type: 'key-array',
+    key_data: ['reportType', 'label'],
+    filter: true,
+    filterType: 'multiselect',
+    placeholder: 'Type constat',
+    selectData: this.relatedEntities,
+    sortable: true,
+  }
 
   columns = [
     {
@@ -61,12 +75,7 @@ export class ReportSubTypesComponent implements OnInit {
       filterType: 'text',
       sortable: true,
     },
-    {
-      header: 'Type constat',
-      field: 'reportType',
-      type: 'key-array',
-      key_data: ['reportType', 'label'],
-    },
+   this.relatedEntityColumn,
     {
       header: 'Actions',
       field: 'action',
@@ -94,11 +103,36 @@ export class ReportSubTypesComponent implements OnInit {
   ngOnInit(): void {
     this.simpleTabsRef.tabRef = 'reportSubTypes';
     this.getAllItems();
-
+    this.initFilterData();
     this.filter =
       this.activatedRoute.snapshot.queryParams.filter && this.activatedRoute.snapshot.queryParams.filter.length > 0;
   }
+  initFilterData() {
 
+    const data = {
+      page: 1,
+      'active[eq]': 1,
+      serializer_group: JSON.stringify(['response', 'short']),
+    };
+    forkJoin([
+      this.simpleTabsRef.getAllItems(data, 'reportTypes'),
+    ]).subscribe(
+      ([relatedServicesResults]) => {
+        this.relatedEntities = this.simpleTabsRef.getTabRefFilterData(relatedServicesResults['results']);
+        this.activeRelatedEntities= this.simpleTabsRef.getTabRefFilterData(relatedServicesResults['results']
+          .filter((value: any) => {
+            return value.active===true
+          })
+        );
+
+        this.relatedEntityColumn.selectData = this.relatedEntities;
+      },
+      (error: any) => {
+        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
+      }
+    );
+
+  }
   resetFilter() {}
 
   openModal(item: any) {
@@ -133,6 +167,7 @@ export class ReportSubTypesComponent implements OnInit {
       selectedItem: this.selectedItem,
       selectedReportType: this.selectedreportType,
       active: this.active,
+      activeRelatedEntities: this.activeRelatedEntities
     };
     console.log(this.selectedreportType);
     modalRef.result.then(

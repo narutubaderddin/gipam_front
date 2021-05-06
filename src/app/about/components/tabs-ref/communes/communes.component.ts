@@ -9,6 +9,7 @@ import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
+import {forkJoin} from "rxjs";
 
 @Component({
   selector: 'app-communes',
@@ -62,7 +63,18 @@ export class CommunesComponent implements OnInit {
   dataTableSearchBar: any = {};
   items: any;
   today: string;
-
+  activeRelatedEntities: any[]=[];
+  relatedEntityColumn={
+    header: 'Département',
+    field: 'department',
+    type: 'key-array',
+    key_data: ['department', 'name'],
+    filter: true,
+    filterType: 'multiselect',
+    placeholder: 'Département',
+    selectData: this.relatedEntities,
+    sortable: true,
+  }
   columns = [
     {
       header: 'Libellé',
@@ -90,12 +102,7 @@ export class CommunesComponent implements OnInit {
       sortable: true,
       width: '200px',
     },
-    {
-      header: 'Departement',
-      field: 'department',
-      type: 'key-array',
-      key_data: ['department', 'name'],
-    },
+    this.relatedEntityColumn,
     {
       header: 'Actions',
       field: 'action',
@@ -126,10 +133,35 @@ export class CommunesComponent implements OnInit {
   ngOnInit(): void {
     this.simpleTabsRef.tabRef = 'communes';
     this.getAllItems();
+    this.initFilterData();
     this.today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     this.initForm();
   }
+  initFilterData() {
+    const previousUrl = this.simpleTabsRef.tabRef;
+    const data = {
+      page: 1,
+      'active[eq]': 1,
+      serializer_group: JSON.stringify(['response', 'short']),
+    };
+    forkJoin([
+      this.simpleTabsRef.getAllItems(data, 'departments'),
+    ]).subscribe(
+      ([relatedServicesResults]) => {
+        this.relatedEntities = this.simpleTabsRef.getTabRefFilterData(relatedServicesResults['results']);
+        this.activeRelatedEntities = this.simpleTabsRef.getTabRefFilterData(relatedServicesResults['results'])
+          .filter((value: any) =>
+            this.isActive(value.disappearanceDate)
+          );
 
+        this.relatedEntityColumn.selectData = this.relatedEntities;
+      },
+      (error: any) => {
+        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
+      }
+    );
+    this.simpleTabsRef.tabRef = previousUrl;
+  }
   initForm() {
     const msg = 'date début inférieur date fin';
     const startDate = this.datePipe.transform(
@@ -286,22 +318,7 @@ export class CommunesComponent implements OnInit {
     return !(endDate !== '' && endDate && endDate <= today);
   }
 
-  convertItem(item: any) {
-    const newItem = {
-      id: item.id,
-      name: item.name,
-      startDate: item.startDate,
-      disappearanceDate: item.disappearanceDate,
-      department: item.department ? item.department : '',
-      active: true,
-    };
-    newItem.startDate = item.startDate ? this.datePipe.transform(item.startDate, 'yyyy/MM/dd') : null;
-    newItem.disappearanceDate = item.disappearanceDate
-      ? this.datePipe.transform(item.disappearanceDate, 'yyyy/MM/dd')
-      : null;
-    newItem.active = this.isActive(newItem.disappearanceDate);
-    return newItem;
-  }
+
 
   getAllItems() {
     this.loading = true;
@@ -318,7 +335,7 @@ export class CommunesComponent implements OnInit {
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results.map((item: any) => {
-          return this.convertItem(item);
+          return Object.assign({ active: this.isActive(item.disappearanceDate) }, item);
         });
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;

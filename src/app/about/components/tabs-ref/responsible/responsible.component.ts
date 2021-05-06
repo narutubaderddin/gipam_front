@@ -85,6 +85,7 @@ export class ResponsibleComponent implements OnInit {
     filterType: 'multiselect',
     placeholder: 'Bâtiments',
     selectData: this.buildings,
+
   };
 
   columns = [
@@ -373,30 +374,7 @@ export class ResponsibleComponent implements OnInit {
     const today = this.datePipe.transform(new Date(), 'yyyy/MM/dd');
     return !(endDate !== '' && endDate && endDate <= today);
   }
-  // convertItem(item: any) {
-  //   const newItem = {
-  //     id: item.id,
-  //     firstName: item.firstName,
-  //     lastName: item.lastName,
-  //     function: item.function,
-  //     login: item.login,
-  //     phone: item.phone,
-  //     fax: item.fax,
-  //     mail: item.mail,
-  //     startDate: item.startDate,
-  //     endDate: item.endDate,
-  //     establishment: item.establishment ? item.establishment : '',
-  //     subDivision: item.subDivision ? item.subDivision : '',
-  //     service: item.service ? item.service : '',
-  //     active: true,
-  //   };
-  //
-  //   newItem.startDate = item.startDate ? this.datePipe.transform(item.startDate, 'yyyy/MM/dd') : null;
-  //   newItem.endDate = item.endDate ? this.datePipe.transform(item.endDate, 'yyyy/MM/dd') : null;
-  //   newItem.active = this.isActive(newItem.endDate);
-  //   console.log(this.isActive(newItem.endDate));
-  //   return newItem;
-  // }
+
 
   getAllItems() {
     this.loading = true;
@@ -412,11 +390,11 @@ export class ResponsibleComponent implements OnInit {
     console.log(params);
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
-        console.log(result);
+
         this.items = result.results.map((item: any) => {
           return Object.assign({ active: this.isActive(item.disappearanceDate) }, item);
         });
-        console.log(result, this.items);
+
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
         this.start = (this.page - 1) * this.limit + 1;

@@ -95,6 +95,7 @@ export class CorrespondentsComponent implements OnInit {
     filterType: 'multiselect',
     placeholder: 'Services',
     selectData: this.services,
+    sortable: true,
   };
 
   relatedEstablishmentsColumn={
@@ -106,6 +107,7 @@ export class CorrespondentsComponent implements OnInit {
     filterType: 'multiselect',
     placeholder: 'Etablissements',
     selectData: this.establishments,
+    sortable: true,
   };
 
   relatedSubDivisionsColumn={
@@ -117,6 +119,7 @@ export class CorrespondentsComponent implements OnInit {
     filterType: 'multiselect',
     placeholder: 'Sous direction',
     selectData: this.subDivisions,
+    sortable: true,
   };
 
   columns = [
@@ -136,7 +139,7 @@ export class CorrespondentsComponent implements OnInit {
       filter: true,
       filterType: 'text',
       sortable: true,
-      width: '120px',
+
     },
     {
       header: 'Fonction',
@@ -153,7 +156,7 @@ export class CorrespondentsComponent implements OnInit {
       filter: true,
       filterType: 'text',
       sortable: true,
-      width: '200px',
+
     },
     {
       header: 'FAX',
@@ -162,7 +165,7 @@ export class CorrespondentsComponent implements OnInit {
       filter: true,
       filterType: 'text',
       sortable: true,
-      width: '100px',
+
     },
     {
       header: 'E-mail',
@@ -261,6 +264,7 @@ export class CorrespondentsComponent implements OnInit {
     // this.tabForm.setValidators(towDatesCompare('startDate', 'endDate'));
   }
   initFilterData() {
+    const previousUrl = this.simpleTabsRef.tabRef;
     const data = {
       page: 1,
       'active[eq]': 1,
@@ -297,14 +301,15 @@ export class CorrespondentsComponent implements OnInit {
         this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
       }
     );
+    this.simpleTabsRef.tabRef = previousUrl;
   }
 
   openModal(item: any) {
     this.btnLoading = null;
     console.log(item);
     if (this.editItem || this.addItem) {
-      this.initFilterData();
-      console.log(this.establishments);
+      // this.initFilterData();
+      // console.log(this.establishments);
 
     }
     if (this.editItem || this.editVisibility) {
@@ -330,9 +335,9 @@ export class CorrespondentsComponent implements OnInit {
       'active[eq]': 1,
     };
     const subDivisionApiData = Object.assign({}, apiData);
-console.log('item', item)
+
     subDivisionApiData['establishments'] = JSON.stringify([item.value.id]);
-    console.log("subDivisionApiData", subDivisionApiData)
+
     this.simpleTabsRef.getItemsByCriteria(subDivisionApiData, 'subDivisions').subscribe(
       (result) => {
         this.activeSubDivisions=this.simpleTabsRef.getTabRefFilterData(result.results);
@@ -465,30 +470,30 @@ console.log('item', item)
     const today = this.datePipe.transform(new Date(), 'yyyy/MM/dd');
     return !(endDate !== '' && endDate && endDate <= today);
   }
-  convertItem(item: any) {
-    const newItem = {
-      id: item.id,
-      firstName: item.firstName,
-      lastName: item.lastName,
-      function: item.function,
-      login: item.login,
-      phone: item.phone,
-      fax: item.fax,
-      mail: item.mail,
-      startDate: item.startDate,
-      endDate: item.endDate,
-      establishment: item.establishment ? item.establishment : '',
-      subDivision: item.subDivision ? item.subDivision : '',
-      service: item.service ? item.service : '',
-      active: true,
-    };
-
-    newItem.startDate = item.startDate ? this.datePipe.transform(item.startDate, 'yyyy/MM/dd') : null;
-    newItem.endDate = item.endDate ? this.datePipe.transform(item.endDate, 'yyyy/MM/dd') : null;
-    newItem.active = this.isActive(newItem.endDate);
-    console.log(this.isActive(newItem.endDate));
-    return newItem;
-  }
+  // convertItem(item: any) {
+  //   const newItem = {
+  //     id: item.id,
+  //     firstName: item.firstName,
+  //     lastName: item.lastName,
+  //     function: item.function,
+  //     login: item.login,
+  //     phone: item.phone,
+  //     fax: item.fax,
+  //     mail: item.mail,
+  //     startDate: item.startDate,
+  //     endDate: item.endDate,
+  //     establishment: item.establishment ? item.establishment : '',
+  //     subDivision: item.subDivision ? item.subDivision : '',
+  //     service: item.service ? item.service : '',
+  //     active: true,
+  //   };
+  //
+  //   newItem.startDate = item.startDate ? this.datePipe.transform(item.startDate, 'yyyy/MM/dd') : null;
+  //   newItem.endDate = item.endDate ? this.datePipe.transform(item.endDate, 'yyyy/MM/dd') : null;
+  //   newItem.active = this.isActive(newItem.endDate);
+  //   console.log(this.isActive(newItem.endDate));
+  //   return newItem;
+  // }
 
   getAllItems() {
     this.loading = true;
@@ -506,7 +511,7 @@ console.log('item', item)
       (result: any) => {
         console.log(result);
         this.items = result.results.map((item: any) => {
-          return this.convertItem(item);
+          return Object.assign({ active: this.isActive(item.disappearanceDate) }, item);
         });
         console.log(result, this.items);
         this.totalFiltred = result.filteredQuantity;
