@@ -750,6 +750,8 @@ p-calendar {
   }
 }
 .p-multiselect {
+  max-width: 100%;
+  min-width: 100%;
   .p-multiselect-label-container {
     font-size: 12px;
   }
@@ -767,9 +769,25 @@ p-calendar {
       .p-multiselect-items {
         font-size: 12px;
         p-multiselectitem li {
-          height: 22px;
+          //height: 22px;
+          white-space: normal;
+          line-height: 1.5em;
         }
       }
     }
   }
+}
+.p-multiselect.p-multiselect-chip .p-multiselect-token {
+  max-width: 10rem;
+  min-width: 10rem;
+  overflow: hidden;
+}
+.p-multiselect-label-container {
+  overflow: hidden;
+  max-width: 10rem;
+  min-width: 10rem;
+}
+
+.p-toast-top-right {
+  z-index: 1055 !important;
 }

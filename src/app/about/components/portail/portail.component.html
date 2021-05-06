@@ -520,10 +520,8 @@
         <p-progressSpinner></p-progressSpinner>
       </div>
       <ng-template #listOeuvres>
-        <div class="no-art-works" *ngIf="filteredQuantity==0">
-          <div class="alert alert-warning" role="alert">
-            Aucun bien culturel
-          </div>
+        <div class="no-art-works" *ngIf="filteredQuantity == 0">
+          <div class="alert alert-warning" role="alert">Aucun bien culturel</div>
         </div>
         <div
           class="search-results"

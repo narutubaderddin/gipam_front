@@ -242,7 +242,8 @@ export class ActionReportTypesComponent implements OnInit {
         this.getAllItems();
       },
       (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
+        this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        this.btnLoading = null;
       }
     );
   }
@@ -273,9 +274,9 @@ export class ActionReportTypesComponent implements OnInit {
         this.addSingle('success', 'Modification', 'Type action constat ' + item.label + ' modifiée avec succés');
         this.getAllItems();
       },
-
       (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
+        this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        this.btnLoading = null;
       }
     );
   }
@@ -308,7 +309,10 @@ export class ActionReportTypesComponent implements OnInit {
 
   search(input: string) {
     this.page = 1;
-    this.dataTableSearchBar = { search: input };
+    this.dataTableSearchBar = {};
+    if (input !== '') {
+      this.dataTableSearchBar = { search: input };
+    }
     this.getAllItems();
   }
 

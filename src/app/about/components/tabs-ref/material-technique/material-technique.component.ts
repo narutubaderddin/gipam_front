@@ -7,7 +7,7 @@ import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 import { DenominationsService } from '@shared/services/denominations.service';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
-import {NgDataTableComponent} from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 
 @Component({
   selector: 'app-material-technique',
@@ -50,7 +50,7 @@ export class MaterialTechniqueComponent implements OnInit {
   dataTableFilter: any = {};
   dataTableSort: any = {};
   dataTableSearchBar: any = {};
-  items: any[]=[];
+  items: any[] = [];
 
   columns = [
     {
@@ -203,8 +203,8 @@ export class MaterialTechniqueComponent implements OnInit {
     let params = {
       limit: this.limit,
       page: this.page,
-      sort_by:this.sortBy,
-      sort: this.sort
+      sort_by: this.sortBy,
+      sort: this.sort,
     };
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
@@ -327,11 +327,11 @@ export class MaterialTechniqueComponent implements OnInit {
 
   search(input: string) {
     this.page = 1;
-    this.dataTableSearchBar= {'search': input};
+    this.dataTableSearchBar = { search: input };
     this.getAllItems();
   }
-  ClearSearch(event: Event, input:string) {
-    if(!event['inputType']){
+  ClearSearch(event: Event, input: string) {
+    if (!event['inputType']) {
       this.search(input);
     }
   }
@@ -349,9 +349,9 @@ export class MaterialTechniqueComponent implements OnInit {
     );
   }
   onSelect(item: any) {
-    console.log(item)
+    console.log(item);
     console.log(this.tabForm.value.denomination);
-    this.tabForm.value.denomination.map((el:any)=> this.selectedDenominations.push(el.id));
+    this.tabForm.value.denomination.map((el: any) => this.selectedDenominations.push(el.id));
   }
   public onDeSelect(item: any) {
     this.selectedDenominations = this.selectedDenominations.filter((denomination: any) => {
@@ -365,6 +365,4 @@ export class MaterialTechniqueComponent implements OnInit {
   public onDeSelectAll(items: any) {
     this.selectedDenominations = [];
   }
-
-
 }

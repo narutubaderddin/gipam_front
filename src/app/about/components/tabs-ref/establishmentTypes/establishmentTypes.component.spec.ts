@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CommunesComponent } from './communes.component';
+import { EstablishmentTypesComponent } from './establishmentTypes.component';
 
-describe('CommunesComponent', () => {
-  let component: CommunesComponent;
-  let fixture: ComponentFixture<CommunesComponent>;
+describe('StylesComponent', () => {
+  let component: EstablishmentTypesComponent;
+  let fixture: ComponentFixture<EstablishmentTypesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CommunesComponent],
+      declarations: [EstablishmentTypesComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CommunesComponent);
+    fixture = TestBed.createComponent(EstablishmentTypesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

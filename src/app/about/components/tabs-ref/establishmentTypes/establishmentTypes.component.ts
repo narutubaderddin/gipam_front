@@ -1,72 +1,76 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
-import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { Component, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
-import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
+
+import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
+import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { datePickerDateFormat, dateTimeFormat, towDatesCompare } from '@shared/utils/helpers';
 import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-communes',
-  templateUrl: './communes.component.html',
-  styleUrls: ['./communes.component.scss'],
+  selector: 'app-establishmentTypes',
+  templateUrl: './establishmentTypes.component.html',
+  styleUrls: ['./establishmentTypes.component.scss'],
   providers: [DatePipe],
 })
-export class CommunesComponent implements OnInit {
+export class EstablishmentTypesComponent implements OnInit {
   @ViewChild('content') modalRef: TemplateRef<any>;
   @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
 
   loading = true;
   btnLoading: any = null;
   myModal: any;
-  selectedItem: {
-    name: '';
-    startDate: '';
-    disappearanceDate: '';
-    department: {
-      id: number;
-      name: '';
-    };
-  };
-  relatedEntities: any[] = [];
-  selectedRelatedEntity: any;
+  selectedItem: any;
+
   itemToEdit: any;
   itemToDelete: string;
   tabForm: FormGroup;
   editItem = false;
   addItem = false;
-  deleteItems = false;
   editVisibility = false;
+  deleteItems = false;
   dropdownSettings: IDropdownSettings;
-  disappearanceDate: string;
+
   active = true;
   dropdownList: any;
   itemLabel: any;
 
   filter: any;
-  sortBy = 'name';
-  sort = 'asc';
   totalFiltred: any;
   total: any;
   limit = 5;
   page = 1;
   end: number;
   start: number;
+  defaultColDef = {
+    headerComponent: 'customHeader',
+    sortable: true,
+    filter: true,
+    resizable: true,
+    headerValueGetter: (params: any) => {
+      return params.colDef.headerName;
+    },
+    headerComponentParams: {
+      menuIcon: 'fa-filter',
+      operator: OPERATORS.like,
+      type: TYPES.text,
+    },
+  };
 
   dataTableFilter: any = {};
   dataTableSort: any = {};
   dataTableSearchBar: any = {};
-  items: any;
-  today: string;
+  items: any[] = [];
 
   columns = [
     {
       header: 'Libellé',
-      field: 'name',
+      field: 'label',
       type: 'key',
       filter: true,
       filterType: 'text',
@@ -75,7 +79,7 @@ export class CommunesComponent implements OnInit {
     {
       header: 'Date début de validité',
       field: 'startDate',
-      type: 'key',
+      type: 'date',
       filter: true,
       filterType: 'range-date',
       sortable: true,
@@ -84,17 +88,11 @@ export class CommunesComponent implements OnInit {
     {
       header: 'Date fin de validité',
       field: 'disappearanceDate',
-      type: 'key',
+      type: 'date',
       filter: true,
       filterType: 'range-date',
       sortable: true,
       width: '200px',
-    },
-    {
-      header: 'Departement',
-      field: 'department',
-      type: 'key-array',
-      key_data: ['department', 'name'],
     },
     {
       header: 'Actions',
@@ -102,11 +100,9 @@ export class CommunesComponent implements OnInit {
       type: 'app-actions-cell',
       sortable: false,
       filter: false,
-      width: '250px',
+      width: '300px',
     },
   ];
-
-  rowCount: any = 5;
 
   constructor(
     private router: Router,
@@ -123,42 +119,35 @@ export class CommunesComponent implements OnInit {
     config.keyboard = false;
   }
 
-  ngOnInit(): void {
-    this.simpleTabsRef.tabRef = 'communes';
-    this.getAllItems();
-    this.today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-    this.initForm();
-  }
-
   initForm() {
-    const msg = 'date début inférieur date fin';
     const startDate = this.datePipe.transform(
       this.selectedItem ? this.selectedItem.startDate : new Date(),
-      'yyyy-MM-dd'
+      datePickerDateFormat
     );
     const disappearanceDate = this.datePipe.transform(
       this.selectedItem ? this.selectedItem.disappearanceDate : '',
-      'yyyy-MM-dd'
+      datePickerDateFormat
     );
     this.tabForm = this.fb.group({
-      label: [this.selectedItem ? this.selectedItem.name : '', [Validators.required]],
+      label: [this.selectedItem ? this.selectedItem.label : '', [Validators.required]],
       startDate: [startDate, [Validators.required]],
       disappearanceDate: [disappearanceDate, []],
-      department: [this.selectedRelatedEntity ? this.selectedRelatedEntity : { name: '' }, [Validators.required]],
     });
-    this.tabForm.setValidators(this.ValidateDate());
+    this.tabForm.setValidators(towDatesCompare('startDate', 'disappearanceDate'));
   }
 
-  ValidateDate(): ValidatorFn {
-    return (cc: FormGroup): ValidationErrors => {
-      if (!cc.get('startDate')) {
-        return null;
-      }
-      if (cc.get('startDate').value > cc.get('disappearanceDate').value) {
-        return { dateInvalid: 'Date début supérieur date fin' };
-      }
-      return null;
-    };
+  get defaultHeaderParams() {
+    return this.defaultColDef.headerComponentParams;
+  }
+
+  ngOnInit(): void {
+    this.simpleTabsRef.tabRef = 'establishmentTypes';
+    this.getAllItems();
+    this.initForm();
+
+    this.filter =
+      this.activatedRoute.snapshot.queryParams['filter'] &&
+      this.activatedRoute.snapshot.queryParams['filter'].length > 0;
   }
 
   resetFilter() {}
@@ -167,58 +156,19 @@ export class CommunesComponent implements OnInit {
     this.btnLoading = null;
     if (this.editItem || this.editVisibility) {
       this.itemToEdit = item;
-      this.itemLabel = item.name;
-
-      this.selectedRelatedEntity = item.region
-        ? {
-            name: item.region.name,
-            id: item.region.id,
-          }
-        : {};
-    }
-    if (this.editItem || this.addItem) {
-      this.getRelatedEntity();
+      this.itemLabel = item.label;
     }
     this.selectedItem = item;
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
-  onDepartmentSelect(item: any) {
-    this.selectedRelatedEntity = item;
-    console.log(item);
-  }
-  onSelectAll(items: any) {}
-
-  getRelatedEntity(): any {
-    const previousUrl = this.simpleTabsRef.tabRef;
-    this.simpleTabsRef.tabRef = 'departments';
-
-    this.simpleTabsRef.getAllItems({}).subscribe((result: any) => {
-      this.relatedEntities = result.results;
-      console.log('relatedEntities', this.relatedEntities);
-    });
-    this.simpleTabsRef.tabRef = previousUrl;
-  }
-
-  transformDateToDateTime(input: string, format: string, addTime: boolean = true) {
-    // 1984-06-05 12:15:30
-    if (input !== '' && input) {
-      if (addTime) {
-        return this.datePipe.transform(input, format) + ' 00:00:00';
-      }
-      return this.datePipe.transform(input, format);
-    }
-    return '';
-  }
 
   submit() {
     this.btnLoading = null;
-
     const item = {
-      name: this.tabForm.value.label,
-      startDate: this.transformDateToDateTime(this.tabForm.value.startDate, 'yyy-MM-dd'),
-      disappearanceDate: this.transformDateToDateTime(this.tabForm.value.disappearanceDate, 'yyy-MM-dd'),
-      department: this.tabForm.value.department.id,
+      label: this.tabForm.value.label,
+      startDate: this.datePipe.transform(this.tabForm.value.startDate, dateTimeFormat),
+      disappearanceDate: this.datePipe.transform(this.tabForm.value.disappearanceDate, dateTimeFormat),
     };
     if (this.addItem) {
       this.addItems(item);
@@ -229,15 +179,35 @@ export class CommunesComponent implements OnInit {
   }
 
   close() {
-    this.selectedItem = null;
-    this.selectedRelatedEntity = [];
     this.editItem = false;
     this.addItem = false;
     this.deleteItems = false;
     this.editVisibility = false;
-
-    // this.myModal.close('Close click');
     this.myModal.dismiss('Cross click');
+  }
+
+  deleteItem(data: any) {
+    this.btnLoading = null;
+    this.deleteItems = true;
+    this.itemToDelete = data;
+    this.itemLabel = data.label;
+    this.myModal = this.modalService.open(this.modalRef, { centered: true });
+  }
+
+  editItemAction(item: any) {
+    this.editItem = true;
+    this.openModal(item);
+  }
+
+  changeVisibilityAction(item: any) {
+    this.editVisibility = true;
+    this.openModal(item);
+  }
+
+  addItemAction() {
+    this.addItem = true;
+    this.selectedItem = null;
+    this.openModal(null);
   }
 
   actionMethod(e: any) {
@@ -256,51 +226,9 @@ export class CommunesComponent implements OnInit {
     }
   }
 
-  addItemAction() {
-    this.addItem = true;
-    this.selectedItem = null;
-    this.selectedRelatedEntity = [];
-    this.openModal('');
-  }
-
-  deleteItem(data: any) {
-    this.btnLoading = null;
-    this.deleteItems = true;
-    this.itemToDelete = data;
-    this.itemLabel = data.name;
-    this.myModal = this.modalService.open(this.modalRef, { centered: true });
-  }
-
-  editItemAction(item: any) {
-    this.editItem = true;
-    this.openModal(item);
-  }
-
-  changeVisibilityAction(item: any) {
-    this.editVisibility = true;
-    this.openModal(item);
-  }
-
   isActive(endDate: string) {
-    const today = this.datePipe.transform(new Date(), 'yyyy/MM/dd');
+    const today = this.datePipe.transform(new Date(), datePickerDateFormat);
     return !(endDate !== '' && endDate && endDate <= today);
-  }
-
-  convertItem(item: any) {
-    const newItem = {
-      id: item.id,
-      name: item.name,
-      startDate: item.startDate,
-      disappearanceDate: item.disappearanceDate,
-      department: item.department ? item.department : '',
-      active: true,
-    };
-    newItem.startDate = item.startDate ? this.datePipe.transform(item.startDate, 'yyyy/MM/dd') : null;
-    newItem.disappearanceDate = item.disappearanceDate
-      ? this.datePipe.transform(item.disappearanceDate, 'yyyy/MM/dd')
-      : null;
-    newItem.active = this.isActive(newItem.disappearanceDate);
-    return newItem;
   }
 
   getAllItems() {
@@ -308,23 +236,21 @@ export class CommunesComponent implements OnInit {
     let params = {
       limit: this.limit,
       page: this.page,
-      sort_by: this.sortBy,
-      sort: this.sort,
     };
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
     params = Object.assign(params, this.dataTableSearchBar);
-
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results.map((item: any) => {
-          return this.convertItem(item);
+          return Object.assign({ active: this.isActive(item.disappearanceDate) }, item);
         });
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
         this.start = (this.page - 1) * this.limit + 1;
         this.end = (this.page - 1) * this.limit + this.items.length;
         this.loading = false;
+        this.dataTableComponent.error = false;
       },
       (error: any) => {
         this.items = [];
@@ -332,9 +258,13 @@ export class CommunesComponent implements OnInit {
         this.total = 0;
         this.dataTableComponent.error = true;
         this.loading = false;
-        this.addSingle('error', 'Erreur Technique', error.error.message);
+        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
       }
     );
+  }
+
+  setItems(data: any[]) {
+    this.items = [...data];
   }
 
   deleteItemss(item: any) {
@@ -342,14 +272,13 @@ export class CommunesComponent implements OnInit {
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Suppression', 'Commune ' + item.name + ' supprimée avec succés');
+        this.addSingle('success', 'Suppression', 'Type établissement ' + item.label + ' supprimée avec succés');
         this.getAllItems();
-        this.deleteItems = false;
       },
       (error: any) => {
         this.close();
         if (error.error.code === 400) {
-          this.addSingle('error', 'Suppression', 'Commune ' + item.name + ' admet une relation');
+          this.addSingle('error', 'Suppression', 'Type établissement ' + item.label + ' admet une relation');
         } else {
           this.addSingle('error', 'Suppression', error.error.message);
         }
@@ -362,12 +291,12 @@ export class CommunesComponent implements OnInit {
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Ajout', 'Commune ' + item.name + ' ajoutée avec succés');
+        this.addSingle('success', 'Ajout', 'Type établissement ' + item.label + ' ajoutée avec succés');
         this.getAllItems();
-        this.addItem = false;
       },
       (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
+        this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        this.btnLoading = null;
       }
     );
   }
@@ -377,14 +306,14 @@ export class CommunesComponent implements OnInit {
     this.simpleTabsRef.editItem(item, id).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Modification', 'Commune ' + item.name + ' modifiée avec succés');
+        this.addSingle('success', 'Modification', 'Type établissement ' + item.label + ' modifiée avec succés');
         this.getAllItems();
         this.editItem = false;
         this.editVisibility = false;
       },
-
       (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
+        this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        this.btnLoading = null;
       }
     );
   }
@@ -417,12 +346,12 @@ export class CommunesComponent implements OnInit {
 
   search(input: string) {
     this.page = 1;
-
     this.dataTableSearchBar = { search: input };
     this.getAllItems();
   }
-  ClearSearch(event: Event, input: string) {
-    if (!event['inputType']) {
+
+  ClearSearch(event: any, input: string) {
+    if (!event.inputType) {
       this.search(input);
     }
   }

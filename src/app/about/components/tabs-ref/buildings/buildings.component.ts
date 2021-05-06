@@ -147,7 +147,6 @@ export class BuildingsComponent implements OnInit {
     },
   ];
 
-
   constructor(
     private router: Router,
     private modalService: NgbModal,
@@ -188,7 +187,7 @@ export class BuildingsComponent implements OnInit {
       disappearanceDate: [disappearanceDate, []],
       site: [this.selectedSite, [Validators.required]],
       commune: [this.selectedCommune, [Validators.required]],
-      responsibles:['', []]
+      responsibles: ['', []],
     });
     this.tabForm.setValidators(this.ValidateDate());
   }
@@ -221,7 +220,7 @@ export class BuildingsComponent implements OnInit {
 
     this.simpleTabsRef.tabRef = 'sites';
 
-    this.simpleTabsRef.getAllItems({limit:'10'}).subscribe(
+    this.simpleTabsRef.getAllItems({ limit: '10' }).subscribe(
       (result: any) => {
         this.sites = result.results;
         console.log('sites', this.sites);
@@ -238,7 +237,7 @@ export class BuildingsComponent implements OnInit {
 
     this.simpleTabsRef.tabRef = 'communes';
 
-    this.simpleTabsRef.getAllItems({limit:'100'}).subscribe(
+    this.simpleTabsRef.getAllItems({ limit: '100' }).subscribe(
       (result: any) => {
         this.communes = result.results;
         console.log('communes', this.communes);
@@ -488,13 +487,12 @@ export class BuildingsComponent implements OnInit {
   search(input: string) {
     this.page = 1;
 
-    this.dataTableSearchBar= {'search': input};
+    this.dataTableSearchBar = { search: input };
     this.getAllItems();
   }
-  ClearSearch(event: Event, input:string) {
-    if(!event['inputType']){
+  ClearSearch(event: Event, input: string) {
+    if (!event['inputType']) {
       this.search(input);
     }
   }
-
 }

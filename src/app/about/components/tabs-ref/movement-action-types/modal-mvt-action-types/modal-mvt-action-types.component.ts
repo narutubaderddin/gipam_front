@@ -33,7 +33,6 @@ export class ModalMvtActionTypesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
     this.getAllMvtTypes();
 
     this.addItem = this.fromParent.addItem;
@@ -44,8 +43,8 @@ export class ModalMvtActionTypesComponent implements OnInit {
     this.active = this.fromParent.active;
     this.selectedItem = this.fromParent.selectedItem;
     this.name = this.fromParent.name;
-    this.btnLoading =this.fromParent.btnLoading;
-    this.selectedMvtType = this.fromParent.selectedMvtType ;
+    this.btnLoading = this.fromParent.btnLoading;
+    this.selectedMvtType = this.fromParent.selectedMvtType;
     console.log('selectedItem', this.selectedItem, this.editItem);
     console.log('selectedMvtType', this.selectedMvtType);
     this.initForm();
@@ -71,8 +70,8 @@ export class ModalMvtActionTypesComponent implements OnInit {
     this.activeModal.close('delete');
   }
   close() {
-    this.selectedMvtType={};
-    this.selectedItem='';
+    this.selectedMvtType = {};
+    this.selectedItem = '';
     this.editItem = false;
     this.addItem = false;
     this.deleteItems = false;
@@ -97,7 +96,7 @@ export class ModalMvtActionTypesComponent implements OnInit {
   // }
   onMvtTypesSelect(item: any) {
     this.selectedMvtType = item;
-    console.log('item',item);
-    console.log(this.selectedItem)
+    console.log('item', item);
+    console.log(this.selectedItem);
   }
 }
