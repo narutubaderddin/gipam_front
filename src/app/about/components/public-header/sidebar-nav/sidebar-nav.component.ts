@@ -188,4 +188,8 @@ export class SidebarNavComponent implements OnInit {
     this.router.navigate(['tab-ref-types-fichier-joint']);
     this.toggleClose();
   }
+  goToPhotographyTypesList() {
+    this.router.navigate(['tab-ref-types-photographie']);
+    this.toggleClose();
+  }
 }

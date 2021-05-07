@@ -11,11 +11,11 @@ import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 
 @Component({
-  selector: 'app-attachment-types',
-  templateUrl: './attachmentTypes.component.html',
-  styleUrls: ['./attachmentTypes.component.scss'],
+  selector: 'app-photography-types',
+  templateUrl: './photographyTypes.component.html',
+  styleUrls: ['./photographyTypes.component.scss'],
 })
-export class AttachmentTypesComponent implements OnInit {
+export class PhotographyTypesComponent implements OnInit {
   @ViewChild('content') modalRef: TemplateRef<any>;
   @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
 
@@ -109,7 +109,7 @@ export class AttachmentTypesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.simpleTabsRef.tabRef = 'attachmentTypes';
+    this.simpleTabsRef.tabRef = 'photographyTypes';
     this.getAllItems();
     this.initForm();
 
@@ -166,6 +166,7 @@ export class AttachmentTypesComponent implements OnInit {
   }
 
   actionMethod(e: any) {
+    console.log(e);
     switch (e.method) {
       case 'delete':
         this.deleteItem(e.item);
@@ -221,14 +222,14 @@ export class AttachmentTypesComponent implements OnInit {
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Suppression', 'Type Fichier joint ' + item.type + ' supprimée avec succés');
+        this.addSingle('success', 'Suppression', 'Type Photographie ' + item.type + ' supprimée avec succés');
         this.getAllItems();
         this.selectedItem = null;
       },
       (error: any) => {
         this.close();
         if (error.error.code === 400) {
-          this.addSingle('error', 'Suppression', 'Type Fichier joint ' + item.type + ' admet une relation');
+          this.addSingle('error', 'Suppression', 'Type Photographie ' + item.type + ' admet une relation');
         } else {
           this.addSingle('error', 'Suppression', error.error.message);
         }
@@ -242,7 +243,7 @@ export class AttachmentTypesComponent implements OnInit {
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Ajout', 'Type Fichier joint ' + item.type + ' ajoutée avec succés');
+        this.addSingle('success', 'Ajout', 'Type Photographie ' + item.type + ' ajoutée avec succés');
         this.getAllItems();
       },
       (error) => {
@@ -258,9 +259,9 @@ export class AttachmentTypesComponent implements OnInit {
     this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
       (result) => {
         if (data.active) {
-          this.addSingle('success', 'Activation', 'Type Fichier joint ' + data.type + ' activée avec succés');
+          this.addSingle('success', 'Activation', 'Type Photographie ' + data.type + ' activée avec succés');
         } else {
-          this.addSingle('success', 'Activation', 'Type Fichier joint ' + data.type + ' désactivée avec succés');
+          this.addSingle('success', 'Activation', 'Type Photographie ' + data.type + ' désactivée avec succés');
         }
         this.getAllItems();
       },
@@ -276,7 +277,7 @@ export class AttachmentTypesComponent implements OnInit {
     this.simpleTabsRef.editItem(item, id).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Modification', 'Type Fichier joint ' + item.type + ' modifiée avec succés');
+        this.addSingle('success', 'Modification', 'Type Photographie ' + item.type + ' modifiée avec succés');
         this.getAllItems();
         this.selectedItem = null;
       },

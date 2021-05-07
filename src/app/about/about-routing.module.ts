@@ -40,6 +40,7 @@ import { ResponsibleComponent } from '@app/about/components/tabs-ref/responsible
 import { EntryModesComponent } from '@app/about/components/tabs-ref/entryModes/entryModes.component';
 import { AuthorTypesComponent } from '@app/about/components/tabs-ref/authorTypes/authorTypes.component';
 import { AttachmentTypesComponent } from '@app/about/components/tabs-ref/attachmentTypes/attachmentTypes.component';
+import { PhotographyTypesComponent } from '@app/about/components/tabs-ref/photographyTypes/photographyTypes.component';
 const routes: Routes = [
   {
     path: '',
@@ -134,6 +135,11 @@ const routes: Routes = [
         path: 'tab-ref-types-fichier-joint',
         component: AttachmentTypesComponent,
         data: { title: 'Liste des types fichier joint' },
+      },
+      {
+        path: 'tab-ref-types-photographie',
+        component: PhotographyTypesComponent,
+        data: { title: 'Liste des types photographie' },
       },
       { path: 'tab-ref-correspondant', component: CorrespondentsComponent },
       { path: 'tab-ref-responsable', component: ResponsibleComponent },
