@@ -105,6 +105,8 @@ import { FieldService } from '@shared/services/field.service';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { CorrespondentsComponent } from './components/tabs-ref/correspondents/correspondents.component';
+import { ResponsibleComponent } from './components/tabs-ref/responsible/responsible.component';
 
 setTheme('bs4');
 
@@ -171,6 +173,8 @@ const ngWizardConfig: NgWizardConfig = {
     CommunesComponent,
     DepartmentsComponent,
     LocalisationTypeComponent,
+    CorrespondentsComponent,
+    ResponsibleComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [

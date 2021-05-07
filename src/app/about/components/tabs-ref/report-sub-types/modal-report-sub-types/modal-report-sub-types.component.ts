@@ -41,7 +41,6 @@ export class ModalReportSubTypesComponent implements OnInit {
       itemsShowLimit: 1,
       allowSearchFilter: true,
     };
-    this.getAllReportTypes();
 
     this.addItem = this.fromParent.addItem;
     this.deleteItems = this.fromParent.deleteItems;
@@ -52,7 +51,7 @@ export class ModalReportSubTypesComponent implements OnInit {
     this.selectedItem = this.fromParent.selectedItem;
     this.name = this.fromParent.name;
     this.selectedreportType = this.fromParent.selectedReportType;
-    // console.log(this.selectedItem, this.editItem, this.selectedreportType);
+    this.reportTypes = this.fromParent.activeRelatedEntities;
   }
   initForm() {
     this.tabForm = this.fb.group({
@@ -80,20 +79,8 @@ export class ModalReportSubTypesComponent implements OnInit {
     this.deleteItems = false;
     this.activeModal.dismiss();
   }
-  getAllReportTypes() {
-    this.simpleTabsRef.tabRef = 'reportTypes';
-    const params = {};
-    this.simpleTabsRef.getAllItems(params).subscribe(
-      (result: any) => {
-        this.reportTypes = result.results;
-        console.log(this.reportTypes);
-      },
-      (error: any) => {
-        console.log('error', error.error.message);
-      }
-    );
-  }
-  onMvtTypesSelect(item: any) {
+
+  onReportTypesSelect(item: any) {
     this.selectedreportType = item;
     console.log(item);
   }

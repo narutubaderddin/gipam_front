@@ -75,6 +75,10 @@ export class MovementsComponent implements AfterViewInit {
       field: 'movementType',
     },
     {
+      headerName: "Type d'action",
+      field: 'actionType',
+    },
+    {
       headerName: 'Sigle Ministère',
       field: 'ministerSigle',
     },
@@ -111,21 +115,17 @@ export class MovementsComponent implements AfterViewInit {
   movements = [
     {
       date: this.datePipe.transform(new Date('01/01/2021'), 'dd/MM/yyyy'),
-      movementType: 'Depôt',
+      movementType: 'Installation',
+      actionType: '',
       ministerSigle: 'MDI',
       directionSigle: 'CAB',
     },
     {
       date: this.datePipe.transform(new Date('03/01/2021'), 'dd/MM/yyyy'),
-      movementType: 'Déplacement',
+      movementType: 'Mise en réserve pour restitution',
+      actionType: 'En réserve pour restitution',
       ministerSigle: 'CG',
       directionSigle: 'PGT',
-    },
-    {
-      date: this.datePipe.transform(new Date(), 'dd/MM/yyyy'),
-      movementType: "Inscription à l'inventaire",
-      ministerSigle: 'MDI',
-      directionSigle: 'CAB',
     },
   ];
   defaultColDef = {

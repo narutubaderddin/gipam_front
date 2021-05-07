@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import ArtWorksDataModel from '@app/about/models/art-works-model';
+import { ArtWorkService } from '@app/about/services/art-work.service';
 import { ColDef, ColumnApi, GridApi } from 'ag-grid-community';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
@@ -10,60 +12,13 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 export class LinksComponent implements OnInit {
   @Input() add: false;
   refs = [' 125', ' 222', ' 342'];
+  artWorksData: any;
+  constructor(private artWorkService: ArtWorkService) {}
 
-  columnDefs: ColDef[] = [
-    {
-      headerName: 'pièce jointes',
-      field: 'attachments',
-      width: 40,
-    },
-    {
-      headerName: 'date de création',
-      field: 'date',
-      width: 40,
-    },
-    {
-      headerName: 'Type',
-      field: 'type',
-      width: 15,
-    },
-    {
-      headerName: 'Responsable',
-      field: 'responsable',
-      width: 30,
-    },
-  ];
-
-  attachments = [
-    {
-      attachments: 'details.pdf',
-      date: '01/01/2020',
-      type: 'type',
-      creator: 'Jean',
-    },
-    {
-      attachments: 'details.pdf',
-      date: '01/03/2020',
-      type: 'type1',
-      creator: 'Paul',
-    },
-    {
-      attachments: 'details.pdf',
-      date: '01/01/2020',
-      type: 'type',
-      creator: 'Jean',
-    },
-  ];
-  defaultColDef = {
-    sortable: true,
-    filter: false,
-    resizable: true,
-    flex: 1,
-  };
-  gridApi: GridApi;
-  gridColumnApi: ColumnApi;
-  gridReady = false;
-  constructor() {}
-
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.artWorkService.getArtWorksData().subscribe((artWorksData: ArtWorksDataModel) => {
+      this.artWorksData = artWorksData.results;
+      console.log(this.artWorksData);
+    });
+  }
 }
