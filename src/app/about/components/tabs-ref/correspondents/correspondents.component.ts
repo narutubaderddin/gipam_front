@@ -8,8 +8,8 @@ import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
-import { datePickerDateFormat, dateTimeFormat, towDatesCompare, viewDateFormat } from '@shared/utils/helpers';
-import {forkJoin} from "rxjs";
+import { datePickerDateFormat, dateTimeFormat } from '@shared/utils/helpers';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-correspondents',
@@ -27,8 +27,8 @@ export class CorrespondentsComponent implements OnInit {
   selectedItem: {
     firstName: '';
     lastName: '';
-    function:'';
-    login:'';
+    function: '';
+    login: '';
     phone: '';
     fax: '';
     mail: '';
@@ -86,7 +86,7 @@ export class CorrespondentsComponent implements OnInit {
   items: any;
   today: string;
 
-  relatedServicesColumn={
+  relatedServicesColumn = {
     header: 'Service',
     field: 'service',
     type: 'key-array',
@@ -98,7 +98,7 @@ export class CorrespondentsComponent implements OnInit {
     sortable: true,
   };
 
-  relatedEstablishmentsColumn={
+  relatedEstablishmentsColumn = {
     header: 'Etablissement',
     field: 'establishment',
     type: 'key-array',
@@ -110,7 +110,7 @@ export class CorrespondentsComponent implements OnInit {
     sortable: true,
   };
 
-  relatedSubDivisionsColumn={
+  relatedSubDivisionsColumn = {
     header: 'Sous direction',
     field: 'subDivision',
     type: 'key-array',
@@ -139,7 +139,6 @@ export class CorrespondentsComponent implements OnInit {
       filter: true,
       filterType: 'text',
       sortable: true,
-
     },
     {
       header: 'Fonction',
@@ -156,7 +155,6 @@ export class CorrespondentsComponent implements OnInit {
       filter: true,
       filterType: 'text',
       sortable: true,
-
     },
     {
       header: 'FAX',
@@ -165,7 +163,6 @@ export class CorrespondentsComponent implements OnInit {
       filter: true,
       filterType: 'text',
       sortable: true,
-
     },
     {
       header: 'E-mail',
@@ -261,7 +258,6 @@ export class CorrespondentsComponent implements OnInit {
       subDivision: [this.selectedSubDivision ? this.selectedSubDivision : { label: '' }, []],
     });
     this.tabForm.setValidators(this.ValidateDate());
-    // this.tabForm.setValidators(towDatesCompare('startDate', 'endDate'));
   }
   initFilterData() {
     const previousUrl = this.simpleTabsRef.tabRef;
@@ -273,29 +269,25 @@ export class CorrespondentsComponent implements OnInit {
     forkJoin([
       this.simpleTabsRef.getAllItems(data, 'services'),
       this.simpleTabsRef.getAllItems(data, 'establishments'),
-      this.simpleTabsRef.getAllItems(data, 'subDivisions')
+      this.simpleTabsRef.getAllItems(data, 'subDivisions'),
     ]).subscribe(
       ([relatedServicesResults, relatedEstablishmentsResults, relatedSubDivisionsResults]) => {
         this.services = this.simpleTabsRef.getTabRefFilterData(relatedServicesResults['results']);
-        this.activeServices = this.simpleTabsRef.getTabRefFilterData(relatedServicesResults['results'])
-          .filter((value: any) =>
-          this.isActive(value.disappearanceDate)
-        );
+        this.activeServices = this.simpleTabsRef
+          .getTabRefFilterData(relatedServicesResults['results'])
+          .filter((value: any) => this.isActive(value.disappearanceDate));
 
         this.establishments = this.simpleTabsRef.getTabRefFilterData(relatedEstablishmentsResults['results']);
-        this.activeEstablishments = this.simpleTabsRef.getTabRefFilterData
-        (relatedEstablishmentsResults['results']).filter((value: any) =>
-          this.isActive(value.disappearanceDate)
-        );
-        this.subDivisions = this.simpleTabsRef.getTabRefFilterData(relatedSubDivisionsResults['results'])
-        this.activeSubDivisions = this.simpleTabsRef.getTabRefFilterData
-        (relatedSubDivisionsResults['results']).filter((value: any) =>
-          this.isActive(value.disappearanceDate)
-        );
+        this.activeEstablishments = this.simpleTabsRef
+          .getTabRefFilterData(relatedEstablishmentsResults['results'])
+          .filter((value: any) => this.isActive(value.disappearanceDate));
+        this.subDivisions = this.simpleTabsRef.getTabRefFilterData(relatedSubDivisionsResults['results']);
+        this.activeSubDivisions = this.simpleTabsRef
+          .getTabRefFilterData(relatedSubDivisionsResults['results'])
+          .filter((value: any) => this.isActive(value.disappearanceDate));
         this.relatedServicesColumn.selectData = this.services;
         this.relatedEstablishmentsColumn.selectData = this.establishments;
         this.relatedSubDivisionsColumn.selectData = this.subDivisions;
-
       },
       (error: any) => {
         this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
@@ -306,15 +298,12 @@ export class CorrespondentsComponent implements OnInit {
 
   openModal(item: any) {
     this.btnLoading = null;
-    console.log(item);
-    if (this.editItem || this.addItem) {
-      // this.initFilterData();
-      // console.log(this.establishments);
 
+    if (this.editItem || this.addItem) {
     }
     if (this.editItem || this.editVisibility) {
       this.itemToEdit = item;
-      this.itemLabel = item.firstName+' '+item.lastName;
+      this.itemLabel = item.firstName + ' ' + item.lastName;
       this.selectedService = item.service ? item.service.label : '';
       this.selectedEstablishment = item.establishment ? item.establishment.label : '';
       this.selectedSubDivision = item.subDivision ? item.subDivision.label : '';
@@ -338,12 +327,9 @@ export class CorrespondentsComponent implements OnInit {
 
     subDivisionApiData['establishments'] = JSON.stringify([item.value.id]);
 
-    this.simpleTabsRef.getItemsByCriteria(subDivisionApiData, 'subDivisions').subscribe(
-      (result) => {
-        this.activeSubDivisions=this.simpleTabsRef.getTabRefFilterData(result.results);
-        console.log("result of subdivisions",  this.activeSubDivisions)
-      }
-    );
+    this.simpleTabsRef.getItemsByCriteria(subDivisionApiData, 'subDivisions').subscribe((result) => {
+      this.activeSubDivisions = this.simpleTabsRef.getTabRefFilterData(result.results);
+    });
   }
   onSubDivisionSelect(item: any) {
     this.selectedSubDivision = item;
@@ -353,17 +339,11 @@ export class CorrespondentsComponent implements OnInit {
       'active[eq]': 1,
     };
     const serviceApiData = Object.assign({}, apiData);
-    console.log('itemService', item)
     serviceApiData['subDivisions'] = JSON.stringify([item.value.id]);
-    console.log("serviceApiData", serviceApiData)
-    this.simpleTabsRef.getItemsByCriteria(serviceApiData, 'services').subscribe(
-      (result) => {
-        this.activeServices=this.simpleTabsRef.getTabRefFilterData(result.results);
-        console.log("result of services",  this.activeServices)
-      }
-    );
+    this.simpleTabsRef.getItemsByCriteria(serviceApiData, 'services').subscribe((result) => {
+      this.activeServices = this.simpleTabsRef.getTabRefFilterData(result.results);
+    });
   }
-
 
   onSelectAll(items: any) {}
 
@@ -380,7 +360,6 @@ export class CorrespondentsComponent implements OnInit {
   }
 
   transformDateToDateTime(input: string, format: string, addTime: boolean = true) {
-    // 1984-06-05 12:15:30
     if (input !== '' && input) {
       if (addTime) {
         return this.datePipe.transform(input, format) + ' 00:00:00';
@@ -451,8 +430,8 @@ export class CorrespondentsComponent implements OnInit {
     this.btnLoading = null;
     this.deleteItems = true;
     this.itemToDelete = data;
-    this.itemLabel = data.firstName+' '+data.lastName;
-    console.log(this.itemLabel);
+    this.itemLabel = data.firstName + ' ' + data.lastName;
+
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
 
@@ -470,30 +449,6 @@ export class CorrespondentsComponent implements OnInit {
     const today = this.datePipe.transform(new Date(), 'yyyy/MM/dd');
     return !(endDate !== '' && endDate && endDate <= today);
   }
-  // convertItem(item: any) {
-  //   const newItem = {
-  //     id: item.id,
-  //     firstName: item.firstName,
-  //     lastName: item.lastName,
-  //     function: item.function,
-  //     login: item.login,
-  //     phone: item.phone,
-  //     fax: item.fax,
-  //     mail: item.mail,
-  //     startDate: item.startDate,
-  //     endDate: item.endDate,
-  //     establishment: item.establishment ? item.establishment : '',
-  //     subDivision: item.subDivision ? item.subDivision : '',
-  //     service: item.service ? item.service : '',
-  //     active: true,
-  //   };
-  //
-  //   newItem.startDate = item.startDate ? this.datePipe.transform(item.startDate, 'yyyy/MM/dd') : null;
-  //   newItem.endDate = item.endDate ? this.datePipe.transform(item.endDate, 'yyyy/MM/dd') : null;
-  //   newItem.active = this.isActive(newItem.endDate);
-  //   console.log(this.isActive(newItem.endDate));
-  //   return newItem;
-  // }
 
   getAllItems() {
     this.loading = true;
@@ -506,14 +461,13 @@ export class CorrespondentsComponent implements OnInit {
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
     params = Object.assign(params, this.dataTableSearchBar);
-    console.log(params);
+
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
-        console.log(result);
         this.items = result.results.map((item: any) => {
           return Object.assign({ active: this.isActive(item.disappearanceDate) }, item);
         });
-        console.log(result, this.items);
+
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
         this.start = (this.page - 1) * this.limit + 1;
@@ -532,7 +486,6 @@ export class CorrespondentsComponent implements OnInit {
   }
 
   deleteItemss(item: any) {
-    console.log(item);
     this.btnLoading = '';
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
@@ -562,7 +515,7 @@ export class CorrespondentsComponent implements OnInit {
 
   addItems(item: any) {
     this.btnLoading = '';
-    console.log(item);
+
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
@@ -595,7 +548,6 @@ export class CorrespondentsComponent implements OnInit {
       },
 
       (error) => {
-        console.log(error);
         this.addSingle('error', 'Modification', error.error.message);
       }
     );

@@ -437,6 +437,7 @@ delete-icon svg {
 tag-input-dropdown {
   font-size: 12px !important;
 }
+
 ::ng-deep .dropdown-container .drop-bloc button {
   color: #00d6d4;
   &:hover {
@@ -664,7 +665,7 @@ li a i:hover {
 /*
   Notifications and form errors
  */
-input,
+input:has(.form-control),
 select,
 ng-multiselect-dropdown,
 textarea,
@@ -741,6 +742,9 @@ p-calendar {
     left: 0 !important;
     .p-dropdown-items-wrapper {
       font-size: 12px;
+      .p-dropdown-items .p-dropdown-item {
+        font-size: 12px;
+      }
     }
   }
   /*For elements with long text*/
@@ -774,6 +778,37 @@ p-calendar {
           line-height: 1.5em;
         }
       }
+    }
+  }
+}
+
+.p-carousel {
+  .p-carousel-content {
+    .p-carousel-indicators {
+      display: none;
+    }
+  }
+}
+.p-galleria {
+  min-width: 380;
+  width: 380px;
+  .p-galleria-thumbnail-container .p-galleria-thumbnail-prev,
+  .p-galleria-thumbnail-container .p-galleria-thumbnail-next {
+    color: black !important;
+  }
+}
+.p-galleria-thumbnail-container {
+  height: 60px;
+  padding: 0.2rem 0.2rem !important;
+  background-color: #f7f7f7 !important;
+}
+/** css drag and drop file **/
+ng-file-drag-drop {
+  height: 50px;
+  .dropZone {
+    height: 50px;
+    img {
+      display: none;
     }
   }
 }

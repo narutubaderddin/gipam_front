@@ -80,16 +80,10 @@
 <ng-template #content let-modal>
   <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
     <div class="modal-header">
-      <h4 class="modal-title" *ngIf="editItem">
-        Modification de correspondant "{{ itemLabel }}"
-      </h4>
+      <h4 class="modal-title" *ngIf="editItem">Modification de correspondant "{{ itemLabel }}"</h4>
       <h4 class="modal-title" *ngIf="addItem">Ajout de correspondant</h4>
-      <h4 class="modal-title" *ngIf="deleteItems">
-        Suppression de correspondant "{{ itemLabel }}"
-      </h4>
-      <h4 class="modal-title" *ngIf="editVisibility">
-        Activation / désactivation de correspondant " {{ itemLabel }}"
-      </h4>
+      <h4 class="modal-title" *ngIf="deleteItems">Suppression de correspondant "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="editVisibility">Activation / désactivation de correspondant " {{ itemLabel }}"</h4>
       <button type="button" class="close" aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
       </button>

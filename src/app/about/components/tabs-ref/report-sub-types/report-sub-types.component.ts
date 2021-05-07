@@ -8,7 +8,7 @@ import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 import { ModalReportSubTypesComponent } from '@app/about/components/tabs-ref/report-sub-types/modal-report-sub-types/modal-report-sub-types.component';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
-import {forkJoin} from "rxjs";
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-report-sub-types',
@@ -54,7 +54,7 @@ export class ReportSubTypesComponent implements OnInit {
   activeRelatedEntities: any[] = [];
   selectedreportType: any;
 
-  relatedEntityColumn= {
+  relatedEntityColumn = {
     header: 'Type constat',
     field: 'reportType',
     type: 'key-array',
@@ -64,7 +64,7 @@ export class ReportSubTypesComponent implements OnInit {
     placeholder: 'Type constat',
     selectData: this.relatedEntities,
     sortable: true,
-  }
+  };
 
   columns = [
     {
@@ -75,7 +75,7 @@ export class ReportSubTypesComponent implements OnInit {
       filterType: 'text',
       sortable: true,
     },
-   this.relatedEntityColumn,
+    this.relatedEntityColumn,
     {
       header: 'Actions',
       field: 'action',
@@ -108,20 +108,17 @@ export class ReportSubTypesComponent implements OnInit {
       this.activatedRoute.snapshot.queryParams.filter && this.activatedRoute.snapshot.queryParams.filter.length > 0;
   }
   initFilterData() {
-
     const data = {
       page: 1,
       'active[eq]': 1,
       serializer_group: JSON.stringify(['response', 'short']),
     };
-    forkJoin([
-      this.simpleTabsRef.getAllItems(data, 'reportTypes'),
-    ]).subscribe(
+    forkJoin([this.simpleTabsRef.getAllItems(data, 'reportTypes')]).subscribe(
       ([relatedServicesResults]) => {
         this.relatedEntities = this.simpleTabsRef.getTabRefFilterData(relatedServicesResults['results']);
-        this.activeRelatedEntities= this.simpleTabsRef.getTabRefFilterData(relatedServicesResults['results']
-          .filter((value: any) => {
-            return value.active===true
+        this.activeRelatedEntities = this.simpleTabsRef.getTabRefFilterData(
+          relatedServicesResults['results'].filter((value: any) => {
+            return value.active === true;
           })
         );
 
@@ -131,7 +128,6 @@ export class ReportSubTypesComponent implements OnInit {
         this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
       }
     );
-
   }
   resetFilter() {}
 
@@ -167,9 +163,9 @@ export class ReportSubTypesComponent implements OnInit {
       selectedItem: this.selectedItem,
       selectedReportType: this.selectedreportType,
       active: this.active,
-      activeRelatedEntities: this.activeRelatedEntities
+      activeRelatedEntities: this.activeRelatedEntities,
     };
-    console.log(this.selectedreportType);
+
     modalRef.result.then(
       (result) => {
         if (result === 'delete') {
@@ -219,7 +215,6 @@ export class ReportSubTypesComponent implements OnInit {
   }
 
   actionMethod(e: any) {
-    console.log(e);
     switch (e.method) {
       case 'delete':
         this.deleteItem(e.item);
@@ -246,7 +241,7 @@ export class ReportSubTypesComponent implements OnInit {
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
     params = Object.assign(params, this.dataTableSearchBar);
-    console.log('http params', params);
+
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results;

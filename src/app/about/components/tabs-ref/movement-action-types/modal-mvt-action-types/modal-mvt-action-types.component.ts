@@ -43,8 +43,8 @@ export class ModalMvtActionTypesComponent implements OnInit {
     this.name = this.fromParent.name;
     this.btnLoading = this.fromParent.btnLoading;
     this.selectedMvtType = this.fromParent.selectedMvtType;
-    this.mvtTypes= this.fromParent.activeRelatedEntities;
-console.log(this.mvtTypes)
+    this.mvtTypes = this.fromParent.activeRelatedEntities;
+
     this.initForm();
   }
   initForm() {
@@ -78,7 +78,5 @@ console.log(this.mvtTypes)
 
   onMvtTypesSelect(item: any) {
     this.selectedMvtType = item;
-    console.log('item', item);
-    console.log(this.selectedItem);
   }
 }

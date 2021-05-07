@@ -89,9 +89,9 @@
   <div *ngIf="add">
     <div class="col-12 content">
       <h5 class="col-md-12 pt-2">Ajouter photographies</h5>
-      <div class="more-details mt-2 pt-4">
+      <div class="more-details pt-3">
         <div class="d-flex flex-wrap">
-          <div class="d-flex carousel-container mb-4" *ngIf="images.length">
+          <div class="d-flex carousel-container mb-2" *ngIf="images.length">
             <p-galleria
               [(value)]="images"
               [containerStyle]="{ 'max-width': '400px' }"
@@ -99,11 +99,11 @@
               [activeIndex]="images.length - 1"
             >
               <ng-template pTemplate="item" let-item>
-                <img width="100%" height="250" [src]="item.imageUrl" [alt]="item.alt" />
+                <img width="100%" height="200" [src]="item.imageUrl" [alt]="item.alt" />
               </ng-template>
               <ng-template pTemplate="thumbnail" let-item>
                 <div class="p-grid p-nogutter p-justify-center">
-                  <img height="50" [src]="item.imageUrl" alt="" (click)="show(item)" />
+                  <img height="60" width="100" [src]="item.imageUrl" alt="" (click)="show(item)" />
                 </div>
               </ng-template>
             </p-galleria>
@@ -153,9 +153,14 @@
                   optionLabel="name"
                   [showClear]="false"
                 ></p-dropdown>
+                <ng-template let-option pTemplate="item">
+                  <div>
+                    <div [ngStyle]="option.disabled ? { color: '#ccc', cursor: 'default' } : ''">{{ option.name }}</div>
+                  </div>
+                </ng-template>
                 <span class="mandatory" *ngIf="!validate && !photographyType">Veuillez saisir un type</span>
               </div>
-              <button class="btn add-action mb-2" (click)="addPhotography()">
+              <button class="btn add-action mb-2 ml-3" (click)="addPhotography()">
                 <i class="fas fa-plus"></i>
                 Valider
               </button>

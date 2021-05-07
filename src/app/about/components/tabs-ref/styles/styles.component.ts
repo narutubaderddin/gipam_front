@@ -258,10 +258,6 @@ export class StylesComponent implements OnInit {
     }
   }
 
-  paginationData(): void {
-    // this.dataTableComponent.handlePaginationInfo();
-  }
-
   addItems(item: any) {
     this.btnLoading = '';
     this.simpleTabsRef.addItem(item).subscribe(

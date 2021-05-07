@@ -80,16 +80,10 @@
 <ng-template #content let-modal>
   <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
     <div class="modal-header">
-      <h4 class="modal-title" *ngIf="editItem">
-        Modification de responsable "{{ itemLabel }}"
-      </h4>
+      <h4 class="modal-title" *ngIf="editItem">Modification de responsable "{{ itemLabel }}"</h4>
       <h4 class="modal-title" *ngIf="addItem">Ajout de responsable</h4>
-      <h4 class="modal-title" *ngIf="deleteItems">
-        Suppression de responsable "{{ itemLabel }}"
-      </h4>
-      <h4 class="modal-title" *ngIf="editVisibility">
-        Activation / désactivation de responsable " {{ itemLabel }}"
-      </h4>
+      <h4 class="modal-title" *ngIf="deleteItems">Suppression de responsable "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="editVisibility">Activation / désactivation de responsable " {{ itemLabel }}"</h4>
       <button type="button" class="close" aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -163,12 +157,11 @@
             formControlName="buildings"
             optionLabel="name"
             display="chip"
-            [placeholder]="selectedBuildings && editItem ?
-            selectedBuildings: 'Sélectionner des bâtiments'"
-            >
+            [placeholder]="selectedBuildings && editItem ? selectedBuildings : 'Sélectionner des bâtiments'"
+          >
           </p-multiSelect>
         </div>
-    </div>
+      </div>
       <div
         class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
         *ngIf="editItem || addItem || editVisibility"
@@ -217,4 +210,3 @@
   </form>
 </ng-template>
 <p-toast></p-toast>
-

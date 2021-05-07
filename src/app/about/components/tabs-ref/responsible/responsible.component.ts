@@ -1,15 +1,15 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {NgDataTableComponent} from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
-import {FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
-import {IDropdownSettings} from 'ng-multiselect-dropdown';
-import {ActivatedRoute, Router} from '@angular/router';
-import {NgbModal, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
-import {SimpleTabsRefService} from '@shared/services/simple-tabs-ref.service';
-import {FieldsService} from '@shared/services/fields.service';
-import {MessageService} from 'primeng/api';
-import {DatePipe} from '@angular/common';
-import {datePickerDateFormat, dateTimeFormat} from '@shared/utils/helpers';
-import {forkJoin} from 'rxjs';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
+import { FieldsService } from '@shared/services/fields.service';
+import { MessageService } from 'primeng/api';
+import { DatePipe } from '@angular/common';
+import { datePickerDateFormat, dateTimeFormat } from '@shared/utils/helpers';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-responsible',
@@ -18,7 +18,6 @@ import {forkJoin} from 'rxjs';
   providers: [DatePipe],
 })
 export class ResponsibleComponent implements OnInit {
-
   @ViewChild('content') modalRef: TemplateRef<any>;
   @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
 
@@ -29,7 +28,7 @@ export class ResponsibleComponent implements OnInit {
     firstName: '';
     lastName: '';
 
-    login:'';
+    login: '';
     phone: '';
     fax: '';
     mail: '';
@@ -43,7 +42,6 @@ export class ResponsibleComponent implements OnInit {
   buildings: any[] = [];
 
   activeBuildings: any[] = [];
-
 
   selectedBuildings: any[] = [];
 
@@ -76,7 +74,7 @@ export class ResponsibleComponent implements OnInit {
   items: any;
   today: string;
 
-  relatedBuildingsColumn={
+  relatedBuildingsColumn = {
     header: 'Bâtiment',
     field: 'buildings',
     type: 'key-array',
@@ -85,7 +83,6 @@ export class ResponsibleComponent implements OnInit {
     filterType: 'multiselect',
     placeholder: 'Bâtiments',
     selectData: this.buildings,
-
   };
 
   columns = [
@@ -96,7 +93,6 @@ export class ResponsibleComponent implements OnInit {
       filter: true,
       filterType: 'text',
       sortable: true,
-
     },
     {
       header: 'Nom',
@@ -105,7 +101,6 @@ export class ResponsibleComponent implements OnInit {
       filter: true,
       filterType: 'text',
       sortable: true,
-
     },
 
     {
@@ -115,7 +110,6 @@ export class ResponsibleComponent implements OnInit {
       filter: true,
       filterType: 'text',
       sortable: true,
-
     },
     {
       header: 'FAX',
@@ -124,7 +118,6 @@ export class ResponsibleComponent implements OnInit {
       filter: true,
       filterType: 'text',
       sortable: true,
-
     },
     {
       header: 'E-mail',
@@ -150,7 +143,6 @@ export class ResponsibleComponent implements OnInit {
       filter: true,
       filterType: 'range-date',
       sortable: true,
-
     },
     {
       header: 'Date fin de validité',
@@ -159,7 +151,6 @@ export class ResponsibleComponent implements OnInit {
       filter: true,
       filterType: 'range-date',
       sortable: true,
-
     },
     {
       header: 'Actions',
@@ -214,10 +205,8 @@ export class ResponsibleComponent implements OnInit {
       startDate: [startDate, [Validators.required]],
       endDate: [disappearanceDate, []],
       buildings: [this.selectedBuildings ? this.selectedBuildings : { name: '' }, []],
-
     });
     this.tabForm.setValidators(this.ValidateDate());
-    // this.tabForm.setValidators(towDatesCompare('startDate', 'endDate'));
   }
   initFilterData() {
     const data = {
@@ -225,17 +214,14 @@ export class ResponsibleComponent implements OnInit {
       'active[eq]': 1,
       serializer_group: JSON.stringify(['response', 'short']),
     };
-    forkJoin([
-      this.simpleTabsRef.getAllItems(data, 'buildings'),
-    ]).subscribe(
+    forkJoin([this.simpleTabsRef.getAllItems(data, 'buildings')]).subscribe(
       ([relatedServicesResults]) => {
         this.buildings = this.simpleTabsRef.getTabRefFilterData(relatedServicesResults.results);
-        this.activeBuildings = this.simpleTabsRef.getTabRefFilterData(relatedServicesResults.results)
-          .filter((value: any) =>
-            this.isActive(value.disappearanceDate)
-          );
+        this.activeBuildings = this.simpleTabsRef
+          .getTabRefFilterData(relatedServicesResults.results)
+          .filter((value: any) => this.isActive(value.disappearanceDate));
         this.relatedBuildingsColumn.selectData = this.buildings;
-         },
+      },
       (error: any) => {
         this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
       }
@@ -244,29 +230,25 @@ export class ResponsibleComponent implements OnInit {
 
   openModal(item: any) {
     this.btnLoading = null;
-    console.log(item);
+
     if (this.editItem || this.addItem) {
       this.initFilterData();
-      console.log(this.buildings);
-
     }
     if (this.editItem || this.editVisibility) {
       this.itemToEdit = item;
-      this.itemLabel = item.firstName+' '+item.lastName;
-      if(item.buildings){
-        item.buildings.map((el:any)=>{
-          this.selectedBuildings.push({id:el.id, name:el.name})
-        })
+      this.itemLabel = item.firstName + ' ' + item.lastName;
+      if (item.buildings) {
+        item.buildings.map((el: any) => {
+          this.selectedBuildings.push({ id: el.id, name: el.name });
+        });
       }
     }
     this.selectedItem = item;
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
- onSelectBuildings(event:Event){
-    console.log(event);
- }
 
+  onSelectBuildings(event: Event) {}
   onSelectAll(items: any) {}
 
   ValidateDate(): ValidatorFn {
@@ -294,9 +276,9 @@ export class ResponsibleComponent implements OnInit {
 
   submit() {
     this.btnLoading = null;
-    const selectedBuildings :any[] = [] ;
-    this.tabForm.value.buildings.map((el:any)=>selectedBuildings.push(el.id))
-    console.log(selectedBuildings);
+    const selectedBuildings: any[] = [];
+    this.tabForm.value.buildings.map((el: any) => selectedBuildings.push(el.id));
+
     const item = {
       firstName: this.tabForm.value.firstName,
       lastName: this.tabForm.value.lastName,
@@ -322,7 +304,7 @@ export class ResponsibleComponent implements OnInit {
     this.addItem = false;
     this.deleteItems = false;
     this.editVisibility = false;
-    this.selectedBuildings=[];
+    this.selectedBuildings = [];
     this.myModal.dismiss('Cross click');
   }
 
@@ -355,8 +337,8 @@ export class ResponsibleComponent implements OnInit {
     this.deleteItems = true;
     this.itemToDelete = data;
 
-    this.itemLabel = data.firstName+' '+data.lastName;
-    console.log(this.itemLabel);
+    this.itemLabel = data.firstName + ' ' + data.lastName;
+
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
 
@@ -375,7 +357,6 @@ export class ResponsibleComponent implements OnInit {
     return !(endDate !== '' && endDate && endDate <= today);
   }
 
-
   getAllItems() {
     this.loading = true;
     let params = {
@@ -387,10 +368,9 @@ export class ResponsibleComponent implements OnInit {
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
     params = Object.assign(params, this.dataTableSearchBar);
-    console.log(params);
+
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
-
         this.items = result.results.map((item: any) => {
           return Object.assign({ active: this.isActive(item.disappearanceDate) }, item);
         });
@@ -413,7 +393,6 @@ export class ResponsibleComponent implements OnInit {
   }
 
   deleteItemss(item: any) {
-    console.log(item);
     this.btnLoading = '';
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
@@ -443,7 +422,7 @@ export class ResponsibleComponent implements OnInit {
 
   addItems(item: any) {
     this.btnLoading = '';
-    console.log(item);
+
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
@@ -476,7 +455,6 @@ export class ResponsibleComponent implements OnInit {
       },
 
       (error) => {
-        console.log(error);
         this.addSingle('error', 'Modification', error.error.message);
       }
     );
