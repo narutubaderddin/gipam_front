@@ -36,7 +36,8 @@ import { ServicesComponent } from '@app/about/components/tabs-ref/services/servi
 import { SitesComponent } from '@app/about/components/tabs-ref/sites/sites.component';
 import { EstablishmentTypesComponent } from '@app/about/components/tabs-ref/establishmentTypes/establishmentTypes.component';
 import { CorrespondentsComponent } from '@app/about/components/tabs-ref/correspondents/correspondents.component';
-import {ResponsibleComponent} from "@app/about/components/tabs-ref/responsible/responsible.component";
+import { ResponsibleComponent } from '@app/about/components/tabs-ref/responsible/responsible.component';
+import { EntryModesComponent } from '@app/about/components/tabs-ref/entryModes/entryModes.component';
 const routes: Routes = [
   {
     path: '',
@@ -117,9 +118,13 @@ const routes: Routes = [
         component: SitesComponent,
         data: { title: 'Liste des sites' },
       },
+      {
+        path: 'tab-ref-modes-entree',
+        component: EntryModesComponent,
+        data: { title: "Liste des modes d'entréé" },
+      },
       { path: 'tab-ref-correspondant', component: CorrespondentsComponent },
       { path: 'tab-ref-responsable', component: ResponsibleComponent },
-
     ],
   },
 ];

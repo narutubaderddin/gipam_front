@@ -176,5 +176,8 @@ export class SidebarNavComponent implements OnInit {
     this.router.navigate(['tab-ref-responsable']);
     this.toggleClose();
   }
-
+  goToEntryModesList() {
+    this.router.navigate(['tab-ref-modes-entree']);
+    this.toggleClose();
+  }
 }
