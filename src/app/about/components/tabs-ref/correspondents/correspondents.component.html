@@ -1,8 +1,8 @@
 <div class="breadcrumb">
   <a href="accueil">Accueil</a>
-  <a href="tab-ref-bâtiment" class="selected-item">
+  <a href="tab-ref-correspondant" class="selected-item">
     <i class="fas fa-chevron-right"></i>
-    Gestion des Bâtiments
+    Gestion des Correspondants
   </a>
 </div>
 <div class="container-fluid">
@@ -13,7 +13,7 @@
           <div class="card">
             <div class="card-body">
               <ul class="d-flex">
-                <li class="col-md-12 selected-table"><i class="fas fa-tasks"></i><a>Gestion des Bâtiments</a></li>
+                <li class="col-md-12 selected-table"><i class="fas fa-tasks"></i><a>Gestion des Correspondants</a></li>
               </ul>
             </div>
           </div>
@@ -44,7 +44,7 @@
               <div class="mr-3">
                 <button class="btn add-action" (click)="addItemAction()">
                   <i class="fas fa-plus-circle mr-1"></i>
-                  Ajouter Bâtiment
+                  Ajouter Correspondant
                 </button>
               </div>
             </div>
@@ -80,86 +80,129 @@
 <ng-template #content let-modal>
   <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
     <div class="modal-header">
-      <h4 class="modal-title" *ngIf="editItem">Modification de bâtiment "{{ selectedItem.name }}"</h4>
-      <h4 class="modal-title" *ngIf="addItem">Ajout de bâtiment</h4>
-      <h4 class="modal-title" *ngIf="deleteItems">Suppression de bâtiment "{{ selectedItem.name }}"</h4>
-      <h4 class="modal-title" *ngIf="editVisibility">
-        Activation / désactivation de bâtiment "{{ selectedItem.name }}"
-      </h4>
+      <h4 class="modal-title" *ngIf="editItem">Modification de correspondant "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="addItem">Ajout de correspondant</h4>
+      <h4 class="modal-title" *ngIf="deleteItems">Suppression de correspondant "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="editVisibility">Activation / désactivation de correspondant " {{ itemLabel }}"</h4>
       <button type="button" class="close" aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
-      <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer le bâtiment "{{ itemLabel }}" ?</div>
+      <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer le correspondant "{{ itemLabel }}" ?</div>
 
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Libellé<span class="mandatory"> *</span></label>
+        <label class="col-sm-5">Nom<span class="mandatory"> *</span></label>
         <input
           type="text"
           class="form-control col-sm-7"
-          value="{{ editItem ? selectedItem.name : '' }}"
-          formControlName="label"
+          value="{{ editItem ? selectedItem.firstName : '' }}"
+          formControlName="firstName"
         />
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Addresse</label>
+        <label class="col-sm-5">Prénom<span class="mandatory"> *</span></label>
         <input
           type="text"
           class="form-control col-sm-7"
-          value="{{ editItem ? selectedItem.address : '' }}"
-          formControlName="address"
+          value="{{ editItem ? selectedItem.firstName : '' }}"
+          formControlName="lastName"
         />
       </div>
-
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">cedex<span class="mandatory"> *</span></label>
+        <label class="col-sm-5">Fonction</label>
         <input
           type="text"
           class="form-control col-sm-7"
-          value="{{ editItem ? selectedItem.cedex : '' }}"
-          formControlName="cedex"
+          value="{{ editItem ? selectedItem.function : '' }}"
+          formControlName="function"
         />
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Distrib</label>
+        <label class="col-sm-5">Téléphone</label>
+        <input
+          type="number"
+          min="0"
+          class="form-control col-sm-7"
+          value="{{ editItem ? selectedItem.phone : '' }}"
+          formControlName="phone"
+        />
+      </div>
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
+        <label class="col-sm-5">Fax</label>
+        <input
+          type="number"
+          min="0"
+          class="form-control col-sm-7"
+          value="{{ editItem ? selectedItem.fax : '' }}"
+          formControlName="fax"
+        />
+      </div>
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
+        <label class="col-sm-5">E-mail</label>
         <input
           type="text"
           class="form-control col-sm-7"
-          value="{{ editItem ? selectedItem.distrib : '' }}"
-          formControlName="distrib"
+          value="{{ editItem ? selectedItem.mail : '' }}"
+          formControlName="mail"
         />
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Site</label>
+        <label class="col-sm-5">Connexion</label>
+        <input
+          type="text"
+          class="form-control col-sm-7"
+          value="{{ editItem ? selectedItem.login : '' }}"
+          formControlName="login"
+        />
+      </div>
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
+        <label class="col-sm-5">Etablissement</label>
         <div class="autocomplete form-control value col-12 col-sm-7">
           <p-dropdown
             class="col-md-7 p-0"
             [style]="{ minWidth: '100%' }"
-            [options]="sites"
-            formControlName="site"
-            placeholder="Choisir un site"
-            optionLabel="label"
+            [options]="activeEstablishments"
+            formControlName="establishment"
+            placeholder="Choisir un établissement"
+            optionLabel="name"
             [showClear]="false"
-            (onChange)="onSiteSelect($event)"
-            [placeholder]="selectedSite && editItem ? selectedSite : 'Sélectionner un site'"
+            (onChange)="onEstablishmentSelect($event)"
+            [placeholder]="selectedEstablishment && editItem ? selectedEstablishment : 'Sélectionner un établissement'"
             [filter]="true"
           ></p-dropdown>
         </div>
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Commune</label>
+        <label class="col-sm-5">Sous direction</label>
         <div class="autocomplete form-control value col-12 col-sm-7">
           <p-dropdown
             class="col-md-7 p-0"
             [style]="{ minWidth: '100%' }"
-            [options]="communes"
+            [options]="activeSubDivisions"
             optionLabel="name"
-            formControlName="commune"
-            placeholder="Choisir une commune"
+            formControlName="subDivision"
+            placeholder="Choisir une sous direction"
             [showClear]="false"
-            (onChange)="onCommuneSelect($event)"
-            [placeholder]="selectedCommune && editItem ? selectedCommune : 'Sélectionner une commune'"
+            (onChange)="onSubDivisionSelect($event)"
+            [placeholder]="selectedSubDivision && editItem ? selectedSubDivision : 'Sélectionner une sous direction'"
+            [filter]="true"
+          ></p-dropdown>
+        </div>
+      </div>
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
+        <label class="col-sm-5">Service</label>
+        <div class="autocomplete form-control value col-12 col-sm-7">
+          <p-dropdown
+            class="col-md-7 p-0"
+            [style]="{ minWidth: '100%' }"
+            [options]="activeServices"
+            optionLabel="name"
+            formControlName="service"
+            placeholder="Choisir un service"
+            [showClear]="false"
+            (onChange)="onServiceSelect($event)"
+            [placeholder]="selectedService && editItem ? selectedService : 'Sélectionner un service'"
             [filter]="true"
           ></p-dropdown>
         </div>
@@ -182,7 +225,7 @@
           type="date"
           name="datepicker"
           class="form-control date-input col-sm-7"
-          formControlName="disappearanceDate"
+          formControlName="endDate"
           [class.ng-invalid]="tabForm.errors && tabForm.errors.dateInvalid"
         />
       </div>

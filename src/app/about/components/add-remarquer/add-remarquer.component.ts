@@ -81,10 +81,24 @@ export class AddRemarquerComponent implements OnInit {
   initDescriptifForm() {
     this.descriptifForm = this.fb.group({
       title: ['', Validators.required],
-      domain: ['', Validators.required],
+      field: ['', Validators.required],
       denomination: ['', Validators.required],
-      material: ['', Validators.required],
-      unit_number: ['', Validators.required],
+      materialTechnique: ['', Validators.required],
+      numberOfUnit: ['', Validators.required],
+      authors: [],
+      creationDate: [],
+      length: [],
+      width: [],
+      height: [],
+      depth: [],
+      weight: [],
+      diameter: [],
+      era: [],
+      style: [],
+      totalLength: [],
+      totalWidth: [],
+      totalHeight: [],
+      descriptiveWords: [],
       items: [],
     });
   }

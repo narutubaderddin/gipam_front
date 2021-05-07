@@ -168,8 +168,7 @@ input:checked + .slider:before {
   display: flex;
   border: 1px solid #cecece;
   border-radius: 1rem;
-  //max-height: 22rem;
-  //min-height: 22rem;
+  height: 624px;
   div {
     .fa-eye {
       color: #407ca8;

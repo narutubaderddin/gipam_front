@@ -168,4 +168,12 @@ export class SidebarNavComponent implements OnInit {
     this.router.navigate(['tab-ref-type-etablissement']);
     this.toggleClose();
   }
+  goToCorrespondentsList() {
+    this.router.navigate(['tab-ref-correspondant']);
+    this.toggleClose();
+  }
+  goToResponsibleList() {
+    this.router.navigate(['tab-ref-responsable']);
+    this.toggleClose();
+  }
 }

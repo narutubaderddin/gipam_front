@@ -1,8 +1,8 @@
 <div class="breadcrumb">
   <a href="accueil">Accueil</a>
-  <a href="tab-ref-commune" class="selected-item">
+  <a href="tab-ref-responsable" class="selected-item">
     <i class="fas fa-chevron-right"></i>
-    Gestion des Communes
+    Gestion des Responsables
   </a>
 </div>
 <div class="container-fluid">
@@ -13,7 +13,7 @@
           <div class="card">
             <div class="card-body">
               <ul class="d-flex">
-                <li class="col-md-12 selected-table"><i class="fas fa-tasks"></i><a>Gestion des Communes</a></li>
+                <li class="col-md-12 selected-table"><i class="fas fa-tasks"></i><a>Gestion des Responsables</a></li>
               </ul>
             </div>
           </div>
@@ -44,7 +44,7 @@
               <div class="mr-3">
                 <button class="btn add-action" (click)="addItemAction()">
                   <i class="fas fa-plus-circle mr-1"></i>
-                  Ajouter Commune
+                  Ajouter Responsable
                 </button>
               </div>
             </div>
@@ -80,61 +80,106 @@
 <ng-template #content let-modal>
   <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
     <div class="modal-header">
-      <h4 class="modal-title" *ngIf="editItem">Modification de la commune "{{ itemLabel }}"</h4>
-      <h4 class="modal-title" *ngIf="addItem">Ajout d'une commune</h4>
-      <h4 class="modal-title" *ngIf="deleteItems">Suppression de la commune "{{ itemLabel }}"</h4>
-      <h4 class="modal-title" *ngIf="editVisibility">Activer/Désactiver la commune "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="editItem">Modification de responsable "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="addItem">Ajout de responsable</h4>
+      <h4 class="modal-title" *ngIf="deleteItems">Suppression de responsable "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="editVisibility">Activation / désactivation de responsable " {{ itemLabel }}"</h4>
       <button type="button" class="close" aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
-      <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer la commune "{{ itemLabel }}" ?</div>
+      <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer le responsable "{{ itemLabel }}" ?</div>
 
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Libellé<span class="mandatory"> *</span></label>
+        <label class="col-sm-5">Nom<span class="mandatory"> *</span></label>
         <input
           type="text"
           class="form-control col-sm-7"
-          value="{{ editItem ? selectedItem.name : '' }}"
-          formControlName="label"
+          value="{{ editItem ? selectedItem.firstName : '' }}"
+          formControlName="firstName"
+        />
+      </div>
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
+        <label class="col-sm-5">Prénom<span class="mandatory"> *</span></label>
+        <input
+          type="text"
+          class="form-control col-sm-7"
+          value="{{ editItem ? selectedItem.firstName : '' }}"
+          formControlName="lastName"
         />
       </div>
 
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Département<span class="mandatory"> *</span></label>
-        <div class="select col-sm-7 p-0">
-          <p-dropdown
-            [options]="activeRelatedEntities"
+        <label class="col-sm-5">Téléphone</label>
+        <input
+          type="number"
+          min="0"
+          class="form-control col-sm-7"
+          value="{{ editItem ? selectedItem.phone : '' }}"
+          formControlName="phone"
+        />
+      </div>
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
+        <label class="col-sm-5">Fax</label>
+        <input
+          type="number"
+          min="0"
+          class="form-control col-sm-7"
+          value="{{ editItem ? selectedItem.fax : '' }}"
+          formControlName="fax"
+        />
+      </div>
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
+        <label class="col-sm-5">E-mail</label>
+        <input
+          type="text"
+          class="form-control col-sm-7"
+          value="{{ editItem ? selectedItem.mail : '' }}"
+          formControlName="mail"
+        />
+      </div>
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
+        <label class="col-sm-5">Connexion</label>
+        <input
+          type="text"
+          class="form-control col-sm-7"
+          value="{{ editItem ? selectedItem.login : '' }}"
+          formControlName="login"
+        />
+      </div>
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
+        <label class="col-sm-5">Bâtiments</label>
+        <div class="autocomplete form-control value col-12 col-sm-7">
+          <p-multiSelect
+            [options]="activeBuildings"
+            class="col-md-7 p-0"
+            formControlName="buildings"
             optionLabel="name"
-            formControlName="department"
-            placeholder="{{
-              selectedRelatedEntity && editItem ? selectedRelatedEntity.name : 'Sélectionner un département'
-            }}"
-            emptyFilterMessage="Aucun résultat trouvé"
-            (onChange)="onDepartmentSelect($event)"
-            [filter]="true"
-            [filterBy]="'name'"
-          ></p-dropdown>
+            display="chip"
+            [placeholder]="selectedBuildings && editItem ? selectedBuildings : 'Sélectionner des bâtiments'"
+          >
+          </p-multiSelect>
         </div>
       </div>
       <div
         class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
-        *ngIf="addItem || editVisibility"
+        *ngIf="editItem || addItem || editVisibility"
       >
         <label class="col-sm-5">Date début de validité<span class="mandatory"> *</span></label>
         <input type="date" name="datepicker" class="form-control date-input col-sm-7" formControlName="startDate" />
       </div>
+
       <div
         class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
-        *ngIf="addItem || editVisibility"
+        *ngIf="editItem || addItem || editVisibility"
       >
         <label class="col-sm-5">Date fin de validité</label>
         <input
           type="date"
           name="datepicker"
           class="form-control date-input col-sm-7"
-          formControlName="disappearanceDate"
+          formControlName="endDate"
           [class.ng-invalid]="tabForm.errors && tabForm.errors.dateInvalid"
         />
       </div>
