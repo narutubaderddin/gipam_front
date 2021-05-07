@@ -21,7 +21,7 @@
         <input
           type="text"
           style="outline: none"
-          class="w-100"
+          class="w-100 form-control"
           (keyup.enter)="onSearchClick()"
           placeholder="Recherche ..."
         />
@@ -499,7 +499,29 @@
                         <div class="row col-12">
                           <label class="col-4">Mots descriptifs</label>
 
-                          <tag-input [modelAsStrings]="true"></tag-input>
+                          <tag-input
+                            id="input"
+                            [placeholder]="'Ajouter un mot descriptif'"
+                            [secondaryPlaceholder]="'Ajouter un mot descriptif'"
+                            [onlyFromAutocomplete]="true"
+                            [minlength]="3"
+                            [onTextChangeDebounce]="200"
+                            formControlName="description"
+                          >
+                            <tag-input-dropdown
+                              [autocompleteObservable]="requestAutocompleteItems"
+                              [dynamicUpdate]="false"
+                              [zIndex]="1060"
+                              [showDropdownIfEmpty]="true"
+                              [keepOpen]="true"
+                              #inputDropdown
+                              appendToBody="false"
+                            >
+                              <ng-template let-item="item" let-index="index" let-last="last">
+                                {{ item.value }}
+                              </ng-template>
+                            </tag-input-dropdown>
+                          </tag-input>
                         </div>
                       </div>
                     </div>
@@ -956,7 +978,7 @@
         >
           <ng-template #TemplateForm4>
             <p *ngFor="let value of form4Values; let index = index">
-              <span>{{ value }}</span>
+              <span>{{ value | formValue }}</span>
             </p>
           </ng-template>
           <button
@@ -979,7 +1001,7 @@
             >
               <div class="mt-3">
                 <p *ngFor="let value of form4Values; let index = index">
-                  <span *ngIf="index < 4">{{ value }}</span>
+                  <span *ngIf="index < 4">{{ value | formValue }}</span>
                 </p>
                 <p *ngIf="showForm4End">...</p>
               </div>
@@ -1024,61 +1046,76 @@
                   </div>
                   <div class="form-group d-flex slider-bloc row">
                     <label for="departement" class="col-5">Départements </label>
-                    <div class="multiSelectBlock col-6">
-                      <p-multiSelect
-                        [options]="departmentsData"
+                    <div class="multiSelectBlock col-6 w-100">
+                      <p-autoComplete
                         id="departement"
+                        [suggestions]="departmentsData"
+                        [minLength]="3"
+                        field="name"
                         formControlName="departement"
-                        emptyFilterMessage="Aucun résultat trouvé"
-                        defaultLabel="Choisir des départements"
-                        optionLabel="name"
-                        display="chip"
-                      ></p-multiSelect>
+                        placeholder="Choisir des départements"
+                        (completeMethod)="onGeographicLocationChange($event, 'departement')"
+                        [multiple]="true"
+                      ></p-autoComplete>
                     </div>
                   </div>
                   <div class="form-group d-flex slider-bloc row">
                     <label for="communes" class="col-5">Communes </label>
-                    <div class="multiSelectBlock col-6">
-                      <p-multiSelect
-                        [options]="communesData"
+                    <div class="multiSelectBlock col-6 w-100">
+                      <p-autoComplete
                         id="communes"
-                        itemSize="30"
-                        [virtualScroll]="true"
+                        [suggestions]="communesData"
+                        [minLength]="3"
+                        field="name"
                         formControlName="communes"
-                        emptyFilterMessage="Aucun résultat trouvé"
-                        defaultLabel="Choisir des communes"
-                        optionLabel="name"
-                        display="chip"
-                      ></p-multiSelect>
+                        placeholder="Choisir des communes"
+                        (completeMethod)="onGeographicLocationChange($event, 'communes')"
+                        [multiple]="true"
+                      ></p-autoComplete>
                     </div>
                   </div>
                   <div class="form-group d-flex slider-bloc row">
                     <label for="batiment" class="col-5">Bâtiments </label>
                     <div class="multiSelectBlock col-6">
-                      <p-multiSelect
-                        [options]="buildingData"
+                      <p-autoComplete
                         id="batiment"
-                        itemSize="30"
-                        [virtualScroll]="true"
+                        [suggestions]="buildingData"
+                        [minLength]="3"
+                        field="name"
                         formControlName="batiment"
-                        emptyFilterMessage="Aucun résultat trouvé"
-                        defaultLabel="Choisir des bâtiments"
-                        optionLabel="name"
-                        display="chip"
-                      ></p-multiSelect>
+                        (onSelect)="onSelectBatiment($event)"
+                        placeholder="Choisir des bâtiments"
+                        (completeMethod)="onGeographicLocationChange($event, 'batiment')"
+                        [multiple]="true"
+                      ></p-autoComplete>
                     </div>
                   </div>
                   <div class="form-group d-flex slider-bloc row">
                     <label for="sites" class="col-5">Sites </label>
                     <div class="multiSelectBlock col-6">
-                      <p-multiSelect
-                        [options]="siteData"
+                      <p-autoComplete
                         id="sites"
+                        [suggestions]="siteData"
+                        [minLength]="3"
+                        formControlName="sites"
+                        field="name"
+                        placeholder="Choisir des sites"
+                        (completeMethod)="onGeographicLocationChange($event, 'sites')"
+                        [multiple]="true"
+                      ></p-autoComplete>
+                    </div>
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
+                    <label for="pieceNumbers" class="col-5">Etage </label>
+                    <div class="multiSelectBlock col-6">
+                      <p-multiSelect
+                        [options]="levelData"
+                        id="pieceNumbers"
                         itemSize="30"
                         [virtualScroll]="true"
-                        formControlName="sites"
+                        formControlName="pieceNumber"
                         emptyFilterMessage="Aucun résultat trouvé"
-                        defaultLabel="Choisir des sites"
+                        defaultLabel="Choisir des Etages"
                         optionLabel="name"
                         display="chip"
                       ></p-multiSelect>
@@ -1100,22 +1137,7 @@
                       ></p-multiSelect>
                     </div>
                   </div>
-                  <div class="form-group d-flex slider-bloc row">
-                    <label for="pieceNumbers" class="col-5">Etage </label>
-                    <div class="multiSelectBlock col-6">
-                      <p-multiSelect
-                        [options]="levelData"
-                        id="pieceNumbers"
-                        itemSize="30"
-                        [virtualScroll]="true"
-                        formControlName="pieceNumber"
-                        emptyFilterMessage="Aucun résultat trouvé"
-                        defaultLabel="Choisir des Etages"
-                        optionLabel="name"
-                        display="chip"
-                      ></p-multiSelect>
-                    </div>
-                  </div>
+
                   <div class="form-group d-flex slider-bloc row">
                     <label for="domaine" class="col-5">Correspodants </label>
                     <!--                    <ng-multiselect-dropdown-->

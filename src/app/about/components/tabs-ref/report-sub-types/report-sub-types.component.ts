@@ -215,7 +215,6 @@ export class ReportSubTypesComponent implements OnInit {
   }
 
   actionMethod(e: any) {
-
     switch (e.method) {
       case 'delete':
         this.deleteItem(e.item);

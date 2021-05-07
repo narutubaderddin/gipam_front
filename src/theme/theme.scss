@@ -437,6 +437,7 @@ delete-icon svg {
 tag-input-dropdown {
   font-size: 12px !important;
 }
+
 ::ng-deep .dropdown-container .drop-bloc button {
   color: #00d6d4;
   &:hover {
@@ -664,7 +665,7 @@ li a i:hover {
 /*
   Notifications and form errors
  */
-input,
+input:has(.form-control),
 select,
 ng-multiselect-dropdown,
 textarea,

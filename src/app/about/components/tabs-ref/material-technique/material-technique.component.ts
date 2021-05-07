@@ -180,7 +180,6 @@ export class MaterialTechniqueComponent implements OnInit {
   }
 
   actionMethod(e: any) {
-
     switch (e.method) {
       case 'delete':
         this.deleteItem(e.item);
@@ -249,7 +248,6 @@ export class MaterialTechniqueComponent implements OnInit {
     );
   }
   addItems(item: any) {
-
     this.btnLoading = '';
     this.simpleTabsRef.tabRef = 'materialTechniques';
     this.simpleTabsRef.addItem(item).subscribe(

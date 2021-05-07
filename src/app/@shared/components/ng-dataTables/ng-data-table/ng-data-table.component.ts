@@ -105,7 +105,7 @@ export class NgDataTableComponent implements OnInit {
     this.columns = this.columns.filter((col) => {
       if (Object.keys(col).indexOf('isVisible') == -1 || col.isVisible) {
         return col;
-      } else {
+      } else if (this.form && this.form.value && Object.keys(this.form.value).indexOf(col.field) != -1) {
         this.form.removeControl(col.field);
       }
     });

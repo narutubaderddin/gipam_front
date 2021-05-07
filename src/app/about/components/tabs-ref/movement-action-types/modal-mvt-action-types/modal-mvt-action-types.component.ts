@@ -78,6 +78,5 @@ export class ModalMvtActionTypesComponent implements OnInit {
 
   onMvtTypesSelect(item: any) {
     this.selectedMvtType = item;
-
   }
 }

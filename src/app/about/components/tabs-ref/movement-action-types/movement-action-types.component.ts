@@ -145,7 +145,6 @@ export class MovementActionTypesComponent implements OnInit {
           id: item.movementType.id,
           label: item.movementType.label,
         };
-
       } else {
         this.selectedMvtType = [];
         this.addItem = true;
@@ -221,7 +220,6 @@ export class MovementActionTypesComponent implements OnInit {
   }
 
   actionMethod(e: any) {
-
     switch (e.method) {
       case 'delete':
         this.deleteItem(e.item);
@@ -252,7 +250,6 @@ export class MovementActionTypesComponent implements OnInit {
 
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
-
         this.items = result.results;
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
@@ -352,7 +349,6 @@ export class MovementActionTypesComponent implements OnInit {
   }
 
   pagination(e: any) {
-
     if (e.page < this.total / parseInt(this.limit.toString(), 0)) {
       this.page = e.page + 1;
     } else {
