@@ -175,11 +175,6 @@ export class AddDescriptionsComponent implements OnInit {
     }
     if (item == 'denomination') {
       this.selectedDomain = value.value.field.label;
-      this.materialTechniquesData = this.materialTechniques.filter((material: any) => {
-        return material.denominations.filter((denomination: any) => {
-          denomination.label == value.value.label;
-        });
-      });
     }
     console.log('mat', this.materialTechniquesData);
   }

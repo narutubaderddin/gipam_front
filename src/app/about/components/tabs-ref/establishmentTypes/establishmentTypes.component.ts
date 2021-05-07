@@ -9,26 +9,30 @@ import { MessageService } from 'primeng/api';
 
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { datePickerDateFormat, dateTimeFormat, towDatesCompare } from '@shared/utils/helpers';
+import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-reportTypes',
-  templateUrl: './reportTypes.component.html',
-  styleUrls: ['./reportTypes.component.scss'],
+  selector: 'app-establishmentTypes',
+  templateUrl: './establishmentTypes.component.html',
+  styleUrls: ['./establishmentTypes.component.scss'],
+  providers: [DatePipe],
 })
-export class ReportTypesComponent implements OnInit {
+export class EstablishmentTypesComponent implements OnInit {
   @ViewChild('content') modalRef: TemplateRef<any>;
   @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
 
   loading = true;
   btnLoading: any = null;
   myModal: any;
-  selectedItem: string;
+  selectedItem: any;
 
   itemToEdit: any;
   itemToDelete: string;
   tabForm: FormGroup;
   editItem = false;
   addItem = false;
+  editVisibility = false;
   deleteItems = false;
   dropdownSettings: IDropdownSettings;
 
@@ -37,8 +41,6 @@ export class ReportTypesComponent implements OnInit {
   itemLabel: any;
 
   filter: any;
-  sortBy = 'label';
-  sort: string = 'asc';
   totalFiltred: any;
   total: any;
   limit = 5;
@@ -75,6 +77,24 @@ export class ReportTypesComponent implements OnInit {
       sortable: true,
     },
     {
+      header: 'Date début de validité',
+      field: 'startDate',
+      type: 'date',
+      filter: true,
+      filterType: 'range-date',
+      sortable: true,
+      width: '200px',
+    },
+    {
+      header: 'Date fin de validité',
+      field: 'disappearanceDate',
+      type: 'date',
+      filter: true,
+      filterType: 'range-date',
+      sortable: true,
+      width: '200px',
+    },
+    {
       header: 'Actions',
       field: 'action',
       type: 'app-actions-cell',
@@ -84,8 +104,6 @@ export class ReportTypesComponent implements OnInit {
     },
   ];
 
-  rowCount: any = 5;
-
   constructor(
     private router: Router,
     private modalService: NgbModal,
@@ -94,17 +112,28 @@ export class ReportTypesComponent implements OnInit {
     private fieldsService: FieldsService,
     public fb: FormBuilder,
     config: NgbModalConfig,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private datePipe: DatePipe
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
   }
 
   initForm() {
+    const startDate = this.datePipe.transform(
+      this.selectedItem ? this.selectedItem.startDate : new Date(),
+      datePickerDateFormat
+    );
+    const disappearanceDate = this.datePipe.transform(
+      this.selectedItem ? this.selectedItem.disappearanceDate : '',
+      datePickerDateFormat
+    );
     this.tabForm = this.fb.group({
-      style: [this.selectedItem, [Validators.required]],
-      active: [true],
+      label: [this.selectedItem ? this.selectedItem.label : '', [Validators.required]],
+      startDate: [startDate, [Validators.required]],
+      disappearanceDate: [disappearanceDate, []],
     });
+    this.tabForm.setValidators(towDatesCompare('startDate', 'disappearanceDate'));
   }
 
   get defaultHeaderParams() {
@@ -112,7 +141,7 @@ export class ReportTypesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.simpleTabsRef.tabRef = 'reportTypes';
+    this.simpleTabsRef.tabRef = 'establishmentTypes';
     this.getAllItems();
     this.initForm();
 
@@ -125,17 +154,11 @@ export class ReportTypesComponent implements OnInit {
 
   openModal(item: any) {
     this.btnLoading = null;
-    if (item) {
-      this.editItem = true;
+    if (this.editItem || this.editVisibility) {
       this.itemToEdit = item;
       this.itemLabel = item.label;
-    } else {
-      this.addItem = true;
     }
-
-    // console.log(item);
-    this.selectedItem = item.label;
-
+    this.selectedItem = item;
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
@@ -143,24 +166,23 @@ export class ReportTypesComponent implements OnInit {
   submit() {
     this.btnLoading = null;
     const item = {
-      label: this.tabForm.value.style,
-      active: this.tabForm.value.active,
+      label: this.tabForm.value.label,
+      startDate: this.datePipe.transform(this.tabForm.value.startDate, dateTimeFormat),
+      disappearanceDate: this.datePipe.transform(this.tabForm.value.disappearanceDate, dateTimeFormat),
     };
     if (this.addItem) {
       this.addItems(item);
     }
-    if (this.editItem) {
+    if (this.editItem || this.editVisibility) {
       this.editField(item, this.itemToEdit.id);
     }
-    this.btnLoading = false;
   }
 
   close() {
     this.editItem = false;
     this.addItem = false;
     this.deleteItems = false;
-
-    // this.myModal.close('Close click');
+    this.editVisibility = false;
     this.myModal.dismiss('Cross click');
   }
 
@@ -172,21 +194,41 @@ export class ReportTypesComponent implements OnInit {
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
 
+  editItemAction(item: any) {
+    this.editItem = true;
+    this.openModal(item);
+  }
+
+  changeVisibilityAction(item: any) {
+    this.editVisibility = true;
+    this.openModal(item);
+  }
+
+  addItemAction() {
+    this.addItem = true;
+    this.selectedItem = null;
+    this.openModal(null);
+  }
+
   actionMethod(e: any) {
-    console.log(e);
     switch (e.method) {
       case 'delete':
         this.deleteItem(e.item);
         break;
       case 'edit':
-        this.openModal(e.item);
+        this.editItemAction(e.item);
         break;
       case 'visibility':
-        this.visibleItem(e.item);
+        this.changeVisibilityAction(e.item);
         break;
       default:
         this.close();
     }
+  }
+
+  isActive(endDate: string) {
+    const today = this.datePipe.transform(new Date(), datePickerDateFormat);
+    return !(endDate !== '' && endDate && endDate <= today);
   }
 
   getAllItems() {
@@ -200,7 +242,9 @@ export class ReportTypesComponent implements OnInit {
     params = Object.assign(params, this.dataTableSearchBar);
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
-        this.items = result.results;
+        this.items = result.results.map((item: any) => {
+          return Object.assign({ active: this.isActive(item.disappearanceDate) }, item);
+        });
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
         this.start = (this.page - 1) * this.limit + 1;
@@ -228,19 +272,18 @@ export class ReportTypesComponent implements OnInit {
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Suppression', 'Type constat ' + item.label + ' supprimée avec succés');
+        this.addSingle('success', 'Suppression', 'Type établissement ' + item.label + ' supprimée avec succés');
         this.getAllItems();
       },
       (error: any) => {
         this.close();
         if (error.error.code === 400) {
-          this.addSingle('error', 'Suppression', 'Type constat ' + item.label + ' admet une relation');
+          this.addSingle('error', 'Suppression', 'Type établissement ' + item.label + ' admet une relation');
         } else {
           this.addSingle('error', 'Suppression', error.error.message);
         }
       }
     );
-    this.btnLoading = false;
   }
 
   addItems(item: any) {
@@ -248,7 +291,7 @@ export class ReportTypesComponent implements OnInit {
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Ajout', 'Type constat ' + item.label + ' ajoutée avec succés');
+        this.addSingle('success', 'Ajout', 'Type établissement ' + item.label + ' ajoutée avec succés');
         this.getAllItems();
       },
       (error) => {
@@ -258,33 +301,16 @@ export class ReportTypesComponent implements OnInit {
     );
   }
 
-  visibleItem(data: any) {
-    data.active = !data.active;
-    this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
-      (result) => {
-        if (data.active) {
-          this.addSingle('success', 'Activation', 'Type constat ' + data.label + ' activée avec succés');
-        } else {
-          this.addSingle('success', 'Activation', 'Type constat ' + data.label + ' désactivée avec succés');
-        }
-        this.getAllItems();
-      },
-
-      (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
-      }
-    );
-  }
-
   editField(item: any, id: number) {
     this.btnLoading = '';
     this.simpleTabsRef.editItem(item, id).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Modification', 'Type constat ' + item.label + ' modifiée avec succés');
+        this.addSingle('success', 'Modification', 'Type établissement ' + item.label + ' modifiée avec succés');
         this.getAllItems();
+        this.editItem = false;
+        this.editVisibility = false;
       },
-
       (error) => {
         this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
         this.btnLoading = null;
@@ -320,10 +346,7 @@ export class ReportTypesComponent implements OnInit {
 
   search(input: string) {
     this.page = 1;
-    this.dataTableSearchBar = {};
-    if (input !== '') {
-      this.dataTableSearchBar = { search: input };
-    }
+    this.dataTableSearchBar = { search: input };
     this.getAllItems();
   }
 

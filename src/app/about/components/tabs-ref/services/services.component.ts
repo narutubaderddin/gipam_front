@@ -9,6 +9,7 @@ import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 import { DatePipe } from '@angular/common';
 import { datePickerDateFormat, dateTimeFormat, towDatesCompare, viewDateFormat } from '@shared/utils/helpers';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-establishments',
@@ -38,6 +39,7 @@ export class ServicesComponent implements OnInit {
     };
   };
   relatedEntities: any[] = [];
+  activeRelatedEntities: any[] = [];
   types: any[] = [];
   selectedRelatedEntity: any;
   itemToEdit: any;
@@ -79,6 +81,18 @@ export class ServicesComponent implements OnInit {
   items: any[] = [];
   today: string;
   error = false;
+  relatedEntityColumn = {
+    header: 'Sous-direction',
+    field: 'subDivision',
+    type: 'key-array',
+    key_data: ['subDivision', 'label'],
+    filter: true,
+    filterType: 'multiselect',
+    placeholder: 'Choisir des Sous-directions',
+    selectData: this.relatedEntities,
+    sortable: true,
+    width: '380px',
+  };
   columns = [
     {
       header: 'Libellé',
@@ -115,12 +129,7 @@ export class ServicesComponent implements OnInit {
       sortable: true,
       width: '200px',
     },
-    {
-      header: 'Sous-direction',
-      field: 'ministryName',
-      type: 'key',
-      width: '380px',
-    },
+    this.relatedEntityColumn,
     {
       header: 'Actions',
       field: 'action',
@@ -148,10 +157,31 @@ export class ServicesComponent implements OnInit {
 
   ngOnInit(): void {
     this.simpleTabsRef.tabRef = 'services';
+    this.initFilterData();
     this.getAllItems();
     this.initForm();
     this.filter =
       this.activatedRoute.snapshot.queryParams.filter && this.activatedRoute.snapshot.queryParams.filter.length > 0;
+  }
+
+  initFilterData() {
+    const data = {
+      page: 1,
+      'active[eq]': 1,
+      serializer_group: JSON.stringify(['response', 'short']),
+    };
+    forkJoin([this.simpleTabsRef.getAllItems(data, 'subDivisions')]).subscribe(
+      ([relatedEntitiesResults]) => {
+        this.relatedEntities = this.simpleTabsRef.getTabRefFilterData(relatedEntitiesResults['results']);
+        this.activeRelatedEntities = relatedEntitiesResults['results'].filter((value: any) =>
+          this.isActive(value.disappearanceDate)
+        );
+        this.relatedEntityColumn.selectData = this.relatedEntities;
+      },
+      (error: any) => {
+        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
+      }
+    );
   }
 
   initForm() {
@@ -186,37 +216,16 @@ export class ServicesComponent implements OnInit {
       this.itemToEdit = item;
       this.itemLabel = item.label;
       this.selectedRelatedEntity = {
-        id: item.ministryId,
-        name: item.ministryName,
+        id: item.subDivision ? item.subDivision.id : '',
+        name: item.subDivision ? item.subDivision.label : '',
       };
     }
     if (this.addItem) {
       this.selectedRelatedEntity = null;
     }
-    if (this.editItem || this.addItem) {
-      if (this.relatedEntities.length === 0) {
-        this.getRelatedEntity();
-      }
-    }
     this.selectedItem = item;
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
-  }
-
-  getRelatedEntity(): any {
-    const previousUrl = this.simpleTabsRef.tabRef;
-    this.simpleTabsRef.tabRef = 'subDivisions';
-
-    this.simpleTabsRef.getAllItems({}).subscribe(
-      (result: any) => {
-        this.relatedEntities = result.results;
-        this.dataTableComponent.error = false;
-      },
-      (error: any) => {
-        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
-      }
-    );
-    this.simpleTabsRef.tabRef = previousUrl;
   }
 
   submit() {
@@ -291,21 +300,6 @@ export class ServicesComponent implements OnInit {
     return !(endDate !== '' && endDate && endDate <= today);
   }
 
-  convertItem(item: any) {
-    const newItem = {
-      id: item.id,
-      label: item.label,
-      acronym: item.acronym,
-      startDate: item.startDate,
-      disappearanceDate: item.disappearanceDate,
-      subDivisionId: item.subDivision ? item.subDivision.id : '',
-      subDivisionName: item.subDivision ? item.subDivision.name : '',
-      active: true,
-    };
-    newItem.active = this.isActive(newItem.disappearanceDate);
-    return newItem;
-  }
-
   getAllItems() {
     this.loading = true;
     let params = {
@@ -315,10 +309,10 @@ export class ServicesComponent implements OnInit {
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
     params = Object.assign(params, this.dataTableSearchBar);
-    this.simpleTabsRef.getAllItems(params).subscribe(
+    this.simpleTabsRef.getAllItems(params, 'services').subscribe(
       (result: any) => {
         this.items = result.results.map((item: any) => {
-          return this.convertItem(item);
+          return Object.assign({ active: this.isActive(item.disappearanceDate) }, item);
         });
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
@@ -368,7 +362,8 @@ export class ServicesComponent implements OnInit {
         this.addItem = false;
       },
       (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
+        this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        this.btnLoading = null;
       }
     );
   }
@@ -383,9 +378,9 @@ export class ServicesComponent implements OnInit {
         this.editItem = false;
         this.editVisibility = false;
       },
-
       (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
+        this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        this.btnLoading = null;
       }
     );
   }
@@ -418,7 +413,10 @@ export class ServicesComponent implements OnInit {
 
   search(input: string) {
     this.page = 1;
-    this.dataTableSearchBar = { search: input };
+    this.dataTableSearchBar = {};
+    if (input !== '') {
+      this.dataTableSearchBar = { search: input };
+    }
     this.getAllItems();
   }
 
