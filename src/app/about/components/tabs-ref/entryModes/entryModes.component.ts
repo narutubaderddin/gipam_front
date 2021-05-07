@@ -123,7 +123,6 @@ export class EntryModesComponent implements OnInit {
 
   openModal(item: any) {
     this.btnLoading = null;
-    console.log('form', this.tabForm.controls);
     if (item) {
       this.editItem = true;
       this.itemToEdit = item;
@@ -168,7 +167,6 @@ export class EntryModesComponent implements OnInit {
   }
 
   actionMethod(e: any) {
-    console.log(e);
     switch (e.method) {
       case 'delete':
         this.deleteItem(e.item);
@@ -182,6 +180,7 @@ export class EntryModesComponent implements OnInit {
       default:
         this.close();
     }
+    this.selectedItem = null;
   }
 
   getAllItems() {

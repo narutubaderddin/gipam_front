@@ -11,11 +11,11 @@ import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 
 @Component({
-  selector: 'app-author-types',
-  templateUrl: './authorTypes.component.html',
-  styleUrls: ['./authorTypes.component.scss'],
+  selector: 'app-attachment-types',
+  templateUrl: './attachmentTypes.component.html',
+  styleUrls: ['./attachmentTypes.component.scss'],
 })
-export class AuthorTypesComponent implements OnInit {
+export class AttachmentTypesComponent implements OnInit {
   @ViewChild('content') modalRef: TemplateRef<any>;
   @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
 
@@ -30,7 +30,6 @@ export class AuthorTypesComponent implements OnInit {
   editItem = false;
   addItem = false;
   deleteItems = false;
-  dropdownSettings: IDropdownSettings;
 
   active = true;
   dropdownList: any;
@@ -66,7 +65,7 @@ export class AuthorTypesComponent implements OnInit {
   columns = [
     {
       header: 'Libellé',
-      field: 'label',
+      field: 'type',
       type: 'key',
       filter: true,
       filterType: 'text',
@@ -100,7 +99,7 @@ export class AuthorTypesComponent implements OnInit {
 
   initForm() {
     this.tabForm = this.fb.group({
-      style: [this.selectedItem?.label, [Validators.required]],
+      style: [this.selectedItem?.type, [Validators.required]],
       active: [this.selectedItem ? this.selectedItem?.active : true],
     });
   }
@@ -110,7 +109,7 @@ export class AuthorTypesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.simpleTabsRef.tabRef = 'authorTypes';
+    this.simpleTabsRef.tabRef = 'attachmentTypes';
     this.getAllItems();
     this.initForm();
 
@@ -127,7 +126,7 @@ export class AuthorTypesComponent implements OnInit {
       this.editItem = true;
       this.itemToEdit = item;
       this.itemLabel = item.label;
-      this.selectedItem = { label: item.label, active: item.active };
+      this.selectedItem = { type: item.type, active: item.active };
     } else {
       this.addItem = true;
     }
@@ -223,14 +222,14 @@ export class AuthorTypesComponent implements OnInit {
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Suppression', 'Type Auteur ' + item.label + ' supprimée avec succés');
+        this.addSingle('success', 'Suppression', 'Type Fichier joint ' + item.label + ' supprimée avec succés');
         this.getAllItems();
         this.selectedItem = null;
       },
       (error: any) => {
         this.close();
         if (error.error.code === 400) {
-          this.addSingle('error', 'Suppression', 'Type Auteur ' + item.label + ' admet une relation');
+          this.addSingle('error', 'Suppression', 'Type Fichier joint ' + item.label + ' admet une relation');
         } else {
           this.addSingle('error', 'Suppression', error.error.message);
         }
@@ -244,7 +243,7 @@ export class AuthorTypesComponent implements OnInit {
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Ajout', 'Type Auteur ' + item.label + ' ajoutée avec succés');
+        this.addSingle('success', 'Ajout', 'Type Fichier joint ' + item.label + ' ajoutée avec succés');
         this.getAllItems();
       },
       (error) => {
@@ -259,9 +258,9 @@ export class AuthorTypesComponent implements OnInit {
     this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
       (result) => {
         if (data.active) {
-          this.addSingle('success', 'Activation', 'Type Auteur ' + data.label + ' activée avec succés');
+          this.addSingle('success', 'Activation', 'Type Fichier joint ' + data.label + ' activée avec succés');
         } else {
-          this.addSingle('success', 'Activation', 'Type Auteur ' + data.label + ' désactivée avec succés');
+          this.addSingle('success', 'Activation', 'Type Fichier joint ' + data.label + ' désactivée avec succés');
         }
         this.getAllItems();
       },
@@ -277,7 +276,7 @@ export class AuthorTypesComponent implements OnInit {
     this.simpleTabsRef.editItem(item, id).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Modification', 'Type Auteur ' + item.label + ' modifiée avec succés');
+        this.addSingle('success', 'Modification', 'Type Fichier joint ' + item.label + ' modifiée avec succés');
         this.getAllItems();
         this.selectedItem = null;
       },

@@ -184,4 +184,8 @@ export class SidebarNavComponent implements OnInit {
     this.router.navigate(['tab-ref-types-auteur']);
     this.toggleClose();
   }
+  goToAttachmentTypesList() {
+    this.router.navigate(['tab-ref-types-fichier-joint']);
+    this.toggleClose();
+  }
 }

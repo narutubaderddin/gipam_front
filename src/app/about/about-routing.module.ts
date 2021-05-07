@@ -39,6 +39,7 @@ import { CorrespondentsComponent } from '@app/about/components/tabs-ref/correspo
 import { ResponsibleComponent } from '@app/about/components/tabs-ref/responsible/responsible.component';
 import { EntryModesComponent } from '@app/about/components/tabs-ref/entryModes/entryModes.component';
 import { AuthorTypesComponent } from '@app/about/components/tabs-ref/authorTypes/authorTypes.component';
+import { AttachmentTypesComponent } from '@app/about/components/tabs-ref/attachmentTypes/attachmentTypes.component';
 const routes: Routes = [
   {
     path: '',
@@ -128,6 +129,11 @@ const routes: Routes = [
         path: 'tab-ref-types-auteur',
         component: AuthorTypesComponent,
         data: { title: 'Liste des types auteur' },
+      },
+      {
+        path: 'tab-ref-types-fichier-joint',
+        component: AttachmentTypesComponent,
+        data: { title: 'Liste des types fichier joint' },
       },
       { path: 'tab-ref-correspondant', component: CorrespondentsComponent },
       { path: 'tab-ref-responsable', component: ResponsibleComponent },
