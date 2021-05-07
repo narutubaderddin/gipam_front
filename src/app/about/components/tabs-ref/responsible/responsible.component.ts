@@ -217,7 +217,6 @@ export class ResponsibleComponent implements OnInit {
 
     });
     this.tabForm.setValidators(this.ValidateDate());
-    // this.tabForm.setValidators(towDatesCompare('startDate', 'endDate'));
   }
   initFilterData() {
     const data = {
