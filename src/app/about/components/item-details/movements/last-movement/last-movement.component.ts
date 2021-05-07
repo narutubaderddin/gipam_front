@@ -23,20 +23,14 @@ export class LastMovementComponent implements OnInit {
   mvtActions: any = [
     {
       date: this.datePipe.transform(new Date('01/01/2021'), 'dd/MM/yyyy'),
-      movementType: 'Depôt',
+      movementType: 'En réserve pour restitution',
       author: 'Jean T',
-      status: 'terminé',
-    },
-    {
-      date: this.datePipe.transform(new Date('03/01/2021'), 'dd/MM/yyyy'),
-      movementType: 'Déplacement',
-      author: 'Olivier T',
       status: 'alert',
     },
     {
-      date: this.datePipe.transform(new Date(), 'dd/MM/yyyy'),
-      movementType: 'Prêt',
-      author: 'Paul T',
+      date: this.datePipe.transform(new Date('03/01/2021'), 'dd/MM/yyyy'),
+      movementType: 'En réserve pour restitution',
+      author: 'Olivier T',
       status: 'en cours',
     },
   ];
