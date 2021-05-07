@@ -89,7 +89,18 @@ export class AttachmentsComponent implements OnInit {
   gridApi: GridApi;
   gridColumnApi: ColumnApi;
   gridReady = false;
-
+  responsiveOptions = [
+    {
+      breakpoint: '1500px',
+      numVisible: 2,
+      numScroll: 2,
+    },
+    {
+      breakpoint: '560px',
+      numVisible: 1,
+      numScroll: 1,
+    },
+  ];
   get attachments(): FormArray {
     return this.attachmentForm.get('attachments') as FormArray;
   }
@@ -120,7 +131,7 @@ export class AttachmentsComponent implements OnInit {
   }
 
   validate() {
-    console.log(this.attachments)
+    console.log(this.attachments);
     if (!this.addedFile || !this.attachmentType) {
       this.validation = false;
     } else {
@@ -146,7 +157,7 @@ export class AttachmentsComponent implements OnInit {
     this.edit = true;
   }
 
-   addAttachment() {
+  addAttachment() {
     this.display = true;
   }
 }
