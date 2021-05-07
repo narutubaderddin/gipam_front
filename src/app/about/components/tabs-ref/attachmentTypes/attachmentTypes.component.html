@@ -1,8 +1,8 @@
 <div class="breadcrumb">
   <a href="accueil">Accueil</a>
-  <a href="tab-ref-type-etablissement" class="selected-item">
+  <a href="tab-ref-types-fichier-joint" class="selected-item">
     <i class="fas fa-chevron-right"></i>
-    Gestion des Types Établissement
+    Gestion des Types Fichier joint
   </a>
 </div>
 <div class="container-fluid">
@@ -14,7 +14,7 @@
             <div class="card-body">
               <ul class="d-flex">
                 <li class="col-md-12 selected-table">
-                  <i class="fas fa-tasks"></i><a>Gestion des Types Établissement</a>
+                  <i class="fas fa-tasks"></i><a>Gestion des Types Fichier joint</a>
                 </li>
               </ul>
             </div>
@@ -44,9 +44,9 @@
                 </span>
               </div>
               <div class="mr-3">
-                <button class="btn add-action" (click)="addItemAction()">
+                <button class="btn add-action" (click)="openModal('')">
                   <i class="fas fa-plus-circle mr-1"></i>
-                  Ajouter Type Établissement
+                  Ajouter Type Fichier joints
                 </button>
               </div>
             </div>
@@ -82,54 +82,40 @@
 <ng-template #content let-modal>
   <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
     <div class="modal-header">
-      <h4 class="modal-title" *ngIf="editItem">Modification du type établissement "{{ itemLabel }}"</h4>
-      <h4 class="modal-title" *ngIf="addItem">Ajout d'un type d'établissement</h4>
-      <h4 class="modal-title" *ngIf="deleteItems">Suppression du type établissement</h4>
-      <h4 class="modal-title" *ngIf="editVisibility">Activer/Désactiver le type établissement "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="editItem">Modification du type fichier joint "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="addItem">Ajout d'un type fichier joint</h4>
+      <h4 class="modal-title" *ngIf="deleteItems">Suppression du type fichier joint</h4>
       <button type="button" class="close" aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
-      <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer le type établissement "{{ itemLabel }}" ?</div>
+      <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer le type fichier joint "{{ itemLabel }}" ?</div>
+
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Libellé<span class="mandatory"> *</span></label>
+        <label class="col-sm-3">Libellé<span class="mandatory"> *</span></label>
         <input
           type="text"
           class="form-control col-sm-7"
-          value="{{ editItem ? selectedItem.label : '' }}"
-          formControlName="label"
+          value="{{ editItem ? selectedItem?.type : '' }}"
+          formControlName="style"
         />
       </div>
-      <div
-        class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
-        *ngIf="addItem || editVisibility"
-      >
-        <label class="col-sm-5">Date début de validité<span class="mandatory"> *</span></label>
-        <input type="date" name="datepicker" class="form-control date-input col-sm-7" formControlName="startDate" />
-      </div>
-      <div
-        class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
-        *ngIf="addItem || editVisibility"
-      >
-        <label class="col-sm-5">Date fin de validité</label>
-        <input
-          type="date"
-          name="datepicker"
-          class="form-control date-input col-sm-7"
-          formControlName="disappearanceDate"
-          [class.ng-invalid]="tabForm.errors && tabForm.errors.dateInvalid"
-        />
+      <div class="form-group col-md-12 d-flex align-items-baseline" *ngIf="addItem">
+        <label class="col-sm-5">visibilité<span class="mandatory"> *</span></label>
+        <div class="btn-slider mr-2 col-3" *ngIf="active">
+          <label [class.active]="active"></label>
+          <label class="switch">
+            <input type="checkbox" [checked]="true" formControlName="active" />
+            <span class="slider round"></span>
+          </label>
+          <label [class.active]="!active"></label>
+        </div>
       </div>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-light cancel-btn" (click)="close()">Annuler</button>
-      <button
-        type="submit"
-        class="btn btn-light valid-btn"
-        *ngIf="editItem || editVisibility"
-        [attr.disabled]="btnLoading"
-      >
+      <button type="submit" class="btn btn-light valid-btn" *ngIf="editItem" [attr.disabled]="btnLoading">
         Modifier
       </button>
       <button type="submit" class="btn btn-light valid-btn" *ngIf="addItem" [attr.disabled]="btnLoading">
