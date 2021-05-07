@@ -107,6 +107,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { CorrespondentsComponent } from './components/tabs-ref/correspondents/correspondents.component';
 import { ResponsibleComponent } from './components/tabs-ref/responsible/responsible.component';
 import { EntryModesComponent } from '@app/about/components/tabs-ref/entryModes/entryModes.component';
+import { AuthorTypesComponent } from '@app/about/components/tabs-ref/authorTypes/authorTypes.component';
 
 setTheme('bs4');
 
@@ -176,6 +177,7 @@ const ngWizardConfig: NgWizardConfig = {
     CorrespondentsComponent,
     ResponsibleComponent,
     EntryModesComponent,
+    AuthorTypesComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [

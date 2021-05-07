@@ -38,6 +38,7 @@ import { EstablishmentTypesComponent } from '@app/about/components/tabs-ref/esta
 import { CorrespondentsComponent } from '@app/about/components/tabs-ref/correspondents/correspondents.component';
 import { ResponsibleComponent } from '@app/about/components/tabs-ref/responsible/responsible.component';
 import { EntryModesComponent } from '@app/about/components/tabs-ref/entryModes/entryModes.component';
+import { AuthorTypesComponent } from '@app/about/components/tabs-ref/authorTypes/authorTypes.component';
 const routes: Routes = [
   {
     path: '',
@@ -122,6 +123,11 @@ const routes: Routes = [
         path: 'tab-ref-modes-entree',
         component: EntryModesComponent,
         data: { title: "Liste des modes d'entréé" },
+      },
+      {
+        path: 'tab-ref-types-auteur',
+        component: AuthorTypesComponent,
+        data: { title: 'Liste des types auteur' },
       },
       { path: 'tab-ref-correspondant', component: CorrespondentsComponent },
       { path: 'tab-ref-responsable', component: ResponsibleComponent },

@@ -80,9 +80,9 @@
 <ng-template #content let-modal>
   <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
     <div class="modal-header">
-      <h4 class="modal-title" *ngIf="editItem">Modification d'un mode d'entréé "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="editItem">Modification du mode d'entréé "{{ itemLabel }}"</h4>
       <h4 class="modal-title" *ngIf="addItem">Ajout d'un mode d'entréé</h4>
-      <h4 class="modal-title" *ngIf="deleteItems">Suppression d'un' mode d'entréé "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="deleteItems">Suppression du mode d'entréé "{{ itemLabel }}"</h4>
       <button type="button" class="close" aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -95,7 +95,7 @@
         <input
           type="text"
           class="form-control col-sm-7"
-          value="{{ editItem ? selectedItem : '' }}"
+          value="{{ editItem ? selectedItem?.label : '' }}"
           formControlName="style"
         />
       </div>

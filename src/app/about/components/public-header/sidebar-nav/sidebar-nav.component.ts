@@ -180,4 +180,8 @@ export class SidebarNavComponent implements OnInit {
     this.router.navigate(['tab-ref-modes-entree']);
     this.toggleClose();
   }
+  goToAuthorTypesList() {
+    this.router.navigate(['tab-ref-types-auteur']);
+    this.toggleClose();
+  }
 }

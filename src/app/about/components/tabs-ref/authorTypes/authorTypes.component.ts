@@ -11,11 +11,11 @@ import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 
 @Component({
-  selector: 'app-entry-modes',
-  templateUrl: './entryModes.component.html',
-  styleUrls: ['./entryModes.component.scss'],
+  selector: 'app-author-types',
+  templateUrl: './authorTypes.component.html',
+  styleUrls: ['./authorTypes.component.scss'],
 })
-export class EntryModesComponent implements OnInit {
+export class AuthorTypesComponent implements OnInit {
   @ViewChild('content') modalRef: TemplateRef<any>;
   @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
 
@@ -110,7 +110,7 @@ export class EntryModesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.simpleTabsRef.tabRef = 'entryModes';
+    this.simpleTabsRef.tabRef = 'authorTypes';
     this.getAllItems();
     this.initForm();
 
@@ -123,7 +123,6 @@ export class EntryModesComponent implements OnInit {
 
   openModal(item: any) {
     this.btnLoading = null;
-    console.log('form', this.tabForm.controls);
     if (item) {
       this.editItem = true;
       this.itemToEdit = item;
@@ -223,14 +222,14 @@ export class EntryModesComponent implements OnInit {
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Suppression', 'Mode entréé ' + item.label + ' supprimée avec succés');
+        this.addSingle('success', 'Suppression', 'Type Auteur ' + item.label + ' supprimée avec succés');
         this.getAllItems();
         this.selectedItem = null;
       },
       (error: any) => {
         this.close();
         if (error.error.code === 400) {
-          this.addSingle('error', 'Suppression', 'Mode entréé ' + item.label + ' admet une relation');
+          this.addSingle('error', 'Suppression', 'Type Auteur ' + item.label + ' admet une relation');
         } else {
           this.addSingle('error', 'Suppression', error.error.message);
         }
@@ -244,7 +243,7 @@ export class EntryModesComponent implements OnInit {
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Ajout', 'Mode entréé ' + item.label + ' ajoutée avec succés');
+        this.addSingle('success', 'Ajout', 'Type Auteur ' + item.label + ' ajoutée avec succés');
         this.getAllItems();
       },
       (error) => {
@@ -259,9 +258,9 @@ export class EntryModesComponent implements OnInit {
     this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
       (result) => {
         if (data.active) {
-          this.addSingle('success', 'Activation', 'Mode entréé ' + data.label + ' activée avec succés');
+          this.addSingle('success', 'Activation', 'Type Auteur ' + data.label + ' activée avec succés');
         } else {
-          this.addSingle('success', 'Activation', 'Mode entréé ' + data.label + ' désactivée avec succés');
+          this.addSingle('success', 'Activation', 'Type Auteur ' + data.label + ' désactivée avec succés');
         }
         this.getAllItems();
       },
@@ -277,7 +276,7 @@ export class EntryModesComponent implements OnInit {
     this.simpleTabsRef.editItem(item, id).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Modification', 'Mode entréé ' + item.label + ' modifiée avec succés');
+        this.addSingle('success', 'Modification', 'Type Auteur ' + item.label + ' modifiée avec succés');
         this.getAllItems();
         this.selectedItem = null;
       },
