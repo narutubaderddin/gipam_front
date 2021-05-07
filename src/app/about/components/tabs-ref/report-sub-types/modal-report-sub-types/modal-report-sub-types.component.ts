@@ -42,7 +42,6 @@ export class ModalReportSubTypesComponent implements OnInit {
       allowSearchFilter: true,
     };
 
-
     this.addItem = this.fromParent.addItem;
     this.deleteItems = this.fromParent.deleteItems;
     this.editItem = this.fromParent.editItem;
@@ -52,8 +51,7 @@ export class ModalReportSubTypesComponent implements OnInit {
     this.selectedItem = this.fromParent.selectedItem;
     this.name = this.fromParent.name;
     this.selectedreportType = this.fromParent.selectedReportType;
-    this.reportTypes= this.fromParent.activeRelatedEntities;
-
+    this.reportTypes = this.fromParent.activeRelatedEntities;
   }
   initForm() {
     this.tabForm = this.fb.group({

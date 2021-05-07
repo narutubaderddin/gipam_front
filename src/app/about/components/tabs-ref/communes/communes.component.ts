@@ -2,14 +2,13 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
-import {forkJoin} from "rxjs";
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-communes',
@@ -63,8 +62,8 @@ export class CommunesComponent implements OnInit {
   dataTableSearchBar: any = {};
   items: any;
   today: string;
-  activeRelatedEntities: any[]=[];
-  relatedEntityColumn={
+  activeRelatedEntities: any[] = [];
+  relatedEntityColumn = {
     header: 'Département',
     field: 'department',
     type: 'key-array',
@@ -74,7 +73,7 @@ export class CommunesComponent implements OnInit {
     placeholder: 'Département',
     selectData: this.relatedEntities,
     sortable: true,
-  }
+  };
   columns = [
     {
       header: 'Libellé',
@@ -144,15 +143,12 @@ export class CommunesComponent implements OnInit {
       'active[eq]': 1,
       serializer_group: JSON.stringify(['response', 'short']),
     };
-    forkJoin([
-      this.simpleTabsRef.getAllItems(data, 'departments'),
-    ]).subscribe(
+    forkJoin([this.simpleTabsRef.getAllItems(data, 'departments')]).subscribe(
       ([relatedServicesResults]) => {
         this.relatedEntities = this.simpleTabsRef.getTabRefFilterData(relatedServicesResults['results']);
-        this.activeRelatedEntities = this.simpleTabsRef.getTabRefFilterData(relatedServicesResults['results'])
-          .filter((value: any) =>
-            this.isActive(value.disappearanceDate)
-          );
+        this.activeRelatedEntities = this.simpleTabsRef
+          .getTabRefFilterData(relatedServicesResults['results'])
+          .filter((value: any) => this.isActive(value.disappearanceDate));
 
         this.relatedEntityColumn.selectData = this.relatedEntities;
       },
@@ -217,7 +213,6 @@ export class CommunesComponent implements OnInit {
   }
   onDepartmentSelect(item: any) {
     this.selectedRelatedEntity = item;
-    console.log(item);
   }
   onSelectAll(items: any) {}
 
@@ -227,13 +222,11 @@ export class CommunesComponent implements OnInit {
 
     this.simpleTabsRef.getAllItems({}).subscribe((result: any) => {
       this.relatedEntities = result.results;
-      console.log('relatedEntities', this.relatedEntities);
     });
     this.simpleTabsRef.tabRef = previousUrl;
   }
 
   transformDateToDateTime(input: string, format: string, addTime: boolean = true) {
-    // 1984-06-05 12:15:30
     if (input !== '' && input) {
       if (addTime) {
         return this.datePipe.transform(input, format) + ' 00:00:00';
@@ -268,7 +261,6 @@ export class CommunesComponent implements OnInit {
     this.deleteItems = false;
     this.editVisibility = false;
 
-    // this.myModal.close('Close click');
     this.myModal.dismiss('Cross click');
   }
 
@@ -317,8 +309,6 @@ export class CommunesComponent implements OnInit {
     const today = this.datePipe.transform(new Date(), 'yyyy/MM/dd');
     return !(endDate !== '' && endDate && endDate <= today);
   }
-
-
 
   getAllItems() {
     this.loading = true;

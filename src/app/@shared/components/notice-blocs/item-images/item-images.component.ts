@@ -18,7 +18,7 @@ export class ItemImagesComponent implements OnInit {
   photography: string = '';
   photographyDate: Date = new Date();
   photographyType: any[] = [];
-  types : any[] = [
+  types: any[] = [
     { name: 'Identification' },
     { name: 'Autre vue' },
     { name: 'Détail' },
@@ -76,12 +76,12 @@ export class ItemImagesComponent implements OnInit {
     this.identification = 0;
     if (this.photographies.value.length > 1) {
       this.photographies.value.forEach((photography: any) => {
-        console.log('name',photography)
+        console.log('name', photography);
 
-        if(photography.photographyType.name!= 'Identification') {
+        if (photography.photographyType.name != 'Identification') {
           this.identification++;
         }
-      })
+      });
       if (this.identification < this.photographies.value.length) {
         this.isIdentification = true;
         this.types[0].disabled = true;
@@ -89,9 +89,8 @@ export class ItemImagesComponent implements OnInit {
         this.isIdentification = false;
         this.types[0].disabled = false;
       }
-      console.log(this.isIdentification)
+      console.log(this.isIdentification);
     }
-
   }
   addPhotography(): void {
     if (!this.photography.length || !this.photographyType || !this.imageName.length) {

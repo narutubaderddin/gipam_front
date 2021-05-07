@@ -5,7 +5,6 @@ import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
-import { DenominationsService } from '@shared/services/denominations.service';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 
@@ -62,13 +61,6 @@ export class MaterialTechniqueComponent implements OnInit {
       sortable: true,
       width: '300px',
     },
-    // {
-    //   header: 'Dénominations',
-    //   field: 'denominations',
-    //   type: 'key-multiple-data',
-    //   key_multiple_data: ['denominations', 'label'],
-    //   scrollable: true,
-    // },
     {
       header: 'Type',
       field: 'type',
@@ -89,7 +81,7 @@ export class MaterialTechniqueComponent implements OnInit {
   ];
 
   rowCount: any = 5;
-  selectedDenomination:any[]=[];
+  selectedDenomination: any[] = [];
   constructor(
     private router: Router,
     private modalService: NgbModal,
@@ -139,18 +131,16 @@ export class MaterialTechniqueComponent implements OnInit {
     if (item) {
       this.editItem = true;
       this.itemToEdit = item;
-      this.itemLabel = item.firstName+' '+item.lastName;
+      this.itemLabel = item.firstName + ' ' + item.lastName;
     } else {
       this.addItem = true;
     }
-    if(item.denominations){
-      item.denominations.map((el:any)=>{
-        this.selectedDenomination.push({id:el.id, label:el.label})
-        console.log(item.denominations)
-      })
-      console.log(item.denominations)
+    if (item.denominations) {
+      item.denominations.map((el: any) => {
+        this.selectedDenomination.push({ id: el.id, label: el.label });
+      });
     }
-    console.log(item.denominations,this.selectedDenomination)
+
     this.selectedItem = item.label;
 
     this.initForm();
@@ -158,9 +148,9 @@ export class MaterialTechniqueComponent implements OnInit {
   }
   submit() {
     this.btnLoading = null;
-    const selectedDenominations: any[]=[];
-    this.tabForm.value.denominations.map((el:any)=>selectedDenominations.push(el.id))
-    console.log(selectedDenominations);
+    const selectedDenominations: any[] = [];
+    this.tabForm.value.denominations.map((el: any) => selectedDenominations.push(el.id));
+
     const item = {
       label: this.tabForm.value.material,
       type: this.tabForm.value.type,
@@ -178,7 +168,7 @@ export class MaterialTechniqueComponent implements OnInit {
     this.editItem = false;
     this.addItem = false;
     this.deleteItems = false;
-    this.selectedDenominations=[];
+    this.selectedDenominations = [];
     this.myModal.dismiss('Cross click');
   }
   deleteItem(data: any) {
@@ -190,7 +180,7 @@ export class MaterialTechniqueComponent implements OnInit {
   }
 
   actionMethod(e: any) {
-    console.log(e);
+
     switch (e.method) {
       case 'delete':
         this.deleteItem(e.item);
@@ -259,7 +249,7 @@ export class MaterialTechniqueComponent implements OnInit {
     );
   }
   addItems(item: any) {
-    console.log(item);
+
     this.btnLoading = '';
     this.simpleTabsRef.tabRef = 'materialTechniques';
     this.simpleTabsRef.addItem(item).subscribe(
@@ -293,11 +283,10 @@ export class MaterialTechniqueComponent implements OnInit {
   }
   editItems(item: any, id: number) {
     this.btnLoading = '';
-    console.log(item);
+
     this.simpleTabsRef.tabRef = 'materialTechniques';
     this.simpleTabsRef.editItem(item, id).subscribe(
       (result) => {
-        console.log(result);
         this.close();
         this.addSingle('success', 'Modification', 'Matière/technique ' + item.label + ' modifiée avec succés');
         this.getAllItems();
@@ -357,11 +346,7 @@ export class MaterialTechniqueComponent implements OnInit {
       }
     );
   }
-  onSelect(item: any) {
-    console.log(item);
-    console.log(this.tabForm.value.denomination);
-    // this.tabForm.value.denominations.map((el: any) => this.selectedDenominations.push(el.id));
-  }
+  onSelect(item: any) {}
   public onDeSelect(item: any) {
     this.selectedDenominations = this.selectedDenominations.filter((denomination: any) => {
       return denomination !== item.id;

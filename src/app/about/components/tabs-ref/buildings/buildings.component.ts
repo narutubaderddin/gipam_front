@@ -2,7 +2,6 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
@@ -167,9 +166,6 @@ export class BuildingsComponent implements OnInit {
     this.getAllItems();
     this.today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     this.initForm();
-
-    // this.filter =
-    //   this.activatedRoute.snapshot.queryParams.filter && this.activatedRoute.snapshot.queryParams.filter.length > 0;
   }
 
   initForm() {
@@ -193,7 +189,6 @@ export class BuildingsComponent implements OnInit {
   }
 
   openModal(item: any) {
-    console.log(item);
     this.btnLoading = null;
     if (this.editItem || this.addItem) {
       this.getSites();
@@ -220,14 +215,13 @@ export class BuildingsComponent implements OnInit {
     const previousUrl = this.simpleTabsRef.tabRef;
 
     this.simpleTabsRef.tabRef = 'sites';
-    const param={
+    const param = {
       serializer_group: JSON.stringify(['response', 'short']),
-      limit: '100'
-    }
+      limit: '100',
+    };
     this.simpleTabsRef.getAllItems(param).subscribe(
       (result: any) => {
         this.sites = result.results.filter((value: any) => this.isActive(value.disappearanceDate));
-        console.log('sites', this.sites);
       },
       (error: any) => {
         this.addSingle('error', '', error.error.message);
@@ -240,14 +234,13 @@ export class BuildingsComponent implements OnInit {
     const previousUrl = this.simpleTabsRef.tabRef;
 
     this.simpleTabsRef.tabRef = 'communes';
-    const param={
+    const param = {
       serializer_group: JSON.stringify(['response', 'short']),
-      limit: '100'
-    }
+      limit: '100',
+    };
     this.simpleTabsRef.getAllItems(param).subscribe(
       (result: any) => {
         this.communes = result.results.filter((value: any) => this.isActive(value.disappearanceDate));
-        console.log('communes', this.communes);
       },
       (error: any) => {
         this.addSingle('error', '', error.error.message);
@@ -337,7 +330,6 @@ export class BuildingsComponent implements OnInit {
     this.deleteItems = true;
     this.itemToDelete = data;
     this.itemLabel = data.name;
-    console.log(this.itemLabel);
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
 
@@ -394,7 +386,7 @@ export class BuildingsComponent implements OnInit {
         this.items = result.results.map((item: any) => {
           return this.convertItem(item);
         });
-        console.log(result, this.items);
+
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
         this.start = (this.page - 1) * this.limit + 1;
@@ -413,7 +405,6 @@ export class BuildingsComponent implements OnInit {
   }
 
   deleteItemss(item: any) {
-    console.log(item);
     this.btnLoading = '';
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
@@ -435,7 +426,7 @@ export class BuildingsComponent implements OnInit {
 
   addItems(item: any) {
     this.btnLoading = '';
-    console.log(item);
+
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
@@ -502,17 +493,4 @@ export class BuildingsComponent implements OnInit {
       this.search(input);
     }
   }
-  // filterCountry(event: Event) {
-  //   //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
-  //   let filtered: any[] = [];
-  //   let query = event.query;
-  //   for (let i = 0; i < this.communes.length; i++) {
-  //     let item = this.communes[i];
-  //     if (item.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-  //       filtered.push(item);
-  //     }
-  //   }
-  //   this.filteredCommunes = filtered;
-  // }
-
 }

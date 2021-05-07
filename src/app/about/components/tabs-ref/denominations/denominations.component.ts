@@ -1,18 +1,12 @@
 import { Component, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { CustomHeaderRendererComponent } from '@shared/components/datatables/custom-header-renderer/custom-header-renderer.component';
-import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
-import { ColumnApi, GridApi, GridOptions, ICellEditorParams } from 'ag-grid-community';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
-import { DenominationsActionsRendererComponent } from '@shared/components/datatables/denominations-actions-renderer/denominations-actions-renderer.component';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import { DenominationsService } from '@shared/services/denominations.service';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-denominations',
@@ -125,7 +119,7 @@ export class DenominationsComponent implements OnInit {
     if (this.editItem || this.editVisibility) {
       this.itemToEdit = item;
       this.itemLabel = item.name;
-      console.log('selectedRelatedEntity', this.selectedRelatedEntity);
+
       this.selectedRelatedEntity = item.field
         ? {
             label: item.field.label,
@@ -142,7 +136,7 @@ export class DenominationsComponent implements OnInit {
   }
   onFieldSelect(item: any) {
     this.selectedRelatedEntity = item;
-    console.log(this.selectedRelatedEntity);
+
   }
   onSelectAll(items: any) {}
 
@@ -152,7 +146,6 @@ export class DenominationsComponent implements OnInit {
 
     this.simpleTabsRef.getAllItems({}).subscribe((result: any) => {
       this.relatedEntities = result.results;
-      console.log('relatedEntities', this.relatedEntities);
     });
     this.simpleTabsRef.tabRef = previousUrl;
   }
@@ -180,7 +173,6 @@ export class DenominationsComponent implements OnInit {
     this.deleteItems = false;
     this.editVisibility = false;
 
-    // this.myModal.close('Close click');
     this.myModal.dismiss('Cross click');
   }
 
@@ -252,11 +244,11 @@ export class DenominationsComponent implements OnInit {
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
     params = Object.assign(params, this.dataTableSearchBar);
-    console.log('http params', params);
+
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results;
-        console.log(this.items);
+
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
         this.start = (this.page - 1) * this.limit + 1;

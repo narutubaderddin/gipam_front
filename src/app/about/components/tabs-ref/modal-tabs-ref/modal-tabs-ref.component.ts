@@ -35,7 +35,7 @@ export class ModalTabsRefComponent implements OnInit {
     this.name = this.fromParent.name;
     this.itemLabel = this.fromParent.itemToEdit;
     this.btnLoading = this.fromParent.btnLoading;
-    console.log(this.selectedItem, this.editItem);
+
     this.initForm();
   }
   initForm() {

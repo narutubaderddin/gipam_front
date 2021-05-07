@@ -155,9 +155,9 @@
                 ></p-dropdown>
                 <ng-template let-option pTemplate="item">
                   <div>
-                      <div [ngStyle]="option.disabled? {'color': '#ccc', 'cursor': 'default'} : ''">{{option.name}}</div>
+                    <div [ngStyle]="option.disabled ? { color: '#ccc', cursor: 'default' } : ''">{{ option.name }}</div>
                   </div>
-              </ng-template>
+                </ng-template>
                 <span class="mandatory" *ngIf="!validate && !photographyType">Veuillez saisir un type</span>
               </div>
               <button class="btn add-action mb-2 ml-3" (click)="addPhotography()">
