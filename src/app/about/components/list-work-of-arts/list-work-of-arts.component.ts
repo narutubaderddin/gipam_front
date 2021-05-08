@@ -31,7 +31,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   @ViewChildren('accordionSectionDOM', { read: ElementRef }) accordionsDOM: QueryList<ElementRef>;
   @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
   isCollapsed = true;
-  showDatatable = true;
+  showDatatable = false;
   data = false;
   mode = 'liste';
   filterFormGroup: FormGroup;
@@ -346,7 +346,22 @@ export class ListWorkOfArtsComponent implements OnInit {
         case 'mouvement':
         case 'mouvementAction':
         case 'constat':
+        case 'deposant':
         case 'constatAction':
+        case 'categorie':
+        case 'localType':
+        case 'region':
+        case 'departement':
+        case 'communes':
+        case 'batiment':
+        case 'sites':
+        case 'pieceNumber':
+        case 'correspondant':
+        case 'etablissement':
+        case 'sousDirection':
+        case 'entryMode':
+        case 'services':
+        case 'ministry':
         case 'status':
           if (Array.isArray(value[key])) {
             value[key].forEach((item: any) => {
@@ -607,7 +622,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       this.fieldService.getAllFields(data),
       this.denominationsService.getAllDenominations(data),
       this.styleService.getAllItems(data),
-      this.simpleTabsRefService.getAllItems(data, 'materialTechniques'),
+      // this.simpleTabsRefService.getAllItems(data, 'materialTechniques'),
       this.simpleTabsRefService.getAllItems(data, 'eras'),
       this.simpleTabsRefService.getAllItems(data, 'authors'),
       this.simpleTabsRefService.getAllItems(data, 'propertyStatusCategories'),
@@ -633,7 +648,7 @@ export class ListWorkOfArtsComponent implements OnInit {
         fieldsResults,
         denominationResults,
         styleResults,
-        materialTechniquesResults,
+        // materialTechniquesResults,
         eraResults,
         authorResults,
         categoriesResults,
@@ -658,7 +673,7 @@ export class ListWorkOfArtsComponent implements OnInit {
         this.domainData = this.getTabRefData(fieldsResults['results']);
         this.denominationData = this.getTabRefData(denominationResults['results']);
         this.styleData = this.getTabRefData(styleResults['results']);
-        this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
+        // this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
         this.authorData = this.getTabRefData(authorResults['results']);
         this.categoriesData = this.getTabRefData(categoriesResults['results']);
         this.depositorsData = this.getTabRefData(depositorsResults['results']);
@@ -796,7 +811,6 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.form3 = new FormGroup({
       ministry: new FormControl(''),
       etablissement: new FormControl(''),
-      direction: new FormControl(''),
       sousDirection: new FormControl(''),
       services: new FormControl(''),
       correspondant: new FormControl(''),

@@ -665,6 +665,7 @@
                           id="entryMode"
                           [virtualScroll]="true"
                           itemSize="30"
+                          formControlName="entryMode"
                           emptyFilterMessage="Aucun résultat trouvé"
                           defaultLabel="Choisir un mode d'entrée"
                           optionLabel="name"
@@ -877,7 +878,7 @@
                           [virtualScroll]="true"
                           (onPanelHide)="onAdministratifMultiSelectChange('etablissement')"
                           [options]="establishmentData"
-                          id="etablissement"
+                          id="establishement"
                           formControlName="etablissement"
                           emptyFilterMessage="Aucun résultat trouvé"
                           defaultLabel="Choisir des étab/dir"
@@ -909,6 +910,7 @@
                         <p-multiSelect
                           [options]="serviceData"
                           id="services"
+                          formControlName="services"
                           emptyFilterMessage="Aucun résultat trouvé"
                           defaultLabel="Choisir des services"
                           optionLabel="name"
@@ -1244,7 +1246,7 @@
           </div>
         </div>
       </div>
-      <div class="datatable mt-4" *ngIf="showDatatable && artWorksData?.results.length > 0 && this.columns?.length > 0">
+      <div class="datatable mt-4" *ngIf="showDatatable && artWorksData?.results && this.columns?.length > 0">
         <div *ngIf="selectedRowCount > 1">
           <div class="mass-action-container">
             <i class="fas fa-share"></i>
