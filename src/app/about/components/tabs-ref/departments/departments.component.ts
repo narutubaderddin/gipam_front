@@ -8,6 +8,7 @@ import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-departments',
@@ -62,6 +63,20 @@ export class DepartmentsComponent implements OnInit {
   items: any[] = [];
   today: string;
 
+  activeRelatedEntities: any[] = [];
+
+  RelatedEntityColumn = {
+    header: 'Région',
+    field: 'region',
+    type: 'key-array',
+    key_data: ['region', 'name'],
+    filter: true,
+    filterType: 'multiselect',
+    placeholder: 'Région',
+    selectData: this.relatedEntities,
+    sortable: true,
+  };
+
   columns = [
     {
       header: 'Libellé',
@@ -74,7 +89,7 @@ export class DepartmentsComponent implements OnInit {
     {
       header: 'Date début de validité',
       field: 'startDate',
-      type: 'key',
+      type: 'date',
       filter: true,
       filterType: 'range-date',
       sortable: true,
@@ -83,18 +98,13 @@ export class DepartmentsComponent implements OnInit {
     {
       header: 'Date fin de validité',
       field: 'disappearanceDate',
-      type: 'key',
+      type: 'date',
       filter: true,
       filterType: 'range-date',
       sortable: true,
       width: '200px',
     },
-    {
-      header: 'Région',
-      field: 'region',
-      type: 'key-array',
-      key_data: ['region', 'name'],
-    },
+    this.RelatedEntityColumn,
     {
       header: 'Actions',
       field: 'action',
@@ -125,8 +135,31 @@ export class DepartmentsComponent implements OnInit {
   ngOnInit(): void {
     this.simpleTabsRef.tabRef = 'departments';
     this.getAllItems();
+    this.initFilterData();
     this.today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     this.initForm();
+  }
+  initFilterData() {
+    const previousUrl = this.simpleTabsRef.tabRef;
+    const data = {
+      page: 1,
+      'active[eq]': 1,
+      serializer_group: JSON.stringify(['response', 'short']),
+    };
+    forkJoin([this.simpleTabsRef.getAllItems(data, 'regions')]).subscribe(
+      ([relatedServicesResults]) => {
+        this.relatedEntities = this.simpleTabsRef.getTabRefFilterData(relatedServicesResults['results']);
+        this.activeRelatedEntities = this.simpleTabsRef
+          .getTabRefFilterData(relatedServicesResults['results'])
+          .filter((value: any) => this.isActive(value.disappearanceDate));
+
+        this.RelatedEntityColumn.selectData = this.relatedEntities;
+      },
+      (error: any) => {
+        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
+      }
+    );
+    this.simpleTabsRef.tabRef = previousUrl;
   }
 
   initForm() {
@@ -176,7 +209,6 @@ export class DepartmentsComponent implements OnInit {
         : {};
     }
     if (this.editItem || this.addItem) {
-      this.getRelatedEntity();
     }
     this.selectedItem = item;
     this.initForm();
@@ -187,19 +219,7 @@ export class DepartmentsComponent implements OnInit {
   }
   onSelectAll(items: any) {}
 
-  getRelatedEntity(): any {
-    const previousUrl = this.simpleTabsRef.tabRef;
-    this.simpleTabsRef.tabRef = 'regions';
-
-    this.simpleTabsRef.getAllItems({}).subscribe((result: any) => {
-      this.relatedEntities = result.results;
-      console.log(this.relatedEntities);
-    });
-    this.simpleTabsRef.tabRef = previousUrl;
-  }
-
   transformDateToDateTime(input: string, format: string, addTime: boolean = true) {
-    // 1984-06-05 12:15:30
     if (input !== '' && input) {
       if (addTime) {
         return this.datePipe.transform(input, format) + ' 00:00:00';
@@ -233,7 +253,6 @@ export class DepartmentsComponent implements OnInit {
     this.deleteItems = false;
     this.editVisibility = false;
 
-    // this.myModal.close('Close click');
     this.myModal.dismiss('Cross click');
   }
 
@@ -283,23 +302,6 @@ export class DepartmentsComponent implements OnInit {
     return !(endDate !== '' && endDate && endDate <= today);
   }
 
-  convertItem(item: any) {
-    const newItem = {
-      id: item.id,
-      name: item.name,
-      startDate: item.startDate,
-      disappearanceDate: item.disappearanceDate,
-      region: item.region ? item.region : '',
-      active: true,
-    };
-    newItem.startDate = item.startDate ? this.datePipe.transform(item.startDate, 'yyyy/MM/dd') : null;
-    newItem.disappearanceDate = item.disappearanceDate
-      ? this.datePipe.transform(item.disappearanceDate, 'yyyy/MM/dd')
-      : null;
-    newItem.active = this.isActive(newItem.disappearanceDate);
-    return newItem;
-  }
-
   getAllItems() {
     this.loading = true;
     let params = {
@@ -311,11 +313,11 @@ export class DepartmentsComponent implements OnInit {
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
     params = Object.assign(params, this.dataTableSearchBar);
-    console.log('http params', params);
+
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results.map((item: any) => {
-          return this.convertItem(item);
+          return Object.assign({ active: this.isActive(item.disappearanceDate) }, item);
         });
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;

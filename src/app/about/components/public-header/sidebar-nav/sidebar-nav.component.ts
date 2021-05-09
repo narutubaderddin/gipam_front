@@ -168,4 +168,28 @@ export class SidebarNavComponent implements OnInit {
     this.router.navigate(['tab-ref-type-etablissement']);
     this.toggleClose();
   }
+  goToCorrespondentsList() {
+    this.router.navigate(['tab-ref-correspondant']);
+    this.toggleClose();
+  }
+  goToResponsibleList() {
+    this.router.navigate(['tab-ref-responsable']);
+    this.toggleClose();
+  }
+  goToEntryModesList() {
+    this.router.navigate(['tab-ref-modes-entree']);
+    this.toggleClose();
+  }
+  goToAuthorTypesList() {
+    this.router.navigate(['tab-ref-types-auteur']);
+    this.toggleClose();
+  }
+  goToAttachmentTypesList() {
+    this.router.navigate(['tab-ref-types-fichier-joint']);
+    this.toggleClose();
+  }
+  goToPhotographyTypesList() {
+    this.router.navigate(['tab-ref-types-photographie']);
+    this.toggleClose();
+  }
 }

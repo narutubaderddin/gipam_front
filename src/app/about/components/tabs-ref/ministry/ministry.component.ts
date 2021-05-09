@@ -132,8 +132,6 @@ export class MinistryComponent implements OnInit {
     this.getAllItems();
     this.initForm();
     this.today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-    // this.filter =
-    //   this.activatedRoute.snapshot.queryParams.filter && this.activatedRoute.snapshot.queryParams.filter.length > 0;
   }
 
   initForm() {
@@ -294,7 +292,7 @@ export class MinistryComponent implements OnInit {
         this.items = result.results.map((item: any) => {
           return this.convertItem(item);
         });
-        console.log(result);
+
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
         this.start = (this.page - 1) * this.limit + 1;

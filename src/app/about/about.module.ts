@@ -104,6 +104,13 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FieldService } from '@shared/services/field.service';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { CorrespondentsComponent } from './components/tabs-ref/correspondents/correspondents.component';
+import { ResponsibleComponent } from './components/tabs-ref/responsible/responsible.component';
+import { EntryModesComponent } from '@app/about/components/tabs-ref/entryModes/entryModes.component';
+import { AuthorTypesComponent } from '@app/about/components/tabs-ref/authorTypes/authorTypes.component';
+import { AttachmentTypesComponent } from '@app/about/components/tabs-ref/attachmentTypes/attachmentTypes.component';
+import { PhotographyTypesComponent } from '@app/about/components/tabs-ref/photographyTypes/photographyTypes.component';
 
 setTheme('bs4');
 
@@ -170,6 +177,12 @@ const ngWizardConfig: NgWizardConfig = {
     CommunesComponent,
     DepartmentsComponent,
     LocalisationTypeComponent,
+    CorrespondentsComponent,
+    ResponsibleComponent,
+    EntryModesComponent,
+    AuthorTypesComponent,
+    AttachmentTypesComponent,
+    PhotographyTypesComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
@@ -217,6 +230,7 @@ const ngWizardConfig: NgWizardConfig = {
     ProgressSpinnerModule,
     InfiniteScrollModule,
     RadioButtonModule,
+    AutoCompleteModule,
   ],
   providers: [MovementsService, BsDatepickerConfig, MessageService, ArtWorksDataPipe, ArtWorksPipe, FieldService],
 })

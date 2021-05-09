@@ -286,7 +286,7 @@ export class PortailComponent implements OnInit {
     this.listOeuvres = [...this.listOeuvres, ...response.results];
     this.oeuvres = [];
     let results: any = this.listOeuvres.filter((oeuvre: any) => {
-      if(this.selectedOeuvre.find(elm=>elm.id == oeuvre.id)){
+      if (this.selectedOeuvre.find((elm) => elm.id == oeuvre.id)) {
         oeuvre.isDemanded = true;
       }
       return oeuvre.field !== null;

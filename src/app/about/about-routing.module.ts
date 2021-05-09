@@ -35,6 +35,12 @@ import { LocalisationTypeComponent } from '@app/about/components/tabs-ref/locali
 import { ServicesComponent } from '@app/about/components/tabs-ref/services/services.component';
 import { SitesComponent } from '@app/about/components/tabs-ref/sites/sites.component';
 import { EstablishmentTypesComponent } from '@app/about/components/tabs-ref/establishmentTypes/establishmentTypes.component';
+import { CorrespondentsComponent } from '@app/about/components/tabs-ref/correspondents/correspondents.component';
+import { ResponsibleComponent } from '@app/about/components/tabs-ref/responsible/responsible.component';
+import { EntryModesComponent } from '@app/about/components/tabs-ref/entryModes/entryModes.component';
+import { AuthorTypesComponent } from '@app/about/components/tabs-ref/authorTypes/authorTypes.component';
+import { AttachmentTypesComponent } from '@app/about/components/tabs-ref/attachmentTypes/attachmentTypes.component';
+import { PhotographyTypesComponent } from '@app/about/components/tabs-ref/photographyTypes/photographyTypes.component';
 const routes: Routes = [
   {
     path: '',
@@ -115,6 +121,28 @@ const routes: Routes = [
         component: SitesComponent,
         data: { title: 'Liste des sites' },
       },
+      {
+        path: 'tab-ref-modes-entree',
+        component: EntryModesComponent,
+        data: { title: "Liste des modes d'entréé" },
+      },
+      {
+        path: 'tab-ref-types-auteur',
+        component: AuthorTypesComponent,
+        data: { title: 'Liste des types auteur' },
+      },
+      {
+        path: 'tab-ref-types-fichier-joint',
+        component: AttachmentTypesComponent,
+        data: { title: 'Liste des types fichier joint' },
+      },
+      {
+        path: 'tab-ref-types-photographie',
+        component: PhotographyTypesComponent,
+        data: { title: 'Liste des types photographie' },
+      },
+      { path: 'tab-ref-correspondant', component: CorrespondentsComponent },
+      { path: 'tab-ref-responsable', component: ResponsibleComponent },
     ],
   },
 ];
