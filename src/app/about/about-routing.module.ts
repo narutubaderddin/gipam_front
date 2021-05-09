@@ -41,6 +41,7 @@ import { EntryModesComponent } from '@app/about/components/tabs-ref/entryModes/e
 import { AuthorTypesComponent } from '@app/about/components/tabs-ref/authorTypes/authorTypes.component';
 import { AttachmentTypesComponent } from '@app/about/components/tabs-ref/attachmentTypes/attachmentTypes.component';
 import { PhotographyTypesComponent } from '@app/about/components/tabs-ref/photographyTypes/photographyTypes.component';
+import { PersonsComponent } from '@app/about/components/tabs-ref/persons/persons.component';
 const routes: Routes = [
   {
     path: '',
@@ -125,6 +126,11 @@ const routes: Routes = [
         path: 'tab-ref-modes-entree',
         component: EntryModesComponent,
         data: { title: "Liste des modes d'entréé" },
+      },
+      {
+        path: 'tab-ref-personnes',
+        component: PersonsComponent,
+        data: { title: 'Liste des personnes' },
       },
       {
         path: 'tab-ref-types-auteur',

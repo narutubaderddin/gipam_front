@@ -111,6 +111,7 @@ import { EntryModesComponent } from '@app/about/components/tabs-ref/entryModes/e
 import { AuthorTypesComponent } from '@app/about/components/tabs-ref/authorTypes/authorTypes.component';
 import { AttachmentTypesComponent } from '@app/about/components/tabs-ref/attachmentTypes/attachmentTypes.component';
 import { PhotographyTypesComponent } from '@app/about/components/tabs-ref/photographyTypes/photographyTypes.component';
+import { PersonsComponent } from '@app/about/components/tabs-ref/persons/persons.component';
 
 setTheme('bs4');
 
@@ -183,6 +184,7 @@ const ngWizardConfig: NgWizardConfig = {
     AuthorTypesComponent,
     AttachmentTypesComponent,
     PhotographyTypesComponent,
+    PersonsComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
