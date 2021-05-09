@@ -250,6 +250,7 @@
               formControlName="materialTechnique"
               optionLabel="name"
               [filter]="true"
+              (onChange)="onSelect($event, 'matiere')"
             >
             </p-multiSelect>
           </div>

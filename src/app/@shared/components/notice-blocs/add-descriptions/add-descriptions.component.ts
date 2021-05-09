@@ -73,7 +73,6 @@ export class AddDescriptionsComponent implements OnInit {
       this.fieldService.getAllFields(data),
       this.denominationsService.getAllDenominations(data),
       this.styleService.getAllItems(data),
-      this.simpleTabsRefService.getAllItems(data, 'materialTechniques'),
       this.simpleTabsRefService.getAllItems(data, 'eras'),
       this.simpleTabsRefService.getAllItems(data, 'authors'),
       this.simpleTabsRefService.getAllItems(data, 'propertyStatusCategories'),
@@ -84,7 +83,6 @@ export class AddDescriptionsComponent implements OnInit {
         fieldsResults,
         denominationResults,
         styleResults,
-        materialTechniquesResults,
         eraResults,
         authorResults,
         categoriesResults,
@@ -95,8 +93,6 @@ export class AddDescriptionsComponent implements OnInit {
         this.denominationData = denominationResults['results'];
         this.denominations = denominationResults['results'];
         this.styleData = this.getTabRefData(styleResults['results']);
-        this.materialTechniquesData = materialTechniquesResults['results'];
-        this.materialTechniques = materialTechniquesResults['results'];
         this.authorData = this.getTabRefData(authorResults['results']);
         this.categoriesData = this.getTabRefData(categoriesResults['results']);
         this.depositorsData = this.getTabRefData(depositorsResults['results']);
@@ -105,78 +101,49 @@ export class AddDescriptionsComponent implements OnInit {
       }
     );
   }
-  onMultiselectChange(key = 'field') {
-    let selectedData = this.descriptifForm.get(key).value;
-    let selectedDataId: any[] = [];
-    if (Array.isArray(selectedData)) {
-      selectedData.forEach((selectedDataValue: any) => {
-        selectedDataId.push(selectedDataValue.id);
-      });
-    }
 
-    const apiData = {
-      page: 1,
-      'active[eq]': 1,
-    };
-    switch (key) {
-      case 'field':
-        let materialApiData = Object.assign({}, apiData);
-        apiData['field[in]'] = JSON.stringify(selectedDataId);
-        materialApiData['field'] = JSON.stringify(selectedDataId);
-        forkJoin([
-          this.denominationsService.getAllDenominations(apiData),
-          this.materialTechniqueService.getFilteredMaterialTechnique(materialApiData),
-        ]).subscribe(([denominationResults, materialTechniquesResults]) => {
-          this.denominationData = this.getTabRefData(denominationResults['results']);
-          this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
-        });
-        break;
-      case 'denomination':
-        apiData['denomination'] = JSON.stringify(selectedDataId);
-        selectedData = this.descriptifForm.get('field').value;
-        selectedDataId = [];
-        if (Array.isArray(selectedData)) {
-          selectedData.forEach((selectedDataValue: any) => {
-            selectedDataId.push(selectedDataValue.id);
-          });
-        }
-
-        apiData['field'] = JSON.stringify(selectedDataId);
-        this.materialTechniqueService.getFilteredMaterialTechnique(apiData).subscribe((materialTechniquesResults) => {
-          this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
-        });
-
-        break;
-    }
-  }
   onTagEdited(e: any) {
     console.log(e);
-  }
-  selectEvent(item: any) {}
-
-  onChangeSearch(val: string) {
-    // fetch remote data from here
-    // And reassign the 'data' which is binded to 'data' property.
-  }
-
-  onFocused(e: any) {
-    // do something when input is focused
   }
 
   onCollapse() {
     this.isCollapsed = !this.isCollapsed;
   }
-  onSelect(value: any, item: string) {
-    if (item == 'field') {
-      this.selectedDomain = value.value.name;
-      this.denominationData = this.denominations.filter((denomination: any) => {
-        return denomination.field.id == value.value.id;
-      });
+  onSelect(value: any, key: string) {
+    const apiData = {
+      page: 1,
+      'active[eq]': 1,
+    };
+    const materialApiData = Object.assign({}, apiData);
+
+    switch (key) {
+      case 'field':
+        this.selectedDomain = value.value.name;
+        this.denominationData = this.denominations.filter((denomination: any) => {
+          return denomination.field.id === value.value.id;
+        });
+        console.log(this.denominationData);
+        materialApiData['denominations'] = JSON.stringify(this.denominationData);
+        forkJoin([this.materialTechniqueService.getFilteredMaterialTechnique(materialApiData)]).subscribe(
+          ([materialTechniquesResults]) => {
+            console.log(materialTechniquesResults);
+            this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
+          }
+        );
+        break;
+      case 'denomination':
+        materialApiData['denominations'] = JSON.stringify([value.value]);
+        forkJoin([this.materialTechniqueService.getFilteredMaterialTechnique(materialApiData)]).subscribe(
+          ([materialTechniquesResults]) => {
+            console.log(materialTechniquesResults);
+            this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
+          }
+        );
+        break;
+      case 'matiere':
+        this.denominationData = value.value.denominations;
+        break;
     }
-    if (item == 'denomination') {
-      this.selectedDomain = value.value.field.label;
-    }
-    console.log('mat', this.materialTechniquesData);
   }
   onDenominationSelect(item: any) {
     this.denomination = item;

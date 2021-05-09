@@ -825,3 +825,8 @@ ng-file-drag-drop {
 .p-toast-top-right {
   z-index: 1055 !important;
 }
+.p-autocomplete .p-autocomplete-panel {
+  min-width: 100%;
+  max-width: 100%;
+  font-size: 12px;
+}

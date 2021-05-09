@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import ArtWorksDataModel from '@app/about/models/art-works-model';
 import { ArtWorkService } from '@app/about/services/art-work.service';
-import { ColDef, ColumnApi, GridApi } from 'ag-grid-community';
-import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { WorkOfArtService } from '@shared/services/work-of-art.service';
 
 @Component({
   selector: 'app-links',
@@ -11,14 +10,49 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 })
 export class LinksComponent implements OnInit {
   @Input() add: false;
-  refs = [' 125', ' 222', ' 342'];
   artWorksData: any;
-  constructor(private artWorkService: ArtWorkService) {}
+  constructor(private artWorkService: ArtWorkService, private workOfArtService: WorkOfArtService) {}
 
   ngOnInit(): void {
-    this.artWorkService.getArtWorksData().subscribe((artWorksData: ArtWorksDataModel) => {
-      this.artWorksData = artWorksData.results;
-      console.log(this.artWorksData);
-    });
+    const filter = {
+      page: 1,
+      limit: 10,
+    };
+    this.workOfArtService.getOeuvres(filter).subscribe(
+      (response) => {
+        this.artWorksData = response.results;
+      },
+      (error) => {
+        //   //error() callback
+        //   this.loading = this.loadingScroll = this.loadingScrollUp = false;
+        // },
+        // () => {
+        //   //complete() callback
+        //   this.loading = this.loadingScroll = this.loadingScrollUp = false;
+      }
+    );
+  }
+
+  search(event: any) {
+    console.log(event);
+    const filter = {
+      page: 1,
+      limit: 10,
+      search: event.query,
+    };
+    this.workOfArtService.getOeuvres(filter).subscribe(
+      (response) => {
+        this.artWorksData = response.results;
+        console.log(response);
+      },
+      (error) => {
+        //   //error() callback
+        //   this.loading = this.loadingScroll = this.loadingScrollUp = false;
+        // },
+        // () => {
+        //   //complete() callback
+        //   this.loading = this.loadingScroll = this.loadingScrollUp = false;
+      }
+    );
   }
 }
