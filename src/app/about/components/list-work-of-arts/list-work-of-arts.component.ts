@@ -1,6 +1,5 @@
 import { Router } from '@angular/router';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
-import { ColumnApi, GridApi } from 'ag-grid-community';
 import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ColumnFilterService } from '@shared/services/column-filter.service';
@@ -41,8 +40,6 @@ export class ListWorkOfArtsComponent implements OnInit {
   frozenCols: any = [];
   columns: any[];
   selectedRowCount = 0;
-  gridApi: GridApi;
-  gridColumnApi: ColumnApi;
   inventoryOptions: Options;
   gridReady = false;
   dataSlider: any = {
@@ -1094,7 +1091,7 @@ export class ListWorkOfArtsComponent implements OnInit {
         filter: false,
         type: 'app-visible-catalog-component-render',
         width: '150px',
-        isVisible: true,
+        isVisible: false,
       },
     ];
   }
@@ -1117,7 +1114,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.initData(data, advancedData, this.headerFilter, this.artWorksData.page);
   }
 
-  onAdministratifMultiSelectChange(key: string) {;
+  onAdministratifMultiSelectChange(key: string) {
     let selectedDataId: any[] = [];
     switch (key) {
       case 'ministry':

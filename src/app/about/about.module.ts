@@ -9,7 +9,6 @@ import { PublicHeaderComponent } from '@app/about/components/public-header/publi
 import { ItemDetailsComponent } from '@app/about/components/item-details/item-details.component';
 import { NgbCarouselModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ActionsComponent } from './components/item-details/actions/actions.component';
-import { AgGridModule } from 'ag-grid-angular';
 import { AddActionModalComponent } from './components/item-details/actions/add-action-modal/add-action-modal.component';
 import { EditActionModalComponent } from './components/item-details/actions/edit-action-modal/edit-action-modal.component';
 import { MovementsComponent } from './components/item-details/movements/movements.component';
@@ -39,7 +38,6 @@ import { NgxHorizontalTimelineModule } from 'ngx-horizontal-timeline';
 import { LastMovementComponent } from './components/item-details/movements/last-movement/last-movement.component';
 import { NgImageSliderModule } from 'ng-image-slider';
 import { NgWizardModule, NgWizardConfig, THEME } from 'ng-wizard';
-import { FullWidthCellRendererComponent as FullWidthCellRenderer } from '@app/@shared/components/datatables/full-width-cell-renderer/full-width-cell-renderer.component';
 import { NoticeBeingCreatedComponent } from './components/administrator-home-page/notice-being-created/notice-being-created.component';
 import { NgFileDragDropModule } from 'ng-file-drag-drop';
 import { BsDatepickerModule, BsDatepickerConfig, DatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -204,7 +202,6 @@ const ngWizardConfig: NgWizardConfig = {
     NgMultiSelectDropDownModule,
     NgbCarouselModule,
     NgbModule,
-    AgGridModule.withComponents([FullWidthCellRenderer]),
     AutocompleteLibModule,
     TreeviewModule.forRoot(),
     NgxSliderModule,

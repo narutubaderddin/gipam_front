@@ -1,11 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomHeaderRendererComponent } from '@shared/components/datatables/custom-header-renderer/custom-header-renderer.component';
-import { BeingCreatedRemarquersActionsRendererComponent } from '@shared/components/datatables/being-created-remarquers-actions-renderer/being-created-remarquers-actions-renderer.component';
-import { VisibleCatalogRendererComponent } from '@shared/components/datatables/visible-catalog-renderer/visible-catalog-renderer.component';
-import { RemarquerDetailsLinkRendererComponent } from '@shared/components/datatables/remarquer-details-link-renderer/remarquer-details-link-renderer.component';
-import { StatusTypeRenderComponent } from '@shared/components/datatables/status-type-render/status-type-render.component';
 import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
-import { ColDef, ColumnApi, GridApi, GridOptions, ICellEditorParams } from 'ag-grid-community';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkOfArtService } from '@app/@shared/services/work-of-art.service';
 
@@ -15,13 +9,6 @@ import { WorkOfArtService } from '@app/@shared/services/work-of-art.service';
   styleUrls: ['./recolement-list.component.scss'],
 })
 export class RecolementListComponent implements OnInit {
-  frameworkComponents = {
-    customHeader: CustomHeaderRendererComponent,
-    gridActionRenderer: BeingCreatedRemarquersActionsRendererComponent,
-    visibleRenderer: VisibleCatalogRendererComponent,
-    detailsLink: RemarquerDetailsLinkRendererComponent,
-    statusTypeRender: StatusTypeRenderComponent,
-  };
   defaultColDef = {
     headerComponent: 'customHeader',
     sortable: true,
@@ -36,10 +23,7 @@ export class RecolementListComponent implements OnInit {
       type: TYPES.text,
     },
   };
-  gridOptions: GridOptions = {
-    suppressLoadingOverlay: false,
-    suppressScrollOnNewData: true,
-  };
+
   remarquers: any;
   columns: any[] = [
     {
@@ -133,7 +117,7 @@ export class RecolementListComponent implements OnInit {
       sortable: true,
     },
   ];
-  ColDef: ColDef[] = [
+  ColDef: any[] = [
     {
       headerName: 'Titre de récolement ',
       field: 'titre',
@@ -202,8 +186,6 @@ export class RecolementListComponent implements OnInit {
   pinnedCols: string[] = ['action'];
   leftPinnedCols: string[] = ['id'];
 
-  gridApi: GridApi;
-  gridColumnApi: ColumnApi;
   gridReady = false;
   rowCount: any = 5;
   filter: boolean = false;
@@ -224,18 +206,6 @@ export class RecolementListComponent implements OnInit {
     this.filter =
       this.activatedRoute.snapshot.queryParams['filter'] &&
       this.activatedRoute.snapshot.queryParams['filter'].length > 0;
-  }
-
-  onGridReady(params: ICellEditorParams) {
-    this.gridApi = params.api;
-    this.gridColumnApi = params.columnApi;
-    this.gridReady = true;
-  }
-
-  onRowCountChange(event: Event) {
-    // @ts-ignore
-    this.rowCount = event.target.value;
-    this.gridApi.paginationSetPageSize(Number(this.rowCount));
   }
 
   resetFilter() {}
