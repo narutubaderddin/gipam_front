@@ -118,6 +118,7 @@ import { DemandService } from '@shared/services/demand.service';
 import { PersonsComponent } from '@app/about/components/tabs-ref/persons/persons.component';
 import { DepositorsComponent } from '@app/about/components/tabs-ref/depositors/depositors.component';
 import { RoomsComponent } from '@app/about/components/tabs-ref/rooms/rooms.component';
+import { AuthorsComponent } from '@app/about/components/tabs-ref/authors/authors.component';
 
 setTheme('bs4');
 
@@ -193,6 +194,7 @@ const ngWizardConfig: NgWizardConfig = {
     PersonsComponent,
     DepositorsComponent,
     RoomsComponent,
+    AuthorsComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
