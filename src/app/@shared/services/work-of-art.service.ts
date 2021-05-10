@@ -694,4 +694,8 @@ export class WorkOfArtService {
     this._selectedArtWorks = items;
     localStorage.setItem('selectedArtWorks',JSON.stringify(this._selectedArtWorks));
   }
+
+  removeSelectedArtWorks() {
+    localStorage.removeItem('selectedArtWorks');
+  }
 }
