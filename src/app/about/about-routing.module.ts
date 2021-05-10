@@ -42,6 +42,7 @@ import { AuthorTypesComponent } from '@app/about/components/tabs-ref/authorTypes
 import { AttachmentTypesComponent } from '@app/about/components/tabs-ref/attachmentTypes/attachmentTypes.component';
 import { PhotographyTypesComponent } from '@app/about/components/tabs-ref/photographyTypes/photographyTypes.component';
 import { PersonsComponent } from '@app/about/components/tabs-ref/persons/persons.component';
+import { DepositorsComponent } from '@app/about/components/tabs-ref/depositors/depositors.component';
 const routes: Routes = [
   {
     path: '',
@@ -146,6 +147,11 @@ const routes: Routes = [
         path: 'tab-ref-types-photographie',
         component: PhotographyTypesComponent,
         data: { title: 'Liste des types photographie' },
+      },
+      {
+        path: 'tab-ref-deposants',
+        component: DepositorsComponent,
+        data: { title: 'Liste des déposants' },
       },
       { path: 'tab-ref-correspondant', component: CorrespondentsComponent },
       { path: 'tab-ref-responsable', component: ResponsibleComponent },
