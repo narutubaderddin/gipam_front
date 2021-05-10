@@ -122,32 +122,26 @@ export class AddDescriptionsComponent implements OnInit {
         this.denominationData = this.denominations.filter((denomination: any) => {
           return denomination.field.id === value.value.id;
         });
-        console.log(this.denominationData);
         materialApiData['denominations'] = JSON.stringify(this.denominationData);
         forkJoin([this.materialTechniqueService.getFilteredMaterialTechnique(materialApiData)]).subscribe(
           ([materialTechniquesResults]) => {
-            console.log(materialTechniquesResults);
             this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
           }
         );
         break;
       case 'denomination':
+        const selectedDomain = this.getTabRefData([value.value.field]);
+        if (!this.descriptifForm.get('field').value.length) {
+          this.descriptifForm.get('field').setValue(selectedDomain[0]);
+        }
+
         materialApiData['denominations'] = JSON.stringify([value.value]);
         forkJoin([this.materialTechniqueService.getFilteredMaterialTechnique(materialApiData)]).subscribe(
           ([materialTechniquesResults]) => {
-            console.log(materialTechniquesResults);
             this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
           }
         );
         break;
-      case 'matiere':
-        this.denominationData = value.value.denominations;
-        break;
     }
   }
-  onDenominationSelect(item: any) {
-    this.denomination = item;
-  }
-  onAuthorSelect(item: any) {}
-  onSelectAll(items: any) {}
 }

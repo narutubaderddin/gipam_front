@@ -64,6 +64,7 @@ import { NgFileDragDropModule } from 'ng-file-drag-drop';
 import { CarouselModule } from 'primeng/carousel';
 import { DialogModule } from 'primeng/dialog';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   imports: [
@@ -97,6 +98,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
     CarouselModule,
     DialogModule,
     AutoCompleteModule,
+    InfiniteScrollModule,
   ],
   declarations: [
     LoaderComponent,
