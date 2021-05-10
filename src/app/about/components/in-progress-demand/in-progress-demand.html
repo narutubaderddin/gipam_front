@@ -2,16 +2,39 @@
   <a href="home-page" class="selected-item"> Liste des commandes </a>
 </div>
 <div class="container-fluid">
-  <div class="body card-table">
-    <app-ng-data-table
-      [data]="products"
-      [columns]="columns"
-      [expand]="true"
-      [expandColumns]="expandColumns"
-      [checkBoxSelection]="false"
-      [singleSelect]="false"
-      frozenWidth="'0px'"
-      [frozenCols]="[]"
-    ></app-ng-data-table>
+  <div class="body d-flex">
+    <div class="col-md-12">
+      <div class="mt-3">
+        <div class="sidebar">
+          <div class="card">
+            <div class="card-body">
+              <ul class="d-flex">
+                <li class="col-md-12 selected-table"><i class="fas fa-tasks"></i><a>List des Demandes en cours</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="mt-2 datagrid-bloc">
+          <div class="datatable mt-4">
+            <app-ng-data-table
+              [data]="requests.results"
+              [columns]="columns"
+              [expand]="true"
+              [expandColumns]="expandColumns"
+              [checkBoxSelection]="false"
+              [singleSelect]="false"
+              [loading]="loading"
+              frozenWidth="'0px'"
+              (pageChanged)="pagination($event)"
+              [frozenCols]="[]"
+              [totalFiltred]="requests.filteredQuantity"
+              [total]="requests.totalQuantity"
+              [page]="requests.page"
+              [limit]="requests.size"
+            ></app-ng-data-table>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

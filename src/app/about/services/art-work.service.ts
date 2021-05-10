@@ -32,8 +32,8 @@ export class ArtWorkService {
         })
       );
   }
-  getAutocompleteData(query: string): Observable<any> {
-    const url = ART_WORKS_API_URL + 'autocompleteData?query=' + query;
+  getAutocompleteData(query: string, type: string): Observable<any> {
+    const url = ART_WORKS_API_URL + 'autocompleteData?query=' + query + '&type=' + type;
     return this.http.get(url, {});
   }
 }
