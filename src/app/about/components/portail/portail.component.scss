@@ -986,6 +986,9 @@ div.mode {
   height: 50px;
 }
 
-.disabled-oeuvre{
+.disabled-oeuvre {
   opacity: 0.55;
+  i{
+   color: #607D8B !important;
+  }
 }

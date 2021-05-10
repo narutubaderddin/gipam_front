@@ -7,24 +7,24 @@ import { Observable } from 'rxjs';
 })
 export class EstablishmentService {
   constructor(private http: HttpClient) {}
-  getEstablishments(param : any = null): Observable<any> {
-    let filter : string = "?";
-    if(param){
-      if(param.label){
-        filter+="label[contains]="+param.label;
+  getEstablishments(param: any = null): Observable<any> {
+    let filter: string = '?';
+    if (param) {
+      if (param.label) {
+        filter += 'label[contains]=' + param.label;
       }
     }
-    return this.http.get('/establishments'+filter);
+    return this.http.get('/establishments' + filter);
   }
 
-  getSubDirections(params:any): Observable<any> {
-    let filter = "?";
-    if(params.establishmentId){
-      filter+= 'establishment[eq]='+params.establishmentId;
+  getSubDirections(params: any): Observable<any> {
+    let filter = '?';
+    if (params.establishmentId) {
+      filter += 'establishment[eq]=' + params.establishmentId;
     }
-    if(params.label){
-      filter+='&label='+params.label;
+    if (params.label) {
+      filter += '&label=' + params.label;
     }
-    return this.http.get('/subDivisions'+filter);
+    return this.http.get('/subDivisions' + filter);
   }
 }

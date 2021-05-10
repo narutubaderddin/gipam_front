@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import {DemandService} from '@shared/services/demand.service';
-import {SharedService} from '@shared/services/shared.service';
+import { DemandService } from '@shared/services/demand.service';
+import { SharedService } from '@shared/services/shared.service';
 
 @Component({
   selector: 'my-app',
@@ -27,6 +27,10 @@ export class InProgressDemandComponent {
       header: 'Sous-direction',
       field: 'subDivisionLabel',
     },
+    {
+      header: 'Status',
+      field: 'status',
+    },
   ];
   expandColumns = [
     {
@@ -35,7 +39,7 @@ export class InProgressDemandComponent {
       sortable: true,
       filter: true,
       filterType: 'text',
-      type: 'app-remarquer-details-link-render'
+      type: 'app-remarquer-details-link-render',
     },
     {
       header: 'Titre',
@@ -160,45 +164,44 @@ export class InProgressDemandComponent {
     },
   ];
 
-  requests : any = [];
-  loading : boolean = false;
-  page : any = 1;
-  constructor(private demandService : DemandService,public sharedService: SharedService) {
+  requests: any = [];
+  loading: boolean = false;
+  page: any = 1;
+  constructor(private demandService: DemandService, public sharedService: SharedService) {
     this.getListDemands();
   }
-  getListDemands()
-  {
+  getListDemands() {
     this.loading = true;
 
-    let payload : any = {
-      page  :this.page
-    }
+    let payload: any = {
+      page: this.page,
+    };
 
     this.demandService.getDemands(payload).subscribe(
       (response) => {
         this.loading = false;
         this.requests = response;
-        this.requests.results = this.requests.results.map((elm:any)=>{
+        this.requests.results = this.requests.results.map((elm: any) => {
           return {
             ...elm,
-            createdAt : `${this.sharedService.dateToString(elm.createdAt)}`,
-            name : elm.firstName + ' ' + elm.lastName,
-            expandData : elm.artWorks.map((eData:any)=>{
+            createdAt: `${this.sharedService.dateToString(elm.createdAt)}`,
+            name: elm.firstName + ' ' + elm.lastName,
+            expandData: elm.artWorks.map((eData: any) => {
               let authors: string = '';
-              eData.authors.forEach((auth:any,index:number)=>{
-                authors+=auth.firstName + ' ' + auth.lastName;
-                if(index<eData.length-1){
-                  authors+=', ';
+              eData.authors.forEach((auth: any, index: number) => {
+                authors += auth.firstName + ' ' + auth.lastName;
+                if (index < eData.length - 1) {
+                  authors += ', ';
                 }
-              })
+              });
               return {
                 ...eData,
-                author: authors
-              }
+                author: authors,
+              };
             }),
-            establishementLabel : elm.establishement.label,
-            subDivisionLabel : elm.subDivision.label
-          }
+            establishementLabel: elm.establishement.label,
+            subDivisionLabel: elm.subDivision.label,
+          };
         });
       },
       (error) => {
@@ -213,10 +216,8 @@ export class InProgressDemandComponent {
   }
 
   pagination(e: any) {
-
     if (e.page < this.requests.totalQuantity / parseInt(this.requests.size.toString(), 0)) {
       this.requests.page = this.page = e.page + 1;
-
     } else {
       this.requests.page = this.requests.totalQuantity / parseInt(this.requests.size.toString(), 0);
     }

@@ -3,7 +3,7 @@ import { Component, HostListener, OnInit, TemplateRef, ViewChild } from '@angula
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
 import { LabelType, Options } from '@angular-slider/ngx-slider';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   NgbModal,
   ModalDismissReasons,
@@ -12,9 +12,9 @@ import {
   NgbCalendar,
 } from '@ng-bootstrap/ng-bootstrap';
 import { FieldService } from '@shared/services/field.service';
-import {RequestService} from '@shared/services/request.service';
-import {EstablishmentService} from '@shared/services/establishment.service';
-import {MessageService} from 'primeng/api';
+import { RequestService } from '@shared/services/request.service';
+import { EstablishmentService } from '@shared/services/establishment.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-portail',
@@ -104,7 +104,7 @@ export class PortailComponent implements OnInit {
   form1: FormGroup;
   firstSearchDrop = false;
   showForm1End = false;
-  requestForm : any;
+  requestForm: any;
 
   constructor(
     private WorkOfArtService: WorkOfArtService,
@@ -154,36 +154,16 @@ export class PortailComponent implements OnInit {
       ceil: 9999,
     };
     this.requestForm = new FormGroup({
-      firstName: new FormControl('', [
-        Validators.required
-      ]),
-      lastName: new FormControl('', [
-        Validators.required
-      ]),
-      pieceNumber: new FormControl('', [
-        Validators.required
-      ]),
-      phone: new FormControl('', [
-        Validators.required
-      ]),
-      mail: new FormControl('', [
-        Validators.required,Validators.email
-      ]),
-      establishement: new FormControl('', [
-        Validators.required
-      ]),
-      subDivision: new FormControl('', [
-        Validators.required
-      ]),
-      function: new FormControl('', [
-        Validators.required
-      ]),
-      building: new FormControl('', [
-        Validators.required
-      ]),
-      level: new FormControl('', [
-        Validators.required
-      ]),
+      firstName: new FormControl('', [Validators.required]),
+      lastName: new FormControl('', [Validators.required]),
+      pieceNumber: new FormControl('', [Validators.required]),
+      phone: new FormControl('', [Validators.required]),
+      mail: new FormControl('', [Validators.required, Validators.email]),
+      establishement: new FormControl('', [Validators.required]),
+      subDivision: new FormControl('', [Validators.required]),
+      function: new FormControl('', [Validators.required]),
+      building: new FormControl('', [Validators.required]),
+      level: new FormControl('', [Validators.required]),
       comment: new FormControl(''),
     });
   }
@@ -212,8 +192,11 @@ export class PortailComponent implements OnInit {
   onFilterChange(value: string): void {
     console.log('filter:', value);
   }
-  details(visible: any, source: string, id: string) {
-    this.router.navigate(['portail-details', id]);
+  details(item:any) {
+    if (item.isInRequest) {
+      return false;
+    }
+    this.router.navigate(['portail-details', item.id]);
   }
 
   onSearchClick() {}
@@ -290,7 +273,7 @@ export class PortailComponent implements OnInit {
 
   addToBasket(event: any, item: any) {
     event.stopPropagation();
-    if(item.isInRequest){
+    if (item.isInRequest) {
       return false;
     }
     item.isDemanded = true;
@@ -299,7 +282,7 @@ export class PortailComponent implements OnInit {
   oeuvreToBeremoved: any;
   removeFromBasket(event: any, item: any) {
     event.stopPropagation();
-    if(item.isInRequest){
+    if (item.isInRequest) {
       return false;
     }
     this.oeuvreToBeremoved = item;
@@ -339,12 +322,12 @@ export class PortailComponent implements OnInit {
     this.listOeuvres = [...this.listOeuvres, ...response.results];
     this.oeuvres = [];
     let results: any = this.listOeuvres.filter((oeuvre: any) => {
-      oeuvre.tooltip = "Ajouter au panier";
-      if(this.selectedOeuvre.find(elm=>elm.id == oeuvre.id)){
+      oeuvre.tooltip = 'Ajouter au panier';
+      if (this.selectedOeuvre.find((elm) => elm.id == oeuvre.id)) {
         oeuvre.isDemanded = true;
       }
-      if(oeuvre.isInRequest){
-        oeuvre.tooltip = "Oeuvre en demande";
+      if (oeuvre.isInRequest) {
+        oeuvre.tooltip = 'Oeuvre réservé';
       }
       return oeuvre.field !== null;
     });
@@ -513,127 +496,125 @@ export class PortailComponent implements OnInit {
     this.oeuvres = this.listOeuvres = [];
     this.page = 1;
   }
-  getEstablishments(){
-    this.establishmentService.getEstablishments().subscribe(
-      (response) => {
+  getEstablishments() {
+    this.establishmentService.getEstablishments().subscribe((response) => {
+      this.establishments = response.results;
+    });
+  }
+  filterEstablishment(event: any) {
+    let filter = event.filter;
+    if (filter.length >= 3) {
+      let payload: any = {
+        label: filter,
+      };
+      this.establishmentService.getEstablishments(payload).subscribe((response) => {
         this.establishments = response.results;
       });
-  }
-  filterEstablishment(event:any){
-    let filter = event.filter;
-    if(filter.length>=3){
-      let payload : any = {
-        label : filter
-      }
-      this.establishmentService.getEstablishments(payload).subscribe(
-        (response) => {
-          this.establishments = response.results;
-        });
     }
   }
-  filterSubDirection(event:any){
+  filterSubDirection(event: any) {
     let filter = event.filter;
-    if(filter.length>=3){
-      let payload : any = {
-        label : filter
-      }
-      this.establishmentService.getEstablishments(payload).subscribe(
-        (response) => {
-          this.establishments = response.results;
-        });
-    }
-  }
-  filterBuilding(event:any){
-    let filter = event.filter;
-    if(filter.length>=3){
-      let payload : any = {
-        label : filter
-      }
-      this.establishmentService.getEstablishments(payload).subscribe(
-        (response) => {
-          this.establishments = response.results;
-        });
-    }
-  }
-  getBuildings(){
-    this.requestService.getBuildings().subscribe(
-      (response) => {
-        this.buildings = response.results;
-
+    if (filter.length >= 3) {
+      let payload: any = {
+        label: filter,
+      };
+      this.establishmentService.getEstablishments(payload).subscribe((response) => {
+        this.establishments = response.results;
       });
-  }
-  request : any
-  onSubmitRequest(request:any) {
-
-      let payload : any = {
-        ...this.requestForm.value
-      }
-      let artWorks : any = [];
-      this.selectedOeuvre.forEach((ouvre)=>{
-        artWorks.push(ouvre.id);
-      });
-      if(artWorks.length>0) {
-        payload.artWorks = artWorks;
-      }
-      payload.pieceNumber = payload.pieceNumber.label;
-      payload.level = payload.level.label;
-      payload.subDivision = payload.subDivision.id;
-      payload.establishement = payload.establishement.id;
-      payload.building = payload.building.id;
-      this.requestService.newRequest(payload).subscribe((response:any)=>{
-        this.modalService.dismissAll('NgbdModal1Content');
-        this.requestForm.reset();
-        this.selectedBuilding = this.selectedLevel
-          = this.selectedEstablishment
-          = this.selectedPieceNumber
-          = this.selectedSubDirection
-          = null;
-        this.selectedOeuvre.forEach((oeuvre:any)=>{
-          oeuvre.isInRequest = true;
-        });
-        this.selectedOeuvre = [];
-        this.WorkOfArtService.removeSelectedArtWorks();
-        this.messageService.add({severity:'success', summary:'Demande des oeuvres', detail:'Votre demande a été enregistrée avec succès'});
-      })
-  }
-  getListSubDirection(estab:any){
-    let payload : any = {
-      establishmentId : estab.id
     }
-     this.establishmentService.getSubDirections(payload).subscribe((response:any)=>{
-       this.subDirections = response.results;
-     })
   }
-  getLevels(buildingId:any){
-
-    this.requestService.getLevels(buildingId).subscribe((response:any)=>{
-      this.levels = response.map((elm:any,index:any)=>{
+  filterBuilding(event: any) {
+    let filter = event.filter;
+    if (filter.length >= 3) {
+      let payload: any = {
+        label: filter,
+      };
+      this.establishmentService.getEstablishments(payload).subscribe((response) => {
+        this.establishments = response.results;
+      });
+    }
+  }
+  getBuildings() {
+    this.requestService.getBuildings().subscribe((response) => {
+      this.buildings = response.results;
+    });
+  }
+  request: any;
+  onSubmitRequest(request: any) {
+    let payload: any = {
+      ...this.requestForm.value,
+    };
+    let artWorks: any = [];
+    this.selectedOeuvre.forEach((ouvre) => {
+      artWorks.push(ouvre.id);
+    });
+    if (artWorks.length > 0) {
+      payload.artWorks = artWorks;
+    }
+    payload.pieceNumber = payload.pieceNumber.label;
+    payload.level = payload.level.label;
+    payload.subDivision = payload.subDivision.id;
+    payload.establishement = payload.establishement.id;
+    payload.building = payload.building.id;
+    this.requestService.newRequest(payload).subscribe((response: any) => {
+      this.modalService.dismissAll('NgbdModal1Content');
+      this.requestForm.reset();
+      this.selectedBuilding = this.selectedLevel = this.selectedEstablishment = this.selectedPieceNumber = this.selectedSubDirection = null;
+      this.selectedOeuvre.forEach((oeuvre: any) => {
+        oeuvre.isInRequest = true;
+      });
+      this.selectedOeuvre = [];
+      this.WorkOfArtService.removeSelectedArtWorks();
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Demande des oeuvres',
+        detail: 'Votre demande a été enregistrée avec succès',
+      });
+    });
+  }
+  getListSubDirection(estab: any) {
+    let payload: any = {
+      establishmentId: estab.id,
+    };
+    this.establishmentService.getSubDirections(payload).subscribe((response: any) => {
+      this.subDirections = response.results;
+    });
+  }
+  getLevels(buildingId: any) {
+    this.requestService.getLevels(buildingId).subscribe((response: any) => {
+      this.levels = response.map((elm: any, index: any) => {
         return {
           id: index,
-          label : elm
-        }
+          label: elm,
+        };
       });
-
-    })
+    });
   }
-  getPiecesNumbers(){
+  getPiecesNumbers() {
     let filter = {
       level: this.selectedLevel.label,
       building: this.selectedBuilding.id,
-    }
-    this.requestService.getPiecesNumbers(filter).subscribe((response:any)=>{
-      this.piecesNumbers = response.map((elm:any,index:any)=>{
+    };
+    this.requestService.getPiecesNumbers(filter).subscribe((response: any) => {
+      this.piecesNumbers = response.map((elm: any, index: any) => {
         return {
           id: index,
-          label : elm
-        }
+          label: elm,
+        };
       });
-    })
+    });
   }
-  selectedEstablishment :any;
-  selectedSubDirection :any;
-  selectedBuilding :any;
-  selectedPieceNumber :any;
-  selectedLevel :any;
+  selectedEstablishment: any;
+  selectedSubDirection: any;
+  selectedBuilding: any;
+  selectedPieceNumber: any;
+  selectedLevel: any;
 
+  exportRequests(){
+    this.requestService.exportRequest().subscribe((response) => {
+      console.log("response");
+      console.log(response);
+      //this.buildings = response.results;
+    });
+  }
 }
