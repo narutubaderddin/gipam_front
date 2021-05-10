@@ -1115,8 +1115,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.initData(data, advancedData, this.headerFilter, this.artWorksData.page);
   }
 
-  onAdministratifMultiSelectChange(key: string) {
-    console.log('onAdministratifMultiSelectChange');
+  onAdministratifMultiSelectChange(key: string) {;
     let selectedDataId: any[] = [];
     switch (key) {
       case 'ministry':

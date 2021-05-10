@@ -63,6 +63,7 @@ export class NgDataTableComponent implements OnInit {
   @Input() expand: Boolean = false;
   @Input() page: any;
   @Input() limit: any;
+  @Input() identifierKey: any;
   @Output() singleSelectionEvent = new EventEmitter();
   @Output() multipleSelectionEvent = new EventEmitter();
   asc: boolean = true;
@@ -108,6 +109,10 @@ export class NgDataTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.key = this.columns[0]['field'];
+    if(this.identifierKey){
+      this.key = this.identifierKey;
+    }
+
     this.columns = this.columns.filter((col) => {
       if (Object.keys(col).indexOf('isVisible') == -1 || col.isVisible) {
         return col;
