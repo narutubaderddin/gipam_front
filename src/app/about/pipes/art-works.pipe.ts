@@ -9,10 +9,24 @@ export class ArtWorksPipe implements PipeTransform {
   transform(value: any, ...args: any[]): any {
     const authors: any[] = value.authors;
     let authorText = '';
-    authors.forEach((value, index) => {
-      authorText += value.label;
-      if (index < value.length) {
+    let communeText = '';
+    let buildingText = '';
+    authors.forEach((authorValue, index) => {
+      authorText += authorValue.label;
+      if (index < authorValue.length) {
         authorText += ',';
+      }
+    });
+    value.communes.forEach((communeValue: any, index: number) => {
+      communeText += communeValue.name;
+      if (index < communeValue.length) {
+        communeText += ',';
+      }
+    });
+    value.buildings.forEach((buildingsValue: any, index: number) => {
+      buildingText += buildingsValue.name;
+      if (index < buildingsValue.length) {
+        buildingText += ',';
       }
     });
     return new ArtWorksModel(
@@ -24,6 +38,8 @@ export class ArtWorksPipe implements PipeTransform {
       value?.era?.label,
       value?.style?.label,
       value?.materialTechnique?.label,
+      communeText,
+      buildingText,
       value?.denomination?.label,
       value?.field?.label,
       value.mouvements,

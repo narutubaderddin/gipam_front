@@ -114,13 +114,18 @@
                     </div>
                     <div class="form-group d-flex slider-bloc row">
                       <label for="titre" class="col-5">Titre</label>
-                      <input
-                        type="text"
-                        formControlName="titre"
-                        class="form-control col-6"
-                        id="titre"
-                        placeholder="Titre"
-                      />
+                      <div class="multiSelectBlock col-6 w-100">
+                        <p-autoComplete
+                          id=" titre"
+                          [minLength]="3"
+                          [suggestions]="titleData"
+                          formControlName="titre"
+                          placeholder="Titre"
+                          [multiple]="false"
+                          (completeMethod)="onTitreChange($event)"
+                        >
+                        </p-autoComplete>
+                      </div>
                     </div>
                     <div class="form-group d-flex slider-bloc row">
                       <label for="author" class="col-5">Auteurs</label>
@@ -161,7 +166,6 @@
                       <label for="denomination" class="col-5">Dénomination</label>
                       <div class="col-6 multiSelectBlock">
                         <p-multiSelect
-                          (onPanelHide)="onMultiselectChange('denomination')"
                           itemSize="30"
                           [virtualScroll]="true"
                           [options]="denominationData"
@@ -186,17 +190,28 @@
                         <div class="row col-10">
                           <label for="materialTechnique" class="col-5">Matières/technique</label>
                           <div class="multiSelectBlock col-6">
-                            <p-multiSelect
-                              itemSize="30"
-                              [virtualScroll]="true"
-                              [options]="materialTechniquesData"
+                            <p-autoComplete
                               id="materialTechnique"
+                              [minLength]="3"
+                              field="name"
+                              [suggestions]="materialTechniquesData"
                               formControlName="materialTechnique"
-                              emptyFilterMessage="Aucun résultat trouvé"
-                              defaultLabel="Choisir des matières"
-                              optionLabel="name"
-                              display="chip"
-                            ></p-multiSelect>
+                              emptyMessage="Aucun résultat trouvé"
+                              (completeMethod)="onMaterialTechniqueComplete($event)"
+                              placeholder="Choisir des matières"
+                            >
+                            </p-autoComplete>
+                            <!--                            <p-multiSelect-->
+                            <!--                              itemSize="30"-->
+                            <!--                              [virtualScroll]="true"-->
+                            <!--                              [options]="materialTechniquesData"-->
+                            <!--                              id="materialTechnique"-->
+                            <!--                              formControlName="materialTechnique"-->
+                            <!--                              emptyFilterMessage="Aucun résultat trouvé"-->
+                            <!--                              defaultLabel="Choisir des matières"-->
+                            <!--                              optionLabel="name"-->
+                            <!--                              display="chip"-->
+                            <!--                            ></p-multiSelect>-->
                           </div>
                         </div>
                         <div class="col-md-2 multiSelectBlock">
@@ -398,7 +413,12 @@
                           />
                         </div>
                         <div class="col-md-2 multiSelectBlock">
-                          <p-dropdown [options]="operatorData" optionLabel="name" optionValue="id"></p-dropdown>
+                          <p-dropdown
+                            [options]="operatorData"
+                            formControlName="creationDateOperator"
+                            optionLabel="name"
+                            optionValue="id"
+                          ></p-dropdown>
                         </div>
                       </div>
 
@@ -926,42 +946,51 @@
                     <span>Recherche avancée</span>
                   </div>
                   <div *ngIf="form3Advanced" class="col-12">
-                    <div class="form-group d-flex slider-bloc row">
-                      <div class="row col-10">
-                        <label class="col-5">Type Etablissement</label>
-                        <div class="multiSelectBlock col-6">
-                          <p-multiSelect
-                            [options]="establishmentTypeData"
-                            id="establishement_type"
-                            emptyFilterMessage="Aucun résultat trouvé"
-                            defaultLabel="Choisir type(s) d'établissement(s)"
+                    <form [formGroup]="advancedForm3">
+                      <div class="form-group d-flex slider-bloc row">
+                        <div class="row col-10">
+                          <label for="establishementType" class="col-5">Type Etablissement</label>
+                          <div class="multiSelectBlock col-6">
+                            <p-multiSelect
+                              [options]="establishmentTypeData"
+                              id="establishementType"
+                              formControlName="establishementType"
+                              emptyFilterMessage="Aucun résultat trouvé"
+                              defaultLabel="Choisir type(s) d'établissement(s)"
+                              optionLabel="name"
+                              display="chip"
+                            ></p-multiSelect>
+                          </div>
+                        </div>
+                        <div class="col-md-2 multiSelectBlock">
+                          <p-dropdown
+                            formControlName="establishementTypeOperator"
+                            [options]="operatorData"
                             optionLabel="name"
-                            display="chip"
-                          ></p-multiSelect>
+                            optionValue="id"
+                          ></p-dropdown>
                         </div>
                       </div>
-                      <div class="col-md-2 multiSelectBlock">
-                        <p-dropdown [options]="operatorData" optionLabel="name" optionValue="id"></p-dropdown>
-                      </div>
-                    </div>
-                    <div class="form-group d-flex slider-bloc row">
-                      <div class="row col-10">
-                        <label class="col-5">Correspodants</label>
-                        <div class="multiSelectBlock col-6">
-                          <p-multiSelect
-                            [options]="correspondentData"
-                            id="correspandant"
-                            emptyFilterMessage="Aucun résultat trouvé"
-                            defaultLabel="Choisir des correspondants"
-                            optionLabel="name"
-                            display="chip"
-                          ></p-multiSelect>
+                      <div class="form-group d-flex slider-bloc row">
+                        <div class="row col-10">
+                          <label class="col-5">Correspodants</label>
+                          <div class="multiSelectBlock col-6">
+                            <p-multiSelect
+                              [options]="correspondentAdministrativeData"
+                              id="correspandant"
+                              formControlName="responsible"
+                              emptyFilterMessage="Aucun résultat trouvé"
+                              defaultLabel="Choisir des correspondants"
+                              optionLabel="name"
+                              display="chip"
+                            ></p-multiSelect>
+                          </div>
                         </div>
+                        <!--                        <div class="col-md-2 multiSelectBlock">-->
+                        <!--                          <p-dropdown [options]="operatorData" optionLabel="name" optionValue="id"></p-dropdown>-->
+                        <!--                        </div>-->
                       </div>
-                      <div class="col-md-2 multiSelectBlock">
-                        <p-dropdown [options]="operatorData" optionLabel="name" optionValue="id"></p-dropdown>
-                      </div>
-                    </div>
+                    </form>
                   </div>
                 </div>
               </form>
@@ -1141,17 +1170,20 @@
                   </div>
 
                   <div class="form-group d-flex slider-bloc row">
-                    <label for="domaine" class="col-5">Correspodants </label>
-                    <!--                    <ng-multiselect-dropdown-->
-                    <!--                      class="select col-6 w-100"-->
-                    <!--                      [placeholder]="'Choisir des correspondants'"-->
-                    <!--                      [settings]="dropdownSettings"-->
-                    <!--                      [data]="domaine"-->
-                    <!--                      formControlName="correspondant"-->
-                    <!--                      (onSelect)="onDomainSelect($event)"-->
-                    <!--                      (onSelectAll)="onSelectAll($event)"-->
-                    <!--                    >-->
-                    <!--                    </ng-multiselect-dropdown>-->
+                    <label for="corrAdmin" class="col-5">Correspodants </label>
+                    <div class="multiSelectBlock col-6">
+                      <p-multiSelect
+                        [options]="correspondentGeographicData"
+                        id="corrAdmin"
+                        itemSize="30"
+                        [virtualScroll]="true"
+                        formControlName="correspondant"
+                        emptyFilterMessage="Aucun résultat trouvé"
+                        defaultLabel="Choisir des correspondants"
+                        optionLabel="name"
+                        display="chip"
+                      ></p-multiSelect>
+                    </div>
                   </div>
                 </div>
               </form>
@@ -1246,82 +1278,98 @@
           </div>
         </div>
       </div>
-      <div class="datatable mt-4" *ngIf="showDatatable && artWorksData?.results && this.columns?.length > 0">
-        <div *ngIf="selectedRowCount > 1">
-          <div class="mass-action-container">
-            <i class="fas fa-share"></i>
-            <button class="btn add-action" translate>
-              <i class="fas fa-plus"></i>
-              Créer mouvement
-            </button>
-            <button class="btn add-action" translate>
-              <i class="fas fa-plus"></i>
-              Créer constat
-            </button>
-            <button class="btn add-action" translate>
-              <i class="fas fa-plus"></i>
-              Créer recolement
-            </button>
-            <button class="btn add-action" translate>
-              <div
-                ngbDropdown
-                placement="bottom-right"
-                class="d-inline-block export-dropdown-bloc"
-                autoClose="outside"
-                container="body"
-              >
-                <button class="btn export-button" id="dropdownBasic12" ngbDropdownToggle translate>
-                  <i class="fas fa-file-export"></i>
-                </button>
-                <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic12">
-                  <ul class="list-group">
-                    <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter Notices style catalogue</li>
-                    <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter Notices techniques</li>
-                    <li class="list-group-item">
-                      <i class="fas fa-file-export"></i> Exporter Notices complètes techniques
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </button>
-          </div>
-        </div>
-        <div *ngIf="selectedRowCount == 1">
-          <div class="mass-action-container">
-            <i class="fas fa-share"></i>
-            <button class="btn add-action" translate>
-              <i class="fas fa-history"></i>
-              Historique
-            </button>
-            <button class="btn add-action" translate>
-              <i class="fas fa-edit"></i>
-              Modifier
-            </button>
-            <button class="btn add-action" translate>
-              <i class="fas fa-copy"></i>
-              Copier
-            </button>
-          </div>
-        </div>
-        <app-ng-data-table
-          [columns]="columns"
-          [data]="artWorksData.results"
-          (multipleSelectionEvent)="onRowsSelection($event)"
-          [frozenCols]="frozenCols"
-          [frozenWidth]="'200px'"
-          [checkBoxSelection]="true"
-          [loading]="loading"
-          (pageChanged)="pagination($event)"
-          (filterValue)="onDataTableFilterChange($event)"
-          [totalFiltred]="artWorksData.filteredQuantity"
-          [total]="artWorksData.totalQuantity"
-          [page]="artWorksData.page"
-          [limit]="artWorksData.size"
-          [end]="end"
-          [start]="start"
-        >
-        </app-ng-data-table>
+      <div class="loading-spinner" *ngIf="firstLoading && loading; else dataTable">
+        <p-progressSpinner></p-progressSpinner>
       </div>
+      <ng-template #dataTable>
+        <div class="datatable mt-4" *ngIf="showDatatable && artWorksData?.results && this.columns?.length > 0">
+          <div *ngIf="selectedRowCount > 1">
+            <div class="mass-action-container">
+              <i class="fas fa-share"></i>
+              <button class="btn add-action" translate>
+                <i class="fas fa-plus"></i>
+                Créer mouvement
+              </button>
+              <button class="btn add-action" translate>
+                <i class="fas fa-plus"></i>
+                Créer constat
+              </button>
+              <button class="btn add-action" translate>
+                <i class="fas fa-plus"></i>
+                Créer recolement
+              </button>
+              <button class="btn add-action" translate>
+                <div
+                  ngbDropdown
+                  placement="bottom-right"
+                  class="d-inline-block export-dropdown-bloc"
+                  autoClose="outside"
+                  container="body"
+                >
+                  <button class="btn export-button" id="dropdownBasic12" ngbDropdownToggle translate>
+                    <i class="fas fa-file-export"></i>
+                  </button>
+                  <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic12">
+                    <ul class="list-group">
+                      <li class="list-group-item">
+                        <i class="fas fa-file-export"></i> Exporter Notices style catalogue
+                      </li>
+                      <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter Notices techniques</li>
+                      <li class="list-group-item">
+                        <i class="fas fa-file-export"></i> Exporter Notices complètes techniques
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </button>
+            </div>
+          </div>
+          <div *ngIf="selectedRowCount == 1">
+            <div class="mass-action-container">
+              <i class="fas fa-share"></i>
+              <button class="btn add-action" translate>
+                <i class="fas fa-history"></i>
+                Historique
+              </button>
+              <button class="btn add-action" translate>
+                <i class="fas fa-edit"></i>
+                Modifier
+              </button>
+              <button class="btn add-action" translate>
+                <i class="fas fa-print"></i>
+                Imprimer
+              </button>
+              <button class="btn add-action" translate>
+                <i class="fas fa-file-export"></i>
+                Export
+              </button>
+              <button class="btn add-action" translate>
+                <i class="fas fa-copy"></i>
+                Dupliquer
+              </button>
+            </div>
+          </div>
+          <app-ng-data-table
+            [columns]="columns"
+            [data]="artWorksData.results"
+            (multipleSelectionEvent)="onRowsSelection($event)"
+            [frozenCols]="frozenCols"
+            [frozenWidth]="'200px'"
+            [checkBoxSelection]="true"
+            (sort)="sortEvent($event)"
+            [loading]="loading"
+            (pageChanged)="pagination($event)"
+            (filterValue)="onDataTableFilterChange($event)"
+            [totalFiltred]="artWorksData.filteredQuantity"
+            [total]="artWorksData.totalQuantity"
+            [page]="artWorksData.page"
+            [limit]="artWorksData.size"
+            [end]="end"
+            [start]="start"
+          >
+          </app-ng-data-table>
+        </div>
+      </ng-template>
     </div>
   </div>
 </div>

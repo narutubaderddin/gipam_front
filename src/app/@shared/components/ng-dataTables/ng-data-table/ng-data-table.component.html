@@ -163,10 +163,6 @@
                   optionLabel="name"
                   optionValue="id"
                 ></p-dropdown>
-                <!--                <select class="select-style w-100" *ngSwitchCase="'select'" [formControlName]="col.field">-->
-                <!--                  <option value=""></option>-->
-                <!--                  <option [value]="data.id" *ngFor="let data of col.selectData">{{ data.name }}</option>-->
-                <!--                </select>-->
                 <p-multiSelect
                   [options]="col.selectData"
                   [virtualScroll]="true"
@@ -176,6 +172,19 @@
                   display="chip"
                   *ngSwitchCase="'multiselect'"
                 ></p-multiSelect>
+                <p-autoComplete
+                  [id]="col.field + '_id'"
+                  *ngSwitchCase="'autoComplete'"
+                  [formControlName]="col.field"
+                  [minLength]="3"
+                  [multiple]="true"
+                  field="name"
+                  emptyMessage="Aucun résultat trouvé"
+                  placeholder="choisir un élément"
+                  (completeMethod)="onDataChange($event, col.filterTab, index)"
+                  [suggestions]="col.selectData"
+                >
+                </p-autoComplete>
               </div>
             </div>
           </th>
