@@ -47,8 +47,14 @@
               <div class="d-flex top-bloc">
                 <div class="col-4 image-container">
                   <div class="row detail-image">
-                    <div class="col-md-12 d-flex p-0 img-wrapper">
-                      <app-item-images></app-item-images>
+                    <div class="col-md-12 d-flex p-0">
+                      <app-item-images
+                        [photographiesForm]="photographiesForm"
+                        [edit]="edit"
+                        [images]="photographies"
+                        (imgToShow)="src($event)"
+                        class="col-12"
+                      ></app-item-images>
                     </div>
                     <i class="fas fa-eye" title="voir image" (click)="showImg()"></i>
                   </div>
@@ -56,7 +62,7 @@
                 <!--Modal-->
                 <div id="image-viewer" [class.active]="openImg">
                   <p class="close" (click)="showImg()">&times;</p>
-                  <img src="assets/images/573b.jpg" alt="" class="modal-content" id="full-image" />
+                  <img [src]="imgSrc" alt="" class="modal-content" id="full-image" />
                 </div>
 
                 <div class="col-8 form-bloc pr-0">
@@ -66,7 +72,16 @@
                         <ng-container ngbNavItem>
                           <a ngbNavLink><i class="far fa-file-alt mr-2"></i>Descriptifs physiques</a>
                           <ng-template ngbNavContent>
-                            <app-descritif [edit]="edit" [addProperty]="false" [addDepot]="false"></app-descritif>
+                            <app-descritif [edit]="edit"
+                                           [addProperty]="false"
+                                           [addDepot]="false"
+                                           [descriptifForm]="descriptifForm"
+                            ></app-descritif>
+<!--                            <app-add-descriptions-->
+<!--                              [edit]="edit"-->
+<!--                              [addDepot]="false"-->
+<!--                              [descriptifForm]="descriptifForm"-->
+<!--                            ></app-add-descriptions>-->
                           </ng-template>
                         </ng-container>
                         <ng-container ngbNavItem>
@@ -85,7 +100,7 @@
                     <div [ngbNavOutlet]="nav" class=""></div>
                     <div *ngIf="edit" class="col-md-12 p-0" style="display: flex; flex-direction: row-reverse">
                       <button class="btn valid-btn" (click)="onSave()">Enregistrer</button>
-                      <button class="btn gbtn-action cancel-btn">Annuler</button>
+                      <button class="btn btn-action cancel-btn">Annuler</button>
                     </div>
                   </div>
                   <div class="d-flex col-12 p-0 flex-column">
