@@ -113,13 +113,13 @@
         <label class="col-sm-5">Sous-direction<span class="mandatory"> *</span></label>
         <div class="select col-sm-7 p-0">
           <p-dropdown
-            [options]="relatedEntities"
+            [options]="activeRelatedEntities"
             optionLabel="label"
             formControlName="subDivision"
-            [placeholder]="selectedRelatedEntity ? selectedRelatedEntity.name : 'Sélectionner un service'"
+            [placeholder]="selectedRelatedEntity ? selectedRelatedEntity.name : 'Sélectionner une sous-direction'"
             emptyFilterMessage="Aucun résultat trouvé"
             [filter]="true"
-            [filterBy]="'name'"
+            [filterBy]="'label'"
             [virtualScroll]="true"
             itemSize="5"
           ></p-dropdown>

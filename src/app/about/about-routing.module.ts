@@ -26,14 +26,21 @@ import { TypeMvtComponent } from '@app/about/components/tabs-ref/type-mvt/type-m
 import { MovementActionTypesComponent } from '@app/about/components/tabs-ref/movement-action-types/movement-action-types.component';
 import { ReportSubTypesComponent } from '@app/about/components/tabs-ref/report-sub-types/report-sub-types.component';
 import { MinistryComponent } from '@app/about/components/tabs-ref/ministry/ministry.component';
-import {BuildingsComponent} from '@app/about/components/tabs-ref/buildings/buildings.component';
-import {CommunesComponent} from "@app/about/components/tabs-ref/communes/communes.component";
+import { BuildingsComponent } from '@app/about/components/tabs-ref/buildings/buildings.component';
+import { CommunesComponent } from '@app/about/components/tabs-ref/communes/communes.component';
 import { SubDivisionsComponent } from '@app/about/components/tabs-ref/subDivisions/subDivisions.component';
 import { RegionsComponent } from '@app/about/components/tabs-ref/regions/regions.component';
-import {DepartmentsComponent} from "@app/about/components/tabs-ref/departments/departments.component";
-import {LocalisationTypeComponent} from "@app/about/components/tabs-ref/localisation-type/localisation-type.component";
+import { DepartmentsComponent } from '@app/about/components/tabs-ref/departments/departments.component';
+import { LocalisationTypeComponent } from '@app/about/components/tabs-ref/localisation-type/localisation-type.component';
 import { ServicesComponent } from '@app/about/components/tabs-ref/services/services.component';
 import { SitesComponent } from '@app/about/components/tabs-ref/sites/sites.component';
+import { EstablishmentTypesComponent } from '@app/about/components/tabs-ref/establishmentTypes/establishmentTypes.component';
+import { CorrespondentsComponent } from '@app/about/components/tabs-ref/correspondents/correspondents.component';
+import { ResponsibleComponent } from '@app/about/components/tabs-ref/responsible/responsible.component';
+import { EntryModesComponent } from '@app/about/components/tabs-ref/entryModes/entryModes.component';
+import { AuthorTypesComponent } from '@app/about/components/tabs-ref/authorTypes/authorTypes.component';
+import { AttachmentTypesComponent } from '@app/about/components/tabs-ref/attachmentTypes/attachmentTypes.component';
+import { PhotographyTypesComponent } from '@app/about/components/tabs-ref/photographyTypes/photographyTypes.component';
 const routes: Routes = [
   {
     path: '',
@@ -47,7 +54,7 @@ const routes: Routes = [
         path: 'oeuvres-list',
         component: ListWorkOfArtsComponent,
         data: {
-          title: 'Liste des oeuvres d\'art',
+          title: "Liste des oeuvres d'art",
         },
       },
       {
@@ -80,6 +87,11 @@ const routes: Routes = [
         data: { title: 'Liste des établissements' },
       },
       {
+        path: 'tab-ref-type-etablissement',
+        component: EstablishmentTypesComponent,
+        data: { title: 'Liste des types établissement' },
+      },
+      {
         path: 'tab-ref-sous-direction',
         component: SubDivisionsComponent,
         data: { title: 'Liste des sous-directions' },
@@ -109,6 +121,28 @@ const routes: Routes = [
         component: SitesComponent,
         data: { title: 'Liste des sites' },
       },
+      {
+        path: 'tab-ref-modes-entree',
+        component: EntryModesComponent,
+        data: { title: "Liste des modes d'entréé" },
+      },
+      {
+        path: 'tab-ref-types-auteur',
+        component: AuthorTypesComponent,
+        data: { title: 'Liste des types auteur' },
+      },
+      {
+        path: 'tab-ref-types-fichier-joint',
+        component: AttachmentTypesComponent,
+        data: { title: 'Liste des types fichier joint' },
+      },
+      {
+        path: 'tab-ref-types-photographie',
+        component: PhotographyTypesComponent,
+        data: { title: 'Liste des types photographie' },
+      },
+      { path: 'tab-ref-correspondant', component: CorrespondentsComponent },
+      { path: 'tab-ref-responsable', component: ResponsibleComponent },
     ],
   },
 ];

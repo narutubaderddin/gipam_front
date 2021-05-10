@@ -99,10 +99,18 @@ import { DepartmentsComponent } from './components/tabs-ref/departments/departme
 import { LocalisationTypeComponent } from './components/tabs-ref/localisation-type/localisation-type.component';
 import { ServicesComponent } from '@app/about/components/tabs-ref/services/services.component';
 import { SitesComponent } from '@app/about/components/tabs-ref/sites/sites.component';
+import { EstablishmentTypesComponent } from '@app/about/components/tabs-ref/establishmentTypes/establishmentTypes.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FieldService } from '@shared/services/field.service';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { CorrespondentsComponent } from './components/tabs-ref/correspondents/correspondents.component';
+import { ResponsibleComponent } from './components/tabs-ref/responsible/responsible.component';
+import { EntryModesComponent } from '@app/about/components/tabs-ref/entryModes/entryModes.component';
+import { AuthorTypesComponent } from '@app/about/components/tabs-ref/authorTypes/authorTypes.component';
+import { AttachmentTypesComponent } from '@app/about/components/tabs-ref/attachmentTypes/attachmentTypes.component';
+import { PhotographyTypesComponent } from '@app/about/components/tabs-ref/photographyTypes/photographyTypes.component';
 import {AutosizeModule} from 'ngx-autosize';
 import {RequestService} from '@shared/services/request.service';
 import {EstablishmentService} from '@shared/services/establishment.service';
@@ -162,6 +170,7 @@ const ngWizardConfig: NgWizardConfig = {
     ReportSubTypesComponent,
     ModalReportSubTypesComponent,
     EstablishmentsComponent,
+    EstablishmentTypesComponent,
     MinistryComponent,
     BuildingsComponent,
     SubDivisionsComponent,
@@ -172,6 +181,12 @@ const ngWizardConfig: NgWizardConfig = {
     CommunesComponent,
     DepartmentsComponent,
     LocalisationTypeComponent,
+    CorrespondentsComponent,
+    ResponsibleComponent,
+    EntryModesComponent,
+    AuthorTypesComponent,
+    AttachmentTypesComponent,
+    PhotographyTypesComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
@@ -219,6 +234,7 @@ const ngWizardConfig: NgWizardConfig = {
     ProgressSpinnerModule,
     InfiniteScrollModule,
     RadioButtonModule,
+    AutoCompleteModule,
     AutosizeModule,
   ],
   providers: [MovementsService, BsDatepickerConfig, MessageService, ArtWorksDataPipe, ArtWorksPipe, FieldService, RequestService, EstablishmentService, DemandService],

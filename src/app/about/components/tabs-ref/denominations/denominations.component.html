@@ -35,7 +35,7 @@
                 </span>
               </div>
               <div class="mr-3">
-                <button class="btn add-action" (click)="openModal('')">
+                <button class="btn add-action" (click)="addItemAction()">
                   <i class="fas fa-plus-circle mr-1"></i>
                   Ajouter Dénomination
                 </button>
@@ -74,9 +74,9 @@
 <ng-template #content let-modal>
   <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
     <div class="modal-header">
-      <h4 class="modal-title" *ngIf="editItem">Modification de dénomination "{{itemToEdit.label}}"</h4>
-      <h4 class="modal-title" *ngIf="addItem">Ajout de dénomination </h4>
-      <h4 class="modal-title" *ngIf="deleteItems">Suppression de dénomination "{{itemLabel}}"</h4>
+      <h4 class="modal-title" *ngIf="editItem">Modification de dénomination "{{ itemToEdit.label }}"</h4>
+      <h4 class="modal-title" *ngIf="addItem">Ajout de dénomination</h4>
+      <h4 class="modal-title" *ngIf="deleteItems">Suppression de dénomination "{{ itemLabel }}"</h4>
       <button type="button" class="close" aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -84,10 +84,7 @@
     <div class="modal-body">
       <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer la dénomination "{{ itemLabel }}" ?</div>
 
-      <div
-        class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
-        *ngIf="editItem || addItem"
-      >
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-3">Libellé<span class="mandatory"> *</span></label>
         <input
           type="text"
@@ -97,25 +94,23 @@
         />
       </div>
 
-      <div
-        class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
-        *ngIf="editItem || addItem"
-      >
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-3">Domaine<span class="mandatory"> *</span></label>
         <div class="select col-sm-7 p-0">
-        <p-dropdown
-          [options]="relatedEntities"
-          optionLabel="label"
-          formControlName="field"
-          placeholder="{{selectedRelatedEntity&&editItem ? selectedRelatedEntity.label : 'Sélectionner un domaine'}}"
-          emptyFilterMessage="Aucun résultat trouvé"
-          (onChange)="onFieldSelect($event)"
-          [filter]="true"
-          [filterBy]="'label'"
-        ></p-dropdown>
+          <p-dropdown
+            [options]="relatedEntities"
+            optionLabel="label"
+            formControlName="field"
+            placeholder="{{
+              selectedRelatedEntity && editItem ? selectedRelatedEntity.label : 'Sélectionner un domaine'
+            }}"
+            emptyFilterMessage="Aucun résultat trouvé"
+            (onChange)="onFieldSelect($event)"
+            [filter]="true"
+            [filterBy]="'label'"
+          ></p-dropdown>
         </div>
       </div>
-
 
       <div class="form-group col-md-12 d-flex align-items-baseline" *ngIf="addItem">
         <label class="col-sm-5">visibilité<span class="mandatory"> *</span></label>
@@ -133,12 +128,7 @@
       <button type="button" class="btn btn-light cancel-btn" (click)="close()">Annuler</button>
       <button type="submit" class="btn btn-light valid-btn" *ngIf="editItem">Modifier</button>
       <button type="submit" class="btn btn-light valid-btn" *ngIf="addItem">Ajouter</button>
-      <button
-        type="button"
-        class="btn btn-light valid-btn"
-        *ngIf="deleteItems"
-        (click)="deleteItemss(itemToDelete)"
-      >
+      <button type="button" class="btn btn-light valid-btn" *ngIf="deleteItems" (click)="deleteItemss(itemToDelete)">
         Supprimer
       </button>
     </div>

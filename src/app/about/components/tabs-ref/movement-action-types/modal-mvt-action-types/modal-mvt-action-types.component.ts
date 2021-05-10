@@ -33,9 +33,6 @@ export class ModalMvtActionTypesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
-    this.getAllMvtTypes();
-
     this.addItem = this.fromParent.addItem;
     this.deleteItems = this.fromParent.deleteItems;
     this.editItem = this.fromParent.editItem;
@@ -44,10 +41,10 @@ export class ModalMvtActionTypesComponent implements OnInit {
     this.active = this.fromParent.active;
     this.selectedItem = this.fromParent.selectedItem;
     this.name = this.fromParent.name;
-    this.btnLoading =this.fromParent.btnLoading;
-    this.selectedMvtType = this.fromParent.selectedMvtType ;
-    console.log('selectedItem', this.selectedItem, this.editItem);
-    console.log('selectedMvtType', this.selectedMvtType);
+    this.btnLoading = this.fromParent.btnLoading;
+    this.selectedMvtType = this.fromParent.selectedMvtType;
+    this.mvtTypes = this.fromParent.activeRelatedEntities;
+
     this.initForm();
   }
   initForm() {
@@ -71,33 +68,15 @@ export class ModalMvtActionTypesComponent implements OnInit {
     this.activeModal.close('delete');
   }
   close() {
-    this.selectedMvtType={};
-    this.selectedItem='';
+    this.selectedMvtType = {};
+    this.selectedItem = '';
     this.editItem = false;
     this.addItem = false;
     this.deleteItems = false;
     this.activeModal.dismiss();
   }
-  getAllMvtTypes() {
-    this.simpleTabsRef.tabRef = 'movementTypes';
-    const params = {};
-    this.simpleTabsRef.getAllItems(params).subscribe(
-      (result: any) => {
-        this.mvtTypes = result.results;
-        console.log(this.mvtTypes);
-      },
-      (error: any) => {
-        console.log('error', error.error.message);
-      }
-    );
-  }
-  // onMvtTypesSelect(item: any) {
-  //   this.selectedMvtType = item;
-  //   console.log(item);
-  // }
+
   onMvtTypesSelect(item: any) {
     this.selectedMvtType = item;
-    console.log('item',item);
-    console.log(this.selectedItem)
   }
 }

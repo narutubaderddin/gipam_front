@@ -8,9 +8,8 @@ describe('LocalisationTypeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LocalisationTypeComponent ]
-    })
-    .compileComponents();
+      declarations: [LocalisationTypeComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

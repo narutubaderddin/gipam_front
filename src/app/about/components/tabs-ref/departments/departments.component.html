@@ -29,8 +29,7 @@
                   id="example-search-input"
                   #searchBox
                   (keyup.enter)="search(searchBox.value)"
-
-                  (input)="ClearSearch($event, searchBox.value )"
+                  (input)="ClearSearch($event, searchBox.value)"
                 />
                 <span class="input-group-append">
                   <button
@@ -106,13 +105,14 @@
         <label class="col-sm-5">Région<span class="mandatory"> *</span></label>
         <div class="select col-sm-7 p-0">
           <p-dropdown
-            [options]="relatedEntities"
+            [options]="activeRelatedEntities"
             optionLabel="name"
             formControlName="region"
-            placeholder="{{selectedRelatedEntity&&editItem ? selectedRelatedEntity.name : 'Sélectionner une région'}}"
+            placeholder="{{
+              selectedRelatedEntity && editItem ? selectedRelatedEntity.name : 'Sélectionner une région'
+            }}"
             emptyFilterMessage="Aucun résultat trouvé"
             (onChange)="onRegionSelect($event)"
-
             [filter]="true"
             [filterBy]="'name'"
           ></p-dropdown>
@@ -165,5 +165,3 @@
   </form>
 </ng-template>
 <p-toast></p-toast>
-
-

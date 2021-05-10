@@ -18,7 +18,7 @@ export class ItemImagesComponent implements OnInit {
   photography: string = '';
   photographyDate: Date = new Date();
   photographyType: any[] = [];
-  types = [
+  types: any[] = [
     { name: 'Identification' },
     { name: 'Autre vue' },
     { name: 'Détail' },
@@ -29,8 +29,10 @@ export class ItemImagesComponent implements OnInit {
   imageName: any = '';
   images: any = [];
   photographyInsertionNumber = 0;
-  selectedPhotography = 1;
+  selectedPhotography = 0;
   validate = true;
+  isIdentification = false;
+  identification = 0;
   get photographies(): FormArray {
     return this.photographiesForm.get('photographies') as FormArray;
   }
@@ -40,7 +42,7 @@ export class ItemImagesComponent implements OnInit {
   }
   initForm() {
     this.photographiesForm = new FormGroup({
-      photographies: this.fb.array([this.createPhotography()]),
+      photographies: this.fb.array([]),
     });
   }
   initData(photography?: string, photographyDate?: Date, photographyType?: any, imageName?: string) {
@@ -63,16 +65,35 @@ export class ItemImagesComponent implements OnInit {
     });
   }
   editPhotographyForm(i: number, photography: string, photographyType: any, photographyDate: Date, imageName: string) {
-    this.photographies.value[i + 1].photographyType = photographyType;
-    this.photographies.value[i + 1].photographyDate = photographyDate;
-    this.photographies.value[i + 1].photographyName = imageName;
-    this.photographies.value[i + 1].photography = photography;
+    this.photographies.value[i].photographyType = photographyType;
+    this.photographies.value[i].photographyDate = photographyDate;
+    this.photographies.value[i].photographyName = imageName;
+    this.photographies.value[i].photography = photography;
     this.images[i].imageUrl = photography;
     this.images[i].image = imageName;
   }
+  verifyIdentification() {
+    this.identification = 0;
+    if (this.photographies.value.length > 1) {
+      this.photographies.value.forEach((photography: any) => {
+        console.log('name', photography);
+
+        if (photography.photographyType.name != 'Identification') {
+          this.identification++;
+        }
+      });
+      if (this.identification < this.photographies.value.length) {
+        this.isIdentification = true;
+        this.types[0].disabled = true;
+      } else {
+        this.isIdentification = false;
+        this.types[0].disabled = false;
+      }
+      console.log(this.isIdentification);
+    }
+  }
   addPhotography(): void {
     if (!this.photography.length || !this.photographyType || !this.imageName.length) {
-      console.log(this.photographyType);
       this.validate = false;
     } else {
       if (this.selectedPhotography == this.photographies.value.length) {
@@ -94,6 +115,7 @@ export class ItemImagesComponent implements OnInit {
           this.imageName
         );
       }
+      this.verifyIdentification();
       this.initData('', new Date());
       this.photographyInsertionNumber++;
       this.selectedPhotography = this.photographies.value.length;
@@ -142,7 +164,7 @@ export class ItemImagesComponent implements OnInit {
     this.file.nativeElement.click();
   }
   show(item: any) {
-    let data = this.photographies.value[item.i + 1];
+    let data = this.photographies.value[item.i];
     this.initData(data.photography, data.photographyDate, data.photographyType, item.image);
     this.selectedPhotography = item.i;
   }

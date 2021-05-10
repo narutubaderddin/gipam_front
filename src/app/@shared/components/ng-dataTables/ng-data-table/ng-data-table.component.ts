@@ -9,6 +9,8 @@ import { Calendar } from 'primeng/calendar';
 import { Dropdown } from 'primeng/dropdown';
 import { DatePipe } from '@angular/common';
 import { viewDateFormat } from '@shared/utils/helpers';
+import { SortIcon } from 'primeng/table';
+import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 
 @Component({
   selector: 'app-ng-data-table',
@@ -88,14 +90,19 @@ export class NgDataTableComponent implements OnInit {
     { name: 'gt', value: '>' },
     { name: 'lte', value: '<=' },
     { name: 'gte', value: '>=' },
-    // { name: 'range', value: 'intervalle' },
+    { name: 'range', value: 'intervalle' },
   ];
   filter: any = {};
   filterFormValues: any = {};
 
   viewDateFormat = viewDateFormat;
 
-  constructor(private calendar: NgbCalendar, public formBuilder: FormBuilder, private datePipe: DatePipe) {
+  constructor(
+    private calendar: NgbCalendar,
+    public formBuilder: FormBuilder,
+    private datePipe: DatePipe,
+    private simpleTabsRefService: SimpleTabsRefService
+  ) {
     this.fromDate = calendar.getToday();
   }
 
@@ -104,7 +111,7 @@ export class NgDataTableComponent implements OnInit {
     this.columns = this.columns.filter((col) => {
       if (Object.keys(col).indexOf('isVisible') == -1 || col.isVisible) {
         return col;
-      } else {
+      } else if (this.form && this.form.value && Object.keys(this.form.value).indexOf(col.field) != -1) {
         this.form.removeControl(col.field);
       }
     });
@@ -232,28 +239,22 @@ export class NgDataTableComponent implements OnInit {
   //   }
   // }
 
-  sortHeader(column: any) {
-    let dir = 'asc';
-    this.asc = !this.asc;
-    if (this.asc) {
-      dir = 'desc';
-    } else {
+  sortHeader(sortIcon: SortIcon, column: any) {
+    let dir;
+    if (sortIcon.sortOrder === 1) {
       dir = 'asc';
+    } else {
+      dir = 'desc';
     }
     const sort = {
       sort_by: column.field,
       sort: dir,
     };
+    if (column.type === 'key-array') {
+      sort.sort_by = column.key_data[0] + '_' + column.key_data[1];
+    }
     this.sort.emit(sort);
   }
-
-  // onFilterChange(open: boolean) {
-  //   if (!open) {
-  //     this.filterValue.emit(this.form.value);
-  //
-  //     console.log(this.form.value);
-  //   }
-  // }
 
   handlePaginationInfo() {
     this.currentPage = this.currentPage ? this.currentPage : 1;
@@ -268,6 +269,7 @@ export class NgDataTableComponent implements OnInit {
   onFilterChange(open: boolean, col: any) {
     if (!open) {
       this.setFilter(col);
+      console.log(this.filter);
       this.filterValue.emit(this.filter);
     }
   }
@@ -387,5 +389,27 @@ export class NgDataTableComponent implements OnInit {
     calendar.writeValue('');
     dropdown.writeValue({ name: 'eq', value: '=' });
     calendar.toggle();
+  }
+
+  onDataChange(event: any, tab: string, index: number) {
+    const apiData = {
+      page: 1,
+      'active[eq]': 1,
+    };
+    apiData['search'] = event.query;
+    this.simpleTabsRefService.getItemsByCriteria(apiData, tab).subscribe((dataResult) => {
+      this.columns[index].selectData = this.getTabRefData(dataResult['results']);
+    });
+  }
+  getTabRefData(result: any[]) {
+    let items: any[] = [];
+    result.forEach((item: any) => {
+      if (item.hasOwnProperty('label')) {
+        items.push({ id: item.id, name: item.label });
+      } else {
+        items.push({ id: item.id, name: item.name });
+      }
+    });
+    return items;
   }
 }

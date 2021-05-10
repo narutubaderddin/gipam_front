@@ -1,18 +1,12 @@
 import { Component, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import {FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
-import { CustomHeaderRendererComponent } from '@shared/components/datatables/custom-header-renderer/custom-header-renderer.component';
-import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
-import { ColumnApi, GridApi, GridOptions, ICellEditorParams } from 'ag-grid-community';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
-import { DenominationsActionsRendererComponent } from '@shared/components/datatables/denominations-actions-renderer/denominations-actions-renderer.component';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import { DenominationsService } from '@shared/services/denominations.service';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
-import {NgDataTableComponent} from "@shared/components/ng-dataTables/ng-data-table/ng-data-table.component";
-import {DatePipe} from "@angular/common";
+import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 
 @Component({
   selector: 'app-denominations',
@@ -28,7 +22,7 @@ export class DenominationsComponent implements OnInit {
   myModal: any;
   selectedItem: {
     label: '';
-    active:true;
+    active: true;
     field: {
       id: number;
       name: '';
@@ -62,7 +56,7 @@ export class DenominationsComponent implements OnInit {
   dataTableFilter: any = {};
   dataTableSort: any = {};
   dataTableSearchBar: any = {};
-  items: any[]=[];
+  items: any[] = [];
   today: string;
 
   columns = [
@@ -90,7 +84,6 @@ export class DenominationsComponent implements OnInit {
     },
   ];
 
-
   constructor(
     private router: Router,
     private modalService: NgbModal,
@@ -99,7 +92,7 @@ export class DenominationsComponent implements OnInit {
     private fieldsService: FieldsService,
     public fb: FormBuilder,
     config: NgbModalConfig,
-    private messageService: MessageService,
+    private messageService: MessageService
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
@@ -117,9 +110,7 @@ export class DenominationsComponent implements OnInit {
       active: [true],
       field: [this.selectedRelatedEntity ? this.selectedRelatedEntity : { label: '' }, [Validators.required]],
     });
-
   }
-
 
   resetFilter() {}
 
@@ -128,13 +119,13 @@ export class DenominationsComponent implements OnInit {
     if (this.editItem || this.editVisibility) {
       this.itemToEdit = item;
       this.itemLabel = item.name;
-      console.log('selectedRelatedEntity',this.selectedRelatedEntity);
-      this.selectedRelatedEntity = item.field ? {
-        label:item.field.label,
-        id:item.field.id
-      } : {};
 
-
+      this.selectedRelatedEntity = item.field
+        ? {
+            label: item.field.label,
+            id: item.field.id,
+          }
+        : {};
     }
     if (this.editItem || this.addItem) {
       this.getRelatedEntity();
@@ -145,7 +136,6 @@ export class DenominationsComponent implements OnInit {
   }
   onFieldSelect(item: any) {
     this.selectedRelatedEntity = item;
-    console.log(this.selectedRelatedEntity)
   }
   onSelectAll(items: any) {}
 
@@ -155,11 +145,9 @@ export class DenominationsComponent implements OnInit {
 
     this.simpleTabsRef.getAllItems({}).subscribe((result: any) => {
       this.relatedEntities = result.results;
-      console.log('relatedEntities',this.relatedEntities);
     });
     this.simpleTabsRef.tabRef = previousUrl;
   }
-
 
   submit() {
     this.btnLoading = null;
@@ -184,7 +172,6 @@ export class DenominationsComponent implements OnInit {
     this.deleteItems = false;
     this.editVisibility = false;
 
-    // this.myModal.close('Close click');
     this.myModal.dismiss('Cross click');
   }
 
@@ -207,7 +194,7 @@ export class DenominationsComponent implements OnInit {
   addItemAction() {
     this.addItem = true;
     this.selectedItem = null;
-    this.selectedRelatedEntity =[];
+    this.selectedRelatedEntity = [];
     this.openModal('');
   }
 
@@ -227,44 +214,40 @@ export class DenominationsComponent implements OnInit {
   changeVisibilityAction(data: any) {
     this.editVisibility = true;
 
-      data.active = !data.active;
+    data.active = !data.active;
 
-      this.simpleTabsRef.editItem({label: data.label, active: data.active}, data.id).subscribe(
-        (result) => {
-          if (data.active) {
-            this.addSingle('success', 'Activation', 'Dénomination ' + data.label + ' activée avec succés');
-          } else {
-            this.addSingle('success', 'Activation', 'Dénomination ' + data.label + ' désactivée avec succés');
-          }
-          this.getAllItems();
-        },
-
-        (error) => {
-          this.addSingle('error', 'Modification', error.error.message);
+    this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
+      (result) => {
+        if (data.active) {
+          this.addSingle('success', 'Activation', 'Dénomination ' + data.label + ' activée avec succés');
+        } else {
+          this.addSingle('success', 'Activation', 'Dénomination ' + data.label + ' désactivée avec succés');
         }
-      );
+        this.getAllItems();
+      },
 
+      (error) => {
+        this.addSingle('error', 'Modification', error.error.message);
+      }
+    );
   }
-
-
-
 
   getAllItems() {
     this.loading = true;
     let params = {
       limit: this.limit,
       page: this.page,
-      sort_by:this.sortBy,
-      sort: this.sort
+      sort_by: this.sortBy,
+      sort: this.sort,
     };
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
     params = Object.assign(params, this.dataTableSearchBar);
-    console.log('http params', params);
+
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results;
-       console.log(this.items);
+
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
         this.start = (this.page - 1) * this.limit + 1;
@@ -363,13 +346,12 @@ export class DenominationsComponent implements OnInit {
   search(input: string) {
     this.page = 1;
 
-    this.dataTableSearchBar= {'search': input};
+    this.dataTableSearchBar = { search: input };
     this.getAllItems();
   }
-  ClearSearch(event: Event, input:string) {
-    if(!event['inputType']){
+  ClearSearch(event: Event, input: string) {
+    if (!event['inputType']) {
       this.search(input);
     }
   }
-
 }

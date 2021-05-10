@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,7 +7,8 @@ import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 import { ModalReportSubTypesComponent } from '@app/about/components/tabs-ref/report-sub-types/modal-report-sub-types/modal-report-sub-types.component';
-import {NgDataTableComponent} from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-report-sub-types',
@@ -48,9 +49,22 @@ export class ReportSubTypesComponent implements OnInit {
   dataTableSort: any = {};
   dataTableSearchBar: any = {};
 
-  items: any[]=[];
+  items: any[] = [];
+  relatedEntities: any[] = [];
+  activeRelatedEntities: any[] = [];
+  selectedreportType: any;
 
-  selectedreportType:any;
+  relatedEntityColumn = {
+    header: 'Type constat',
+    field: 'reportType',
+    type: 'key-array',
+    key_data: ['reportType', 'label'],
+    filter: true,
+    filterType: 'multiselect',
+    placeholder: 'Type constat',
+    selectData: this.relatedEntities,
+    sortable: true,
+  };
 
   columns = [
     {
@@ -61,12 +75,7 @@ export class ReportSubTypesComponent implements OnInit {
       filterType: 'text',
       sortable: true,
     },
-    {
-      header: 'Type constat',
-      field: 'reportType',
-      type: 'key-array',
-      key_data: ['reportType', 'label'],
-    },
+    this.relatedEntityColumn,
     {
       header: 'Actions',
       field: 'action',
@@ -91,15 +100,35 @@ export class ReportSubTypesComponent implements OnInit {
     config.keyboard = false;
   }
 
-
   ngOnInit(): void {
     this.simpleTabsRef.tabRef = 'reportSubTypes';
     this.getAllItems();
-
+    this.initFilterData();
     this.filter =
       this.activatedRoute.snapshot.queryParams.filter && this.activatedRoute.snapshot.queryParams.filter.length > 0;
   }
+  initFilterData() {
+    const data = {
+      page: 1,
+      'active[eq]': 1,
+      serializer_group: JSON.stringify(['response', 'short']),
+    };
+    forkJoin([this.simpleTabsRef.getAllItems(data, 'reportTypes')]).subscribe(
+      ([relatedServicesResults]) => {
+        this.relatedEntities = this.simpleTabsRef.getTabRefFilterData(relatedServicesResults['results']);
+        this.activeRelatedEntities = this.simpleTabsRef.getTabRefFilterData(
+          relatedServicesResults['results'].filter((value: any) => {
+            return value.active === true;
+          })
+        );
 
+        this.relatedEntityColumn.selectData = this.relatedEntities;
+      },
+      (error: any) => {
+        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
+      }
+    );
+  }
   resetFilter() {}
 
   openModal(item: any) {
@@ -109,12 +138,10 @@ export class ReportSubTypesComponent implements OnInit {
         this.editItem = true;
         this.itemToEdit = item;
         this.itemLabel = item.label;
-        this.selectedreportType =
-          {
-            id: item.reportType.id,
-            label: item.reportType.label,
-          };
-
+        this.selectedreportType = {
+          id: item.reportType.id,
+          label: item.reportType.label,
+        };
       } else {
         this.addItem = true;
       }
@@ -136,8 +163,9 @@ export class ReportSubTypesComponent implements OnInit {
       selectedItem: this.selectedItem,
       selectedReportType: this.selectedreportType,
       active: this.active,
+      activeRelatedEntities: this.activeRelatedEntities,
     };
-console.log(this.selectedreportType)
+
     modalRef.result.then(
       (result) => {
         if (result === 'delete') {
@@ -187,7 +215,6 @@ console.log(this.selectedreportType)
   }
 
   actionMethod(e: any) {
-    console.log(e);
     switch (e.method) {
       case 'delete':
         this.deleteItem(e.item);
@@ -208,16 +235,16 @@ console.log(this.selectedreportType)
     let params = {
       limit: this.limit,
       page: this.page,
-      sort_by:this.sortBy,
-      sort: this.sort
+      sort_by: this.sortBy,
+      sort: this.sort,
     };
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
     params = Object.assign(params, this.dataTableSearchBar);
-    console.log('http params', params);
+
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
-        this.items = result.results
+        this.items = result.results;
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
         this.start = (this.page - 1) * this.limit + 1;
@@ -338,11 +365,11 @@ console.log(this.selectedreportType)
 
   search(input: string) {
     this.page = 1;
-    this.dataTableSearchBar= {'search': input};
+    this.dataTableSearchBar = { search: input };
     this.getAllItems();
   }
-  ClearSearch(event: Event, input:string) {
-    if(!event['inputType']){
+  ClearSearch(event: Event, input: string) {
+    if (!event['inputType']) {
       this.search(input);
     }
   }

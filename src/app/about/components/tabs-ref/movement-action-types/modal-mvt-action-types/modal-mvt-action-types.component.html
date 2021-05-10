@@ -27,9 +27,9 @@
         <div class="select col-sm-7 p-0">
           <p-dropdown
             [options]="mvtTypes"
-            optionLabel="label"
+            optionLabel="name"
             formControlName="movementType"
-            [placeholder]="selectedMvtType&&editItem ? selectedMvtType.label : 'Sélectionner un type mouvement'"
+            [placeholder]="selectedMvtType && editItem ? selectedMvtType.label : 'Sélectionner un type mouvement'"
             emptyFilterMessage="Aucun résultat trouvé"
             (onChange)="onMvtTypesSelect($event)"
             [filter]="true"

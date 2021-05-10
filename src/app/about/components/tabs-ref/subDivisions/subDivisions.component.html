@@ -113,7 +113,7 @@
         <label class="col-sm-5">Etablissement<span class="mandatory"> *</span></label>
         <div class="select col-sm-7 p-0">
           <p-dropdown
-            [options]="relatedEntities"
+            [options]="activeRelatedEntities"
             optionLabel="label"
             formControlName="establishment"
             [placeholder]="selectedRelatedEntity ? selectedRelatedEntity.label : 'Sélectionner un établissement'"

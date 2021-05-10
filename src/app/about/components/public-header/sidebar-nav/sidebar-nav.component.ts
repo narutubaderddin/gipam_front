@@ -144,15 +144,15 @@ export class SidebarNavComponent implements OnInit {
     this.router.navigate(['tab-ref-bâtiment']);
     this.toggleClose();
   }
-  goToCommunesList(){
+  goToCommunesList() {
     this.router.navigate(['tab-ref-commune']);
     this.toggleClose();
   }
-  goToDepartmentsList(){
+  goToDepartmentsList() {
     this.router.navigate(['tab-ref-departement']);
     this.toggleClose();
   }
-  goToLocalisationTypeList(){
+  goToLocalisationTypeList() {
     this.router.navigate(['tab-ref-type-localisation']);
     this.toggleClose();
   }
@@ -162,6 +162,34 @@ export class SidebarNavComponent implements OnInit {
   }
   goToSiteList() {
     this.router.navigate(['tab-ref-site']);
+    this.toggleClose();
+  }
+  goToEstablishmentTypesList() {
+    this.router.navigate(['tab-ref-type-etablissement']);
+    this.toggleClose();
+  }
+  goToCorrespondentsList() {
+    this.router.navigate(['tab-ref-correspondant']);
+    this.toggleClose();
+  }
+  goToResponsibleList() {
+    this.router.navigate(['tab-ref-responsable']);
+    this.toggleClose();
+  }
+  goToEntryModesList() {
+    this.router.navigate(['tab-ref-modes-entree']);
+    this.toggleClose();
+  }
+  goToAuthorTypesList() {
+    this.router.navigate(['tab-ref-types-auteur']);
+    this.toggleClose();
+  }
+  goToAttachmentTypesList() {
+    this.router.navigate(['tab-ref-types-fichier-joint']);
+    this.toggleClose();
+  }
+  goToPhotographyTypesList() {
+    this.router.navigate(['tab-ref-types-photographie']);
     this.toggleClose();
   }
 }

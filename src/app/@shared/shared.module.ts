@@ -61,6 +61,9 @@ import { LinksComponent } from './components/notice-blocs/links/links.component'
 import { HypertextLinksComponent } from './components/notice-blocs//links/hypertext-links/hypertext-links.component';
 import { GalleriaModule } from 'primeng/galleria';
 import { NgFileDragDropModule } from 'ng-file-drag-drop';
+import { CarouselModule } from 'primeng/carousel';
+import { DialogModule } from 'primeng/dialog';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 @NgModule({
   imports: [
@@ -91,6 +94,9 @@ import { NgFileDragDropModule } from 'ng-file-drag-drop';
     CalendarModule,
     GalleriaModule,
     NgFileDragDropModule,
+    CarouselModule,
+    DialogModule,
+    AutoCompleteModule,
   ],
   declarations: [
     LoaderComponent,

@@ -8,6 +8,8 @@ export class ArtWorksModel {
     public era?: string,
     public style?: string,
     public materialTechnique?: string,
+    public communes?: string,
+    public buildings?: string,
     public denomination?: string,
     public field?: string,
     public movements?: any[],

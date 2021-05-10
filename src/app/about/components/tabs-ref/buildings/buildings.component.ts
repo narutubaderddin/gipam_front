@@ -2,7 +2,6 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
@@ -147,7 +146,6 @@ export class BuildingsComponent implements OnInit {
     },
   ];
 
-
   constructor(
     private router: Router,
     private modalService: NgbModal,
@@ -168,9 +166,6 @@ export class BuildingsComponent implements OnInit {
     this.getAllItems();
     this.today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     this.initForm();
-
-    // this.filter =
-    //   this.activatedRoute.snapshot.queryParams.filter && this.activatedRoute.snapshot.queryParams.filter.length > 0;
   }
 
   initForm() {
@@ -183,12 +178,12 @@ export class BuildingsComponent implements OnInit {
       label: [this.selectedItem ? this.selectedItem.name : '', [Validators.required]],
       address: [this.selectedItem ? this.selectedItem.address : '', []],
       distrib: [this.selectedItem ? this.selectedItem.distrib : '', []],
-      cedex: [this.selectedItem ? this.selectedItem.cedex : '', [Validators.required]],
+      cedex: [this.selectedItem ? this.selectedItem.cedex : '', []],
       startDate: [startDate, [Validators.required]],
       disappearanceDate: [disappearanceDate, []],
-      site: [this.selectedSite, [Validators.required]],
-      commune: [this.selectedCommune, [Validators.required]],
-      responsibles:['', []]
+      site: [this.selectedSite, []],
+      commune: [this.selectedCommune, []],
+      responsibles: ['', []],
     });
     this.tabForm.setValidators(this.ValidateDate());
   }
@@ -220,11 +215,13 @@ export class BuildingsComponent implements OnInit {
     const previousUrl = this.simpleTabsRef.tabRef;
 
     this.simpleTabsRef.tabRef = 'sites';
-
-    this.simpleTabsRef.getAllItems({limit:'10'}).subscribe(
+    const param = {
+      serializer_group: JSON.stringify(['response', 'short']),
+      limit: '100',
+    };
+    this.simpleTabsRef.getAllItems(param).subscribe(
       (result: any) => {
-        this.sites = result.results;
-        console.log('sites', this.sites);
+        this.sites = result.results.filter((value: any) => this.isActive(value.disappearanceDate));
       },
       (error: any) => {
         this.addSingle('error', '', error.error.message);
@@ -237,11 +234,13 @@ export class BuildingsComponent implements OnInit {
     const previousUrl = this.simpleTabsRef.tabRef;
 
     this.simpleTabsRef.tabRef = 'communes';
-
-    this.simpleTabsRef.getAllItems({limit:'100'}).subscribe(
+    const param = {
+      serializer_group: JSON.stringify(['response', 'short']),
+      limit: '100',
+    };
+    this.simpleTabsRef.getAllItems(param).subscribe(
       (result: any) => {
-        this.communes = result.results;
-        console.log('communes', this.communes);
+        this.communes = result.results.filter((value: any) => this.isActive(value.disappearanceDate));
       },
       (error: any) => {
         this.addSingle('error', '', error.error.message);
@@ -331,7 +330,6 @@ export class BuildingsComponent implements OnInit {
     this.deleteItems = true;
     this.itemToDelete = data;
     this.itemLabel = data.name;
-    console.log(this.itemLabel);
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
 
@@ -376,7 +374,7 @@ export class BuildingsComponent implements OnInit {
     let params = {
       limit: this.limit,
       page: this.page,
-      ort_by: this.sortBy,
+      sort_by: this.sortBy,
       sort: this.sort,
     };
     params = Object.assign(params, this.dataTableFilter);
@@ -388,7 +386,7 @@ export class BuildingsComponent implements OnInit {
         this.items = result.results.map((item: any) => {
           return this.convertItem(item);
         });
-        console.log(result, this.items);
+
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
         this.start = (this.page - 1) * this.limit + 1;
@@ -407,7 +405,6 @@ export class BuildingsComponent implements OnInit {
   }
 
   deleteItemss(item: any) {
-    console.log(item);
     this.btnLoading = '';
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
@@ -429,7 +426,7 @@ export class BuildingsComponent implements OnInit {
 
   addItems(item: any) {
     this.btnLoading = '';
-    console.log(item);
+
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
@@ -488,13 +485,12 @@ export class BuildingsComponent implements OnInit {
   search(input: string) {
     this.page = 1;
 
-    this.dataTableSearchBar= {'search': input};
+    this.dataTableSearchBar = { search: input };
     this.getAllItems();
   }
-  ClearSearch(event: Event, input:string) {
-    if(!event['inputType']){
+  ClearSearch(event: Event, input: string) {
+    if (!event['inputType']) {
       this.search(input);
     }
   }
-
 }

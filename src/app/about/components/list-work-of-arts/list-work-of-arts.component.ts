@@ -18,6 +18,8 @@ import { StylesService } from '@shared/services/styles.service';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { MaterialTechniqueService } from '@shared/services/material-technique.service';
 import { MessageService } from 'primeng/api';
+import { map } from 'rxjs/operators';
+import { RoomService } from '@shared/services/room.service';
 
 @Component({
   selector: 'app-list-work-of-arts',
@@ -29,7 +31,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   @ViewChildren('accordionSectionDOM', { read: ElementRef }) accordionsDOM: QueryList<ElementRef>;
   @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
   isCollapsed = true;
-  showDatatable = true;
+  showDatatable = false;
   data = false;
   mode = 'liste';
   filterFormGroup: FormGroup;
@@ -80,6 +82,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   end: number;
   start: number;
   loading: boolean = false;
+  firstLoading: boolean = true;
   headerFilter: any = {};
   advancedForm1: FormGroup;
   domainData: any[] = [];
@@ -98,7 +101,8 @@ export class ListWorkOfArtsComponent implements OnInit {
   subDivisionData: any[] = [];
   serviceData: any[] = [];
   establishmentTypeData: any[] = [];
-  correspondentData: any[] = [];
+  correspondentGeographicData: any[] = [];
+  correspondentAdministrativeData: any[] = [];
   locationTypeData: any[] = [];
   regionData: any[] = [];
   departmentsData: any[] = [];
@@ -123,6 +127,8 @@ export class ListWorkOfArtsComponent implements OnInit {
     { name: 'Avec oeuvres archivées', id: '' },
     { name: 'Uniquement oeuvres', id: '' },
   ];
+  titleData: any[] = [];
+  advancedForm3: FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -136,17 +142,25 @@ export class ListWorkOfArtsComponent implements OnInit {
     private styleService: StylesService,
     private simpleTabsRefService: SimpleTabsRefService,
     private messageService: MessageService,
-    private materialTechniqueService: MaterialTechniqueService
+    private materialTechniqueService: MaterialTechniqueService,
+    private roomService: RoomService
   ) {}
 
   initData(filter: any, advancedFilter: any, headerFilters: any = {}, page = 1) {
     this.loading = true;
-    this.artWorkService.getArtWorksData(filter, advancedFilter, headerFilters, page).subscribe(
+    let sort = '';
+    let sortBy = '';
+    if (this.dataTableSort.hasOwnProperty('sort')) {
+      sort = this.dataTableSort['sort'];
+      sortBy = this.dataTableSort['sort_by'];
+    }
+    this.artWorkService.getArtWorksData(filter, advancedFilter, headerFilters, page, 5, sort, sortBy).subscribe(
       (artWorksData: ArtWorksDataModel) => {
         this.artWorksData = artWorksData;
         this.start = (this.artWorksData.page - 1) * this.artWorksData.size + 1;
         this.end = (this.artWorksData.page - 1) * this.artWorksData.size + this.artWorksData.results.length;
         this.loading = false;
+        this.firstLoading = false;
       },
       (error: any) => {
         this.addSingle('error', '', error.error.message);
@@ -198,7 +212,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       this.form4.value,
       this.formStatus.value,
     ]);
-    const advancedForms = this.formatAdvancedData({}, [this.advancedForm1.value]);
+    const advancedForms = this.formatAdvancedData({}, [this.advancedForm1.value, this.advancedForm3.value]);
     this.headerFilter = this.formatFormsData({}, [headersFilter], true);
     this.initData(forms, advancedForms, this.headerFilter, 1);
   }
@@ -219,6 +233,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   fourthSearchDrop = false;
   form1Advanced: boolean = false;
   form3Advanced: boolean = false;
+  dataTableSort: any = {};
 
   onSelectAll(items: any) {}
 
@@ -243,7 +258,19 @@ export class ListWorkOfArtsComponent implements OnInit {
 
     return data;
   }
-
+  sortEvent(e: any) {
+    this.dataTableSort = e;
+    let data = this.formatFormsData({}, [
+      this.form1.value,
+      this.form2.value,
+      this.form3.value,
+      this.form4.value,
+      this.formStatus.value,
+    ]);
+    let advancedData = this.formatAdvancedData({}, [this.advancedForm1.value, this.advancedForm3.value]);
+    this.headerFilter = this.formatFormsData({}, [this.headerFilter], true);
+    this.initData(data, advancedData, this.headerFilter, this.artWorksData.page);
+  }
   formatAdvancedData(data: any, values: any[]) {
     values.forEach((value) => {
       data = this.getDataFromAdvancedForm(data, value);
@@ -251,7 +278,6 @@ export class ListWorkOfArtsComponent implements OnInit {
     return data;
   }
   getDataFromHeadersForm(data: any, value: any) {
-    console.log(value);
     Object.keys(value).forEach((key) => {
       let result: any[] = [];
       switch (key) {
@@ -259,6 +285,7 @@ export class ListWorkOfArtsComponent implements OnInit {
         case 'denomination':
         case 'materialTechnique':
         case 'style':
+        case 'communes':
         case 'era':
         case 'field':
         case 'status':
@@ -292,6 +319,7 @@ export class ListWorkOfArtsComponent implements OnInit {
         switch (key) {
           case 'style':
           case 'materialTechnique':
+          case 'responsible':
             let result: any[] = [];
             if (Array.isArray(value[key])) {
               value[key].forEach((item: any) => {
@@ -327,6 +355,7 @@ export class ListWorkOfArtsComponent implements OnInit {
         }
       }
     });
+
     return data;
   }
 
@@ -343,7 +372,22 @@ export class ListWorkOfArtsComponent implements OnInit {
         case 'mouvement':
         case 'mouvementAction':
         case 'constat':
+        case 'deposant':
         case 'constatAction':
+        case 'categorie':
+        case 'localType':
+        case 'region':
+        case 'departement':
+        case 'communes':
+        case 'batiment':
+        case 'sites':
+        case 'pieceNumber':
+        case 'correspondant':
+        case 'etablissement':
+        case 'sousDirection':
+        case 'entryMode':
+        case 'services':
+        case 'ministry':
         case 'status':
           if (Array.isArray(value[key])) {
             value[key].forEach((item: any) => {
@@ -411,7 +455,7 @@ export class ListWorkOfArtsComponent implements OnInit {
         this.form4.value,
         this.formStatus.value,
       ]);
-      let advancedData = this.formatAdvancedData({}, [this.advancedForm1.value]);
+      let advancedData = this.formatAdvancedData({}, [this.advancedForm1.value, this.advancedForm3.value]);
       this.headerFilter = this.formatFormsData({}, [this.headerFilter], true);
       this.initData(data, advancedData, this.headerFilter);
     }
@@ -515,6 +559,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   hoveredDate: NgbDate | null = null;
   openImg: boolean = false;
   imageUrl: string;
+  descriptionData: any;
 
   onDateSelection(date: NgbDate) {
     if (!this.fromDate && !this.toDate) {
@@ -557,10 +602,7 @@ export class ListWorkOfArtsComponent implements OnInit {
 
   onChange(event: Date) {
     if (event && !isNaN(event.getFullYear())) {
-      console.log(this.datePipe.transform(new Date(event.getFullYear()), 'yyyy'));
-
-      this.form1.controls['date'].setValue(event.getFullYear());
-      console.log(this.form1.value);
+      this.advancedForm1.controls['creationDate'].setValue(event.getFullYear());
     }
   }
 
@@ -575,7 +617,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       this.visibleCol.push({
         header: data.header,
         field: data.field,
-        isVisible: true,
+        isVisible: data.isVisible,
         index: index,
       });
     });
@@ -603,7 +645,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       this.fieldService.getAllFields(data),
       this.denominationsService.getAllDenominations(data),
       this.styleService.getAllItems(data),
-      this.simpleTabsRefService.getAllItems(data, 'materialTechniques'),
+      // this.simpleTabsRefService.getAllItems(data, 'materialTechniques'),
       this.simpleTabsRefService.getAllItems(data, 'eras'),
       this.simpleTabsRefService.getAllItems(data, 'authors'),
       this.simpleTabsRefService.getAllItems(data, 'propertyStatusCategories'),
@@ -620,16 +662,18 @@ export class ListWorkOfArtsComponent implements OnInit {
       this.simpleTabsRefService.getAllItems(data, 'locationTypes'),
       this.simpleTabsRefService.getAllItems(data, 'regions'),
       this.simpleTabsRefService.getAllItems(data, 'departments'),
-      this.simpleTabsRefService.getAllItems(data, 'communes'),
-      this.simpleTabsRefService.getAllItems(data, 'buildings'),
-      this.simpleTabsRefService.getAllItems(data, 'sites'),
+      this.simpleTabsRefService.getAllItems(data, 'correspondents'),
+      this.simpleTabsRefService.getAllItems(data, 'responsibles'),
+      // this.simpleTabsRefService.getAllItems(data, 'communes'),
+      // this.simpleTabsRefService.getAllItems(data, 'buildings'),
+      // this.simpleTabsRefService.getAllItems(data, 'sites'),
       this.simpleTabsRefService.getAllItems(data, 'entryModes'),
     ]).subscribe(
       ([
         fieldsResults,
         denominationResults,
         styleResults,
-        materialTechniquesResults,
+        // materialTechniquesResults,
         eraResults,
         authorResults,
         categoriesResults,
@@ -646,15 +690,17 @@ export class ListWorkOfArtsComponent implements OnInit {
         locationTypesData,
         regionsData,
         departmentData,
-        communesData,
-        buildingsData,
-        sitesData,
+        correspondentsData,
+        responsibleData,
+        // communesData,
+        // buildingsData,
+        // sitesData,
         entryModesData,
       ]) => {
         this.domainData = this.getTabRefData(fieldsResults['results']);
         this.denominationData = this.getTabRefData(denominationResults['results']);
         this.styleData = this.getTabRefData(styleResults['results']);
-        this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
+        // this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
         this.authorData = this.getTabRefData(authorResults['results']);
         this.categoriesData = this.getTabRefData(categoriesResults['results']);
         this.depositorsData = this.getTabRefData(depositorsResults['results']);
@@ -671,9 +717,11 @@ export class ListWorkOfArtsComponent implements OnInit {
         this.locationTypeData = this.getTabRefData(locationTypesData['results']);
         this.regionData = this.getTabRefData(regionsData['results']);
         this.departmentsData = this.getTabRefData(departmentData['results']);
-        this.communesData = this.getTabRefData(communesData['results']);
-        this.buildingData = this.getTabRefData(buildingsData['results']);
-        this.siteData = this.getTabRefData(sitesData['results']);
+        this.correspondentGeographicData = this.getTabRefData(correspondentsData['results']);
+        this.correspondentAdministrativeData = this.getTabRefData(responsibleData['results']);
+        // this.communesData = this.getTabRefData(communesData['results']);
+        // this.buildingData = this.getTabRefData(buildingsData['results']);
+        // this.siteData = this.getTabRefData(sitesData['results']);
         this.entryModesData = this.getTabRefData(entryModesData['results']);
         this.initColumnsDefinition();
         this.initVisibleCols();
@@ -755,6 +803,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.initGeographicLocationForm();
     this.initIdentificationAdvancedForm();
     this.initStatusForm();
+    this.initAdminAdvancedForm();
   }
 
   initStatusForm() {
@@ -792,7 +841,6 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.form3 = new FormGroup({
       ministry: new FormControl(''),
       etablissement: new FormControl(''),
-      direction: new FormControl(''),
       sousDirection: new FormControl(''),
       services: new FormControl(''),
       correspondant: new FormControl(''),
@@ -811,7 +859,14 @@ export class ListWorkOfArtsComponent implements OnInit {
       correspondant: new FormControl(''),
     });
   }
-
+  initAdminAdvancedForm() {
+    this.advancedForm3 = new FormGroup({
+      establishementType: new FormControl(''),
+      establishementTypeOperator: new FormControl('and'),
+      responsible: new FormControl(''),
+      responsibleOperator: new FormControl('and'),
+    });
+  }
   initIdentificationAdvancedForm() {
     this.advancedForm1 = new FormGroup({
       materialTechnique: new FormControl(''),
@@ -838,6 +893,10 @@ export class ListWorkOfArtsComponent implements OnInit {
       eraOperator: new FormControl('and'),
       unitNumber: new FormControl(''),
       unitNumberOperator: new FormControl('and'),
+      description: new FormControl(''),
+      descriptionOperator: new FormControl('and'),
+      creationDate: new FormControl(''),
+      creationDateOperator: new FormControl('and'),
     });
   }
 
@@ -863,6 +922,17 @@ export class ListWorkOfArtsComponent implements OnInit {
         isVisible: true,
       },
       {
+        header: 'Auteur',
+        field: 'authors',
+        width: '150px',
+        sortable: true,
+        filter: true,
+        filterType: 'multiselect',
+        selectData: this.authorData,
+        type: 'key',
+        isVisible: true,
+      },
+      {
         header: 'Date création',
         field: 'creationDate',
         sortable: true,
@@ -870,7 +940,7 @@ export class ListWorkOfArtsComponent implements OnInit {
         filter: true,
         type: 'key',
         filterType: 'range-date',
-        isVisible: true,
+        isVisible: false,
       },
       {
         header: 'Domaine',
@@ -893,7 +963,7 @@ export class ListWorkOfArtsComponent implements OnInit {
         filterType: 'multiselect',
         selectData: this.denominationData,
         type: 'key',
-        isVisible: true,
+        isVisible: false,
       },
       {
         header: 'Matière',
@@ -904,7 +974,7 @@ export class ListWorkOfArtsComponent implements OnInit {
         filterType: 'multiselect',
         selectData: this.materialTechniquesData,
         type: 'key',
-        isVisible: true,
+        isVisible: false,
       },
       {
         header: 'Style',
@@ -915,7 +985,7 @@ export class ListWorkOfArtsComponent implements OnInit {
         filterType: 'multiselect',
         selectData: this.styleData,
         type: 'key',
-        isVisible: true,
+        isVisible: false,
       },
       {
         header: 'Epoque',
@@ -926,19 +996,9 @@ export class ListWorkOfArtsComponent implements OnInit {
         filterType: 'multiselect',
         selectData: this.eraData,
         type: 'key',
-        isVisible: true,
+        isVisible: false,
       },
-      {
-        header: 'Auteur',
-        field: 'authors',
-        width: '150px',
-        sortable: true,
-        filter: true,
-        filterType: 'multiselect',
-        selectData: this.authorData,
-        type: 'key',
-        isVisible: true,
-      },
+
       {
         header: 'Type de Statut',
         field: 'status',
@@ -963,6 +1023,30 @@ export class ListWorkOfArtsComponent implements OnInit {
         isVisible: true,
       },
       {
+        header: 'Commune',
+        field: 'communes',
+        width: '150px',
+        sortable: true,
+        filter: true,
+        filterType: 'autoComplete',
+        filterTab: 'communes',
+        selectData: this.communesData,
+        type: 'key',
+        isVisible: true,
+      },
+
+      {
+        header: 'Bâtiment',
+        field: 'buildings',
+        width: '150px',
+        sortable: true,
+        filter: true,
+        filterType: 'multiselect',
+        selectData: this.buildingData,
+        type: 'key',
+        isVisible: true,
+      },
+      {
         header: 'photographie',
         field: 'property',
         cellRenderer: 'imageViewer',
@@ -970,7 +1054,7 @@ export class ListWorkOfArtsComponent implements OnInit {
         sortable: true,
         filter: true,
         type: 'key',
-        isVisible: true,
+        isVisible: false,
       },
       {
         header: 'Dernier constat de présence',
@@ -980,25 +1064,25 @@ export class ListWorkOfArtsComponent implements OnInit {
         filter: true,
         filterType: 'text',
         type: 'key',
-        isVisible: true,
+        isVisible: false,
       },
       {
         header: 'Dernière action liée au constat',
         field: 'author',
         width: '150px',
-        isVisible: true,
+        isVisible: false,
       },
       {
         header: 'Dernier mouvement',
         field: 'author',
         width: '150px',
-        isVisible: true,
+        isVisible: false,
       },
       {
         header: 'Dernière action liée au mouvement',
         field: 'author',
         width: '150px',
-        isVisible: true,
+        isVisible: false,
       },
       {
         header: 'Visible catalogue',
@@ -1026,7 +1110,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       this.form4.value,
       this.formStatus.value,
     ]);
-    let advancedData = this.formatAdvancedData({}, [this.advancedForm1.value]);
+    let advancedData = this.formatAdvancedData({}, [this.advancedForm1.value, this.advancedForm3.value]);
     this.headerFilter = this.formatFormsData({}, [this.headerFilter], true);
     this.initData(data, advancedData, this.headerFilter, this.artWorksData.page);
   }
@@ -1098,5 +1182,159 @@ export class ListWorkOfArtsComponent implements OnInit {
         }
         break;
     }
+  }
+
+  filterCommune(event: any) {
+    let data = {
+      page: 1,
+      'active[eq]': 1,
+      serializer_group: JSON.stringify(['response', 'short']),
+    };
+    let query = event.target.value;
+    if (query.length >= 2 || event.inputType == 'deleteContentBackward') {
+      data['name'] = query;
+      data = this.getAPisItems(data, this.form4, 'departement');
+      data = this.getAPisItems(data, this.form4, 'region');
+      this.simpleTabsRefService.getItemsByCriteria(data, 'communes').subscribe((communesData) => {
+        this.communesData = this.getTabRefData(communesData['results']);
+      });
+    }
+  }
+
+  filterDescription(event: any) {
+    console.log(event);
+    return false;
+    // if (event.query.length >= 3 || event.originalEvent.inputType == 'deleteContentBackward') {
+    //   this.artWorkService.getAutocompleteData(event.query).subscribe((data) => {
+    //     this.descriptionData = data;
+    //   });
+    // }
+  }
+
+  onGeographicLocationChange(event: any, key: string) {
+    if (event.query.length > 2) {
+      let data = {
+        page: 1,
+        'active[eq]': 1,
+        serializer_group: JSON.stringify(['response', 'short']),
+        search: event.query,
+      };
+
+      let keys = [];
+      switch (key) {
+        case 'departement':
+          keys = [{ formKey: 'region', tabName: 'departments' }];
+          let departementDataApi = Object.assign({}, data);
+          keys.forEach((keysData) => {
+            departementDataApi = this.getAPisItems(departementDataApi, this.form4, keysData.formKey);
+          });
+          this.simpleTabsRefService
+            .getItemsByCriteria(departementDataApi, 'departments')
+            .subscribe((departementData) => {
+              this.departmentsData = this.getTabRefData(departementData['results']);
+            });
+          break;
+        case 'communes':
+          keys = [
+            { formKey: 'departement', tabName: 'communes' },
+            { formKey: 'region', tabName: 'departments' },
+          ];
+          let communeDataApi = Object.assign({}, data);
+          keys.forEach((keysData) => {
+            communeDataApi = this.getAPisItems(communeDataApi, this.form4, keysData.formKey);
+          });
+          this.simpleTabsRefService.getItemsByCriteria(communeDataApi, 'communes').subscribe((communeData) => {
+            this.communesData = this.getTabRefData(communeData['results']);
+          });
+          break;
+        case 'batiment':
+          keys = [
+            { formKey: 'departement', tabName: 'communes' },
+            { formKey: 'region', tabName: 'departments' },
+            { formKey: 'communes', tabName: 'sites' },
+          ];
+          let buildingDataApi = Object.assign({}, data);
+          keys.forEach((keysData) => {
+            buildingDataApi = this.getAPisItems(buildingDataApi, this.form4, keysData.formKey);
+          });
+          this.simpleTabsRefService.getItemsByCriteria(buildingDataApi, 'buildings').subscribe((buildingData) => {
+            this.buildingData = this.getTabRefData(buildingData['results']);
+          });
+          break;
+        case 'sites':
+          keys = [
+            { formKey: 'departement', tabName: 'communes' },
+            { formKey: 'region', tabName: 'departments' },
+            { formKey: 'communes', tabName: 'sites' },
+            { formKey: 'batiment', tabName: 'buildings' },
+          ];
+          let siteDataApi = Object.assign({}, data);
+          keys.forEach((keysData) => {
+            siteDataApi = this.getAPisItems(siteDataApi, this.form4, keysData.formKey);
+          });
+          this.simpleTabsRefService.getItemsByCriteria(siteDataApi, 'sites').subscribe((siteDataApi) => {
+            this.siteData = this.getTabRefData(siteDataApi['results']);
+          });
+          break;
+      }
+    }
+  }
+
+  private getAPisItems(data: any, form: FormGroup, key: string) {
+    let itemData = form.value[key];
+    let result: any[] = [];
+    if (Array.isArray(itemData)) {
+      itemData.forEach((item) => {
+        result.push(item.id);
+      });
+    }
+    if (result.length > 0) {
+      data[key] = JSON.stringify(result);
+    }
+    return data;
+  }
+  public requestAutocompleteItems = (text: string) => {
+    return this.artWorkService.getAutocompleteData(text, 'description').pipe(map((data) => data));
+  };
+
+  onSelectBatiment(event: any) {
+    let data = this.getAPisItems({}, this.form4, 'batiment');
+    this.roomService.getLevelByBuildings(data['batiment']).subscribe((levelResult) => {
+      levelResult.forEach((item) => {
+        this.levelData.push({ id: 0, name: item });
+      });
+    });
+  }
+
+  onTitreChange(event: any) {
+    this.artWorkService.getAutocompleteData(event.query, 'title').subscribe((titleResult) => {
+      this.titleData = titleResult;
+    });
+  }
+
+  onMaterialTechniqueComplete($event: any) {
+    let selectedDomaineData = this.form1.get('domaine').value;
+    let selectedDenominationData = this.form1.get('denomination').value;
+    const apiData = {
+      page: 1,
+      'active[eq]': 1,
+    };
+    let selectedDataId: any[] = [];
+    if (Array.isArray(selectedDomaineData)) {
+      selectedDomaineData.forEach((selectedDataValue: any) => {
+        selectedDataId.push(selectedDataValue.id);
+      });
+      apiData['field'] = JSON.stringify(selectedDataId);
+    }
+    selectedDataId = [];
+    if (Array.isArray(selectedDenominationData)) {
+      selectedDenominationData.forEach((selectedDataValue: any) => {
+        selectedDataId.push(selectedDataValue.id);
+      });
+      apiData['denomination'] = JSON.stringify(selectedDataId);
+    }
+    this.materialTechniqueService.getFilteredMaterialTechnique(apiData).subscribe((materialTechniquesResults) => {
+      this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
+    });
   }
 }

@@ -1,14 +1,13 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import { OPERATORS, TYPES } from '@shared/services/column-filter.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalConfig, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
-
 import { ModalMvtActionTypesComponent } from '@app/about/components/tabs-ref/movement-action-types/modal-mvt-action-types/modal-mvt-action-types.component';
-import {NgDataTableComponent} from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-movement-action-types',
@@ -45,10 +44,22 @@ export class MovementActionTypesComponent implements OnInit {
   end: number;
   start: number;
 
+  relatedEntities: any[] = [];
+  activeRelatedEntities: any[] = [];
   dataTableFilter: any = {};
   dataTableSort: any = {};
   dataTableSearchBar: any = {};
-
+  RelatedEntityColumn = {
+    header: 'Type mouvement',
+    field: 'movementType',
+    type: 'key-array',
+    key_data: ['movementType', 'label'],
+    filter: true,
+    filterType: 'multiselect',
+    placeholder: 'Type mouvement',
+    selectData: this.relatedEntities,
+    sortable: true,
+  };
   items: any;
   fieldNames = {
     label: 'Libellé',
@@ -63,12 +74,7 @@ export class MovementActionTypesComponent implements OnInit {
       filterType: 'text',
       sortable: true,
     },
-    {
-      header: 'Type mouvement',
-      field: 'movementType',
-      type: 'key-array',
-      key_data: ['movementType', 'label'],
-    },
+    this.RelatedEntityColumn,
     {
       header: 'Actions',
       field: 'action',
@@ -96,13 +102,38 @@ export class MovementActionTypesComponent implements OnInit {
   ngOnInit(): void {
     this.simpleTabsRef.tabRef = 'movementActionTypes';
     this.getAllItems();
-
+    this.initFilterData();
     this.filter =
       this.activatedRoute.snapshot.queryParams.filter && this.activatedRoute.snapshot.queryParams.filter.length > 0;
   }
+  initFilterData() {
+    const previousUrl = this.simpleTabsRef.tabRef;
+    const data = {
+      page: 1,
+      'active[eq]': 1,
+      serializer_group: JSON.stringify(['response', 'short']),
+    };
+    forkJoin([this.simpleTabsRef.getAllItems(data, 'movementTypes')]).subscribe(
+      ([relatedServicesResults]) => {
+        this.relatedEntities = this.simpleTabsRef.getTabRefFilterData(relatedServicesResults['results']);
+        this.activeRelatedEntities = this.simpleTabsRef.getTabRefFilterData(
+          relatedServicesResults['results'].filter((value: any) => {
+            return value.active === true;
+          })
+        );
 
+        this.RelatedEntityColumn.selectData = this.relatedEntities;
+      },
+      (error: any) => {
+        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
+      }
+    );
+    this.simpleTabsRef.tabRef = previousUrl;
+  }
   resetFilter() {}
-
+  isActive(active: string) {
+    return active;
+  }
   openModal(item: any) {
     this.btnLoading = null;
     if (!this.deleteItems) {
@@ -110,12 +141,10 @@ export class MovementActionTypesComponent implements OnInit {
         this.editItem = true;
         this.itemToEdit = item;
         this.itemLabel = item.label;
-        this.selectedMvtType =
-          {
-            id: item.movementType.id,
-            label: item.movementType.label,
-          };
-        console.log('selectedMvtType', this.selectedMvtType);
+        this.selectedMvtType = {
+          id: item.movementType.id,
+          label: item.movementType.label,
+        };
       } else {
         this.selectedMvtType = [];
         this.addItem = true;
@@ -137,8 +166,9 @@ export class MovementActionTypesComponent implements OnInit {
       itemToEdit: this.itemToEdit,
       selectedItem: this.selectedItem,
       active: this.active,
-      btnLoading:this.btnLoading,
+      btnLoading: this.btnLoading,
       selectedMvtType: this.selectedMvtType,
+      activeRelatedEntities: this.activeRelatedEntities,
     };
 
     modalRef.result.then(
@@ -190,7 +220,6 @@ export class MovementActionTypesComponent implements OnInit {
   }
 
   actionMethod(e: any) {
-    console.log(e);
     switch (e.method) {
       case 'delete':
         this.deleteItem(e.item);
@@ -221,7 +250,6 @@ export class MovementActionTypesComponent implements OnInit {
 
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
-        console.log(result);
         this.items = result.results;
         this.totalFiltred = result.filteredQuantity;
         this.total = result.totalQuantity;
@@ -268,7 +296,7 @@ export class MovementActionTypesComponent implements OnInit {
   addItems(item: any) {
     this.simpleTabsRef.tabRef = 'movementActionTypes';
     this.btnLoading = '';
-    console.log(item);
+
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
@@ -321,7 +349,6 @@ export class MovementActionTypesComponent implements OnInit {
   }
 
   pagination(e: any) {
-    console.log('pagination');
     if (e.page < this.total / parseInt(this.limit.toString(), 0)) {
       this.page = e.page + 1;
     } else {
@@ -344,11 +371,11 @@ export class MovementActionTypesComponent implements OnInit {
 
   search(input: string) {
     this.page = 1;
-    this.dataTableSearchBar= {'search': input};
+    this.dataTableSearchBar = { search: input };
     this.getAllItems();
   }
-  ClearSearch(event: Event, input:string) {
-    if(!event['inputType']){
+  ClearSearch(event: Event, input: string) {
+    if (!event['inputType']) {
       this.search(input);
     }
   }
