@@ -115,7 +115,8 @@ import { AutosizeModule } from 'ngx-autosize';
 import { RequestService } from '@shared/services/request.service';
 import { EstablishmentService } from '@shared/services/establishment.service';
 import { DemandService } from '@shared/services/demand.service';
-
+import { PersonsComponent } from '@app/about/components/tabs-ref/persons/persons.component';
+import { DepositorsComponent } from '@app/about/components/tabs-ref/depositors/depositors.component';
 setTheme('bs4');
 
 const ngWizardConfig: NgWizardConfig = {
@@ -187,6 +188,8 @@ const ngWizardConfig: NgWizardConfig = {
     AuthorTypesComponent,
     AttachmentTypesComponent,
     PhotographyTypesComponent,
+    PersonsComponent,
+    DepositorsComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
