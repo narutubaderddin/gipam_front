@@ -20,82 +20,48 @@
               </i>
             </div>
             <ng-template #content let-modal>
-              <div class="modal-header col-12 text-sm-center col-sm-12">
-                <h4 style="margin-left: 30%" class="text-center" id="s">
-                  {{ selectedOeuvre.length > 0 ? selectedOeuvre.length : 'Aucun' }} bien{{
-                    selectedOeuvre.length > 1 ? 's' : ''
-                  }}
-                  culturel{{ selectedOeuvre.length > 1 ? 's' : '' }} demandé{{ selectedOeuvre.length > 1 ? 's' : '' }}
-                </h4>
-                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="shop-container container-fluid">
-                  <div class="row" *ngIf="selectedOeuvre.length > 0">
-                    <div class="col-md-12">
-                      <i
-                        class="float-right fas fa-file-download d-inline p-2"
-                        placement="top"
-                        ngbTooltip="Exporter"
-                      ></i>
+              <form (ngSubmit)="onSubmitRequest(request)" [formGroup]="requestForm">
+                <div class="modal-header col-12 text-sm-center col-sm-12">
+                  <h4 style="margin-left: 30%" class="text-center" id="s">
+                    {{ selectedOeuvre.length > 0 ? selectedOeuvre.length : 'Aucun' }} bien{{
+                      selectedOeuvre.length > 1 ? 's' : ''
+                    }}
+                    culturel{{ selectedOeuvre.length > 1 ? 's' : '' }} demandé{{ selectedOeuvre.length > 1 ? 's' : '' }}
+                  </h4>
+                  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="shop-container container-fluid">
+                    <div class="row" *ngIf="selectedOeuvre.length > 0">
+                      <div class="col-md-12">
+                        <i
+                          class="float-right fas fa-file-download d-inline p-2"
+                          placement="top"
+                          ngbTooltip="Exporter"
+                        ></i>
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-md-12" *ngIf="selectedOeuvre.length === 0; else existSelectedOeuvre">
-                    <div class="alert alert-warning" role="alert" style="margin-top: 25px">
-                      Vous n'avez aucun bien culturel demandé.
+                    <div class="col-md-12" *ngIf="selectedOeuvre.length === 0; else existSelectedOeuvre">
+                      <div class="alert alert-warning" role="alert" style="margin-top: 25px">
+                        Vous n'avez aucun bien culturel demandé.
+                      </div>
                     </div>
-                  </div>
-                  <ng-template #existSelectedOeuvre>
-                    <div class="row">
-                      <aside class="col-lg-5">
-                        <div class="card mb-3">
-                          <div class="card-body">
-                            <form>
+                    <ng-template #existSelectedOeuvre>
+                      <div class="row">
+                        <aside class="col-lg-5">
+                          <div class="card mb-3">
+                            <div class="card-body">
                               <div class="form-group">
                                 <div class="input-group">
-                                  <input type="text" class="form-control" name="" placeholder="Nom" />
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <div class="input-group">
-                                  <input type="text" class="form-control" name="" placeholder="Prénom" />
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <!--<input type="text" class="form-control" name="" placeholder="Direction" />-->
-                                <select class="form-control">
-                                  <option value="">Choisissez une direction</option>
-                                </select>
-                              </div>
-                              <div class="form-group">
-                                <div class="input-group">
-                                  <select class="form-control">
-                                    <option value="">Choisissez une Sous-direction</option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <div class="input-group">
-                                  <input type="text" class="form-control" name="" placeholder="Fonction" />
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <div class="input-group">
-                                  <select class="form-control">
-                                    <option value="">Choisissez un Batiment</option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <div class="input-group">
-                                  <input type="text" class="form-control" name="" placeholder="Téléphone" />
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <div class="input-group">
-                                  <input type="text" class="form-control" name="" placeholder="Mail" />
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    name="Nom"
+                                    placeholder="Nom"
+                                    formControlName="firstName"
+                                  />
                                 </div>
                               </div>
                               <div class="form-group">
@@ -103,84 +69,268 @@
                                   <input
                                     type="text"
                                     class="form-control"
-                                    name=""
-                                    onfocus="(this.type='date')"
-                                    placeholder="Date de livraision souhaité"
+                                    name="prenom"
+                                    placeholder="Prénom"
+                                    formControlName="lastName"
                                   />
                                 </div>
                               </div>
                               <div class="form-group">
                                 <div class="input-group">
-                                  <textarea placeholder="Commentaire"></textarea>
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    name="function"
+                                    placeholder="Fonction"
+                                    formControlName="function"
+                                  />
                                 </div>
                               </div>
-                            </form>
+                              <div class="form-group">
+                                <p-dropdown
+                                  filter="true"
+                                  filterBy="label"
+                                  formControlName="establishement"
+                                  [options]="establishments"
+                                  [(ngModel)]="selectedEstablishment"
+                                  [emptyFilterMessage]="'Aucune direction'"
+                                  (onFilter)="filterEstablishment($event)"
+                                  (onChange)="getListSubDirection(selectedEstablishment)"
+                                  optionLabel="label"
+                                  placeholder="Choisissez une direction"
+                                >
+                                  <ng-template pTemplate="selectedItem">
+                                    <div class="country-item country-item-value" *ngIf="selectedEstablishment">
+                                      <div>{{ selectedEstablishment.label }}</div>
+                                    </div>
+                                  </ng-template>
+                                  <ng-template let-establishment pTemplate="item">
+                                    <div class="country-item">
+                                      <div>{{ establishment.label }}</div>
+                                    </div>
+                                  </ng-template>
+                                </p-dropdown>
+                              </div>
+                              <div class="form-group">
+                                <p-dropdown
+                                  [options]="subDirections"
+                                  filter="true"
+                                  filterBy="label"
+                                  formControlName="subDivision"
+                                  [(ngModel)]="selectedSubDirection"
+                                  [emptyFilterMessage]="'Aucune sous-direction'"
+                                  (onFilter)="filterSubDirection($event)"
+                                  optionLabel="label"
+                                  placeholder="Choisissez une Sous-direction"
+                                >
+                                  <ng-template pTemplate="selectedItem">
+                                    <div class="country-item country-item-value" *ngIf="selectedSubDirection">
+                                      <div>{{ selectedSubDirection.label }}</div>
+                                    </div>
+                                  </ng-template>
+                                  <ng-template let-subDirection pTemplate="item">
+                                    <div class="country-item">
+                                      <div>{{ subDirection.label }}</div>
+                                    </div>
+                                  </ng-template>
+                                </p-dropdown>
+                              </div>
+
+                              <div class="form-group">
+                                <p-dropdown
+                                  filter="true"
+                                  filterBy="name"
+                                  formControlName="building"
+                                  [options]="buildings"
+                                  [(ngModel)]="selectedBuilding"
+                                  [emptyFilterMessage]="'Aucun Batiment'"
+                                  (onFilter)="filterBuilding($event)"
+                                  (onChange)="getLevels(selectedBuilding.id)"
+                                  optionLabel="name"
+                                  placeholder="Choisissez un Batiment"
+                                >
+                                  <ng-template pTemplate="selectedItem">
+                                    <div class="country-item country-item-value" *ngIf="selectedBuilding">
+                                      <div>{{ selectedBuilding.name }}</div>
+                                    </div>
+                                  </ng-template>
+                                  <ng-template let-building pTemplate="item">
+                                    <div class="country-item">
+                                      <div>{{ building.name }}</div>
+                                    </div>
+                                  </ng-template>
+                                </p-dropdown>
+                                <!--<div class="input-group">
+                                  <select class="form-control" formControlName="building"
+                                          (change)="getListPieces($event?.target?.value)">
+                                    <option value="">Choisissez un Batiment</option>
+                                    <option *ngFor="let building of buildings"
+                                            value="{{building.id}}">{{building.name}}</option>
+                                  </select>
+                                </div>-->
+                              </div>
+                              <div class="form-group">
+                                <p-dropdown
+                                  filter="true"
+                                  filterBy="label"
+                                  formControlName="level"
+                                  [options]="levels"
+                                  [(ngModel)]="selectedLevel"
+                                  [emptyFilterMessage]="'Aucun niveau'"
+                                  (onChange)="getPiecesNumbers()"
+                                  optionLabel="label"
+                                  placeholder="Choisissez un Niveau"
+                                >
+                                  <ng-template pTemplate="selectedItem">
+                                    <div class="country-item country-item-value" *ngIf="selectedLevel">
+                                      <div>{{ selectedLevel.label }}</div>
+                                    </div>
+                                  </ng-template>
+                                  <ng-template let-level pTemplate="item">
+                                    <div class="country-item">
+                                      <div>{{ level.label }}</div>
+                                    </div>
+                                  </ng-template>
+                                </p-dropdown>
+                                <!--selectedPiecesNumber-->
+                                <!--piecesNumbers-->
+                                <!--<select class="form-control" formControlName="pieceNumber">
+                                  <option value="">Choisissez un Niveau</option>
+                                  <option *ngFor="let pieceNumber of piecesNumbers"
+                                          value="{{pieceNumber}}">{{pieceNumber}}</option>
+                                </select>-->
+                              </div>
+                              <div class="form-group">
+                                <p-dropdown
+                                  filter="true"
+                                  filterBy="label"
+                                  formControlName="pieceNumber"
+                                  [options]="piecesNumbers"
+                                  [(ngModel)]="selectedPieceNumber"
+                                  [emptyFilterMessage]="'Aucun n° de piéce'"
+                                  placeholder="Choisissez un n° de piéce"
+                                >
+                                  <ng-template pTemplate="selectedItem">
+                                    <div class="country-item country-item-value" *ngIf="selectedPieceNumber">
+                                      <div>{{ selectedPieceNumber.label }}</div>
+                                    </div>
+                                  </ng-template>
+                                  <ng-template let-piecesNumber pTemplate="item">
+                                    <div class="country-item">
+                                      <div>{{ piecesNumber.label }}</div>
+                                    </div>
+                                  </ng-template>
+                                </p-dropdown>
+
+                                <!--<div class="input-group">
+                                  <select class="form-control" formControlName="level">
+                                    <option value="">Choisissez un n° de piéce</option>
+                                    <option value="Niveau1">N 1</option>
+                                    <option value="Niveau2">N 2</option>
+                                  </select>
+                                </div>-->
+                              </div>
+                              <div class="form-group">
+                                <div class="input-group">
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    name="phone"
+                                    placeholder="Téléphone"
+                                    formControlName="phone"
+                                  />
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <div class="input-group">
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    name="mail"
+                                    placeholder="Mail"
+                                    formControlName="mail"
+                                  />
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <div class="input-group">
+                                  <textarea
+                                    formControlName="comment"
+                                    placeholder="Commentaire"
+                                    rows="2"
+                                    autosize
+                                  ></textarea>
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </aside>
-                      <aside class="col-lg-7">
-                        <div class="card" style="height: 444.78px">
-                          <div class="table-responsive">
-                            <table class="table table-borderless table-shopping-cart">
-                              <thead class="text-muted">
-                                <tr class="small text-uppercase">
-                                  <th scope="col"></th>
-                                  <!--<th scope="col" width="120">Price</th>-->
-                                  <th scope="col" class="text-right d-none d-md-block" width="100"></th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr *ngFor="let oeuvre of selectedOeuvre; let index = index">
-                                  <td>
-                                    <figure class="itemside align-items-center">
-                                      <div class="aside"><img src="assets/images/2.jpg" class="img-sm" /></div>
-                                      <figcaption class="info">
-                                        <a class="title text-dark" data-abc="true">{{ oeuvre.title }}</a>
-                                        <!--<p class="text-muted small">SIZE: L <br> Brand: MAXTRA</p>-->
-                                      </figcaption>
-                                    </figure>
-                                  </td>
-                                  <!--<td>
+                        </aside>
+                        <aside class="col-lg-7">
+                          <div class="card" style="height: 582.78px">
+                            <div class="table-responsive">
+                              <table class="table table-borderless table-shopping-cart">
+                                <thead class="text-muted">
+                                  <tr class="small text-uppercase">
+                                    <th scope="col"></th>
+                                    <!--<th scope="col" width="120">Price</th>-->
+                                    <th scope="col" class="text-right d-none d-md-block" width="100"></th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let oeuvre of selectedOeuvre; let index = index">
+                                    <td>
+                                      <figure class="itemside align-items-center">
+                                        <div class="aside"><img src="assets/images/2.jpg" class="img-sm" /></div>
+                                        <figcaption class="info">
+                                          <a class="title text-dark" data-abc="true">{{ oeuvre.title }}</a>
+                                          <!--<p class="text-muted small">SIZE: L <br> Brand: MAXTRA</p>-->
+                                        </figcaption>
+                                      </figure>
+                                    </td>
+                                    <!--<td>
                                 <div class="price-wrap"> <var class="price">$10.00</var> <small class="text-muted"> $9.20 each </small> </div>
                               </td>-->
-                                  <td class="text-center d-none d-md-block">
-                                    <button
-                                      (click)="removeFromBasket($event, oeuvre)"
-                                      placement="top"
-                                      ngbTooltip="Retirer du panier"
-                                      type="button"
-                                      class="btn btn-outline-danger btn-xs"
-                                    >
-                                      <i
-                                        class="fa fa-trash"
-                                        pTooltip="Retirer du panier"
-                                        tooltipPosition="top"
-                                        aria-hidden="true"
-                                      ></i>
-                                    </button>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
+                                    <td class="text-center d-none d-md-block">
+                                      <button
+                                        (click)="removeFromBasket($event, oeuvre)"
+                                        placement="top"
+                                        ngbTooltip="Retirer du panier"
+                                        type="button"
+                                        class="btn btn-outline-danger btn-xs"
+                                      >
+                                        <i
+                                          class="fa fa-trash"
+                                          pTooltip="Retirer du panier"
+                                          tooltipPosition="top"
+                                          aria-hidden="true"
+                                        ></i>
+                                      </button>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
                           </div>
-                        </div>
-                      </aside>
-                    </div>
-                  </ng-template>
-                </div>
-                <form>
+                        </aside>
+                      </div>
+                    </ng-template>
+                  </div>
+                  <!-- <form>
                   <div class="form-group"></div>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button
-                  class="btn btn-out btn-primary btn-square btn-main"
-                  data-abc="true"
-                  (click)="modal.dismiss('Cross click')"
-                >
-                  Valider
-                </button>
-              </div>
+                </form>-->
+                </div>
+                <div class="modal-footer">
+                  <button
+                    class="btn btn-out btn-primary btn-square btn-main"
+                    data-abc="true"
+                    type="submit"
+                    [disabled]="!requestForm.valid"
+                  >
+                    <!--(click)="modal.dismiss('Cross click')"-->
+                    Valider
+                  </button>
+                </div>
+              </form>
             </ng-template>
             <i class="fas fa-file-download d-inline p-2"></i>
           </div>
@@ -546,6 +696,7 @@
                   class="picture-bloc-images card shadow p-3 items-bloc item"
                   style="margin-bottom: 0"
                   *ngFor="let items of section.items"
+                  [ngClass]="items.isInRequest ? 'disabled-oeuvre' : ''"
                   (click)="details(items.visible, items.image, items.id)"
                 >
                   <div class="card-block flip">
@@ -575,7 +726,7 @@
                         <i
                           data-toggle="tooltip"
                           data-placement="top"
-                          ngbTooltip="Ajouter au panier"
+                          ngbTooltip="{{ items.tooltip }}"
                           class="fa fa-shopping-basket icon"
                           aria-hidden="true"
                           (click)="addToBasket($event, items)"
@@ -701,3 +852,4 @@
     </div>
   </form>
 </ng-template>
+<p-toast></p-toast>

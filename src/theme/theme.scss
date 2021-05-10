@@ -169,7 +169,7 @@ button {
 
         label {
           font-size: 12px;
-          color: #407ca8;
+          color: #838a90;
           width: 100px;
         }
 
@@ -665,7 +665,7 @@ li a i:hover {
 /*
   Notifications and form errors
  */
-input:has(.form-control),
+input,
 select,
 ng-multiselect-dropdown,
 textarea,

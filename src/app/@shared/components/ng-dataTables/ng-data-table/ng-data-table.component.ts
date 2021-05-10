@@ -10,6 +10,7 @@ import { Dropdown } from 'primeng/dropdown';
 import { DatePipe } from '@angular/common';
 import { viewDateFormat } from '@shared/utils/helpers';
 import { SortIcon } from 'primeng/table';
+import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 
 @Component({
   selector: 'app-ng-data-table',
@@ -96,7 +97,12 @@ export class NgDataTableComponent implements OnInit {
 
   viewDateFormat = viewDateFormat;
 
-  constructor(private calendar: NgbCalendar, public formBuilder: FormBuilder, private datePipe: DatePipe) {
+  constructor(
+    private calendar: NgbCalendar,
+    public formBuilder: FormBuilder,
+    private datePipe: DatePipe,
+    private simpleTabsRefService: SimpleTabsRefService
+  ) {
     this.fromDate = calendar.getToday();
   }
 
@@ -263,6 +269,7 @@ export class NgDataTableComponent implements OnInit {
   onFilterChange(open: boolean, col: any) {
     if (!open) {
       this.setFilter(col);
+      console.log(this.filter);
       this.filterValue.emit(this.filter);
     }
   }
@@ -382,5 +389,27 @@ export class NgDataTableComponent implements OnInit {
     calendar.writeValue('');
     dropdown.writeValue({ name: 'eq', value: '=' });
     calendar.toggle();
+  }
+
+  onDataChange(event: any, tab: string, index: number) {
+    const apiData = {
+      page: 1,
+      'active[eq]': 1,
+    };
+    apiData['search'] = event.query;
+    this.simpleTabsRefService.getItemsByCriteria(apiData, tab).subscribe((dataResult) => {
+      this.columns[index].selectData = this.getTabRefData(dataResult['results']);
+    });
+  }
+  getTabRefData(result: any[]) {
+    let items: any[] = [];
+    result.forEach((item: any) => {
+      if (item.hasOwnProperty('label')) {
+        items.push({ id: item.id, name: item.label });
+      } else {
+        items.push({ id: item.id, name: item.name });
+      }
+    });
+    return items;
   }
 }

@@ -448,7 +448,10 @@ input:checked + .slider:before {
     }
   }
 }
-
+.loading-spinner {
+  margin-left: 40%;
+  margin-top: 6%;
+}
 .multiSelectBlock {
   padding: 0;
 }

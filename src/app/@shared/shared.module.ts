@@ -1,4 +1,4 @@
-import { NgModule, Provider, Component } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AgGridModule } from 'ag-grid-angular';
@@ -64,7 +64,6 @@ import { NgFileDragDropModule } from 'ng-file-drag-drop';
 import { CarouselModule } from 'primeng/carousel';
 import { DialogModule } from 'primeng/dialog';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   imports: [
@@ -98,7 +97,6 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     CarouselModule,
     DialogModule,
     AutoCompleteModule,
-    InfiniteScrollModule,
   ],
   declarations: [
     LoaderComponent,
