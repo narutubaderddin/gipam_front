@@ -27,18 +27,23 @@
   <ol class="mb-2" *ngIf="add">
     <li class="mb-2">Fait partie de:</li>
     <li>
-      <p-dropdown
+      <p-autoComplete
+        #autocompletePanel
         class="select col-md-4 col-sm-7 p-sm-0 col-12"
         [style]="{ width: '100%' }"
-        [options]="artWorksData"
-        [filter]="true"
+        [suggestions]="artWorksData"
+        (completeMethod)="search($event)"
+        [dropdown]="true"
+        (onShow)="change()"
+        minLength="3"
+        virtualScroll="true"
         defaultLabel="Sélectionner un numéro d'inventaire"
       >
-        <ng-template let-item pTemplate="item"> {{ item.id }} - {{ item.titre }} - {{ item.field }} </ng-template>
+        <ng-template let-item pTemplate="item"> {{ item.id }} - {{ item.title }} - {{ item.field.label }} </ng-template>
         <ng-template let-item pTemplate="selectedItem">
-          {{ item.id }} - {{ item.titre }} - {{ item.field }}
+          {{ item.id }} - {{ item.title }} - {{ item.field.label }}
         </ng-template>
-      </p-dropdown>
+      </p-autoComplete>
     </li>
   </ol>
 </div>
