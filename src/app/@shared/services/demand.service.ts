@@ -6,14 +6,13 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class DemandService {
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
-  getDemands(params:any): Observable<any> {
-    let filter : any = "?limit=5";
-    if(params.page){
-      filter+='&page='+params.page;
+  getDemands(params: any): Observable<any> {
+    let filter: any = '?limit=5';
+    if (params.page) {
+      filter += '&page=' + params.page;
     }
-    return this.http.get('/requests'+filter);
+    return this.http.get('/requests' + filter);
   }
 }

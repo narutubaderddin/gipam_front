@@ -111,10 +111,12 @@ import { EntryModesComponent } from '@app/about/components/tabs-ref/entryModes/e
 import { AuthorTypesComponent } from '@app/about/components/tabs-ref/authorTypes/authorTypes.component';
 import { AttachmentTypesComponent } from '@app/about/components/tabs-ref/attachmentTypes/attachmentTypes.component';
 import { PhotographyTypesComponent } from '@app/about/components/tabs-ref/photographyTypes/photographyTypes.component';
-import {AutosizeModule} from 'ngx-autosize';
-import {RequestService} from '@shared/services/request.service';
-import {EstablishmentService} from '@shared/services/establishment.service';
-import {DemandService} from '@shared/services/demand.service';
+import { AutosizeModule } from 'ngx-autosize';
+import { RequestService } from '@shared/services/request.service';
+import { EstablishmentService } from '@shared/services/establishment.service';
+import { DemandService } from '@shared/services/demand.service';
+import { PersonsComponent } from '@app/about/components/tabs-ref/persons/persons.component';
+import { DepositorsComponent } from '@app/about/components/tabs-ref/depositors/depositors.component';
 
 setTheme('bs4');
 
@@ -187,6 +189,8 @@ const ngWizardConfig: NgWizardConfig = {
     AuthorTypesComponent,
     AttachmentTypesComponent,
     PhotographyTypesComponent,
+    PersonsComponent,
+    DepositorsComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
@@ -237,6 +241,16 @@ const ngWizardConfig: NgWizardConfig = {
     AutoCompleteModule,
     AutosizeModule,
   ],
-  providers: [MovementsService, BsDatepickerConfig, MessageService, ArtWorksDataPipe, ArtWorksPipe, FieldService, RequestService, EstablishmentService, DemandService],
+  providers: [
+    MovementsService,
+    BsDatepickerConfig,
+    MessageService,
+    ArtWorksDataPipe,
+    ArtWorksPipe,
+    FieldService,
+    RequestService,
+    EstablishmentService,
+    DemandService,
+  ],
 })
 export class AboutModule {}
