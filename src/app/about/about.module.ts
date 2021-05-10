@@ -117,6 +117,7 @@ import { EstablishmentService } from '@shared/services/establishment.service';
 import { DemandService } from '@shared/services/demand.service';
 import { PersonsComponent } from '@app/about/components/tabs-ref/persons/persons.component';
 import { DepositorsComponent } from '@app/about/components/tabs-ref/depositors/depositors.component';
+import { RoomsComponent } from '@app/about/components/tabs-ref/rooms/rooms.component';
 
 setTheme('bs4');
 
@@ -191,6 +192,7 @@ const ngWizardConfig: NgWizardConfig = {
     PhotographyTypesComponent,
     PersonsComponent,
     DepositorsComponent,
+    RoomsComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
