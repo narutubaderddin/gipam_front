@@ -168,6 +168,7 @@
                         <p-multiSelect
                           itemSize="30"
                           [virtualScroll]="true"
+                          (onPanelHide)="onMultiselectChange('denomination')"
                           [options]="denominationData"
                           id="denomination"
                           formControlName="denomination"
@@ -194,9 +195,11 @@
                               id="materialTechnique"
                               [minLength]="3"
                               field="name"
+                              [multiple]="true"
                               [suggestions]="materialTechniquesData"
                               formControlName="materialTechnique"
                               emptyMessage="Aucun résultat trouvé"
+                              [dropdown]="true"
                               (completeMethod)="onMaterialTechniqueComplete($event)"
                               placeholder="Choisir des matières"
                             >

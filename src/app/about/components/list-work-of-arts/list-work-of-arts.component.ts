@@ -148,13 +148,15 @@ export class ListWorkOfArtsComponent implements OnInit {
 
   initData(filter: any, advancedFilter: any, headerFilters: any = {}, page = 1) {
     this.loading = true;
-    let sort = '';
-    let sortBy = '';
+    let sort = 'desc';
+    let sortBy = 'creationDate';
     if (this.dataTableSort.hasOwnProperty('sort')) {
+      console.log(this.dataTableSort);
       sort = this.dataTableSort['sort'];
       sortBy = this.dataTableSort['sort_by'];
+      console.log(sort, sortBy);
     }
-    this.artWorkService.getArtWorksData(filter, advancedFilter, headerFilters, page, 5, sort, sortBy).subscribe(
+    this.artWorkService.getArtWorksData(filter, advancedFilter, headerFilters, page, 5, sortBy, sort).subscribe(
       (artWorksData: ArtWorksDataModel) => {
         this.artWorksData = artWorksData;
         this.start = (this.artWorksData.page - 1) * this.artWorksData.size + 1;
@@ -750,7 +752,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       case 'domaine':
         let materialApiData = Object.assign({}, apiData);
         apiData['field[in]'] = JSON.stringify(selectedDataId);
-        materialApiData['field'] = JSON.stringify(selectedDataId);
+        materialApiData['fields'] = JSON.stringify(selectedDataId);
         forkJoin([
           this.denominationsService.getAllDenominations(apiData),
           this.materialTechniqueService.getFilteredMaterialTechnique(materialApiData),
@@ -760,7 +762,7 @@ export class ListWorkOfArtsComponent implements OnInit {
         });
         break;
       case 'denomination':
-        apiData['denomination'] = JSON.stringify(selectedDataId);
+        apiData['denominations'] = JSON.stringify(selectedDataId);
         selectedData = this.form1.get('domaine').value;
         selectedDataId = [];
         if (Array.isArray(selectedData)) {
@@ -1324,14 +1326,14 @@ export class ListWorkOfArtsComponent implements OnInit {
       selectedDomaineData.forEach((selectedDataValue: any) => {
         selectedDataId.push(selectedDataValue.id);
       });
-      apiData['field'] = JSON.stringify(selectedDataId);
+      apiData['fields'] = JSON.stringify(selectedDataId);
     }
     selectedDataId = [];
     if (Array.isArray(selectedDenominationData)) {
       selectedDenominationData.forEach((selectedDataValue: any) => {
         selectedDataId.push(selectedDataValue.id);
       });
-      apiData['denomination'] = JSON.stringify(selectedDataId);
+      apiData['denominations'] = JSON.stringify(selectedDataId);
     }
     this.materialTechniqueService.getFilteredMaterialTechnique(apiData).subscribe((materialTechniquesResults) => {
       this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
