@@ -41,6 +41,8 @@ import { EntryModesComponent } from '@app/about/components/tabs-ref/entryModes/e
 import { AuthorTypesComponent } from '@app/about/components/tabs-ref/authorTypes/authorTypes.component';
 import { AttachmentTypesComponent } from '@app/about/components/tabs-ref/attachmentTypes/attachmentTypes.component';
 import { PhotographyTypesComponent } from '@app/about/components/tabs-ref/photographyTypes/photographyTypes.component';
+import { PersonsComponent } from '@app/about/components/tabs-ref/persons/persons.component';
+import { DepositorsComponent } from '@app/about/components/tabs-ref/depositors/depositors.component';
 const routes: Routes = [
   {
     path: '',
@@ -127,6 +129,11 @@ const routes: Routes = [
         data: { title: "Liste des modes d'entréé" },
       },
       {
+        path: 'tab-ref-personnes',
+        component: PersonsComponent,
+        data: { title: 'Liste des personnes' },
+      },
+      {
         path: 'tab-ref-types-auteur',
         component: AuthorTypesComponent,
         data: { title: 'Liste des types auteur' },
@@ -140,6 +147,11 @@ const routes: Routes = [
         path: 'tab-ref-types-photographie',
         component: PhotographyTypesComponent,
         data: { title: 'Liste des types photographie' },
+      },
+      {
+        path: 'tab-ref-deposants',
+        component: DepositorsComponent,
+        data: { title: 'Liste des déposants' },
       },
       { path: 'tab-ref-correspondant', component: CorrespondentsComponent },
       { path: 'tab-ref-responsable', component: ResponsibleComponent },
