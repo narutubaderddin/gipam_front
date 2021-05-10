@@ -233,7 +233,6 @@ export class ResponsibleComponent implements OnInit {
 
     if (this.editItem || this.addItem) {
       this.initFilterData();
-
     }
     if (this.editItem || this.editVisibility) {
       this.itemToEdit = item;
@@ -394,7 +393,6 @@ export class ResponsibleComponent implements OnInit {
   }
 
   deleteItemss(item: any) {
-
     this.btnLoading = '';
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
@@ -457,7 +455,6 @@ export class ResponsibleComponent implements OnInit {
       },
 
       (error) => {
-
         this.addSingle('error', 'Modification', error.error.message);
       }
     );

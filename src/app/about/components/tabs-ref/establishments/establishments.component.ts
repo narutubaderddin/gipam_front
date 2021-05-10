@@ -415,7 +415,6 @@ export class EstablishmentsComponent implements OnInit {
         this.editItem = false;
         this.editVisibility = false;
       },
-
       (error) => {
         this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
         this.btnLoading = null;

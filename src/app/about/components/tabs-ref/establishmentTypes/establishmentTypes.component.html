@@ -82,10 +82,10 @@
 <ng-template #content let-modal>
   <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
     <div class="modal-header">
-      <h4 class="modal-title" *ngIf="editItem">Modification de type établissement</h4>
-      <h4 class="modal-title" *ngIf="addItem">Ajout de type établissement</h4>
-      <h4 class="modal-title" *ngIf="deleteItems">Suppression de type établissement</h4>
-      <h4 class="modal-title" *ngIf="editVisibility">Activer/Désactiver l'établissement "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="editItem">Modification du type établissement "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="addItem">Ajout d'un type d'établissement</h4>
+      <h4 class="modal-title" *ngIf="deleteItems">Suppression du type établissement</h4>
+      <h4 class="modal-title" *ngIf="editVisibility">Activer/Désactiver le type établissement "{{ itemLabel }}"</h4>
       <button type="button" class="close" aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
       </button>

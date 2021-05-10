@@ -169,7 +169,6 @@ export class TypeMvtComponent implements OnInit {
   }
 
   actionMethod(e: any) {
-
     switch (e.method) {
       case 'delete':
         this.deleteItem(e.item);

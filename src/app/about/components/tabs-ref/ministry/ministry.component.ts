@@ -132,7 +132,6 @@ export class MinistryComponent implements OnInit {
     this.getAllItems();
     this.initForm();
     this.today = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-
   }
 
   initForm() {

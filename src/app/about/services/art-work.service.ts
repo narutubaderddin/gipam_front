@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import ArtWorksDataModel from '@app/about/models/art-works-model';
 import { ArtWorksDataPipe } from '@app/about/pipes/art-works-data.pipe';
+import { Observable } from 'rxjs';
 
 const ART_WORKS_API_URL = '/artWorks/';
 
@@ -30,5 +31,9 @@ export class ArtWorkService {
           return this.artWorksDataPipe.transform(data);
         })
       );
+  }
+  getAutocompleteData(query: string, type: string): Observable<any> {
+    const url = ART_WORKS_API_URL + 'autocompleteData?query=' + query + '&type=' + type;
+    return this.http.get(url, {});
   }
 }

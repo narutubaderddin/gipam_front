@@ -136,7 +136,6 @@ export class DenominationsComponent implements OnInit {
   }
   onFieldSelect(item: any) {
     this.selectedRelatedEntity = item;
-
   }
   onSelectAll(items: any) {}
 

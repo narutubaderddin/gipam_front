@@ -87,6 +87,9 @@ export class SimpleTabsRefService {
   }
 
   getFormErrors(errors: any, sum: string) {
+    if (!errors) {
+      return;
+    }
     Object.keys(errors).forEach((key) => {
       if (Array.isArray(errors[key])) {
         errors[key].forEach((error: any) => {

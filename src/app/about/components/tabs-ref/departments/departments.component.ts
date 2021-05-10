@@ -209,7 +209,6 @@ export class DepartmentsComponent implements OnInit {
         : {};
     }
     if (this.editItem || this.addItem) {
-
     }
     this.selectedItem = item;
     this.initForm();
@@ -221,7 +220,6 @@ export class DepartmentsComponent implements OnInit {
   onSelectAll(items: any) {}
 
   transformDateToDateTime(input: string, format: string, addTime: boolean = true) {
-
     if (input !== '' && input) {
       if (addTime) {
         return this.datePipe.transform(input, format) + ' 00:00:00';
