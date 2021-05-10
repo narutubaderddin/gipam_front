@@ -282,6 +282,10 @@
                   <tr>
                     <td *ngFor="let col of expandColumns">
                       <span [ngSwitch]="col.type">
+                        <app-remarquer-details-link-renderer
+                          *ngSwitchCase="'app-remarquer-details-link-render'"
+                          [value]="expandItem[col.field]"
+                        ></app-remarquer-details-link-renderer>
                         <span *ngSwitchDefault> {{ expandItem[col.field] }} </span>
                         <app-select-button-render
                           *ngSwitchCase="'app-select-button-render'"
@@ -293,7 +297,7 @@
                 </ng-template>
                 <ng-template pTemplate="emptymessage">
                   <tr>
-                    <td colspan="6">There are no order for this product yet.</td>
+                    <td colspan="2">Aucune oeuvre demandé.</td>
                   </tr>
                 </ng-template>
               </p-table>

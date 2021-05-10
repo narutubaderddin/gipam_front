@@ -111,6 +111,10 @@ import { EntryModesComponent } from '@app/about/components/tabs-ref/entryModes/e
 import { AuthorTypesComponent } from '@app/about/components/tabs-ref/authorTypes/authorTypes.component';
 import { AttachmentTypesComponent } from '@app/about/components/tabs-ref/attachmentTypes/attachmentTypes.component';
 import { PhotographyTypesComponent } from '@app/about/components/tabs-ref/photographyTypes/photographyTypes.component';
+import {AutosizeModule} from 'ngx-autosize';
+import {RequestService} from '@shared/services/request.service';
+import {EstablishmentService} from '@shared/services/establishment.service';
+import {DemandService} from '@shared/services/demand.service';
 
 setTheme('bs4');
 
@@ -231,7 +235,8 @@ const ngWizardConfig: NgWizardConfig = {
     InfiniteScrollModule,
     RadioButtonModule,
     AutoCompleteModule,
+    AutosizeModule,
   ],
-  providers: [MovementsService, BsDatepickerConfig, MessageService, ArtWorksDataPipe, ArtWorksPipe, FieldService],
+  providers: [MovementsService, BsDatepickerConfig, MessageService, ArtWorksDataPipe, ArtWorksPipe, FieldService, RequestService, EstablishmentService, DemandService],
 })
 export class AboutModule {}

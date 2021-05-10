@@ -1116,6 +1116,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   }
 
   onAdministratifMultiSelectChange(key: string) {
+    console.log('onAdministratifMultiSelectChange')
     let selectedDataId: any[] = [];
     switch (key) {
       case 'ministry':
