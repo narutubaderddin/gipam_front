@@ -412,6 +412,9 @@ input:checked + .slider:before {
 ::ng-deep .p-multiselect {
   width: 100%;
 }
+::ng-deep p-calendar {
+  padding: 0 !important;
+}
 ::ng-deep {
   .multiSelectBlock {
     .p-autocomplete {
@@ -419,6 +422,7 @@ input:checked + .slider:before {
       input {
         font-size: 12px !important;
         height: 25px;
+        width: inherit;
       }
       .p-autocomplete-multiple-container {
         padding: 0;

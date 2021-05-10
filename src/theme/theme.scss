@@ -665,13 +665,13 @@ li a i:hover {
 /*
   Notifications and form errors
  */
-input:has(.form-control),
+input,
 select,
 ng-multiselect-dropdown,
 textarea,
 .dropdown-btn {
   &:not(.novalidate) {
-    &.ng-invalid.ng-dirty {
+    l &.ng-invalid.ng-dirty {
       border: 2px solid $red !important;
       border-radius: 3px !important;
       box-shadow: 1px 1px 3px $red !important;
@@ -819,8 +819,8 @@ ng-file-drag-drop {
 }
 .p-multiselect-label-container {
   overflow: hidden;
-  max-width: 10rem;
-  min-width: 10rem;
+  //max-width: 10rem;
+  //min-width: 10rem;
 }
 
 .p-toast-top-right {
