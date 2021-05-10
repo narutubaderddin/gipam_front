@@ -12,8 +12,8 @@ export class SelectButtonRenderComponent implements OnInit {
 
   ngOnInit(): void {
     this.stateOptions = [
-      { label: 'Oui', value: 'oui' },
-      { label: 'Non', value: 'non' },
+      { label: 'Accepté', value: 'oui' },
+      { label: 'Refusé', value: 'non' },
     ];
   }
 }
