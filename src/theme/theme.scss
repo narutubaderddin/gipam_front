@@ -783,9 +783,17 @@ p-calendar {
 }
 
 .p-carousel {
+
   .p-carousel-content {
+    .p-carousel-container {
+      .p-carousel .p-carousel-content .p-carousel-prev,
+      .p-carousel .p-carousel-content .p-carousel-next {
+        margin: 0px !important;
+      }
+    }
     .p-carousel-indicators {
       display: none;
+
     }
   }
 }
@@ -848,7 +856,8 @@ ng-file-drag-drop {
   border: none;
   border-radius: 0px;
 }
-.cancel-btn {
+.cancel-btn, cancel-btn:hover
+  cancel-btn:focus{
   background-color: #6c7681c9;
   color: white;
   font-size: 10px;

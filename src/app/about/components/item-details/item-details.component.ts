@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren, Inpu
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'angular2-notifications';
 import { SharedService } from '@shared/services/shared.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-item-details',
@@ -14,37 +14,41 @@ export class ItemDetailsComponent implements OnInit {
   @ViewChild('accordionDOM') public parentRef: ElementRef<HTMLElement>;
   @ViewChild('stickyMenu') menuElement: ElementRef;
 
-  elementPosition: any=20;
+  elementPosition: any = 2;
   // @Input() collapseSideNav: boolean;
 
   type: string = 'depot';
-  page: any = 2;
+  page: any = 5;
   edit = false;
   depositStatusForm: FormGroup;
   descriptifForm: FormGroup;
-  photographies:any[]= [  // get images of item
-    {imageUrl :"assets/images/573.jpg",
-      alt: "description",
+  attachmentForm:FormGroup;
+  photographies: any[] = [
+    // get images of item
+    {
+      imageUrl: 'assets/images/573.jpg',
+      alt: 'description',
       i: 0,
-      image: "palette 1.jpg",
-      photography: "assets/images/573.jpg",
-      photographyDate: "12/2/2020",
-      photographyName: "profil.jpg",
-      photographyType: {name: "Etat"},
-      imageName :"imageName",
+      image: 'palette 1.jpg',
+      photography: 'assets/images/573.jpg',
+      photographyDate: '12/2/2020',
+      photographyName: 'profil.jpg',
+      photographyType: { name: 'Etat' },
+      imageName: 'imageName',
     },
-    {imageUrl :"assets/images/573.jpg",
-      alt: "description",
+    {
+      imageUrl: 'assets/images/365.jpg',
+      alt: 'description',
       i: 1,
-      image: "palette 2.jpg",
-      photography: "assets/images/365.jpg",
-      photographyDate: "12/2/2020",
-      photographyName: "profil.jpg",
-      photographyType: {name: "Identification"},
-      imageName :"imageName12",
-    }
+      image: 'palette 2.jpg',
+      photography: 'assets/images/365.jpg',
+      photographyDate: '12/2/2020',
+      photographyName: 'profil.jpg',
+      photographyType: { name: 'Identification' },
+      imageName: 'imageName12',
+    },
   ];
-  imgSrc: string= this.photographies[0]?this.photographies[0].imageUrl:'';
+  imgSrc: string = this.photographies[0] ? this.photographies[0].imageUrl : '';
   moreDetails = ['19-01-2020', '23-02-2020', '01-03-2020', '25-03-2020', '20-04-2020'];
   // isCollapsed: boolean = false;
   dynamic: boolean = false;
@@ -52,8 +56,6 @@ export class ItemDetailsComponent implements OnInit {
   sticky: boolean = false;
 
   photographiesForm: FormGroup;
-
-
 
   get menuClosed(): boolean {
     return this.sharedService.collapseMenu;
@@ -74,6 +76,7 @@ export class ItemDetailsComponent implements OnInit {
     this.initDescriptifForm();
     this.initDepositStatusForm();
     this.initPhotographiesForm();
+    this.initAttachmentForm()
   }
 
   initPhotographiesForm() {
@@ -81,7 +84,11 @@ export class ItemDetailsComponent implements OnInit {
       photographies: this.fb.array([]),
     });
   }
-
+  initAttachmentForm() {
+    this.attachmentForm = new FormGroup({
+      attachments: this.fb.array([]),
+    });
+  }
   @HostListener('window:scroll', ['$event'])
   handleScroll() {
     const windowScroll = window.pageYOffset;
@@ -125,27 +132,7 @@ export class ItemDetailsComponent implements OnInit {
     this.dynamic = e;
     console.log(this.dynamic);
   }
-  page1() {
-    this.page = 1;
-  }
-  page2() {
-    this.page = 2;
-  }
-  page3() {
-    this.page = 3;
-  }
-  page4() {
-    this.page = 4;
-  }
-  page5() {
-    this.page = 5;
-  }
-  page6() {
-    this.page = 6;
-  }
-  page7() {
-    this.page = 7;
-  }
+
   onEditMode() {
     this.edit = !this.edit;
   }
@@ -161,6 +148,6 @@ export class ItemDetailsComponent implements OnInit {
 
   src(event: any) {
     this.imgSrc = event;
-    console.log(event)
+    console.log(event);
   }
 }

@@ -1,172 +1,129 @@
 <div class="row images-container">
-<!--  <div *ngIf="!add">-->
-<!--    <div class="col-12 content">-->
-<!--      <div class="d-flex carousel-container mb-4" *ngIf="!add">-->
-<!--        <div class="d-flex justify-content-center flex-column">-->
-<!--          <div class="pictures-list">-->
-<!--            <img src="assets/images/573.jpg" alt="" />-->
-<!--            <img src="assets/images/573a.jpg" alt="" />-->
-<!--            <img src="assets/images/573b.jpg" alt="" />-->
-<!--            <img src="assets/images/573.jpg" alt="" />-->
-<!--            <img src="assets/images/573b.jpg" alt="" />-->
-<!--            <img src="assets/images/573.jpg" alt="" />-->
-<!--          </div>-->
-<!--          <div style="align-self: center; font-size: 25px; color: gainsboro">-->
-<!--            <i class="fas fa-chevron-down"></i>-->
-<!--          </div>-->
-<!--        </div>-->
+  <div class="col-12 content">
+    <h5 class="col-md-12 pt-2">Photographies</h5>
+    <div class="more-details pt-3">
+      <div class="d-flex flex-wrap justify-content-around">
+        <div class="d-flex carousel-container mb-2 col-12" *ngIf="images.length">
+          <p-galleria
+            [(value)]="images"
+            [containerStyle]="{ 'max-width': '400px' }"
+            [numVisible]="5"
+            [activeIndex]="add ? images.length - 1 : 0"
+          >
+            <ng-template pTemplate="item" let-item>
+              <img width="100%" height="200" [src]="item.imageUrl" [alt]="item.alt" />
+            </ng-template>
+            <ng-template pTemplate="thumbnail" let-item>
+              <div class="p-grid p-nogutter p-justify-center">
+                <img height="60" width="100" [src]="item.imageUrl" alt="" (click)="show(item)" />
+              </div>
+            </ng-template>
+          </p-galleria>
+        </div>
 
-<!--      </div>-->
-
-<!--      <div class="more-details mt-2 pt-4">-->
-<!--        <div class="d-flex flex-wrap" *ngIf="slide == 1">-->
-<!--          <p *ngIf="!add">-->
-<!--            <strong class="col-5">Date d'ajout </strong>-->
-<!--            <span class="col-7" *ngIf="!add">12/02/2019</span>-->
-<!--          </p>-->
-<!--          <p>-->
-<!--            <strong class="col-5" *ngIf="!add">Type </strong>-->
-<!--            <span class="col-6" *ngIf="!editType && !add">Identification</span>-->
-<!--            <i class="far fa-edit col-1" (click)="editType = !editType" *ngIf="!editType && !add"></i>-->
-<!--          </p>-->
-
-<!--          <div class="col-12 pr-0" *ngIf="editType">-->
-<!--            <select style="font-size: 12px" class="col-12 p-1">-->
-<!--              <option value="">&#45;&#45;Choisissez un type de photographie&#45;&#45;</option>-->
-<!--              <option *ngFor="let type of types" [value]="type">{{ type }}</option>-->
-<!--            </select>-->
-<!--            <div class="d-flex justify-content-end col-12 p-0 mt-2 mb-2 edition-btn">-->
-<!--              <button (click)="editType = !editType" class="mr-2">Annuler</button>-->
-<!--              <button (click)="editPhotoType()">Valider</button>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-
-<!--        <div class="" *ngIf="slide == 2">-->
-<!--          <p><strong>Date d'ajout </strong><span> 16/04/2019</span></p>-->
-<!--          <p><strong>Type </strong> <i class="far fa-edit"></i></p>-->
-<!--        </div>-->
-<!--        <div class="" *ngIf="slide == 3">-->
-<!--          <p><strong>Date d'ajout </strong> <span>12/06/2019</span></p>-->
-<!--          <p><strong>Type </strong> <span>Numérique</span><i class="far fa-edit"></i></p>-->
-<!--        </div>-->
-<!--        <div class="" *ngIf="slide == 4">-->
-<!--          <p><strong>Date d'ajout </strong> <span>12/09/2019</span></p>-->
-<!--          <p><strong>Type </strong> <span>Numérique</span><i class="far fa-edit"></i></p>-->
-<!--        </div>-->
-<!--        <button class="btn add-action mb-2" (click)="addImg()" *ngIf="!add">-->
-<!--          <i class="fas fa-plus"></i>-->
-<!--          Ajouter une photographie-->
-<!--        </button>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-
-
-    <div class="col-12 content">
-      <h5 class="col-md-12 pt-2">Photographies</h5>
-      <div class="more-details pt-3 ">
-        <div class="d-flex flex-wrap justify-content-around">
-          <div class="d-flex carousel-container mb-2 col-12" *ngIf="images.length">
-            <p-galleria
-              [(value)]="images"
-              [containerStyle]="{ 'max-width': '400px' }"
-              [numVisible]="5"
-              [activeIndex]="add? images.length - 1:0"
-            >
-              <ng-template pTemplate="item" let-item>
-                <img width="100%" height="200" [src]="item.imageUrl" [alt]="item.alt" />
-              </ng-template>
-              <ng-template pTemplate="thumbnail" let-item>
-                <div class="p-grid p-nogutter p-justify-center">
-                  <img height="60" width="100" [src]="item.imageUrl" alt="" (click)="show(item)" />
+        <div class="col-md-12">
+          <div class="d-flex justify-content-end">
+            <button class="btn add-action mb-2" (click)="addImg()" *ngIf="!add">
+              <i class="fas fa-plus"></i>
+              Ajouter une/plusieurs photographie(s)
+            </button>
+          </div>
+          <div class="form-group col-md-12">
+            <label class="col-md-5">Photographie</label>
+            <i class="far fa-trash-alt col-1"
+               *ngIf="!add"
+               (click)="deleteItem(imageName)"
+               pTooltip="Supprimer"
+               tooltipPosition="top"
+            ></i>
+            <p *ngIf="!add && !addImage" class="col-7">{{ imageName }}</p>
+            <div class="input-group input-group-sm upload-file" *ngIf="add || addImage">
+              <div class="input-group input-group-sm h-auto">
+                <input
+                  class="form-control"
+                  [hidden]="true"
+                  (change)="handleFileInput($event.target.files)"
+                  accept=".PNG,.png,.jpg,.JPG, .jpeg, .JPEG"
+                  type="file"
+                  #fileSelect
+                />
+                <input readonly class="form-control" [(ngModel)]="imageName" placeholder="Select file..." />
+                <div class="input-group-prepend">
+                  <span class="input-group-text" (click)="fileSelect.click()" translate>
+                    <i class="fas fa-upload mr-2"></i>Importer
+                  </span>
                 </div>
-              </ng-template>
-            </p-galleria>
+              </div>
+              <span *ngIf="!validate && !photography.length" class="mandatory">Saisir une photo</span>
+            </div>
+          </div>
+          <div class="form-group col-md-12">
+            <label class="col-md-5">Date</label>
+            <p *ngIf="!add && !addImage" class="col-7">{{ photographyDate }}</p>
+            <p-calendar
+              class="col-md-12"
+              *ngIf="add || addImage "
+              [style]="{ minWidth: '100%' }"
+              [(ngModel)]="photographyDate"
+              [showIcon]="true"
+              inputId="icon"
+            ></p-calendar>
           </div>
 
+          <div class="form-group col-md-12">
+            <label class="col-md-5">Type</label>
+            <i
+              class="far fa-edit col-1"
+              (click)="editImgType()"
+              *ngIf="!editType && !add && !addImage"
+              pTooltip="Modifier"
+              tooltipPosition="top"
+            ></i>
+            <p *ngIf="!editType && !add && !addImage" class="col-7">{{ photographyType['name'] }}</p>
 
-
-            <div class="col-md-12">
-              <div class="d-flex justify-content-end">
-              <button class="btn add-action mb-2" (click)="addImg()" *ngIf="!add">
-                <i class="fas fa-plus"></i>
-                Ajouter une photographie
-              </button>
+            <p-dropdown
+              class="col-md-12"
+              *ngIf="add || addImage || editType"
+              [style]="{ minWidth: '100%' }"
+              [options]="types"
+              [(ngModel)]="photographyType"
+              placeholder="Choisir un type"
+              optionLabel="name"
+              [showClear]="false"
+            ></p-dropdown>
+            <ng-template let-option pTemplate="item">
+              <div>
+                <div [ngStyle]="option.disabled ? { color: '#ccc', cursor: 'default' } : ''">{{ option.name }}</div>
               </div>
-              <div class="form-group col-md-12">
-                <label class="col-5">Photographie</label>
-                <p *ngIf="!add&&!edit&&!addImage" class="col-7">{{imageName}}</p>
-                <div class="input-group input-group-sm upload-file" *ngIf="add||addImage||edit"
-                >
-                  <div class="input-group input-group-sm h-auto">
-                    <input
-                      class="form-control"
-                      [hidden]="true"
-                      (change)="handleFileInput($event.target.files)"
-                      accept=".PNG,.png,.jpg,.JPG, .jpeg, .JPEG"
-                      type="file"
-                      #fileSelect
-                    />
-                    <input readonly class="form-control" [(ngModel)]="imageName" placeholder="Select file..." />
-                    <div class="input-group-prepend">
-                      <span class="input-group-text" (click)="fileSelect.click()" translate>
-                        <i class="fas fa-upload mr-2"></i>Importer
-                      </span>
-                    </div>
-                  </div>
-                  <span *ngIf="!validate && !photography.length" class="mandatory">Saisir une photo</span>
-                </div>
-              </div>
-              <div class="form-group col-md-12">
-                <label class="col-md-3">Date</label>
-                <p *ngIf="!add&&!edit&&!addImage" class="col-7">{{photographyDate}}</p>
-                <p-calendar
-                  class="col-md-12"
-                  *ngIf="add||addImage||edit"
-                  [style]="{ minWidth: '100%' }"
-                  [(ngModel)]="photographyDate"
-                  [showIcon]="true"
-                  inputId="icon"
-                ></p-calendar>
-              </div>
+            </ng-template>
+            <span class="mandatory" *ngIf="!validate && !photographyType">Veuillez saisir un type</span>
 
-              <div class="form-group col-md-12">
-                <label class="col-md-3">Type</label>
-                <i class="far fa-edit col-1" (click)="editImgType(photographyType)" *ngIf="!editType&&!add&&!addImage"></i>
-                <p *ngIf="!editType&&!add&&!addImage"  class="col-7">{{photographyType['name']}}</p>
-
-                <p-dropdown
-                  class="col-md-12"
-                  *ngIf="add||addImage||editType"
-                  [style]="{ minWidth: '100%' }"
-                  [options]="types"
-                  [(ngModel)]="photographyType"
-                  placeholder="Choisir un type"
-                  optionLabel="name"
-                  [showClear]="false"
-                ></p-dropdown>
-                <ng-template let-option pTemplate="item">
-                  <div>
-                    <div [ngStyle]="option.disabled ? { color: '#ccc', cursor: 'default' } : ''">{{ option.name }}</div>
-                  </div>
-                </ng-template>
-                <span class="mandatory" *ngIf="!validate && !photographyType">Veuillez saisir un type</span>
-
-                <div class="d-flex justify-content-end col-12 p-0 mt-2 mb-2" *ngIf="editType">
-                  <button (click)="cancelEditType()" class="mr-2 cancel-btn">Annuler</button>
-                  <button (click)="saveEditType()" class="valid-btn">Valider</button>
-                </div>
-
-              </div>
-              <button class="btn add-action mb-2 ml-3" (click)="addPhotography()" *ngIf="add||edit||addImage">
-                <i class="fas fa-plus"></i>
-                Valider
-              </button>
+            <div class="d-flex justify-content-end col-12 p-0 mt-2 mb-2" *ngIf="editType">
+              <button (click)="cancelEditType()" class="mr-2 cancel-btn">Annuler</button>
+              <button (click)="saveEditType()" class="valid-btn">Valider</button>
             </div>
-
-
+          </div>
+          <button class="btn add-action mb-2 ml-3" (click)="addPhotography()" *ngIf="add || addImage">
+            <i class="fas fa-plus"></i>
+            Valider
+          </button>
         </div>
       </div>
     </div>
   </div>
+</div>
+<p-dialog header="Supprimer la photographie" [modal]="true" [(visible)]="deleteDialog" [style]="{ width: '30vw' }">
+  <div class="p-0 pb-3">
+    <div class="col-12">
+      <span>Voulez-vous supprimer la photographie "<strong> {{itemToDelete}} </strong>" ?</span>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <button class="cancel-btn" (click)="cancelDelete()" style="font-size: 12px">
+      Annuler
+    </button>
+    <button class="valid-btn" (click)="delete()" style="font-size: 12px">
+      supprimer
+    </button>
+  </ng-template>
+</p-dialog>

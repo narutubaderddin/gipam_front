@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalOptions, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { AddImgModalComponent } from '@shared/components/notice-blocs/item-images/add-img-modal/add-img-modal.component';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -8,15 +8,15 @@ import { viewDateFormat } from '@shared/utils/helpers';
   templateUrl: './item-images.component.html',
   styleUrls: ['./item-images.component.scss'],
 })
-export class ItemImagesComponent implements OnInit,OnChanges {
+export class ItemImagesComponent implements OnInit, OnChanges {
   @ViewChild('file') file: any;
   @Input() add = false;
   @Input() edit = false;
   @Input() images: any[] = [];
   @Input() photographiesForm: FormGroup;
-  @Output() imgToShow= new EventEmitter;
-  addImage=false;
-  activeIndex=0;
+  @Output() imgToShow = new EventEmitter();
+  addImage = false;
+  activeIndex = 0;
   editType = false;
   photography: string = '';
   photographyDate: Date = new Date();
@@ -37,40 +37,32 @@ export class ItemImagesComponent implements OnInit,OnChanges {
   validate = true;
   isIdentification = false;
   identification = 0;
-
-  viewDateFormat= viewDateFormat;
-
+  deleteDialog:boolean = false;
+  itemToDelete:any;
+  viewDateFormat = viewDateFormat;
 
   get photographies(): FormArray {
     return this.photographiesForm.get('photographies') as FormArray;
   }
   constructor(private modalService: NgbModal, public fb: FormBuilder) {}
   ngOnInit(): void {
-     this.initForm();
-  if(this.images[this.activeIndex]) {
-  this.initData(
-    this.images[this.activeIndex].photography,
-    this.images[this.activeIndex].photographyDate,
-    this.images[this.activeIndex].photographyType,
-    this.images[this.activeIndex].image
-  )}
-  this.images.map((el:any)=>this.photographies.push(
-    this.createPhotography(el.photography, el.photographyDate, el.photographyType, el.imageName)
-  ))
-  }
-  ngOnChanges(changements: SimpleChanges) {
-    if(changements.edit.currentValue){
-      this.initData('', new Date(), [],'')
-    }
-    if(!changements.edit.currentValue&&!this.add){
+    this.initForm();
+    this.images.map((el: any) =>
+      this.photographies.push(
+        this.createPhotography(el.photography, el.photographyDate, el.photographyType, el.imageName)
+      )
+    );
+    if(this.images[this.activeIndex]) {
       this.initData(
         this.images[this.activeIndex].photography,
         this.images[this.activeIndex].photographyDate,
         this.images[this.activeIndex].photographyType,
         this.images[this.activeIndex].image
-      )
+      );
     }
   }
+  ngOnChanges(changements: SimpleChanges) {}
+
   initForm() {
     this.photographiesForm = new FormGroup({
       photographies: this.fb.array([]),
@@ -107,7 +99,7 @@ export class ItemImagesComponent implements OnInit,OnChanges {
     this.identification = 0;
     if (this.photographies.value.length > 1) {
       this.photographies.value.forEach((photography: any) => {
-        console.log('name', photography);
+
 
         if (photography.photographyType.name != 'Identification') {
           this.identification++;
@@ -120,14 +112,14 @@ export class ItemImagesComponent implements OnInit,OnChanges {
         this.isIdentification = false;
         this.types[0].disabled = false;
       }
-      console.log(this.isIdentification);
+
     }
   }
   addPhotography(): void {
     if (!this.photography.length || !this.photographyType || !this.imageName.length) {
       this.validate = false;
     } else {
-      if (this.selectedPhotography == this.photographies.value.length||this.addImage) {
+      if (this.selectedPhotography == this.photographies.value.length || this.addImage) {
         this.images.push({
           i: this.photographyInsertionNumber,
           imageUrl: this.photography,
@@ -168,60 +160,61 @@ export class ItemImagesComponent implements OnInit,OnChanges {
     };
   }
   addImg() {
-    this.addImage=true;
-    this.editType=false;
+    this.addImage = true;
+    this.editType = false;
     this.initData('', new Date());
-
   }
 
-  editPhotoType(photographyType: any) {
-    console.log(photographyType)
-  }
   addFile() {
     this.file.nativeElement.click();
   }
   show(item: any) {
-
-      let data = this.images[item.i];
-      this.initData(data.photography, data.photographyDate, data.photographyType, item.image);
-      this.selectedPhotography = item.i;
-      this.imgToShow.emit(item.imageUrl);
-      this.activeIndex=item.i;
-    if(this.addImage){
-      // this.activeIndex=item.i;
-      return this.addImage=false;
-    }
-      console.log(item.imageUrl,data,this.imgToShow);
+    let data = this.images[item.i];
+    this.initData(data.photography, data.photographyDate, data.photographyType, item.image);
+    this.selectedPhotography = item.i;
+    this.imgToShow.emit(item.imageUrl);
+    this.activeIndex = item.i;
+    this.addImage = false;
+    this.editType=false;
   }
 
   saveEditType() {
     if (!this.photographyType) {
       this.validate = false;
     } else {
-        this.editPhotographyForm(
-          this.selectedPhotography,
-          this.photography,
-          this.photographyType,
-          this.photographyDate,
-          this.imageName
-        );
+      this.editPhotographyForm(
+        this.selectedPhotography,
+        this.photography,
+        this.photographyType,
+        this.photographyDate,
+        this.imageName
+      );
       this.verifyIdentification();
       this.photographyInsertionNumber++;
       this.validate = true;
     }
-    this.editType=false;
+    this.editType = false;
   }
 
   cancelEditType() {
-    this.editType = !this.editType
-    this.photographyType=this.previousPhotographyType;
+    this.editType = !this.editType;
+    this.photographyType = this.previousPhotographyType;
+  }
+  editImgType() {
+    this.editType = !this.editType;
+    this.previousPhotographyType = this.photographyType;
   }
 
-  editImgType(item:any) {
-    this.editType = !this.editType
-    this.previousPhotographyType= this.photographyType;
-    console.log( this.photographyType);
-    // this.photographyType=item;
-    console.log()
+  delete() {
+    // this.photographies.removeAt(this.activeIndex);
+    this.images.splice(this.activeIndex, 1);
+  }
+
+  deleteItem(item:string) {
+    this.itemToDelete=item;
+    this.deleteDialog=!this.deleteDialog;
+  }
+  cancelDelete(){
+    this.deleteDialog=!this.deleteDialog;
   }
 }

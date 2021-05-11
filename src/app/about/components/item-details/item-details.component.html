@@ -72,16 +72,17 @@
                         <ng-container ngbNavItem>
                           <a ngbNavLink><i class="far fa-file-alt mr-2"></i>Descriptifs physiques</a>
                           <ng-template ngbNavContent>
-                            <app-descritif [edit]="edit"
-                                           [addProperty]="false"
-                                           [addDepot]="false"
-                                           [descriptifForm]="descriptifForm"
+                            <app-descritif
+                              [edit]="edit"
+                              [addProperty]="false"
+                              [addDepot]="false"
+                              [descriptifForm]="descriptifForm"
                             ></app-descritif>
-<!--                            <app-add-descriptions-->
-<!--                              [edit]="edit"-->
-<!--                              [addDepot]="false"-->
-<!--                              [descriptifForm]="descriptifForm"-->
-<!--                            ></app-add-descriptions>-->
+                            <!--                            <app-add-descriptions-->
+                            <!--                              [edit]="edit"-->
+                            <!--                              [addDepot]="false"-->
+                            <!--                              [descriptifForm]="descriptifForm"-->
+                            <!--                            ></app-add-descriptions>-->
                           </ng-template>
                         </ng-container>
                         <ng-container ngbNavItem>
@@ -106,52 +107,26 @@
                   <div class="d-flex col-12 p-0 flex-column">
                     <div class="d-flex col-12 p-0 mt-4 justify-content-between">
                       <div class="attachments-container mr-2 col-md-7 p-0">
-                        <app-attachments style="width: 100%"></app-attachments>
+                        <app-attachments
+                          style="width: 100%"
+                          [attachmentForm]="attachmentForm"
+                          [add]="false"
+                          [itemDetails]="true"
+                        ></app-attachments>
                       </div>
                       <div class="attachments-container ml-2 col-md-5 p-0">
-                        <app-links style="width: 100%"></app-links>
+                        <app-links
+                          style="width: 100%"
+                          [add]="false"
+                          [itemDetails]="true"
+                        ></app-links>
                       </div>
                     </div>
                     <div class="attachments-container col-md-12 p-0 row m-0 align-baseline">
-                      <app-hypertext-links style="width: 100%"></app-hypertext-links>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="d-flex justify-content-md-between">
-                <div class="col-md-10 p-0 firth-bloc">
-                  <div *ngIf="page == 1" class="first-page-bloc col-md-12">
-                    <div class="col-md-12 mb-2 d-flex justify-content-end">
-                      <i class="fas fa-edit pointer-event" (click)="onEditMode()"></i>
-                    </div>
-                    <div class="accordion-bloc col-sm-11 col-lg-4">
-                      <ngb-accordion
-                        #acc="ngbAccordion"
-                        [closeOthers]="true"
-                        activeIds="toggle-1"
-                        *ngFor="let detail of moreDetails; let i = index"
-                      >
-                        <ngb-panel id="toggle-{{ i }}">
-                          <ng-template ngbPanelTitle>
-                            <div class="details-bloc">
-                              <div class="d-flex details">{{ detail }}</div>
-                              <div class="d-flex"><i class="zmdi zmdi-caret-down"></i></div>
-                            </div>
-                          </ng-template>
-                          <ng-template ngbPanelContent>
-                            <p class="paragraph">
-                              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
-                              squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
-                              nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-                              single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft
-                              beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
-                              vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
-                              you probably haven't heard of them accusamus labore sustainable VHS.
-                            </p>
-                          </ng-template>
-                        </ngb-panel>
-                      </ngb-accordion>
+                      <app-hypertext-links style="width: 100%"
+                      [add]="false"
+                      [itemDetails]="true">
+                      </app-hypertext-links>
                     </div>
                   </div>
                 </div>

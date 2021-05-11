@@ -23,7 +23,6 @@ ol {
   *list-style: decimal; /* Restitue la numérotation par défaut pour IE6/7 */
   font: 15px "trebuchet MS", "lucida sans";
   padding: 0;
-  //margin-bottom: 4em;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
@@ -32,16 +31,13 @@ ol ol {
 }
 .rounded-list span {
   position: relative;
-  //display: block;
-  //padding: .4em .4em .4em 2em;
-  //*padding: .4em;
-  //margin: .5em 0;
   background: #ddd;
   color: #444;
   text-decoration: none;
   border-radius: 0.3em;
   transition: all 0.3s ease-out;
-
+  padding: 0.4em 0.4em 0.4em 2em;
+  *padding: 0.4em;
   align-items: baseline;
   display: flex;
   justify-content: space-around;
@@ -72,6 +68,7 @@ ol ol {
   font-weight: bold;
   border-radius: 2em;
   transition: all 0.3s ease-out;
+
 }
 
 label {
@@ -93,4 +90,7 @@ label {
 }
 .form-control {
   font-size: 12px;
+}
+.fa-trash-alt{
+  color: #b01212 !important;
 }

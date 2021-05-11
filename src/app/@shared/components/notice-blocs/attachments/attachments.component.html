@@ -2,45 +2,63 @@
   <div class="d-flex justify-content-between">
     <h5>Pièces jointes</h5>
   </div>
-  <div class="d-flex flex-column justify-content-between">
-    <div class="d-flex align-self-end" *ngIf="!add">
-      <button class="btn btn-primary add-attachments add-action">
-        <div class="add-item"><i class="fas fa-plus"></i></div>
-        <span class="ml-2">Ajouter Pièces jointes</span>
-      </button>
-    </div>
-  </div>
-
-  <div class="attachement-container p-2" *ngIf="add">
+  <div class="attachement-container p-2">
     <button class="btn add-action col-7" (click)="addAttachment()">
       <i class="fas fa-plus mr-2"></i>Ajouter une/plusieurs pièce(s) jointe(s)
     </button>
     <p-carousel
       [responsiveOptions]="responsiveOptions"
-      [value]="attachments.value"
+      [value]="itemDetails? existingAttachments:attachments.value"
       [numVisible]="3"
       [numScroll]="3"
       [circular]="false"
     >
-      <ng-template let-product pTemplate="item">
+      <ng-template let-item pTemplate="item">
         <div class="product-item">
           <div class="product-item-content p-1">
             <div class="card">
               <div class="d-flex justify-content-center card-header">
-                <h4 class="card-header mr-2 attachment-name">{{ product.attachment.name }}</h4>
-                <i class="fas fa-file-download"></i>
+                <h4 class="card-header attachment-name">{{ item.attachment.name }}</h4>
+                <i class="fas fa-file-download" pTooltip="Télécharger"
+                   tooltipPosition="top"></i>
+                <i class="far fa-trash-alt p-1"
+                   *ngIf="itemDetails"
+                   (click)="delete(item.attachment.name)"
+                   pTooltip="Supprimer"
+                   tooltipPosition="top"
+                ></i>
+                <i
+                  class="far fa-edit"
+                  *ngIf="itemDetails"
+                  (click)="editAttachment(item.attachmentType, getIndex(item))"
+                  pTooltip="Modifier"
+                  tooltipPosition="top"
+                ></i>
               </div>
 
               <div class="card-body p-2">
                 <div class="form-group col-12 mb-0 p-0">
+                  <label *ngIf="itemDetails" class="col-md-12">Type</label>
+                  <p *ngIf="itemDetails&&!filesProperties[getIndex(item)].edit" class="col-md-12">{{ item.attachmentType }}</p>
+
                   <p-dropdown
+                    *ngIf="add||itemDetails&&filesProperties[getIndex(item)].edit"
                     [style]="{ minWidth: '100%' }"
                     [options]="types"
                     appendTo="body"
                     placeholder="Choisir un type"
                     [showClear]="false"
-                    [(ngModel)]="product.attachmentType"
+                    [(ngModel)]="item.attachmentType"
                   ></p-dropdown>
+                </div>
+                <div class="d-flex justify-content-end col-12 p-0 mt-2 mb-2"
+                     *ngIf="itemDetails&&filesProperties[getIndex(item)].edit">
+                  <button (click)="cancelEditAttachment(item, getIndex(item))" class="mr-2 cancel-btn">Annuler</button>
+                  <button
+                    (click)="editAttachmentForm(getIndex(item),item.attachment,item.attachmentType)"
+                    class="valid-btn">
+                    Valider
+                  </button>
                 </div>
               </div>
             </div>
@@ -48,42 +66,9 @@
         </div>
       </ng-template>
     </p-carousel>
-    <p-carousel
-      *ngIf="existingAttachments && !add"
-      [value]="existingAttachments"
-      [numVisible]="3"
-      [numScroll]="3"
-      [circular]="false"
-    >
-      <ng-template let-product pTemplate="item">
-        <div class="product-item">
-          <div class="product-item-content p-1">
-            <div class="card">
-              <div class="d-flex justify-content-center card-header">
-                <h4 class="card-header mr-2">{{ product.title }}</h4>
-                <i class="fas fa-file-download"></i>
-              </div>
-
-              <div class="card-body">
-                <p class="card-text">{{ product.date }}</p>
-                <p class="card-text">{{ product.creator }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ng-template>
-    </p-carousel>
-    <!-- <div class="col-md-8 file-list" *ngIf="files">
-          <div class="d-flex" *ngFor="let attachment of files; let i = index">
-            <span class="attachment d-flex" (click)="showItem(i)" [ngClass]="{ active: selectedAttachment === i }"
-              ><i class="fas fa-file-alt mr-2"></i>
-              <p class="attachment-name">{{ attachment.name }}</p></span
-            >
-          </div>
-        </div> -->
   </div>
 </div>
-<p-dialog header="Ajouter une photographie" [modal]="true" [(visible)]="display" [style]="{ width: '30vw' }">
+<p-dialog header="Ajouter une pièce jointe" [modal]="true" [(visible)]="display" [style]="{ width: '30vw' }">
   <div class="p-0 pb-3">
     <div class="col-12">
       <div class="card">
@@ -127,6 +112,21 @@
     <button class="btn-primary" style="font-size: 12px; background-color: lightgray">Annuler</button>
     <button class="btn-primary" (click)="validate()" style="font-size: 12px; background-color: #00d6d4">
       Enregistrer
+    </button>
+  </ng-template>
+</p-dialog>
+<p-dialog header="Supprimer une pièce jointe" [modal]="true" [(visible)]="deleteDialog" [style]="{ width: '30vw' }">
+  <div class="p-0 pb-3">
+    <div class="col-12">
+      <span>Voulez-vous supprimer la pièce jointe "<strong> {{itemToDelete}} </strong>" ?</span>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <button class="cancel-btn" (click)="cancelDelete()" style="font-size: 12px">
+      Annuler
+    </button>
+    <button class="valid-btn" (click)="deleteAttachment(selectedAttachment)" style="font-size: 12px">
+      supprimer
     </button>
   </ng-template>
 </p-dialog>

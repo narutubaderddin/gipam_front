@@ -1,13 +1,13 @@
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {FieldsService} from "@shared/services/fields.service";
-import {DenominationsService} from "@shared/services/denominations.service";
-import {StylesService} from "@shared/services/styles.service";
-import {SimpleTabsRefService} from "@shared/services/simple-tabs-ref.service";
-import {MaterialTechniqueService} from "@shared/services/material-technique.service";
-import {forkJoin} from "rxjs";
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { FieldsService } from '@shared/services/fields.service';
+import { DenominationsService } from '@shared/services/denominations.service';
+import { StylesService } from '@shared/services/styles.service';
+import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
+import { MaterialTechniqueService } from '@shared/services/material-technique.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-descritif',
@@ -84,16 +84,16 @@ export class DescritifComponent implements OnInit {
       this.simpleTabsRefService.getAllItems(data, 'entryModes'),
     ]).subscribe(
       ([
-         fieldsResults,
-         denominationResults,
-         styleResults,
-         materialTechniquesResults,
-         eraResults,
-         authorResults,
-         categoriesResults,
-         depositorsResults,
-         entryModesData,
-       ]) => {
+        fieldsResults,
+        denominationResults,
+        styleResults,
+        materialTechniquesResults,
+        eraResults,
+        authorResults,
+        categoriesResults,
+        depositorsResults,
+        entryModesData,
+      ]) => {
         this.domainData = this.getTabRefData(fieldsResults['results']);
         this.denominationData = denominationResults['results'];
         this.denominations = denominationResults['results'];
