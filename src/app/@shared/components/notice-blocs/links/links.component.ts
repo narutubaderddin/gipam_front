@@ -11,21 +11,21 @@ import { WorkOfArtService } from '@shared/services/work-of-art.service';
 export class LinksComponent implements OnInit {
   @ViewChild('autocompletePanel') autocompletePanel: any;
   @Input() add: false;
-  @Input() itemDetails: boolean= false;
+  @Input() itemDetails: boolean = false;
 
-  addLinks:boolean=false;
+  addLinks: boolean = false;
   artWorksData: any[] = [];
   page = 1;
   query = '';
   same = true;
-  deleteDialog: boolean=false;
-  itemToDelete:string='';
+  deleteDialog: boolean = false;
+  itemToDelete: string = '';
   selectedItem: any;
-  existingLinks: any[]=[
+  existingLinks: any[] = [
     {
-      url: "string",
-      name: "string"
-    }
+      url: 'string',
+      name: 'string',
+    },
   ];
 
   constructor(
@@ -80,32 +80,32 @@ export class LinksComponent implements OnInit {
   }
 
   addNewLinks() {
-    this.addLinks=!this.addLinks;
+    this.addLinks = !this.addLinks;
   }
-  addLink(){
+  addLink() {
     this.existingLinks.push({
       // i: this.photographyInsertionNumber,
-      url: "string",
-      name: "string"
+      url: 'string',
+      name: 'string',
     });
   }
-  cancelLink(){
-    this.addLinks=!this.addLinks;
+  cancelLink() {
+    this.addLinks = !this.addLinks;
   }
-  delete(item:string){
-    this.deleteDialog=true;
-    this.itemToDelete= item['name'];
-    this.selectedItem= item;
+  delete(item: string) {
+    this.deleteDialog = true;
+    this.itemToDelete = item['name'];
+    this.selectedItem = item;
   }
-  cancelDelete(){
-    this.deleteDialog=false;
-    this.itemToDelete= '';
+  cancelDelete() {
+    this.deleteDialog = false;
+    this.itemToDelete = '';
   }
   removeLink(i: number) {
-    this.existingLinks.splice(i,1);
-    this.deleteDialog=false;
+    this.existingLinks.splice(i, 1);
+    this.deleteDialog = false;
   }
-  getIndex(el:any) {
+  getIndex(el: any) {
     return this.existingLinks.indexOf(el);
   }
 }

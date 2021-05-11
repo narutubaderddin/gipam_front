@@ -9,16 +9,16 @@ export class HypertextLinksComponent implements OnInit {
   @Input() add: false;
   @Input() itemDetails = false;
   myForm: FormGroup;
-  addLinks: boolean=false;
-  deleteDialog: boolean=false;
-  itemToDelete:string='';
+  addLinks: boolean = false;
+  deleteDialog: boolean = false;
+  itemToDelete: string = '';
   selectedItem: any;
-  existingLinks:any[]=[
+  existingLinks: any[] = [
     {
-      url: "string",
-      name: "string"
-    }
-  ]
+      url: 'string',
+      name: 'string',
+    },
+  ];
 
   get liens(): FormArray {
     return this.myForm.get('liens') as FormArray;
@@ -61,21 +61,21 @@ export class HypertextLinksComponent implements OnInit {
     });
   }
   addNewLinks() {
-    this.addLinks=true;
+    this.addLinks = true;
   }
   cancelAddLinks() {
-    this.addLinks=false;
+    this.addLinks = false;
   }
-  getIndex(el:any) {
+  getIndex(el: any) {
     return this.existingLinks.indexOf(el);
   }
-  delete(item:string){
-    this.deleteDialog=true;
-    this.itemToDelete= item['name'];
-    this.selectedItem= item;
+  delete(item: string) {
+    this.deleteDialog = true;
+    this.itemToDelete = item['name'];
+    this.selectedItem = item;
   }
-  cancelDelete(){
-    this.deleteDialog=false;
-    this.itemToDelete= '';
+  cancelDelete() {
+    this.deleteDialog = false;
+    this.itemToDelete = '';
   }
 }

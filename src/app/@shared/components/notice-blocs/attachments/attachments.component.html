@@ -8,7 +8,7 @@
     </button>
     <p-carousel
       [responsiveOptions]="responsiveOptions"
-      [value]="itemDetails? existingAttachments:attachments.value"
+      [value]="itemDetails ? existingAttachments : attachments.value"
       [numVisible]="3"
       [numScroll]="3"
       [circular]="false"
@@ -19,13 +19,13 @@
             <div class="card">
               <div class="d-flex justify-content-center card-header">
                 <h4 class="card-header attachment-name">{{ item.attachment.name }}</h4>
-                <i class="fas fa-file-download" pTooltip="Télécharger"
-                   tooltipPosition="top"></i>
-                <i class="far fa-trash-alt p-1"
-                   *ngIf="itemDetails"
-                   (click)="delete(item.attachment.name)"
-                   pTooltip="Supprimer"
-                   tooltipPosition="top"
+                <i class="fas fa-file-download" pTooltip="Télécharger" tooltipPosition="top"></i>
+                <i
+                  class="far fa-trash-alt p-1"
+                  *ngIf="itemDetails"
+                  (click)="delete(item.attachment.name)"
+                  pTooltip="Supprimer"
+                  tooltipPosition="top"
                 ></i>
                 <i
                   class="far fa-edit"
@@ -39,10 +39,12 @@
               <div class="card-body p-2">
                 <div class="form-group col-12 mb-0 p-0">
                   <label *ngIf="itemDetails" class="col-md-12">Type</label>
-                  <p *ngIf="itemDetails&&!filesProperties[getIndex(item)].edit" class="col-md-12">{{ item.attachmentType }}</p>
+                  <p *ngIf="itemDetails && !filesProperties[getIndex(item)].edit" class="col-md-12">
+                    {{ item.attachmentType }}
+                  </p>
 
                   <p-dropdown
-                    *ngIf="add||itemDetails&&filesProperties[getIndex(item)].edit"
+                    *ngIf="add || (itemDetails && filesProperties[getIndex(item)].edit)"
                     [style]="{ minWidth: '100%' }"
                     [options]="types"
                     appendTo="body"
@@ -51,12 +53,15 @@
                     [(ngModel)]="item.attachmentType"
                   ></p-dropdown>
                 </div>
-                <div class="d-flex justify-content-end col-12 p-0 mt-2 mb-2"
-                     *ngIf="itemDetails&&filesProperties[getIndex(item)].edit">
+                <div
+                  class="d-flex justify-content-end col-12 p-0 mt-2 mb-2"
+                  *ngIf="itemDetails && filesProperties[getIndex(item)].edit"
+                >
                   <button (click)="cancelEditAttachment(item, getIndex(item))" class="mr-2 cancel-btn">Annuler</button>
                   <button
-                    (click)="editAttachmentForm(getIndex(item),item.attachment,item.attachmentType)"
-                    class="valid-btn">
+                    (click)="editAttachmentForm(getIndex(item), item.attachment, item.attachmentType)"
+                    class="valid-btn"
+                  >
                     Valider
                   </button>
                 </div>
@@ -118,15 +123,13 @@
 <p-dialog header="Supprimer une pièce jointe" [modal]="true" [(visible)]="deleteDialog" [style]="{ width: '30vw' }">
   <div class="p-0 pb-3">
     <div class="col-12">
-      <span>Voulez-vous supprimer la pièce jointe "<strong> {{itemToDelete}} </strong>" ?</span>
+      <span
+        >Voulez-vous supprimer la pièce jointe "<strong> {{ itemToDelete }} </strong>" ?</span
+      >
     </div>
   </div>
   <ng-template pTemplate="footer">
-    <button class="cancel-btn" (click)="cancelDelete()" style="font-size: 12px">
-      Annuler
-    </button>
-    <button class="valid-btn" (click)="deleteAttachment(selectedAttachment)" style="font-size: 12px">
-      supprimer
-    </button>
+    <button class="cancel-btn" (click)="cancelDelete()" style="font-size: 12px">Annuler</button>
+    <button class="valid-btn" (click)="deleteAttachment(selectedAttachment)" style="font-size: 12px">supprimer</button>
   </ng-template>
 </p-dialog>

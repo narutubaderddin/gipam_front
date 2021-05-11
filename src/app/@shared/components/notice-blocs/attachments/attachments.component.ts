@@ -10,7 +10,7 @@ import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 export class AttachmentsComponent implements OnInit {
   @Input() add = false;
   @Input() attachmentForm: FormGroup;
-  @Input() itemDetails: boolean=false;
+  @Input() itemDetails: boolean = false;
 
   attachmentType: any;
   files: any[] = [];
@@ -33,24 +33,23 @@ export class AttachmentsComponent implements OnInit {
   existingAttachments = [
     {
       attachment: {
-        name:'details.pdf'
+        name: 'details.pdf',
       },
       attachmentType: 'type 2',
     },
     {
       attachment: {
-        name: 'fichier'
+        name: 'fichier',
       },
-      attachmentType: "type 2"
+      attachmentType: 'type 2',
     },
     {
       attachment: {
-        name:'exemple.pdf'
+        name: 'exemple.pdf',
       },
       attachmentType: 'type 1',
-    }
+    },
   ];
-
 
   responsiveOptions = [
     {
@@ -64,11 +63,11 @@ export class AttachmentsComponent implements OnInit {
       numScroll: 1,
     },
   ];
-  editAttachement: boolean =false;
-  filesProperties: any[] =[];
+  editAttachement: boolean = false;
+  filesProperties: any[] = [];
 
   previousType: any;
-  deleteDialog: boolean=false;
+  deleteDialog: boolean = false;
   itemToDelete: string;
 
   get attachments(): FormArray {
@@ -77,12 +76,11 @@ export class AttachmentsComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    if(this.itemDetails) {
+    if (this.itemDetails) {
       this.existingAttachments.map((el: any) => {
         this.files.push(el.attachment);
-        this.attachments.push(this.createAttachment(
-          el.attachment,el.attachementType));
-      })
+        this.attachments.push(this.createAttachment(el.attachment, el.attachementType));
+      });
     }
   }
 
@@ -91,7 +89,7 @@ export class AttachmentsComponent implements OnInit {
     this.attachmentType = photographyType;
   }
   createAttachment(attachment?: any, attachmentType?: any): FormGroup {
-    this.filesProperties.push({edit :false, delete:false});
+    this.filesProperties.push({ edit: false, delete: false });
     return this.fb.group({
       attachment: [attachment, [Validators.required]],
       attachmentType: [attachmentType, [Validators.required]],
@@ -100,7 +98,7 @@ export class AttachmentsComponent implements OnInit {
   editAttachmentForm(index?: any, attachment?: any, attachmentType?: any) {
     this.attachments.value[index].attachment = attachment;
     this.attachments.value[index].attachmentType = attachmentType;
-    this.filesProperties[index].edit=false;
+    this.filesProperties[index].edit = false;
   }
   getUploadedFiles(files: any) {
     this.addedFile = files[files.length - 1];
@@ -109,17 +107,17 @@ export class AttachmentsComponent implements OnInit {
   deleteAttachment(index: number) {
     this.files.splice(index, 1);
     this.attachments.removeAt(index);
-    this.deleteDialog=false;
+    this.deleteDialog = false;
   }
 
   validate() {
     if (!this.addedFile || !this.attachmentType) {
       this.validation = false;
     } else {
-      if(this.itemDetails){
-        this.existingAttachments.push({attachment:this.addedFile, attachmentType: this.attachmentType})
+      if (this.itemDetails) {
+        this.existingAttachments.push({ attachment: this.addedFile, attachmentType: this.attachmentType });
       }
-      if (this.selectedAttachment == this.attachments.value.length||this.itemDetails) {
+      if (this.selectedAttachment == this.attachments.value.length || this.itemDetails) {
         this.files.push(this.addedFile);
         this.attachments.push(this.createAttachment(this.addedFile, this.attachmentType));
       } else {
@@ -144,33 +142,32 @@ export class AttachmentsComponent implements OnInit {
   addAttachment() {
     this.display = true;
   }
-  editAttachment(value:any, index:number) {
-
-    this.filesProperties[index]={
+  editAttachment(value: any, index: number) {
+    this.filesProperties[index] = {
       ...this.filesProperties[index],
-      edit :true,
-      delete:false
+      edit: true,
+      delete: false,
     };
     this.previousType = value;
   }
-  cancelEditAttachment(el:any, index:number) {
-    this.filesProperties[index]={
+  cancelEditAttachment(el: any, index: number) {
+    this.filesProperties[index] = {
       ...this.filesProperties[index],
-      edit :false,
-      delete:false
+      edit: false,
+      delete: false,
     };
     this.editAttachmentForm(index, el.attachment, this.previousType);
-    this.existingAttachments[index].attachmentType=this.previousType;
+    this.existingAttachments[index].attachmentType = this.previousType;
   }
-  getIndex(el:any) {
+  getIndex(el: any) {
     return this.existingAttachments.indexOf(el);
   }
-  delete(item:string){
-    this.deleteDialog=true;
-    this.itemToDelete= item;
+  delete(item: string) {
+    this.deleteDialog = true;
+    this.itemToDelete = item;
   }
-  cancelDelete(){
-    this.deleteDialog=false;
-    this.itemToDelete= '';
+  cancelDelete() {
+    this.deleteDialog = false;
+    this.itemToDelete = '';
   }
 }

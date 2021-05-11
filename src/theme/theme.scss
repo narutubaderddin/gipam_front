@@ -783,7 +783,6 @@ p-calendar {
 }
 
 .p-carousel {
-
   .p-carousel-content {
     .p-carousel-container {
       .p-carousel .p-carousel-content .p-carousel-prev,
@@ -793,7 +792,6 @@ p-calendar {
     }
     .p-carousel-indicators {
       display: none;
-
     }
   }
 }
@@ -856,8 +854,8 @@ ng-file-drag-drop {
   border: none;
   border-radius: 0px;
 }
-.cancel-btn, cancel-btn:hover
-  cancel-btn:focus{
+.cancel-btn,
+cancel-btn:hover cancel-btn:focus {
   background-color: #6c7681c9;
   color: white;
   font-size: 10px;

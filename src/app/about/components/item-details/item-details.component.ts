@@ -23,7 +23,7 @@ export class ItemDetailsComponent implements OnInit {
   edit = false;
   depositStatusForm: FormGroup;
   descriptifForm: FormGroup;
-  attachmentForm:FormGroup;
+  attachmentForm: FormGroup;
   photographies: any[] = [
     // get images of item
     {
@@ -87,7 +87,7 @@ export class ItemDetailsComponent implements OnInit {
     this.initDescriptifForm();
     this.initDepositStatusForm();
     this.initPhotographiesForm();
-    this.initAttachmentForm()
+    this.initAttachmentForm();
   }
 
   initPhotographiesForm() {

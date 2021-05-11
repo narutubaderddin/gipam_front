@@ -30,11 +30,12 @@
           </div>
           <div class="form-group col-md-12">
             <label class="col-md-5">Photographie</label>
-            <i class="far fa-trash-alt col-1"
-               *ngIf="!add"
-               (click)="deleteItem(imageName)"
-               pTooltip="Supprimer"
-               tooltipPosition="top"
+            <i
+              class="far fa-trash-alt col-1"
+              *ngIf="!add"
+              (click)="deleteItem(imageName)"
+              pTooltip="Supprimer"
+              tooltipPosition="top"
             ></i>
             <p *ngIf="!add && !addImage" class="col-7">{{ imageName }}</p>
             <div class="input-group input-group-sm upload-file" *ngIf="add || addImage">
@@ -62,7 +63,7 @@
             <p *ngIf="!add && !addImage" class="col-7">{{ photographyDate }}</p>
             <p-calendar
               class="col-md-12"
-              *ngIf="add || addImage "
+              *ngIf="add || addImage"
               [style]="{ minWidth: '100%' }"
               [(ngModel)]="photographyDate"
               [showIcon]="true"
@@ -115,15 +116,13 @@
 <p-dialog header="Supprimer la photographie" [modal]="true" [(visible)]="deleteDialog" [style]="{ width: '30vw' }">
   <div class="p-0 pb-3">
     <div class="col-12">
-      <span>Voulez-vous supprimer la photographie "<strong> {{itemToDelete}} </strong>" ?</span>
+      <span
+        >Voulez-vous supprimer la photographie "<strong> {{ itemToDelete }} </strong>" ?</span
+      >
     </div>
   </div>
   <ng-template pTemplate="footer">
-    <button class="cancel-btn" (click)="cancelDelete()" style="font-size: 12px">
-      Annuler
-    </button>
-    <button class="valid-btn" (click)="delete()" style="font-size: 12px">
-      supprimer
-    </button>
+    <button class="cancel-btn" (click)="cancelDelete()" style="font-size: 12px">Annuler</button>
+    <button class="valid-btn" (click)="delete()" style="font-size: 12px">supprimer</button>
   </ng-template>
 </p-dialog>

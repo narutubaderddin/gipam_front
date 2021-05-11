@@ -37,8 +37,8 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   validate = true;
   isIdentification = false;
   identification = 0;
-  deleteDialog:boolean = false;
-  itemToDelete:any;
+  deleteDialog: boolean = false;
+  itemToDelete: any;
   viewDateFormat = viewDateFormat;
 
   get photographies(): FormArray {
@@ -52,7 +52,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         this.createPhotography(el.photography, el.photographyDate, el.photographyType, el.imageName)
       )
     );
-    if(this.images[this.activeIndex]) {
+    if (this.images[this.activeIndex]) {
       this.initData(
         this.images[this.activeIndex].photography,
         this.images[this.activeIndex].photographyDate,
@@ -99,8 +99,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     this.identification = 0;
     if (this.photographies.value.length > 1) {
       this.photographies.value.forEach((photography: any) => {
-
-
         if (photography.photographyType.name != 'Identification') {
           this.identification++;
         }
@@ -112,7 +110,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         this.isIdentification = false;
         this.types[0].disabled = false;
       }
-
     }
   }
   addPhotography(): void {
@@ -175,7 +172,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     this.imgToShow.emit(item.imageUrl);
     this.activeIndex = item.i;
     this.addImage = false;
-    this.editType=false;
+    this.editType = false;
   }
 
   saveEditType() {
@@ -210,11 +207,11 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     this.images.splice(this.activeIndex, 1);
   }
 
-  deleteItem(item:string) {
-    this.itemToDelete=item;
-    this.deleteDialog=!this.deleteDialog;
+  deleteItem(item: string) {
+    this.itemToDelete = item;
+    this.deleteDialog = !this.deleteDialog;
   }
-  cancelDelete(){
-    this.deleteDialog=!this.deleteDialog;
+  cancelDelete() {
+    this.deleteDialog = !this.deleteDialog;
   }
 }
