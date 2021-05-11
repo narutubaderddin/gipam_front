@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as L from 'leaflet';
-import { ColDef, ColumnApi, GridApi } from 'ag-grid-community';
 
 @Injectable({
   providedIn: 'root',
