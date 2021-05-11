@@ -612,7 +612,9 @@ export class PortailComponent implements OnInit {
 
   exportRequests(){
     this.requestService.exportRequest().subscribe((response) => {
-
+      console.log("response");
+      console.log(response);
+      //window.location.href = response.url;
     });
   }
 }
