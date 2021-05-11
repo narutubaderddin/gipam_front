@@ -1,5 +1,9 @@
 <div class="breadcrumb">
-  <a href="home-page" class="selected-item"> Liste des commandes </a>
+  <a href="accueil">Accueil</a>
+  <a href="accueil" class="selected-item">
+    <i class="fas fa-chevron-right"></i>
+    Notices en cours de création
+  </a>
 </div>
 <div class="container-fluid">
   <div class="body d-flex">
@@ -9,7 +13,9 @@
           <div class="card">
             <div class="card-body">
               <ul class="d-flex">
-                <li class="col-md-12 selected-table"><i class="fas fa-tasks"></i><a>List des Demandes en cours</a></li>
+                <li class="col-md-12 selected-table">
+                  <i class="fas fa-align-left"></i><a>Liste des demandes en cours</a>
+                </li>
               </ul>
             </div>
           </div>
@@ -31,6 +37,7 @@
               [total]="requests.totalQuantity"
               [page]="requests.page"
               [limit]="requests.size"
+              identifierKey="id"
             ></app-ng-data-table>
           </div>
         </div>

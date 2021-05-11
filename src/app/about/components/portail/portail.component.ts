@@ -192,8 +192,11 @@ export class PortailComponent implements OnInit {
   onFilterChange(value: string): void {
     console.log('filter:', value);
   }
-  details(visible: any, source: string, id: string) {
-    this.router.navigate(['portail-details', id]);
+  details(item: any) {
+    if (item.isInRequest) {
+      return false;
+    }
+    this.router.navigate(['portail-details', item.id]);
   }
 
   onSearchClick() {}
@@ -324,7 +327,7 @@ export class PortailComponent implements OnInit {
         oeuvre.isDemanded = true;
       }
       if (oeuvre.isInRequest) {
-        oeuvre.tooltip = 'Oeuvre en demande';
+        oeuvre.tooltip = 'Oeuvre réservé';
       }
       return oeuvre.field !== null;
     });
@@ -606,4 +609,8 @@ export class PortailComponent implements OnInit {
   selectedBuilding: any;
   selectedPieceNumber: any;
   selectedLevel: any;
+
+  exportRequests() {
+    this.requestService.exportRequest().subscribe((response) => {});
+  }
 }

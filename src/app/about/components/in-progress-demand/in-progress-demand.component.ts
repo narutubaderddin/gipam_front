@@ -27,6 +27,10 @@ export class InProgressDemandComponent {
       header: 'Sous-direction',
       field: 'subDivisionLabel',
     },
+    {
+      header: 'Status',
+      field: 'status',
+    },
   ];
   expandColumns = [
     {

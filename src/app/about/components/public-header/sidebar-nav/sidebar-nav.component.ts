@@ -67,6 +67,10 @@ export class SidebarNavComponent implements OnInit {
     this.router.navigate(['tab-ref-dénomination']);
     this.toggleClose();
   }
+  goToRequestLsit() {
+    this.router.navigate(['demandes-en-cours']);
+    this.toggleClose();
+  }
   goToPoratil() {
     this.menu = 4;
     this.router.navigate(['portail']);

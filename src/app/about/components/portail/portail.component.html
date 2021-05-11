@@ -40,6 +40,7 @@
                           class="float-right fas fa-file-download d-inline p-2"
                           placement="top"
                           ngbTooltip="Exporter"
+                          (click)="exportRequests()"
                         ></i>
                       </div>
                     </div>
@@ -697,7 +698,7 @@
                   style="margin-bottom: 0"
                   *ngFor="let items of section.items"
                   [ngClass]="items.isInRequest ? 'disabled-oeuvre' : ''"
-                  (click)="details(items.visible, items.image, items.id)"
+                  (click)="details(items)"
                 >
                   <div class="card-block flip">
                     <!--<div *ngFor="let attachment of items.attachments">
