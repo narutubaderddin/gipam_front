@@ -51,7 +51,6 @@
     "ngx-autosize": "^1.8.4",
     "ngx-bootstrap": "^6.2.0",
     "ngx-chips": "^2.2.2",
-    "ngx-dropzone": "^3.0.0",
     "ngx-horizontal-timeline": "^0.0.6",
     "ngx-infinite-scroll": "^10.0.1",
     "ngx-pagination": "^5.0.0",
