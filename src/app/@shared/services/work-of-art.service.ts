@@ -698,4 +698,7 @@ export class WorkOfArtService {
   removeSelectedArtWorks() {
     localStorage.removeItem('selectedArtWorks');
   }
+  addWorkOfArt(data: any): Observable<any> {
+    return this.http.post('/notices/property', data);
+  }
 }

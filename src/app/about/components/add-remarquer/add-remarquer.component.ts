@@ -3,7 +3,7 @@ import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { NgWizardConfig, NgWizardService, StepChangedArgs, StepValidationArgs, STEP_STATE, THEME } from 'ng-wizard';
 import { of } from 'rxjs';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -17,19 +17,17 @@ export class AddRemarquerComponent implements OnInit {
   descriptifForm: FormGroup;
   attachmentForm: FormGroup;
   photographiesForm: FormGroup;
+  statusForm: FormGroup;
+  linksForm: FormGroup;
+  linkArtWorkForm: FormGroup;
   propertyStatusForm: FormGroup;
   depositStatusForm: FormGroup;
   addProperty = false;
   addDeposit = false;
   descriptionTitle = '';
-  domains = this.WorkOfArtService.domaine;
+  domains: any[] = [];
   keyword = 'name';
-  stepStates = {
-    normal: STEP_STATE.normal,
-    disabled: STEP_STATE.disabled,
-    error: STEP_STATE.error,
-    hidden: STEP_STATE.hidden,
-  };
+
   display = false;
   config: NgWizardConfig = {
     selected: 0,
@@ -49,9 +47,12 @@ export class AddRemarquerComponent implements OnInit {
       ],
     },
   };
-
+  closeResult = '';
+  isValidTypeBoolean: boolean = true;
+  addPropertyValues: any[] = [];
+  addPropertyForm: FormGroup;
   constructor(
-    public WorkOfArtService: WorkOfArtService,
+    public workOfArtService: WorkOfArtService,
     private ngWizardService: NgWizardService,
     private modalService: NgbModal,
     public fb: FormBuilder,
@@ -72,19 +73,29 @@ export class AddRemarquerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initDescriptifForm();
     this.initPropertyStatusForm();
     this.initDepositStatusForm();
     this.initAttachmentForm();
     this.initPhotographiesForm();
+    this.initAddProperty();
+    this.initHyperLink();
+    this.initLinks();
+    this.initDescriptifForm();
   }
+  initAddProperty() {
+    this.addPropertyForm = this.fb.group({
+      decriptid: this.descriptifForm,
+      photographies: this.photographiesForm,
+    });
+  }
+
   initDescriptifForm() {
     this.descriptifForm = this.fb.group({
       title: ['', Validators.required],
       field: ['', Validators.required],
       denomination: ['', Validators.required],
       materialTechnique: ['', Validators.required],
-      numberOfUnit: ['', Validators.required],
+      numberOfUnit: [''],
       authors: [],
       creationDate: [],
       length: [],
@@ -100,6 +111,11 @@ export class AddRemarquerComponent implements OnInit {
       totalHeight: [],
       descriptiveWords: [],
       items: [],
+      photographies: this.photographiesForm.value.photographies,
+      status: this.addProperty ? this.propertyStatusForm : this.depositStatusForm,
+      parent: this.linkArtWorkForm.value,
+      hyperlinks: this.linksForm.value.hyperlinks,
+      attachments: this.attachmentForm.value.attachments,
     });
   }
   initPropertyStatusForm() {
@@ -122,6 +138,16 @@ export class AddRemarquerComponent implements OnInit {
       stopNumber: [''],
     });
   }
+  initHyperLink() {
+    this.linksForm = this.fb.group({
+      hyperlinks: this.fb.array([]),
+    });
+  }
+  initLinks() {
+    this.linkArtWorkForm = this.fb.group({
+      parent: [''],
+    });
+  }
   initAttachmentForm() {
     this.attachmentForm = new FormGroup({
       attachments: this.fb.array([]),
@@ -132,10 +158,6 @@ export class AddRemarquerComponent implements OnInit {
       photographies: this.fb.array([]),
     });
   }
-  openVerticallyCentered(content: any) {
-    this.modalService.open(content, { centered: true });
-  }
-  closeResult = '';
 
   open(content: any) {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then(
@@ -148,7 +170,7 @@ export class AddRemarquerComponent implements OnInit {
     );
   }
 
-  private getDismissReason(reason: any): string {
+  getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
@@ -157,38 +179,10 @@ export class AddRemarquerComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
-  selectEvent(item: any) {}
-
-  onChangeSearch(val: string) {
-    // fetch remote data from here
-    // And reassign the 'data' which is binded to 'data' property.
-  }
-
-  onFocused(e: any) {
-    // do something when input is focused
-  }
-
-  showPreviousStep(event?: Event) {
-    this.ngWizardService.previous();
-  }
-
-  showNextStep(event?: Event) {
-    this.ngWizardService.next();
-  }
-
-  resetWizard(event?: Event) {
-    this.ngWizardService.reset();
-  }
-
-  setTheme(theme: THEME) {
-    this.ngWizardService.theme(theme);
-  }
 
   stepChanged(args: StepChangedArgs) {
     console.log(args.step);
   }
-
-  isValidTypeBoolean: boolean = true;
 
   isValidFunctionReturnsBoolean(args: StepValidationArgs) {
     return true;
@@ -197,9 +191,14 @@ export class AddRemarquerComponent implements OnInit {
   isValidFunctionReturnsObservable(args: StepValidationArgs) {
     return of(true);
   }
+
+  setValues() {
+    this.addPropertyValues = [...this.descriptifForm.value, ...this.photographiesForm.value];
+  }
   submit() {
+    console.log(this.descriptifForm.value);
+    this.workOfArtService.addWorkOfArt(this.descriptifForm.value).subscribe();
     if (!this.descriptifForm.valid) {
-      console.log(this.descriptifForm);
       this.display = true;
     }
   }
