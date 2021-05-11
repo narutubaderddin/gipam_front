@@ -168,6 +168,7 @@
                         <p-multiSelect
                           itemSize="30"
                           [virtualScroll]="true"
+                          (onPanelHide)="onMultiselectChange('denomination')"
                           [options]="denominationData"
                           id="denomination"
                           formControlName="denomination"
@@ -194,9 +195,11 @@
                               id="materialTechnique"
                               [minLength]="3"
                               field="name"
+                              [multiple]="true"
                               [suggestions]="materialTechniquesData"
                               formControlName="materialTechnique"
                               emptyMessage="Aucun résultat trouvé"
+                              [dropdown]="true"
                               (completeMethod)="onMaterialTechniqueComplete($event)"
                               placeholder="Choisir des matières"
                             >
@@ -650,32 +653,46 @@
                   </div>
                   <div class="col-6 mt-3">
                     <div class="form-group d-flex slider-bloc row" *ngIf="propStatus">
-                      <label for="titre" class="col-5">Date Entrée</label>
-                      <input
-                        type="date"
-                        name="datepicker"
+                      <label for="entryDate" class="col-5">Date Entrée</label>
+                      <p-calendar
+                        #pcdEntry
                         formControlName="entryDate"
-                        class="form-control date-input col-6"
-                        ngbDatepicker
-                        autoClose="outside"
-                        displayMonths="2"
-                        outsideDays="hidden"
-                        id="date"
-                      />
+                        [readonlyInput]="true"
+                        [monthNavigator]="true"
+                        [yearNavigator]="true"
+                        [numberOfMonths]="1"
+                        [selectionMode]="'range'"
+                        [showOtherMonths]="true"
+                        [showIcon]="true"
+                        id="entryDate"
+                        class="date-input col-6"
+                        dateFormat="dd/mm/yy"
+                        yearRange="1900:2100"
+                        styleClass="dateTimeField"
+                        placeholder="Date Entrée"
+                      >
+                      </p-calendar>
                     </div>
                     <div class="form-group d-flex slider-bloc row" *ngIf="depotStatus">
-                      <label for="titre" class="col-5">Date Dépôt</label>
-                      <input
-                        type="date"
-                        name="datepicker"
+                      <label for="depotDate" class="col-5">Date Dépôt</label>
+                      <p-calendar
+                        #pcdDepot
                         formControlName="depotDate"
-                        class="form-control date-input col-6"
-                        ngbDatepicker
-                        autoClose="outside"
-                        displayMonths="2"
-                        outsideDays="hidden"
-                        id="date"
-                      />
+                        [readonlyInput]="true"
+                        [monthNavigator]="true"
+                        [yearNavigator]="true"
+                        [numberOfMonths]="1"
+                        [selectionMode]="'range'"
+                        [showOtherMonths]="true"
+                        [showIcon]="true"
+                        id="depotDate"
+                        class="date-input col-6"
+                        dateFormat="dd/mm/yy"
+                        yearRange="1900:2100"
+                        styleClass="dateTimeField"
+                        placeholder="Date Dépôt"
+                      >
+                      </p-calendar>
                     </div>
                     <div class="form-group d-flex slider-bloc row" *ngIf="propStatus">
                       <label for="entryMode" class="col-5">Mode entrée</label>

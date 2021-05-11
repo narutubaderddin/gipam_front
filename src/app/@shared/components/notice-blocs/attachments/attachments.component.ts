@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ColDef, ColumnApi, GridApi } from 'ag-grid-community';
 import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 
@@ -30,7 +29,7 @@ export class AttachmentsComponent implements OnInit {
     lang: {},
   };
 
-  columnDefs: ColDef[] = [
+  columnDefs: any[] = [
     {
       headerName: 'pièce jointes',
       field: 'attachments',
@@ -86,8 +85,7 @@ export class AttachmentsComponent implements OnInit {
     resizable: true,
     flex: 1,
   };
-  gridApi: GridApi;
-  gridColumnApi: ColumnApi;
+
   gridReady = false;
   responsiveOptions = [
     {
