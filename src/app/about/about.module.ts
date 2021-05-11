@@ -115,6 +115,7 @@ import { EstablishmentService } from '@shared/services/establishment.service';
 import { DemandService } from '@shared/services/demand.service';
 import { PersonsComponent } from '@app/about/components/tabs-ref/persons/persons.component';
 import { DepositorsComponent } from '@app/about/components/tabs-ref/depositors/depositors.component';
+import { ItemDetailsPdfComponent } from './components/item-details/pdf/item-details-pdf/item-details-pdf.component';
 setTheme('bs4');
 
 const ngWizardConfig: NgWizardConfig = {
@@ -188,6 +189,7 @@ const ngWizardConfig: NgWizardConfig = {
     PhotographyTypesComponent,
     PersonsComponent,
     DepositorsComponent,
+    ItemDetailsPdfComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [

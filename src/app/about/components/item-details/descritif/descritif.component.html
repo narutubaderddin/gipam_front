@@ -2,7 +2,7 @@
   <div class="form-group col-md-6">
     <label>Titre <span class="mandatory" *ngIf="edit">*</span></label>
     <input class="form-control value" placeholder="titre" *ngIf="edit" />
-    <div class="value" *ngIf="!edit">Titre de la sculpture</div>
+    <div class="value" *ngIf="!edit">{{ artwork.title }}</div>
   </div>
   <div class="form-group col-md-6">
     <label>Domaine <span class="mandatory" *ngIf="edit">*</span></label>
@@ -17,7 +17,7 @@
       >
       </ng-multiselect-dropdown>
     </div>
-    <div class="value" *ngIf="!edit">Sculpture</div>
+    <div class="value" *ngIf="!edit">{{ artwork.domain }}</div>
   </div>
   <div class="form-group col-md-6">
     <label class="">Dénomination <span class="mandatory" *ngIf="edit">*</span></label>
@@ -59,7 +59,7 @@
       <a href="">Ajouter un nouvel auteur</a>
     </div>
 
-    <div class="value" *ngIf="!edit">Auteur 1, Auteur 11</div>
+    <div class="value" *ngIf="!edit">{{ artwork.author }}</div>
   </div>
   <div class="col-md-8"></div>
   <div class="divider"></div>
@@ -72,7 +72,7 @@
         <option>m</option>
       </select>
     </div>
-    <div class="value" *ngIf="!edit">85cm</div>
+    <div class="value" *ngIf="!edit">{{ artwork.height }}</div>
   </div>
   <div
     class="form-group col-md-6"
@@ -144,7 +144,7 @@
         <option>m</option>
       </select>
     </div>
-    <div class="value" *ngIf="!edit">85cm</div>
+    <div class="value" *ngIf="!edit">{{ artwork.width }}</div>
   </div>
   <div class="form-group col-md-6" *ngIf="selectedDomain === ('Luminaire' || 'Pièce de musée') || edit">
     <label class="">Diamètre</label>

@@ -13,6 +13,13 @@ export class DescritifComponent implements OnInit {
   @Input() edit = false;
   @Input() addDepot = false;
   @Input() addProperty = true;
+  @Input() artwork = {
+    title: 'Titre de la sculpture',
+    domain: 'Sculpture',
+    height: '85',
+    width: '85',
+    author: 'Auteur 1, Auteur 11',
+  };
 
   domain = 'Sculpture';
   denomination: any;
