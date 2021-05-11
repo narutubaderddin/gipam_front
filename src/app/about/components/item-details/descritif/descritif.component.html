@@ -1,558 +1,236 @@
-<!--<div class="form-bloc">-->
-<!--  <div class="form-group col-md-6">-->
-<!--    <label>Titre <span class="mandatory" *ngIf="edit">*</span></label>-->
-<!--    <input class="form-control value" placeholder="titre" *ngIf="edit" />-->
-<!--    <div class="value" *ngIf="!edit">Titre de la sculpture</div>-->
-<!--  </div>-->
-<!--  <div class="form-group col-md-6">-->
-<!--    <label>Domaine <span class="mandatory" *ngIf="edit">*</span></label>-->
-<!--    <div class="autocomplete form-control value" *ngIf="edit">-->
-<!--      <ng-multiselect-dropdown-->
-<!--        class="select"-->
-<!--        [placeholder]="'Choisir ses domaines'"-->
-<!--        [settings]="dropdownSettings"-->
-<!--        [data]="domains"-->
-<!--        (onSelect)="onDomainSelect($event)"-->
-<!--        (onSelectAll)="onSelectAll($event)"-->
-<!--      >-->
-<!--      </ng-multiselect-dropdown>-->
-<!--    </div>-->
-<!--    <div class="value" *ngIf="!edit">Sculpture</div>-->
-<!--  </div>-->
-<!--  <div class="form-group col-md-6">-->
-<!--    <label class="">Dénomination <span class="mandatory" *ngIf="edit">*</span></label>-->
-<!--    <div class="autocomplete form-control value" *ngIf="edit">-->
-<!--      <ng-multiselect-dropdown-->
-<!--        class="select"-->
-<!--        [placeholder]="'Choisir des dénominations'"-->
-<!--        [settings]="dropdownSettings"-->
-<!--        [data]="WorkOfArtService.denominations"-->
-<!--        (onSelect)="onItemSelect($event)"-->
-<!--        (onSelectAll)="onSelectAll($event)"-->
-<!--      >-->
-<!--      </ng-multiselect-dropdown>-->
-
-<!--      <ng-template #itemTemplate let-item>-->
-<!--        <a [innerHTML]="item.name"></a>-->
-<!--      </ng-template>-->
-<!--      <ng-template #notFoundTemplate let-notFound>-->
-<!--        <div [innerHTML]="notFound"></div>-->
-<!--      </ng-template>-->
-<!--    </div>-->
-<!--    <div class="value" *ngIf="!edit">Statuette</div>-->
-<!--  </div>-->
-<!--  <div class="divider"></div>-->
-<!--  <div class="form-group col-md-12" style="max-width: 98%">-->
-<!--    <label style="margin-right: -17%; width: 18%" class="">Auteurs</label>-->
-
-<!--    <ng-multiselect-dropdown-->
-<!--      *ngIf="edit"-->
-<!--      class="select col-md-4"-->
-<!--      [placeholder]="'-&#45;&#45; Choisir des auteurs -&#45;&#45;'"-->
-<!--      [settings]="dropdownSettings"-->
-<!--      [data]="WorkOfArtService.authors"-->
-<!--      (onSelect)="onDomainSelect($event)"-->
-<!--      (onSelectAll)="onSelectAll($event)"-->
-<!--    >-->
-<!--    </ng-multiselect-dropdown>-->
-<!--    <div class="col-md-4 link value" *ngIf="edit">-->
-<!--      <a href="">Ajouter un nouvel auteur</a>-->
-<!--    </div>-->
-
-<!--    <div class="value" *ngIf="!edit">Auteur 1, Auteur 11</div>-->
-<!--  </div>-->
-<!--  <div class="col-md-8"></div>-->
-<!--  <div class="divider"></div>-->
-<!--  <div class="form-group col-md-6">-->
-<!--    <label class="col-md-3">Hauteur</label>-->
-<!--    <div class="d-flex value" *ngIf="edit">-->
-<!--      <input class="col-md-8 form-control" />-->
-<!--      <select class="col-md-4 col-xs-2 form-control">-->
-<!--        <option class="active">cm</option>-->
-<!--        <option>m</option>-->
-<!--      </select>-->
-<!--    </div>-->
-<!--    <div class="value" *ngIf="!edit">85cm</div>-->
-<!--  </div>-->
-<!--  <div-->
-<!--    class="form-group col-md-6"-->
-<!--    *ngIf="-->
-<!--      selectedDomain ==-->
-<!--        ('Sculpture' || 'Luminaire' || 'Pièce de musée' || 'Horlogerie' || 'Art textile' || 'Art de la table') && edit-->
-<!--    "-->
-<!--  >-->
-<!--    <label class="col-md-4">Largeur</label>-->
-<!--    <div class="d-flex value" *ngIf="edit">-->
-<!--      <input class="col-md-8 form-control" />-->
-<!--      <select class="col-md-4 col-xs-2 form-control">-->
-<!--        <option class="active">cm</option>-->
-<!--        <option>m</option>-->
-<!--      </select>-->
-<!--    </div>-->
-<!--    <p class="value" *ngIf="!edit">85cm</p>-->
-<!--  </div>-->
-<!--  <div class="form-group col-md-6 value" *ngIf="selectedDomain == ('Peinture' || 'Art graphique') || edit">-->
-<!--    <label class="">Largeur Tot</label>-->
-<!--    <div class="d-flex value" *ngIf="edit">-->
-<!--      <input class="col-md-8 form-control" />-->
-<!--      <select class="col-md-4 col-xs-2 form-control">-->
-<!--        <option class="active">cm</option>-->
-<!--        <option>m</option>-->
-<!--      </select>-->
-<!--    </div>-->
-<!--    <p class="value" *ngIf="!edit">85cm</p>-->
-<!--  </div>-->
-<!--  <div class="form-group col-md-6" *ngIf="selectedDomain == ('Peinture' || 'Art graphique') || edit">-->
-<!--    <label class="">Hauteur Tot</label>-->
-
-<!--    <div class="d-flex value" *ngIf="edit">-->
-<!--      <input class="col-md-8 form-control" />-->
-<!--      <select class="col-md-4 col-xs-2 form-control">-->
-<!--        <option class="active">cm</option>-->
-<!--        <option>m</option>-->
-<!--      </select>-->
-<!--    </div>-->
-<!--    <p class="value" *ngIf="!edit">85cm</p>-->
-<!--  </div>-->
-<!--  <div class="form-group col-md-6" *ngIf="selectedDomain === ('Luminaire' || 'Pièce de musé' || 'Horlogerie') || edit">-->
-<!--    <label class="">Longueur</label>-->
-<!--    <div class="d-flex value" *ngIf="edit">-->
-<!--      <input class="col-md-8 form-control" />-->
-<!--      <select class="col-md-4 col-xs-2 form-control value">-->
-<!--        <option class="active">cm</option>-->
-<!--        <option>m</option>-->
-<!--      </select>-->
-<!--    </div>-->
-<!--    <p class="value" *ngIf="!edit">85cm</p>-->
-<!--  </div>-->
-<!--  <div class="form-group col-md-6">-->
-<!--    <label class="">Profondeur</label>-->
-<!--    <div class="d-flex value" *ngIf="edit">-->
-<!--      <input class="col-md-8 form-control" />-->
-<!--      <select class="col-md-4 col-xs-2 form-control">-->
-<!--        <option class="active">cm</option>-->
-<!--        <option>m</option>-->
-<!--      </select>-->
-<!--    </div>-->
-<!--    <div class="value" *ngIf="!edit">85cm</div>-->
-<!--  </div>-->
-<!--  <div class="form-group col-md-6">-->
-<!--    <label class="col-md-3">Longueur</label>-->
-<!--    <div class="d-flex value" *ngIf="edit">-->
-<!--      <input class="col-md-8 form-control" />-->
-<!--      <select class="col-md-4 col-xs-2 form-control">-->
-<!--        <option class="active">cm</option>-->
-<!--        <option>m</option>-->
-<!--      </select>-->
-<!--    </div>-->
-<!--    <div class="value" *ngIf="!edit">85cm</div>-->
-<!--  </div>-->
-<!--  <div class="form-group col-md-6" *ngIf="selectedDomain === ('Luminaire' || 'Pièce de musée') || edit">-->
-<!--    <label class="">Diamètre</label>-->
-<!--    <div class="d-flex value" *ngIf="edit">-->
-<!--      <input class="col-md-8 form-control" />-->
-<!--      <select class="col-md-4 col-xs-2 form-control">-->
-<!--        <option class="active">cm</option>-->
-<!--        <option>m</option>-->
-<!--      </select>-->
-<!--    </div>-->
-<!--    <p class="value" *ngIf="!edit">85cm</p>-->
-<!--  </div>-->
-<!--  <div class="col-md-4"></div>-->
-<!--  <div class="divider"></div>-->
-<!--  <div class="form-group col-md-6">-->
-<!--    <label class="">Epoque</label>-->
-<!--    <div class="form-control autocomplete value" *ngIf="edit">-->
-<!--      <ng-autocomplete-->
-<!--        placeholder="Epoque"-->
-<!--        [data]="denomination"-->
-<!--        [searchKeyword]="keyword"-->
-<!--        (selected)="selectEvent($event)"-->
-<!--        (inputChanged)="onChangeSearch($event)"-->
-<!--        (inputFocused)="onFocused($event)"-->
-<!--        [itemTemplate]="itemTemplate"-->
-<!--        [notFoundTemplate]="notFoundTemplate"-->
-<!--      >-->
-<!--      </ng-autocomplete>-->
-<!--      <ng-template #itemTemplate let-item>-->
-<!--        <a [innerHTML]="item.name"></a>-->
-<!--      </ng-template>-->
-<!--      <ng-template #notFoundTemplate let-notFound>-->
-<!--        <div [innerHTML]="notFound"></div>-->
-<!--      </ng-template>-->
-<!--    </div>-->
-<!--    <div class="value" *ngIf="!edit">Années</div>-->
-<!--  </div>-->
-<!--  <div class="form-group col-md-6">-->
-<!--    <label class="">Style</label>-->
-<!--    <div class="autocomplete form-control value" *ngIf="edit">-->
-<!--      <ng-autocomplete-->
-<!--        placeholder="Style"-->
-<!--        [data]="denomination"-->
-<!--        [searchKeyword]="keyword"-->
-<!--        (selected)="selectEvent($event)"-->
-<!--        (inputChanged)="onChangeSearch($event)"-->
-<!--        (inputFocused)="onFocused($event)"-->
-<!--        [itemTemplate]="itemTemplate"-->
-<!--        [notFoundTemplate]="notFoundTemplate"-->
-<!--      >-->
-<!--      </ng-autocomplete>-->
-<!--      <ng-template #itemTemplate let-item>-->
-<!--        <a [innerHTML]="item.name"></a>-->
-<!--      </ng-template>-->
-<!--      <ng-template #notFoundTemplate let-notFound>-->
-<!--        <div [innerHTML]="notFound"></div>-->
-<!--      </ng-template>-->
-<!--    </div>-->
-<!--    <div class="value" *ngIf="!edit">85cm</div>-->
-<!--  </div>-->
-<!--  <div class="form-group col-md-6">-->
-<!--    <label class="">Date de création</label>-->
-<!--    <input type="date" class="form-control value" *ngIf="edit" />-->
-<!--    <div class="value" *ngIf="!edit">12/01/2020</div>-->
-<!--  </div>-->
-<!--  <div class="form-group col-md-6">-->
-<!--    <label class="">Matières <span class="mandatory" *ngIf="edit">*</span></label>-->
-<!--    <div class="autocomplete form-control value" *ngIf="edit">-->
-<!--      <ng-autocomplete-->
-<!--        placeholder="Matières"-->
-<!--        [data]="denomination"-->
-<!--        [searchKeyword]="keyword"-->
-<!--        (selected)="selectEvent($event)"-->
-<!--        (inputChanged)="onChangeSearch($event)"-->
-<!--        (inputFocused)="onFocused($event)"-->
-<!--        [itemTemplate]="itemTemplate"-->
-<!--        [notFoundTemplate]="notFoundTemplate"-->
-<!--      >-->
-<!--      </ng-autocomplete>-->
-<!--      <ng-template #itemTemplate let-item>-->
-<!--        <a [innerHTML]="item.name"></a>-->
-<!--      </ng-template>-->
-<!--      <ng-template #notFoundTemplate let-notFound>-->
-<!--        <div [innerHTML]="notFound"></div>-->
-<!--      </ng-template>-->
-<!--    </div>-->
-<!--    <p class="value" *ngIf="!edit">Metal</p>-->
-<!--  </div>-->
-<!--</div>-->
-
-
-<form [formGroup]="descriptifForm">
-  <div class="form-bloc">
-    <div class="col-md-6">
-      <div class="form-group flex-wrap flex-sm-nowrap">
-        <label class="">Titre<span class="mandatory">*</span></label>
-        <div class="value" *ngIf="!edit">Titre de la sculpture</div>
-        <input type="text" class="form-control value col-12 col-sm-7" formControlName="title" *ngIf="edit" />
-      </div>
-      <div
-        *ngIf="
-          descriptifForm.get('title').invalid &&
-          (descriptifForm.get('title').dirty || descriptifForm.get('title').touched)
-        "
-      >
-        <div class="mandatory" *ngIf="descriptifForm.get('title').errors.required">Veuillez saisir un titre.</div>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="form-group flex-wrap flex-sm-nowrap">
-        <label>Domaine<span class="mandatory">*</span></label>
-        <div class="value" *ngIf="!edit">Sculpture</div>
-        <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
-          <p-dropdown
-            class="col-md-12"
-            [style]="{ minWidth: '100%' }"
-            [options]="domainData"
-            formControlName="field"
-            id="field"
-            placeholder="Choisir un domaine"
-            optionLabel="name"
-            [showClear]="false"
-            emptyFilterMessage="Aucun résultat trouvé"
-            (onChange)="onSelect($event, 'field')"
-          ></p-dropdown>
-        </div>
-      </div>
-      <div
-        *ngIf="
-          descriptifForm.get('field').invalid &&
-          (descriptifForm.get('field').dirty || descriptifForm.get('field').touched)
-        "
-      >
-        <div class="mandatory" *ngIf="descriptifForm.get('field').errors.required">Veuillez saisir un domaine</div>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="form-group flex-wrap flex-sm-nowrap">
-        <label class="-4">Dénomination<span class="mandatory">*</span></label>
-        <div class="value" *ngIf="!edit">Statuette</div>
-        <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
-          <p-dropdown
-            class="col-md-12"
-            [style]="{ minWidth: '100%' }"
-            [options]="denominationData"
-            formControlName="denomination"
-            id="denomination"
-            placeholder="Choisir une dénomination"
-            optionLabel="label"
-            [showClear]="false"
-            (onChange)="onSelect($event, 'denomination')"
-            emptyFilterMessage="Aucun résultat trouvé"
-          ></p-dropdown>
-        </div>
-      </div>
-      <div
-        *ngIf="
-          descriptifForm.get('denomination').invalid &&
-          (descriptifForm.get('denomination').dirty || descriptifForm.get('denomination').touched)
-        "
-      >
-        <div class="mandatory" *ngIf="descriptifForm.get('denomination').errors.required">
-          Veuillez saisir une dénomination
-        </div>
-      </div>
-    </div>
-    <div class="divider"></div>
-    <div class="form-group col-md-12 flex-wrap flex-wrap" style="max-width: 98%">
-      <label style="margin-right: -17%; width: 18%" class="col-sm-5">Auteurs</label>
-      <div class="value" *ngIf="!edit">Auteur 1, Auteur 11</div>
-      <p-multiSelect
-        *ngIf="edit"
-        class="select col-md-4 col-sm-7 p-sm-0 col-12"
-        selectionLimit="5"
-        [maxSelectedLabels]="2"
-        [style]="{ width: '100%' }"
-        [options]="authorData"
-        formControlName="authors"
-        optionLabel="name"
-        [filter]="true"
-        defaultLabel="Sélectionner des auteurs"
-      >
-      </p-multiSelect>
-      <div class="col-md-4 col-12 p-sm-0 link value" *ngIf="edit">
-        <a href="">Ajouter un nouvel auteur</a>
-      </div>
-    </div>
-    <div class="col-md-8"></div>
-    <div class="d-flex flex-wrap justify-content-between" *ngIf="selectedDomain">
-      <div class="divider"></div>
-      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="!['Art textile'].includes(selectedDomain)">
-        <label class="">Hauteur</label>
-        <div class="value" *ngIf="!edit">85cm</div>
-        <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
-          <input class="col-md-8 form-control" type="number" formControlName="height" />
-          <select class="col-md-4 col-sm-4 form-control">
-            <option class="active">cm</option>
-            <option>m</option>
-          </select>
-        </div>
-      </div>
-      <div
-        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="!['Sculpture', 'Luminaire', 'Pièce de musée', 'Horlogerie', 'Objet décoratif'].includes(selectedDomain)"
-      >
-        <label class="">Largeur</label>
-        <div class="value" *ngIf="!edit">85cm</div>
-        <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
-          <input class="col-md-8 form-control" type="number" formControlName="width" />
-          <select class="col-md-4 col-sm-4 form-control">
-            <option class="active">cm</option>
-            <option>m</option>
-          </select>
-        </div>
-      </div>
-      <div
-        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="['Sculpture', 'Peinture'].includes(selectedDomain)"
-      >
-        <label class="">Largeur Tot </label>
-        <div class="value" *ngIf="!edit">85cm</div>
-        <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
-          <input class="col-md-8 form-control" type="number" formControlName="totalWidth" />
-          <select class="col-md-4 col-sm-4 form-control">
-            <option class="active">cm</option>
-            <option>m</option>
-          </select>
-        </div>
-      </div>
-      <div
-        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="['Peinture', 'Art graphique'].includes(selectedDomain)"
-      >
-        <label class="">Hauteur Tot</label>
-        <div class="value" *ngIf="!edit">85cm</div>
-        <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
-          <input class="col-md-8 form-control" type="number" formControlName="totalHeight" />
-          <select class="col-md-4 col-sm-4 form-control">
-            <option class="active">cm</option>
-            <option>m</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="!['Art graphique'].includes(selectedDomain)">
-        <label class="">Longueur</label>
-        <div class="value" *ngIf="!edit">85cm</div>
-        <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
-          <input class="col-md-8 form-control" type="number" formControlName="length" />
-          <select class="col-md-4 col-sm-4 form-control">
-            <option class="active">cm</option>
-            <option>m</option>
-          </select>
-        </div>
-      </div>
-      <div
-        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="['Sculpture', 'Mobilier Patrimonial', 'Objet décoratif'].includes(selectedDomain)"
-      >
-        <label class="">Profondeur</label>
-        <div class="value" *ngIf="!edit">85cm</div>
-        <div class="d-flex value" *ngIf="edit">
-          <input class="col-md-8 form-control col-12 col-sm-7" type="number" formControlName="depth" />
-          <select class="col-md-4 col-sm-4 form-control">
-            <option class="active">cm</option>
-            <option>m</option>
-          </select>
-        </div>
-      </div>
-      <div
-        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="['Peinture', 'Pièce de musée'].includes(selectedDomain)"
-      >
-        <label class="col-md-3">Poids</label>
-        <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
-          <input class="col-md-8 form-control" type="number" formControlName="weight" />
-          <select class="col-md-4 col-sm-4 form-control">
-            <option class="active">Kg</option>
-          </select>
-        </div>
-      </div>
-      <div
-        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="['Luminaire', 'Pièce de musée', 'Decor mural'].includes(selectedDomain)"
-      >
-        <label class="">Diamètre</label>
-        <div class="d-flex value col-12 col-sm-7">
-          <input class="col-md-8 form-control" type="number" formControlName="diameter" />
-          <select class="col-md-4 form-control">
-            <option class="active">cm</option>
-            <option>m</option>
-          </select>
-        </div>
-      </div>
-      <div class="col-md-4"></div>
-      <div class="divider"></div>
-      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
-        <label class="">Epoque</label>
-        <div class="autocomplete form-control value col-12 col-sm-7">
-          <p-dropdown
-            class="col-md-12"
-            [style]="{ minWidth: '100%' }"
-            [options]="eraData"
-            formControlName="era"
-            placeholder="Choisir une époque"
-            optionLabel="name"
-            [showClear]="false"
-          ></p-dropdown>
-        </div>
-      </div>
-      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
-        <label class="">Style</label>
-        <div class="autocomplete form-control value col-12 col-sm-7">
-          <p-dropdown
-            class="col-md-12"
-            [style]="{ minWidth: '100%' }"
-            [options]="styleData"
-            formControlName="style"
-            placeholder="Choisir un style"
-            optionLabel="name"
-            [showClear]="false"
-          ></p-dropdown>
-        </div>
-      </div>
-      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
-        <label class="">Date de création</label>
-        <div class="autocomplete form-control value col-12 col-sm-7">
-          <p-calendar
-            class="col-md-12"
-            [style]="{ minWidth: '100%' }"
-            formControlName="creationDate"
-            [showIcon]="true"
-            inputId="icon"
-          ></p-calendar>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-group flex-wrap flex-sm-nowrap">
-          <label class="">Matières <span class="mandatory">*</span></label>
-          <div class="autocomplete form-control value col-12 col-sm-7">
-            <p-multiSelect
-              selectionLimit="5"
-              [maxSelectedLabels]="2"
-              [style]="{ width: '100%' }"
-              [options]="materialTechniquesData"
-              formControlName="materialTechnique"
-              optionLabel="name"
-              [filter]="true"
-            >
-            </p-multiSelect>
-          </div>
-        </div>
-        <div
-          *ngIf="
-            descriptifForm.get('materialTechnique').invalid &&
-            (descriptifForm.get('materialTechnique').dirty || descriptifForm.get('materialTechnique').touched)
-          "
-        >
-          <div class="mandatory" *ngIf="descriptifForm.get('materialTechnique').errors.required">
-            Veuillez saisir une matière/technique
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6" *ngIf="['Art de la table', 'Objet décoratif'].includes(selectedDomain)">
-        <div class="form-group flex-wrap flex-sm-nowrap">
-          <label class="">Nombre unité<span class="mandatory">*</span></label>
-          <div class="d-flex value col-12 col-sm-7">
-            <input class="col-md-12 form-control" type="number" value="0" formControlNAme="numberOfUnit" />
-          </div>
-        </div>
-        <div
-          *ngIf="
-            descriptifForm.get('numberOfUnit').invalid &&
-            (descriptifForm.get('numberOfUnit').dirty || descriptifForm.get('numberOfUnit').touched)
-          "
-        >
-          <div class="mandatory" *ngIf="descriptifForm.get('numberOfUnit').errors.required">
-            Veuillez saisir un nombre d'unité
-          </div>
-        </div>
-      </div>
-      <div class="divider"></div>
-      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
-        <label>Marquage</label>
-        <input class="form-control value col-12 col-sm-7" placeholder="Marquage" />
-      </div>
-      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
-        <label>Signature inscription</label>
-        <input class="form-control value col-12 col-sm-7" placeholder="Signature inscription" />
-      </div>
-
-      <div class="form-group d-flex align-items-center col-md-6">
-        <label class="">Mots descriptifs</label>
-        <tag-input
-          formControlName="descriptiveWords"
-          [editable]="true"
-          (onTagEdited)="onTagEdited($event)"
-          secondaryPlaceholder="Entrer mots descriptifs"
-          class="value"
-          placeholder=" +Mots descriptifs"
-        ></tag-input>
-      </div>
-      <div class="col-md-12">
-        <div class="d-flex form-group col-md-12 p-0">
-          <label>Commentaire</label>
-          <textarea type="text" class="form-control" placeholder="Commentaire ..."></textarea>
-        </div>
-      </div>
-    </div>
+<div class="form-bloc">
+  <div class="form-group col-md-6">
+    <label>Titre <span class="mandatory" *ngIf="edit">*</span></label>
+    <input class="form-control value" placeholder="titre" *ngIf="edit" />
+    <div class="value" *ngIf="!edit">{{ artwork.title }}</div>
   </div>
-</form>
+  <div class="form-group col-md-6">
+    <label>Domaine <span class="mandatory" *ngIf="edit">*</span></label>
+    <div class="autocomplete form-control value" *ngIf="edit">
+      <ng-multiselect-dropdown
+        class="select"
+        [placeholder]="'Choisir ses domaines'"
+        [settings]="dropdownSettings"
+        [data]="domains"
+        (onSelect)="onDomainSelect($event)"
+        (onSelectAll)="onSelectAll($event)"
+      >
+      </ng-multiselect-dropdown>
+    </div>
+    <div class="value" *ngIf="!edit">{{ artwork.domain }}</div>
+  </div>
+  <div class="form-group col-md-6">
+    <label class="">Dénomination <span class="mandatory" *ngIf="edit">*</span></label>
+    <div class="autocomplete form-control value" *ngIf="edit">
+      <ng-multiselect-dropdown
+        class="select"
+        [placeholder]="'Choisir des dénominations'"
+        [settings]="dropdownSettings"
+        [data]="WorkOfArtService.denominations"
+        (onSelect)="onItemSelect($event)"
+        (onSelectAll)="onSelectAll($event)"
+      >
+      </ng-multiselect-dropdown>
+
+      <ng-template #itemTemplate let-item>
+        <a [innerHTML]="item.name"></a>
+      </ng-template>
+      <ng-template #notFoundTemplate let-notFound>
+        <div [innerHTML]="notFound"></div>
+      </ng-template>
+    </div>
+    <div class="value" *ngIf="!edit">Statuette</div>
+  </div>
+  <div class="divider"></div>
+  <div class="form-group col-md-12" style="max-width: 98%">
+    <label style="margin-right: -17%; width: 18%" class="">Auteurs</label>
+
+    <ng-multiselect-dropdown
+      *ngIf="edit"
+      class="select col-md-4"
+      [placeholder]="'--- Choisir des auteurs ---'"
+      [settings]="dropdownSettings"
+      [data]="WorkOfArtService.authors"
+      (onSelect)="onDomainSelect($event)"
+      (onSelectAll)="onSelectAll($event)"
+    >
+    </ng-multiselect-dropdown>
+    <div class="col-md-4 link value" *ngIf="edit">
+      <a href="">Ajouter un nouvel auteur</a>
+    </div>
+
+    <div class="value" *ngIf="!edit">{{ artwork.author }}</div>
+  </div>
+  <div class="col-md-8"></div>
+  <div class="divider"></div>
+  <div class="form-group col-md-6">
+    <label class="col-md-3">Hauteur</label>
+    <div class="d-flex value" *ngIf="edit">
+      <input class="col-md-8 form-control" />
+      <select class="col-md-4 col-xs-2 form-control">
+        <option class="active">cm</option>
+        <option>m</option>
+      </select>
+    </div>
+    <div class="value" *ngIf="!edit">{{ artwork.height }}</div>
+  </div>
+  <div
+    class="form-group col-md-6"
+    *ngIf="
+      selectedDomain ==
+        ('Sculpture' || 'Luminaire' || 'Pièce de musée' || 'Horlogerie' || 'Art textile' || 'Art de la table') && edit
+    "
+  >
+    <label class="col-md-4">Largeur</label>
+    <div class="d-flex value" *ngIf="edit">
+      <input class="col-md-8 form-control" />
+      <select class="col-md-4 col-xs-2 form-control">
+        <option class="active">cm</option>
+        <option>m</option>
+      </select>
+    </div>
+    <p class="value" *ngIf="!edit">85cm</p>
+  </div>
+  <div class="form-group col-md-6 value" *ngIf="selectedDomain == ('Peinture' || 'Art graphique') || edit">
+    <label class="">Largeur Tot</label>
+    <div class="d-flex value" *ngIf="edit">
+      <input class="col-md-8 form-control" />
+      <select class="col-md-4 col-xs-2 form-control">
+        <option class="active">cm</option>
+        <option>m</option>
+      </select>
+    </div>
+    <p class="value" *ngIf="!edit">85cm</p>
+  </div>
+  <div class="form-group col-md-6" *ngIf="selectedDomain == ('Peinture' || 'Art graphique') || edit">
+    <label class="">Hauteur Tot</label>
+    <div class="d-flex value" *ngIf="edit">
+      <input class="col-md-8 form-control" />
+      <select class="col-md-4 col-xs-2 form-control">
+        <option class="active">cm</option>
+        <option>m</option>
+      </select>
+    </div>
+    <p class="value" *ngIf="!edit">85cm</p>
+  </div>
+  <div class="form-group col-md-6" *ngIf="selectedDomain === ('Luminaire' || 'Pièce de musé' || 'Horlogerie') || edit">
+    <label class="">Longueur</label>
+    <div class="d-flex value" *ngIf="edit">
+      <input class="col-md-8 form-control" />
+      <select class="col-md-4 col-xs-2 form-control value">
+        <option class="active">cm</option>
+        <option>m</option>
+      </select>
+    </div>
+    <p class="value" *ngIf="!edit">85cm</p>
+  </div>
+  <div class="form-group col-md-6">
+    <label class="">Profondeur</label>
+    <div class="d-flex value" *ngIf="edit">
+      <input class="col-md-8 form-control" />
+      <select class="col-md-4 col-xs-2 form-control">
+        <option class="active">cm</option>
+        <option>m</option>
+      </select>
+    </div>
+    <div class="value" *ngIf="!edit">85cm</div>
+  </div>
+  <div class="form-group col-md-6">
+    <label class="col-md-3">Longueur</label>
+    <div class="d-flex value" *ngIf="edit">
+      <input class="col-md-8 form-control" />
+      <select class="col-md-4 col-xs-2 form-control">
+        <option class="active">cm</option>
+        <option>m</option>
+      </select>
+    </div>
+    <div class="value" *ngIf="!edit">{{ artwork.width }}</div>
+  </div>
+  <div class="form-group col-md-6" *ngIf="selectedDomain === ('Luminaire' || 'Pièce de musée') || edit">
+    <label class="">Diamètre</label>
+    <div class="d-flex value" *ngIf="edit">
+      <input class="col-md-8 form-control" />
+      <select class="col-md-4 col-xs-2 form-control">
+        <option class="active">cm</option>
+        <option>m</option>
+      </select>
+    </div>
+    <p class="value" *ngIf="!edit">85cm</p>
+  </div>
+  <div class="col-md-4"></div>
+  <div class="divider"></div>
+  <div class="form-group col-md-6">
+    <label class="">Epoque</label>
+    <div class="form-control autocomplete value" *ngIf="edit">
+      <ng-autocomplete
+        placeholder="Epoque"
+        [data]="denomination"
+        [searchKeyword]="keyword"
+        (selected)="selectEvent($event)"
+        (inputChanged)="onChangeSearch($event)"
+        (inputFocused)="onFocused($event)"
+        [itemTemplate]="itemTemplate"
+        [notFoundTemplate]="notFoundTemplate"
+      >
+      </ng-autocomplete>
+      <ng-template #itemTemplate let-item>
+        <a [innerHTML]="item.name"></a>
+      </ng-template>
+      <ng-template #notFoundTemplate let-notFound>
+        <div [innerHTML]="notFound"></div>
+      </ng-template>
+    </div>
+    <div class="value" *ngIf="!edit">Années</div>
+  </div>
+  <div class="form-group col-md-6">
+    <label class="">Style</label>
+    <div class="autocomplete form-control value" *ngIf="edit">
+      <ng-autocomplete
+        placeholder="Style"
+        [data]="denomination"
+        [searchKeyword]="keyword"
+        (selected)="selectEvent($event)"
+        (inputChanged)="onChangeSearch($event)"
+        (inputFocused)="onFocused($event)"
+        [itemTemplate]="itemTemplate"
+        [notFoundTemplate]="notFoundTemplate"
+      >
+      </ng-autocomplete>
+      <ng-template #itemTemplate let-item>
+        <a [innerHTML]="item.name"></a>
+      </ng-template>
+      <ng-template #notFoundTemplate let-notFound>
+        <div [innerHTML]="notFound"></div>
+      </ng-template>
+    </div>
+    <div class="value" *ngIf="!edit">85cm</div>
+  </div>
+  <div class="form-group col-md-6">
+    <label class="">Date de création</label>
+    <input type="date" class="form-control value" *ngIf="edit" />
+    <div class="value" *ngIf="!edit">12/01/2020</div>
+  </div>
+  <div class="form-group col-md-6">
+    <label class="">Matières <span class="mandatory" *ngIf="edit">*</span></label>
+    <div class="autocomplete form-control value" *ngIf="edit">
+      <ng-autocomplete
+        placeholder="Matières"
+        [data]="denomination"
+        [searchKeyword]="keyword"
+        (selected)="selectEvent($event)"
+        (inputChanged)="onChangeSearch($event)"
+        (inputFocused)="onFocused($event)"
+        [itemTemplate]="itemTemplate"
+        [notFoundTemplate]="notFoundTemplate"
+      >
+      </ng-autocomplete>
+      <ng-template #itemTemplate let-item>
+        <a [innerHTML]="item.name"></a>
+      </ng-template>
+      <ng-template #notFoundTemplate let-notFound>
+        <div [innerHTML]="notFound"></div>
+      </ng-template>
+    </div>
+    <p class="value" *ngIf="!edit">Metal</p>
+  </div>
+</div>

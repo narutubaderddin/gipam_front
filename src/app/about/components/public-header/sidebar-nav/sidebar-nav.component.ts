@@ -67,6 +67,10 @@ export class SidebarNavComponent implements OnInit {
     this.router.navigate(['tab-ref-dénomination']);
     this.toggleClose();
   }
+  goToRequestLsit() {
+    this.router.navigate(['demandes-en-cours']);
+    this.toggleClose();
+  }
   goToPoratil() {
     this.menu = 4;
     this.router.navigate(['portail']);
@@ -198,6 +202,18 @@ export class SidebarNavComponent implements OnInit {
   }
   goToDepositorsList() {
     this.router.navigate(['tab-ref-deposants']);
+    this.toggleClose();
+  }
+  goToRoomsList() {
+    this.router.navigate(['tab-ref-pieces']);
+    this.toggleClose();
+  }
+  goToAuthorsList() {
+    this.router.navigate(['tab-ref-auteurs']);
+    this.toggleClose();
+  }
+  goToReportModelsList() {
+    this.router.navigate(['tab-ref-modeles-constat']);
     this.toggleClose();
   }
 }

@@ -9,7 +9,6 @@ import { PublicHeaderComponent } from '@app/about/components/public-header/publi
 import { ItemDetailsComponent } from '@app/about/components/item-details/item-details.component';
 import { NgbCarouselModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ActionsComponent } from './components/item-details/actions/actions.component';
-import { AgGridModule } from 'ag-grid-angular';
 import { AddActionModalComponent } from './components/item-details/actions/add-action-modal/add-action-modal.component';
 import { EditActionModalComponent } from './components/item-details/actions/edit-action-modal/edit-action-modal.component';
 import { MovementsComponent } from './components/item-details/movements/movements.component';
@@ -39,7 +38,6 @@ import { NgxHorizontalTimelineModule } from 'ngx-horizontal-timeline';
 import { LastMovementComponent } from './components/item-details/movements/last-movement/last-movement.component';
 import { NgImageSliderModule } from 'ng-image-slider';
 import { NgWizardModule, NgWizardConfig, THEME } from 'ng-wizard';
-import { FullWidthCellRendererComponent as FullWidthCellRenderer } from '@app/@shared/components/datatables/full-width-cell-renderer/full-width-cell-renderer.component';
 import { NoticeBeingCreatedComponent } from './components/administrator-home-page/notice-being-created/notice-being-created.component';
 import { NgFileDragDropModule } from 'ng-file-drag-drop';
 import { BsDatepickerModule, BsDatepickerConfig, DatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -117,7 +115,11 @@ import { EstablishmentService } from '@shared/services/establishment.service';
 import { DemandService } from '@shared/services/demand.service';
 import { PersonsComponent } from '@app/about/components/tabs-ref/persons/persons.component';
 import { DepositorsComponent } from '@app/about/components/tabs-ref/depositors/depositors.component';
+import { RoomsComponent } from '@app/about/components/tabs-ref/rooms/rooms.component';
+import { AuthorsComponent } from '@app/about/components/tabs-ref/authors/authors.component';
+import { ReportModelsComponent } from '@app/about/components/tabs-ref/report-models/report-models.component';
 
+import { ItemDetailsPdfComponent } from './components/item-details/pdf/item-details-pdf/item-details-pdf.component';
 setTheme('bs4');
 
 const ngWizardConfig: NgWizardConfig = {
@@ -191,6 +193,10 @@ const ngWizardConfig: NgWizardConfig = {
     PhotographyTypesComponent,
     PersonsComponent,
     DepositorsComponent,
+    ItemDetailsPdfComponent,
+    RoomsComponent,
+    AuthorsComponent,
+    ReportModelsComponent,
   ],
   exports: [PublicHeaderComponent, AddActionModalComponent],
   imports: [
@@ -205,7 +211,6 @@ const ngWizardConfig: NgWizardConfig = {
     NgMultiSelectDropDownModule,
     NgbCarouselModule,
     NgbModule,
-    AgGridModule.withComponents([FullWidthCellRenderer]),
     AutocompleteLibModule,
     TreeviewModule.forRoot(),
     NgxSliderModule,

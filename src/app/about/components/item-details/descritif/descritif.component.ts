@@ -21,6 +21,13 @@ export class DescritifComponent implements OnInit {
   @Input() addDepot = false;
   @Input() addProperty = true;
   @Input() descriptifForm: FormGroup;
+  @Input() artwork = {
+    title: 'Titre de la sculpture',
+    domain: 'Sculpture',
+    height: '85',
+    width: '85',
+    author: 'Auteur 1, Auteur 11',
+  };
 
   items: any = [];
   domain = '';

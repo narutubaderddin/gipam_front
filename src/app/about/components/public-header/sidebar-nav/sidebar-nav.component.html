@@ -97,6 +97,9 @@
                   <a class="dropdown-item" (click)="goToPhotographyTypesList()">Types photographie</a>
                   <a class="dropdown-item" (click)="goToPersonsList()">Personnes</a>
                   <a class="dropdown-item" (click)="goToDepositorsList()">Déposants</a>
+                  <a class="dropdown-item" (click)="goToRoomsList()">Pièces</a>
+                  <a class="dropdown-item" (click)="goToAuthorsList()">Auteurs</a>
+                  <a class="dropdown-item" (click)="goToReportModelsList()">Modèles constat</a>
                 </ul>
               </div>
             </li>
@@ -125,7 +128,7 @@
           </a>
         </div>
       </li>
-      <li class="right-header list main_nav_list_item demande" *ngIf="isAuthentiticated" (click)="goToWorkOfArts()">
+      <li class="right-header list main_nav_list_item demande" *ngIf="isAuthentiticated" (click)="goToRequestLsit()">
         <div class="dropdown nav-menu" [class.nav-active]="menu == 2">
           <a class="pl-3 pr-3">
             <i class="fas fa-server" style="font-size: 18px"></i>

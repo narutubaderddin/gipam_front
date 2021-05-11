@@ -46,6 +46,9 @@ export class LinksComponent implements OnInit {
         this.page = 1;
         this.artWorksData = [];
       }
+      response.results.forEach((item: any) => {
+        item.data = item.id + '-' + item.title + '-' + item.field.label;
+      });
       this.artWorksData = this.artWorksData.concat(response.results);
     });
   }

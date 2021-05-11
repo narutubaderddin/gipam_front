@@ -3,6 +3,7 @@ import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'angular2-notifications';
 import { SharedService } from '@shared/services/shared.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PdfGeneratorService } from '@shared/services/pdf-generator.service';
 
 @Component({
   selector: 'app-item-details',
@@ -57,6 +58,15 @@ export class ItemDetailsComponent implements OnInit {
 
   photographiesForm: FormGroup;
 
+  artwork = {
+    id: 145,
+    title: 'Titre de la sculpture',
+    domain: 'Sculpture',
+    height: '100cm',
+    width: '100cm',
+    author: 'Auteur 1, Auteur 11',
+  };
+
   get menuClosed(): boolean {
     return this.sharedService.collapseMenu;
   }
@@ -65,7 +75,8 @@ export class ItemDetailsComponent implements OnInit {
     config: NgbCarouselConfig,
     private notificationsService: NotificationsService,
     private sharedService: SharedService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private pdfGeneratorService: PdfGeneratorService
   ) {
     config.interval = 10000;
     config.wrap = false;
@@ -149,5 +160,10 @@ export class ItemDetailsComponent implements OnInit {
   src(event: any) {
     this.imgSrc = event;
     console.log(event);
+  }
+
+  downloadPDF() {
+    const element = document.getElementById('appItemDetailsPdf');
+    this.pdfGeneratorService.downloadPDFFromHTML(element, this.artwork.title + '.pdf');
   }
 }
