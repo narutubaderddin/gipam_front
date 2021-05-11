@@ -208,4 +208,8 @@ export class SidebarNavComponent implements OnInit {
     this.router.navigate(['tab-ref-auteurs']);
     this.toggleClose();
   }
+  goToReportModelsList() {
+    this.router.navigate(['tab-ref-modeles-constat']);
+    this.toggleClose();
+  }
 }
