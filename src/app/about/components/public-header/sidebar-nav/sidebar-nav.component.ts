@@ -204,4 +204,16 @@ export class SidebarNavComponent implements OnInit {
     this.router.navigate(['tab-ref-deposants']);
     this.toggleClose();
   }
+  goToRoomsList() {
+    this.router.navigate(['tab-ref-pieces']);
+    this.toggleClose();
+  }
+  goToAuthorsList() {
+    this.router.navigate(['tab-ref-auteurs']);
+    this.toggleClose();
+  }
+  goToReportModelsList() {
+    this.router.navigate(['tab-ref-modeles-constat']);
+    this.toggleClose();
+  }
 }
