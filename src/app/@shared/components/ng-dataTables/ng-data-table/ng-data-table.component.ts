@@ -109,7 +109,7 @@ export class NgDataTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.key = this.columns[0]['field'];
-    if(this.identifierKey){
+    if (this.identifierKey) {
       this.key = this.identifierKey;
     }
 

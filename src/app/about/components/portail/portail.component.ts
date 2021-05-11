@@ -192,7 +192,7 @@ export class PortailComponent implements OnInit {
   onFilterChange(value: string): void {
     console.log('filter:', value);
   }
-  details(item:any) {
+  details(item: any) {
     if (item.isInRequest) {
       return false;
     }
@@ -610,10 +610,11 @@ export class PortailComponent implements OnInit {
   selectedPieceNumber: any;
   selectedLevel: any;
 
-  exportRequests(){
-    this.requestService.exportRequest().subscribe((response) => {
-      console.log("response");
-      console.log(response);
+  exportRequests() {
+    this.requestService.exportRequest().subscribe((response: Response | any) => {
+      console.log('response');
+      this.requestService.manageFileResponseDownload(response, 'test');
+
       //window.location.href = response.url;
     });
   }

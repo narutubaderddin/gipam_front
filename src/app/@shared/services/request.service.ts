@@ -30,8 +30,36 @@ export class RequestService {
   exportRequest(): Observable<any> {
     let headers = new HttpHeaders();
     headers = headers.set('Accept', 'application/pdf');
-    return this.http.get('/requests/exportRequest/', {
-      responseType: 'blob'
+    return this.http.get('/requests/exportRequest', {
+      responseType: 'blob',
+      observe: 'response',
     });
+  }
+  manageFileResponseDownload(response: Response | any, content: any) {
+    const newBlob = new Blob([response.body], {
+      type: response.body.type,
+    });
+    // file name
+    let fileName = content;
+
+    // IE doesn't allow using a blob object directly as link href
+    // instead it is necessary to use msSaveOrOpenBlob
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(newBlob, fileName);
+      return;
+    }
+
+    const data = window.URL.createObjectURL(newBlob);
+    const link = document.createElement('a');
+    link.href = data;
+    link.download = fileName;
+    // this is necessary as link.click() does not work on the latest firefox
+    link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+    // window.open(data);
+    setTimeout(() => {
+      // For Firefox it is necessary to delay revoking the ObjectURL
+      window.URL.revokeObjectURL(data);
+      link.remove();
+    }, 100);
   }
 }
