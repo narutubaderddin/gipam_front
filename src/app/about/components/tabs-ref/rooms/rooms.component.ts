@@ -115,10 +115,7 @@ export class RoomsComponent implements OnInit {
       this.selectedItem ? this.selectedItem.startDate : new Date(),
       datePickerDateFormat
     );
-    const endDate = this.datePipe.transform(
-      this.selectedItem ? this.selectedItem.disappearanceDate : '',
-      datePickerDateFormat
-    );
+    const endDate = this.datePipe.transform(this.selectedItem ? this.selectedItem.endDate : '', datePickerDateFormat);
     this.tabForm = this.fb.group({
       reference: [this.selectedItem ? this.selectedItem.reference : '', [Validators.required]],
       level: [this.selectedItem ? this.selectedItem.level : '', [Validators.required]],
@@ -206,7 +203,7 @@ export class RoomsComponent implements OnInit {
     this.btnLoading = null;
     if (this.editItem || this.editVisibility) {
       this.itemToEdit = item;
-      this.itemLabel = item.label;
+      this.itemLabel = item.reference;
       this.selectedRelatedEntity = {
         id: item.building ? item.building.id : '',
         name: item.building ? item.building.name : '',
