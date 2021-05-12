@@ -119,6 +119,7 @@ import { RoomsComponent } from '@app/about/components/tabs-ref/rooms/rooms.compo
 import { AuthorsComponent } from '@app/about/components/tabs-ref/authors/authors.component';
 import { ReportModelsComponent } from '@app/about/components/tabs-ref/report-models/report-models.component';
 
+import { ItemDetailsPdfComponent } from './components/item-details/pdf/item-details-pdf/item-details-pdf.component';
 setTheme('bs4');
 
 const ngWizardConfig: NgWizardConfig = {
@@ -192,6 +193,7 @@ const ngWizardConfig: NgWizardConfig = {
     PhotographyTypesComponent,
     PersonsComponent,
     DepositorsComponent,
+    ItemDetailsPdfComponent,
     RoomsComponent,
     AuthorsComponent,
     ReportModelsComponent,
