@@ -66,6 +66,7 @@ export class ItemDetailsComponent implements OnInit {
     id: 145,
     titre: 'Titre',
     domain: 'Art graphique',
+    field: 'Art graphique',
     height: '85',
     width: '85',
     authors: 'Auteur 1, Auteur 11',
