@@ -19,6 +19,7 @@ import { MaterialTechniqueService } from '@shared/services/material-technique.se
 import { MessageService } from 'primeng/api';
 import { map } from 'rxjs/operators';
 import { RoomService } from '@shared/services/room.service';
+import { RequestService } from '@shared/services/request.service';
 
 @Component({
   selector: 'app-list-work-of-arts',
@@ -140,7 +141,8 @@ export class ListWorkOfArtsComponent implements OnInit {
     private simpleTabsRefService: SimpleTabsRefService,
     private messageService: MessageService,
     private materialTechniqueService: MaterialTechniqueService,
-    private roomService: RoomService
+    private roomService: RoomService,
+    private requestService: RequestService
   ) {}
 
   initData(filter: any, advancedFilter: any, headerFilters: any = {}, page = 1) {
@@ -148,23 +150,33 @@ export class ListWorkOfArtsComponent implements OnInit {
     let sort = 'desc';
     let sortBy = 'creationDate';
     if (this.dataTableSort.hasOwnProperty('sort')) {
-      console.log(this.dataTableSort);
       sort = this.dataTableSort['sort'];
       sortBy = this.dataTableSort['sort_by'];
-      console.log(sort, sortBy);
     }
-    this.artWorkService.getArtWorksData(filter, advancedFilter, headerFilters, page, 5, sortBy, sort).subscribe(
-      (artWorksData: ArtWorksDataModel) => {
-        this.artWorksData = artWorksData;
-        this.start = (this.artWorksData.page - 1) * this.artWorksData.size + 1;
-        this.end = (this.artWorksData.page - 1) * this.artWorksData.size + this.artWorksData.results.length;
-        this.loading = false;
-        this.firstLoading = false;
-      },
-      (error: any) => {
-        this.addSingle('error', '', error.error.message);
-      }
-    );
+    this.artWorkService
+      .getArtWorksData(
+        filter,
+        advancedFilter,
+        headerFilters,
+        page,
+        5,
+        sortBy,
+        sort,
+        this.globalSearch,
+        this.searchQuery
+      )
+      .subscribe(
+        (artWorksData: ArtWorksDataModel) => {
+          this.artWorksData = artWorksData;
+          this.start = (this.artWorksData.page - 1) * this.artWorksData.size + 1;
+          this.end = (this.artWorksData.page - 1) * this.artWorksData.size + this.artWorksData.results.length;
+          this.loading = false;
+          this.firstLoading = false;
+        },
+        (error: any) => {
+          this.addSingle('error', '', error.error.message);
+        }
+      );
   }
 
   addSingle(type: string, sum: string, msg: string) {
@@ -549,10 +561,22 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.showInventoryRange = event.target.checked;
   }
 
-  onSearchClick() {
+  onSearchClick(type = 'local') {
+    let data = this.formatFormsData({}, [
+      this.form1.value,
+      this.form2.value,
+      this.form3.value,
+      this.form4.value,
+      this.formStatus.value,
+    ]);
+    let advancedData = this.formatAdvancedData({}, [this.advancedForm1.value, this.advancedForm3.value]);
+    this.headerFilter = this.formatFormsData({}, [this.headerFilter], true);
+    this.initData(data, advancedData, this.headerFilter, 1);
     this.showDatatable = true;
   }
 
+  globalSearch: string = '';
+  searchQuery: string = '';
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
   hoveredDate: NgbDate | null = null;
@@ -854,6 +878,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       communes: new FormControl(''),
       batiment: new FormControl(''),
       sites: new FormControl(''),
+      level: new FormControl(''),
       pieceNumber: new FormControl(''),
       correspondant: new FormControl(''),
     });
@@ -1334,5 +1359,35 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.materialTechniqueService.getFilteredMaterialTechnique(apiData).subscribe((materialTechniquesResults) => {
       this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
     });
+  }
+
+  onSelectEtage() {
+    let selectedLevelData = this.form4.get('level').value;
+    let selectedBuildingData = this.form4.get('batiment').value;
+    let selectedLevelId: any[] = [];
+    let selectedBuildingId: any[] = [];
+    if (Array.isArray(selectedLevelData)) {
+      selectedLevelData.forEach((selectedDataValue: any) => {
+        selectedLevelId.push(selectedDataValue.name);
+      });
+    }
+    if (Array.isArray(selectedBuildingData)) {
+      selectedBuildingData.forEach((selectedDataValue: any) => {
+        selectedBuildingId.push(selectedDataValue.id);
+      });
+    }
+    console.log(selectedLevelId, selectedBuildingId);
+    this.requestService
+      .getPiecesNumbers({
+        building: selectedBuildingId,
+        level: selectedLevelId,
+      })
+      .subscribe((roomData) => {
+        let resultData: any[] = [];
+        roomData.forEach((room: any, index: any) => {
+          resultData.push({ id: index + 1, name: room });
+        });
+        this.roomData = resultData;
+      });
   }
 }
