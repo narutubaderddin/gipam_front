@@ -41,7 +41,7 @@ export class SimpleTabsRefService {
   }
 
   addItem(denomination: any): Observable<any> {
-    return this.http.post<any>(`/${this.tabRef}`, denomination, httpOptions);
+    return this.http.post<any>(`/${this.tabRef}/`, denomination, httpOptions);
   }
 
   editItem(denomination: any, id: number): Observable<any> {
