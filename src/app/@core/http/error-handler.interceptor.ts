@@ -31,7 +31,7 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
         this.messageService.add({
           severity: 'error',
           summary: 'Erreur Technique',
-          detail: 'Une erreur technique est servenue',
+          detail: 'Une erreur technique est survenue',
         });
       }
     }
