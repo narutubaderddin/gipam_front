@@ -150,7 +150,6 @@ export class AuthorsComponent implements OnInit {
         this.people = this.simpleTabsRef.getTabRefFilterData(peopleResults.results);
         this.activeTypes = typesResults.results.filter((value: any) => value.active === true);
         this.typesColumn.selectData = this.types;
-        console.log('this.people', this.people);
       },
       (error: any) => {
         this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
@@ -170,7 +169,6 @@ export class AuthorsComponent implements OnInit {
     ]).subscribe(
       ([typesResults, peopleResults]) => {
         this.activeTypes = typesResults.results;
-        console.log('activeTypes', this.activeTypes);
         this.activePeople = peopleResults.results;
         this.addNotActiveEntities();
       },

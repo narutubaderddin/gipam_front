@@ -202,7 +202,7 @@ export class ReportModelsComponent implements OnInit {
     this.btnLoading = null;
     this.deleteItems = true;
     this.itemToDelete = data;
-    this.itemLabel = data.firstName + ' ' + data.lastName;
+    this.itemLabel = data.name;
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
 
@@ -266,25 +266,19 @@ export class ReportModelsComponent implements OnInit {
   visibleItem(data: any) {
     data.active = !data.active;
     this.loading = true;
-    this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
+    this.simpleTabsRef.editItem({ active: data.active }, data.id).subscribe(
       (result) => {
         if (data.active) {
-          this.addSingle(
-            'success',
-            'Activation',
-            'Personne ' + data.firstName + ' ' + data.lastName + ' activée avec succés'
-          );
+          this.addSingle('success', 'Activation', 'Personne ' + data.name + ' activée avec succés');
         } else {
-          this.addSingle(
-            'success',
-            'Activation',
-            'Personne ' + data.firstName + ' ' + data.lastName + ' désactivée avec succés'
-          );
+          this.addSingle('success', 'Activation', 'Personne ' + data.name + ' désactivée avec succés');
         }
         this.getAllItems();
       },
       (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Modification', error.error.message);
+        }
         this.loading = false;
       }
     );
@@ -301,8 +295,10 @@ export class ReportModelsComponent implements OnInit {
         this.addItem = false;
       },
       (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
-        this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Ajout', error.error.message);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        }
         this.btnLoading = null;
       }
     );
@@ -318,8 +314,10 @@ export class ReportModelsComponent implements OnInit {
         this.editItem = false;
       },
       (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
-        this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Modification', error.error.message);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        }
         this.btnLoading = null;
       }
     );
