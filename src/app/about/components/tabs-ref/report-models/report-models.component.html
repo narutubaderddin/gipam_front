@@ -105,7 +105,6 @@
         <label class="col-sm-5">Domaines</label>
         <div class="select col-sm-7 p-0">
           <p-multiSelect
-            [style]="{ minWidth: '100%' }"
             [options]="activeFields"
             [virtualScroll]="true"
             formControlName="fields"
@@ -116,6 +115,17 @@
             [filterBy]="'label'"
           ></p-multiSelect>
         </div>
+      </div>
+    </div>
+    <div class="form-group col-md-12 d-flex align-items-baseline" *ngIf="addItem">
+      <label class="col-sm-5">visibilité<span class="mandatory"> *</span></label>
+      <div class="btn-slider mr-2 col-3" *ngIf="active">
+        <label [class.active]="active"></label>
+        <label class="switch">
+          <input type="checkbox" [checked]="true" formControlName="active" />
+          <span class="slider round"></span>
+        </label>
+        <label [class.active]="!active"></label>
       </div>
     </div>
     <div class="modal-footer">

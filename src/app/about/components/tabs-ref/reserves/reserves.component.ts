@@ -12,12 +12,12 @@ import { datePickerDateFormat, dateTimeFormat, towDatesCompare, viewDateFormat }
 import { forkJoin } from 'rxjs';
 
 @Component({
-  selector: 'app-rooms',
-  templateUrl: './rooms.component.html',
-  styleUrls: ['./rooms.component.scss'],
+  selector: 'app-reserves',
+  templateUrl: './reserves.component.html',
+  styleUrls: ['./reserves.component.scss'],
   providers: [DatePipe],
 })
-export class RoomsComponent implements OnInit {
+export class ReservesComponent implements OnInit {
   @ViewChild('content') modalRef: TemplateRef<any>;
   @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
 
@@ -25,9 +25,43 @@ export class RoomsComponent implements OnInit {
   btnLoading: any = null;
   myModal: any;
   selectedItem: any;
-  relatedEntities: any[] = [];
-  activeRelatedEntities: any[] = [];
-  selectedRelatedEntity: any;
+
+  // for datatable filter
+  relatedRooms: any[] = [];
+  relatedBuildings: any[] = [];
+
+  // for form dropdown and autocomplete
+
+  autoComplete: {
+    regions: any[];
+    departments: any[];
+    communes: any[];
+    sites: any[];
+    buildings: any[];
+  } = {
+    regions: [],
+    departments: [],
+    communes: [],
+    sites: [],
+    buildings: [],
+  };
+
+  relatedRegions: any[] = [];
+  relatedCommunes: any[] = [];
+  relatedSites: any[] = [];
+  relatedDepartments: any[] = [];
+  activeRelatedRooms: any[] = [];
+  activeBuildings: any[] = [];
+
+  // selected from dropdown
+
+  selectedRelatedRoom: any;
+  selectedBuilding: any;
+  selectedDepartment: any;
+  selectedCommune: any;
+  selectedSite: any;
+  selectedRegion: any;
+
   itemToEdit: any;
   itemToDelete: string;
   tabForm: FormGroup;
@@ -73,17 +107,44 @@ export class RoomsComponent implements OnInit {
 
   rowCount: any = 5;
 
-  relatedEntityColumn = {
+  relatedRoomColumn = {
+    header: 'Entité',
+    field: 'room',
+    type: 'key-array',
+    key_data: ['room', 'reference'],
+    filter: true,
+    filterType: 'multiselect',
+    placeholder: 'Choisir une entité',
+    selectData: this.relatedRooms,
+    sortable: true,
+  };
+
+  relatedBuildingColumn = {
     header: 'Bâtiment',
     field: 'building',
     type: 'key-array',
     key_data: ['building', 'name'],
-    filter: true,
-    filterType: 'multiselect',
-    placeholder: 'Choisir un bâtiment',
-    selectData: this.relatedEntities,
-    sortable: true,
-    width: '380px',
+  };
+
+  relatedCommuneColumn = {
+    header: 'Commune',
+    field: 'commune',
+    type: 'key-array',
+    key_data: ['commune', 'name'],
+  };
+
+  relatedSiteColumn = {
+    header: 'Site',
+    field: 'site',
+    type: 'key-array',
+    key_data: ['site', 'label'],
+  };
+
+  relatedDepartmentColumn = {
+    header: 'Département',
+    field: 'department',
+    type: 'key-array',
+    key_data: ['department', 'name'],
   };
 
   constructor(
@@ -100,7 +161,7 @@ export class RoomsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.simpleTabsRef.tabRef = 'rooms';
+    this.simpleTabsRef.tabRef = 'reserves';
     this.initColumnsDefinition();
     this.initFilterData();
     this.getAllItems();
@@ -117,11 +178,10 @@ export class RoomsComponent implements OnInit {
     );
     const endDate = this.datePipe.transform(this.selectedItem ? this.selectedItem.endDate : '', datePickerDateFormat);
     this.tabForm = this.fb.group({
-      reference: [this.selectedItem ? this.selectedItem.reference : '', [Validators.required]],
-      level: [this.selectedItem ? this.selectedItem.level : '', [Validators.required]],
+      label: [this.selectedItem ? this.selectedItem.reference : '', [Validators.required]],
       startDate: [startDate, [Validators.required]],
       endDate: [endDate, []],
-      building: [this.selectedRelatedEntity ? this.selectedRelatedEntity : '', [Validators.required]],
+      room: [{ value: this.selectedRelatedRoom, disabled: !this.selectedBuilding }, [Validators.required]],
     });
     this.tabForm.setValidators(towDatesCompare('startDate', 'endDate'));
   }
@@ -129,22 +189,18 @@ export class RoomsComponent implements OnInit {
   initColumnsDefinition() {
     this.columns = [
       {
-        header: 'Reference',
-        field: 'reference',
+        header: 'Libellé',
+        field: 'label',
         type: 'key',
         filter: true,
         filterType: 'text',
         sortable: true,
       },
-      {
-        header: 'Niveau',
-        field: 'level',
-        type: 'key',
-        filter: true,
-        filterType: 'text',
-        sortable: true,
-        width: '100px',
-      },
+      this.relatedRoomColumn,
+      this.relatedBuildingColumn,
+      this.relatedSiteColumn,
+      this.relatedCommuneColumn,
+      this.relatedDepartmentColumn,
       {
         header: 'Date début de validité',
         field: 'startDate',
@@ -163,7 +219,6 @@ export class RoomsComponent implements OnInit {
         sortable: true,
         width: '200px',
       },
-      this.relatedEntityColumn,
       {
         header: 'Actions',
         field: 'action',
@@ -178,18 +233,59 @@ export class RoomsComponent implements OnInit {
   initFilterData() {
     const data = {
       page: 1,
+      serializer_group: JSON.stringify(['short']),
     };
-    forkJoin([this.simpleTabsRef.getAllItems(data, 'buildings')]).subscribe(
+    forkJoin([this.simpleTabsRef.getAllItems(data, 'rooms')]).subscribe(
       ([relatedEntitiesResults]) => {
-        this.relatedEntities = this.simpleTabsRef.getTabRefFilterData(relatedEntitiesResults['results']);
-        this.activeRelatedEntities = relatedEntitiesResults['results'].filter((value: any) =>
-          this.isActive(value.disappearanceDate)
-        );
-        this.relatedEntityColumn.selectData = this.relatedEntities;
+        this.relatedRooms = this.simpleTabsRef.getTabRefFilterData(relatedEntitiesResults.results);
+        this.relatedRoomColumn.selectData = this.relatedRooms;
       },
       (error: any) => {
         this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
       }
+    );
+  }
+
+  onDataChange(event: any, tab: string) {
+    const apiData = {
+      page: 1,
+      search: event.query,
+    };
+    this.simpleTabsRef.getAllItems(apiData, tab).subscribe((dataResult) => {
+      this.autoComplete[tab] = dataResult.results;
+    });
+  }
+
+  initFormDropdowns() {
+    const data = {
+      page: 1,
+      serializer_group: JSON.stringify(['short']),
+    };
+    forkJoin([
+      this.simpleTabsRef.getAllItems(data, 'regions'),
+      this.simpleTabsRef.getAllItems(data, 'communes'),
+      this.simpleTabsRef.getAllItems(data, 'sites'),
+    ]).subscribe(
+      ([regionsResults, communesResults, sitesResults]) => {
+        this.relatedRegions = this.simpleTabsRef.getTabRefFilterData(regionsResults.results);
+        this.relatedCommunes = this.simpleTabsRef.getTabRefFilterData(communesResults.results);
+        this.relatedSites = this.simpleTabsRef.getTabRefFilterData(sitesResults.results);
+      },
+      (error: any) => {
+        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
+      }
+    );
+  }
+
+  getRoomsByBuilding() {
+    const params = {
+      'building[eq]': this.selectedBuilding.id,
+    };
+    this.simpleTabsRef.getAllItems(params, 'rooms').subscribe(
+      (result: any) => {
+        this.activeRelatedRooms = result.results.filter((value: any) => this.isActive(value.endDate));
+      },
+      (error: any) => {}
     );
   }
 
@@ -203,14 +299,15 @@ export class RoomsComponent implements OnInit {
     this.btnLoading = null;
     if (this.editItem || this.editVisibility) {
       this.itemToEdit = item;
-      this.itemLabel = item.reference;
-      this.selectedRelatedEntity = {
-        id: item.building ? item.building.id : '',
-        name: item.building ? item.building.name : '',
+      this.itemLabel = item.label;
+      this.selectedRelatedRoom = {
+        id: item.room ? item.room.id : '',
+        reference: item.room ? item.room.reference : '',
       };
     }
     if (this.addItem) {
-      this.selectedRelatedEntity = null;
+      this.selectedRelatedRoom = null;
+      this.selectedBuilding = null;
     }
     this.selectedItem = item;
     this.initForm();
@@ -221,11 +318,10 @@ export class RoomsComponent implements OnInit {
     this.btnLoading = null;
 
     const item = {
-      reference: this.tabForm.value.reference,
-      level: this.tabForm.value.level,
+      label: this.tabForm.value.label,
+      room: this.tabForm.value.room.id,
       startDate: this.datePipe.transform(this.tabForm.value.startDate, dateTimeFormat),
       endDate: this.datePipe.transform(this.tabForm.value.endDate, dateTimeFormat),
-      building: this.tabForm.value.building.id,
     };
     if (this.addItem) {
       this.addItems(item);
@@ -240,6 +336,8 @@ export class RoomsComponent implements OnInit {
     this.addItem = false;
     this.deleteItems = false;
     this.editVisibility = false;
+    this.selectedRelatedRoom = null;
+    this.selectedBuilding = null;
     this.myModal.dismiss('Cross click');
   }
 
@@ -262,7 +360,7 @@ export class RoomsComponent implements OnInit {
   addItemAction() {
     this.addItem = true;
     this.selectedItem = null;
-    this.selectedRelatedEntity = {};
+    this.selectedRelatedRoom = {};
     this.openModal(null);
   }
 
@@ -298,7 +396,7 @@ export class RoomsComponent implements OnInit {
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
     params = Object.assign(params, this.dataTableSearchBar);
-    this.simpleTabsRef.getAllItems(params, 'rooms').subscribe(
+    this.simpleTabsRef.getAllItems(params, 'reserves').subscribe(
       (result: any) => {
         this.items = result.results.map((item: any) => {
           return Object.assign({ active: this.isActive(item.endDate) }, item);
@@ -318,7 +416,9 @@ export class RoomsComponent implements OnInit {
         this.total = 0;
         this.dataTableComponent.error = true;
         this.loading = false;
-        this.addSingle('error', 'Erreur Technique', 'Message: ' + error.error.message);
+        if (error.error.code !== 500) {
+          this.addSingle('error', 'Erreur Technique', 'Message: ' + error.error.message);
+        }
       }
     );
   }
@@ -328,16 +428,14 @@ export class RoomsComponent implements OnInit {
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Suppression', 'Pièce ' + item.label + ' supprimée avec succés');
+        this.addSingle('success', 'Suppression', 'Entité ' + item.label + ' supprimée avec succés');
         this.getAllItems();
         this.deleteItems = false;
       },
       (error: any) => {
         this.close();
         if (error.error.code === 400) {
-          this.addSingle('error', 'Suppression', 'Pièce ' + item.label + ' admet une relation');
-        } else {
-          this.addSingle('error', 'Suppression', error.error.message);
+          this.addSingle('error', 'Suppression', 'Entité ' + item.label + ' admet une relation');
         }
       }
     );
@@ -348,12 +446,14 @@ export class RoomsComponent implements OnInit {
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Ajout', 'Pièce ' + item.label + ' ajoutée avec succés');
+        this.addSingle('success', 'Ajout', 'Entité ' + item.label + ' ajoutée avec succés');
         this.getAllItems();
         this.addItem = false;
       },
       (error) => {
-        this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        if (error.error.code === 400) {
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        }
         this.btnLoading = null;
       }
     );
@@ -364,13 +464,15 @@ export class RoomsComponent implements OnInit {
     this.simpleTabsRef.editItem(item, id).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Modification', 'Pièce ' + item.label + ' modifiée avec succés');
+        this.addSingle('success', 'Modification', 'Entité ' + item.label + ' modifiée avec succés');
         this.getAllItems();
         this.editItem = false;
         this.editVisibility = false;
       },
       (error) => {
-        this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        if (error.error.code === 400) {
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        }
         this.btnLoading = null;
       }
     );

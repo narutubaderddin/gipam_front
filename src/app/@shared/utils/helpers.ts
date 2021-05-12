@@ -35,3 +35,11 @@ export function towDatesCompare(startDateName: string, disappearanceDateName: st
     return null;
   };
 }
+
+export function getMultiSelectIds(results: any[]) {
+  const items: any[] = [];
+  results.forEach((item: any) => {
+    items.push(item.id);
+  });
+  return items;
+}
