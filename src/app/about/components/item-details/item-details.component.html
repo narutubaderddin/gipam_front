@@ -36,7 +36,7 @@
               <div class="col-4 icons p-0">
                 <i class="fas fa-archive"></i>
                 <i class="far fa-file-excel" *ngIf="!dynamic"></i>
-                <i class="fas fa-print"></i>
+                <i class="fas fa-print" (click)="downloadPDF()"></i>
                 <i class="far fa-edit" (click)="onEditMode()" *ngIf="!dynamic"></i>
               </div>
             </div>
@@ -66,7 +66,12 @@
                         <ng-container ngbNavItem>
                           <a ngbNavLink><i class="far fa-file-alt mr-2"></i>Descriptifs physiques</a>
                           <ng-template ngbNavContent>
-                            <app-descritif [edit]="edit" [addProperty]="false" [addDepot]="false"></app-descritif>
+                            <app-descritif
+                              [edit]="edit"
+                              [artwork]="artwork"
+                              [addProperty]="false"
+                              [addDepot]="false"
+                            ></app-descritif>
                           </ng-template>
                         </ng-container>
                         <ng-container ngbNavItem>
@@ -149,5 +154,13 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<div hidden>
+  <div id="appItemDetailsPdf">
+    <br />
+    <app-item-details-pdf [artWorksToPrint]="artWorksToPrint"></app-item-details-pdf>
+    <br />
   </div>
 </div>
