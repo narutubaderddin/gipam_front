@@ -1317,6 +1317,10 @@
                 <i class="fas fa-plus"></i>
                 Créer recolement
               </button>
+              <button class="btn add-action" (click)="PrinNoticePDF()" translate>
+                <i class="fas fa-print"></i>
+                Imprimer
+              </button>
               <button class="btn add-action" translate>
                 <div
                   ngbDropdown
@@ -1354,7 +1358,7 @@
                 <i class="fas fa-edit"></i>
                 Modifier
               </button>
-              <button class="btn add-action" translate>
+              <button class="btn add-action" (click)="PrinNoticePDF()" translate>
                 <i class="fas fa-print"></i>
                 Imprimer
               </button>
@@ -1396,4 +1400,12 @@
 <div id="image-viewer" [class.active]="openImg">
   <p class="close" (click)="showImg()">&times;</p>
   <img [src]="imageUrl" alt="" class="modal-content" id="full-image" />
+</div>
+
+<div hidden>
+  <div id="printNoticesPDF">
+    <br />
+    <app-item-details-pdf [artWorksToPrint]="selectedRow"></app-item-details-pdf>
+    <br />
+  </div>
 </div>

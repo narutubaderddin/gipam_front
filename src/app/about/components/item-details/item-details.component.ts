@@ -29,12 +29,13 @@ export class ItemDetailsComponent implements OnInit {
   sticky: boolean = false;
   artwork = {
     id: 145,
-    title: 'Titre de la sculpture',
+    titre: 'Titre de la sculpture',
     domain: 'Sculpture',
     height: '100cm',
     width: '100cm',
-    author: 'Auteur 1, Auteur 11',
+    authors: 'Auteur 1, Auteur 11',
   };
+  artWorksToPrint: any = [];
 
   get menuClosed(): boolean {
     // console.log('menuOpened', this.sharedService.collapseMenu);
@@ -118,7 +119,8 @@ export class ItemDetailsComponent implements OnInit {
   }
 
   downloadPDF() {
+    this.artWorksToPrint.push(this.artwork);
     const element = document.getElementById('appItemDetailsPdf');
-    this.pdfGeneratorService.downloadPDFFromHTML(element, this.artwork.title + '.pdf');
+    this.pdfGeneratorService.downloadPDFFromHTML(element, this.artwork.titre + '.pdf');
   }
 }

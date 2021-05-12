@@ -19,6 +19,7 @@ import { MaterialTechniqueService } from '@shared/services/material-technique.se
 import { MessageService } from 'primeng/api';
 import { map } from 'rxjs/operators';
 import { RoomService } from '@shared/services/room.service';
+import { PdfGeneratorService } from '@shared/services/pdf-generator.service';
 import { RequestService } from '@shared/services/request.service';
 
 @Component({
@@ -40,6 +41,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   oeuvres = this.WorkOfArtService.oeuvres[0].items;
   frozenCols: any = [];
   columns: any[];
+  selectedRow: any;
   selectedRowCount = 0;
   inventoryOptions: Options;
   gridReady = false;
@@ -142,6 +144,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     private messageService: MessageService,
     private materialTechniqueService: MaterialTechniqueService,
     private roomService: RoomService,
+    private pdfGeneratorService: PdfGeneratorService,
     private requestService: RequestService
   ) {}
 
@@ -631,6 +634,7 @@ export class ListWorkOfArtsComponent implements OnInit {
 
   onRowsSelection(data: any) {
     if (Array.isArray(data)) {
+      this.selectedRow = data;
       this.selectedRowCount = data.length;
     }
   }
@@ -1359,6 +1363,16 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.materialTechniqueService.getFilteredMaterialTechnique(apiData).subscribe((materialTechniquesResults) => {
       this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
     });
+  }
+
+  //Print notice to pdf
+  PrinNoticePDF() {
+    let title: string = 'Détails_notices.pdf';
+    if (this.selectedRowCount == 1) {
+      title = this.selectedRow[0].titre;
+    }
+    const element = document.getElementById('printNoticesPDF');
+    this.pdfGeneratorService.downloadPDFFromHTML(element, title);
   }
 
   onSelectEtage() {
