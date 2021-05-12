@@ -24,7 +24,7 @@ export class SimpleTabsRefService {
         params = params.append(key, data[key]);
       }
     });
-    return this.http.get<any[]>(`/${tabRefName}/`, { params });
+    return this.http.get<any[]>(`/${tabRefName}`, { params });
   }
   getItemsByCriteria(data: any, tabRefName: string = null): Observable<any> {
     let params = new HttpParams();
@@ -34,14 +34,14 @@ export class SimpleTabsRefService {
         params = params.append(key, data[key]);
       }
     });
-    return this.http.get<any[]>(`/${tabRefName}/findByCriteria/`, { params });
+    return this.http.get<any[]>(`/${tabRefName}/findByCriteria`, { params });
   }
   deleteItem(denomination: any): Observable<any> {
     return this.http.delete<any>(`/${this.tabRef}/${denomination.id}`, httpOptions);
   }
 
   addItem(denomination: any): Observable<any> {
-    return this.http.post<any>(`/${this.tabRef}/`, denomination, httpOptions);
+    return this.http.post<any>(`/${this.tabRef}`, denomination, httpOptions);
   }
 
   editItem(denomination: any, id: number): Observable<any> {

@@ -827,24 +827,30 @@ ng-file-drag-drop {
     }
   }
 }
-.p-multiselect.p-multiselect-chip .p-multiselect-token {
-  max-width: 15rem;
-  min-width: 10rem;
-  overflow: hidden;
-}
 .p-multiselect-label-container {
   overflow: hidden;
-  //max-width: 15rem;
-  //min-width: 10rem;
+  max-width: 15rem;
+  min-width: 10rem;
 }
 
 .p-toast-top-right {
   z-index: 1055 !important;
 }
-.p-autocomplete .p-autocomplete-panel {
-  min-width: 100%;
-  max-width: 100%;
-  font-size: 12px;
+
+.p-autocomplete {
+  display: block !important;
+  .p-autocomplete-panel {
+    min-width: 100%;
+    max-width: 100%;
+    font-size: 12px;
+  }
+  .p-autocomplete-input {
+    min-width: 100%;
+    max-width: 100%;
+  }
+  .p-inputtext {
+    font-size: 12px !important;
+  }
 }
 
 .valid-btn {

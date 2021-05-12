@@ -323,7 +323,7 @@ export class PersonsComponent implements OnInit {
   visibleItem(data: any) {
     data.active = !data.active;
     this.loading = true;
-    this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
+    this.simpleTabsRef.editItem({ active: data.active }, data.id).subscribe(
       (result) => {
         if (data.active) {
           this.addSingle(

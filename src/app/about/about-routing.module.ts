@@ -46,6 +46,7 @@ import { DepositorsComponent } from '@app/about/components/tabs-ref/depositors/d
 import { RoomsComponent } from '@app/about/components/tabs-ref/rooms/rooms.component';
 import { AuthorsComponent } from '@app/about/components/tabs-ref/authors/authors.component';
 import { ReportModelsComponent } from '@app/about/components/tabs-ref/report-models/report-models.component';
+import { ReservesComponent } from '@app/about/components/tabs-ref/reserves/reserves.component';
 const routes: Routes = [
   {
     path: '',
@@ -170,6 +171,11 @@ const routes: Routes = [
         path: 'tab-ref-modeles-constat',
         component: ReportModelsComponent,
         data: { title: 'Liste des modèles de constat' },
+      },
+      {
+        path: 'tab-ref-reserves',
+        component: ReservesComponent,
+        data: { title: 'Liste des réserves' },
       },
       { path: 'tab-ref-correspondant', component: CorrespondentsComponent },
       { path: 'tab-ref-responsable', component: ResponsibleComponent },

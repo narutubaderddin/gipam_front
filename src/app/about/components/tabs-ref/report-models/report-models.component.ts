@@ -8,6 +8,7 @@ import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
 import { forkJoin } from 'rxjs';
+import { getMultiSelectIds } from '@shared/utils/helpers';
 
 @Component({
   selector: 'app-report-models',
@@ -56,26 +57,14 @@ export class ReportModelsComponent implements OnInit {
   relatedFields = {
     header: 'Domaines',
     field: 'fields',
-    type: 'key-array',
-    key_data: ['field', 'label'],
-    filter: true,
-    filterType: 'multiselect',
-    placeholder: 'Auteur',
-    selectData: this.fields,
+    type: 'key-multiple-data',
+    key_multiple_data: ['fields', 'label'],
   };
 
   columns = [
     {
       header: 'Nom',
       field: 'name',
-      type: 'key',
-      filter: true,
-      filterType: 'text',
-      sortable: true,
-    },
-    {
-      header: 'Nom',
-      field: 'lastName',
       type: 'key',
       filter: true,
       filterType: 'text',
@@ -108,29 +97,28 @@ export class ReportModelsComponent implements OnInit {
 
   ngOnInit(): void {
     this.simpleTabsRef.tabRef = 'reportModels';
-    this.initFilterData();
     this.getAllItems();
     this.initForm();
   }
 
   initForm() {
     this.tabForm = this.fb.group({
-      name: [this.selectedItem ? this.selectedItem.firstName : '', [Validators.required]],
+      name: [this.selectedItem ? this.selectedItem.name : '', [Validators.required]],
       fields: [this.selectedFields, [Validators.required]],
       active: [this.selectedItem ? this.selectedItem?.active : true],
     });
   }
 
-  initFilterData() {
+  getActiveRelatedEntities() {
     const data = {
       page: 1,
+      serializer_group: JSON.stringify(['short']),
+      'active[eq]': 1,
     };
-    forkJoin([this.simpleTabsRef.getAllItems(data, 'fields')]).subscribe(
-      ([relatedFieldsResults]) => {
-        this.fields = this.simpleTabsRef.getTabRefFilterData(relatedFieldsResults.results);
-        this.activeFields = relatedFieldsResults.results.filter((value: any) => value.active === true);
-        console.log('fields', this.activeFields);
-        this.relatedFields.selectData = this.fields;
+    this.simpleTabsRef.getAllItems(data, 'fields').subscribe(
+      (result) => {
+        this.activeFields = result.results;
+        this.addNotActiveEntities();
       },
       (error: any) => {
         this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
@@ -138,16 +126,26 @@ export class ReportModelsComponent implements OnInit {
     );
   }
 
+  addNotActiveEntities() {
+    if (this.selectedFields) {
+      this.selectedFields.forEach((item: any) => {
+        if (!this.activeFields.some((activeItem) => activeItem.id === item.id)) {
+          this.activeFields.push(item);
+        }
+      });
+    }
+  }
+
   openModal(item: any) {
     this.btnLoading = null;
 
     if (this.editItem) {
       this.itemToEdit = item;
-      this.itemLabel = item.firstName + ' ' + item.lastName;
-      this.selectedFields = item.author;
+      this.itemLabel = item.name;
+      this.selectedFields = item.fields;
     }
     this.selectedItem = item;
-    console.log('item', item);
+    this.getActiveRelatedEntities();
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
@@ -156,8 +154,8 @@ export class ReportModelsComponent implements OnInit {
     this.btnLoading = null;
 
     const item = {
-      name: this.tabForm.value.firstName,
-      fields: this.tabForm.value.fields,
+      name: this.tabForm.value.name,
+      fields: getMultiSelectIds(this.tabForm.value.fields),
       active: this.tabForm.value.active,
     };
     if (this.addItem) {
@@ -204,7 +202,7 @@ export class ReportModelsComponent implements OnInit {
     this.btnLoading = null;
     this.deleteItems = true;
     this.itemToDelete = data;
-    this.itemLabel = data.firstName + ' ' + data.lastName;
+    this.itemLabel = data.name;
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
 
@@ -250,22 +248,14 @@ export class ReportModelsComponent implements OnInit {
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle(
-          'success',
-          'Suppression',
-          'Personne ' + item.firstName + ' ' + item.lastName + ' supprimée avec succés'
-        );
+        this.addSingle('success', 'Suppression', 'Personne ' + item.name + ' supprimée avec succés');
         this.getAllItems();
         this.deleteItems = false;
       },
       (error: any) => {
         this.close();
         if (error.error.code === 400) {
-          this.addSingle(
-            'error',
-            'Suppression',
-            'Personne ' + item.firstName + ' ' + item.lastName + ' admet une relation'
-          );
+          this.addSingle('error', 'Suppression', 'Personne ' + item.name + ' admet une relation');
         } else {
           this.addSingle('error', 'Suppression', error.error.message);
         }
@@ -276,25 +266,19 @@ export class ReportModelsComponent implements OnInit {
   visibleItem(data: any) {
     data.active = !data.active;
     this.loading = true;
-    this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
+    this.simpleTabsRef.editItem({ active: data.active }, data.id).subscribe(
       (result) => {
         if (data.active) {
-          this.addSingle(
-            'success',
-            'Activation',
-            'Personne ' + data.firstName + ' ' + data.lastName + ' activée avec succés'
-          );
+          this.addSingle('success', 'Activation', 'Personne ' + data.name + ' activée avec succés');
         } else {
-          this.addSingle(
-            'success',
-            'Activation',
-            'Personne ' + data.firstName + ' ' + data.lastName + ' désactivée avec succés'
-          );
+          this.addSingle('success', 'Activation', 'Personne ' + data.name + ' désactivée avec succés');
         }
         this.getAllItems();
       },
       (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Modification', error.error.message);
+        }
         this.loading = false;
       }
     );
@@ -306,13 +290,15 @@ export class ReportModelsComponent implements OnInit {
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Ajout', 'Personne ' + item.firstName + ' ' + item.lastName + ' ajoutée avec succés');
+        this.addSingle('success', 'Ajout', 'Personne ' + item.name + ' ajoutée avec succés');
         this.getAllItems();
         this.addItem = false;
       },
       (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
-        this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Ajout', error.error.message);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        }
         this.btnLoading = null;
       }
     );
@@ -323,17 +309,15 @@ export class ReportModelsComponent implements OnInit {
     this.simpleTabsRef.editItem(item, id).subscribe(
       (result) => {
         this.close();
-        this.addSingle(
-          'success',
-          'Modification',
-          'Personne ' + item.firstName + ' ' + item.lastName + ' modifiée avec succés'
-        );
+        this.addSingle('success', 'Modification', 'Personne ' + item.name + ' modifiée avec succés');
         this.getAllItems();
         this.editItem = false;
       },
       (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
-        this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Modification', error.error.message);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        }
         this.btnLoading = null;
       }
     );

@@ -103,7 +103,7 @@
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-5">Niveau<span class="mandatory"> *</span></label>
         <input
-          type="text"
+          type="number"
           class="form-control col-sm-7"
           value="{{ editItem ? selectedItem.level : '' }}"
           formControlName="level"

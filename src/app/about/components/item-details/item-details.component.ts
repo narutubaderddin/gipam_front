@@ -65,7 +65,7 @@ export class ItemDetailsComponent implements OnInit {
   {
     id: 145,
     titre: 'Titre',
-    field: 'Art graphique',
+    domain: 'Art graphique',
     height: '85',
     width: '85',
     authors: 'Auteur 1, Auteur 11',
@@ -77,6 +77,7 @@ export class ItemDetailsComponent implements OnInit {
     denomination:'Affiche',
     createdAt:'22/01/2020'
   };
+  artWorksToPrint: any = [];
 
 
   constructor(
@@ -201,6 +202,7 @@ export class ItemDetailsComponent implements OnInit {
   }
 
   downloadPDF() {
+    this.artWorksToPrint.push(this.artwork);
     const element = document.getElementById('appItemDetailsPdf');
     this.pdfGeneratorService.downloadPDFFromHTML(element, this.artwork.titre + '.pdf');
   }
