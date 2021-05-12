@@ -2,8 +2,8 @@
   <div class="form-bloc">
     <div class="col-md-6">
       <div class="form-group flex-wrap flex-sm-nowrap">
-        <label class="">Titre<span class="mandatory">*</span></label>
-        <div class="value" *ngIf="!edit">{{artwork.title}}</div>
+        <label class="">Titre<span class="mandatory" *ngIf="edit">*</span></label>
+        <div class="value" *ngIf="!edit">{{artwork.titre}}</div>
         <input type="text" class="form-control value col-12 col-sm-7" formControlName="title" *ngIf="edit" />
       </div>
       <div
@@ -12,13 +12,13 @@
           (descriptifForm.get('title').dirty || descriptifForm.get('title').touched)
         "
       >
-        <div class="mandatory" *ngIf="descriptifForm.get('title').errors.required">Veuillez saisir un titre.</div>
+        <div class="mandatory" *ngIf="edit&&descriptifForm.get('title').errors.required">Veuillez saisir un titre.</div>
       </div>
     </div>
     <div class="col-md-6">
       <div class="form-group flex-wrap flex-sm-nowrap">
-        <label>Domaine<span class="mandatory">*</span></label>
-        <div class="value" *ngIf="!edit">{{artwork.domain}}</div>
+        <label>Domaine<span class="mandatory" *ngIf="edit">*</span></label>
+        <div class="value" *ngIf="!edit">{{artwork.field}}</div>
         <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
           <p-dropdown
             class="col-md-12"
@@ -35,7 +35,7 @@
         </div>
       </div>
       <div
-        *ngIf="
+        *ngIf="edit&&
           descriptifForm.get('field').invalid &&
           (descriptifForm.get('field').dirty || descriptifForm.get('field').touched)
         "
@@ -45,8 +45,8 @@
     </div>
     <div class="col-md-6">
       <div class="form-group flex-wrap flex-sm-nowrap">
-        <label class="-4">Dénomination<span class="mandatory">*</span></label>
-        <div class="value" *ngIf="!edit">Statuette</div>
+        <label class="-4">Dénomination<span class="mandatory" *ngIf="edit">*</span></label>
+        <div class="value" *ngIf="!edit">{{artwork.denomination}}</div>
         <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
           <p-dropdown
             class="col-md-12"
@@ -63,7 +63,7 @@
         </div>
       </div>
       <div
-        *ngIf="
+        *ngIf="edit&&
           descriptifForm.get('denomination').invalid &&
           (descriptifForm.get('denomination').dirty || descriptifForm.get('denomination').touched)
         "
@@ -75,8 +75,8 @@
     </div>
     <div class="divider"></div>
     <div class="form-group col-md-12 flex-wrap flex-wrap" style="max-width: 98%">
-      <label style="margin-right: -17%; width: 18%" class="col-sm-5">{{ artwork.author }}</label>
-      <div class="value" *ngIf="!edit">Auteur 1, Auteur 11</div>
+      <label style="margin-right: -17%; width: 18%" class="col-sm-5">Auteurs</label>
+      <div class="value" *ngIf="!edit">{{ artwork.authors }}</div>
       <p-multiSelect
         *ngIf="edit"
         class="select col-md-4 col-sm-7 p-sm-0 col-12"
@@ -95,9 +95,9 @@
       </div>
     </div>
     <div class="col-md-8"></div>
-    <div class="d-flex flex-wrap justify-content-between" *ngIf="selectedDomain">
+    <div class="d-flex flex-wrap justify-content-between" *ngIf="selectedDomain|| artwork.field">
       <div class="divider"></div>
-      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="!['Art textile'].includes(selectedDomain)">
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="(!['Art textile'].includes(selectedDomain))||artwork.height">
         <label class="">Hauteur</label>
         <div class="value" *ngIf="!edit">{{ artwork.height }}</div>
         <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
@@ -113,7 +113,7 @@
         *ngIf="!['Sculpture', 'Luminaire', 'Pièce de musée', 'Horlogerie', 'Objet décoratif'].includes(selectedDomain)"
       >
         <label class="">Largeur</label>
-        <div class="value" *ngIf="!edit">85cm</div>
+        <div class="value" *ngIf="!edit">{{ artwork.width }}</div>
         <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
           <input class="col-md-8 form-control" type="number" formControlName="width" />
           <select class="col-md-4 col-sm-4 form-control">
@@ -124,10 +124,10 @@
       </div>
       <div
         class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="['Sculpture', 'Peinture'].includes(selectedDomain)"
+        *ngIf="['Sculpture', 'Peinture', 'Art graphique'].includes(selectedDomain)"
       >
         <label class="">Largeur Tot </label>
-        <div class="value" *ngIf="!edit">85cm</div>
+        <div class="value" *ngIf="!edit">{{artwork.totalWidth}}</div>
         <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
           <input class="col-md-8 form-control" type="number" formControlName="totalWidth" />
           <select class="col-md-4 col-sm-4 form-control">
@@ -192,7 +192,8 @@
         *ngIf="['Luminaire', 'Pièce de musée', 'Decor mural'].includes(selectedDomain)"
       >
         <label class="">Diamètre</label>
-        <div class="d-flex value col-12 col-sm-7">
+        <div class="value" *ngIf="!edit">{{ artwork.Diameter }}</div>
+        <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
           <input class="col-md-8 form-control" type="number" formControlName="diameter" />
           <select class="col-md-4 form-control">
             <option class="active">cm</option>
@@ -204,7 +205,8 @@
       <div class="divider"></div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
         <label class="">Epoque</label>
-        <div class="autocomplete form-control value col-12 col-sm-7">
+        <div class="value" *ngIf="!edit">{{ artwork.era }}</div>
+        <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
           <p-dropdown
             class="col-md-12"
             [style]="{ minWidth: '100%' }"
@@ -218,7 +220,8 @@
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
         <label class="">Style</label>
-        <div class="autocomplete form-control value col-12 col-sm-7">
+        <div class="value" *ngIf="!edit">{{ artwork.style }}</div>
+        <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
           <p-dropdown
             class="col-md-12"
             [style]="{ minWidth: '100%' }"
@@ -232,7 +235,9 @@
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
         <label class="">Date de création</label>
-        <div class="autocomplete form-control value col-12 col-sm-7">
+        <div class="value" *ngIf="!edit">{{ artwork.createdAt }}</div>
+
+        <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
           <p-calendar
             class="col-md-12"
             [style]="{ minWidth: '100%' }"
@@ -244,8 +249,10 @@
       </div>
       <div class="col-md-6">
         <div class="form-group flex-wrap flex-sm-nowrap">
-          <label class="">Matières <span class="mandatory">*</span></label>
-          <div class="autocomplete form-control value col-12 col-sm-7">
+
+          <label class="">Matières <span class="mandatory" *ngIf="edit">*</span></label>
+          <div class="value" *ngIf="!edit">{{ artwork.materialTechnique }}</div>
+          <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
             <p-multiSelect
               selectionLimit="5"
               [maxSelectedLabels]="2"
@@ -259,7 +266,7 @@
           </div>
         </div>
         <div
-          *ngIf="
+          *ngIf=" edit&&
             descriptifForm.get('materialTechnique').invalid &&
             (descriptifForm.get('materialTechnique').dirty || descriptifForm.get('materialTechnique').touched)
           "
@@ -271,18 +278,19 @@
       </div>
       <div class="col-md-6" *ngIf="['Art de la table', 'Objet décoratif'].includes(selectedDomain)">
         <div class="form-group flex-wrap flex-sm-nowrap">
-          <label class="">Nombre unité<span class="mandatory">*</span></label>
+          <label class="">Nombre unité<span class="mandatory" *ngIf="edit">*</span></label>
+          <div class="value" *ngIf="!edit">{{ artwork.nbrunite }}</div>
           <div class="d-flex value col-12 col-sm-7">
-            <input class="col-md-12 form-control" type="number" value="0" formControlNAme="numberOfUnit" />
+            <input *ngIf="edit" class="col-md-12 form-control" type="number" value="0" formControlNAme="numberOfUnit" />
           </div>
         </div>
         <div
-          *ngIf="
+          *ngIf="edit&&
             descriptifForm.get('numberOfUnit').invalid &&
             (descriptifForm.get('numberOfUnit').dirty || descriptifForm.get('numberOfUnit').touched)
           "
         >
-          <div class="mandatory" *ngIf="descriptifForm.get('numberOfUnit').errors.required">
+          <div class="mandatory" *ngIf="descriptifForm.get('numberOfUnit').errors.required" >
             Veuillez saisir un nombre d'unité
           </div>
         </div>
@@ -290,16 +298,19 @@
       <div class="divider"></div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
         <label>Marquage</label>
-        <input class="form-control value col-12 col-sm-7" placeholder="Marquage" />
+        <div class="value" *ngIf="!edit">{{ artwork.marquage }}</div>
+        <input *ngIf="edit" class="form-control value col-12 col-sm-7" placeholder="Marquage" />
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
         <label>Signature inscription</label>
-        <input class="form-control value col-12 col-sm-7" placeholder="Signature inscription" />
+        <input *ngIf="edit" class="form-control value col-12 col-sm-7" placeholder="Signature inscription" />
       </div>
 
       <div class="form-group d-flex align-items-center col-md-6">
         <label class="">Mots descriptifs</label>
+        <div class="value" *ngIf="!edit">{{ artwork.desc }}</div>
         <tag-input
+          *ngIf="edit"
           formControlName="descriptiveWords"
           [editable]="true"
           (onTagEdited)="onTagEdited($event)"
@@ -311,7 +322,8 @@
       <div class="col-md-12">
         <div class="d-flex form-group col-md-12 p-0">
           <label>Commentaire</label>
-          <textarea type="text" class="form-control" placeholder="Commentaire ..."></textarea>
+          <div class="value" *ngIf="!edit">{{ artwork.comment }}</div>
+          <textarea type="text" class="form-control" placeholder="Commentaire ..." *ngIf="edit"></textarea>
         </div>
       </div>
     </div>

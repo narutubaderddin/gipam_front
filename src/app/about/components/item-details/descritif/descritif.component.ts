@@ -21,14 +21,7 @@ export class DescritifComponent implements OnInit {
   @Input() addDepot = false;
   @Input() addProperty = true;
   @Input() descriptifForm: FormGroup;
-  @Input() artwork = {
-    title: 'Titre de la sculpture',
-    domain: 'Sculpture',
-    height: '85',
-    width: '85',
-    author: 'Auteur 1, Auteur 11',
-  };
-
+  @Input() artwork : any;
   items: any = [];
   domain = '';
   denominations: any;
@@ -58,6 +51,8 @@ export class DescritifComponent implements OnInit {
 
   ngOnInit(): void {
     this.initFilterData();
+    this.initData();
+
   }
   get f() {
     return this.descriptifForm.controls;
@@ -154,4 +149,12 @@ export class DescritifComponent implements OnInit {
         break;
     }
   }
+
+  private initData() {
+    if(this.artwork){
+      this.selectedDomain=this.artwork['field'];
+console.log(this.selectedDomain, this.artwork['field'])
+    }
+  }
+
 }

@@ -108,4 +108,7 @@ export class LinksComponent implements OnInit {
   getIndex(el: any) {
     return this.existingLinks.indexOf(el);
   }
+  editLink() {
+    this.addLinks = !this.addLinks;
+  }
 }

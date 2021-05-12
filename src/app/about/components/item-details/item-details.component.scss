@@ -4,9 +4,9 @@
   background-color: white;
   top: 75px;
   padding: 1% 2% 0 1%;
-  width: 100%;
+  width: calc(100% - 100px);
+  margin-left: 60px;
   left: 0;
-  //min-height: 150px;
 }
 .sticky {
   position: fixed;
@@ -35,7 +35,6 @@
   border-radius: 25px;
   margin-bottom: 10px;
   padding: 0.2rem;
-  /* width: 80%; */
   align-self: center;
   font-size: 0.8rem;
   cursor: pointer;
@@ -55,12 +54,10 @@
 
 // img css
 .image-container {
-  justify-content: center;
-  display: flex;
+  //justify-content: center;
+  //display: flex;
   border: 1px solid #cecece;
   border-radius: 1rem;
-  //max-height: 22rem;
-  //min-height: 22rem;
   div {
     .fa-eye {
       color: #407ca8;
@@ -79,12 +76,6 @@
       align-items: center;
       justify-content: center;
       display: flex;
-
-      //max-width: 15rem;
-      //align-items: center;
-      //justify-content: center;
-      //display: flex;
-      //max-height: 100%;
       img {
         width: auto;
         max-width: 100%;
@@ -94,9 +85,6 @@
   }
 }
 
-.fullwidth {
-  padding-left: 100px;
-}
 .width {
   padding-left: 300px;
 }
@@ -118,7 +106,6 @@
   z-index: 10;
   display: flex;
   align-items: center;
-  //margin-right: 15px;
   cursor: pointer;
   i {
     margin: 20px;
@@ -171,15 +158,9 @@ li a {
   align-items: center;
   padding-top: 10px;
   padding-bottom: 5px;
-  //width:5%;
-  //height: 5%;
+
 }
-//a:hover {
-//  color: #004d9d !important;
-//}
-//a:not([href]) {
-//  background-color: transparent !important;
-//}
+
 button {
   background: transparent;
   border: none;
@@ -187,7 +168,6 @@ button {
   outline: none;
 }
 .titre {
-  //font-family: 'BNPP Sans', Arial, Helvetica, sans-serif;
   margin: 0;
   font-size: 1.5rem;
   color: #0466c8;
@@ -195,7 +175,6 @@ button {
   font-family: Arial, Helvetica, sans-serif;
 }
 .titre1 {
-  //font-family: 'BNPP Sans', Arial, Helvetica, sans-serif;
   margin: 0;
   font-size: 1rem;
   color: #0466c8;
@@ -204,8 +183,7 @@ button {
 }
 
 .container-fluid {
-  //margin-top: 20px;
-  margin-top: 160px;
+  margin-top: 12rem;
   padding: 0 20px;
   p {
     font-size: 14px;
@@ -221,7 +199,6 @@ button {
     width: 5px;
   }
   .first-bloc {
-    //margin-bottom: 20px;
     display: flex;
     justify-content: space-between;
     .cadre {
@@ -245,7 +222,6 @@ button {
 
       .container {
         padding: 1rem 0;
-        //min-height: 23rem;
         display: flex;
         justify-content: space-around;
         ul {
@@ -267,7 +243,6 @@ button {
     }
     .detail-image {
       display: flex;
-      //justify-content: flex-end;
     }
     .cadre {
       font-family: sans-serif;
@@ -305,8 +280,6 @@ button {
   .firth-bloc {
     background-color: white;
     display: flex;
-    //border: 1px solid #dee2e6;
-    //border-radius: 25px;
     margin-top: 15px;
     justify-content: center;
     padding: 0 1rem;
@@ -413,7 +386,7 @@ button {
   display: flex;
   flex-direction: column;
   position: fixed;
-  z-index: 120;
+  z-index: 1000;
   left: 0;
   top: 0;
   width: 100%;
@@ -426,8 +399,6 @@ button {
   margin: auto;
   display: block;
   max-width: 90%;
-  //width: 80%;
-  //max-width: 700px;
   -webkit-animation-name: zoom;
   -webkit-animation-duration: 0.6s;
   animation-name: zoom;
@@ -435,7 +406,6 @@ button {
 }
 
 #image-viewer .close {
-  //position: absolute;
   font-weight: 500;
   transition: 0.3s;
   color: white;
@@ -484,7 +454,6 @@ button {
   /** nav tabs **/
   .nav-tabs {
     .nav-link.active {
-      //color: #00d6d4;
       background-color: #00d6d4;
       color: white;
     }
@@ -600,12 +569,8 @@ button {
 .attachments-container {
   //border: 1px solid gainsboro;
   border-radius: 25px;
-  //min-height: 25rem;
-  //width: 49%;
   display: flex;
   align-items: flex-start;
-
-  // liens hypertextes
 
   h5 {
     color: #347898 !important;

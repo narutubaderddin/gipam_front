@@ -16,7 +16,7 @@ export class ItemDetailsComponent implements OnInit {
   @ViewChild('stickyMenu') menuElement: ElementRef;
 
   elementPosition: any = 2;
-  // @Input() collapseSideNav: boolean;
+
 
   type: string = 'depot';
   page: any = 5;
@@ -24,6 +24,9 @@ export class ItemDetailsComponent implements OnInit {
   depositStatusForm: FormGroup;
   descriptifForm: FormGroup;
   attachmentForm: FormGroup;
+  propertyStatusForm: FormGroup;
+  linksForm: FormGroup;
+  linkArtWorkForm: FormGroup;
   photographies: any[] = [
     // get images of item
     {
@@ -51,25 +54,30 @@ export class ItemDetailsComponent implements OnInit {
   ];
   imgSrc: string = this.photographies[0] ? this.photographies[0].imageUrl : '';
   moreDetails = ['19-01-2020', '23-02-2020', '01-03-2020', '25-03-2020', '20-04-2020'];
-  // isCollapsed: boolean = false;
+
   dynamic: boolean = false;
   openImg: boolean = false;
   sticky: boolean = false;
 
   photographiesForm: FormGroup;
 
-  artwork = {
+  artwork =
+  {
     id: 145,
-    title: 'Titre de la sculpture',
-    domain: 'Sculpture',
-    height: '100cm',
-    width: '100cm',
-    author: 'Auteur 1, Auteur 11',
+    titre: 'Titre',
+    field: 'Art graphique',
+    height: '85',
+    width: '85',
+    authors: 'Auteur 1, Auteur 11',
+    totalWidth:'',
+    totalHeight:'',
+    era:'',
+    materialTechnique:'',
+    status:'',
+    denomination:'Affiche',
+    createdAt:'22/01/2020'
   };
 
-  get menuClosed(): boolean {
-    return this.sharedService.collapseMenu;
-  }
 
   constructor(
     config: NgbCarouselConfig,
@@ -88,6 +96,11 @@ export class ItemDetailsComponent implements OnInit {
     this.initDepositStatusForm();
     this.initPhotographiesForm();
     this.initAttachmentForm();
+    this.initPropertyStatusForm();
+    this.initDepositStatusForm();
+    this.initHyperLink();
+    this.initLinks();
+
   }
 
   initPhotographiesForm() {
@@ -139,6 +152,31 @@ export class ItemDetailsComponent implements OnInit {
       stopNumber: [''],
     });
   }
+  initPropertyStatusForm() {
+    this.propertyStatusForm = this.fb.group({
+      entryMode: [''],
+      entryDate: [''],
+      marking: [''],
+      category: [''],
+      registrationSignature: [''],
+      descriptiveWords: [''],
+      insuranceValue: [''],
+      insuranceValueDate: [''],
+      otherRegistrations: [''],
+      description: [''],
+    });
+  }
+
+  initHyperLink() {
+    this.linksForm = this.fb.group({
+      hyperlinks: this.fb.array([]),
+    });
+  }
+  initLinks() {
+    this.linkArtWorkForm = this.fb.group({
+      parent: [''],
+    });
+  }
   f1(e: any) {
     this.dynamic = e;
     console.log(this.dynamic);
@@ -164,6 +202,6 @@ export class ItemDetailsComponent implements OnInit {
 
   downloadPDF() {
     const element = document.getElementById('appItemDetailsPdf');
-    this.pdfGeneratorService.downloadPDFFromHTML(element, this.artwork.title + '.pdf');
+    this.pdfGeneratorService.downloadPDFFromHTML(element, this.artwork.titre + '.pdf');
   }
 }

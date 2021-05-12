@@ -1,6 +1,6 @@
 <div [formGroup]="myForm" *ngIf="!add">
-  <div class="col-md-12 d-flex align-items-baseline">
-    <h5 class="col-md-3 p-0">Liens hypertextes</h5>
+  <div class="col-md-12 d-flex align-items-baseline flex-column flex-md-row">
+    <h5 class="col-md-4 p-0">Liens hypertextes</h5>
     <ol class="rounded-list col-md-6">
       <ng-template ngFor let-item pTemplate="item" [ngForOf]="existingLinks" let-i="index">
         <li>
@@ -17,7 +17,7 @@
         </li>
       </ng-template>
     </ol>
-    <div class="d-flex justify-content-end col-md-3" *ngIf="!add">
+    <div class="d-flex justify-content-end col-md-3 p-0" *ngIf="!add">
       <button class="btn add-action" (click)="addNewLinks()"><i class="fas fa-plus mr-2"></i>Ajouter un lien</button>
     </div>
   </div>
@@ -75,11 +75,11 @@
     </div>
   </div>
 </div>
-<p-dialog header="Supprimer le lien" [modal]="true" [(visible)]="deleteDialog" [style]="{ width: '30vw' }">
+<p-dialog header="Supprimer le lien hypertexte " [modal]="true" [(visible)]="deleteDialog" [style]="{ width: '30vw' }">
   <div class="p-0 pb-3">
     <div class="col-12">
       <span
-        >Voulez-vous supprimer le lien "<strong> {{ itemToDelete }} </strong>" ?</span
+        >Voulez-vous supprimer le lien hypertexte "<strong> {{ itemToDelete }} </strong>" ?</span
       >
     </div>
   </div>

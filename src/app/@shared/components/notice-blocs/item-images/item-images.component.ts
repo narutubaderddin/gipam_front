@@ -209,9 +209,9 @@ export class ItemImagesComponent implements OnInit, OnChanges {
 
   deleteItem(item: string) {
     this.itemToDelete = item;
-    this.deleteDialog = !this.deleteDialog;
+    this.deleteDialog = true;
   }
   cancelDelete() {
-    this.deleteDialog = !this.deleteDialog;
+    this.deleteDialog = false;
   }
 }

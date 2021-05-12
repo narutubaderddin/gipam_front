@@ -89,6 +89,14 @@ input {
   }
   .fa-trash-alt {
     color: #b01212 !important;
+    margin-top: 1rem;
+    position: absolute;
+    top: 7rem;
+    right: 0.2rem;
+    background-color: #f1f1f1;
+    padding: 0.5rem;
+    border-radius: 5rem;
+    z-index: 1;
   }
   @media (max-width: 800px) {
     flex-wrap: wrap;

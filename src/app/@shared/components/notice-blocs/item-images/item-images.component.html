@@ -1,8 +1,16 @@
 <div class="row images-container">
   <div class="col-12 content">
     <h5 class="col-md-12 pt-2">Photographies</h5>
+    <i
+      class="far fa-trash-alt"
+      *ngIf="!add"
+      (click)="deleteItem(imageName)"
+      pTooltip="Supprimer"
+      tooltipPosition="top"
+    ></i>
     <div class="more-details pt-3">
       <div class="d-flex flex-wrap justify-content-around">
+
         <div class="d-flex carousel-container mb-2 col-12" *ngIf="images.length">
           <p-galleria
             [(value)]="images"
@@ -30,13 +38,13 @@
           </div>
           <div class="form-group col-md-12">
             <label class="col-md-5">Photographie</label>
-            <i
-              class="far fa-trash-alt col-1"
-              *ngIf="!add"
-              (click)="deleteItem(imageName)"
-              pTooltip="Supprimer"
-              tooltipPosition="top"
-            ></i>
+<!--            <i-->
+<!--              class="far fa-trash-alt col-1"-->
+<!--              *ngIf="!add"-->
+<!--              (click)="deleteItem(imageName)"-->
+<!--              pTooltip="Supprimer"-->
+<!--              tooltipPosition="top"-->
+<!--            ></i>-->
             <p *ngIf="!add && !addImage" class="col-7">{{ imageName }}</p>
             <div class="input-group input-group-sm upload-file" *ngIf="add || addImage">
               <div class="input-group input-group-sm h-auto">
@@ -72,7 +80,7 @@
           </div>
 
           <div class="form-group col-md-12">
-            <label class="col-md-5">Type</label>
+            <label class="col-md-2">Type</label>
             <i
               class="far fa-edit col-1"
               (click)="editImgType()"

@@ -1,20 +1,21 @@
 <div class="col-md-12 pl-0">
   <div class="col-md-12 p-0">
     <h5 class="pl-0">Liens avec oeuvres</h5>
-    <div class="d-flex justify-content-end" *ngIf="!add">
+    <div class="d-flex justify-content-end" *ngIf="(addLinks||existingLinks.length)&&!add">
       <button class="btn add-action col-7" (click)="addNewLinks()">
-        <i class="fas fa-plus mr-2"></i>Ajouter un lien
+        <i class="fas fa-plus mr-2"></i>Ajouter fait partie de
       </button>
     </div>
 
     <ol class="rounded-list" *ngIf="!add">
-      <li>Fait partie de:</li>
+      <li *ngIf="addLinks||existingLinks.length||add">Fait partie de:</li>
       <li *ngIf="addLinks">
         <p-autoComplete
           #autocompletePanel
           class="select col-md-4 col-sm-7 p-sm-0 col-12"
           [style]="{ width: '100%' }"
           [suggestions]="artWorksData"
+          field="data"
           (completeMethod)="search($event)"
           [dropdown]="true"
           (onShow)="change()"
@@ -22,12 +23,7 @@
           virtualScroll="true"
           defaultLabel="Sélectionner un numéro d'inventaire"
         >
-          <ng-template let-item pTemplate="item">
-            {{ item.id }} - {{ item.title }} - {{ item.field.label }}
-          </ng-template>
-          <ng-template let-item pTemplate="selectedItem">
-            {{ item.id }} - {{ item.title }} - {{ item.field.label }}
-          </ng-template>
+          <ng-template let-item pTemplate="item"> {{ item.data }} </ng-template>
         </p-autoComplete>
         <div class="d-flex justify-content-end col-12 p-0 mt-2 mb-2">
           <button (click)="cancelLink()" class="mr-2 cancel-btn">Annuler</button>
@@ -38,6 +34,13 @@
         <li>
           <span
             ><a href="#">{{ item.url }}</a> | {{ item.name }}
+            <div>
+            <i
+              class="far fa-edit col-1 mr-2"
+              (click)="editLink()"
+              pTooltip="Modifier"
+              tooltipPosition="top"
+            ></i>
             <i
               class="far fa-trash-alt"
               *ngIf="itemDetails"
@@ -45,7 +48,8 @@
               pTooltip="Supprimer"
               tooltipPosition="top"
             ></i
-          ></span>
+          ></div>
+          </span>
         </li>
       </ng-template>
       <li>
@@ -86,11 +90,11 @@
     </li>
   </ol>
 </div>
-<p-dialog header="Supprimer le lien" [modal]="true" [(visible)]="deleteDialog" [style]="{ width: '30vw' }">
+<p-dialog header="Supprimer le lien avec oeuvre" [modal]="true" [(visible)]="deleteDialog" [style]="{ width: '30vw' }">
   <div class="p-0 pb-3">
     <div class="col-12">
       <span
-        >Voulez-vous supprimer le lien "<strong> {{ itemToDelete }} </strong>" ?</span
+        >Voulez-vous supprimer le lien avec oeuvre "<strong> {{ itemToDelete }} </strong>" ?</span
       >
     </div>
   </div>
