@@ -1,10 +1,11 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
-import { NgWizardConfig, NgWizardService, StepChangedArgs, StepValidationArgs, STEP_STATE, THEME } from 'ng-wizard';
+import { NgWizardConfig, NgWizardService, StepChangedArgs, StepValidationArgs, THEME } from 'ng-wizard';
 import { of } from 'rxjs';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-add-remarquer',
@@ -13,11 +14,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AddRemarquerComponent implements OnInit {
   @ViewChild('content') ngTemplate: ElementRef;
-
+  btnLoading: any = null;
   descriptifForm: FormGroup;
   attachmentForm: FormGroup;
   photographiesForm: FormGroup;
-  statusForm: FormGroup;
   linksForm: FormGroup;
   linkArtWorkForm: FormGroup;
   propertyStatusForm: FormGroup;
@@ -49,15 +49,14 @@ export class AddRemarquerComponent implements OnInit {
   };
   closeResult = '';
   isValidTypeBoolean: boolean = true;
-  addPropertyValues: any[] = [];
-  addPropertyForm: FormGroup;
   constructor(
     public workOfArtService: WorkOfArtService,
     private ngWizardService: NgWizardService,
     private modalService: NgbModal,
     public fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     const type = this.route.snapshot.paramMap.get('type');
@@ -73,22 +72,18 @@ export class AddRemarquerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.initForms();
+  }
+
+  initForms() {
     this.initPropertyStatusForm();
     this.initDepositStatusForm();
     this.initAttachmentForm();
     this.initPhotographiesForm();
-    this.initAddProperty();
     this.initHyperLink();
     this.initLinks();
     this.initDescriptifForm();
   }
-  initAddProperty() {
-    this.addPropertyForm = this.fb.group({
-      decriptid: this.descriptifForm,
-      photographies: this.photographiesForm,
-    });
-  }
-
   initDescriptifForm() {
     this.descriptifForm = this.fb.group({
       title: ['', Validators.required],
@@ -99,22 +94,34 @@ export class AddRemarquerComponent implements OnInit {
       authors: [],
       creationDate: [],
       length: [],
+      lengthUnit: ['1'],
       width: [],
+      widthUnit: ['1'],
       height: [],
+      heightUnit: ['1'],
       depth: [],
+      depthUnit: [],
       weight: [],
+      weightUnit: ['1'],
       diameter: [],
+      diameterUnit: ['1'],
       era: [],
       style: [],
       totalLength: [],
+      totlLengthUnit: ['1'],
       totalWidth: [],
+      totalWidthUnit: [1],
       totalHeight: [],
+      totalHeightUnit: ['1'],
       descriptiveWords: [],
-      items: [],
-      photographies: this.photographiesForm.value.photographies,
+      description: [],
+      registrationSignature: [],
+      otherRegistrations: [],
+      marking: [],
+      photographies: [],
       status: this.addProperty ? this.propertyStatusForm : this.depositStatusForm,
-      parent: this.linkArtWorkForm.value,
-      hyperlinks: this.linksForm.value.hyperlinks,
+      parent: [],
+      hyperlinks: [],
       attachments: this.attachmentForm.value.attachments,
     });
   }
@@ -139,13 +146,13 @@ export class AddRemarquerComponent implements OnInit {
     });
   }
   initHyperLink() {
-    this.linksForm = this.fb.group({
+    this.linksForm = new FormGroup({
       hyperlinks: this.fb.array([]),
     });
   }
   initLinks() {
     this.linkArtWorkForm = this.fb.group({
-      parent: [''],
+      parent: [1],
     });
   }
   initAttachmentForm() {
@@ -159,6 +166,9 @@ export class AddRemarquerComponent implements OnInit {
     });
   }
 
+  addSingle(type: string, sum: string, msg: string) {
+    this.messageService.add({ severity: type, summary: sum, detail: msg });
+  }
   open(content: any) {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then(
       (result) => {
@@ -191,15 +201,73 @@ export class AddRemarquerComponent implements OnInit {
   isValidFunctionReturnsObservable(args: StepValidationArgs) {
     return of(true);
   }
-
-  setValues() {
-    this.addPropertyValues = [...this.descriptifForm.value, ...this.photographiesForm.value];
+  formatData() {
+    this.descriptifForm.get('height').value
+      ? this.descriptifForm
+          .get('height')
+          .setValue(+this.descriptifForm.get('height').value * +this.descriptifForm.get('heightUnit').value)
+      : '';
+    this.descriptifForm.get('length').value
+      ? this.descriptifForm
+          .get('length')
+          .setValue(+this.descriptifForm.get('length').value * +this.descriptifForm.get('lengthUnit').value)
+      : '';
+    this.descriptifForm.get('width').value
+      ? this.descriptifForm
+          .get('width')
+          .setValue(+this.descriptifForm.get('width').value * +this.descriptifForm.get('widthUnit').value)
+      : '';
+    this.descriptifForm.get('depth').value
+      ? this.descriptifForm
+          .get('depth')
+          .setValue(+this.descriptifForm.get('depth').value * +this.descriptifForm.get('depthUnit').value)
+      : '';
+    this.descriptifForm.get('diameter').value
+      ? this.descriptifForm
+          .get('diameter')
+          .setValue(+this.descriptifForm.get('diameter').value * +this.descriptifForm.get('diameterUnit').value)
+      : '';
+    this.descriptifForm.get('totalHeight').value
+      ? this.descriptifForm
+          .get('totalHeight')
+          .setValue(+this.descriptifForm.get('totalHeight').value * +this.descriptifForm.get('totalHeight').value)
+      : '';
+    this.descriptifForm.get('totalLength').value
+      ? this.descriptifForm
+          .get('totalLength')
+          .setValue(+this.descriptifForm.get('totalLength').value * +this.descriptifForm.get('totalLength').value)
+      : '';
+    this.descriptifForm.get('totalWidth').value
+      ? this.descriptifForm
+          .get('totalWidth')
+          .setValue(+this.descriptifForm.get('totalWidth').value * +this.descriptifForm.get('totalWidth').value)
+      : '';
   }
   submit() {
-    console.log(this.descriptifForm.value);
-    this.workOfArtService.addWorkOfArt(this.descriptifForm.value).subscribe();
     if (!this.descriptifForm.valid) {
       this.display = true;
+    } else {
+      this.descriptifForm.get('photographies').setValue(this.photographiesForm.value.photographies);
+      this.descriptifForm.get('hyperlinks').setValue(this.linksForm.value.hyperlinks);
+      this.descriptifForm.get('parent').setValue(this.linkArtWorkForm.value.parent);
+      this.propertyStatusForm.get('marking').setValue(this.descriptifForm.get('marking').value);
+      this.propertyStatusForm
+        .get('registrationSignature')
+        .setValue(this.descriptifForm.get('registrationSignature').value);
+      this.propertyStatusForm.get('descriptiveWords').setValue(this.descriptifForm.get('descriptiveWords').value);
+      this.propertyStatusForm.get('description').setValue(this.descriptifForm.get('description').value);
+      this.display = false;
+      this.descriptifForm.get('materialTechnique').setValue(this.descriptifForm.get('materialTechnique').value[0]);
+      this.formatData();
+      this.workOfArtService.addWorkOfArt(this.descriptifForm.value).subscribe(
+        (res) => {
+          this.addSingle('success', 'Ajout', 'La notice a été ajoutée avec succès');
+          this.initForms();
+        },
+        (err) => {
+          this.addSingle('error', 'Ajout', "Une erreur est survenue lors de l'ajout");
+        }
+      );
     }
   }
 }

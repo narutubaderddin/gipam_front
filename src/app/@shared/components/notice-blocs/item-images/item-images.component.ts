@@ -2,6 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalOptions, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { AddImgModalComponent } from '@shared/components/notice-blocs/item-images/add-img-modal/add-img-modal.component';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 
 @Component({
   selector: 'app-item-images',
@@ -33,23 +34,35 @@ export class ItemImagesComponent implements OnInit {
   validate = true;
   isIdentification = false;
   identification = 0;
+  imagePreview: any;
   get photographies(): FormArray {
     return this.photographiesForm.get('photographies') as FormArray;
   }
-  constructor(private modalService: NgbModal, public fb: FormBuilder) {}
+  constructor(private modalService: NgbModal, public fb: FormBuilder, private simpleTabsRef: SimpleTabsRefService) {}
   ngOnInit(): void {
-    this.initForm();
+    this.getAllTypes();
   }
-  initForm() {
-    this.photographiesForm = new FormGroup({
-      photographies: this.fb.array([]),
-    });
-  }
+
   initData(photography?: string, photographyDate?: Date, photographyType?: any, imageName?: string) {
     this.photography = photography;
     this.photographyDate = photographyDate;
     this.photographyType = photographyType;
     this.imageName = imageName;
+  }
+
+  getAllTypes() {
+    this.simpleTabsRef.tabRef = 'photographyTypes';
+    const params = {
+      limit: 40,
+      page: 1,
+    };
+    this.simpleTabsRef.getAllItems(params).subscribe(
+      (result: any) => {
+        console.log(result);
+        this.types = result.results;
+      },
+      (error: any) => {}
+    );
   }
   createPhotography(
     photography?: string,
@@ -58,39 +71,37 @@ export class ItemImagesComponent implements OnInit {
     imageName?: string
   ): FormGroup {
     return this.fb.group({
-      photographyDate: [photographyDate, [Validators.required]],
-      photography: [photography, [Validators.required]],
-      photographyType: [photographyType, [Validators.required]],
-      photographyName: [imageName, [Validators.required]],
+      date: [photographyDate],
+      imagePreview: [photography],
+      photographyType: [photographyType.id],
+      // photographyName: [imageName],
     });
   }
   editPhotographyForm(i: number, photography: string, photographyType: any, photographyDate: Date, imageName: string) {
     this.photographies.value[i].photographyType = photographyType;
-    this.photographies.value[i].photographyDate = photographyDate;
-    this.photographies.value[i].photographyName = imageName;
-    this.photographies.value[i].photography = photography;
+    this.photographies.value[i].date = photographyDate;
+    // this.photographies.value[i].photographyName = imageName;
+    this.photographies.value[i].imagePreview = photography;
     this.images[i].imageUrl = photography;
     this.images[i].image = imageName;
   }
   verifyIdentification() {
     this.identification = 0;
-    if (this.photographies.value.length > 1) {
-      this.photographies.value.forEach((photography: any) => {
-        console.log('name', photography);
-
-        if (photography.photographyType.name != 'Identification') {
-          this.identification++;
-        }
-      });
-      if (this.identification < this.photographies.value.length) {
-        this.isIdentification = true;
-        this.types[0].disabled = true;
-      } else {
-        this.isIdentification = false;
-        this.types[0].disabled = false;
-      }
-      console.log(this.isIdentification);
-    }
+    // if (this.photographies.value.length > 1) {
+    //   this.photographies.value.forEach((photography: any) => {
+    //     if (photography.photographyType.name != 'Identification') {
+    //       this.identification++;
+    //     }
+    //   });
+    //   if (this.identification < this.photographies.value.length) {
+    //     this.isIdentification = true;
+    //     this.types[0].disabled = true;
+    //   } else {
+    //     this.isIdentification = false;
+    //     this.types[0].disabled = false;
+    //   }
+    //   console.log(this.isIdentification);
+    // }
   }
   addPhotography(): void {
     if (!this.photography.length || !this.photographyType || !this.imageName.length) {
@@ -104,8 +115,9 @@ export class ItemImagesComponent implements OnInit {
           image: this.imageName,
         });
         this.photographies.push(
-          this.createPhotography(this.photography, this.photographyDate, this.photographyType, this.imageName)
+          this.createPhotography(this.imagePreview, this.photographyDate, this.photographyType, this.imageName)
         );
+        console.log('validation', this.photographies);
       } else {
         this.editPhotographyForm(
           this.selectedPhotography,
@@ -126,7 +138,10 @@ export class ItemImagesComponent implements OnInit {
   handleFileInput(file: FileList) {
     this.fileToUpload = file.item(0);
 
-    //Show image preview
+    const formData: FormData = new FormData();
+    formData.append('fileKey', file.item(0), file.item(0).name);
+    this.imagePreview = formData;
+
     let reader = new FileReader();
     reader.onload = (event: any) => {
       this.photography = event.target.result;

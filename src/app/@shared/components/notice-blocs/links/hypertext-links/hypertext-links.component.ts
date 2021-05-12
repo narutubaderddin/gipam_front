@@ -7,17 +7,14 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class HypertextLinksComponent implements OnInit {
   @Input() add: false;
-  myForm: FormGroup;
-
-  get liens(): FormArray {
-    return this.myForm.get('liens') as FormArray;
+  @Input() linksForm: FormGroup;
+  get hyperlinks(): FormArray {
+    return this.linksForm.get('hyperlinks') as FormArray;
   }
-
   constructor(private fb: FormBuilder) {}
 
-  ngOnInit() {
-    this.configForm();
-  }
+  ngOnInit() {}
+
   createAttachment(attachment?: any, attachmentType?: any): FormGroup {
     return this.fb.group({
       name: [attachment],
@@ -26,28 +23,11 @@ export class HypertextLinksComponent implements OnInit {
   }
 
   addBook() {
-    this.liens.push(this.buildBook());
+    console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+    this.hyperlinks.push(this.createAttachment());
   }
 
   removeBook(i: number) {
-    this.liens.removeAt(i);
-  }
-
-  save() {
-    alert(`New Author created: ${this.myForm.get('author').value}`);
-  }
-
-  private configForm() {
-    this.myForm = this.fb.group({
-      author: ['', [Validators.required, Validators.maxLength(40)]],
-      liens: this.fb.array([this.buildBook()]),
-    });
-  }
-
-  private buildBook(): FormGroup {
-    return this.fb.group({
-      urlName: ['', [Validators.required]],
-      url: [''],
-    });
+    this.hyperlinks.removeAt(i);
   }
 }

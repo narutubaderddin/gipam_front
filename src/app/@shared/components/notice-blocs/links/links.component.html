@@ -26,7 +26,7 @@
 
   <ol class="mb-2" *ngIf="add">
     <li class="mb-2">Fait partie de:</li>
-    <li>
+    <li [formGroup]="linkArtWorkForm">
       <p-autoComplete
         #autocompletePanel
         class="select col-md-4 col-sm-7 p-sm-0 col-12"
@@ -34,11 +34,13 @@
         [suggestions]="artWorksData"
         field="data"
         (completeMethod)="search($event)"
+        (onSelect)="handleSelect($event)"
         [dropdown]="true"
         (onShow)="change()"
         minLength="3"
         virtualScroll="true"
         defaultLabel="Sélectionner un numéro d'inventaire"
+        formControlName="parent"
       >
         <ng-template let-item pTemplate="item"> {{ item.data }} </ng-template>
       </p-autoComplete>

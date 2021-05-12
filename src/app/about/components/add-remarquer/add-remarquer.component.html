@@ -83,8 +83,12 @@
                           <div
                             class="attachments-container ml-2 col-md-5 p-0 d-flex flex-column flex-sm-row flex-md-column"
                           >
-                            <app-links style="width: 100%" [add]="true"></app-links>
-                            <app-hypertext-links style="width: 100%" [add]="true"></app-hypertext-links>
+                            <app-links [linkArtWorkForm]="linkArtWorkForm" style="width: 100%" [add]="true"></app-links>
+                            <app-hypertext-links
+                              [linksForm]="linksForm"
+                              style="width: 100%"
+                              [add]="true"
+                            ></app-hypertext-links>
                           </div>
                         </div>
                       </div>
@@ -130,3 +134,4 @@
     </div>
   </ng-template>
 </ng-wizard>
+<p-toast></p-toast>

@@ -8,6 +8,7 @@ import { FieldsService } from '@app/@shared/services/fields.service';
 import { StylesService } from '@app/@shared/services/styles.service';
 import { SimpleTabsRefService } from '@app/@shared/services/simple-tabs-ref.service';
 import { MaterialTechniqueService } from '@app/@shared/services/material-technique.service';
+import { retry } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-descriptions',
@@ -23,10 +24,9 @@ export class AddDescriptionsComponent implements OnInit {
   domain = '';
   denominations: any;
   denomination: any;
-  selectedDomain = '';
+  selectedDomain: any;
   isCollapsed = true;
   dropdownSettings: IDropdownSettings;
-  autocompleteItems = ['Item1', 'item2', 'item3'];
   domainData: any[];
   denominationData: any[];
   styleData: any[];
@@ -118,9 +118,11 @@ export class AddDescriptionsComponent implements OnInit {
 
     switch (key) {
       case 'field':
-        this.selectedDomain = value.value.name;
+        this.selectedDomain = this.domainData.filter((domain: any) => {
+          return domain.id === value.value;
+        });
         this.denominationData = this.denominations.filter((denomination: any) => {
-          return denomination.field.id === value.value.id;
+          return denomination.field.id === value.value;
         });
         materialApiData['denominations'] = JSON.stringify(this.denominationData);
         forkJoin([this.materialTechniqueService.getFilteredMaterialTechnique(materialApiData)]).subscribe(
@@ -130,12 +132,14 @@ export class AddDescriptionsComponent implements OnInit {
         );
         break;
       case 'denomination':
-        const selectedDomain = this.getTabRefData([value.value.field]);
-        if (!this.descriptifForm.get('field').value.length) {
-          this.descriptifForm.get('field').setValue(selectedDomain[0]);
-        }
-
-        materialApiData['denominations'] = JSON.stringify([value.value]);
+        // const selectedDomain = this.getTabRefData([value.value.field]);
+        // if (!this.descriptifForm.get('field').value.length) {
+        //   this.descriptifForm.get('field').setValue(selectedDomain[0]);
+        // }
+        const denomination = this.denominationData.filter((den: any) => {
+          return den.id === value.value;
+        });
+        materialApiData['denominations'] = JSON.stringify(denomination);
         forkJoin([this.materialTechniqueService.getFilteredMaterialTechnique(materialApiData)]).subscribe(
           ([materialTechniquesResults]) => {
             this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);

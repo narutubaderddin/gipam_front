@@ -46,6 +46,7 @@ import { CarouselModule } from 'primeng/carousel';
 import { DialogModule } from 'primeng/dialog';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { RemarquerDetailsLinkRendererComponent } from './components/ng-dataTables/remarquer-details-link-renderer/remarquer-details-link-renderer.component';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   imports: [
@@ -78,6 +79,7 @@ import { RemarquerDetailsLinkRendererComponent } from './components/ng-dataTable
     CarouselModule,
     DialogModule,
     AutoCompleteModule,
+    ToastModule,
   ],
   declarations: [
     LoaderComponent,
