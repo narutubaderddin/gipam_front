@@ -10,8 +10,9 @@ import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 export class AttachmentsComponent implements OnInit {
   @Input() add = false;
   @Input() attachmentForm: FormGroup;
+  @Input() itemDetails: boolean = false;
 
-  attachmentType: any[];
+  attachmentType: any;
   files: any[] = [];
   validation = true;
   selectedAttachment = 0;
@@ -29,64 +30,27 @@ export class AttachmentsComponent implements OnInit {
     lang: {},
   };
 
-  columnDefs: any[] = [
-    {
-      headerName: 'pièce jointes',
-      field: 'attachments',
-      width: 40,
-    },
-    {
-      headerName: 'date de création',
-      field: 'date',
-      width: 40,
-    },
-    {
-      headerName: 'Type',
-      field: 'type',
-      width: 15,
-    },
-    {
-      headerName: 'Responsable',
-      field: 'responsable',
-      width: 30,
-    },
-  ];
-
   existingAttachments = [
     {
-      title: 'details.pdf',
-      date: '01/01/2020',
-      type: 'type A',
-      creator: 'Olivier',
+      attachment: {
+        name: 'details.pdf',
+      },
+      attachmentType: 'type 2',
     },
     {
-      title: 'details.pdf',
-      date: '01/03/2020',
-      type: 'type',
-      creator: 'Paul',
+      attachment: {
+        name: 'fichier',
+      },
+      attachmentType: 'type 2',
     },
     {
-      title: 'details.pdf',
-      date: '01/01/2020',
-      type: 'type',
-      creator: 'Jean',
-    },
-    {
-      title: 'details.pdf',
-      date: '01/01/2020',
-      type: 'type',
-      creator: 'Jean',
+      attachment: {
+        name: 'exemple.pdf',
+      },
+      attachmentType: 'type 1',
     },
   ];
 
-  defaultColDef = {
-    sortable: true,
-    filter: false,
-    resizable: true,
-    flex: 1,
-  };
-
-  gridReady = false;
   responsiveOptions = [
     {
       breakpoint: '1500px',
@@ -99,18 +63,33 @@ export class AttachmentsComponent implements OnInit {
       numScroll: 1,
     },
   ];
+  editAttachement: boolean = false;
+  filesProperties: any[] = [];
+
+  previousType: any;
+  deleteDialog: boolean = false;
+  itemToDelete: string;
+
   get attachments(): FormArray {
     return this.attachmentForm.get('attachments') as FormArray;
   }
   constructor(private fb: FormBuilder) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.itemDetails) {
+      this.existingAttachments.map((el: any) => {
+        this.files.push(el.attachment);
+        this.attachments.push(this.createAttachment(el.attachment, el.attachementType));
+      });
+    }
+  }
 
   initData(photography?: any, photographyType?: any) {
     this.addedFile = photography;
     this.attachmentType = photographyType;
   }
   createAttachment(attachment?: any, attachmentType?: any): FormGroup {
+    this.filesProperties.push({ edit: false, delete: false });
     return this.fb.group({
       attachment: [attachment, [Validators.required]],
       attachmentType: [attachmentType, [Validators.required]],
@@ -119,6 +98,7 @@ export class AttachmentsComponent implements OnInit {
   editAttachmentForm(index?: any, attachment?: any, attachmentType?: any) {
     this.attachments.value[index].attachment = attachment;
     this.attachments.value[index].attachmentType = attachmentType;
+    this.filesProperties[index].edit = false;
   }
   getUploadedFiles(files: any) {
     this.addedFile = files[files.length - 1];
@@ -126,14 +106,18 @@ export class AttachmentsComponent implements OnInit {
 
   deleteAttachment(index: number) {
     this.files.splice(index, 1);
+    this.attachments.removeAt(index);
+    this.deleteDialog = false;
   }
 
   validate() {
-    console.log(this.attachments);
     if (!this.addedFile || !this.attachmentType) {
       this.validation = false;
     } else {
-      if (this.selectedAttachment == this.attachments.value.length) {
+      if (this.itemDetails) {
+        this.existingAttachments.push({ attachment: this.addedFile, attachmentType: this.attachmentType });
+      }
+      if (this.selectedAttachment == this.attachments.value.length || this.itemDetails) {
         this.files.push(this.addedFile);
         this.attachments.push(this.createAttachment(this.addedFile, this.attachmentType));
       } else {
@@ -157,5 +141,33 @@ export class AttachmentsComponent implements OnInit {
 
   addAttachment() {
     this.display = true;
+  }
+  editAttachment(value: any, index: number) {
+    this.filesProperties[index] = {
+      ...this.filesProperties[index],
+      edit: true,
+      delete: false,
+    };
+    this.previousType = value;
+  }
+  cancelEditAttachment(el: any, index: number) {
+    this.filesProperties[index] = {
+      ...this.filesProperties[index],
+      edit: false,
+      delete: false,
+    };
+    this.editAttachmentForm(index, el.attachment, this.previousType);
+    this.existingAttachments[index].attachmentType = this.previousType;
+  }
+  getIndex(el: any) {
+    return this.existingAttachments.indexOf(el);
+  }
+  delete(item: string) {
+    this.deleteDialog = true;
+    this.itemToDelete = item;
+  }
+  cancelDelete() {
+    this.deleteDialog = false;
+    this.itemToDelete = '';
   }
 }

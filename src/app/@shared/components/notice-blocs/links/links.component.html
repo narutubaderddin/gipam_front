@@ -1,12 +1,57 @@
 <div class="col-md-12 pl-0">
   <div class="col-md-12 p-0">
     <h5 class="pl-0">Liens avec oeuvres</h5>
+    <div class="d-flex justify-content-end" *ngIf="(addLinks||existingLinks.length)&&!add">
+      <button class="btn add-action col-7" (click)="addNewLinks()">
+        <i class="fas fa-plus mr-2"></i>Ajouter fait partie de
+      </button>
+    </div>
 
     <ol class="rounded-list" *ngIf="!add">
-      <li>Fait partie de:</li>
-      <li>
-        <span><a href="#">149</a> | 22/01/2020 | Jean</span>
+      <li *ngIf="addLinks||existingLinks.length||add">Fait partie de:</li>
+      <li *ngIf="addLinks">
+        <p-autoComplete
+          #autocompletePanel
+          class="select col-md-4 col-sm-7 p-sm-0 col-12"
+          [style]="{ width: '100%' }"
+          [suggestions]="artWorksData"
+          field="data"
+          (completeMethod)="search($event)"
+          [dropdown]="true"
+          (onShow)="change()"
+          minLength="3"
+          virtualScroll="true"
+          defaultLabel="Sélectionner un numéro d'inventaire"
+        >
+          <ng-template let-item pTemplate="item"> {{ item.data }} </ng-template>
+        </p-autoComplete>
+        <div class="d-flex justify-content-end col-12 p-0 mt-2 mb-2">
+          <button (click)="cancelLink()" class="mr-2 cancel-btn">Annuler</button>
+          <button (click)="addLink()" class="valid-btn">Valider</button>
+        </div>
       </li>
+      <ng-template ngFor let-item pTemplate="item" [ngForOf]="existingLinks" let-i="index">
+        <li>
+          <span
+            ><a href="#">{{ item.url }}</a> | {{ item.name }}
+            <div>
+            <i
+              class="far fa-edit col-1 mr-2"
+              (click)="editLink()"
+              pTooltip="Modifier"
+              tooltipPosition="top"
+            ></i>
+            <i
+              class="far fa-trash-alt"
+              *ngIf="itemDetails"
+              (click)="delete(item)"
+              pTooltip="Supprimer"
+              tooltipPosition="top"
+            ></i
+          ></div>
+          </span>
+        </li>
+      </ng-template>
       <li>
         Composé de :
         <ol>
@@ -45,3 +90,16 @@
     </li>
   </ol>
 </div>
+<p-dialog header="Supprimer le lien avec oeuvre" [modal]="true" [(visible)]="deleteDialog" [style]="{ width: '30vw' }">
+  <div class="p-0 pb-3">
+    <div class="col-12">
+      <span
+        >Voulez-vous supprimer le lien avec oeuvre "<strong> {{ itemToDelete }} </strong>" ?</span
+      >
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <button class="cancel-btn" (click)="cancelDelete()" style="font-size: 12px">Annuler</button>
+    <button class="valid-btn" (click)="removeLink(getIndex(selectedItem))" style="font-size: 12px">supprimer</button>
+  </ng-template>
+</p-dialog>
