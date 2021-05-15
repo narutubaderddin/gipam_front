@@ -25,7 +25,7 @@ export class ReservesComponent implements OnInit {
   btnLoading: any = null;
   myModal: any;
   selectedItem: any;
-
+  loadingDropdownData = false;
   // for datatable filter
   relatedRooms: any[] = [];
   relatedBuildings: any[] = [];
@@ -38,12 +38,14 @@ export class ReservesComponent implements OnInit {
     communes: any[];
     sites: any[];
     buildings: any[];
+    room: any[];
   } = {
     regions: [],
     departments: [],
     communes: [],
     sites: [],
     buildings: [],
+    room: [],
   };
 
   activeRelatedRooms: any[] = [];
@@ -57,12 +59,14 @@ export class ReservesComponent implements OnInit {
     commune: any;
     site: any;
     building: any;
+    room: any;
   } = {
     region: null,
     department: null,
     commune: null,
     site: null,
     building: null,
+    room: null,
   };
 
   itemToEdit: any;
@@ -111,7 +115,7 @@ export class ReservesComponent implements OnInit {
   rowCount: any = 5;
 
   relatedRoomColumn = {
-    header: 'Entité',
+    header: 'Pièce',
     field: 'room',
     type: 'key-array',
     key_data: ['room', 'reference'],
@@ -150,6 +154,13 @@ export class ReservesComponent implements OnInit {
     key_data: ['department', 'name'],
   };
 
+  relatedRegionColumn = {
+    header: 'Region',
+    field: 'region',
+    type: 'key-array',
+    key_data: ['region', 'name'],
+  };
+
   constructor(
     private modalService: NgbModal,
     private activatedRoute: ActivatedRoute,
@@ -174,14 +185,13 @@ export class ReservesComponent implements OnInit {
   }
 
   initForm() {
-    const msg = 'date début inférieur date fin';
     const startDate = this.datePipe.transform(
       this.selectedItem ? this.selectedItem.startDate : new Date(),
       datePickerDateFormat
     );
     const endDate = this.datePipe.transform(this.selectedItem ? this.selectedItem.endDate : '', datePickerDateFormat);
     this.tabForm = this.fb.group({
-      label: [this.selectedItem ? this.selectedItem.reference : '', [Validators.required]],
+      label: [this.selectedItem ? this.selectedItem.label : '', [Validators.required]],
       startDate: [startDate, [Validators.required]],
       endDate: [endDate, []],
       room: [{ value: this.selectedRelatedRoom, disabled: !this.selectedRelated?.building }, [Validators.required]],
@@ -204,6 +214,7 @@ export class ReservesComponent implements OnInit {
       this.relatedSiteColumn,
       this.relatedCommuneColumn,
       this.relatedDepartmentColumn,
+      this.relatedRegionColumn,
       {
         header: 'Date début de validité',
         field: 'startDate',
@@ -258,8 +269,9 @@ export class ReservesComponent implements OnInit {
       params[relatedEntityName + '[eq]'] = relatedEntity.id;
     }
     this.unsetRelated(entity);
+    this.tabForm.get('room').setValue('');
+    this.tabForm.get('room').disable();
     entity = entity + 's';
-    console.log('params', params);
     this.simpleTabsRef.getAllItems(params, entity).subscribe((dataResult) => {
       this.autoComplete[entity] = dataResult.results;
       console.log(entity, dataResult.results);
@@ -274,7 +286,6 @@ export class ReservesComponent implements OnInit {
     };
     this.simpleTabsRef.getAllItems(params, 'sites').subscribe((dataResult) => {
       this.autoComplete.sites = dataResult.results;
-      console.log('sites', dataResult.results);
     });
   }
 
@@ -309,12 +320,16 @@ export class ReservesComponent implements OnInit {
     this.tabForm.get('room').enable();
     const params = {
       'building[eq]': this.selectedRelated.building.id,
+      serializer_group: JSON.stringify(['short']),
     };
     this.simpleTabsRef.getAllItems(params, 'rooms').subscribe(
       (result: any) => {
         this.activeRelatedRooms = result.results.filter((value: any) => this.isActive(value.endDate));
+        this.loadingDropdownData = false;
       },
-      (error: any) => {}
+      (error: any) => {
+        this.loadingDropdownData = false;
+      }
     );
   }
 
@@ -322,18 +337,35 @@ export class ReservesComponent implements OnInit {
     return this.defaultColDef.headerComponentParams;
   }
 
-  resetFilter() {}
+  fillDropDowns(item: any) {
+    if (item.region) {
+      this.selectedRelated.region = Object.assign({}, item.region);
+      this.getDropdownData('department', 'region', this.selectedRelated.region);
+      this.selectedRelated.department = Object.assign({}, item.department);
+      this.getDropdownData('commune', 'department', this.selectedRelated.department);
+      this.selectedRelated.commune = Object.assign({}, item.commune);
+      this.getDropdownData('building', 'commune', this.selectedRelated.commune);
+    } else {
+      this.selectedRelated.site = Object.assign({}, item.site);
+      this.getDropdownData('building', 'site', this.selectedRelated.site);
+    }
+    this.selectedRelated.building = Object.assign({}, item.building);
+    this.getRoomsByBuilding();
+  }
 
   openModal(item: any) {
     this.initFormDropdowns();
     this.btnLoading = null;
     if (this.editItem || this.editVisibility) {
+      this.loadingDropdownData = true;
       this.itemToEdit = item;
       this.itemLabel = item.label;
       this.selectedRelatedRoom = {
         id: item.room ? item.room.id : '',
         reference: item.room ? item.room.reference : '',
       };
+      this.fillDropDowns(item);
+      console.log('selected item', item);
     }
     this.selectedItem = item;
     this.initForm();
@@ -363,11 +395,6 @@ export class ReservesComponent implements OnInit {
     this.deleteItems = false;
     this.editVisibility = false;
     this.selectedRelatedRoom = null;
-    // this.selectedRelated.building = null;
-    // this.selectedRelated.department = null;
-    // this.selectedRelated.commune = null;
-    // this.selectedRelated.site = null;
-    // this.selectedRelated.region = null;
     this.unsetRelated();
     this.myModal.dismiss('Cross click');
   }
@@ -399,7 +426,7 @@ export class ReservesComponent implements OnInit {
     this.btnLoading = null;
     this.deleteItems = true;
     this.itemToDelete = data;
-    this.itemLabel = data.reference;
+    this.itemLabel = data.label;
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
 

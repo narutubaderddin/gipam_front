@@ -90,144 +90,170 @@
     </div>
     <div class="modal-body">
       <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer la réserve "{{ itemLabel }}" ?</div>
-
-      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-7">Libellé<span class="mandatory"> *</span></label>
-        <input
-          type="text"
-          class="form-control col-sm-5"
-          value="{{ editItem ? selectedItem.label : '' }}"
-          formControlName="label"
-        />
+      <div class="loading-spinner col-md-12 d-flex justify-content-center" *ngIf="loadingDropdownData">
+        <p-progressSpinner></p-progressSpinner>
       </div>
-      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-7">Filtrer par Région<span class="mandatory"> *</span></label>
-        <div class="select col-sm-5 p-0">
-          <p-dropdown
-            [options]="autoComplete.regions"
-            optionLabel="name"
-            [placeholder]="'Filtrer par région'"
-            emptyFilterMessage="Aucun résultat trouvé"
-            [filter]="true"
-            [filterBy]="'name'"
-            [virtualScroll]="true"
-            itemSize="5"
-            (onChange)="getDropdownData('department', 'region', selectedRelated.region)"
-            [(ngModel)]="selectedRelated.region"
-            [ngModelOptions]="{ standalone: true }"
-          ></p-dropdown>
+      <div [hidden]="loadingDropdownData">
+        <div
+          class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
+          *ngIf="editItem || addItem"
+        >
+          <label class="col-sm-7">Libellé<span class="mandatory"> *</span></label>
+          <input
+            type="text"
+            class="form-control col-sm-5"
+            value="{{ editItem ? selectedItem.label : '' }}"
+            formControlName="label"
+          />
         </div>
-      </div>
-      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-7">Filtrer par Département<span class="mandatory"> *</span></label>
-        <div class="select col-sm-5 p-0">
-          <p-dropdown
-            [options]="autoComplete.departments"
-            optionLabel="name"
-            [placeholder]="'Filtrer par département'"
-            emptyFilterMessage="Aucun résultat trouvé"
-            [filter]="true"
-            [filterBy]="'name'"
-            [virtualScroll]="true"
-            itemSize="5"
-            (onChange)="getDropdownData('commune', 'department', selectedRelated.department)"
-            [(ngModel)]="selectedRelated.department"
-            [ngModelOptions]="{ standalone: true }"
-            [disabled]="!selectedRelated.region"
-          ></p-dropdown>
+        <div
+          class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
+          *ngIf="editItem || addItem"
+        >
+          <label class="col-sm-7">Filtrer par Région<span class="mandatory"> *</span></label>
+          <div class="select col-sm-5 p-0">
+            <p-dropdown
+              [options]="autoComplete.regions"
+              optionLabel="name"
+              [placeholder]="'Filtrer par région'"
+              emptyFilterMessage="Aucun résultat trouvé"
+              [filter]="true"
+              [filterBy]="'name'"
+              [virtualScroll]="true"
+              itemSize="5"
+              (onChange)="getDropdownData('department', 'region', selectedRelated.region)"
+              [(ngModel)]="selectedRelated.region"
+              [ngModelOptions]="{ standalone: true }"
+            ></p-dropdown>
+          </div>
         </div>
-      </div>
-      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-7">Filtrer par Commune<span class="mandatory"> *</span></label>
-        <div class="select col-sm-5 p-0">
-          <p-dropdown
-            [options]="autoComplete.communes"
-            optionLabel="name"
-            [placeholder]="'Filtrer par commune'"
-            emptyFilterMessage="Aucun résultat trouvé"
-            [filter]="true"
-            [filterBy]="'name'"
-            [virtualScroll]="true"
-            itemSize="5"
-            (onChange)="getDropdownData('building', 'commune', selectedRelated.commune)"
-            [(ngModel)]="selectedRelated.commune"
-            [ngModelOptions]="{ standalone: true }"
-            [disabled]="!selectedRelated.department"
-          ></p-dropdown>
+        <div
+          class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
+          *ngIf="editItem || addItem"
+        >
+          <label class="col-sm-7">Filtrer par Département<span class="mandatory"> *</span></label>
+          <div class="select col-sm-5 p-0">
+            <p-dropdown
+              [options]="autoComplete.departments"
+              optionLabel="name"
+              [placeholder]="'Filtrer par département'"
+              emptyFilterMessage="Aucun résultat trouvé"
+              [filter]="true"
+              [filterBy]="'name'"
+              [virtualScroll]="true"
+              itemSize="5"
+              (onChange)="getDropdownData('commune', 'department', selectedRelated.department)"
+              [(ngModel)]="selectedRelated.department"
+              [ngModelOptions]="{ standalone: true }"
+              [disabled]="!selectedRelated.region"
+            ></p-dropdown>
+          </div>
         </div>
-      </div>
-      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-7">Filtrer par Site<span class="mandatory"> *</span></label>
-        <div class="col-sm-5 p-0">
-          <p-autoComplete
-            [minLength]="3"
-            field="label"
-            emptyMessage="Aucun résultat trouvé"
-            placeholder="Filtrer par site"
-            (completeMethod)="autoCompleteSites($event)"
-            (onSelect)="getDropdownData('building', 'site', selectedRelated.site)"
-            [suggestions]="autoComplete.sites"
-            [(ngModel)]="selectedRelated.site"
-            [ngModelOptions]="{ standalone: true }"
-          ></p-autoComplete>
+        <div
+          class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
+          *ngIf="editItem || addItem"
+        >
+          <label class="col-sm-7">Filtrer par Commune<span class="mandatory"> *</span></label>
+          <div class="select col-sm-5 p-0">
+            <p-dropdown
+              [options]="autoComplete.communes"
+              optionLabel="name"
+              [placeholder]="'Filtrer par commune'"
+              emptyFilterMessage="Aucun résultat trouvé"
+              [filter]="true"
+              [filterBy]="'name'"
+              [virtualScroll]="true"
+              itemSize="5"
+              (onChange)="getDropdownData('building', 'commune', selectedRelated.commune)"
+              [(ngModel)]="selectedRelated.commune"
+              [ngModelOptions]="{ standalone: true }"
+              [disabled]="!selectedRelated.department"
+            ></p-dropdown>
+          </div>
         </div>
-      </div>
-      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-7">Filtrer par Bâtiment<span class="mandatory"> *</span></label>
-        <div class="select col-sm-5 p-0">
-          <p-dropdown
-            [options]="autoComplete.buildings"
-            optionLabel="name"
-            [placeholder]="'Filtrer par bâtiment'"
-            emptyFilterMessage="Aucun résultat trouvé"
-            [filter]="true"
-            [filterBy]="'name'"
-            [virtualScroll]="true"
-            itemSize="5"
-            (onChange)="getRoomsByBuilding()"
-            [(ngModel)]="selectedRelated.building"
-            [ngModelOptions]="{ standalone: true }"
-            [disabled]="!selectedRelated.commune && !selectedRelated.site"
-          ></p-dropdown>
+        <div
+          class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
+          *ngIf="editItem || addItem"
+        >
+          <label class="col-sm-7">Filtrer par Site<span class="mandatory"> *</span></label>
+          <div class="col-sm-5 p-0">
+            <p-autoComplete
+              [minLength]="3"
+              field="label"
+              emptyMessage="Aucun résultat trouvé"
+              placeholder="Filtrer par site"
+              (completeMethod)="autoCompleteSites($event)"
+              (onSelect)="getDropdownData('building', 'site', selectedRelated.site)"
+              [suggestions]="autoComplete.sites"
+              [(ngModel)]="selectedRelated.site"
+              [ngModelOptions]="{ standalone: true }"
+            ></p-autoComplete>
+          </div>
         </div>
-      </div>
-      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-7">Pièce<span class="mandatory"> *</span></label>
-        <div class="select col-sm-5 p-0">
-          <p-dropdown
-            [options]="activeRelatedRooms"
-            optionLabel="reference"
-            formControlName="room"
-            [placeholder]="'Sélectionner une pièce'"
-            emptyFilterMessage="Aucun résultat trouvé"
-            [filter]="true"
-            [filterBy]="'reference'"
-            [virtualScroll]="true"
-            itemSize="5"
-          ></p-dropdown>
+        <div
+          class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
+          *ngIf="editItem || addItem"
+        >
+          <label class="col-sm-7">Filtrer par Bâtiment<span class="mandatory"> *</span></label>
+          <div class="select col-sm-5 p-0">
+            <p-dropdown
+              [options]="autoComplete.buildings"
+              optionLabel="name"
+              [placeholder]="'Filtrer par bâtiment'"
+              emptyFilterMessage="Aucun résultat trouvé"
+              [filter]="true"
+              [filterBy]="'name'"
+              [virtualScroll]="true"
+              itemSize="5"
+              (onChange)="getRoomsByBuilding()"
+              [(ngModel)]="selectedRelated.building"
+              [ngModelOptions]="{ standalone: true }"
+              [disabled]="!selectedRelated.commune && !selectedRelated.site"
+            ></p-dropdown>
+          </div>
         </div>
-      </div>
-      <div
-        class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
-        *ngIf="addItem || editVisibility"
-      >
-        <label class="col-sm-7">Date début de validité<span class="mandatory"> *</span></label>
-        <input type="date" name="datepicker" class="form-control date-input col-sm-5" formControlName="startDate" />
-      </div>
-      <div
-        class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
-        *ngIf="addItem || editVisibility"
-      >
-        <label class="col-sm-7">Date fin de validité</label>
-        <input
-          type="date"
-          name="datepicker"
-          class="form-control date-input col-sm-5"
-          formControlName="endDate"
-          [class.ng-invalid]="tabForm.errors && tabForm.errors.dateInvalid"
-        />
+        <div
+          class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
+          *ngIf="editItem || addItem"
+        >
+          <label class="col-sm-7">Pièce<span class="mandatory"> *</span></label>
+          <div class="select col-sm-5 p-0">
+            <p-dropdown
+              [options]="activeRelatedRooms"
+              optionLabel="reference"
+              formControlName="room"
+              [placeholder]="'Sélectionner une pièce'"
+              emptyFilterMessage="Aucun résultat trouvé"
+              [filter]="true"
+              [filterBy]="'reference'"
+              [virtualScroll]="true"
+              itemSize="5"
+            ></p-dropdown>
+          </div>
+        </div>
+        <div
+          class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
+          *ngIf="addItem || editVisibility"
+        >
+          <label class="col-sm-7">Date début de validité<span class="mandatory"> *</span></label>
+          <input type="date" name="datepicker" class="form-control date-input col-sm-5" formControlName="startDate" />
+        </div>
+        <div
+          class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
+          *ngIf="addItem || editVisibility"
+        >
+          <label class="col-sm-7">Date fin de validité</label>
+          <input
+            type="date"
+            name="datepicker"
+            class="form-control date-input col-sm-5"
+            formControlName="endDate"
+            [class.ng-invalid]="tabForm.errors && tabForm.errors.dateInvalid"
+          />
+        </div>
       </div>
     </div>
+
     <div class="modal-footer">
       <button type="button" class="btn btn-light cancel-btn" (click)="close()">Annuler</button>
       <button
