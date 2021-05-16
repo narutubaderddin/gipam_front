@@ -64,8 +64,9 @@ export class ItemImagesComponent implements OnInit {
       (error: any) => {}
     );
   }
+
   createPhotography(
-    photography?: string,
+    photography?: FormData,
     photographyDate?: Date,
     photographyType?: any,
     imageName?: string
@@ -74,13 +75,13 @@ export class ItemImagesComponent implements OnInit {
       date: [photographyDate],
       imagePreview: [photography],
       photographyType: [photographyType.id],
-      // photographyName: [imageName],
+      // imageName: [imageName],
     });
   }
   editPhotographyForm(i: number, photography: string, photographyType: any, photographyDate: Date, imageName: string) {
     this.photographies.value[i].photographyType = photographyType;
     this.photographies.value[i].date = photographyDate;
-    // this.photographies.value[i].photographyName = imageName;
+    // this.photographies.value[i].imageName = imageName;
     this.photographies.value[i].imagePreview = photography;
     this.images[i].imageUrl = photography;
     this.images[i].image = imageName;
@@ -114,8 +115,14 @@ export class ItemImagesComponent implements OnInit {
           alt: 'description',
           image: this.imageName,
         });
+        console.log(typeof this.buildFormData(this.fileToUpload));
         this.photographies.push(
-          this.createPhotography(this.imagePreview, this.photographyDate, this.photographyType, this.imageName)
+          this.createPhotography(
+            this.buildFormData(this.fileToUpload),
+            this.photographyDate,
+            this.photographyType,
+            this.imageName
+          )
         );
         console.log('validation', this.photographies);
       } else {
@@ -134,14 +141,14 @@ export class ItemImagesComponent implements OnInit {
       this.validate = true;
     }
   }
-
+  buildFormData(file: File): FormData {
+    const formData = new FormData();
+    formData.append('imagePreview', file, file.name);
+    return formData;
+  }
   handleFileInput(file: FileList) {
     this.fileToUpload = file.item(0);
-
-    const formData: FormData = new FormData();
-    formData.append('fileKey', file.item(0), file.item(0).name);
-    this.imagePreview = formData;
-
+    console.log(this.buildFormData(this.fileToUpload));
     let reader = new FileReader();
     reader.onload = (event: any) => {
       this.photography = event.target.result;

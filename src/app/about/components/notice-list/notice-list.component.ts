@@ -13,11 +13,11 @@ export class NoticeListComponent implements OnInit {
     {
       header: 'N° inventaire',
       field: 'id',
-      type: 'app-remarquer-details-link-render',
-      width: '150px',
+      sortable: true,
       filter: true,
       filterType: 'text',
-      sortable: true,
+      checkBoxSelection: false,
+      type: 'app-remarquer-details-link-render',
     },
     {
       header: 'Titre',

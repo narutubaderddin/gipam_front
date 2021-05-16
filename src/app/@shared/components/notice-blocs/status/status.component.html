@@ -4,7 +4,16 @@
     <div class="form-bloc pl-0" *ngIf="addDeposit" [formGroup]="depositStatusForm">
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
         <label class="">Date de dépôt</label>
-        <input type="date" class="form-control value col-12 col-sm-7" *ngIf="edit" formControlName="depositDate" />
+        <div class="autocomplete form-control value col-12 col-sm-7">
+          <p-calendar
+            *ngIf="edit"
+            class="col-md-12"
+            [style]="{ minWidth: '100%' }"
+            formControlName="depositDate"
+            [showIcon]="true"
+            inputId="icon"
+          ></p-calendar>
+        </div>
         <div class="value" *ngIf="!edit">12/01/2020</div>
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">

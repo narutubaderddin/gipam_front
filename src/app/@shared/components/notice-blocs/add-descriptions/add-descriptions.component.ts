@@ -23,8 +23,6 @@ export class AddDescriptionsComponent implements OnInit {
   items: any = [];
   domain = '';
   denominations: any;
-  denomination: any;
-  selectedDomain: any;
   isCollapsed = true;
   dropdownSettings: IDropdownSettings;
   domainData: any[];
@@ -37,12 +35,14 @@ export class AddDescriptionsComponent implements OnInit {
   eraData: any[];
   entryModesData: any[];
   materialTechniques: any;
+  attributeToShow: any;
   constructor(
     private fieldService: FieldsService,
     private denominationsService: DenominationsService,
     private styleService: StylesService,
     private simpleTabsRefService: SimpleTabsRefService,
     private materialTechniqueService: MaterialTechniqueService,
+    private workOfArtService: WorkOfArtService,
     public fb: FormBuilder
   ) {}
 
@@ -51,6 +51,18 @@ export class AddDescriptionsComponent implements OnInit {
   }
   get f() {
     return this.descriptifForm.controls;
+  }
+  get field() {
+    return this.descriptifForm.get('field').value;
+  }
+  get denomination() {
+    return this.descriptifForm.get('denomination').value;
+  }
+  getAttributes() {
+    this.workOfArtService.getAttributes(this.field, this.denomination).subscribe((result) => {
+      this.attributeToShow = result;
+      console.log(result);
+    });
   }
   getTabRefData(result: any[]) {
     let items: any[] = [];
@@ -118,28 +130,24 @@ export class AddDescriptionsComponent implements OnInit {
 
     switch (key) {
       case 'field':
-        this.selectedDomain = this.domainData.filter((domain: any) => {
-          return domain.id === value.value;
+        this.denominationData = this.denominations.filter((denomi: any) => {
+          return denomi.field.id === value.value;
         });
-        this.denominationData = this.denominations.filter((denomination: any) => {
-          return denomination.field.id === value.value;
+        const isTrue = this.denominationData.filter((den: any) => {
+          return den.id === this.denomination && den.field.id === this.field;
         });
-        materialApiData['denominations'] = JSON.stringify(this.denominationData);
-        forkJoin([this.materialTechniqueService.getFilteredMaterialTechnique(materialApiData)]).subscribe(
-          ([materialTechniquesResults]) => {
-            this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
-          }
-        );
+        if (!isTrue.length) {
+          this.descriptifForm.get('denomination').setValue(null);
+        }
+        this.field && this.denomination ? this.getAttributes() : '';
         break;
       case 'denomination':
-        // const selectedDomain = this.getTabRefData([value.value.field]);
-        // if (!this.descriptifForm.get('field').value.length) {
-        //   this.descriptifForm.get('field').setValue(selectedDomain[0]);
-        // }
+        this.field && this.denomination ? this.getAttributes() : '';
         const denomination = this.denominationData.filter((den: any) => {
           return den.id === value.value;
         });
-        materialApiData['denominations'] = JSON.stringify(denomination);
+        this.field ? (materialApiData['fields'] = JSON.stringify([this.field])) : '';
+        materialApiData['denominations'] = JSON.stringify([this.denomination]);
         forkJoin([this.materialTechniqueService.getFilteredMaterialTechnique(materialApiData)]).subscribe(
           ([materialTechniquesResults]) => {
             this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);

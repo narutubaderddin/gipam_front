@@ -1,18 +1,21 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { NgWizardConfig, NgWizardService, StepChangedArgs, StepValidationArgs, THEME } from 'ng-wizard';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { DirtyComponent } from '@shared/components/dirty-component';
+import set = Reflect.set;
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-remarquer',
   templateUrl: './add-remarquer.component.html',
   styleUrls: ['./add-remarquer.component.scss'],
 })
-export class AddRemarquerComponent implements OnInit {
+export class AddRemarquerComponent implements OnInit, DirtyComponent {
   @ViewChild('content') ngTemplate: ElementRef;
   btnLoading: any = null;
   descriptifForm: FormGroup;
@@ -28,7 +31,7 @@ export class AddRemarquerComponent implements OnInit {
   domains: any[] = [];
   keyword = 'name';
 
-  display = false;
+  display: Observable<boolean>;
   config: NgWizardConfig = {
     selected: 0,
     theme: THEME.dots,
@@ -48,7 +51,11 @@ export class AddRemarquerComponent implements OnInit {
     },
   };
   closeResult = '';
-  isValidTypeBoolean: boolean = true;
+  isValidTypeBoolean = true;
+  isDirty = false;
+  value: boolean;
+  url: string;
+
   constructor(
     public workOfArtService: WorkOfArtService,
     private ngWizardService: NgWizardService,
@@ -73,6 +80,11 @@ export class AddRemarquerComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForms();
+    this.descriptifForm.valueChanges.subscribe((e) => (this.isDirty = true));
+  }
+
+  canDeactivate() {
+    return this.isDirty;
   }
 
   initForms() {
@@ -86,10 +98,10 @@ export class AddRemarquerComponent implements OnInit {
   }
   initDescriptifForm() {
     this.descriptifForm = this.fb.group({
-      title: ['', Validators.required],
-      field: ['', Validators.required],
-      denomination: ['', Validators.required],
-      materialTechnique: ['', Validators.required],
+      title: [''],
+      field: [null],
+      denomination: [null],
+      materialTechnique: [''],
       numberOfUnit: [''],
       authors: [],
       creationDate: [],
@@ -202,64 +214,37 @@ export class AddRemarquerComponent implements OnInit {
     return of(true);
   }
   formatData() {
-    this.descriptifForm.get('height').value
-      ? this.descriptifForm
-          .get('height')
-          .setValue(+this.descriptifForm.get('height').value * +this.descriptifForm.get('heightUnit').value)
-      : '';
-    this.descriptifForm.get('length').value
-      ? this.descriptifForm
-          .get('length')
-          .setValue(+this.descriptifForm.get('length').value * +this.descriptifForm.get('lengthUnit').value)
-      : '';
-    this.descriptifForm.get('width').value
-      ? this.descriptifForm
-          .get('width')
-          .setValue(+this.descriptifForm.get('width').value * +this.descriptifForm.get('widthUnit').value)
-      : '';
-    this.descriptifForm.get('depth').value
-      ? this.descriptifForm
-          .get('depth')
-          .setValue(+this.descriptifForm.get('depth').value * +this.descriptifForm.get('depthUnit').value)
-      : '';
-    this.descriptifForm.get('diameter').value
-      ? this.descriptifForm
-          .get('diameter')
-          .setValue(+this.descriptifForm.get('diameter').value * +this.descriptifForm.get('diameterUnit').value)
-      : '';
-    this.descriptifForm.get('totalHeight').value
-      ? this.descriptifForm
-          .get('totalHeight')
-          .setValue(+this.descriptifForm.get('totalHeight').value * +this.descriptifForm.get('totalHeight').value)
-      : '';
-    this.descriptifForm.get('totalLength').value
-      ? this.descriptifForm
-          .get('totalLength')
-          .setValue(+this.descriptifForm.get('totalLength').value * +this.descriptifForm.get('totalLength').value)
-      : '';
-    this.descriptifForm.get('totalWidth').value
-      ? this.descriptifForm
-          .get('totalWidth')
-          .setValue(+this.descriptifForm.get('totalWidth').value * +this.descriptifForm.get('totalWidth').value)
-      : '';
+    const keys = ['height', 'width', 'length', 'totalHeight', 'totalWidth', 'totalLength', 'depth', 'diameter'];
+    keys.forEach((key: string) => {
+      this.descriptifForm
+        .get(key)
+        .setValue(+this.descriptifForm.get(key).value * +this.descriptifForm.get(key.concat('Unit')).value);
+    });
   }
   submit() {
-    if (!this.descriptifForm.valid) {
-      this.display = true;
-    } else {
-      this.descriptifForm.get('photographies').setValue(this.photographiesForm.value.photographies);
-      this.descriptifForm.get('hyperlinks').setValue(this.linksForm.value.hyperlinks);
-      this.descriptifForm.get('parent').setValue(this.linkArtWorkForm.value.parent);
-      this.propertyStatusForm.get('marking').setValue(this.descriptifForm.get('marking').value);
-      this.propertyStatusForm
-        .get('registrationSignature')
-        .setValue(this.descriptifForm.get('registrationSignature').value);
-      this.propertyStatusForm.get('descriptiveWords').setValue(this.descriptifForm.get('descriptiveWords').value);
-      this.propertyStatusForm.get('description').setValue(this.descriptifForm.get('description').value);
-      this.display = false;
-      this.descriptifForm.get('materialTechnique').setValue(this.descriptifForm.get('materialTechnique').value[0]);
-      this.formatData();
+    this.descriptifForm.get('photographies').setValue(this.photographiesForm.value.photographies);
+    this.descriptifForm.get('hyperlinks').setValue(this.linksForm.value.hyperlinks);
+    this.descriptifForm.get('parent').setValue(this.linkArtWorkForm.value.parent);
+    this.descriptifForm.get('attachments').setValue(this.attachmentForm.value.attachments);
+    this.propertyStatusForm.get('marking').setValue(this.descriptifForm.get('marking').value);
+    this.propertyStatusForm
+      .get('registrationSignature')
+      .setValue(this.descriptifForm.get('registrationSignature').value);
+    this.propertyStatusForm.get('descriptiveWords').setValue(this.descriptifForm.get('descriptiveWords').value);
+    this.propertyStatusForm.get('description').setValue(this.descriptifForm.get('description').value);
+    this.formatData();
+    if (this.addProperty) {
       this.workOfArtService.addWorkOfArt(this.descriptifForm.value).subscribe(
+        (result) => {
+          this.addSingle('success', 'Ajout', result.msg);
+          this.initForms();
+        },
+        (err) => {
+          this.addSingle('error', 'Ajout', "Une erreur est survenue lors de l'ajout");
+        }
+      );
+    } else {
+      this.workOfArtService.addDepositWorkOfArt(this.descriptifForm.value).subscribe(
         (res) => {
           this.addSingle('success', 'Ajout', 'La notice a été ajoutée avec succès');
           this.initForms();

@@ -41,6 +41,7 @@ export class LinksComponent implements OnInit {
       });
       this.artWorksData = this.artWorksData.concat(response.results);
     });
+    console.log(this.artWorksData);
   }
 
   search(event: any) {
