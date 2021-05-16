@@ -47,6 +47,7 @@ import { DialogModule } from 'primeng/dialog';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { RemarquerDetailsLinkRendererComponent } from './components/ng-dataTables/remarquer-details-link-renderer/remarquer-details-link-renderer.component';
 import { ToastModule } from 'primeng/toast';
+import { ChipModule } from 'primeng/chip';
 
 @NgModule({
   imports: [
@@ -80,6 +81,7 @@ import { ToastModule } from 'primeng/toast';
     DialogModule,
     AutoCompleteModule,
     ToastModule,
+    ChipModule,
   ],
   declarations: [
     LoaderComponent,

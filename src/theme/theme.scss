@@ -784,14 +784,20 @@ p-calendar {
 
 .p-carousel {
   .p-carousel-content {
+    .p-carousel-container {
+      .p-carousel .p-carousel-content .p-carousel-prev,
+      .p-carousel .p-carousel-content .p-carousel-next {
+        margin: 0px !important;
+      }
+    }
     .p-carousel-indicators {
       display: none;
     }
   }
 }
 .p-galleria {
-  min-width: 380;
-  width: 380px;
+  //min-width: 380;
+  //width: 380px;
   .p-galleria-thumbnail-container .p-galleria-thumbnail-prev,
   .p-galleria-thumbnail-container .p-galleria-thumbnail-next {
     color: black !important;
@@ -801,6 +807,15 @@ p-calendar {
   height: 60px;
   padding: 0.2rem 0.2rem !important;
   background-color: #f7f7f7 !important;
+}
+.p-galleria-item {
+  height: 22rem !important;
+  img {
+    max-width: 100% !important;
+    width: unset;
+    max-height: 22rem;
+    height: unset;
+  }
 }
 /** css drag and drop file **/
 ng-file-drag-drop {
@@ -812,22 +827,44 @@ ng-file-drag-drop {
     }
   }
 }
-.p-multiselect.p-multiselect-chip .p-multiselect-token {
-  max-width: 15rem;
-  min-width: 10rem;
-  overflow: hidden;
-}
 .p-multiselect-label-container {
   overflow: hidden;
-  //max-width: 15rem;
-  //min-width: 10rem;
+  max-width: 15rem;
+  min-width: 10rem;
 }
 
 .p-toast-top-right {
   z-index: 1055 !important;
 }
-.p-autocomplete .p-autocomplete-panel {
-  min-width: 100%;
-  max-width: 100%;
-  font-size: 12px;
+
+.p-autocomplete {
+  display: block !important;
+  .p-autocomplete-panel {
+    min-width: 100%;
+    max-width: 100%;
+    font-size: 12px;
+  }
+  .p-autocomplete-input {
+    min-width: 100%;
+    max-width: 100%;
+  }
+  .p-inputtext {
+    font-size: 12px !important;
+  }
+}
+
+.valid-btn {
+  background-color: #00d6d4;
+  font-size: 10px;
+  color: white;
+  border: none;
+  border-radius: 0px;
+}
+.cancel-btn,
+cancel-btn:hover cancel-btn:focus {
+  background-color: #6c7681c9;
+  color: white;
+  font-size: 10px;
+  border: none;
+  border-radius: 0px;
 }

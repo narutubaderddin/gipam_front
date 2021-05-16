@@ -86,7 +86,7 @@ export class CommunesComponent implements OnInit {
     {
       header: 'Date début de validité',
       field: 'startDate',
-      type: 'key',
+      type: 'date',
       filter: true,
       filterType: 'range-date',
       sortable: true,
@@ -95,7 +95,7 @@ export class CommunesComponent implements OnInit {
     {
       header: 'Date fin de validité',
       field: 'disappearanceDate',
-      type: 'key',
+      type: 'date',
       filter: true,
       filterType: 'range-date',
       sortable: true,

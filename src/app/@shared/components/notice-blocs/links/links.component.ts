@@ -13,10 +13,22 @@ export class LinksComponent implements OnInit {
   @ViewChild('autocompletePanel') autocompletePanel: any;
   @Input() linkArtWorkForm: FormGroup;
   @Input() add: false;
+  @Input() itemDetails: boolean = false;
+
+  addLinks: boolean = false;
   artWorksData: any[] = [];
   page = 1;
   query = '';
-  private same = true;
+  same = true;
+  deleteDialog: boolean = false;
+  itemToDelete: string = '';
+  selectedItem: any;
+  existingLinks: any[] = [
+    {
+      url: 'string',
+      name: 'string',
+    },
+  ];
 
   constructor(
     private artWorkService: ArtWorkService,
@@ -71,5 +83,37 @@ export class LinksComponent implements OnInit {
   handleSelect(item: any) {
     this.linkArtWorkForm.get('parent').setValue(item.id);
     console.log(this.linkArtWorkForm);
+  }
+  addNewLinks() {
+    this.addLinks = !this.addLinks;
+  }
+  addLink() {
+    this.existingLinks.push({
+      // i: this.photographyInsertionNumber,
+      url: 'string',
+      name: 'string',
+    });
+  }
+  cancelLink() {
+    this.addLinks = !this.addLinks;
+  }
+  delete(item: string) {
+    this.deleteDialog = true;
+    this.itemToDelete = item['name'];
+    this.selectedItem = item;
+  }
+  cancelDelete() {
+    this.deleteDialog = false;
+    this.itemToDelete = '';
+  }
+  removeLink(i: number) {
+    this.existingLinks.splice(i, 1);
+    this.deleteDialog = false;
+  }
+  getIndex(el: any) {
+    return this.existingLinks.indexOf(el);
+  }
+  editLink() {
+    this.addLinks = !this.addLinks;
   }
 }
