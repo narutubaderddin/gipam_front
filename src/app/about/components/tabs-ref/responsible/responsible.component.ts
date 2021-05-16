@@ -8,7 +8,13 @@ import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
-import { datePickerDateFormat, dateTimeFormat } from '@shared/utils/helpers';
+import {
+  datePickerDateFormat,
+  dateTimeFormat,
+  getMultiSelectIds,
+  markAsDirtyDeep,
+  towDatesCompare,
+} from '@shared/utils/helpers';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -39,11 +45,41 @@ export class ResponsibleComponent implements OnInit {
     startDate: '';
     endDate: '';
   };
+
+  relatedEntities: {
+    regions: any[];
+    departments: any[];
+    communes: any[];
+    sites: any[];
+    buildings: any[];
+  } = {
+    regions: [],
+    departments: [],
+    communes: [],
+    sites: [],
+    buildings: [],
+  };
+
+  selectedRelated: {
+    region: any;
+    departments: any[];
+    commune: any;
+    site: any;
+    buildings: any[];
+  } = {
+    region: null,
+    departments: [],
+    commune: null,
+    site: null,
+    buildings: [],
+  };
+
   buildings: any[] = [];
 
   activeBuildings: any[] = [];
 
   selectedBuildings: any[] = [];
+  selectedDepartments: any[] = [];
 
   itemToEdit: any;
   itemToDelete: string;
@@ -75,14 +111,21 @@ export class ResponsibleComponent implements OnInit {
   today: string;
 
   relatedBuildingsColumn = {
-    header: 'Bâtiment',
+    header: 'Bâtiments',
     field: 'buildings',
-    type: 'key-array',
-    key_data: ['buildings', 'name'],
+    type: 'key-multiple-data',
+    key_multiple_data: ['buildings', 'name'],
     filter: true,
     filterType: 'multiselect',
     placeholder: 'Bâtiments',
     selectData: this.buildings,
+  };
+
+  relatedDepartmentsColumn = {
+    header: 'Départements',
+    field: 'departments',
+    type: 'key-multiple-data',
+    key_multiple_data: ['departments', 'name'],
   };
 
   columns = [
@@ -135,7 +178,8 @@ export class ResponsibleComponent implements OnInit {
       filterType: 'text',
       sortable: true,
     },
-
+    this.relatedDepartmentsColumn,
+    this.relatedBuildingsColumn,
     {
       header: 'Date début de validité',
       field: 'startDate',
@@ -204,10 +248,24 @@ export class ResponsibleComponent implements OnInit {
       mail: [this.selectedItem ? this.selectedItem.mail : '', [Validators.email]],
       startDate: [startDate, [Validators.required]],
       endDate: [disappearanceDate, []],
-      buildings: [this.selectedBuildings ? this.selectedBuildings : { name: '' }, []],
+      buildings: [
+        {
+          value: this.selectedBuildings,
+          disabled: !this.selectedRelated.commune && !this.selectedRelated.site && this.selectedBuildings.length === 0,
+        },
+        [],
+      ],
+      departments: [
+        {
+          value: this.selectedDepartments,
+          disabled: !this.selectedRelated.region && this.selectedDepartments.length === 0,
+        },
+        [],
+      ],
     });
-    this.tabForm.setValidators(this.ValidateDate());
+    this.tabForm.setValidators(towDatesCompare('startDate', 'endDate'));
   }
+
   initFilterData() {
     const data = {
       page: 1,
@@ -217,9 +275,6 @@ export class ResponsibleComponent implements OnInit {
     forkJoin([this.simpleTabsRef.getAllItems(data, 'buildings')]).subscribe(
       ([relatedServicesResults]) => {
         this.buildings = this.simpleTabsRef.getTabRefFilterData(relatedServicesResults.results);
-        this.activeBuildings = this.simpleTabsRef
-          .getTabRefFilterData(relatedServicesResults.results)
-          .filter((value: any) => this.isActive(value.disappearanceDate));
         this.relatedBuildingsColumn.selectData = this.buildings;
       },
       (error: any) => {
@@ -228,56 +283,52 @@ export class ResponsibleComponent implements OnInit {
     );
   }
 
+  initRegionsDropdowns() {
+    const data = {
+      page: 1,
+      serializer_group: JSON.stringify(['short']),
+    };
+    forkJoin([this.simpleTabsRef.getAllItems(data, 'regions')]).subscribe(
+      ([regionsResults]) => {
+        this.relatedEntities.regions = regionsResults.results;
+      },
+      (error: any) => {
+        this.addSingle('error', 'Erreur Technique', 'Une erreur technique est survenue');
+      }
+    );
+  }
+
   openModal(item: any) {
+    this.resetRelatedEntities();
+    this.initRegionsDropdowns();
+
     this.btnLoading = null;
 
-    if (this.editItem || this.addItem) {
-      this.initFilterData();
-    }
     if (this.editItem || this.editVisibility) {
       this.itemToEdit = item;
       this.itemLabel = item.firstName + ' ' + item.lastName;
-      if (item.buildings) {
-        item.buildings.map((el: any) => {
-          this.selectedBuildings.push({ id: el.id, name: el.name });
-        });
-      }
+      this.selectedDepartments = item.departments;
+      this.relatedEntities.departments = item.departments;
+      this.selectedBuildings = item.buildings;
+      this.relatedEntities.buildings = item.buildings;
+      this.tabForm.get('departments').enable();
+      this.tabForm.get('buildings').enable();
+      console.log('selected buildings', item.buildings);
     }
     this.selectedItem = item;
     this.initForm();
-    this.myModal = this.modalService.open(this.modalRef, { centered: true });
-  }
-
-  onSelectBuildings(event: Event) {}
-  onSelectAll(items: any) {}
-
-  ValidateDate(): ValidatorFn {
-    return (cc: FormGroup): ValidationErrors => {
-      if (!cc.get('startDate')) {
-        return null;
-      }
-      if (cc.get('startDate').value > cc.get('endDate').value) {
-        return { dateInvalid: 'Date début supérieur date fin' };
-      }
-      return null;
-    };
-  }
-
-  transformDateToDateTime(input: string, format: string, addTime: boolean = true) {
-    // 1984-06-05 12:15:30
-    if (input !== '' && input) {
-      if (addTime) {
-        return this.datePipe.transform(input, format) + ' 00:00:00';
-      }
-      return this.datePipe.transform(input, format);
-    }
-    return '';
+    this.myModal = this.modalService.open(this.modalRef, { centered: true, scrollable: true });
   }
 
   submit() {
+    if (this.tabForm.invalid) {
+      markAsDirtyDeep(this.tabForm);
+      this.addSingle('error', 'Erreur', 'Veuillez vérifier tous les champs encadrés en rouge');
+      return;
+    }
+
     this.btnLoading = null;
-    const selectedBuildings: any[] = [];
-    this.tabForm.value.buildings.map((el: any) => selectedBuildings.push(el.id));
+    // this.tabForm.value.buildings.map((el: any) => selectedBuildings.push(el.id));
 
     const item = {
       firstName: this.tabForm.value.firstName,
@@ -287,7 +338,8 @@ export class ResponsibleComponent implements OnInit {
       phone: this.tabForm.value.phone,
       fax: this.tabForm.value.fax,
       mail: this.tabForm.value.mail,
-      buildings: selectedBuildings,
+      buildings: getMultiSelectIds(this.tabForm.value.buildings),
+      departments: getMultiSelectIds(this.tabForm.value.departments),
       startDate: this.datePipe.transform(this.tabForm.value.startDate, dateTimeFormat),
       endDate: this.datePipe.transform(this.tabForm.value.endDate, dateTimeFormat),
     };
@@ -304,6 +356,7 @@ export class ResponsibleComponent implements OnInit {
     this.addItem = false;
     this.deleteItems = false;
     this.editVisibility = false;
+    this.selectedDepartments = [];
     this.selectedBuildings = [];
     this.myModal.dismiss('Cross click');
   }
@@ -327,7 +380,6 @@ export class ResponsibleComponent implements OnInit {
   addItemAction() {
     this.addItem = true;
     this.selectedItem = null;
-    this.selectedBuildings = [];
 
     this.openModal('');
   }
@@ -352,8 +404,64 @@ export class ResponsibleComponent implements OnInit {
     this.openModal(item);
   }
 
+  getDropdownData(entity: string, relatedEntityName?: string, relatedEntity?: any) {
+    const params = {
+      page: 1,
+      serializer_group: JSON.stringify(['short']),
+      'disappearanceDate[gtOrNull]': this.datePipe.transform(new Date(), dateTimeFormat),
+    };
+    if (relatedEntity) {
+      params[relatedEntityName + '[eq]'] = relatedEntity.id;
+    }
+    this.resetRelatedEntities(relatedEntityName);
+    entity = entity + 's';
+    this.relatedEntities[entity] = [];
+    this.simpleTabsRef.getAllItems(params, entity).subscribe((dataResult) => {
+      this.relatedEntities[entity] = dataResult.results;
+    });
+  }
+
+  resetRelatedEntities(relatedEntityName?: string) {
+    if (!relatedEntityName) {
+      Object.keys(this.selectedRelated).forEach((key) => {
+        this.selectedRelated[key] = null;
+      });
+      Object.keys(this.relatedEntities).forEach((key) => {
+        this.relatedEntities[key] = [];
+      });
+    }
+    if (relatedEntityName === 'region') {
+      this.tabForm.get('departments').setValue(null);
+      this.tabForm.get('departments').enable();
+    }
+    if (relatedEntityName === 'site') {
+      this.tabForm.get('buildings').setValue(null);
+      this.tabForm.get('buildings').enable();
+      this.relatedEntities.communes = [];
+      this.selectedRelated.commune = null;
+    }
+    if (relatedEntityName === 'commune') {
+      this.tabForm.get('buildings').setValue(null);
+      this.tabForm.get('buildings').enable();
+      this.relatedEntities.sites = [];
+      this.selectedRelated.site = null;
+    }
+  }
+
+  autoComplete(event: any, entity: string, field: string) {
+    const params = {
+      page: 1,
+      serializer_group: JSON.stringify(['short']),
+    };
+    params[field + '[startsWith]'] = event.query;
+    entity = entity + 's';
+    this.simpleTabsRef.getAllItems(params, entity).subscribe((dataResult) => {
+      this.relatedEntities[entity] = dataResult.results;
+    });
+  }
+
   isActive(endDate: string) {
-    const today = this.datePipe.transform(new Date(), 'yyyy/MM/dd');
+    const today = this.datePipe.transform(new Date(), datePickerDateFormat);
     return !(endDate !== '' && endDate && endDate <= today);
   }
 
@@ -372,7 +480,7 @@ export class ResponsibleComponent implements OnInit {
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results.map((item: any) => {
-          return Object.assign({ active: this.isActive(item.disappearanceDate) }, item);
+          return Object.assign({ active: this.isActive(item.endDate) }, item);
         });
 
         this.totalFiltred = result.filteredQuantity;
@@ -435,7 +543,12 @@ export class ResponsibleComponent implements OnInit {
         this.addItem = false;
       },
       (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
+        if (error.error.code !== 400) {
+          this.addSingle('error', 'Ajout', error.error.message);
+        } else {
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        }
+        this.btnLoading = null;
       }
     );
   }
@@ -455,7 +568,12 @@ export class ResponsibleComponent implements OnInit {
       },
 
       (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
+        if (error.error.code !== 400) {
+          this.addSingle('error', 'Modification', error.error.message);
+        } else {
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        }
+        this.btnLoading = null;
       }
     );
   }
@@ -492,6 +610,7 @@ export class ResponsibleComponent implements OnInit {
     this.dataTableSearchBar = { search: input };
     this.getAllItems();
   }
+
   ClearSearch(event: Event, input: string) {
     if (!event['inputType']) {
       this.search(input);

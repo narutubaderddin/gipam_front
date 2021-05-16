@@ -78,19 +78,18 @@
   </div>
 </div>
 <ng-template #content let-modal>
-  <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
-    <div class="modal-header">
-      <h4 class="modal-title" *ngIf="editItem">Modification de responsable "{{ itemLabel }}"</h4>
-      <h4 class="modal-title" *ngIf="addItem">Ajout de responsable</h4>
-      <h4 class="modal-title" *ngIf="deleteItems">Suppression de responsable "{{ itemLabel }}"</h4>
-      <h4 class="modal-title" *ngIf="editVisibility">Activation / désactivation de responsable " {{ itemLabel }}"</h4>
-      <button type="button" class="close" aria-label="Close" (click)="close()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer le responsable "{{ itemLabel }}" ?</div>
-
+  <div class="modal-header">
+    <h4 class="modal-title" *ngIf="editItem">Modification de responsable "{{ itemLabel }}"</h4>
+    <h4 class="modal-title" *ngIf="addItem">Ajout de responsable</h4>
+    <h4 class="modal-title" *ngIf="deleteItems">Suppression de responsable "{{ itemLabel }}"</h4>
+    <h4 class="modal-title" *ngIf="editVisibility">Activation / désactivation de responsable " {{ itemLabel }}"</h4>
+    <button type="button" class="close" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer le responsable "{{ itemLabel }}" ?</div>
+    <form [formGroup]="tabForm">
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-5">Nom<span class="mandatory"> *</span></label>
         <input
@@ -148,31 +147,114 @@
           formControlName="login"
         />
       </div>
+      <hr class="mt-1 mb-1" *ngIf="editItem || addItem" />
+      <div class="col-md-12 form-sections mb-1 text-muted" *ngIf="editItem || addItem">
+        <span class="text-muted">Départements:</span>
+      </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
+        <label class="col-sm-5">Région</label>
+        <div class="select col-sm-7 p-0">
+          <p-dropdown
+            [options]="relatedEntities.regions"
+            optionLabel="name"
+            [placeholder]="'Filtrer par région'"
+            emptyFilterMessage="Aucun résultat trouvé"
+            [filter]="true"
+            [filterBy]="'name'"
+            [virtualScroll]="true"
+            itemSize="5"
+            (onChange)="getDropdownData('department', 'region', selectedRelated.region)"
+            [(ngModel)]="selectedRelated.region"
+            [ngModelOptions]="{ standalone: true }"
+          ></p-dropdown>
+        </div>
+      </div>
+      <div
+        class="form-group col-md-12 d-flex justify-content-between align-items-baseline mb-4"
+        *ngIf="editItem || addItem"
+      >
+        <label class="col-sm-5">Départements</label>
+        <div class="autocomplete form-control value col-12 col-sm-7">
+          <p-multiSelect
+            [options]="relatedEntities.departments"
+            class="col-md-7 p-0"
+            formControlName="departments"
+            optionLabel="name"
+            display="chip"
+            placeholder="Sélectionner des départements"
+            aria-describedby="departmentHelp"
+          >
+          </p-multiSelect>
+          <p id="departmentHelp" class="form-text text-muted">Filtrer Départements par Region</p>
+        </div>
+      </div>
+      <hr class="mt-1 mb-1" *ngIf="editItem || addItem" />
+      <p class="col-md-12 form-sections mb-1 text-muted" *ngIf="editItem || addItem">Bâtiments:</p>
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
+        <label class="col-sm-5">Commune</label>
+        <div class="select col-sm-7 p-0">
+          <p-autoComplete
+            [minLength]="3"
+            field="name"
+            emptyMessage="Aucun résultat trouvé"
+            placeholder="Filtrer par commune"
+            (completeMethod)="autoComplete($event, 'commune', 'name')"
+            (onSelect)="getDropdownData('building', 'commune', selectedRelated.commune)"
+            [suggestions]="relatedEntities.communes"
+            [(ngModel)]="selectedRelated.commune"
+            [ngModelOptions]="{ standalone: true }"
+          ></p-autoComplete>
+        </div>
+      </div>
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
+        <label class="col-sm-5">Site</label>
+        <div class="col-sm-7 p-0">
+          <p-autoComplete
+            [minLength]="3"
+            field="label"
+            emptyMessage="Aucun résultat trouvé"
+            placeholder="Filtrer par site"
+            (completeMethod)="autoComplete($event, 'site', 'label')"
+            (onSelect)="getDropdownData('building', 'site', selectedRelated.site)"
+            [suggestions]="relatedEntities.sites"
+            [(ngModel)]="selectedRelated.site"
+            [ngModelOptions]="{ standalone: true }"
+          ></p-autoComplete>
+        </div>
+      </div>
+      <div
+        class="form-group col-md-12 d-flex justify-content-between align-items-baseline mb-4"
+        *ngIf="editItem || addItem"
+      >
         <label class="col-sm-5">Bâtiments</label>
         <div class="autocomplete form-control value col-12 col-sm-7">
           <p-multiSelect
-            [options]="activeBuildings"
+            [options]="relatedEntities.buildings"
             class="col-md-7 p-0"
             formControlName="buildings"
             optionLabel="name"
             display="chip"
-            [placeholder]="selectedBuildings && editItem ? selectedBuildings : 'Sélectionner des bâtiments'"
+            placeholder="Sélectionner des bâtiments"
+            aria-describedby="buildingHelp"
           >
           </p-multiSelect>
+          <p id="buildingHelp" class="form-text text-muted">Filtrer Bâtiments par Site ou par Commune</p>
         </div>
+      </div>
+      <hr class="mt-1 mb-1" *ngIf="addItem" />
+      <div class="col-md-12 form-sections mb-1" *ngIf="addItem">
+        <span class="text-muted">Dates de validité:</span>
       </div>
       <div
         class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
-        *ngIf="editItem || addItem || editVisibility"
+        *ngIf="addItem || editVisibility"
       >
         <label class="col-sm-5">Date début de validité<span class="mandatory"> *</span></label>
         <input type="date" name="datepicker" class="form-control date-input col-sm-7" formControlName="startDate" />
       </div>
-
       <div
         class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
-        *ngIf="editItem || addItem || editVisibility"
+        *ngIf="addItem || editVisibility"
       >
         <label class="col-sm-5">Date fin de validité</label>
         <input
@@ -183,30 +265,37 @@
           [class.ng-invalid]="tabForm.errors && tabForm.errors.dateInvalid"
         />
       </div>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-light cancel-btn" (click)="close()">Annuler</button>
-      <button
-        type="submit"
-        class="btn btn-light valid-btn"
-        *ngIf="editItem || editVisibility"
-        [attr.disabled]="btnLoading"
-      >
-        Modifier
-      </button>
-      <button type="submit" class="btn btn-light valid-btn" *ngIf="addItem" [attr.disabled]="btnLoading">
-        Ajouter
-      </button>
-      <button
-        type="button"
-        class="btn btn-light valid-btn"
-        *ngIf="deleteItems"
-        (click)="deleteItemss(itemToDelete)"
-        [attr.disabled]="btnLoading"
-      >
-        Supprimer
-      </button>
-    </div>
-  </form>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light cancel-btn" (click)="close()">Annuler</button>
+    <button
+      type="submit"
+      class="btn btn-light valid-btn"
+      *ngIf="editItem || editVisibility"
+      [attr.disabled]="btnLoading"
+      (click)="submit()"
+    >
+      Modifier
+    </button>
+    <button
+      type="submit"
+      class="btn btn-light valid-btn"
+      *ngIf="addItem"
+      [attr.disabled]="btnLoading"
+      (click)="submit()"
+    >
+      Ajouter
+    </button>
+    <button
+      type="button"
+      class="btn btn-light valid-btn"
+      *ngIf="deleteItems"
+      (click)="deleteItemss(itemToDelete)"
+      [attr.disabled]="btnLoading"
+    >
+      Supprimer
+    </button>
+  </div>
 </ng-template>
 <p-toast></p-toast>

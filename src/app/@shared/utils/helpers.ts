@@ -38,7 +38,7 @@ export function towDatesCompare(startDateName: string, disappearanceDateName: st
 
 export function getMultiSelectIds(results: any[]) {
   const items: any[] = [];
-  results.forEach((item: any) => {
+  results?.forEach((item: any) => {
     items.push(item.id);
   });
   return items;
