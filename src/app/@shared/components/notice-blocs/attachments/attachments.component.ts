@@ -96,7 +96,6 @@ export class AttachmentsComponent implements OnInit {
     };
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
-        console.log(result);
         this.types = result.results;
       },
       (error: any) => {}
@@ -116,7 +115,6 @@ export class AttachmentsComponent implements OnInit {
     this.filesProperties[index].edit = false;
   }
   getUploadedFiles(files: any) {
-    console.log(files);
     this.addedFile = files[files.length - 1];
   }
 

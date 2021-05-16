@@ -86,7 +86,6 @@ export class AddRemarquerComponent implements OnInit, DirtyComponent {
   canDeactivate() {
     return this.isDirty;
   }
-
   initForms() {
     this.initPropertyStatusForm();
     this.initDepositStatusForm();

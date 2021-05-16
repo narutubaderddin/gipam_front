@@ -29,7 +29,9 @@ export class HypertextLinksComponent implements OnInit {
   }
   constructor(private fb: FormBuilder) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.configForm();
+  }
 
   createAttachment(attachment?: any, attachmentType?: any): FormGroup {
     return this.fb.group({

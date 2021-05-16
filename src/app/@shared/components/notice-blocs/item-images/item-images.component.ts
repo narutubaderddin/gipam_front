@@ -23,13 +23,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   photographyDate: Date = new Date();
   photographyType: any[] = [];
   previousPhotographyType: any[] = [];
-  types: any[] = [
-    { name: 'Identification' },
-    { name: 'Autre vue' },
-    { name: 'Détail' },
-    { name: 'Etat' },
-    { name: 'Ancien cliché' },
-  ];
+  types: any[];
   fileToUpload: any;
   imageName: any = '';
   // images: any = [];
@@ -87,7 +81,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     };
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
-        console.log(result);
         this.types = result.results;
       },
       (error: any) => {}
@@ -143,7 +136,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
           alt: 'description',
           image: this.imageName,
         });
-        console.log(typeof this.buildFormData(this.fileToUpload));
         this.photographies.push(
           this.createPhotography(
             this.buildFormData(this.fileToUpload),
@@ -152,7 +144,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
             this.imageName
           )
         );
-        console.log('validation', this.photographies);
       } else {
         this.editPhotographyForm(
           this.selectedPhotography,
@@ -176,7 +167,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   }
   handleFileInput(file: FileList) {
     this.fileToUpload = file.item(0);
-    console.log(this.buildFormData(this.fileToUpload));
     let reader = new FileReader();
     reader.onload = (event: any) => {
       this.photography = event.target.result;
