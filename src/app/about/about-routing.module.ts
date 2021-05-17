@@ -43,8 +43,7 @@ import { AttachmentTypesComponent } from '@app/about/components/tabs-ref/attachm
 import { PhotographyTypesComponent } from '@app/about/components/tabs-ref/photographyTypes/photographyTypes.component';
 import { PersonsComponent } from '@app/about/components/tabs-ref/persons/persons.component';
 import { DepositorsComponent } from '@app/about/components/tabs-ref/depositors/depositors.component';
-import { DirtyCheckGuard } from '@shared/guards/dirty-check.guard';
-import { NameFormCanDeactivateGuard } from '@app/about/components/add-remarquer/name-form.can-deactivate.guard';
+import { DirtyCheckGuard } from '@app/about/components/add-remarquer/dirty-check.guard';
 import { RoomsComponent } from '@app/about/components/tabs-ref/rooms/rooms.component';
 import { AuthorsComponent } from '@app/about/components/tabs-ref/authors/authors.component';
 import { ReportModelsComponent } from '@app/about/components/tabs-ref/report-models/report-models.component';

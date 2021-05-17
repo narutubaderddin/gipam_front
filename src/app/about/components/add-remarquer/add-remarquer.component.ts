@@ -4,18 +4,15 @@ import { NgWizardConfig, NgWizardService, StepChangedArgs, StepValidationArgs, T
 import { Observable, of } from 'rxjs';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { DirtyComponent } from '@shared/components/dirty-component';
-import set = Reflect.set;
-import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-remarquer',
   templateUrl: './add-remarquer.component.html',
   styleUrls: ['./add-remarquer.component.scss'],
 })
-export class AddRemarquerComponent implements OnInit, DirtyComponent {
+export class AddRemarquerComponent implements OnInit {
   @ViewChild('content') ngTemplate: ElementRef;
   btnLoading: any = null;
   descriptifForm: FormGroup;
@@ -83,7 +80,7 @@ export class AddRemarquerComponent implements OnInit, DirtyComponent {
     this.descriptifForm.valueChanges.subscribe((e) => (this.isDirty = true));
   }
 
-  canDeactivate() {
+  canDeactivate(): boolean | Observable<boolean> {
     return this.isDirty;
   }
   initForms() {

@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { CanDeactivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { DirtyComponent } from '../components/dirty-component';
+import { AddRemarquerComponent } from '@app/about/components/add-remarquer/add-remarquer.component';
 
 @Injectable({
   providedIn: 'root',
 })
-export class DirtyCheckGuard implements CanDeactivate<DirtyComponent> {
+export class DirtyCheckGuard implements CanDeactivate<AddRemarquerComponent> {
   canDeactivate(
-    component: DirtyComponent,
+    component: AddRemarquerComponent,
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
