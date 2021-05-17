@@ -668,6 +668,9 @@ li a i:hover {
 input,
 select,
 ng-multiselect-dropdown,
+.p-autoComplete,
+.p-multiSelect,
+.p-dropdown,
 textarea,
 .dropdown-btn {
   &:not(.novalidate) {
@@ -675,6 +678,11 @@ textarea,
       border: 2px solid $red !important;
       border-radius: 3px !important;
       box-shadow: 1px 1px 3px $red !important;
+    }
+
+    &.ng-invalid.ng-dirty:not(form) {
+      border: 1px solid $red !important;
+      border-radius: 3px !important;
     }
 
     &.ng-invalid.ng-touched:not(form) {

@@ -8,7 +8,13 @@ import { MessageService } from 'primeng/api';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 import { DatePipe } from '@angular/common';
-import { datePickerDateFormat, dateTimeFormat, towDatesCompare, viewDateFormat } from '@shared/utils/helpers';
+import {
+  datePickerDateFormat,
+  dateTimeFormat,
+  markAsDirtyDeep,
+  towDatesCompare,
+  viewDateFormat,
+} from '@shared/utils/helpers';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -355,17 +361,20 @@ export class ReservesComponent implements OnInit {
 
   openModal(item: any) {
     this.initFormDropdowns();
+    this.selectedRelatedRoom = null;
+    this.tabForm.get('room').setValue('');
     this.btnLoading = null;
     if (this.editItem || this.editVisibility) {
-      this.loadingDropdownData = true;
       this.itemToEdit = item;
       this.itemLabel = item.label;
+    }
+    if (this.editItem) {
+      this.loadingDropdownData = true;
       this.selectedRelatedRoom = {
         id: item.room ? item.room.id : '',
         reference: item.room ? item.room.reference : '',
       };
       this.fillDropDowns(item);
-      console.log('selected item', item);
     }
     this.selectedItem = item;
     this.initForm();
@@ -373,19 +382,34 @@ export class ReservesComponent implements OnInit {
   }
 
   submit() {
+    if (this.tabForm.invalid || !this.tabForm.get('room').value) {
+      markAsDirtyDeep(this.tabForm);
+      this.addSingle('error', 'Erreur', 'Veuillez vérifier tous les champs encadrés en rouge');
+      return;
+    }
     this.btnLoading = null;
-
-    const item = {
-      label: this.tabForm.value.label,
-      room: this.tabForm.value.room.id,
-      startDate: this.datePipe.transform(this.tabForm.value.startDate, dateTimeFormat),
-      endDate: this.datePipe.transform(this.tabForm.value.endDate, dateTimeFormat),
-    };
+    let item = {};
+    if (this.addItem || this.editItem) {
+      item = {
+        label: this.tabForm.value.label,
+        room: this.tabForm.value.room.id,
+        startDate: this.datePipe.transform(this.tabForm.value.startDate, dateTimeFormat),
+        endDate: this.datePipe.transform(this.tabForm.value.endDate, dateTimeFormat),
+      };
+    }
     if (this.addItem) {
       this.addItems(item);
+      return;
+    }
+    if (this.editVisibility) {
+      item = {
+        startDate: this.datePipe.transform(this.tabForm.value.startDate, dateTimeFormat),
+        endDate: this.datePipe.transform(this.tabForm.value.endDate, dateTimeFormat),
+      };
     }
     if (this.editItem || this.editVisibility) {
       this.editField(item, this.itemToEdit.id);
+      return;
     }
   }
 
@@ -522,7 +546,7 @@ export class ReservesComponent implements OnInit {
     this.simpleTabsRef.editItem(item, id).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Modification', 'Entité ' + item.label + ' modifiée avec succés');
+        this.addSingle('success', 'Modification', 'Entité ' + this.itemLabel + ' modifiée avec succés');
         this.getAllItems();
         this.editItem = false;
         this.editVisibility = false;

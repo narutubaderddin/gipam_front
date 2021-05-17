@@ -91,21 +91,23 @@
     <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer le responsable "{{ itemLabel }}" ?</div>
     <form [formGroup]="tabForm">
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Nom<span class="mandatory"> *</span></label>
+        <label for="firstName" class="col-sm-5">Nom<span class="mandatory"> *</span></label>
         <input
+          formControlName="firstName"
+          id="firstName"
           type="text"
           class="form-control col-sm-7"
           value="{{ editItem ? selectedItem.firstName : '' }}"
-          formControlName="firstName"
         />
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Prénom<span class="mandatory"> *</span></label>
+        <label for="lastName" class="col-sm-5">Prénom<span class="mandatory"> *</span></label>
         <input
+          formControlName="lastName"
+          id="lastName"
           type="text"
           class="form-control col-sm-7"
           value="{{ editItem ? selectedItem.firstName : '' }}"
-          formControlName="lastName"
         />
       </div>
 
@@ -120,22 +122,22 @@
         />
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Fax</label>
+        <label class="col-sm-5">Fax<span class="mandatory"> *</span></label>
         <input
+          formControlName="fax"
           type="number"
           min="0"
           class="form-control col-sm-7"
           value="{{ editItem ? selectedItem.fax : '' }}"
-          formControlName="fax"
         />
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">E-mail</label>
+        <label class="col-sm-5">E-mail<span class="mandatory"> *</span></label>
         <input
+          formControlName="mail"
           type="text"
           class="form-control col-sm-7"
           value="{{ editItem ? selectedItem.mail : '' }}"
-          formControlName="mail"
         />
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
@@ -147,49 +149,37 @@
           formControlName="login"
         />
       </div>
-      <hr class="mt-1 mb-1" *ngIf="editItem || addItem" />
-      <div class="col-md-12 form-sections mb-1 text-muted" *ngIf="editItem || addItem">
-        <span class="text-muted">Départements:</span>
-      </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-5">Région</label>
         <div class="select col-sm-7 p-0">
           <p-dropdown
+            formControlName="region"
             [options]="relatedEntities.regions"
             optionLabel="name"
-            [placeholder]="'Filtrer par région'"
+            [placeholder]="'Sélectionner une région'"
             emptyFilterMessage="Aucun résultat trouvé"
             [filter]="true"
             [filterBy]="'name'"
             [virtualScroll]="true"
+            (onChange)="getDropdownData('department', 'region', tabForm.get('region').value)"
             itemSize="5"
-            (onChange)="getDropdownData('department', 'region', selectedRelated.region)"
-            [(ngModel)]="selectedRelated.region"
-            [ngModelOptions]="{ standalone: true }"
           ></p-dropdown>
         </div>
       </div>
-      <div
-        class="form-group col-md-12 d-flex justify-content-between align-items-baseline mb-4"
-        *ngIf="editItem || addItem"
-      >
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-5">Départements</label>
         <div class="autocomplete form-control value col-12 col-sm-7">
           <p-multiSelect
+            formControlName="departments"
             [options]="relatedEntities.departments"
             class="col-md-7 p-0"
-            formControlName="departments"
             optionLabel="name"
             display="chip"
             placeholder="Sélectionner des départements"
-            aria-describedby="departmentHelp"
           >
           </p-multiSelect>
-          <p id="departmentHelp" class="form-text text-muted">Filtrer Départements par Region</p>
         </div>
       </div>
-      <hr class="mt-1 mb-1" *ngIf="editItem || addItem" />
-      <p class="col-md-12 form-sections mb-1 text-muted" *ngIf="editItem || addItem">Bâtiments:</p>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-5">Commune</label>
         <div class="select col-sm-7 p-0">
@@ -197,8 +187,8 @@
             [minLength]="3"
             field="name"
             emptyMessage="Aucun résultat trouvé"
-            placeholder="Filtrer par commune"
-            (completeMethod)="autoComplete($event, 'commune', 'name')"
+            placeholder="Filtrer bâtiments par commune"
+            (completeMethod)="autoComplete($event, 'commune', 'name', 'department', tabForm.get('departments').value)"
             (onSelect)="getDropdownData('building', 'commune', selectedRelated.commune)"
             [suggestions]="relatedEntities.communes"
             [(ngModel)]="selectedRelated.commune"
@@ -213,7 +203,7 @@
             [minLength]="3"
             field="label"
             emptyMessage="Aucun résultat trouvé"
-            placeholder="Filtrer par site"
+            placeholder="Filtrer bâtiments par site"
             (completeMethod)="autoComplete($event, 'site', 'label')"
             (onSelect)="getDropdownData('building', 'site', selectedRelated.site)"
             [suggestions]="relatedEntities.sites"
@@ -222,10 +212,7 @@
           ></p-autoComplete>
         </div>
       </div>
-      <div
-        class="form-group col-md-12 d-flex justify-content-between align-items-baseline mb-4"
-        *ngIf="editItem || addItem"
-      >
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-5">Bâtiments</label>
         <div class="autocomplete form-control value col-12 col-sm-7">
           <p-multiSelect
@@ -241,12 +228,8 @@
           <p id="buildingHelp" class="form-text text-muted">Filtrer Bâtiments par Site ou par Commune</p>
         </div>
       </div>
-      <hr class="mt-1 mb-1" *ngIf="addItem" />
-      <div class="col-md-12 form-sections mb-1" *ngIf="addItem">
-        <span class="text-muted">Dates de validité:</span>
-      </div>
       <div
-        class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
+        class="form-group col-md-12 d-flex justify-content-between align-items-baseline mt-4"
         *ngIf="addItem || editVisibility"
       >
         <label class="col-sm-5">Date début de validité<span class="mandatory"> *</span></label>

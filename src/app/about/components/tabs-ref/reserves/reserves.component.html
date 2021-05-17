@@ -78,30 +78,30 @@
   </div>
 </div>
 <ng-template #content let-modal>
-  <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
-    <div class="modal-header">
-      <h4 class="modal-title" *ngIf="editItem">Modification de réserve "{{ itemLabel }}"</h4>
-      <h4 class="modal-title" *ngIf="addItem">Ajout d'une réserve</h4>
-      <h4 class="modal-title" *ngIf="deleteItems">Suppression de réserve "{{ itemLabel }}"</h4>
-      <h4 class="modal-title" *ngIf="editVisibility">Activer/Désactiver la réserve "{{ itemLabel }}"</h4>
-      <button type="button" class="close" aria-label="Close" (click)="close()">
-        <span aria-hidden="true">&times;</span>
-      </button>
+  <div class="modal-header">
+    <h4 class="modal-title" *ngIf="editItem">Modification de réserve "{{ itemLabel }}"</h4>
+    <h4 class="modal-title" *ngIf="addItem">Ajout d'une réserve</h4>
+    <h4 class="modal-title" *ngIf="deleteItems">Suppression de réserve "{{ itemLabel }}"</h4>
+    <h4 class="modal-title" *ngIf="editVisibility">Activer/Désactiver la réserve "{{ itemLabel }}"</h4>
+    <button type="button" class="close" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer la réserve "{{ itemLabel }}" ?</div>
+    <div class="col-md-12 d-flex justify-content-center" *ngIf="loadingDropdownData">
+      <p-progressSpinner></p-progressSpinner>
     </div>
-    <div class="modal-body">
-      <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer la réserve "{{ itemLabel }}" ?</div>
-      <div class="loading-spinner col-md-12 d-flex justify-content-center" *ngIf="loadingDropdownData">
-        <p-progressSpinner></p-progressSpinner>
-      </div>
-      <div [hidden]="loadingDropdownData">
+    <div [hidden]="loadingDropdownData">
+      <form [formGroup]="tabForm">
         <div
           class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
           *ngIf="editItem || addItem"
         >
-          <label class="col-sm-7">Libellé<span class="mandatory"> *</span></label>
+          <label class="col-sm-5">Libellé<span class="mandatory"> *</span></label>
           <input
             type="text"
-            class="form-control col-sm-5"
+            class="form-control col-sm-7"
             value="{{ editItem ? selectedItem.label : '' }}"
             formControlName="label"
           />
@@ -110,12 +110,12 @@
           class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
           *ngIf="editItem || addItem"
         >
-          <label class="col-sm-7">Filtrer par Région<span class="mandatory"> *</span></label>
-          <div class="select col-sm-5 p-0">
+          <label class="col-sm-5">Région</label>
+          <div class="select col-sm-7 p-0">
             <p-dropdown
               [options]="autoComplete.regions"
               optionLabel="name"
-              [placeholder]="'Filtrer par région'"
+              [placeholder]="'Filtrer département par région'"
               emptyFilterMessage="Aucun résultat trouvé"
               [filter]="true"
               [filterBy]="'name'"
@@ -131,12 +131,12 @@
           class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
           *ngIf="editItem || addItem"
         >
-          <label class="col-sm-7">Filtrer par Département<span class="mandatory"> *</span></label>
-          <div class="select col-sm-5 p-0">
+          <label class="col-sm-5">Département</label>
+          <div class="select col-sm-7 p-0">
             <p-dropdown
               [options]="autoComplete.departments"
               optionLabel="name"
-              [placeholder]="'Filtrer par département'"
+              [placeholder]="'Filtrer commune par département'"
               emptyFilterMessage="Aucun résultat trouvé"
               [filter]="true"
               [filterBy]="'name'"
@@ -146,19 +146,21 @@
               [(ngModel)]="selectedRelated.department"
               [ngModelOptions]="{ standalone: true }"
               [disabled]="!selectedRelated.region"
+              aria-describedby="departmentHelp"
             ></p-dropdown>
+            <small id="departmentHelp" class="form-text text-muted">Filtrer Départment par Région</small>
           </div>
         </div>
         <div
           class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
           *ngIf="editItem || addItem"
         >
-          <label class="col-sm-7">Filtrer par Commune<span class="mandatory"> *</span></label>
-          <div class="select col-sm-5 p-0">
+          <label class="col-sm-5">Commune</label>
+          <div class="select col-sm-7 p-0">
             <p-dropdown
               [options]="autoComplete.communes"
               optionLabel="name"
-              [placeholder]="'Filtrer par commune'"
+              [placeholder]="'Filtrer bâtiment par commune'"
               emptyFilterMessage="Aucun résultat trouvé"
               [filter]="true"
               [filterBy]="'name'"
@@ -168,20 +170,22 @@
               [(ngModel)]="selectedRelated.commune"
               [ngModelOptions]="{ standalone: true }"
               [disabled]="!selectedRelated.department"
+              aria-describedby="communeHelp"
             ></p-dropdown>
+            <small id="communeHelp" class="form-text text-muted">Filtrer Commune par Département</small>
           </div>
         </div>
         <div
           class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
           *ngIf="editItem || addItem"
         >
-          <label class="col-sm-7">Filtrer par Site<span class="mandatory"> *</span></label>
-          <div class="col-sm-5 p-0">
+          <label class="col-sm-5">Site</label>
+          <div class="col-sm-7 p-0">
             <p-autoComplete
               [minLength]="3"
               field="label"
               emptyMessage="Aucun résultat trouvé"
-              placeholder="Filtrer par site"
+              placeholder="Filtrer bâtiment par site"
               (completeMethod)="autoCompleteSites($event)"
               (onSelect)="getDropdownData('building', 'site', selectedRelated.site)"
               [suggestions]="autoComplete.sites"
@@ -194,12 +198,12 @@
           class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
           *ngIf="editItem || addItem"
         >
-          <label class="col-sm-7">Filtrer par Bâtiment<span class="mandatory"> *</span></label>
-          <div class="select col-sm-5 p-0">
+          <label class="col-sm-5">Bâtiment<span class="mandatory"> *</span></label>
+          <div class="select col-sm-7 p-0">
             <p-dropdown
               [options]="autoComplete.buildings"
               optionLabel="name"
-              [placeholder]="'Filtrer par bâtiment'"
+              [placeholder]="'Filtrer pièce par bâtiment'"
               emptyFilterMessage="Aucun résultat trouvé"
               [filter]="true"
               [filterBy]="'name'"
@@ -209,15 +213,17 @@
               [(ngModel)]="selectedRelated.building"
               [ngModelOptions]="{ standalone: true }"
               [disabled]="!selectedRelated.commune && !selectedRelated.site"
+              aria-describedby="buildingHelp"
             ></p-dropdown>
+            <small id="buildingHelp" class="form-text text-muted">Filtrer Bâtiment par Site ou par Commune</small>
           </div>
         </div>
         <div
           class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
           *ngIf="editItem || addItem"
         >
-          <label class="col-sm-7">Pièce<span class="mandatory"> *</span></label>
-          <div class="select col-sm-5 p-0">
+          <label class="col-sm-5">Pièce<span class="mandatory"> *</span></label>
+          <div class="select col-sm-7 p-0">
             <p-dropdown
               [options]="activeRelatedRooms"
               optionLabel="reference"
@@ -228,55 +234,64 @@
               [filterBy]="'reference'"
               [virtualScroll]="true"
               itemSize="5"
+              aria-describedby="roomHelp"
             ></p-dropdown>
+            <small id="roomHelp" class="form-text text-muted">Filtrer Pièce par Bâtiment</small>
           </div>
         </div>
         <div
           class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
           *ngIf="addItem || editVisibility"
         >
-          <label class="col-sm-7">Date début de validité<span class="mandatory"> *</span></label>
-          <input type="date" name="datepicker" class="form-control date-input col-sm-5" formControlName="startDate" />
+          <label class="col-sm-5">Date début de validité<span class="mandatory"> *</span></label>
+          <input type="date" name="datepicker" class="form-control date-input col-sm-7" formControlName="startDate" />
         </div>
         <div
           class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
           *ngIf="addItem || editVisibility"
         >
-          <label class="col-sm-7">Date fin de validité</label>
+          <label class="col-sm-5">Date fin de validité</label>
           <input
             type="date"
             name="datepicker"
-            class="form-control date-input col-sm-5"
+            class="form-control date-input col-sm-7"
             formControlName="endDate"
             [class.ng-invalid]="tabForm.errors && tabForm.errors.dateInvalid"
           />
         </div>
-      </div>
+      </form>
     </div>
+  </div>
 
-    <div class="modal-footer">
-      <button type="button" class="btn btn-light cancel-btn" (click)="close()">Annuler</button>
-      <button
-        type="submit"
-        class="btn btn-light valid-btn"
-        *ngIf="editItem || editVisibility"
-        [attr.disabled]="btnLoading"
-      >
-        Modifier
-      </button>
-      <button type="submit" class="btn btn-light valid-btn" *ngIf="addItem" [attr.disabled]="btnLoading">
-        Ajouter
-      </button>
-      <button
-        type="button"
-        class="btn btn-light valid-btn"
-        *ngIf="deleteItems"
-        (click)="deleteItemss(itemToDelete)"
-        [attr.disabled]="btnLoading"
-      >
-        Supprimer
-      </button>
-    </div>
-  </form>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light cancel-btn" (click)="close()">Annuler</button>
+    <button
+      type="submit"
+      class="btn btn-light valid-btn"
+      *ngIf="editItem || editVisibility"
+      [attr.disabled]="btnLoading"
+      (click)="submit()"
+    >
+      Modifier
+    </button>
+    <button
+      type="submit"
+      class="btn btn-light valid-btn"
+      *ngIf="addItem"
+      [attr.disabled]="btnLoading"
+      (click)="submit()"
+    >
+      Ajouter
+    </button>
+    <button
+      type="button"
+      class="btn btn-light valid-btn"
+      *ngIf="deleteItems"
+      (click)="deleteItemss(itemToDelete)"
+      [attr.disabled]="btnLoading"
+    >
+      Supprimer
+    </button>
+  </div>
 </ng-template>
 <p-toast></p-toast>

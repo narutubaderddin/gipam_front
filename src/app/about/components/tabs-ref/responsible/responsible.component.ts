@@ -78,6 +78,7 @@ export class ResponsibleComponent implements OnInit {
 
   activeBuildings: any[] = [];
 
+  selectedRegion: any;
   selectedBuildings: any[] = [];
   selectedDepartments: any[] = [];
 
@@ -115,12 +116,14 @@ export class ResponsibleComponent implements OnInit {
     field: 'buildings',
     type: 'key-multiple-data',
     key_multiple_data: ['buildings', 'name'],
-    filter: true,
-    filterType: 'multiselect',
-    placeholder: 'Bâtiments',
-    selectData: this.buildings,
   };
 
+  relatedRegionColumn = {
+    header: 'Region',
+    field: 'region',
+    type: 'key-array',
+    key_data: ['region', 'name'],
+  };
   relatedDepartmentsColumn = {
     header: 'Départements',
     field: 'departments',
@@ -178,6 +181,7 @@ export class ResponsibleComponent implements OnInit {
       filterType: 'text',
       sortable: true,
     },
+    this.relatedRegionColumn,
     this.relatedDepartmentsColumn,
     this.relatedBuildingsColumn,
     {
@@ -237,17 +241,19 @@ export class ResponsibleComponent implements OnInit {
       this.selectedItem ? this.selectedItem.endDate : '',
       datePickerDateFormat
     );
+    const firstName = this.selectedItem ? this.selectedItem.firstName : null;
     this.tabForm = this.fb.group({
-      firstName: [this.selectedItem ? this.selectedItem.firstName : '', [Validators.required]],
-      lastName: [this.selectedItem ? this.selectedItem.lastName : '', [Validators.required]],
+      firstName: [firstName, [Validators.required]],
+      lastName: [this.selectedItem ? this.selectedItem.lastName : null, [Validators.required]],
 
       login: [this.selectedItem ? this.selectedItem.login : '', []],
 
-      phone: [this.selectedItem ? this.selectedItem.phone : '', []],
-      fax: [this.selectedItem ? this.selectedItem.fax : '', []],
-      mail: [this.selectedItem ? this.selectedItem.mail : '', [Validators.email]],
+      phone: [this.selectedItem ? this.selectedItem.phone : '', [Validators.required]],
+      fax: [this.selectedItem ? this.selectedItem.fax : '', [Validators.required]],
+      mail: [this.selectedItem ? this.selectedItem.mail : '', [Validators.required, Validators.email]],
       startDate: [startDate, [Validators.required]],
       endDate: [disappearanceDate, []],
+      region: [this.selectedRegion, []],
       buildings: [
         {
           value: this.selectedBuildings,
@@ -255,13 +261,7 @@ export class ResponsibleComponent implements OnInit {
         },
         [],
       ],
-      departments: [
-        {
-          value: this.selectedDepartments,
-          disabled: !this.selectedRelated.region && this.selectedDepartments.length === 0,
-        },
-        [],
-      ],
+      departments: [this.selectedDepartments, []],
     });
     this.tabForm.setValidators(towDatesCompare('startDate', 'endDate'));
   }
@@ -283,14 +283,19 @@ export class ResponsibleComponent implements OnInit {
     );
   }
 
-  initRegionsDropdowns() {
+  initFormDropdowns() {
     const data = {
       page: 1,
       serializer_group: JSON.stringify(['short']),
+      'disappearanceDate[gtOrNull]': this.datePipe.transform(new Date(), dateTimeFormat),
     };
-    forkJoin([this.simpleTabsRef.getAllItems(data, 'regions')]).subscribe(
-      ([regionsResults]) => {
+    forkJoin([
+      this.simpleTabsRef.getAllItems(data, 'regions'),
+      this.simpleTabsRef.getAllItems(data, 'departments'),
+    ]).subscribe(
+      ([regionsResults, departmentsResults]) => {
         this.relatedEntities.regions = regionsResults.results;
+        this.relatedEntities.departments = departmentsResults.results;
       },
       (error: any) => {
         this.addSingle('error', 'Erreur Technique', 'Une erreur technique est survenue');
@@ -300,21 +305,21 @@ export class ResponsibleComponent implements OnInit {
 
   openModal(item: any) {
     this.resetRelatedEntities();
-    this.initRegionsDropdowns();
-
+    this.initFormDropdowns();
     this.btnLoading = null;
 
     if (this.editItem || this.editVisibility) {
       this.itemToEdit = item;
       this.itemLabel = item.firstName + ' ' + item.lastName;
       this.selectedDepartments = item.departments;
+      this.selectedRegion = item.region;
       this.relatedEntities.departments = item.departments;
       this.selectedBuildings = item.buildings;
       this.relatedEntities.buildings = item.buildings;
       this.tabForm.get('departments').enable();
       this.tabForm.get('buildings').enable();
-      console.log('selected buildings', item.buildings);
     }
+    console.log('selectedRegion', this.selectedRegion);
     this.selectedItem = item;
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true, scrollable: true });
@@ -330,24 +335,35 @@ export class ResponsibleComponent implements OnInit {
     this.btnLoading = null;
     // this.tabForm.value.buildings.map((el: any) => selectedBuildings.push(el.id));
 
-    const item = {
-      firstName: this.tabForm.value.firstName,
-      lastName: this.tabForm.value.lastName,
-
-      login: this.tabForm.value.login,
-      phone: this.tabForm.value.phone,
-      fax: this.tabForm.value.fax,
-      mail: this.tabForm.value.mail,
-      buildings: getMultiSelectIds(this.tabForm.value.buildings),
-      departments: getMultiSelectIds(this.tabForm.value.departments),
-      startDate: this.datePipe.transform(this.tabForm.value.startDate, dateTimeFormat),
-      endDate: this.datePipe.transform(this.tabForm.value.endDate, dateTimeFormat),
-    };
+    let item = {};
+    if (this.addItem || this.editItem) {
+      item = {
+        firstName: this.tabForm.value.firstName,
+        lastName: this.tabForm.value.lastName,
+        login: this.tabForm.value.login,
+        phone: this.tabForm.value.phone,
+        fax: this.tabForm.value.fax,
+        mail: this.tabForm.value.mail,
+        region: this.tabForm.value.region?.id,
+        departments: getMultiSelectIds(this.tabForm.value.departments),
+        buildings: getMultiSelectIds(this.tabForm.value.buildings),
+        startDate: this.datePipe.transform(this.tabForm.value.startDate, dateTimeFormat),
+        endDate: this.datePipe.transform(this.tabForm.value.endDate, dateTimeFormat),
+      };
+    }
     if (this.addItem) {
       this.addItems(item);
+      return;
+    }
+    if (this.editVisibility) {
+      item = {
+        startDate: this.datePipe.transform(this.tabForm.value.startDate, dateTimeFormat),
+        endDate: this.datePipe.transform(this.tabForm.value.endDate, dateTimeFormat),
+      };
     }
     if (this.editItem || this.editVisibility) {
       this.editField(item, this.itemToEdit.id);
+      return;
     }
   }
 
@@ -411,8 +427,13 @@ export class ResponsibleComponent implements OnInit {
       'disappearanceDate[gtOrNull]': this.datePipe.transform(new Date(), dateTimeFormat),
     };
     if (relatedEntity) {
-      params[relatedEntityName + '[eq]'] = relatedEntity.id;
+      if (!Array.isArray(relatedEntity)) {
+        params[relatedEntityName + '[eq]'] = relatedEntity.id;
+      } else {
+        params[relatedEntityName + '[in]'] = getMultiSelectIds(relatedEntity);
+      }
     }
+
     this.resetRelatedEntities(relatedEntityName);
     entity = entity + 's';
     this.relatedEntities[entity] = [];
@@ -448,12 +469,25 @@ export class ResponsibleComponent implements OnInit {
     }
   }
 
-  autoComplete(event: any, entity: string, field: string) {
+  autoComplete(event: any, entity: string, field: string, relatedEntityName?: any, relatedEntity?: any) {
+    console.log('entity', entity);
+    console.log('relted', relatedEntityName);
+    console.log('relted value', relatedEntity);
     const params = {
       page: 1,
       serializer_group: JSON.stringify(['short']),
     };
     params[field + '[startsWith]'] = event.query;
+    if (relatedEntity) {
+      if (!Array.isArray(relatedEntity)) {
+        console.log('relted not array', relatedEntityName);
+        params[relatedEntityName + '[eq]'] = relatedEntity.id;
+      } else if (relatedEntity.length !== 0) {
+        console.log('relted is array', relatedEntityName);
+        params[relatedEntityName + '[in]'] = JSON.stringify(getMultiSelectIds(relatedEntity));
+      }
+    }
+    console.log('params', params);
     entity = entity + 's';
     this.simpleTabsRef.getAllItems(params, entity).subscribe((dataResult) => {
       this.relatedEntities[entity] = dataResult.results;
@@ -566,7 +600,6 @@ export class ResponsibleComponent implements OnInit {
         this.getAllItems();
         this.editItem = false;
       },
-
       (error) => {
         if (error.error.code !== 400) {
           this.addSingle('error', 'Modification', error.error.message);
