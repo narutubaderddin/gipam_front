@@ -255,6 +255,8 @@
                 {{ item[col.key_data[0]] ? item[col.key_data[0]][col.key_data[1]] : '' }}
               </span>
               <span *ngSwitchCase="'date'"> {{ item[col.field] | date: viewDateFormat }} </span>
+              <app-in-progress-notice-renderer [value]="item" *ngSwitchCase="'app-in-progress-notice-renderer'">
+              </app-in-progress-notice-renderer>
 
               <span *ngSwitchDefault> {{ item[col.field] }} </span>
             </span>

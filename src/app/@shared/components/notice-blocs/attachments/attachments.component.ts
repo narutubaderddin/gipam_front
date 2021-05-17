@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 
 @Component({
   selector: 'app-attachments',
@@ -20,9 +20,8 @@ export class AttachmentsComponent implements OnInit {
   addedFile: any;
   edit = false;
   display = false;
-
+  types: any;
   slide = 1;
-  types = ['type 1', 'type 2', 'type 3'];
 
   dragDropConfig = {
     showList: false,
@@ -73,9 +72,10 @@ export class AttachmentsComponent implements OnInit {
   get attachments(): FormArray {
     return this.attachmentForm.get('attachments') as FormArray;
   }
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private simpleTabsRef: SimpleTabsRefService) {}
 
   ngOnInit(): void {
+    this.getAllTypes();
     if (this.itemDetails) {
       this.existingAttachments.map((el: any) => {
         this.files.push(el.attachment);
@@ -88,15 +88,29 @@ export class AttachmentsComponent implements OnInit {
     this.addedFile = photography;
     this.attachmentType = photographyType;
   }
+  getAllTypes() {
+    this.simpleTabsRef.tabRef = 'attachmentTypes';
+    const params = {
+      limit: 40,
+      page: 1,
+    };
+    this.simpleTabsRef.getAllItems(params).subscribe(
+      (result: any) => {
+        this.types = result.results;
+      },
+      (error: any) => {}
+    );
+  }
   createAttachment(attachment?: any, attachmentType?: any): FormGroup {
     this.filesProperties.push({ edit: false, delete: false });
     return this.fb.group({
-      attachment: [attachment, [Validators.required]],
+      link: [attachment, [Validators.required]],
       attachmentType: [attachmentType, [Validators.required]],
+      comment: [''],
     });
   }
   editAttachmentForm(index?: any, attachment?: any, attachmentType?: any) {
-    this.attachments.value[index].attachment = attachment;
+    this.attachments.value[index].link = attachment;
     this.attachments.value[index].attachmentType = attachmentType;
     this.filesProperties[index].edit = false;
   }
@@ -119,9 +133,9 @@ export class AttachmentsComponent implements OnInit {
       }
       if (this.selectedAttachment == this.attachments.value.length || this.itemDetails) {
         this.files.push(this.addedFile);
-        this.attachments.push(this.createAttachment(this.addedFile, this.attachmentType));
+        this.attachments.push(this.createAttachment(this.addedFile.name, this.attachmentType));
       } else {
-        this.editAttachmentForm(this.selectedAttachment, this.addedFile, this.attachmentType);
+        this.editAttachmentForm(this.selectedAttachment, this.addedFile.name, this.attachmentType);
       }
       this.initData();
       this.attachmentInsertionNumber++;

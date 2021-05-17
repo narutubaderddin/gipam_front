@@ -74,6 +74,7 @@
         [suggestions]="artWorksData"
         field="data"
         (completeMethod)="search($event)"
+        (onSelect)="handleSelect($event)"
         [dropdown]="true"
         (onShow)="change()"
         minLength="3"

@@ -51,12 +51,15 @@
   </div>
 </div>
 
-<div class="col-md-12 d-flex pl-0 align-items-baseline" [formGroup]="myForm" *ngIf="add">
+<form class="col-md-12 d-flex pl-0 align-items-baseline" [formGroup]="linksForm" *ngIf="add">
   <div class="form-group" class="col-md-12 d-flex flex-column p-0">
     <h5 class="col-md-12 p-0 m-0">Liens hypertextes</h5>
     <div class="col-md-12 p-1 mt-1 hyperlink-container">
-      <div formArrayName="liens" class="hyperlink-bloc">
-        <div [formGroupName]="i" class="mt-1" *ngFor="let lien of liens.controls; let i = index">
+      <button class="btn add-action col-7 ml-2" (click)="addBook()" *ngIf="!hyperlinks.value.length">
+        <i class="fas fa-plus mr-2"></i>Ajouter un lien hypertexte
+      </button>
+      <div formArrayName="hyperlinks" class="hyperlink-bloc">
+        <div [formGroupName]="i" class="mt-1" *ngFor="let lien of hyperlinks.controls; let i = index">
           <div class="d-flex">
             <div class="form-group col-md-5 d-flex p-0">
               <input class="form-control" placeholder="Nom URL" formControlName="urlName" />
@@ -74,7 +77,7 @@
       </div>
     </div>
   </div>
-</div>
+</form>
 <p-dialog header="Supprimer le lien hypertexte " [modal]="true" [(visible)]="deleteDialog" [style]="{ width: '30vw' }">
   <div class="p-0 pb-3">
     <div class="col-12">

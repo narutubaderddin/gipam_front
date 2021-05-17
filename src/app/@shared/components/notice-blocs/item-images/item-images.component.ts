@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { NgbModal, NgbModalOptions, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { AddImgModalComponent } from '@shared/components/notice-blocs/item-images/add-img-modal/add-img-modal.component';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { viewDateFormat } from '@shared/utils/helpers';
 @Component({
   selector: 'app-item-images',
@@ -22,21 +23,15 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   photographyDate: Date = new Date();
   photographyType: any[] = [];
   previousPhotographyType: any[] = [];
-  types: any[] = [
-    { name: 'Identification' },
-    { name: 'Autre vue' },
-    { name: 'Détail' },
-    { name: 'Etat' },
-    { name: 'Ancien cliché' },
-  ];
+  types: any[];
   fileToUpload: any;
   imageName: any = '';
-  // images: any = [];
   photographyInsertionNumber = 0;
   selectedPhotography = 0;
   validate = true;
   isIdentification = false;
   identification = 0;
+  imagePreview: any;
   deleteDialog: boolean = false;
   itemToDelete: any;
   viewDateFormat = viewDateFormat;
@@ -44,9 +39,9 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   get photographies(): FormArray {
     return this.photographiesForm.get('photographies') as FormArray;
   }
-  constructor(private modalService: NgbModal, public fb: FormBuilder) {}
+  constructor(private modalService: NgbModal, public fb: FormBuilder, private simpleTabsRef: SimpleTabsRefService) {}
   ngOnInit(): void {
-    this.initForm();
+    this.getAllTypes();
     this.images.map((el: any) =>
       this.photographies.push(
         this.createPhotography(el.photography, el.photographyDate, el.photographyType, el.imageName)
@@ -63,37 +58,49 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changements: SimpleChanges) {}
 
-  initForm() {
-    this.photographiesForm = new FormGroup({
-      photographies: this.fb.array([]),
-    });
-  }
   initData(photography?: string, photographyDate?: Date, photographyType?: any, imageName?: string) {
     this.photography = photography;
     this.photographyDate = photographyDate;
     this.photographyType = photographyType;
     this.imageName = imageName;
   }
+
+  getAllTypes() {
+    this.simpleTabsRef.tabRef = 'photographyTypes';
+    const params = {
+      limit: 40,
+      page: 1,
+    };
+    this.simpleTabsRef.getAllItems(params).subscribe(
+      (result: any) => {
+        this.types = result.results;
+      },
+      (error: any) => {}
+    );
+  }
+
   createPhotography(
-    photography?: string,
+    photography?: FormData,
     photographyDate?: Date,
     photographyType?: any,
     imageName?: string
   ): FormGroup {
     return this.fb.group({
-      photographyDate: [photographyDate, [Validators.required]],
-      photography: [photography, [Validators.required]],
-      photographyType: [photographyType, [Validators.required]],
-      photographyName: [imageName, [Validators.required]],
+      date: [photographyDate],
+      imagePreview: [photography],
+      photographyType: [photographyType.id],
+      // imageName: [imageName],
     });
   }
   editPhotographyForm(i: number, photography: string, photographyType: any, photographyDate: Date, imageName: string) {
     this.photographies.value[i].photographyType = photographyType;
-    this.photographies.value[i].photographyDate = photographyDate;
-    this.photographies.value[i].photographyName = imageName;
-    this.photographies.value[i].photography = photography;
+    this.photographies.value[i].date = photographyDate;
+    // this.photographies.value[i].imageName = imageName;
+    this.photographies.value[i].imagePreview = photography;
     this.images[i].imageUrl = photography;
     this.images[i].image = imageName;
+    this.images[i].photographyType = photographyType;
+    this.photography = photography;
   }
   verifyIdentification() {
     this.identification = 0;
@@ -122,9 +129,16 @@ export class ItemImagesComponent implements OnInit, OnChanges {
           imageUrl: this.photography,
           alt: 'description',
           image: this.imageName,
+          photographyType: this.photographyType,
+          photographyDate: this.photographyDate,
         });
         this.photographies.push(
-          this.createPhotography(this.photography, this.photographyDate, this.photographyType, this.imageName)
+          this.createPhotography(
+            this.buildFormData(this.fileToUpload),
+            this.photographyDate,
+            this.photographyType,
+            this.imageName
+          )
         );
       } else {
         this.editPhotographyForm(
@@ -142,11 +156,13 @@ export class ItemImagesComponent implements OnInit, OnChanges {
       this.validate = true;
     }
   }
-
+  buildFormData(file: File): FormData {
+    const formData = new FormData();
+    formData.append('imagePreview', file, file.name);
+    return formData;
+  }
   handleFileInput(file: FileList) {
     this.fileToUpload = file.item(0);
-
-    //Show image preview
     let reader = new FileReader();
     reader.onload = (event: any) => {
       this.photography = event.target.result;
@@ -166,8 +182,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     this.file.nativeElement.click();
   }
   show(item: any) {
-    let data = this.images[item.i];
-    this.initData(data.photography, data.photographyDate, data.photographyType, item.image);
+    this.initData(item.imageUrl, item.photographyDate, item.photographyType, item.image);
     this.selectedPhotography = item.i;
     this.imgToShow.emit(item.imageUrl);
     this.activeIndex = item.i;
@@ -203,7 +218,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   }
 
   delete() {
-    // this.photographies.removeAt(this.activeIndex);
+    this.photographies.removeAt(this.activeIndex);
     this.images.splice(this.activeIndex, 1);
   }
 
