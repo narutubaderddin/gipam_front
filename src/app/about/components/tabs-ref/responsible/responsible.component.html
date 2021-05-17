@@ -163,6 +163,7 @@
             [virtualScroll]="true"
             (onChange)="getDropdownData('department', 'region', tabForm.get('region').value)"
             itemSize="5"
+            [class.ng-invalid]="tabForm.errors && tabForm.errors.oneOfTheseFields"
           ></p-dropdown>
         </div>
       </div>
@@ -176,6 +177,7 @@
             optionLabel="name"
             display="chip"
             placeholder="Sélectionner des départements"
+            [class.ng-invalid]="tabForm.errors && tabForm.errors.oneOfTheseFields"
           >
           </p-multiSelect>
         </div>
@@ -223,6 +225,7 @@
             display="chip"
             placeholder="Sélectionner des bâtiments"
             aria-describedby="buildingHelp"
+            [class.ng-invalid]="tabForm.errors && tabForm.errors.oneOfTheseFields"
           >
           </p-multiSelect>
           <p id="buildingHelp" class="form-text text-muted">Filtrer Bâtiments par Site ou par Commune</p>

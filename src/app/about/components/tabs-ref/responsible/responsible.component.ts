@@ -13,6 +13,7 @@ import {
   dateTimeFormat,
   getMultiSelectIds,
   markAsDirtyDeep,
+  oneOfTheseFields,
   towDatesCompare,
 } from '@shared/utils/helpers';
 import { forkJoin } from 'rxjs';
@@ -277,7 +278,10 @@ export class ResponsibleComponent implements OnInit {
       ],
       departments: [this.selectedDepartments, []],
     });
-    this.tabForm.setValidators(towDatesCompare('startDate', 'endDate'));
+    this.tabForm.setValidators([
+      towDatesCompare('startDate', 'endDate'),
+      oneOfTheseFields('region', 'departments', 'buildings'),
+    ]);
   }
 
   initFilterData() {
@@ -350,6 +354,16 @@ export class ResponsibleComponent implements OnInit {
     if (this.tabForm.invalid) {
       markAsDirtyDeep(this.tabForm);
       this.addSingle('error', 'Erreur', 'Veuillez vérifier tous les champs encadrés en rouge');
+      if (this.tabForm.errors.oneOfTheseFields) {
+        this.addSingle(
+          'error',
+          'Erreur',
+          'Un responsable doit avoir au moins une Région ou un Département ou un Bâtiment'
+        );
+      }
+      if (this.tabForm.errors.dateInvalid) {
+        this.addSingle('error', 'Erreur', this.tabForm.errors.dateInvalid);
+      }
       return;
     }
 
@@ -394,6 +408,7 @@ export class ResponsibleComponent implements OnInit {
     this.deleteItems = false;
     this.editVisibility = false;
     this.selectedDepartments = [];
+    this.selectedRegion = null;
     this.selectedBuildings = [];
     this.myModal.dismiss('Cross click');
   }
