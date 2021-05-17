@@ -19,10 +19,9 @@ export class PdfGeneratorService {
       jsPDF: {
         unit: 'cm',
         format: 'a4',
-        orientation: 'landscape',
+        orientation: 'portrait',
       },
     };
     html2pdf().set(options).from(element).save();
-    // html2pdf(element, options);
   }
 }

@@ -8,7 +8,7 @@ import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
-import { datePickerDateFormat, dateTimeFormat } from '@shared/utils/helpers';
+import { datePickerDateFormat, dateTimeFormat, getMultiSelectIds } from '@shared/utils/helpers';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -27,6 +27,7 @@ export class AuthorsComponent implements OnInit {
   selectedItem: any;
 
   selectedType: any;
+  selectedPeople: any;
 
   itemToEdit: any;
   itemToDelete: string;
@@ -54,6 +55,8 @@ export class AuthorsComponent implements OnInit {
   today: string;
   types: any[] = [];
   activeTypes: any[] = [];
+  people: any[] = [];
+  activePeople: any[] = [];
 
   typesColumn = {
     header: 'Type',
@@ -64,6 +67,13 @@ export class AuthorsComponent implements OnInit {
     filterType: 'multiselect',
     placeholder: 'Type',
     selectData: this.types,
+  };
+
+  peopleColumn = {
+    header: 'Ayant droit',
+    field: 'people',
+    type: 'key-multiple-data',
+    key_multiple_data: ['people', 'label'],
   };
 
   columns = [
@@ -84,6 +94,7 @@ export class AuthorsComponent implements OnInit {
       sortable: true,
     },
     this.typesColumn,
+    this.peopleColumn,
     {
       header: 'Actions',
       field: 'action',
@@ -119,7 +130,8 @@ export class AuthorsComponent implements OnInit {
     this.tabForm = this.fb.group({
       firstName: [this.selectedItem ? this.selectedItem.firstName : '', [Validators.required]],
       lastName: [this.selectedItem ? this.selectedItem.lastName : '', [Validators.required]],
-      type: [this.selectedType ? this.selectedType.label : '', []],
+      type: [this.selectedType ? this.selectedType : '', []],
+      people: [this.selectedPeople ? this.selectedPeople : [], []],
       active: [this.selectedItem ? this.selectedItem?.active : true],
     });
   }
@@ -127,10 +139,15 @@ export class AuthorsComponent implements OnInit {
   initFilterData() {
     const data = {
       page: 1,
+      serializer_group: JSON.stringify(['short']),
     };
-    forkJoin([this.simpleTabsRef.getAllItems(data, 'authorTypes')]).subscribe(
-      ([typesResults]) => {
+    forkJoin([
+      this.simpleTabsRef.getAllItems(data, 'authorTypes'),
+      this.simpleTabsRef.getAllItems(data, 'persons'),
+    ]).subscribe(
+      ([typesResults, peopleResults]) => {
         this.types = this.simpleTabsRef.getTabRefFilterData(typesResults.results);
+        this.people = this.simpleTabsRef.getTabRefFilterData(peopleResults.results);
         this.activeTypes = typesResults.results.filter((value: any) => value.active === true);
         this.typesColumn.selectData = this.types;
       },
@@ -140,27 +157,63 @@ export class AuthorsComponent implements OnInit {
     );
   }
 
+  getActiveRelatedEntities() {
+    const data = {
+      page: 1,
+      serializer_group: JSON.stringify(['short']),
+      'active[eq]': 1,
+    };
+    forkJoin([
+      this.simpleTabsRef.getAllItems(data, 'authorTypes'),
+      this.simpleTabsRef.getAllItems(data, 'persons'),
+    ]).subscribe(
+      ([typesResults, peopleResults]) => {
+        this.activeTypes = typesResults.results;
+        this.activePeople = peopleResults.results;
+        this.addNotActiveEntities();
+      },
+      (error: any) => {
+        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
+      }
+    );
+  }
+
+  addNotActiveEntities() {
+    if (this.selectedPeople) {
+      this.selectedPeople?.forEach((item: any) => {
+        if (!this.activePeople.some((activeItem) => activeItem.id === item.id)) {
+          this.activePeople.push(item);
+        }
+      });
+    }
+    if (this.selectedType) {
+      if (!this.activeTypes.some((activeItem) => activeItem.id === this.selectedType?.id)) {
+        this.activePeople.push(this.selectedType);
+      }
+    }
+  }
+
   openModal(item: any) {
     this.btnLoading = null;
-
+    this.selectedItem = item;
     if (this.editItem) {
       this.itemToEdit = item;
       this.itemLabel = item.firstName + ' ' + item.lastName;
       this.selectedType = item.type;
+      this.selectedPeople = item.people;
     }
-    this.selectedItem = item;
-    console.log('item', item);
+    this.getActiveRelatedEntities();
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
 
   submit() {
     this.btnLoading = null;
-
     const item = {
       firstName: this.tabForm.value.firstName,
       lastName: this.tabForm.value.lastName,
       type: this.tabForm.value.type.id,
+      people: getMultiSelectIds(this.tabForm.value.people),
       active: this.tabForm.value.active,
     };
     if (this.addItem) {
@@ -170,6 +223,7 @@ export class AuthorsComponent implements OnInit {
       this.editField(item, this.itemToEdit.id);
     }
     this.selectedType = null;
+    this.selectedPeople = null;
   }
 
   close() {
@@ -179,6 +233,7 @@ export class AuthorsComponent implements OnInit {
     this.editVisibility = false;
     this.myModal.dismiss('Cross click');
     this.selectedType = null;
+    this.selectedPeople = null;
   }
 
   actionMethod(e: any) {

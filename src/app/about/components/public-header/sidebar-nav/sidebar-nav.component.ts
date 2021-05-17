@@ -216,4 +216,8 @@ export class SidebarNavComponent implements OnInit {
     this.router.navigate(['tab-ref-modeles-constat']);
     this.toggleClose();
   }
+  goToReservesList() {
+    this.router.navigate(['tab-ref-reserves']);
+    this.toggleClose();
+  }
 }

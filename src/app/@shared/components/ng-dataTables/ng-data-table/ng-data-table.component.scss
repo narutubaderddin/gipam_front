@@ -130,3 +130,9 @@
 .cancel-btn {
   background-color: #6c7681c9;
 }
+
+:host ::ng-deep .p-chip.ng-datatable {
+  background-color: #0080ff !important;
+  font-size: 12px;
+  color: white;
+}

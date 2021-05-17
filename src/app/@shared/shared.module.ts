@@ -46,6 +46,9 @@ import { CarouselModule } from 'primeng/carousel';
 import { DialogModule } from 'primeng/dialog';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { RemarquerDetailsLinkRendererComponent } from './components/ng-dataTables/remarquer-details-link-renderer/remarquer-details-link-renderer.component';
+import { ToastModule } from 'primeng/toast';
+import { ChipModule } from 'primeng/chip';
+import { InProgressNoticeRendererComponent } from './components/ng-dataTables/in-progress-notice-renderer/in-progress-notice-renderer.component';
 
 @NgModule({
   imports: [
@@ -78,10 +81,11 @@ import { RemarquerDetailsLinkRendererComponent } from './components/ng-dataTable
     CarouselModule,
     DialogModule,
     AutoCompleteModule,
+    ToastModule,
+    ChipModule,
   ],
   declarations: [
     LoaderComponent,
-
     DescriptionBlocComponent,
     AdministrativeMovementBlocComponent,
     GeographicMovementBlocComponent,
@@ -103,6 +107,7 @@ import { RemarquerDetailsLinkRendererComponent } from './components/ng-dataTable
     LinksComponent,
     HypertextLinksComponent,
     RemarquerDetailsLinkRendererComponent,
+    InProgressNoticeRendererComponent,
   ],
   exports: [
     LoaderComponent,

@@ -18,7 +18,6 @@ ol ol {
 }
 .rounded-list span {
   position: relative;
-  //display: block;
   padding: 0.4em 0.4em 0.4em 2em;
   *padding: 0.4em;
   margin: 0.5em 0;
@@ -41,7 +40,6 @@ ol ol {
 }
 
 .rounded-list span:before {
-  //content: counter(li);
   content: "";
   counter-increment: li;
   position: absolute;
@@ -57,4 +55,11 @@ ol ol {
   font-weight: bold;
   border-radius: 2em;
   transition: all 0.3s ease-out;
+}
+.fa-trash-alt {
+  color: #b01212 !important;
+  margin-top: 0px;
+}
+.fa-edit {
+  color: #00b5ff !important;
 }

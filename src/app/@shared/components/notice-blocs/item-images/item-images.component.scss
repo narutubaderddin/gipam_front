@@ -37,11 +37,9 @@ input {
   }
 }
 .content {
-  background-color: white;
-  height: 560px;
+  //height: 560px;
 
   .more-details {
-    border-top: 1px #d0d0d0 solid;
     display: flex;
     flex-direction: column;
     p {
@@ -76,11 +74,31 @@ input {
       background-color: #5c8fb1;
     }
   }
+
+  .valid-btn {
+    background-color: #00d6d4;
+    font-size: 10px;
+    color: white;
+  }
+  .cancel-btn {
+    background-color: #6c7681c9;
+    color: white;
+  }
+  .fa-edit {
+    color: #00b5ff !important;
+  }
+  .fa-trash-alt {
+    color: #b01212 !important;
+    margin-top: 1rem;
+    position: absolute;
+    top: 7rem;
+    right: 0.2rem;
+    background-color: #f1f1f1;
+    padding: 0.5rem;
+    border-radius: 5rem;
+    z-index: 1;
+  }
   @media (max-width: 800px) {
     flex-wrap: wrap;
-    //.more-details {
-    //  border-left: none;
-    //  height: auto;
-    //}
   }
 }

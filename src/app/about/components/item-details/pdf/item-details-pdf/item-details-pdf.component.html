@@ -1,20 +1,24 @@
 <div class="col-md-4">
-  <table class="pdf-table">
-    <tr>
-      <td rowspan="5" class="black-bar sideway-text"></td>
-      <td class="pdf-text-info">N° SOA/ {{ artwork.id }}</td>
-    </tr>
-    <tr>
-      <td class="pdf-text-info">{{ artwork.title }}</td>
-    </tr>
-    <tr>
-      <td class="pdf-text-info">{{ artwork.author }}</td>
-    </tr>
-    <tr>
-      <td class="empty-line"></td>
-    </tr>
-    <tr>
-      <td class="black-bar empty-line">SOA : poste 820.80</td>
-    </tr>
-  </table>
+  <div *ngFor="let artwork of artWorksToPrint">
+    <div class="artwork-ticket">
+      <table class="pdf-table">
+        <tr>
+          <td rowspan="5" class="black-bar sideway-text"></td>
+          <td class="pdf-text-info">N° SOA/ {{ artwork.id }}</td>
+        </tr>
+        <tr>
+          <td class="pdf-text-info">{{ artwork.titre }}</td>
+        </tr>
+        <tr>
+          <td class="pdf-text-info">{{ artwork.authors }}</td>
+        </tr>
+        <tr>
+          <td class="empty-line"></td>
+        </tr>
+        <tr>
+          <td class="black-bar empty-line">SOA : poste 820.80</td>
+        </tr>
+      </table>
+    </div>
+  </div>
 </div>

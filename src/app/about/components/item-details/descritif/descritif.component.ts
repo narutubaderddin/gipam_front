@@ -1,6 +1,13 @@
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { FieldsService } from '@shared/services/fields.service';
+import { DenominationsService } from '@shared/services/denominations.service';
+import { StylesService } from '@shared/services/styles.service';
+import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
+import { MaterialTechniqueService } from '@shared/services/material-technique.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-descritif',
@@ -13,63 +20,139 @@ export class DescritifComponent implements OnInit {
   @Input() edit = false;
   @Input() addDepot = false;
   @Input() addProperty = true;
-  @Input() artwork = {
-    title: 'Titre de la sculpture',
-    domain: 'Sculpture',
-    height: '85',
-    width: '85',
-    author: 'Auteur 1, Auteur 11',
-  };
-
-  domain = 'Sculpture';
+  @Input() descriptifForm: FormGroup;
+  @Input() artwork: any;
+  items: any = [];
+  domain = '';
+  denominations: any;
   denomination: any;
   selectedDomain = '';
   isCollapsed = true;
   dropdownSettings: IDropdownSettings;
   autocompleteItems = ['Item1', 'item2', 'item3'];
-
-  constructor(public WorkOfArtService: WorkOfArtService) {}
+  domainData: any[];
+  denominationData: any[];
+  styleData: any[];
+  materialTechniquesData: any[];
+  authorData: any[];
+  categoriesData: any[];
+  depositorsData: any[];
+  eraData: any[];
+  entryModesData: any[];
+  materialTechniques: any;
+  constructor(
+    private fieldService: FieldsService,
+    private denominationsService: DenominationsService,
+    private styleService: StylesService,
+    private simpleTabsRefService: SimpleTabsRefService,
+    private materialTechniqueService: MaterialTechniqueService,
+    public fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
-    this.domains = this.WorkOfArtService.domaine;
-    this.dropdownSettings = {
-      singleSelection: false,
-      idField: 'id',
-      textField: 'name',
-      selectAllText: 'Sélectionner tout',
-      unSelectAllText: 'Supprimer les sélections',
-      itemsShowLimit: 1,
-      allowSearchFilter: true,
+    this.initFilterData();
+    this.initData();
+  }
+  get f() {
+    return this.descriptifForm.controls;
+  }
+  getTabRefData(result: any[]) {
+    let items: any[] = [];
+    result.forEach((item: any) => {
+      if (item.hasOwnProperty('label')) {
+        items.push({ id: item.id, name: item.label });
+      } else {
+        items.push({ id: item.id, name: item.name });
+      }
+    });
+    return items;
+  }
+  initFilterData() {
+    const data = {
+      page: 1,
+      'active[eq]': 1,
+      serializer_group: JSON.stringify(['response', 'short']),
     };
+    forkJoin([
+      this.fieldService.getAllFields(data),
+      this.denominationsService.getAllDenominations(data),
+      this.styleService.getAllItems(data),
+      this.simpleTabsRefService.getAllItems(data, 'eras'),
+      this.simpleTabsRefService.getAllItems(data, 'authors'),
+      this.simpleTabsRefService.getAllItems(data, 'propertyStatusCategories'),
+      this.simpleTabsRefService.getAllItems(data, 'depositors'),
+      this.simpleTabsRefService.getAllItems(data, 'entryModes'),
+    ]).subscribe(
+      ([
+        fieldsResults,
+        denominationResults,
+        styleResults,
+        eraResults,
+        authorResults,
+        categoriesResults,
+        depositorsResults,
+        entryModesData,
+      ]) => {
+        this.domainData = this.getTabRefData(fieldsResults['results']);
+        this.denominationData = denominationResults['results'];
+        this.denominations = denominationResults['results'];
+        this.styleData = this.getTabRefData(styleResults['results']);
+        this.authorData = this.getTabRefData(authorResults['results']);
+        this.categoriesData = this.getTabRefData(categoriesResults['results']);
+        this.depositorsData = this.getTabRefData(depositorsResults['results']);
+        this.eraData = this.getTabRefData(eraResults['results']);
+        this.entryModesData = this.getTabRefData(entryModesData['results']);
+      }
+    );
   }
-  selectDomain(item: any) {
-    this.denomination = item.denominations;
-    this.selectedDomain = item.name;
-    console.log('selectedDomain', this.selectedDomain);
-  }
-  selectEvent(item: any) {}
 
-  onChangeSearch(val: string) {
-    // fetch remote data from here
-    // And reassign the 'data' which is binded to 'data' property.
-  }
-
-  onFocused(e: any) {
-    // do something when input is focused
+  onTagEdited(e: any) {
+    console.log(e);
   }
 
   onCollapse() {
     this.isCollapsed = !this.isCollapsed;
   }
-  onDomainSelect(item: any) {
-    // this.denominations = item.denominations;
-    this.denomination = item.denominations;
-    this.selectedDomain = item.name;
-    console.log('selectedDomain', this.selectedDomain);
-    console.log(item);
+  onSelect(value: any, key: string) {
+    const apiData = {
+      page: 1,
+      'active[eq]': 1,
+    };
+    const materialApiData = Object.assign({}, apiData);
+
+    switch (key) {
+      case 'field':
+        this.selectedDomain = value.value.name;
+        this.denominationData = this.denominations.filter((denomination: any) => {
+          return denomination.field.id === value.value.id;
+        });
+        materialApiData['denominations'] = JSON.stringify(this.denominationData);
+        forkJoin([this.materialTechniqueService.getFilteredMaterialTechnique(materialApiData)]).subscribe(
+          ([materialTechniquesResults]) => {
+            this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
+          }
+        );
+        break;
+      case 'denomination':
+        const selectedDomain = this.getTabRefData([value.value.field]);
+        if (!this.descriptifForm.get('field').value.length) {
+          this.descriptifForm.get('field').setValue(selectedDomain[0]);
+        }
+
+        materialApiData['denominations'] = JSON.stringify([value.value]);
+        forkJoin([this.materialTechniqueService.getFilteredMaterialTechnique(materialApiData)]).subscribe(
+          ([materialTechniquesResults]) => {
+            this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
+          }
+        );
+        break;
+    }
   }
-  onItemSelect(item: any) {
-    console.log(item);
+
+  private initData() {
+    if (this.artwork) {
+      this.selectedDomain = this.artwork['field'];
+      console.log(this.selectedDomain, this.artwork['field']);
+    }
   }
-  onSelectAll(items: any) {}
 }

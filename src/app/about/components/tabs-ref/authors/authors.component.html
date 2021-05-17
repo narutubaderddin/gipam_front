@@ -115,13 +115,29 @@
             [options]="activeTypes"
             optionLabel="label"
             formControlName="type"
-            [placeholder]="selectedType ? selectedType.label : 'Sélectionner un type'"
+            placeholder="Sélectionner un type"
             emptyFilterMessage="Aucun résultat trouvé"
             [filter]="true"
             [filterBy]="'label'"
             [virtualScroll]="true"
             itemSize="5"
           ></p-dropdown>
+        </div>
+      </div>
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
+        <label class="col-sm-5">Personnes ayant-droit</label>
+        <div class="select col-sm-7 p-0">
+          <p-multiSelect
+            [options]="activePeople"
+            [virtualScroll]="true"
+            formControlName="people"
+            emptyFilterMessage="Aucun résultat trouvé"
+            optionLabel="label"
+            display="chip"
+            [filter]="true"
+            [filterBy]="'label'"
+            placeholder="Sélectionner des personnes"
+          ></p-multiSelect>
         </div>
       </div>
       <div class="form-group col-md-12 d-flex align-items-baseline" *ngIf="addItem">

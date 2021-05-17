@@ -1,8 +1,8 @@
 <div class="breadcrumb">
   <a href="accueil">Accueil</a>
-  <a href="tab-ref-pieces" class="selected-item">
+  <a href="tab-ref-reserves" class="selected-item">
     <i class="fas fa-chevron-right"></i>
-    Gestion des Pièces
+    Gestion des Réserves
   </a>
 </div>
 <div class="container-fluid">
@@ -13,7 +13,7 @@
           <div class="card">
             <div class="card-body">
               <ul class="d-flex">
-                <li class="col-md-12 selected-table"><i class="fas fa-tasks"></i><a>Gestion des Pièces</a></li>
+                <li class="col-md-12 selected-table"><i class="fas fa-tasks"></i><a>Gestion des Réserves</a></li>
               </ul>
             </div>
           </div>
@@ -44,7 +44,7 @@
               <div class="mr-3">
                 <button class="btn add-action" (click)="addItemAction()">
                   <i class="fas fa-plus-circle mr-1"></i>
-                  Ajouter Pièce
+                  Ajouter Réserve
                 </button>
               </div>
             </div>
@@ -80,46 +80,105 @@
 <ng-template #content let-modal>
   <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
     <div class="modal-header">
-      <h4 class="modal-title" *ngIf="editItem">Modification de pièce "{{ itemLabel }}"</h4>
-      <h4 class="modal-title" *ngIf="addItem">Ajout d'une pièce</h4>
-      <h4 class="modal-title" *ngIf="deleteItems">Suppression de pièce "{{ itemLabel }}"</h4>
-      <h4 class="modal-title" *ngIf="editVisibility">Activer/Désactiver la pièce "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="editItem">Modification de réserve "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="addItem">Ajout d'une réserve</h4>
+      <h4 class="modal-title" *ngIf="deleteItems">Suppression de réserve "{{ itemLabel }}"</h4>
+      <h4 class="modal-title" *ngIf="editVisibility">Activer/Désactiver la réserve "{{ itemLabel }}"</h4>
       <button type="button" class="close" aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
-      <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer la pièce "{{ itemLabel }}" ?</div>
+      <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer la réserve "{{ itemLabel }}" ?</div>
 
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Référence<span class="mandatory"> *</span></label>
+        <label class="col-sm-5">Libellé<span class="mandatory"> *</span></label>
         <input
           type="text"
           class="form-control col-sm-7"
-          value="{{ editItem ? selectedItem.reference : '' }}"
-          formControlName="reference"
+          value="{{ editItem ? selectedItem.label : '' }}"
+          formControlName="label"
         />
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Niveau<span class="mandatory"> *</span></label>
-        <input
-          type="number"
-          class="form-control col-sm-7"
-          value="{{ editItem ? selectedItem.level : '' }}"
-          formControlName="level"
-        />
+        <label class="col-sm-5">Filtrer par Région<span class="mandatory"> *</span></label>
+        <div class="col-sm-7 p-0">
+          <p-autoComplete
+            [minLength]="3"
+            field="name"
+            emptyMessage="Aucun résultat trouvé"
+            placeholder="Filtrer par région"
+            (completeMethod)="onDataChange($event, 'regions')"
+            [suggestions]="autoComplete.regions"
+            [(ngModel)]="selectedRegion"
+            [ngModelOptions]="{ standalone: true }"
+          >
+          </p-autoComplete>
+        </div>
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Bâtiment<span class="mandatory"> *</span></label>
+        <label class="col-sm-5">Filtrer par Département<span class="mandatory"> *</span></label>
+        <div class="col-sm-7 p-0">
+          <p-autoComplete
+            [minLength]="3"
+            field="name"
+            emptyMessage="Aucun résultat trouvé"
+            placeholder="Filtrer par département"
+            (completeMethod)="onDataChange($event, 'departments')"
+            [suggestions]="autoComplete.departments"
+            [(ngModel)]="selectedDepartment"
+            [ngModelOptions]="{ standalone: true }"
+            [disabled]="!selectedRegion"
+          >
+          </p-autoComplete>
+        </div>
+      </div>
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
+        <label class="col-sm-5">Filtrer par Commune<span class="mandatory"> *</span></label>
+        <div class="col-sm-7 p-0">
+          <p-autoComplete
+            [minLength]="3"
+            field="name"
+            emptyMessage="Aucun résultat trouvé"
+            placeholder="Filtrer par commune"
+            (completeMethod)="onDataChange($event, 'communes')"
+            [suggestions]="autoComplete.communes"
+            [(ngModel)]="selectedCommune"
+            [ngModelOptions]="{ standalone: true }"
+            [disabled]="!selectedDepartment"
+          >
+          </p-autoComplete>
+        </div>
+      </div>
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
+        <label class="col-sm-5">Filtrer par Bâtiment<span class="mandatory"> *</span></label>
         <div class="select col-sm-7 p-0">
           <p-dropdown
-            [options]="activeRelatedEntities"
+            [options]="activeBuildings"
             optionLabel="name"
-            formControlName="building"
-            [placeholder]="selectedRelatedEntity ? selectedRelatedEntity.name : 'Sélectionner un bâtiment'"
+            [placeholder]="'Filtrer par bâtiment'"
             emptyFilterMessage="Aucun résultat trouvé"
             [filter]="true"
             [filterBy]="'name'"
+            [virtualScroll]="true"
+            itemSize="5"
+            (onChange)="getRoomsByBuilding()"
+            [(ngModel)]="selectedBuilding"
+            [ngModelOptions]="{ standalone: true }"
+          ></p-dropdown>
+        </div>
+      </div>
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
+        <label class="col-sm-5">Pièce<span class="mandatory"> *</span></label>
+        <div class="select col-sm-7 p-0">
+          <p-dropdown
+            [options]="activeRelatedRooms"
+            optionLabel="reference"
+            formControlName="room"
+            [placeholder]="'Sélectionner une pièce'"
+            emptyFilterMessage="Aucun résultat trouvé"
+            [filter]="true"
+            [filterBy]="'reference'"
             [virtualScroll]="true"
             itemSize="5"
           ></p-dropdown>
@@ -171,3 +230,4 @@
     </div>
   </form>
 </ng-template>
+<p-toast></p-toast>

@@ -3,6 +3,7 @@
     <div class="col-md-6" *ngIf="addDepot">
       <div class="form-group flex-wrap flex-sm-nowrap">
         <label class="">N inventaire</label>
+
         <input type="text" class="form-control value col-12 col-sm-7" formControlName="title" />
       </div>
     </div>
@@ -29,9 +30,10 @@
             [style]="{ minWidth: '100%' }"
             [options]="domainData"
             formControlName="field"
-            id="field"
+            dataKey="id"
             placeholder="Choisir un domaine"
             optionLabel="name"
+            optionValue="id"
             [showClear]="false"
             emptyFilterMessage="Aucun résultat trouvé"
             (onChange)="onSelect($event, 'field')"
@@ -59,6 +61,7 @@
             id="denomination"
             placeholder="Choisir une dénomination"
             optionLabel="label"
+            optionValue="id"
             [showClear]="false"
             (onChange)="onSelect($event, 'denomination')"
             emptyFilterMessage="Aucun résultat trouvé"
@@ -87,6 +90,7 @@
         [style]="{ width: '100%' }"
         [options]="authorData"
         formControlName="authors"
+        optionValue="id"
         optionLabel="name"
         [filter]="true"
         defaultLabel="Sélectionner des auteurs"
@@ -97,84 +101,69 @@
       </div>
     </div>
     <div class="col-md-8"></div>
-    <div class="d-flex flex-wrap justify-content-between" *ngIf="selectedDomain">
+    <div class="d-flex flex-wrap justify-content-between" *ngIf="denomination && field && attributeToShow">
       <div class="divider"></div>
-      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="!['Art textile'].includes(selectedDomain)">
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('Height')">
         <label class="">Hauteur</label>
         <div class="d-flex value col-12 col-sm-7">
           <input class="col-md-8 form-control" type="number" formControlName="height" />
-          <select class="col-md-4 col-sm-4 form-control">
-            <option class="active">cm</option>
-            <option>m</option>
+          <select class="col-md-4 col-sm-4 form-control" formControlName="heightUnit">
+            <option class="active" value="1">cm</option>
+            <option value="100">m</option>
           </select>
         </div>
       </div>
-      <div
-        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="!['Sculpture', 'Luminaire', 'Pièce de musée', 'Horlogerie', 'Objet décoratif'].includes(selectedDomain)"
-      >
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('width')">
         <label class="">Largeur</label>
         <div class="d-flex value col-12 col-sm-7">
           <input class="col-md-8 form-control" type="number" formControlName="width" />
-          <select class="col-md-4 col-sm-4 form-control">
-            <option class="active">cm</option>
-            <option>m</option>
+          <select class="col-md-4 col-sm-4 form-control" formControlName="widthUnit">
+            <option class="active" value="1">cm</option>
+            <option value="100">m</option>
           </select>
         </div>
       </div>
-      <div
-        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="['Sculpture', 'Peinture'].includes(selectedDomain)"
-      >
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('totalWidth')">
         <label class="">Largeur Tot </label>
         <div class="d-flex value col-12 col-sm-7">
           <input class="col-md-8 form-control" type="number" formControlName="totalWidth" />
-          <select class="col-md-4 col-sm-4 form-control">
-            <option class="active">cm</option>
-            <option>m</option>
+          <select class="col-md-4 col-sm-4 form-control" formControlName="totalWidthUnit">
+            <option class="active" value="1">cm</option>
+            <option value="100">m</option>
           </select>
         </div>
       </div>
-      <div
-        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="['Peinture', 'Art graphique'].includes(selectedDomain)"
-      >
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('totalHeight')">
         <label class="">Hauteur Tot</label>
         <div class="d-flex value col-12 col-sm-7">
           <input class="col-md-8 form-control" type="number" formControlName="totalHeight" />
-          <select class="col-md-4 col-sm-4 form-control">
-            <option class="active">cm</option>
-            <option>m</option>
+          <select class="col-md-4 col-sm-4 form-control" formControlName="totalHeightUnit">
+            <option class="active" value="1">cm</option>
+            <option value="100">m</option>
           </select>
         </div>
       </div>
-      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="!['Art graphique'].includes(selectedDomain)">
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('length')">
         <label class="">Longueur</label>
         <div class="d-flex value col-12 col-sm-7">
           <input class="col-md-8 form-control" type="number" formControlName="length" />
-          <select class="col-md-4 col-sm-4 form-control">
-            <option class="active">cm</option>
-            <option>m</option>
+          <select class="col-md-4 col-sm-4 form-control" formControlName="lengthUnit">
+            <option class="active" value="1">cm</option>
+            <option value="100">m</option>
           </select>
         </div>
       </div>
-      <div
-        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="['Sculpture', 'Mobilier Patrimonial', 'Objet décoratif'].includes(selectedDomain)"
-      >
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('depth')">
         <label class="">Profondeur</label>
         <div class="d-flex value">
           <input class="col-md-8 form-control col-12 col-sm-7" type="number" formControlName="depth" />
-          <select class="col-md-4 col-sm-4 form-control">
-            <option class="active">cm</option>
-            <option>m</option>
+          <select class="col-md-4 col-sm-4 form-control" formControlName="depthUnit">
+            <option class="active" value="1">cm</option>
+            <option value="100">m</option>
           </select>
         </div>
       </div>
-      <div
-        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="['Peinture', 'Pièce de musée'].includes(selectedDomain)"
-      >
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('weight')">
         <label class="col-md-3">Poids</label>
         <div class="d-flex value col-12 col-sm-7">
           <input class="col-md-8 form-control" type="number" formControlName="weight" />
@@ -183,22 +172,19 @@
           </select>
         </div>
       </div>
-      <div
-        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="['Luminaire', 'Pièce de musée', 'Decor mural'].includes(selectedDomain)"
-      >
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('diameter')">
         <label class="">Diamètre</label>
         <div class="d-flex value col-12 col-sm-7">
           <input class="col-md-8 form-control" type="number" formControlName="diameter" />
-          <select class="col-md-4 form-control">
-            <option class="active">cm</option>
-            <option>m</option>
+          <select class="col-md-4 col-sm-4 form-control" formControlName="diameterUnit">
+            <option class="active" value="1">cm</option>
+            <option value="100">m</option>
           </select>
         </div>
       </div>
       <div class="col-md-4"></div>
       <div class="divider"></div>
-      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('era')">
         <label class="">Epoque</label>
         <div class="autocomplete form-control value col-12 col-sm-7">
           <p-dropdown
@@ -208,11 +194,12 @@
             formControlName="era"
             placeholder="Choisir une époque"
             optionLabel="name"
+            optionValue="id"
             [showClear]="false"
           ></p-dropdown>
         </div>
       </div>
-      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('style')">
         <label class="">Style</label>
         <div class="autocomplete form-control value col-12 col-sm-7">
           <p-dropdown
@@ -220,6 +207,7 @@
             [style]="{ minWidth: '100%' }"
             [options]="styleData"
             formControlName="style"
+            optionValue="id"
             placeholder="Choisir un style"
             optionLabel="name"
             [showClear]="false"
@@ -238,7 +226,7 @@
           ></p-calendar>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-6" *ngIf="attributeToShow.includes('materialTechnique')">
         <div class="form-group flex-wrap flex-sm-nowrap">
           <label class="">Matières <span class="mandatory">*</span></label>
           <div class="autocomplete form-control value col-12 col-sm-7">
@@ -249,9 +237,9 @@
               [options]="materialTechniquesData"
               formControlName="materialTechnique"
               optionLabel="name"
+              optionValue="id"
               placeholder="Choisir une matière/technique"
               [filter]="true"
-              (onChange)="onSelect($event, 'matiere')"
             >
             </p-multiSelect>
           </div>
@@ -267,7 +255,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6" *ngIf="['Art de la table', 'Objet décoratif'].includes(selectedDomain)">
+      <div class="col-md-6" *ngIf="attributeToShow.includes('numberOfUnit')">
         <div class="form-group flex-wrap flex-sm-nowrap">
           <label class="">Nombre unité<span class="mandatory">*</span></label>
           <div class="d-flex value col-12 col-sm-7">
@@ -288,11 +276,15 @@
       <div class="divider"></div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
         <label>Marquage</label>
-        <input class="form-control value col-12 col-sm-7" placeholder="Marquage" />
+        <input class="form-control value col-12 col-sm-7" placeholder="Marquage" formControlName="marking" />
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
         <label>Signature inscription</label>
-        <input class="form-control value col-12 col-sm-7" placeholder="Signature inscription" />
+        <input
+          class="form-control value col-12 col-sm-7"
+          placeholder="Signature inscription"
+          formControlName="registrationSignature"
+        />
       </div>
 
       <div class="form-group d-flex align-items-center col-md-6">
@@ -309,9 +301,15 @@
       <div class="col-md-12">
         <div class="d-flex form-group col-md-12 p-0">
           <label>Commentaire</label>
-          <textarea type="text" class="form-control" placeholder="Commentaire ..."></textarea>
+          <textarea
+            type="text"
+            class="form-control"
+            placeholder="Commentaire ..."
+            formControlName="description"
+          ></textarea>
         </div>
       </div>
     </div>
   </div>
 </form>
+<p-toast></p-toast>

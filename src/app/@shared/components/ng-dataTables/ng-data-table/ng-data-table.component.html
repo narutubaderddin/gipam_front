@@ -245,15 +245,18 @@
                 [value]="item[col.field]"
               ></app-visible-catalog-component-render>
               <span *ngSwitchCase="'key-multiple-data'">
-                <span *ngFor="let Item of item[col.key_multiple_data[0]]; let i = index"
-                  >{{ Item[col.key_multiple_data[1]] }}
-                  <span *ngIf="i < item[col.key_multiple_data[0]].length - 1">,</span>
-                </span>
+                <p-chip
+                  *ngFor="let Item of item[col.key_multiple_data[0]]; let i = index"
+                  label="{{ Item[col.key_multiple_data[1]] }}"
+                  styleClass="p-mr-2 ng-datatable"
+                ></p-chip>
               </span>
               <span *ngSwitchCase="'key-array'">
                 {{ item[col.key_data[0]] ? item[col.key_data[0]][col.key_data[1]] : '' }}
               </span>
               <span *ngSwitchCase="'date'"> {{ item[col.field] | date: viewDateFormat }} </span>
+              <app-in-progress-notice-renderer [value]="item" *ngSwitchCase="'app-in-progress-notice-renderer'">
+              </app-in-progress-notice-renderer>
 
               <span *ngSwitchDefault> {{ item[col.field] }} </span>
             </span>
