@@ -354,6 +354,22 @@ export class PortailComponent implements OnInit {
   getOeuvres() {
     this.loading = this.page == 1;
     this.loadingScroll = this.page != 1;
+    let filter = this.extractedFilterOeuvres();
+    this.WorkOfArtService.getOeuvres(filter).subscribe(
+      (response) => {
+        this.orderOeuvresByDomains(response);
+      },
+      (error) => {
+        //error() callback
+        this.loading = this.loadingScroll = this.loadingScrollUp = false;
+      },
+      () => {
+        //complete() callback
+        this.loading = this.loadingScroll = this.loadingScrollUp = false;
+      }
+    );
+  }
+  private extractedFilterOeuvres() {
     const height = {
       min: this.value,
       max: this.highValue,
@@ -392,7 +408,7 @@ export class PortailComponent implements OnInit {
     if (this.formModesValues && this.formModesValues.length == 1) {
       mode = this.formModesValues[0];
     }
-    let filter = {
+    return  {
       height: height,
       width: width,
       weight: weight,
@@ -402,20 +418,8 @@ export class PortailComponent implements OnInit {
       mode: mode,
       page: page,
     };
-    this.WorkOfArtService.getOeuvres(filter).subscribe(
-      (response) => {
-        this.orderOeuvresByDomains(response);
-      },
-      (error) => {
-        //error() callback
-        this.loading = this.loadingScroll = this.loadingScrollUp = false;
-      },
-      () => {
-        //complete() callback
-        this.loading = this.loadingScroll = this.loadingScrollUp = false;
-      }
-    );
   }
+
   initSearch() {
     if (this.searchOeuvre === '') {
       this.page = 1;
@@ -614,7 +618,11 @@ export class PortailComponent implements OnInit {
   }
 
   exportArtWorks() {
-    this.WorkOfArtService.exportArtWorks().subscribe((response: Response | any) => {
+    let filter : any = {};
+    filter = this.extractedFilterOeuvres();
+    filter.limit = this.totalOeuvres;
+    delete filter['page'];
+    this.WorkOfArtService.exportArtWorks(filter).subscribe((response: Response | any) => {
       this.requestService.manageFileResponseDownload(response, 'Oeuvres Graphiques');
     });
   }
