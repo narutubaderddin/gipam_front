@@ -701,4 +701,15 @@ export class WorkOfArtService {
   addWorkOfArt(data: any): Observable<any> {
     return this.http.post('/notices/property', data);
   }
+  addDepositWorkOfArt(data: any): Observable<any> {
+    return this.http.post('/notices/deposit', data);
+  }
+
+  getAttributes(fieldId: any, denominationId: any): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('field_id', fieldId);
+    params = params.append('denomination_id', denominationId);
+
+    return this.http.get('/notices/attributes', { params });
+  }
 }

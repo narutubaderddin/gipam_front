@@ -10,10 +10,9 @@
     ></i>
     <div class="more-details pt-3">
       <div class="d-flex flex-wrap justify-content-around">
-
         <div class="d-flex carousel-container mb-2 col-12" *ngIf="images.length">
           <p-galleria
-            [(value)]="images"
+            [value]="images"
             [containerStyle]="{ 'max-width': '400px' }"
             [numVisible]="5"
             [activeIndex]="add ? images.length - 1 : 0"
@@ -38,15 +37,8 @@
           </div>
           <div class="form-group col-md-12">
             <label class="col-md-5">Photographie</label>
-<!--            <i-->
-<!--              class="far fa-trash-alt col-1"-->
-<!--              *ngIf="!add"-->
-<!--              (click)="deleteItem(imageName)"-->
-<!--              pTooltip="Supprimer"-->
-<!--              tooltipPosition="top"-->
-<!--            ></i>-->
             <p *ngIf="!add && !addImage" class="col-7">{{ imageName }}</p>
-            <div class="input-group input-group-sm upload-file" *ngIf="add || addImage">
+            <div class="input-group input-group-sm upload-file" *ngIf="add">
               <div class="input-group input-group-sm h-auto">
                 <input
                   class="form-control"
@@ -63,74 +55,73 @@
                   </span>
                 </div>
               </div>
-              <span *ngIf="!validate && !photography.length" class="mandatory">Saisir une photo</span>
             </div>
-          </div>
-          <div class="form-group col-md-12">
-            <label class="col-md-5">Date</label>
-            <p *ngIf="!add && !addImage" class="col-7">{{ photographyDate }}</p>
-            <p-calendar
-              class="col-md-12"
-              *ngIf="add || addImage"
-              [style]="{ minWidth: '100%' }"
-              [(ngModel)]="photographyDate"
-              [showIcon]="true"
-              inputId="icon"
-            ></p-calendar>
-          </div>
+            <div class="form-group">
+              <label class="col-md-5">Date</label>
+              <p *ngIf="!add && !addImage" class="col-7">{{ photographyDate }}</p>
+              <p-calendar
+                class="col-md-12"
+                *ngIf="addImage || add"
+                [style]="{ minWidth: '100%' }"
+                [(ngModel)]="photographyDate"
+                [showIcon]="true"
+                inputId="icon"
+              ></p-calendar>
+            </div>
 
-          <div class="form-group col-md-12">
-            <label class="col-md-2">Type</label>
-            <i
-              class="far fa-edit col-1"
-              (click)="editImgType()"
-              *ngIf="!editType && !add && !addImage"
-              pTooltip="Modifier"
-              tooltipPosition="top"
-            ></i>
-            <p *ngIf="!editType && !add && !addImage" class="col-7">{{ photographyType['name'] }}</p>
+            <div class="form-group">
+              <label class="col-md-2">Type</label>
+              <i
+                class="far fa-edit col-1"
+                (click)="editImgType()"
+                *ngIf="!editType && !add && !addImage"
+                pTooltip="Modifier"
+                tooltipPosition="top"
+              ></i>
+              <p *ngIf="!editType && !add && !addImage" class="col-7">{{ photographyType['name'] }}</p>
 
-            <p-dropdown
-              class="col-md-12"
-              *ngIf="add || addImage || editType"
-              [style]="{ minWidth: '100%' }"
-              [options]="types"
-              [(ngModel)]="photographyType"
-              placeholder="Choisir un type"
-              optionLabel="name"
-              [showClear]="false"
-            ></p-dropdown>
-            <ng-template let-option pTemplate="item">
-              <div>
-                <div [ngStyle]="option.disabled ? { color: '#ccc', cursor: 'default' } : ''">{{ option.name }}</div>
+              <p-dropdown
+                class="col-md-12"
+                *ngIf="addImage || editType || add"
+                [style]="{ minWidth: '100%' }"
+                [options]="types"
+                [(ngModel)]="photographyType"
+                placeholder="Choisir un type"
+                optionLabel="type"
+                [showClear]="false"
+              ></p-dropdown>
+              <ng-template let-option pTemplate="item">
+                <div>
+                  <div [ngStyle]="option.disabled ? { color: '#ccc', cursor: 'default' } : ''">{{ option.name }}</div>
+                </div>
+              </ng-template>
+              <span class="mandatory" *ngIf="!validate && !photographyType">Veuillez saisir un type</span>
+
+              <div class="d-flex justify-content-end col-12 p-0 mt-2 mb-2" *ngIf="editType">
+                <button (click)="cancelEditType()" class="mr-2 cancel-btn">Annuler</button>
+                <button (click)="saveEditType()" class="valid-btn">Valider</button>
               </div>
-            </ng-template>
-            <span class="mandatory" *ngIf="!validate && !photographyType">Veuillez saisir un type</span>
-
-            <div class="d-flex justify-content-end col-12 p-0 mt-2 mb-2" *ngIf="editType">
-              <button (click)="cancelEditType()" class="mr-2 cancel-btn">Annuler</button>
-              <button (click)="saveEditType()" class="valid-btn">Valider</button>
             </div>
+            <button class="btn add-action mb-2 ml-3" (click)="addPhotography()" *ngIf="add || addImage">
+              <i class="fas fa-plus"></i>
+              Valider
+            </button>
           </div>
-          <button class="btn add-action mb-2 ml-3" (click)="addPhotography()" *ngIf="add || addImage">
-            <i class="fas fa-plus"></i>
-            Valider
-          </button>
         </div>
       </div>
     </div>
   </div>
-</div>
-<p-dialog header="Supprimer la photographie" [modal]="true" [(visible)]="deleteDialog" [style]="{ width: '30vw' }">
-  <div class="p-0 pb-3">
-    <div class="col-12">
-      <span
-        >Voulez-vous supprimer la photographie "<strong> {{ itemToDelete }} </strong>" ?</span
-      >
+  <p-dialog header="Supprimer la photographie" [modal]="true" [(visible)]="deleteDialog" [style]="{ width: '30vw' }">
+    <div class="p-0 pb-3">
+      <div class="col-12">
+        <span
+          >Voulez-vous supprimer la photographie "<strong> {{ itemToDelete }} </strong>" ?</span
+        >
+      </div>
     </div>
-  </div>
-  <ng-template pTemplate="footer">
-    <button class="cancel-btn" (click)="cancelDelete()" style="font-size: 12px">Annuler</button>
-    <button class="valid-btn" (click)="delete()" style="font-size: 12px">supprimer</button>
-  </ng-template>
-</p-dialog>
+    <ng-template pTemplate="footer">
+      <button class="cancel-btn" (click)="cancelDelete()" style="font-size: 12px">Annuler</button>
+      <button class="valid-btn" (click)="delete()" style="font-size: 12px">supprimer</button>
+    </ng-template>
+  </p-dialog>
+</div>
