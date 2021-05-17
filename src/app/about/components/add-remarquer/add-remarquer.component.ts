@@ -100,7 +100,7 @@ export class AddRemarquerComponent implements OnInit, DirtyComponent {
       title: [''],
       field: [null],
       denomination: [null],
-      materialTechnique: [''],
+      materialTechnique: [null],
       numberOfUnit: [''],
       authors: [],
       creationDate: [],
@@ -215,9 +215,11 @@ export class AddRemarquerComponent implements OnInit, DirtyComponent {
   formatData() {
     const keys = ['height', 'width', 'length', 'totalHeight', 'totalWidth', 'totalLength', 'depth', 'diameter'];
     keys.forEach((key: string) => {
-      this.descriptifForm
-        .get(key)
-        .setValue(+this.descriptifForm.get(key).value * +this.descriptifForm.get(key.concat('Unit')).value);
+      if (this.descriptifForm.get(key).value) {
+        this.descriptifForm
+          .get(key)
+          .setValue(+this.descriptifForm.get(key).value * +this.descriptifForm.get(key.concat('Unit')).value);
+      }
     });
   }
   submit() {

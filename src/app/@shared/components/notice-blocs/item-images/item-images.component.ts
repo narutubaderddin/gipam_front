@@ -26,7 +26,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   types: any[];
   fileToUpload: any;
   imageName: any = '';
-  // images: any = [];
   photographyInsertionNumber = 0;
   selectedPhotography = 0;
   validate = true;
@@ -43,7 +42,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   constructor(private modalService: NgbModal, public fb: FormBuilder, private simpleTabsRef: SimpleTabsRefService) {}
   ngOnInit(): void {
     this.getAllTypes();
-    this.initForm();
     this.images.map((el: any) =>
       this.photographies.push(
         this.createPhotography(el.photography, el.photographyDate, el.photographyType, el.imageName)
@@ -59,12 +57,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     }
   }
   ngOnChanges(changements: SimpleChanges) {}
-
-  initForm() {
-    this.photographiesForm = new FormGroup({
-      photographies: this.fb.array([]),
-    });
-  }
 
   initData(photography?: string, photographyDate?: Date, photographyType?: any, imageName?: string) {
     this.photography = photography;
@@ -107,6 +99,8 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     this.photographies.value[i].imagePreview = photography;
     this.images[i].imageUrl = photography;
     this.images[i].image = imageName;
+    this.images[i].photographyType = photographyType;
+    this.photography = photography;
   }
   verifyIdentification() {
     this.identification = 0;
@@ -135,6 +129,8 @@ export class ItemImagesComponent implements OnInit, OnChanges {
           imageUrl: this.photography,
           alt: 'description',
           image: this.imageName,
+          photographyType: this.photographyType,
+          photographyDate: this.photographyDate,
         });
         this.photographies.push(
           this.createPhotography(
@@ -186,8 +182,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     this.file.nativeElement.click();
   }
   show(item: any) {
-    let data = this.images[item.i];
-    this.initData(data.photography, data.photographyDate, data.photographyType, item.image);
+    this.initData(item.imageUrl, item.photographyDate, item.photographyType, item.image);
     this.selectedPhotography = item.i;
     this.imgToShow.emit(item.imageUrl);
     this.activeIndex = item.i;
@@ -223,7 +218,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   }
 
   delete() {
-    // this.photographies.removeAt(this.activeIndex);
+    this.photographies.removeAt(this.activeIndex);
     this.images.splice(this.activeIndex, 1);
   }
 
