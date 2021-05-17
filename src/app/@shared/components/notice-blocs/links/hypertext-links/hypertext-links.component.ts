@@ -7,17 +7,32 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class HypertextLinksComponent implements OnInit {
   @Input() add: false;
+  @Input() linksForm: FormGroup;
+  get hyperlinks(): FormArray {
+    return this.linksForm.get('hyperlinks') as FormArray;
+  }
+  @Input() itemDetails = false;
   myForm: FormGroup;
+  addLinks: boolean = false;
+  deleteDialog: boolean = false;
+  itemToDelete: string = '';
+  selectedItem: any;
+  existingLinks: any[] = [
+    {
+      url: 'string',
+      name: 'string',
+    },
+  ];
 
   get liens(): FormArray {
     return this.myForm.get('liens') as FormArray;
   }
-
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
     this.configForm();
   }
+
   createAttachment(attachment?: any, attachmentType?: any): FormGroup {
     return this.fb.group({
       name: [attachment],
@@ -26,10 +41,17 @@ export class HypertextLinksComponent implements OnInit {
   }
 
   addBook() {
-    this.liens.push(this.buildBook());
+    this.hyperlinks.push(this.createAttachment());
   }
 
   removeBook(i: number) {
+    this.hyperlinks.removeAt(i);
+  }
+  addLink() {
+    this.liens.push(this.buildLink());
+  }
+
+  removeLink(i: number) {
     this.liens.removeAt(i);
   }
 
@@ -37,17 +59,34 @@ export class HypertextLinksComponent implements OnInit {
     alert(`New Author created: ${this.myForm.get('author').value}`);
   }
 
-  private configForm() {
+  configForm() {
     this.myForm = this.fb.group({
-      author: ['', [Validators.required, Validators.maxLength(40)]],
-      liens: this.fb.array([this.buildBook()]),
+      liens: this.fb.array([this.buildLink()]),
     });
   }
 
-  private buildBook(): FormGroup {
+  buildLink(): FormGroup {
     return this.fb.group({
       urlName: ['', [Validators.required]],
-      url: [''],
+      url: ['', [Validators.required]],
     });
+  }
+  addNewLinks() {
+    this.addLinks = true;
+  }
+  cancelAddLinks() {
+    this.addLinks = false;
+  }
+  getIndex(el: any) {
+    return this.existingLinks.indexOf(el);
+  }
+  delete(item: string) {
+    this.deleteDialog = true;
+    this.itemToDelete = item['name'];
+    this.selectedItem = item;
+  }
+  cancelDelete() {
+    this.deleteDialog = false;
+    this.itemToDelete = '';
   }
 }

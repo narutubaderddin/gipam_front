@@ -71,6 +71,13 @@ export class MaterialTechniqueComponent implements OnInit {
       width: '300px',
     },
     {
+      header: 'Dénominations',
+      field: 'denominations',
+      type: 'key-multiple-data',
+      key_multiple_data: ['denominations', 'label'],
+      scrollable: true,
+    },
+    {
       header: 'Actions',
       field: 'action',
       type: 'app-actions-cell',

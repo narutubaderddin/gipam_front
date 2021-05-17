@@ -975,3 +975,72 @@ div.actions-oeuvre {
 .card-footer {
   border-radius: 0px;
 }
+.card-columns {
+  column-gap: 0;
+  orphans: 2;
+  widows: 2;
+
+  .active {
+    /*border: solid 2px #2196f3;*/
+    border: solid 2px rgba(12, 17, 43, 0.8);
+    border-radius: 0.25rem;
+  }
+
+  /* This is where the magic happens */
+  input[type="checkbox"] {
+    position: absolute;
+    top: 0.3em;
+    left: 0.5em;
+  }
+
+  @media (pointer: coarse) {
+    input[type="checkbox"] {
+      height: 2em;
+      width: 2em;
+    }
+  }
+
+  /* Use z-index to make it accessible to keyboard navigation */
+  @media (hover: hover) {
+    input[type="checkbox"] {
+      z-index: -1;
+    }
+    .card:hover input[type="checkbox"],
+    input[type="checkbox"]:focus,
+    input[type="checkbox"]:checked {
+      z-index: auto;
+    }
+  }
+}
+
+@media (min-width: 34em) {
+  .card-columns {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+  }
+}
+
+@media (min-width: 48em) {
+  .card-columns {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+  }
+}
+
+@media (min-width: 62em) {
+  .card-columns {
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4;
+  }
+}
+
+@media (min-width: 75em) {
+  .card-columns {
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4;
+  }
+}

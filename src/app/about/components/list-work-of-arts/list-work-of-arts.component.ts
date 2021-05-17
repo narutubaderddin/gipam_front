@@ -37,7 +37,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   mode = 'liste';
   filterFormGroup: FormGroup;
   showInventoryRange = false;
-
+  oeuvrePerDomain: any;
   oeuvres = this.WorkOfArtService.oeuvres[0].items;
   frozenCols: any = [];
   columns: any[];
@@ -162,7 +162,7 @@ export class ListWorkOfArtsComponent implements OnInit {
         advancedFilter,
         headerFilters,
         page,
-        5,
+        this.mode == 'pictures' ? 20 : 5,
         sortBy,
         sort,
         this.globalSearch,
@@ -170,10 +170,19 @@ export class ListWorkOfArtsComponent implements OnInit {
       )
       .subscribe(
         (artWorksData: ArtWorksDataModel) => {
-          this.artWorksData = artWorksData;
+          if (this.mode == 'pictures' && page > 1) {
+            artWorksData.results.forEach((oeuvre: any) => {
+              this.artWorkResults.push(oeuvre);
+            });
+          } else {
+            this.artWorkResults = artWorksData.results;
+            this.artWorksData = artWorksData;
+          }
+
           this.start = (this.artWorksData.page - 1) * this.artWorksData.size + 1;
           this.end = (this.artWorksData.page - 1) * this.artWorksData.size + this.artWorksData.results.length;
           this.loading = false;
+          this.loadingScroll = false;
           this.firstLoading = false;
         },
         (error: any) => {
@@ -185,7 +194,8 @@ export class ListWorkOfArtsComponent implements OnInit {
   addSingle(type: string, sum: string, msg: string) {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
   }
-
+  selectedOeuvres: any[] = [];
+  artWorkResults: any[] = [];
   ngOnInit(): void {
     this.initFilterData();
     this.oeuvreToShow = this.oeuvres;
@@ -461,7 +471,6 @@ export class ListWorkOfArtsComponent implements OnInit {
         break;
     }
     if (event == false) {
-      this.showDatatable = true;
       let data = this.formatFormsData({}, [
         this.form1.value,
         this.form2.value,
@@ -471,6 +480,11 @@ export class ListWorkOfArtsComponent implements OnInit {
       ]);
       let advancedData = this.formatAdvancedData({}, [this.advancedForm1.value, this.advancedForm3.value]);
       this.headerFilter = this.formatFormsData({}, [this.headerFilter], true);
+      if (this.mode == 'pictures') {
+        this.loading = true;
+        this.firstLoading = true;
+      }
+      this.showDatatable = true;
       this.initData(data, advancedData, this.headerFilter);
     }
   }
@@ -672,7 +686,6 @@ export class ListWorkOfArtsComponent implements OnInit {
       this.fieldService.getAllFields(data),
       this.denominationsService.getAllDenominations(data),
       this.styleService.getAllItems(data),
-      // this.simpleTabsRefService.getAllItems(data, 'materialTechniques'),
       this.simpleTabsRefService.getAllItems(data, 'eras'),
       this.simpleTabsRefService.getAllItems(data, 'authors'),
       this.simpleTabsRefService.getAllItems(data, 'propertyStatusCategories'),
@@ -691,9 +704,6 @@ export class ListWorkOfArtsComponent implements OnInit {
       this.simpleTabsRefService.getAllItems(data, 'departments'),
       this.simpleTabsRefService.getAllItems(data, 'correspondents'),
       this.simpleTabsRefService.getAllItems(data, 'responsibles'),
-      // this.simpleTabsRefService.getAllItems(data, 'communes'),
-      // this.simpleTabsRefService.getAllItems(data, 'buildings'),
-      // this.simpleTabsRefService.getAllItems(data, 'sites'),
       this.simpleTabsRefService.getAllItems(data, 'entryModes'),
     ]).subscribe(
       ([
@@ -719,9 +729,6 @@ export class ListWorkOfArtsComponent implements OnInit {
         departmentData,
         correspondentsData,
         responsibleData,
-        // communesData,
-        // buildingsData,
-        // sitesData,
         entryModesData,
       ]) => {
         this.domainData = this.getTabRefData(fieldsResults['results']);
@@ -746,9 +753,6 @@ export class ListWorkOfArtsComponent implements OnInit {
         this.departmentsData = this.getTabRefData(departmentData['results']);
         this.correspondentGeographicData = this.getTabRefData(correspondentsData['results']);
         this.correspondentAdministrativeData = this.getTabRefData(responsibleData['results']);
-        // this.communesData = this.getTabRefData(communesData['results']);
-        // this.buildingData = this.getTabRefData(buildingsData['results']);
-        // this.siteData = this.getTabRefData(sitesData['results']);
         this.entryModesData = this.getTabRefData(entryModesData['results']);
         this.initColumnsDefinition();
         this.initVisibleCols();
@@ -1403,5 +1407,57 @@ export class ListWorkOfArtsComponent implements OnInit {
         });
         this.roomData = resultData;
       });
+  }
+
+  changeMode(mode: string) {
+    this.mode = mode;
+    if (this.showDatatable) {
+      let data = this.formatFormsData({}, [
+        this.form1.value,
+        this.form2.value,
+        this.form3.value,
+        this.form4.value,
+        this.formStatus.value,
+      ]);
+      let advancedData = this.formatAdvancedData({}, [this.advancedForm1.value, this.advancedForm3.value]);
+      this.headerFilter = this.formatFormsData({}, [this.headerFilter], true);
+      this.loading = true;
+      this.firstLoading = true;
+      this.initData(data, advancedData, this.headerFilter, 1);
+      this.showDatatable = true;
+    }
+  }
+  selectedValues: string[] = [];
+  selectOeuvre(item: any, index: number) {
+    item.active = !item.active;
+    if (item.active) {
+      this.selectedOeuvres.push(item);
+    } else {
+      this.selectedOeuvres = this.selectedOeuvres.filter((oeuvre) => {
+        return oeuvre.id !== item.id;
+      });
+    }
+  }
+
+  throttle = 300;
+  scrollDistance = 2;
+  scrollUpDistance = 1;
+  direction = '';
+  page = 1;
+  loadingScroll: boolean = false;
+  onScrollDown() {
+    this.page++;
+    let data = this.formatFormsData({}, [
+      this.form1.value,
+      this.form2.value,
+      this.form3.value,
+      this.form4.value,
+      this.formStatus.value,
+    ]);
+    let advancedData = this.formatAdvancedData({}, [this.advancedForm1.value, this.advancedForm3.value]);
+    this.headerFilter = this.formatFormsData({}, [this.headerFilter], true);
+    this.loadingScroll = true;
+    this.initData(data, advancedData, this.headerFilter, this.page);
+    this.showDatatable = true;
   }
 }
