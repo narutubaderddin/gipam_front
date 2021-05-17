@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import ArtWorksDataModel, { ArtWorksModel } from '@app/about/models/art-works-model';
+import ArtWorksDataModel, { ArtWorksModel, Photographie } from '@app/about/models/art-works-model';
 
 @Pipe({
   name: 'art-works',
@@ -29,6 +29,7 @@ export class ArtWorksPipe implements PipeTransform {
         buildingText += ',';
       }
     });
+    let principalPhoto = new Photographie(value.principalPhoto?.id, value.principalPhoto?.imagePreview);
     return new ArtWorksModel(
       value.id,
       value.title,
@@ -46,7 +47,8 @@ export class ArtWorksPipe implements PipeTransform {
       value.status?.statusType == 'DepositStatus' ? 'Dépôt' : 'Propriété',
       value.status?.depsitorName,
       value.creationDate,
-      value.visible
+      value.visible,
+      principalPhoto
     );
   }
 }
