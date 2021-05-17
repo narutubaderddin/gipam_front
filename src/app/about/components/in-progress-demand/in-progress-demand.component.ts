@@ -222,9 +222,7 @@ export class InProgressDemandComponent {
     this.getListDemands();
   }
 
-  changeRequestStatus(request:any){
-    this.demandService.changeStatus(request).subscribe((response)=>{
-
-    });
+  changeRequestStatus(request: any) {
+    this.demandService.changeStatus(request).subscribe((response) => {});
   }
 }

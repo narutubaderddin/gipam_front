@@ -418,13 +418,13 @@ export class NgDataTableComponent implements OnInit {
     });
     return items;
   }
-  onChangeRequestStatus(requestID:any,status:any){
-    console.log("requestID");
+  onChangeRequestStatus(requestID: any, status: any) {
+    console.log('requestID');
     console.log(requestID);
     const newRequest = {
-      'id'  : requestID,
-      'requestStatus' : status
-    }
+      id: requestID,
+      requestStatus: status,
+    };
     this.changeRequestStatus.emit(newRequest);
   }
 }

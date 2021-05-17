@@ -22,7 +22,8 @@
           type="text"
           style="outline: none"
           class="w-100 form-control"
-          (keyup.enter)="onSearchClick()"
+          [(ngModel)]="globalSearch"
+          (keyup.enter)="onSearchClick('global')"
           placeholder="Recherche ..."
         />
         <button type="submit" class="searchButton" (click)="onSearchClick()">
@@ -168,6 +169,7 @@
                         <p-multiSelect
                           itemSize="30"
                           [virtualScroll]="true"
+                          (onPanelHide)="onMultiselectChange('denomination')"
                           [options]="denominationData"
                           id="denomination"
                           formControlName="denomination"
@@ -194,9 +196,11 @@
                               id="materialTechnique"
                               [minLength]="3"
                               field="name"
+                              [multiple]="true"
                               [suggestions]="materialTechniquesData"
                               formControlName="materialTechnique"
                               emptyMessage="Aucun résultat trouvé"
+                              [dropdown]="true"
                               (completeMethod)="onMaterialTechniqueComplete($event)"
                               placeholder="Choisir des matières"
                             >
@@ -650,32 +654,46 @@
                   </div>
                   <div class="col-6 mt-3">
                     <div class="form-group d-flex slider-bloc row" *ngIf="propStatus">
-                      <label for="titre" class="col-5">Date Entrée</label>
-                      <input
-                        type="date"
-                        name="datepicker"
+                      <label for="entryDate" class="col-5">Date Entrée</label>
+                      <p-calendar
+                        #pcdEntry
                         formControlName="entryDate"
-                        class="form-control date-input col-6"
-                        ngbDatepicker
-                        autoClose="outside"
-                        displayMonths="2"
-                        outsideDays="hidden"
-                        id="date"
-                      />
+                        [readonlyInput]="true"
+                        [monthNavigator]="true"
+                        [yearNavigator]="true"
+                        [numberOfMonths]="1"
+                        [selectionMode]="'range'"
+                        [showOtherMonths]="true"
+                        [showIcon]="true"
+                        id="entryDate"
+                        class="date-input col-6"
+                        dateFormat="dd/mm/yy"
+                        yearRange="1900:2100"
+                        styleClass="dateTimeField"
+                        placeholder="Date Entrée"
+                      >
+                      </p-calendar>
                     </div>
                     <div class="form-group d-flex slider-bloc row" *ngIf="depotStatus">
-                      <label for="titre" class="col-5">Date Dépôt</label>
-                      <input
-                        type="date"
-                        name="datepicker"
+                      <label for="depotDate" class="col-5">Date Dépôt</label>
+                      <p-calendar
+                        #pcdDepot
                         formControlName="depotDate"
-                        class="form-control date-input col-6"
-                        ngbDatepicker
-                        autoClose="outside"
-                        displayMonths="2"
-                        outsideDays="hidden"
-                        id="date"
-                      />
+                        [readonlyInput]="true"
+                        [monthNavigator]="true"
+                        [yearNavigator]="true"
+                        [numberOfMonths]="1"
+                        [selectionMode]="'range'"
+                        [showOtherMonths]="true"
+                        [showIcon]="true"
+                        id="depotDate"
+                        class="date-input col-6"
+                        dateFormat="dd/mm/yy"
+                        yearRange="1900:2100"
+                        styleClass="dateTimeField"
+                        placeholder="Date Dépôt"
+                      >
+                      </p-calendar>
                     </div>
                     <div class="form-group d-flex slider-bloc row" *ngIf="propStatus">
                       <label for="entryMode" class="col-5">Mode entrée</label>
@@ -1048,20 +1066,6 @@
               <form [formGroup]="form4">
                 <div class="col-12 pt-1">
                   <div class="form-group d-flex slider-bloc row">
-                    <label for="localType" class="col-5">Type local </label>
-                    <div class="multiSelectBlock col-6">
-                      <p-multiSelect
-                        [options]="locationTypeData"
-                        id="localType"
-                        formControlName="localType"
-                        emptyFilterMessage="Aucun résultat trouvé"
-                        defaultLabel="Choisir des types local"
-                        optionLabel="name"
-                        display="chip"
-                      ></p-multiSelect>
-                    </div>
-                  </div>
-                  <div class="form-group d-flex slider-bloc row">
                     <label for="region" class="col-5">Régions </label>
                     <div class="multiSelectBlock col-6">
                       <p-multiSelect
@@ -1106,6 +1110,21 @@
                     </div>
                   </div>
                   <div class="form-group d-flex slider-bloc row">
+                    <label for="sites" class="col-5">Sites </label>
+                    <div class="multiSelectBlock col-6">
+                      <p-autoComplete
+                        id="sites"
+                        [suggestions]="siteData"
+                        [minLength]="3"
+                        formControlName="sites"
+                        field="name"
+                        placeholder="Choisir des sites"
+                        (completeMethod)="onGeographicLocationChange($event, 'sites')"
+                        [multiple]="true"
+                      ></p-autoComplete>
+                    </div>
+                  </div>
+                  <div class="form-group d-flex slider-bloc row">
                     <label for="batiment" class="col-5">Bâtiments </label>
                     <div class="multiSelectBlock col-6">
                       <p-autoComplete
@@ -1122,29 +1141,15 @@
                     </div>
                   </div>
                   <div class="form-group d-flex slider-bloc row">
-                    <label for="sites" class="col-5">Sites </label>
-                    <div class="multiSelectBlock col-6">
-                      <p-autoComplete
-                        id="sites"
-                        [suggestions]="siteData"
-                        [minLength]="3"
-                        formControlName="sites"
-                        field="name"
-                        placeholder="Choisir des sites"
-                        (completeMethod)="onGeographicLocationChange($event, 'sites')"
-                        [multiple]="true"
-                      ></p-autoComplete>
-                    </div>
-                  </div>
-                  <div class="form-group d-flex slider-bloc row">
                     <label for="pieceNumbers" class="col-5">Etage </label>
                     <div class="multiSelectBlock col-6">
                       <p-multiSelect
                         [options]="levelData"
                         id="pieceNumbers"
+                        (onPanelHide)="onSelectEtage()"
                         itemSize="30"
                         [virtualScroll]="true"
-                        formControlName="pieceNumber"
+                        formControlName="level"
                         emptyFilterMessage="Aucun résultat trouvé"
                         defaultLabel="Choisir des Etages"
                         optionLabel="name"
@@ -1168,7 +1173,20 @@
                       ></p-multiSelect>
                     </div>
                   </div>
-
+                  <div class="form-group d-flex slider-bloc row">
+                    <label for="localType" class="col-5">Type local </label>
+                    <div class="multiSelectBlock col-6">
+                      <p-multiSelect
+                        [options]="locationTypeData"
+                        id="localType"
+                        formControlName="localType"
+                        emptyFilterMessage="Aucun résultat trouvé"
+                        defaultLabel="Choisir des types local"
+                        optionLabel="name"
+                        display="chip"
+                      ></p-multiSelect>
+                    </div>
+                  </div>
                   <div class="form-group d-flex slider-bloc row">
                     <label for="corrAdmin" class="col-5">Correspodants </label>
                     <div class="multiSelectBlock col-6">
@@ -1268,9 +1286,10 @@
         <div class="d-flex">
           <div class="search-panel">
             <input
-              (keyup)="search($event)"
+              (keyup.enter)="onSearchClick('local')"
               class="form-control"
               type="text"
+              [(ngModel)]="searchQuery"
               name="search"
               autocomplete="off"
               placeholder="Recherche"
@@ -1297,6 +1316,10 @@
               <button class="btn add-action" translate>
                 <i class="fas fa-plus"></i>
                 Créer recolement
+              </button>
+              <button class="btn add-action" (click)="PrinNoticePDF()" translate>
+                <i class="fas fa-print"></i>
+                Imprimer
               </button>
               <button class="btn add-action" translate>
                 <div
@@ -1335,7 +1358,7 @@
                 <i class="fas fa-edit"></i>
                 Modifier
               </button>
-              <button class="btn add-action" translate>
+              <button class="btn add-action" (click)="PrinNoticePDF()" translate>
                 <i class="fas fa-print"></i>
                 Imprimer
               </button>
@@ -1377,4 +1400,12 @@
 <div id="image-viewer" [class.active]="openImg">
   <p class="close" (click)="showImg()">&times;</p>
   <img [src]="imageUrl" alt="" class="modal-content" id="full-image" />
+</div>
+
+<div hidden>
+  <div id="printNoticesPDF">
+    <br />
+    <app-item-details-pdf [artWorksToPrint]="selectedRow"></app-item-details-pdf>
+    <br />
+  </div>
 </div>

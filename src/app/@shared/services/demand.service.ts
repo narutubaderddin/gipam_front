@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 const httpOptions = {
@@ -20,10 +20,10 @@ export class DemandService {
     }
     return this.http.get('/requests' + filter);
   }
-  changeStatus(request:any){
+  changeStatus(request: any) {
     const payload = {
-      requestStatus : request.requestStatus
-    }
-    return this.http.patch('/requests/' + request.id,payload);
+      requestStatus: request.requestStatus,
+    };
+    return this.http.patch('/requests/' + request.id, payload);
   }
 }

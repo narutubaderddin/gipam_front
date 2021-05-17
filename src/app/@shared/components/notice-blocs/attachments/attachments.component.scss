@@ -1,3 +1,9 @@
+.dropzone-container {
+  height: 50px;
+  width: 400px;
+  display: flex;
+  justify-content: center;
+}
 .attachement-container {
   border: 1px solid #cecece;
   border-radius: 1rem;
@@ -10,7 +16,7 @@
     font-size: 18px;
   }
   .attachment-name {
-    width: 215px;
+    //width: 215px;
     text-overflow: ellipsis;
     overflow: hidden;
     height: 18px;
@@ -32,39 +38,13 @@ h5 {
   font-weight: 600;
   display: flex;
 }
+
 .form-group {
   label {
     padding: 0;
     font-size: 12px;
     font-weight: 600;
     color: #838a90;
-  }
-}
-.carousel {
-  .carousel-item,
-  .carousel-item.active {
-    display: flex !important;
-
-    div {
-      display: flex !important;
-    }
-
-    .carousel-control-prev,
-    .carousel-control-next {
-      position: absolute;
-      top: 55px !important;
-      bottom: 55px !important;
-      z-index: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 1.2rem !important;
-      color: #fff;
-      text-align: center;
-      opacity: 0.5;
-      transition: opacity 0.15s ease;
-      background-color: skyblue;
-    }
   }
 }
 
@@ -100,7 +80,7 @@ h5 {
 }
 .attachment-name {
   text-overflow: ellipsis;
-  width: 125px;
+
   white-space: nowrap;
   overflow: hidden;
 }
@@ -118,6 +98,9 @@ h5 {
   line-height: 1.5;
   text-align: center;
   cursor: pointer;
+}
+.fa-trash-alt {
+  margin-top: unset;
 }
 ::ng-deep .upload-file {
   .dropZone {

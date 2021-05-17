@@ -43,6 +43,10 @@ import { AttachmentTypesComponent } from '@app/about/components/tabs-ref/attachm
 import { PhotographyTypesComponent } from '@app/about/components/tabs-ref/photographyTypes/photographyTypes.component';
 import { PersonsComponent } from '@app/about/components/tabs-ref/persons/persons.component';
 import { DepositorsComponent } from '@app/about/components/tabs-ref/depositors/depositors.component';
+import { RoomsComponent } from '@app/about/components/tabs-ref/rooms/rooms.component';
+import { AuthorsComponent } from '@app/about/components/tabs-ref/authors/authors.component';
+import { ReportModelsComponent } from '@app/about/components/tabs-ref/report-models/report-models.component';
+import { ReservesComponent } from '@app/about/components/tabs-ref/reserves/reserves.component';
 const routes: Routes = [
   {
     path: '',
@@ -152,6 +156,26 @@ const routes: Routes = [
         path: 'tab-ref-deposants',
         component: DepositorsComponent,
         data: { title: 'Liste des déposants' },
+      },
+      {
+        path: 'tab-ref-pieces',
+        component: RoomsComponent,
+        data: { title: 'Liste des pièces' },
+      },
+      {
+        path: 'tab-ref-auteurs',
+        component: AuthorsComponent,
+        data: { title: 'Liste des auteurs' },
+      },
+      {
+        path: 'tab-ref-modeles-constat',
+        component: ReportModelsComponent,
+        data: { title: 'Liste des modèles de constat' },
+      },
+      {
+        path: 'tab-ref-reserves',
+        component: ReservesComponent,
+        data: { title: 'Liste des réserves' },
       },
       { path: 'tab-ref-correspondant', component: CorrespondentsComponent },
       { path: 'tab-ref-responsable', component: ResponsibleComponent },

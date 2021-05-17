@@ -139,8 +139,6 @@ export class PortailComponent implements OnInit {
   ngOnInit(): void {
     this.getFields();
     this.getOeuvres();
-    this.getEstablishments();
-    this.getBuildings();
     this.oeuvreToShow = this.oeuvres;
     this.form1 = new FormGroup({
       inventory: new FormControl(''),
@@ -543,7 +541,7 @@ export class PortailComponent implements OnInit {
   onSubmitRequest(request: any) {
     let payload: any = {
       ...this.requestForm.value,
-      requestStatus : "En cours"
+      requestStatus: 'En cours',
     };
     let artWorks: any = [];
     this.selectedOeuvre.forEach((ouvre) => {
@@ -552,7 +550,6 @@ export class PortailComponent implements OnInit {
     if (artWorks.length > 0) {
       payload.artWorks = artWorks;
     }
-    console.log(payload);
     this.requestService.newRequest(payload).subscribe((response: any) => {
       this.modalService.dismissAll('NgbdModal1Content');
       this.requestForm.reset();
@@ -613,12 +610,9 @@ export class PortailComponent implements OnInit {
     });
   }
 
-
   exportArtWorks() {
     this.WorkOfArtService.exportArtWorks().subscribe((response: Response | any) => {
       this.requestService.manageFileResponseDownload(response, 'Oeuvres Graphiques');
     });
   }
-
-
 }

@@ -2,10 +2,8 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import * as L from 'leaflet';
 
 import { DatePipe } from '@angular/common';
-import { ColDef, ColumnApi, GridApi, ICellEditorParams } from 'ag-grid-community';
 
 import { MovementsService } from '@app/about/components/item-details/movements/movements.service';
-import { ShowMovementDetailsRendererComponent } from '@shared/components/datatables/show-movement-details-renderer/show-movement-details-renderer.component';
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
 const shadowUrl = 'assets/marker-shadow.png';
@@ -35,51 +33,6 @@ export class LastMovementComponent implements OnInit {
     },
   ];
   query = 'Tunis';
-  frameworkComponent = {
-    showMovementDetailsRenderer: ShowMovementDetailsRendererComponent,
-  };
-  columnDefs: ColDef[] = [
-    {
-      headerName: 'Date',
-      field: 'date',
-    },
-    {
-      headerName: 'Type mouvement',
-      field: 'movementType',
-    },
-    {
-      headerName: 'Sigle Ministère',
-      field: 'ministerSigle',
-    },
-    {
-      headerName: 'Sigle Etab/Dir',
-      field: 'directionSigle',
-    },
-    {
-      headerName: 'Sigle Service',
-      field: 'directionSigle',
-    },
-    {
-      headerName: 'Sigle Site',
-      field: 'directionSigle',
-    },
-    {
-      headerName: 'Sigle Batiment',
-      field: 'directionSigle',
-    },
-    {
-      headerName: 'Correspondants',
-      field: 'correspondant',
-    },
-    {
-      headerName: 'Détails',
-      flex: 0.5,
-      cellRenderer: 'showMovementDetailsRenderer',
-      tooltipValueGetter: () => {
-        return 'Voir plus de détails sur le mouvement';
-      },
-    },
-  ];
 
   movements = [
     {
@@ -107,20 +60,11 @@ export class LastMovementComponent implements OnInit {
     resizable: true,
     flex: 1,
   };
-  gridApi: GridApi;
-  gridColumnApi: ColumnApi;
-  gridReady = false;
 
   constructor(private movementsService: MovementsService, private datePipe: DatePipe) {}
 
   ngOnInit(): void {
     console.log(this.showDetailsMvt);
-  }
-
-  onGridReady(params: ICellEditorParams) {
-    this.gridApi = params.api;
-    this.gridColumnApi = params.columnApi;
-    this.gridReady = true;
   }
 
   initMap(): void {

@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ColDef, ColumnApi, GridApi, ICellEditorParams } from 'ag-grid-community';
 import { DatePipe } from '@angular/common';
-import { StatusRendererComponent } from '@shared/components/datatables/status-renderer/status-renderer.component';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { AddActionModalComponent } from '@app/about/components/item-details/actions/add-action-modal/add-action-modal.component';
-import { EditActionRendererComponent } from '@shared/components/datatables/edit-action-renderer/edit-action-renderer.component';
 
 @Component({
   selector: 'app-actions',
@@ -14,10 +11,7 @@ import { EditActionRendererComponent } from '@shared/components/datatables/edit-
 })
 export class ActionsComponent implements OnInit {
   detailCellRendererParams: any;
-  frameworkComponent = {
-    statusRenderer: StatusRendererComponent,
-    editActionRenderer: EditActionRendererComponent,
-  };
+
   // @ts-ignore
   columnDefs: ColDef[] = [
     {
@@ -41,11 +35,6 @@ export class ActionsComponent implements OnInit {
       headerName: 'Etat de conservation',
       field: 'conservationStatus',
       cellRenderer: 'statusRenderer',
-      tooltipValueGetter: (value) => {
-        if (value.data.status === 'Voir commentaire') {
-          return value.data.status;
-        }
-      },
     },
     {
       headerName: 'Action',
@@ -86,8 +75,6 @@ export class ActionsComponent implements OnInit {
     resizable: true,
     flex: 1,
   };
-  gridApi: GridApi;
-  gridColumnApi: ColumnApi;
   gridReady = false;
   constructor(private datePipe: DatePipe, private modalService: NgbModal) {}
 
@@ -123,12 +110,6 @@ export class ActionsComponent implements OnInit {
         params.successCallback(params.data.callRecords);
       },
     };
-  }
-
-  onGridReady(params: ICellEditorParams) {
-    this.gridApi = params.api;
-    this.gridColumnApi = params.columnApi;
-    this.gridReady = true;
   }
 
   addAction() {

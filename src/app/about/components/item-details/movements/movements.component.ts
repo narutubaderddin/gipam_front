@@ -2,17 +2,7 @@ import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
 import * as L from 'leaflet';
 import { MovementsService } from '@app/about/components/item-details/movements/movements.service';
 import { DatePipe } from '@angular/common';
-import { ColDef, ColumnApi, GridApi, ICellEditorParams } from 'ag-grid-community';
-import { ShowMovementDetailsRendererComponent } from '@shared/components/datatables/show-movement-details-renderer/show-movement-details-renderer.component';
-import { AllCommunityModules, Module } from '@ag-grid-community/all-modules';
-import '@ag-grid-community/all-modules/dist/styles/ag-grid.css';
-import '@ag-grid-community/all-modules/dist/styles/ag-theme-alpine.css';
-import { FullWidthCellRendererComponent as FullWidthCellRenderer } from '@app/@shared/components/datatables/full-width-cell-renderer/full-width-cell-renderer.component';
 import { HttpClient } from '@angular/common/http';
-import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
-import { MasterDetailModule } from '@ag-grid-enterprise/master-detail';
-import { MenuModule } from '@ag-grid-enterprise/menu';
-import { ColumnsToolPanelModule } from '@ag-grid-enterprise/column-tool-panel';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -62,55 +52,53 @@ export class MovementsComponent implements AfterViewInit {
     },
   ];
   query = 'Tunis';
-  frameworkComponent = {
-    showMovementDetailsRenderer: ShowMovementDetailsRendererComponent,
-  };
-  columnDefs: ColDef[] = [
-    {
-      headerName: 'Date',
-      field: 'date',
-    },
-    {
-      headerName: 'Type mouvement',
-      field: 'movementType',
-    },
-    {
-      headerName: "Type d'action",
-      field: 'actionType',
-    },
-    {
-      headerName: 'Sigle Ministère',
-      field: 'ministerSigle',
-    },
-    {
-      headerName: 'Sigle Etab/Dir',
-      field: 'directionSigle',
-    },
-    {
-      headerName: 'Sigle Service',
-      field: 'directionSigle',
-    },
-    {
-      headerName: 'Sigle Site',
-      field: 'directionSigle',
-    },
-    {
-      headerName: 'Sigle Batiment',
-      field: 'directionSigle',
-    },
-    {
-      headerName: 'Correspondants',
-      field: 'correspondant',
-    },
-    {
-      headerName: 'Détails',
-      flex: 0.5,
-      cellRenderer: 'showMovementDetailsRenderer',
-      tooltipValueGetter: () => {
-        return 'Voir plus de détails sur le mouvement';
-      },
-    },
-  ];
+
+  // columnDefs: ColDef[] = [
+  //   {
+  //     headerName: 'Date',
+  //     field: 'date',
+  //   },
+  //   {
+  //     headerName: 'Type mouvement',
+  //     field: 'movementType',
+  //   },
+  //   {
+  //     headerName: "Type d'action",
+  //     field: 'actionType',
+  //   },
+  //   {
+  //     headerName: 'Sigle Ministère',
+  //     field: 'ministerSigle',
+  //   },
+  //   {
+  //     headerName: 'Sigle Etab/Dir',
+  //     field: 'directionSigle',
+  //   },
+  //   {
+  //     headerName: 'Sigle Service',
+  //     field: 'directionSigle',
+  //   },
+  //   {
+  //     headerName: 'Sigle Site',
+  //     field: 'directionSigle',
+  //   },
+  //   {
+  //     headerName: 'Sigle Batiment',
+  //     field: 'directionSigle',
+  //   },
+  //   {
+  //     headerName: 'Correspondants',
+  //     field: 'correspondant',
+  //   },
+  //   {
+  //     headerName: 'Détails',
+  //     flex: 0.5,
+  //     cellRenderer: 'showMovementDetailsRenderer',
+  //     tooltipValueGetter: () => {
+  //       return 'Voir plus de détails sur le mouvement';
+  //     },
+  //   },
+  // ];
 
   movements = [
     {
@@ -145,12 +133,6 @@ export class MovementsComponent implements AfterViewInit {
   }
   fullWidthCellRenderer = 'fullWidthCellRenderer';
 
-  frameworkComponents = { fullWidthCellRenderer: FullWidthCellRenderer };
-  getRowHeight = function (params: any) {
-    // if (this.isFullWidth(params.data)) {
-    return 100;
-    // }
-  };
   isFullWidthCell = function (rowNode: any) {
     console.log(rowNode.data);
 
@@ -158,16 +140,11 @@ export class MovementsComponent implements AfterViewInit {
   };
 
   detailCellRenderer = 'myDetailCellRenderer';
-  gridApi: GridApi;
-  gridColumnApi: ColumnApi;
+
   gridReady = false;
 
   constructor(private movementsService: MovementsService, private datePipe: DatePipe, private http: HttpClient) {}
 
-  onGridReady(params: any) {
-    this.gridApi = params.api;
-    this.gridColumnApi = params.columnApi;
-  }
   ngAfterViewInit(): void {
     // this.initMap();
     // this.movementsService.makeCapitalMarkers(this.map);

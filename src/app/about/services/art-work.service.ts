@@ -20,10 +20,24 @@ export class ArtWorkService {
     page = 1,
     limit = 5,
     sortField = 'id',
-    sortDirection = 'asc'
+    sortDirection = 'asc',
+    search = '',
+    globalSearch = ''
   ) {
     const url =
-      ART_WORKS_API_URL + '?page=' + page + '&limit=' + limit + '&sort_by=' + sortField + '&sort=' + sortDirection;
+      ART_WORKS_API_URL +
+      '?page=' +
+      page +
+      '&limit=' +
+      limit +
+      '&sort_by=' +
+      sortField +
+      '&sort=' +
+      sortDirection +
+      '&search=' +
+      search +
+      '&globalSearch=' +
+      globalSearch;
     return this.http
       .post(url, { filter: filter, advancedFilter: advancedFilter, headerFilters: headerFilters }, {})
       .pipe(
