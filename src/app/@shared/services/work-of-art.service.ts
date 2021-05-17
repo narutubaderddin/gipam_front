@@ -712,4 +712,7 @@ export class WorkOfArtService {
 
     return this.http.get('/notices/attributes', { params });
   }
+  getWorkOfArtById(id: any): Observable<any> {
+     return this.http.get('/artWorks/'+ id);
+  }
 }

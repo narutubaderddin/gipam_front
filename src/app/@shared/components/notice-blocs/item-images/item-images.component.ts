@@ -41,6 +41,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   }
   constructor(private modalService: NgbModal, public fb: FormBuilder, private simpleTabsRef: SimpleTabsRefService) {}
   ngOnInit(): void {
+
     this.getAllTypes();
     this.images.map((el: any) =>
       this.photographies.push(
@@ -57,7 +58,9 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     }
   }
   ngOnChanges(changements: SimpleChanges) {}
-
+  get items() {
+    return this.images;
+  }
   initData(photography?: string, photographyDate?: Date, photographyType?: any, imageName?: string) {
     this.photography = photography;
     this.photographyDate = photographyDate;
@@ -74,7 +77,8 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.types = result.results;
-      },
+
+        },
       (error: any) => {}
     );
   }
@@ -140,6 +144,10 @@ export class ItemImagesComponent implements OnInit, OnChanges {
             this.imageName
           )
         );
+
+        if(this.addImage){
+          this.addItem();
+        }
       } else {
         this.editPhotographyForm(
           this.selectedPhotography,
@@ -149,7 +157,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
           this.imageName
         );
       }
-      this.verifyIdentification();
+      // this.verifyIdentification();
       this.initData('', new Date());
       this.photographyInsertionNumber++;
       this.selectedPhotography = this.photographies.value.length;
@@ -159,6 +167,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   buildFormData(file: File): FormData {
     const formData = new FormData();
     formData.append('imagePreview', file, file.name);
+
     return formData;
   }
   handleFileInput(file: FileList) {
@@ -228,5 +237,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   }
   cancelDelete() {
     this.deleteDialog = false;
+  }
+  addItem(){
   }
 }
