@@ -13,7 +13,7 @@ export class DirtyCheckGuard implements CanDeactivate<AddRemarquerComponent> {
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (component.canDeactivate()) {
-      return confirm('Vous avez rempli certains champs du formulaire. Si vous arrêtez, vous les perderez.');
+      return component.canDeactivate();
     } else {
       return true;
     }

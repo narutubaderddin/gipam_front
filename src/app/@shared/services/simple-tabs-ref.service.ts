@@ -24,7 +24,7 @@ export class SimpleTabsRefService {
         params = params.append(key, data[key]);
       }
     });
-    return this.http.get<any[]>(`/${tabRefName}`, { params });
+    return this.http.get<any[]>(`/${tabRefName}/`, { params });
   }
   getItemsByCriteria(data: any, tabRefName: string = null): Observable<any> {
     let params = new HttpParams();

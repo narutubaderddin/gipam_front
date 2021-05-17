@@ -81,7 +81,8 @@ export class AddRemarquerComponent implements OnInit {
   }
 
   canDeactivate(): boolean | Observable<boolean> {
-    return this.isDirty;
+    this.submit();
+    return true;
   }
   initForms() {
     this.initPropertyStatusForm();

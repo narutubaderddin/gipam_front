@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TreeviewItem } from 'ngx-treeview';
-import { HttpClient, HttpParameterCodec, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParameterCodec, HttpParams } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
@@ -699,7 +699,10 @@ export class WorkOfArtService {
     localStorage.removeItem('selectedArtWorks');
   }
   addWorkOfArt(data: any): Observable<any> {
-    return this.http.post('/notices/property', data);
+    const headers = new HttpHeaders({
+      'Content-Type': 'multipart/form-data;boundary='+Math.random()
+    });
+    return this.http.post('/notices/property', data, {'headers': headers});
   }
   addDepositWorkOfArt(data: any): Observable<any> {
     return this.http.post('/notices/deposit', data);
@@ -711,5 +714,15 @@ export class WorkOfArtService {
     params = params.append('denomination_id', denominationId);
 
     return this.http.get('/notices/attributes', { params });
+  }
+
+  getInProgressNotices(data: any) : Observable<any>{
+    let params = new HttpParams();
+    Object.keys(data).forEach((key) => {
+      if (data[key]) {
+        params = params.append(key, data[key]);
+      }
+    });
+    return this.http.get('/notices/get-art-works-in-progress', {params})
   }
 }
