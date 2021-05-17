@@ -18,6 +18,7 @@ import { AboutModule } from '@app/about/about.module';
 import { HomeModule } from '@app/home/home.module';
 import { NotificationAnimationType, SimpleNotificationsModule } from 'angular2-notifications';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   imports: [
@@ -48,6 +49,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
       preventDuplicates: true,
       timeOut: 2000,
     }),
+    ToastModule,
     // must be imported as the last module as it contains the fallback route
   ],
   declarations: [AppComponent],
