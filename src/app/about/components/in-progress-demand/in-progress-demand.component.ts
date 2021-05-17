@@ -14,22 +14,25 @@ export class InProgressDemandComponent {
       header: 'Date de la demande',
       field: 'createdAt',
     },
-
     {
-      header: 'Demandé par ',
+      header: 'Bénéficiaire',
       field: 'name',
     },
     {
+      header: 'Demandeur',
+      field: 'nameApplicant',
+    },
+    {
       header: 'Direction',
-      field: 'establishementLabel',
+      field: 'establishement',
     },
     {
       header: 'Sous-direction',
-      field: 'subDivisionLabel',
+      field: 'subDivision',
     },
     {
       header: 'Status',
-      field: 'status',
+      field: 'requestStatus',
     },
   ];
   expandColumns = [
@@ -182,10 +185,18 @@ export class InProgressDemandComponent {
         this.loading = false;
         this.requests = response;
         this.requests.results = this.requests.results.map((elm: any) => {
+          let nameApplicant : string = "";
+          if(elm.firstNameApplicant){
+            nameApplicant+=elm.firstNameApplicant;
+          }
+          if(elm.lastNameApplicant){
+            nameApplicant+=elm.lastNameApplicant;
+          }
           return {
             ...elm,
             createdAt: `${this.sharedService.dateToString(elm.createdAt)}`,
             name: elm.firstName + ' ' + elm.lastName,
+            nameApplicant: nameApplicant,
             expandData: elm.artWorks.map((eData: any) => {
               let authors: string = '';
               eData.authors.forEach((auth: any, index: number) => {
@@ -199,8 +210,6 @@ export class InProgressDemandComponent {
                 author: authors,
               };
             }),
-            establishementLabel: elm.establishement.label,
-            subDivisionLabel: elm.subDivision.label,
           };
         });
       },
@@ -222,5 +231,9 @@ export class InProgressDemandComponent {
       this.requests.page = this.requests.totalQuantity / parseInt(this.requests.size.toString(), 0);
     }
     this.getListDemands();
+  }
+
+  changeRequestStatus(request: any) {
+    this.demandService.changeStatus(request).subscribe((response) => {});
   }
 }

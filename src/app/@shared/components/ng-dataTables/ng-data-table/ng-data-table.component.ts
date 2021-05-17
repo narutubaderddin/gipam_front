@@ -61,11 +61,13 @@ export class NgDataTableComponent implements OnInit {
   @Output() sort = new EventEmitter();
   @Input() singleSelect: Boolean = false;
   @Input() expand: Boolean = false;
+  @Input() showConfirmRequest: Boolean = false;
   @Input() page: any;
   @Input() limit: any;
   @Input() identifierKey: any;
   @Output() singleSelectionEvent = new EventEmitter();
   @Output() multipleSelectionEvent = new EventEmitter();
+  @Output() changeRequestStatus = new EventEmitter();
   asc: boolean = true;
   currentPage: number;
   paginationSize: number;
@@ -297,6 +299,7 @@ export class NgDataTableComponent implements OnInit {
           this.filter[col.field] = {
             value: this.form.value[col.field],
             type: col.filterType,
+            field_type: col.type,
           };
         }
       } else {
@@ -416,5 +419,14 @@ export class NgDataTableComponent implements OnInit {
       }
     });
     return items;
+  }
+  onChangeRequestStatus(requestID: any, status: any) {
+    console.log('requestID');
+    console.log(requestID);
+    const newRequest = {
+      id: requestID,
+      requestStatus: status,
+    };
+    this.changeRequestStatus.emit(newRequest);
   }
 }

@@ -57,20 +57,23 @@ export class ItemDetailsComponent implements OnInit {
 
   photographiesForm: FormGroup;
 
-  artwork = { id: 145,
+  artwork =
+  {
+    id: 145,
     titre: 'Titre',
     domain: 'Art graphique',
     field: 'Art graphique',
     height: '85',
     width: '85',
     authors: 'Auteur 1, Auteur 11',
-    totalWidth: '',
-    totalHeight: '',
-    era: '',
-    materialTechnique: '',
-    status: '',
-    denomination: 'Affiche',
-    createdAt: '22/01/2020',};
+    totalWidth:'',
+    totalHeight:'',
+    era:'',
+    materialTechnique:'',
+    status:'',
+    denomination:'Affiche',
+    createdAt:'22/01/2020'
+  };
   artWorksToPrint: any = [];
 
   constructor(

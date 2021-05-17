@@ -8,7 +8,13 @@ import { MessageService } from 'primeng/api';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 import { DatePipe } from '@angular/common';
-import { datePickerDateFormat, dateTimeFormat, towDatesCompare, viewDateFormat } from '@shared/utils/helpers';
+import {
+  datePickerDateFormat,
+  dateTimeFormat,
+  markAsDirtyDeep,
+  towDatesCompare,
+  viewDateFormat,
+} from '@shared/utils/helpers';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -25,7 +31,7 @@ export class ReservesComponent implements OnInit {
   btnLoading: any = null;
   myModal: any;
   selectedItem: any;
-
+  loadingDropdownData = false;
   // for datatable filter
   relatedRooms: any[] = [];
   relatedBuildings: any[] = [];
@@ -38,29 +44,36 @@ export class ReservesComponent implements OnInit {
     communes: any[];
     sites: any[];
     buildings: any[];
+    room: any[];
   } = {
     regions: [],
     departments: [],
     communes: [],
     sites: [],
     buildings: [],
+    room: [],
   };
 
-  relatedRegions: any[] = [];
-  relatedCommunes: any[] = [];
-  relatedSites: any[] = [];
-  relatedDepartments: any[] = [];
   activeRelatedRooms: any[] = [];
-  activeBuildings: any[] = [];
 
   // selected from dropdown
 
   selectedRelatedRoom: any;
-  selectedBuilding: any;
-  selectedDepartment: any;
-  selectedCommune: any;
-  selectedSite: any;
-  selectedRegion: any;
+  selectedRelated: {
+    region: any;
+    department: any;
+    commune: any;
+    site: any;
+    building: any;
+    room: any;
+  } = {
+    region: null,
+    department: null,
+    commune: null,
+    site: null,
+    building: null,
+    room: null,
+  };
 
   itemToEdit: any;
   itemToDelete: string;
@@ -108,7 +121,7 @@ export class ReservesComponent implements OnInit {
   rowCount: any = 5;
 
   relatedRoomColumn = {
-    header: 'Entité',
+    header: 'Pièce',
     field: 'room',
     type: 'key-array',
     key_data: ['room', 'reference'],
@@ -147,6 +160,13 @@ export class ReservesComponent implements OnInit {
     key_data: ['department', 'name'],
   };
 
+  relatedRegionColumn = {
+    header: 'Region',
+    field: 'region',
+    type: 'key-array',
+    key_data: ['region', 'name'],
+  };
+
   constructor(
     private modalService: NgbModal,
     private activatedRoute: ActivatedRoute,
@@ -171,17 +191,16 @@ export class ReservesComponent implements OnInit {
   }
 
   initForm() {
-    const msg = 'date début inférieur date fin';
     const startDate = this.datePipe.transform(
       this.selectedItem ? this.selectedItem.startDate : new Date(),
       datePickerDateFormat
     );
     const endDate = this.datePipe.transform(this.selectedItem ? this.selectedItem.endDate : '', datePickerDateFormat);
     this.tabForm = this.fb.group({
-      label: [this.selectedItem ? this.selectedItem.reference : '', [Validators.required]],
+      label: [this.selectedItem ? this.selectedItem.label : '', [Validators.required]],
       startDate: [startDate, [Validators.required]],
       endDate: [endDate, []],
-      room: [{ value: this.selectedRelatedRoom, disabled: !this.selectedBuilding }, [Validators.required]],
+      room: [{ value: this.selectedRelatedRoom, disabled: !this.selectedRelated?.building }, [Validators.required]],
     });
     this.tabForm.setValidators(towDatesCompare('startDate', 'endDate'));
   }
@@ -201,6 +220,7 @@ export class ReservesComponent implements OnInit {
       this.relatedSiteColumn,
       this.relatedCommuneColumn,
       this.relatedDepartmentColumn,
+      this.relatedRegionColumn,
       {
         header: 'Date début de validité',
         field: 'startDate',
@@ -246,13 +266,44 @@ export class ReservesComponent implements OnInit {
     );
   }
 
-  onDataChange(event: any, tab: string) {
-    const apiData = {
+  getDropdownData(entity: string, relatedEntityName?: string, relatedEntity?: any) {
+    const params = {
       page: 1,
-      search: event.query,
+      serializer_group: JSON.stringify(['short']),
     };
-    this.simpleTabsRef.getAllItems(apiData, tab).subscribe((dataResult) => {
-      this.autoComplete[tab] = dataResult.results;
+    if (relatedEntity) {
+      params[relatedEntityName + '[eq]'] = relatedEntity.id;
+    }
+    this.unsetRelated(entity);
+    this.tabForm.get('room').setValue('');
+    this.tabForm.get('room').disable();
+    entity = entity + 's';
+    this.simpleTabsRef.getAllItems(params, entity).subscribe((dataResult) => {
+      this.autoComplete[entity] = dataResult.results;
+      console.log(entity, dataResult.results);
+    });
+  }
+
+  autoCompleteSites(event: any) {
+    const params = {
+      page: 1,
+      'label[startsWith]': event.query,
+      serializer_group: JSON.stringify(['short']),
+    };
+    this.simpleTabsRef.getAllItems(params, 'sites').subscribe((dataResult) => {
+      this.autoComplete.sites = dataResult.results;
+    });
+  }
+
+  unsetRelated(from?: string) {
+    let unset = false;
+    Object.keys(this.selectedRelated).forEach((key) => {
+      if (key === from) {
+        unset = true;
+      }
+      if (unset || !from) {
+        this.selectedRelated[key] = null;
+      }
     });
   }
 
@@ -261,15 +312,9 @@ export class ReservesComponent implements OnInit {
       page: 1,
       serializer_group: JSON.stringify(['short']),
     };
-    forkJoin([
-      this.simpleTabsRef.getAllItems(data, 'regions'),
-      this.simpleTabsRef.getAllItems(data, 'communes'),
-      this.simpleTabsRef.getAllItems(data, 'sites'),
-    ]).subscribe(
-      ([regionsResults, communesResults, sitesResults]) => {
-        this.relatedRegions = this.simpleTabsRef.getTabRefFilterData(regionsResults.results);
-        this.relatedCommunes = this.simpleTabsRef.getTabRefFilterData(communesResults.results);
-        this.relatedSites = this.simpleTabsRef.getTabRefFilterData(sitesResults.results);
+    forkJoin([this.simpleTabsRef.getAllItems(data, 'regions')]).subscribe(
+      ([regionsResults]) => {
+        this.autoComplete.regions = this.simpleTabsRef.getTabRefFilterData(regionsResults.results);
       },
       (error: any) => {
         this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
@@ -278,14 +323,19 @@ export class ReservesComponent implements OnInit {
   }
 
   getRoomsByBuilding() {
+    this.tabForm.get('room').enable();
     const params = {
-      'building[eq]': this.selectedBuilding.id,
+      'building[eq]': this.selectedRelated.building.id,
+      serializer_group: JSON.stringify(['short']),
     };
     this.simpleTabsRef.getAllItems(params, 'rooms').subscribe(
       (result: any) => {
         this.activeRelatedRooms = result.results.filter((value: any) => this.isActive(value.endDate));
+        this.loadingDropdownData = false;
       },
-      (error: any) => {}
+      (error: any) => {
+        this.loadingDropdownData = false;
+      }
     );
   }
 
@@ -293,21 +343,38 @@ export class ReservesComponent implements OnInit {
     return this.defaultColDef.headerComponentParams;
   }
 
-  resetFilter() {}
+  fillDropDowns(item: any) {
+    if (item.region) {
+      this.selectedRelated.region = Object.assign({}, item.region);
+      this.getDropdownData('department', 'region', this.selectedRelated.region);
+      this.selectedRelated.department = Object.assign({}, item.department);
+      this.getDropdownData('commune', 'department', this.selectedRelated.department);
+      this.selectedRelated.commune = Object.assign({}, item.commune);
+      this.getDropdownData('building', 'commune', this.selectedRelated.commune);
+    } else {
+      this.selectedRelated.site = Object.assign({}, item.site);
+      this.getDropdownData('building', 'site', this.selectedRelated.site);
+    }
+    this.selectedRelated.building = Object.assign({}, item.building);
+    this.getRoomsByBuilding();
+  }
 
   openModal(item: any) {
+    this.initFormDropdowns();
+    this.selectedRelatedRoom = null;
+    this.tabForm.get('room').setValue('');
     this.btnLoading = null;
     if (this.editItem || this.editVisibility) {
       this.itemToEdit = item;
       this.itemLabel = item.label;
+    }
+    if (this.editItem) {
+      this.loadingDropdownData = true;
       this.selectedRelatedRoom = {
         id: item.room ? item.room.id : '',
         reference: item.room ? item.room.reference : '',
       };
-    }
-    if (this.addItem) {
-      this.selectedRelatedRoom = null;
-      this.selectedBuilding = null;
+      this.fillDropDowns(item);
     }
     this.selectedItem = item;
     this.initForm();
@@ -315,19 +382,34 @@ export class ReservesComponent implements OnInit {
   }
 
   submit() {
+    if (this.tabForm.invalid || !this.tabForm.get('room').value) {
+      markAsDirtyDeep(this.tabForm);
+      this.addSingle('error', 'Erreur', 'Veuillez vérifier tous les champs encadrés en rouge');
+      return;
+    }
     this.btnLoading = null;
-
-    const item = {
-      label: this.tabForm.value.label,
-      room: this.tabForm.value.room.id,
-      startDate: this.datePipe.transform(this.tabForm.value.startDate, dateTimeFormat),
-      endDate: this.datePipe.transform(this.tabForm.value.endDate, dateTimeFormat),
-    };
+    let item = {};
+    if (this.addItem || this.editItem) {
+      item = {
+        label: this.tabForm.value.label,
+        room: this.tabForm.value.room.id,
+        startDate: this.datePipe.transform(this.tabForm.value.startDate, dateTimeFormat),
+        endDate: this.datePipe.transform(this.tabForm.value.endDate, dateTimeFormat),
+      };
+    }
     if (this.addItem) {
       this.addItems(item);
+      return;
+    }
+    if (this.editVisibility) {
+      item = {
+        startDate: this.datePipe.transform(this.tabForm.value.startDate, dateTimeFormat),
+        endDate: this.datePipe.transform(this.tabForm.value.endDate, dateTimeFormat),
+      };
     }
     if (this.editItem || this.editVisibility) {
       this.editField(item, this.itemToEdit.id);
+      return;
     }
   }
 
@@ -337,7 +419,7 @@ export class ReservesComponent implements OnInit {
     this.deleteItems = false;
     this.editVisibility = false;
     this.selectedRelatedRoom = null;
-    this.selectedBuilding = null;
+    this.unsetRelated();
     this.myModal.dismiss('Cross click');
   }
 
@@ -368,7 +450,7 @@ export class ReservesComponent implements OnInit {
     this.btnLoading = null;
     this.deleteItems = true;
     this.itemToDelete = data;
-    this.itemLabel = data.reference;
+    this.itemLabel = data.label;
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
 
@@ -464,7 +546,7 @@ export class ReservesComponent implements OnInit {
     this.simpleTabsRef.editItem(item, id).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Modification', 'Entité ' + item.label + ' modifiée avec succés');
+        this.addSingle('success', 'Modification', 'Entité ' + this.itemLabel + ' modifiée avec succés');
         this.getAllItems();
         this.editItem = false;
         this.editVisibility = false;

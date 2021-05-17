@@ -631,6 +631,12 @@ export class WorkOfArtService {
   constructor(private http: HttpClient) {}
   getOeuvres(filterObj: any): Observable<any> {
     let filter: string = `limit=40&page=${filterObj.page}`;
+    filter = this.extractedQuery(filterObj, filter);
+    filter += '&sort_by=field';
+    return this.http.get('/artWorks/search?' + filter);
+  }
+
+  private extractedQuery(filterObj: any, filter: string) {
     if (filterObj.search) {
       filter += '&searchArt[eq]=' + filterObj.search;
     }
@@ -671,8 +677,7 @@ export class WorkOfArtService {
     if (filterObj.mode) {
       filter += '&mode[eq]=' + filterObj.mode;
     }
-    filter += '&sort_by=field';
-    return this.http.get('/artWorks/search?' + filter);
+    return filter;
   }
 
   getOeuvreDetails(id: string): Observable<any> {
@@ -711,6 +716,16 @@ export class WorkOfArtService {
     params = params.append('denomination_id', denominationId);
 
     return this.http.get('/notices/attributes', { params });
+  }
+  exportArtWorks(filterObj: any): Observable<any> {
+    let filter : string = "";
+    filter+="?limit="+filterObj.limit
+    filter = this.extractedQuery(filterObj, filter);
+    filter += '&sort_by=field';
+    return this.http.get('/artWorks/exportListArtWorks'+filter, {
+      responseType: 'blob',
+      observe: 'response',
+    });
   }
   getWorkOfArtById(id: any): Observable<any> {
      return this.http.get('/artWorks/'+ id);
