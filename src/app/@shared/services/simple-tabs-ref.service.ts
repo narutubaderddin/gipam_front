@@ -68,7 +68,12 @@ export class SimpleTabsRefService {
         dTFilter[key].value.forEach((item: any) => {
           values.push(item.id);
         });
-        filter[key + '[in]'] = JSON.stringify(values);
+        if (dTFilter[key].field_type === 'key-array') {
+          filter[key + '[in]'] = JSON.stringify(values);
+        }
+        if (dTFilter[key].field_type === 'key-multiple-data') {
+          filter[key + '_id[in]'] = JSON.stringify(values);
+        }
       }
     });
     return filter;

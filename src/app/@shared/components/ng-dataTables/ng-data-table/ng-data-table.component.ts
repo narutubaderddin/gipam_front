@@ -297,6 +297,7 @@ export class NgDataTableComponent implements OnInit {
           this.filter[col.field] = {
             value: this.form.value[col.field],
             type: col.filterType,
+            field_type: col.type,
           };
         }
       } else {

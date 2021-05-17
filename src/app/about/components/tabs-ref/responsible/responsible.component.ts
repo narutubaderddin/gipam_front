@@ -75,6 +75,8 @@ export class ResponsibleComponent implements OnInit {
   };
 
   buildings: any[] = [];
+  departments: any[] = [];
+  regions: any[] = [];
 
   activeBuildings: any[] = [];
 
@@ -116,6 +118,10 @@ export class ResponsibleComponent implements OnInit {
     field: 'buildings',
     type: 'key-multiple-data',
     key_multiple_data: ['buildings', 'name'],
+    filter: true,
+    filterType: 'multiselect',
+    placeholder: 'Filtrer par bâtiments',
+    selectData: this.buildings,
   };
 
   relatedRegionColumn = {
@@ -123,12 +129,20 @@ export class ResponsibleComponent implements OnInit {
     field: 'region',
     type: 'key-array',
     key_data: ['region', 'name'],
+    filter: true,
+    filterType: 'multiselect',
+    placeholder: 'Filtrer par régions',
+    selectData: this.regions,
   };
   relatedDepartmentsColumn = {
     header: 'Départements',
     field: 'departments',
     type: 'key-multiple-data',
     key_multiple_data: ['departments', 'name'],
+    filter: true,
+    filterType: 'multiselect',
+    placeholder: 'Filtrer par départements',
+    selectData: this.departments,
   };
 
   columns = [
@@ -272,9 +286,17 @@ export class ResponsibleComponent implements OnInit {
       'active[eq]': 1,
       serializer_group: JSON.stringify(['response', 'short']),
     };
-    forkJoin([this.simpleTabsRef.getAllItems(data, 'buildings')]).subscribe(
-      ([relatedServicesResults]) => {
-        this.buildings = this.simpleTabsRef.getTabRefFilterData(relatedServicesResults.results);
+    forkJoin([
+      this.simpleTabsRef.getAllItems(data, 'regions'),
+      this.simpleTabsRef.getAllItems(data, 'departments'),
+      this.simpleTabsRef.getAllItems(data, 'buildings'),
+    ]).subscribe(
+      ([regionsResults, departmentsResults, buildingsResults]) => {
+        this.regions = this.simpleTabsRef.getTabRefFilterData(regionsResults.results);
+        this.relatedRegionColumn.selectData = this.regions;
+        this.departments = this.simpleTabsRef.getTabRefFilterData(departmentsResults.results);
+        this.relatedDepartmentsColumn.selectData = this.departments;
+        this.buildings = this.simpleTabsRef.getTabRefFilterData(buildingsResults.results);
         this.relatedBuildingsColumn.selectData = this.buildings;
       },
       (error: any) => {
@@ -319,7 +341,6 @@ export class ResponsibleComponent implements OnInit {
       this.tabForm.get('departments').enable();
       this.tabForm.get('buildings').enable();
     }
-    console.log('selectedRegion', this.selectedRegion);
     this.selectedItem = item;
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true, scrollable: true });
@@ -470,9 +491,6 @@ export class ResponsibleComponent implements OnInit {
   }
 
   autoComplete(event: any, entity: string, field: string, relatedEntityName?: any, relatedEntity?: any) {
-    console.log('entity', entity);
-    console.log('relted', relatedEntityName);
-    console.log('relted value', relatedEntity);
     const params = {
       page: 1,
       serializer_group: JSON.stringify(['short']),
@@ -480,14 +498,11 @@ export class ResponsibleComponent implements OnInit {
     params[field + '[startsWith]'] = event.query;
     if (relatedEntity) {
       if (!Array.isArray(relatedEntity)) {
-        console.log('relted not array', relatedEntityName);
         params[relatedEntityName + '[eq]'] = relatedEntity.id;
       } else if (relatedEntity.length !== 0) {
-        console.log('relted is array', relatedEntityName);
         params[relatedEntityName + '[in]'] = JSON.stringify(getMultiSelectIds(relatedEntity));
       }
     }
-    console.log('params', params);
     entity = entity + 's';
     this.simpleTabsRef.getAllItems(params, entity).subscribe((dataResult) => {
       this.relatedEntities[entity] = dataResult.results;
