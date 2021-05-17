@@ -2,7 +2,7 @@
   <a href="accueil">Accueil</a>
   <a href="accueil" class="selected-item">
     <i class="fas fa-chevron-right"></i>
-    Notices en cours de création
+    Liste des demandes en cours
   </a>
 </div>
 <div class="container-fluid">
@@ -32,6 +32,7 @@
               [loading]="loading"
               frozenWidth="'0px'"
               (pageChanged)="pagination($event)"
+              (changeRequestStatus)="changeRequestStatus($event)"
               [frozenCols]="[]"
               [totalFiltred]="requests.filteredQuantity"
               [total]="requests.totalQuantity"

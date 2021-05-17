@@ -66,6 +66,7 @@ export class NgDataTableComponent implements OnInit {
   @Input() identifierKey: any;
   @Output() singleSelectionEvent = new EventEmitter();
   @Output() multipleSelectionEvent = new EventEmitter();
+  @Output() changeRequestStatus = new EventEmitter();
   asc: boolean = true;
   currentPage: number;
   paginationSize: number;
@@ -416,5 +417,14 @@ export class NgDataTableComponent implements OnInit {
       }
     });
     return items;
+  }
+  onChangeRequestStatus(requestID: any, status: any) {
+    console.log('requestID');
+    console.log(requestID);
+    const newRequest = {
+      id: requestID,
+      requestStatus: status,
+    };
+    this.changeRequestStatus.emit(newRequest);
   }
 }

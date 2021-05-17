@@ -327,7 +327,7 @@ export class PortailComponent implements OnInit {
         oeuvre.isDemanded = true;
       }
       if (oeuvre.isInRequest) {
-        oeuvre.tooltip = 'Oeuvre réservé';
+        oeuvre.tooltip = 'Oeuvre réservée';
       }
       return oeuvre.field !== null;
     });
@@ -611,6 +611,18 @@ export class PortailComponent implements OnInit {
   selectedLevel: any;
 
   exportRequests() {
-    this.requestService.exportRequest().subscribe((response) => {});
+    this.requestService.exportRequest().subscribe((response: Response | any) => {
+      console.log('response');
+      this.requestService.manageFileResponseDownload(response, 'test');
+
+      //window.location.href = response.url;
+    });
+  }
+
+  exportArtWorks() {
+    this.WorkOfArtService.exportArtWorks().subscribe((response: Response | any) => {
+      console.log('response');
+      this.requestService.manageFileResponseDownload(response, 'Oeuvres Graphiques');
+    });
   }
 }

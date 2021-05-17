@@ -223,4 +223,13 @@ export class InProgressDemandComponent {
     }
     this.getListDemands();
   }
+
+  changeRequestStatus(request: any) {
+    //const status = event.target.innerHTML === "Valider la demande" ? "Valider" : "Refuser";
+    console.log(request);
+    //console.log(event.target.attributes.id);
+    this.demandService.changeStatus(request).subscribe((response) => {
+      console.log(response);
+    });
+  }
 }
