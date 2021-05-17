@@ -543,6 +543,7 @@ export class PortailComponent implements OnInit {
   onSubmitRequest(request: any) {
     let payload: any = {
       ...this.requestForm.value,
+      requestStatus : "En cours"
     };
     let artWorks: any = [];
     this.selectedOeuvre.forEach((ouvre) => {
@@ -551,11 +552,7 @@ export class PortailComponent implements OnInit {
     if (artWorks.length > 0) {
       payload.artWorks = artWorks;
     }
-    payload.pieceNumber = payload.pieceNumber.label;
-    payload.level = payload.level.label;
-    payload.subDivision = payload.subDivision.id;
-    payload.establishement = payload.establishement.id;
-    payload.building = payload.building.id;
+    console.log(payload);
     this.requestService.newRequest(payload).subscribe((response: any) => {
       this.modalService.dismissAll('NgbdModal1Content');
       this.requestForm.reset();
@@ -612,17 +609,13 @@ export class PortailComponent implements OnInit {
 
   exportRequests() {
     this.requestService.exportRequest().subscribe((response: Response | any) => {
-      console.log('response');
       this.requestService.manageFileResponseDownload(response, 'test');
-
-      //window.location.href = response.url;
     });
   }
 
 
   exportArtWorks() {
     this.WorkOfArtService.exportArtWorks().subscribe((response: Response | any) => {
-      console.log('response');
       this.requestService.manageFileResponseDownload(response, 'Oeuvres Graphiques');
     });
   }

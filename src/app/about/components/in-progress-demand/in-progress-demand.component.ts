@@ -21,15 +21,15 @@ export class InProgressDemandComponent {
     },
     {
       header: 'Direction',
-      field: 'establishementLabel',
+      field: 'establishement',
     },
     {
       header: 'Sous-direction',
-      field: 'subDivisionLabel',
+      field: 'subDivision',
     },
     {
       header: 'Status',
-      field: 'status',
+      field: 'requestStatus',
     },
   ];
   expandColumns = [
@@ -199,8 +199,6 @@ export class InProgressDemandComponent {
                 author: authors,
               };
             }),
-            establishementLabel: elm.establishement.label,
-            subDivisionLabel: elm.subDivision.label,
           };
         });
       },
@@ -225,11 +223,8 @@ export class InProgressDemandComponent {
   }
 
   changeRequestStatus(request:any){
-    //const status = event.target.innerHTML === "Valider la demande" ? "Valider" : "Refuser";
-    console.log(request);
-    //console.log(event.target.attributes.id);
     this.demandService.changeStatus(request).subscribe((response)=>{
-      console.log(response);
+
     });
   }
 }
