@@ -41,7 +41,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   oeuvres = this.WorkOfArtService.oeuvres[0].items;
   frozenCols: any = [];
   columns: any[];
-  selectedRow: any;
+  selectedRows: any;
   selectedRowCount = 0;
   inventoryOptions: Options;
   gridReady = false;
@@ -648,7 +648,7 @@ export class ListWorkOfArtsComponent implements OnInit {
 
   onRowsSelection(data: any) {
     if (Array.isArray(data)) {
-      this.selectedRow = data;
+      this.selectedRows = data;
       this.selectedRowCount = data.length;
     }
   }
@@ -1373,7 +1373,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   PrinNoticePDF() {
     let title: string = 'Détails_notices.pdf';
     if (this.selectedRowCount == 1) {
-      title = this.selectedRow[0].titre;
+      title = this.selectedRows[0].titre;
     }
     const element = document.getElementById('printNoticesPDF');
     this.pdfGeneratorService.downloadPDFFromHTML(element, title);
@@ -1459,5 +1459,24 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.loadingScroll = true;
     this.initData(data, advancedData, this.headerFilter, this.page);
     this.showDatatable = true;
+  }
+
+  exportNotices(type: String) {
+    //get artwork's to get theire PDF.
+    let artWorkids = [];
+    if (this.selectedRowCount) {
+      artWorkids = this.artWorkService.getArtWorkIds(this.selectedRows);
+    } else {
+      artWorkids = this.artWorkService.getArtWorkIds(this.artWorkResults);
+    }
+
+    let dataTosend = {
+      notices: artWorkids,
+      sort: this.dataTableSort.hasOwnProperty('sort') ? this.dataTableSort['sort'] : 'asc',
+      sortBy: this.dataTableSort.hasOwnProperty('sort_by') ? this.dataTableSort['sort_by'] : 'id',
+    };
+    this.requestService.exportNotices(dataTosend).subscribe((response: Response | any) => {
+      this.requestService.manageFileResponseDownload(response, type);
+    });
   }
 }
