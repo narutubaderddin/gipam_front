@@ -66,7 +66,7 @@ export class RequestService {
     headers = headers.set('Accept', 'application/pdf');
     //prepare query URL.
     let url = '/artWorks/export/' + type + '?sort_by=' + requestParams.sortBy + '&sort=' + requestParams.sort;
-    requestParams.notices.forEach((artWorkId) => {
+    requestParams.notices.forEach((artWorkId: any) => {
       return (url += '&artWorks[]=' + artWorkId);
     });
 
