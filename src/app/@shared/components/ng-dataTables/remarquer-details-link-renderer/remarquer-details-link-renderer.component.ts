@@ -9,7 +9,5 @@ export class RemarquerDetailsLinkRendererComponent implements OnInit {
   @Input() value: string = '';
   constructor() {}
 
-  ngOnInit(): void {
-    console.log(this.value);
-  }
+  ngOnInit(): void {}
 }

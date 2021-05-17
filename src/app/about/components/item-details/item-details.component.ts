@@ -17,6 +17,7 @@ export class ItemDetailsComponent implements OnInit {
 
   elementPosition: any = 2;
 
+
   type: string = 'depot';
   page: any = 5;
   edit = false;
@@ -60,7 +61,8 @@ export class ItemDetailsComponent implements OnInit {
 
   photographiesForm: FormGroup;
 
-  artwork = {
+  artwork =
+  {
     id: 145,
     titre: 'Titre',
     domain: 'Art graphique',
@@ -68,15 +70,16 @@ export class ItemDetailsComponent implements OnInit {
     height: '85',
     width: '85',
     authors: 'Auteur 1, Auteur 11',
-    totalWidth: '',
-    totalHeight: '',
-    era: '',
-    materialTechnique: '',
-    status: '',
-    denomination: 'Affiche',
-    createdAt: '22/01/2020',
+    totalWidth:'',
+    totalHeight:'',
+    era:'',
+    materialTechnique:'',
+    status:'',
+    denomination:'Affiche',
+    createdAt:'22/01/2020'
   };
   artWorksToPrint: any = [];
+
 
   constructor(
     config: NgbCarouselConfig,
@@ -99,6 +102,7 @@ export class ItemDetailsComponent implements OnInit {
     this.initDepositStatusForm();
     this.initHyperLink();
     this.initLinks();
+
   }
 
   initPhotographiesForm() {

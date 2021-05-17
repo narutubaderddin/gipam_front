@@ -48,7 +48,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { RemarquerDetailsLinkRendererComponent } from './components/ng-dataTables/remarquer-details-link-renderer/remarquer-details-link-renderer.component';
 import { ToastModule } from 'primeng/toast';
 import { ChipModule } from 'primeng/chip';
-import { InProgressNoticeRendererComponent } from './components/in-progress-notice-renderer/in-progress-notice-renderer.component';
+import { InProgressNoticeRendererComponent } from './components/ng-dataTables/in-progress-notice-renderer/in-progress-notice-renderer.component';
 
 @NgModule({
   imports: [

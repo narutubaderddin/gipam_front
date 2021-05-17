@@ -58,6 +58,8 @@
               [frozenCols]="[]"
               [frozenWidth]="'0px'"
               [checkBoxSelection]="false"
+              [singleSelect]="true"
+              (singleSelectionEvent)="onRowsSelection($event)"
             >
             </app-ng-data-table>
           </div>
