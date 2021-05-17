@@ -3,7 +3,7 @@
     <div class="col-md-6">
       <div class="form-group flex-wrap flex-sm-nowrap">
         <label class="">Titre<span class="mandatory" *ngIf="edit">*</span></label>
-        <div class="value" *ngIf="!edit">{{artwork.titre}}</div>
+        <div class="value" *ngIf="!edit">{{ artwork.titre }}</div>
         <input type="text" class="form-control value col-12 col-sm-7" formControlName="title" *ngIf="edit" />
       </div>
       <div
@@ -12,13 +12,15 @@
           (descriptifForm.get('title').dirty || descriptifForm.get('title').touched)
         "
       >
-        <div class="mandatory" *ngIf="edit&&descriptifForm.get('title').errors.required">Veuillez saisir un titre.</div>
+        <div class="mandatory" *ngIf="edit && descriptifForm.get('title').errors.required">
+          Veuillez saisir un titre.
+        </div>
       </div>
     </div>
     <div class="col-md-6">
       <div class="form-group flex-wrap flex-sm-nowrap">
         <label>Domaine<span class="mandatory" *ngIf="edit">*</span></label>
-        <div class="value" *ngIf="!edit">{{artwork.domain}}</div>
+        <div class="value" *ngIf="!edit">{{ artwork.domain }}</div>
         <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
           <p-dropdown
             class="col-md-12"
@@ -35,7 +37,8 @@
         </div>
       </div>
       <div
-        *ngIf="edit&&
+        *ngIf="
+          edit &&
           descriptifForm.get('field').invalid &&
           (descriptifForm.get('field').dirty || descriptifForm.get('field').touched)
         "
@@ -46,7 +49,7 @@
     <div class="col-md-6">
       <div class="form-group flex-wrap flex-sm-nowrap">
         <label class="-4">Dénomination<span class="mandatory" *ngIf="edit">*</span></label>
-        <div class="value" *ngIf="!edit">{{artwork.denomination}}</div>
+        <div class="value" *ngIf="!edit">{{ artwork.denomination }}</div>
         <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
           <p-dropdown
             class="col-md-12"
@@ -63,7 +66,8 @@
         </div>
       </div>
       <div
-        *ngIf="edit&&
+        *ngIf="
+          edit &&
           descriptifForm.get('denomination').invalid &&
           (descriptifForm.get('denomination').dirty || descriptifForm.get('denomination').touched)
         "
@@ -95,9 +99,12 @@
       </div>
     </div>
     <div class="col-md-8"></div>
-    <div class="d-flex flex-wrap justify-content-between" *ngIf="selectedDomain|| artwork.field">
+    <div class="d-flex flex-wrap justify-content-between" *ngIf="selectedDomain || artwork.field">
       <div class="divider"></div>
-      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="(!['Art textile'].includes(selectedDomain))||artwork.height">
+      <div
+        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
+        *ngIf="!['Art textile'].includes(selectedDomain) || artwork.height"
+      >
         <label class="">Hauteur</label>
         <div class="value" *ngIf="!edit">{{ artwork.height }}</div>
         <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
@@ -127,7 +134,7 @@
         *ngIf="['Sculpture', 'Peinture', 'Art graphique'].includes(selectedDomain)"
       >
         <label class="">Largeur Tot </label>
-        <div class="value" *ngIf="!edit">{{artwork.totalWidth}}</div>
+        <div class="value" *ngIf="!edit">{{ artwork.totalWidth }}</div>
         <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
           <input class="col-md-8 form-control" type="number" formControlName="totalWidth" />
           <select class="col-md-4 col-sm-4 form-control">
@@ -249,7 +256,6 @@
       </div>
       <div class="col-md-6">
         <div class="form-group flex-wrap flex-sm-nowrap">
-
           <label class="">Matières <span class="mandatory" *ngIf="edit">*</span></label>
           <div class="value" *ngIf="!edit">{{ artwork.materialTechnique }}</div>
           <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
@@ -266,7 +272,8 @@
           </div>
         </div>
         <div
-          *ngIf=" edit&&
+          *ngIf="
+            edit &&
             descriptifForm.get('materialTechnique').invalid &&
             (descriptifForm.get('materialTechnique').dirty || descriptifForm.get('materialTechnique').touched)
           "
@@ -285,12 +292,13 @@
           </div>
         </div>
         <div
-          *ngIf="edit&&
+          *ngIf="
+            edit &&
             descriptifForm.get('numberOfUnit').invalid &&
             (descriptifForm.get('numberOfUnit').dirty || descriptifForm.get('numberOfUnit').touched)
           "
         >
-          <div class="mandatory" *ngIf="descriptifForm.get('numberOfUnit').errors.required" >
+          <div class="mandatory" *ngIf="descriptifForm.get('numberOfUnit').errors.required">
             Veuillez saisir un nombre d'unité
           </div>
         </div>

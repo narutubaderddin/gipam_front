@@ -7,6 +7,10 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class HypertextLinksComponent implements OnInit {
   @Input() add: false;
+  @Input() linksForm: FormGroup;
+  get hyperlinks(): FormArray {
+    return this.linksForm.get('hyperlinks') as FormArray;
+  }
   @Input() itemDetails = false;
   myForm: FormGroup;
   addLinks: boolean = false;
@@ -23,12 +27,12 @@ export class HypertextLinksComponent implements OnInit {
   get liens(): FormArray {
     return this.myForm.get('liens') as FormArray;
   }
-
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
     this.configForm();
   }
+
   createAttachment(attachment?: any, attachmentType?: any): FormGroup {
     return this.fb.group({
       name: [attachment],
@@ -36,6 +40,13 @@ export class HypertextLinksComponent implements OnInit {
     });
   }
 
+  addBook() {
+    this.hyperlinks.push(this.createAttachment());
+  }
+
+  removeBook(i: number) {
+    this.hyperlinks.removeAt(i);
+  }
   addLink() {
     this.liens.push(this.buildLink());
   }

@@ -2,6 +2,7 @@ import { Component, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import ArtWorksDataModel from '@app/about/models/art-works-model';
 import { ArtWorkService } from '@app/about/services/art-work.service';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-links',
@@ -10,6 +11,7 @@ import { WorkOfArtService } from '@shared/services/work-of-art.service';
 })
 export class LinksComponent implements OnInit {
   @ViewChild('autocompletePanel') autocompletePanel: any;
+  @Input() linkArtWorkForm: FormGroup;
   @Input() add: false;
   @Input() itemDetails: boolean = false;
 
@@ -51,10 +53,10 @@ export class LinksComponent implements OnInit {
       });
       this.artWorksData = this.artWorksData.concat(response.results);
     });
+    console.log(this.artWorksData);
   }
 
   search(event: any) {
-    console.log('eee', event);
     if (!event) {
       this.query = '';
       this.same = true;
@@ -78,7 +80,10 @@ export class LinksComponent implements OnInit {
       }
     }, 500);
   }
-
+  handleSelect(item: any) {
+    this.linkArtWorkForm.get('parent').setValue(item.id);
+    console.log(this.linkArtWorkForm);
+  }
   addNewLinks() {
     this.addLinks = !this.addLinks;
   }

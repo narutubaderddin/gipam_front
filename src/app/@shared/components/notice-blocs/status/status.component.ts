@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { FormGroup } from '@angular/forms';
+import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 
 @Component({
   selector: 'app-status',
@@ -16,11 +16,42 @@ export class StatusComponent implements OnInit {
   @Input() propertyStatusForm: FormGroup;
   @Input() depositStatusForm: FormGroup;
   isCollapsed = false;
-  categories = ['Bien patrimonial exceptionnel', 'Bien patrimonial standard', 'Bien usuel', 'issu du 1% artistique'];
-  modeEntree = ["Inscription rétrospective à l'inventaire", 'Don', 'Acquisition', "Cession / transfert d'affectation"];
-  constructor(public WorkOfArtService: WorkOfArtService) {}
+  categories: any[] = [];
+  entryModes: any[] = [];
+  params: { limit: number; page: number };
+  constructor(private simpleTabsRef: SimpleTabsRefService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getAllEntryModes();
+    this.getAllCategories();
+  }
+
+  initParams(tabref: string) {
+    this.simpleTabsRef.tabRef = tabref;
+    this.params = {
+      limit: 40,
+      page: 1,
+    };
+  }
+  getAllEntryModes() {
+    this.initParams('entryModes');
+    this.simpleTabsRef.getAllItems(this.params).subscribe(
+      (result: any) => {
+        this.entryModes = result.results;
+      },
+      (error: any) => {}
+    );
+  }
+  getAllCategories() {
+    this.initParams('propertyStatusCategories');
+    this.simpleTabsRef.getAllItems(this.params).subscribe(
+      (result: any) => {
+        this.categories = result.results;
+      },
+      (error: any) => {}
+    );
+  }
+
   selectEvent(item: any) {}
 
   onChangeSearch(val: string) {
