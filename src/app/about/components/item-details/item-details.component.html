@@ -44,11 +44,14 @@
 
           <div class="col-md-12 mt-2">
             <div *ngIf="!dynamic">
-              <div class="flex-column-reverse d-flex top-bloc flex-sm-column-reverse flex-md-column-reverse flex-lg-row">
+              <div
+                class="flex-column-reverse d-flex top-bloc flex-sm-column-reverse flex-md-column-reverse flex-lg-row"
+              >
                 <div class="col-lg-4 col-md-12 col-sm-12 col-12 image-container">
                   <div class="detail-image">
                     <div class="col-md-12 d-flex p-0 img-wrapper mt-2 mt-sm-0">
                       <app-item-images
+                        *ngIf="photographies.length"
                         [photographiesForm]="photographiesForm"
                         [edit]="edit"
                         [images]="photographies"
@@ -56,8 +59,7 @@
                         class="col-12"
                       ></app-item-images>
                     </div>
-                    <i class="fas fa-eye" title="voir image" (click)="showImg()"></i>
-
+                    <i class="fas fa-eye" title="voir image" (click)="showImg()" *ngIf="photographies.length"></i>
                   </div>
                 </div>
                 <!--Modal-->
@@ -74,13 +76,13 @@
                           <a ngbNavLink><i class="far fa-file-alt mr-2"></i>Descriptifs physiques</a>
                           <ng-template ngbNavContent>
                             <app-descritif
+                              *ngIf="workArt"
                               [edit]="edit"
-                              [artwork]="artwork"
+                              [artwork]="workArt"
                               [addProperty]="false"
                               [addDepot]="false"
                               [descriptifForm]="descriptifForm"
                             ></app-descritif>
-
                           </ng-template>
                         </ng-container>
                         <ng-container ngbNavItem>
@@ -141,3 +143,4 @@
     <br />
   </div>
 </div>
+<p-toast></p-toast>

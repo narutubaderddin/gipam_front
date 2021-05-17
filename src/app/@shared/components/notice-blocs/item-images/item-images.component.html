@@ -38,7 +38,7 @@
           <div class="form-group col-md-12">
             <label class="col-md-5">Photographie</label>
             <p *ngIf="!add && !addImage" class="col-7">{{ imageName }}</p>
-            <div class="input-group input-group-sm upload-file" *ngIf="add">
+            <div class="input-group input-group-sm upload-file" *ngIf="add || addImage">
               <div class="input-group input-group-sm h-auto">
                 <input
                   class="form-control"

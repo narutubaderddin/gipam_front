@@ -4,9 +4,8 @@
     <div class="form-bloc pl-0" *ngIf="addDeposit" [formGroup]="depositStatusForm">
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
         <label class="">Date de dépôt</label>
-        <div class="autocomplete form-control value col-12 col-sm-7">
+        <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
           <p-calendar
-            *ngIf="edit"
             class="col-md-12"
             [style]="{ minWidth: '100%' }"
             formControlName="depositDate"

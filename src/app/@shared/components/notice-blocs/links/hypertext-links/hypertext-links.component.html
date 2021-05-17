@@ -1,7 +1,7 @@
 <div [formGroup]="myForm" *ngIf="!add">
   <div class="col-md-12 d-flex align-items-baseline flex-column flex-md-row">
     <h5 class="col-md-4 p-0">Liens hypertextes</h5>
-    <ol class="rounded-list col-md-6">
+    <ol class="rounded-list col-md-5">
       <ng-template ngFor let-item pTemplate="item" [ngForOf]="existingLinks" let-i="index">
         <li>
           <span

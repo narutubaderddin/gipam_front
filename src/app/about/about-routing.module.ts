@@ -56,7 +56,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'accueil', pathMatch: 'full' },
       { path: 'accueil', component: AdministratorHomePageComponent, data: { title: 'Accueil' } },
-      { path: 'details', component: ItemDetailsComponent },
+      { path: 'details/:id', component: ItemDetailsComponent },
       { path: 'portail-details/:id', component: PortailItemDetailsComponent },
       {
         path: 'oeuvres-list',
@@ -179,8 +179,12 @@ const routes: Routes = [
         component: ReservesComponent,
         data: { title: 'Liste des réserves' },
       },
-      { path: 'tab-ref-correspondant', component: CorrespondentsComponent },
-      { path: 'tab-ref-responsable', component: ResponsibleComponent },
+      {
+        path: 'tab-ref-correspondant',
+        component: CorrespondentsComponent,
+        data: { title: 'Liste des correspondants' },
+      },
+      { path: 'tab-ref-responsable', component: ResponsibleComponent, data: { title: 'Liste des responsables' } },
     ],
   },
 ];
