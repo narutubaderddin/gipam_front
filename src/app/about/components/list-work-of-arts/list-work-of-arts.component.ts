@@ -41,7 +41,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   oeuvres = this.WorkOfArtService.oeuvres[0].items;
   frozenCols: any = [];
   columns: any[];
-  selectedRow: any;
+  selectedRows: any;
   selectedRowCount = 0;
   inventoryOptions: Options;
   gridReady = false;
@@ -634,7 +634,7 @@ export class ListWorkOfArtsComponent implements OnInit {
 
   onRowsSelection(data: any) {
     if (Array.isArray(data)) {
-      this.selectedRow = data;
+      this.selectedRows = data;
       this.selectedRowCount = data.length;
     }
   }
@@ -1369,7 +1369,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   PrinNoticePDF() {
     let title: string = 'Détails_notices.pdf';
     if (this.selectedRowCount == 1) {
-      title = this.selectedRow[0].titre;
+      title = this.selectedRows[0].titre;
     }
     const element = document.getElementById('printNoticesPDF');
     this.pdfGeneratorService.downloadPDFFromHTML(element, title);
@@ -1406,11 +1406,16 @@ export class ListWorkOfArtsComponent implements OnInit {
   }
 
   exportNotices(type: String) {
-    console.log(this.selectedRow);
+    //get artwork's to get theire PDF.
+    let artWorkids = [];
+    if (this.selectedRowCount) {
+      artWorkids = this.artWorkService.getArtWorkids(this.selectedRows);
+    } else {
+      artWorkids = this.artWorkService.getArtWorkids(this.artWorksData.results);
+    }
 
-    //Artworks to get theire PDF.
     let dataTosend = {
-      notices: [5, 6, 8, 10],
+      notices: artWorkids,
       sort: this.dataTableSort.hasOwnProperty('sort') ? this.dataTableSort['sort'] : 'asc',
       sortBy: this.dataTableSort.hasOwnProperty('sort_by') ? this.dataTableSort['sort_by'] : 'id',
     };
