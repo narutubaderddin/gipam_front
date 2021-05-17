@@ -21,15 +21,15 @@ export class InProgressDemandComponent {
     },
     {
       header: 'Direction',
-      field: 'establishementLabel',
+      field: 'establishement',
     },
     {
       header: 'Sous-direction',
-      field: 'subDivisionLabel',
+      field: 'subDivision',
     },
     {
       header: 'Status',
-      field: 'status',
+      field: 'requestStatus',
     },
   ];
   expandColumns = [
@@ -199,8 +199,6 @@ export class InProgressDemandComponent {
                 author: authors,
               };
             }),
-            establishementLabel: elm.establishement.label,
-            subDivisionLabel: elm.subDivision.label,
           };
         });
       },
@@ -222,5 +220,9 @@ export class InProgressDemandComponent {
       this.requests.page = this.requests.totalQuantity / parseInt(this.requests.size.toString(), 0);
     }
     this.getListDemands();
+  }
+
+  changeRequestStatus(request: any) {
+    this.demandService.changeStatus(request).subscribe((response) => {});
   }
 }

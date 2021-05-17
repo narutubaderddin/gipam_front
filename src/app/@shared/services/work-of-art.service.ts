@@ -712,4 +712,10 @@ export class WorkOfArtService {
 
     return this.http.get('/notices/attributes', { params });
   }
+  exportArtWorks(): Observable<any> {
+    return this.http.get('/artWorks/exportRequest', {
+      responseType: 'blob',
+      observe: 'response',
+    });
+  }
 }

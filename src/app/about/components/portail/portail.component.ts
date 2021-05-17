@@ -139,8 +139,6 @@ export class PortailComponent implements OnInit {
   ngOnInit(): void {
     this.getFields();
     this.getOeuvres();
-    this.getEstablishments();
-    this.getBuildings();
     this.oeuvreToShow = this.oeuvres;
     this.form1 = new FormGroup({
       inventory: new FormControl(''),
@@ -327,7 +325,7 @@ export class PortailComponent implements OnInit {
         oeuvre.isDemanded = true;
       }
       if (oeuvre.isInRequest) {
-        oeuvre.tooltip = 'Oeuvre réservé';
+        oeuvre.tooltip = 'Oeuvre réservée';
       }
       return oeuvre.field !== null;
     });
@@ -543,6 +541,7 @@ export class PortailComponent implements OnInit {
   onSubmitRequest(request: any) {
     let payload: any = {
       ...this.requestForm.value,
+      requestStatus: 'En cours',
     };
     let artWorks: any = [];
     this.selectedOeuvre.forEach((ouvre) => {
@@ -551,11 +550,6 @@ export class PortailComponent implements OnInit {
     if (artWorks.length > 0) {
       payload.artWorks = artWorks;
     }
-    payload.pieceNumber = payload.pieceNumber.label;
-    payload.level = payload.level.label;
-    payload.subDivision = payload.subDivision.id;
-    payload.establishement = payload.establishement.id;
-    payload.building = payload.building.id;
     this.requestService.newRequest(payload).subscribe((response: any) => {
       this.modalService.dismissAll('NgbdModal1Content');
       this.requestForm.reset();
@@ -611,6 +605,14 @@ export class PortailComponent implements OnInit {
   selectedLevel: any;
 
   exportRequests() {
-    this.requestService.exportRequest().subscribe((response) => {});
+    this.requestService.exportRequest().subscribe((response: Response | any) => {
+      this.requestService.manageFileResponseDownload(response, 'test');
+    });
+  }
+
+  exportArtWorks() {
+    this.WorkOfArtService.exportArtWorks().subscribe((response: Response | any) => {
+      this.requestService.manageFileResponseDownload(response, 'Oeuvres Graphiques');
+    });
   }
 }
