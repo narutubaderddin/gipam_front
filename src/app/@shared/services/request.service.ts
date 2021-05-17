@@ -60,4 +60,19 @@ export class RequestService {
       link.remove();
     }, 100);
   }
+
+  exportNotices(requestParams: any = {}, type: string = 'catalogue'): Observable<any> {
+    let headers = new HttpHeaders();
+    headers = headers.set('Accept', 'application/pdf');
+    //prepare query URL.
+    let url = '/artWorks/export/' + type + '?sort_by=' + requestParams.sortBy + '&sort=' + requestParams.sort;
+    requestParams.notices.forEach((artWorkId: any) => {
+      return (url += '&artWorks[]=' + artWorkId);
+    });
+
+    return this.http.get(url, {
+      responseType: 'blob',
+      observe: 'response',
+    });
+  }
 }
