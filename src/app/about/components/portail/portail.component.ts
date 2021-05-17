@@ -163,6 +163,9 @@ export class PortailComponent implements OnInit {
       building: new FormControl('', [Validators.required]),
       level: new FormControl('', [Validators.required]),
       comment: new FormControl(''),
+      phoneApplicant: new FormControl(''),
+      firstNameApplicant: new FormControl(''),
+      lastNameApplicant: new FormControl(''),
     });
   }
   search(event: any) {}
