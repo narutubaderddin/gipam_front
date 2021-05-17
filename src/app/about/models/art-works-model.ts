@@ -16,8 +16,13 @@ export class ArtWorksModel {
     public status?: any,
     public depositor?: string,
     public creationDate?: string,
-    public visible?: boolean
+    public visible?: boolean,
+    public principalPhoto?: Photographie
   ) {}
+}
+
+export class Photographie {
+  constructor(public id?: number, public imagePreview?: string) {}
 }
 
 export default class ArtWorksDataModel {
