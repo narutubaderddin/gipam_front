@@ -21,7 +21,7 @@ export class DescritifComponent implements OnInit {
   @Input() addDepot = false;
   @Input() addProperty = true;
   @Input() descriptifForm: FormGroup;
-  @Input() artwork : any;
+  @Input() artwork: any;
   items: any = [];
   domain = '';
   denominations: any;
@@ -52,7 +52,6 @@ export class DescritifComponent implements OnInit {
   ngOnInit(): void {
     this.initFilterData();
     this.initData();
-
   }
   get f() {
     return this.descriptifForm.controls;
@@ -85,15 +84,15 @@ export class DescritifComponent implements OnInit {
       this.simpleTabsRefService.getAllItems(data, 'entryModes'),
     ]).subscribe(
       ([
-         fieldsResults,
-         denominationResults,
-         styleResults,
-         eraResults,
-         authorResults,
-         categoriesResults,
-         depositorsResults,
-         entryModesData,
-       ]) => {
+        fieldsResults,
+        denominationResults,
+        styleResults,
+        eraResults,
+        authorResults,
+        categoriesResults,
+        depositorsResults,
+        entryModesData,
+      ]) => {
         this.domainData = this.getTabRefData(fieldsResults['results']);
         this.denominationData = denominationResults['results'];
         this.denominations = denominationResults['results'];
@@ -151,10 +150,9 @@ export class DescritifComponent implements OnInit {
   }
 
   private initData() {
-    if(this.artwork){
-      this.selectedDomain=this.artwork['field'];
-console.log(this.selectedDomain, this.artwork['field'])
+    if (this.artwork) {
+      this.selectedDomain = this.artwork['field'];
+      console.log(this.selectedDomain, this.artwork['field']);
     }
   }
-
 }

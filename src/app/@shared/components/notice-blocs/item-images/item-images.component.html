@@ -10,7 +10,6 @@
     ></i>
     <div class="more-details pt-3">
       <div class="d-flex flex-wrap justify-content-around">
-
         <div class="d-flex carousel-container mb-2 col-12" *ngIf="images.length">
           <p-galleria
             [(value)]="images"
@@ -38,13 +37,13 @@
           </div>
           <div class="form-group col-md-12">
             <label class="col-md-5">Photographie</label>
-<!--            <i-->
-<!--              class="far fa-trash-alt col-1"-->
-<!--              *ngIf="!add"-->
-<!--              (click)="deleteItem(imageName)"-->
-<!--              pTooltip="Supprimer"-->
-<!--              tooltipPosition="top"-->
-<!--            ></i>-->
+            <!--            <i-->
+            <!--              class="far fa-trash-alt col-1"-->
+            <!--              *ngIf="!add"-->
+            <!--              (click)="deleteItem(imageName)"-->
+            <!--              pTooltip="Supprimer"-->
+            <!--              tooltipPosition="top"-->
+            <!--            ></i>-->
             <p *ngIf="!add && !addImage" class="col-7">{{ imageName }}</p>
             <div class="input-group input-group-sm upload-file" *ngIf="add || addImage">
               <div class="input-group input-group-sm h-auto">

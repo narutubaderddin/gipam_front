@@ -1,14 +1,14 @@
 <div class="col-md-12 pl-0">
   <div class="col-md-12 p-0">
     <h5 class="pl-0">Liens avec oeuvres</h5>
-    <div class="d-flex justify-content-end" *ngIf="(addLinks||existingLinks.length)&&!add">
+    <div class="d-flex justify-content-end" *ngIf="(addLinks || existingLinks.length) && !add">
       <button class="btn add-action col-7" (click)="addNewLinks()">
         <i class="fas fa-plus mr-2"></i>Ajouter fait partie de
       </button>
     </div>
 
     <ol class="rounded-list" *ngIf="!add">
-      <li *ngIf="addLinks||existingLinks.length||add">Fait partie de:</li>
+      <li *ngIf="addLinks || existingLinks.length || add">Fait partie de:</li>
       <li *ngIf="addLinks">
         <p-autoComplete
           #autocompletePanel
@@ -35,20 +35,15 @@
           <span
             ><a href="#">{{ item.url }}</a> | {{ item.name }}
             <div>
-            <i
-              class="far fa-edit col-1 mr-2"
-              (click)="editLink()"
-              pTooltip="Modifier"
-              tooltipPosition="top"
-            ></i>
-            <i
-              class="far fa-trash-alt"
-              *ngIf="itemDetails"
-              (click)="delete(item)"
-              pTooltip="Supprimer"
-              tooltipPosition="top"
-            ></i
-          ></div>
+              <i class="far fa-edit col-1 mr-2" (click)="editLink()" pTooltip="Modifier" tooltipPosition="top"></i>
+              <i
+                class="far fa-trash-alt"
+                *ngIf="itemDetails"
+                (click)="delete(item)"
+                pTooltip="Supprimer"
+                tooltipPosition="top"
+              ></i>
+            </div>
           </span>
         </li>
       </ng-template>

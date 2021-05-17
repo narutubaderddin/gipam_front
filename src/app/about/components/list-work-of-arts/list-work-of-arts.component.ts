@@ -1404,4 +1404,18 @@ export class ListWorkOfArtsComponent implements OnInit {
         this.roomData = resultData;
       });
   }
+
+  exportNotices(type: String) {
+    console.log(this.selectedRow);
+
+    //Artworks to get theire PDF.
+    let dataTosend = {
+      notices: [5, 6, 8, 10],
+      sort: this.dataTableSort.hasOwnProperty('sort') ? this.dataTableSort['sort'] : 'asc',
+      sortBy: this.dataTableSort.hasOwnProperty('sort_by') ? this.dataTableSort['sort_by'] : 'id',
+    };
+    this.requestService.exportNotices(dataTosend).subscribe((response: Response | any) => {
+      this.requestService.manageFileResponseDownload(response, type);
+    });
+  }
 }
