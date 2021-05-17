@@ -304,10 +304,21 @@
                   </tr>
                 </ng-template>
               </p-table>
-              <tr style="float: right; margin-top: 1%">
+              <tr style="float: right; margin-top: 1%" *ngIf="showConfirmRequest">
                 <td>
-                  <button pButton type="button" label="Valider la demande"></button>
-                  <button pButton type="button" label="Annuler la demande" class="p-button-secondary"></button>
+                  <button
+                    pButton
+                    type="button"
+                    label="Valider la demande"
+                    (click)="onChangeRequestStatus(item.id, 'Accepter')"
+                  ></button>
+                  <button
+                    pButton
+                    type="button"
+                    label="Annuler la demande"
+                    (click)="onChangeRequestStatus(item.id, 'Refuser')"
+                    class="p-button-secondary"
+                  ></button>
                 </td>
               </tr>
             </div>

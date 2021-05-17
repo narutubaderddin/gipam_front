@@ -179,8 +179,12 @@ const routes: Routes = [
         component: ReservesComponent,
         data: { title: 'Liste des réserves' },
       },
-      { path: 'tab-ref-correspondant', component: CorrespondentsComponent },
-      { path: 'tab-ref-responsable', component: ResponsibleComponent },
+      {
+        path: 'tab-ref-correspondant',
+        component: CorrespondentsComponent,
+        data: { title: 'Liste des correspondants' },
+      },
+      { path: 'tab-ref-responsable', component: ResponsibleComponent, data: { title: 'Liste des responsables' } },
     ],
   },
 ];

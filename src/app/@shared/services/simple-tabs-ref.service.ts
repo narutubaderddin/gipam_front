@@ -41,7 +41,7 @@ export class SimpleTabsRefService {
   }
 
   addItem(denomination: any): Observable<any> {
-    return this.http.post<any>(`/${this.tabRef}`, denomination, httpOptions);
+    return this.http.post<any>(`/${this.tabRef}/`, denomination, httpOptions);
   }
 
   editItem(denomination: any, id: number): Observable<any> {
@@ -68,7 +68,12 @@ export class SimpleTabsRefService {
         dTFilter[key].value.forEach((item: any) => {
           values.push(item.id);
         });
-        filter[key + '[in]'] = JSON.stringify(values);
+        if (dTFilter[key].field_type === 'key-array') {
+          filter[key + '[in]'] = JSON.stringify(values);
+        }
+        if (dTFilter[key].field_type === 'key-multiple-data') {
+          filter[key + '_id[in]'] = JSON.stringify(values);
+        }
       }
     });
     return filter;
