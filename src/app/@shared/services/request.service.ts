@@ -28,8 +28,6 @@ export class RequestService {
     return this.http.get('/rooms/findRoomsRefByCriteria' + filter);
   }
   exportRequest(): Observable<any> {
-    let headers = new HttpHeaders();
-    headers = headers.set('Accept', 'application/pdf');
     return this.http.get('/requests/exportRequest', {
       responseType: 'blob',
       observe: 'response',

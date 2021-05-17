@@ -698,4 +698,10 @@ export class WorkOfArtService {
   removeSelectedArtWorks() {
     localStorage.removeItem('selectedArtWorks');
   }
+  exportArtWorks(): Observable<any> {
+    return this.http.get('/artWorks/exportRequest', {
+      responseType: 'blob',
+      observe: 'response',
+    });
+  }
 }
