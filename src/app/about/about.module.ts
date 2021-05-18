@@ -121,6 +121,7 @@ import { ReportModelsComponent } from '@app/about/components/tabs-ref/report-mod
 import { ReservesComponent } from '@app/about/components/tabs-ref/reserves/reserves.component';
 
 import { ItemDetailsPdfComponent } from './components/item-details/pdf/item-details-pdf/item-details-pdf.component';
+import { AddRemarquerResolver } from '@app/about/components/add-remarquer/add-remarquer-resolver';
 setTheme('bs4');
 
 const ngWizardConfig: NgWizardConfig = {
@@ -258,6 +259,7 @@ const ngWizardConfig: NgWizardConfig = {
     RequestService,
     EstablishmentService,
     DemandService,
+    AddRemarquerResolver,
   ],
 })
 export class AboutModule {}

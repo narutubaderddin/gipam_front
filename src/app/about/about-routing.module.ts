@@ -48,6 +48,7 @@ import { RoomsComponent } from '@app/about/components/tabs-ref/rooms/rooms.compo
 import { AuthorsComponent } from '@app/about/components/tabs-ref/authors/authors.component';
 import { ReportModelsComponent } from '@app/about/components/tabs-ref/report-models/report-models.component';
 import { ReservesComponent } from '@app/about/components/tabs-ref/reserves/reserves.component';
+import { AddRemarquerResolver } from '@app/about/components/add-remarquer/add-remarquer-resolver';
 
 const routes: Routes = [
   {
