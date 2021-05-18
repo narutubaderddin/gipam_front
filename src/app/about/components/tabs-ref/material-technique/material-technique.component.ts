@@ -7,6 +7,7 @@ import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { getMultiSelectIds, tabRefFormBackendErrorMessage } from '@shared/utils/helpers';
 
 @Component({
   selector: 'app-material-technique',
@@ -18,7 +19,7 @@ export class MaterialTechniqueComponent implements OnInit {
   @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
 
   myModal: any;
-  selectedItem: string;
+  selectedItem: any;
 
   itemToEdit: any;
   itemToDelete: string;
@@ -26,17 +27,11 @@ export class MaterialTechniqueComponent implements OnInit {
   editItem = false;
   addItem = false;
   deleteItems = false;
-  dropdownSettings: IDropdownSettings;
 
-  denominations: any;
-  selectedDenominations: any = [];
+  activeDenominations: any[] = [];
+  selectedDenominations: any[] = [];
   active = true;
-  dropdownList: any;
   itemLabel: any;
-  selectedDomain: any;
-  filter: any;
-  sort: string = 'asc';
-  sortBy = 'label';
   totalFiltred: any;
   total: any;
   limit: any = '5';
@@ -50,6 +45,20 @@ export class MaterialTechniqueComponent implements OnInit {
   dataTableSort: any = {};
   dataTableSearchBar: any = {};
   items: any[] = [];
+
+  denominationsFilter: any[] = [];
+
+  denominationsColumn = {
+    header: 'Dénominations',
+    field: 'denominations',
+    type: 'key-multiple-data',
+    key_multiple_data: ['denominations', 'label'],
+    filter: true,
+    filterType: 'multiselect',
+    placeholder: 'Domaine',
+    selectData: this.denominationsFilter,
+    sortable: true,
+  };
 
   columns = [
     {
@@ -70,13 +79,7 @@ export class MaterialTechniqueComponent implements OnInit {
       sortable: true,
       width: '300px',
     },
-    {
-      header: 'Dénominations',
-      field: 'denominations',
-      type: 'key-multiple-data',
-      key_multiple_data: ['denominations', 'label'],
-      scrollable: true,
-    },
+    this.denominationsColumn,
     {
       header: 'Actions',
       field: 'action',
@@ -88,14 +91,11 @@ export class MaterialTechniqueComponent implements OnInit {
   ];
 
   rowCount: any = 5;
-  selectedDenomination: any[] = [];
   constructor(
     private router: Router,
     private modalService: NgbModal,
     private activatedRoute: ActivatedRoute,
     private simpleTabsRef: SimpleTabsRefService,
-
-    private fieldsService: FieldsService,
     public fb: FormBuilder,
     config: NgbModalConfig,
     private messageService: MessageService
@@ -108,33 +108,22 @@ export class MaterialTechniqueComponent implements OnInit {
     this.simpleTabsRef.tabRef = 'materialTechniques';
     this.getAllItems();
     // this.getAllFields();
-    this.getAllDenominations();
     this.initForm();
-    this.selectedDenominations = [];
-    this.dropdownSettings = {
-      singleSelection: false,
-      selectAllText: 'Sélectionner tout',
-      unSelectAllText: 'Déselectionner tout',
-      idField: 'id',
-      textField: 'label',
-      itemsShowLimit: 1,
-      allowSearchFilter: true,
-    };
   }
+
   initForm() {
     this.tabForm = this.fb.group({
-      material: [this.selectedItem, [Validators.required]],
-      type: [''],
-      denomination: ['', [Validators.required]],
-      active: [true],
+      material: [this.selectedItem?.label, [Validators.required]],
+      type: [this.selectedItem?.type],
+      denominations: [this.selectedDenominations, [Validators.required]],
+      active: [this.selectedItem?.active],
     });
   }
 
-  resetFilter() {}
-
   openModal(item: any) {
+    console.log('item to edit', item);
     this.btnLoading = null;
-
+    this.getActiveDenominations();
     if (item) {
       this.editItem = true;
       this.itemToEdit = item;
@@ -143,12 +132,10 @@ export class MaterialTechniqueComponent implements OnInit {
       this.addItem = true;
     }
     if (item.denominations) {
-      item.denominations.map((el: any) => {
-        this.selectedDenomination.push({ id: el.id, label: el.label });
-      });
+      this.selectedDenominations = item.denominations;
     }
 
-    this.selectedItem = item.label;
+    this.selectedItem = item;
 
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
@@ -156,12 +143,11 @@ export class MaterialTechniqueComponent implements OnInit {
   submit() {
     this.btnLoading = null;
     const selectedDenominations: any[] = [];
-    this.tabForm.value.denominations.map((el: any) => selectedDenominations.push(el.id));
 
     const item = {
       label: this.tabForm.value.material,
       type: this.tabForm.value.type,
-      denominations: selectedDenominations,
+      denominations: getMultiSelectIds(this.tabForm.value.denominations),
       active: this.tabForm.value.active,
     };
     if (this.addItem) {
@@ -178,6 +164,7 @@ export class MaterialTechniqueComponent implements OnInit {
     this.selectedDenominations = [];
     this.myModal.dismiss('Cross click');
   }
+
   deleteItem(data: any) {
     this.btnLoading = null;
     this.deleteItems = true;
@@ -208,8 +195,6 @@ export class MaterialTechniqueComponent implements OnInit {
     let params = {
       limit: this.limit,
       page: this.page,
-      sort_by: this.sortBy,
-      sort: this.sort,
     };
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
@@ -243,6 +228,7 @@ export class MaterialTechniqueComponent implements OnInit {
         this.close();
         this.addSingle('success', 'Suppression', 'Matière/technique ' + item.label + ' supprimée avec succés');
         this.getAllItems();
+        this.btnLoading = null;
       },
       (error: any) => {
         this.close();
@@ -251,6 +237,7 @@ export class MaterialTechniqueComponent implements OnInit {
         } else {
           this.addSingle('error', 'Suppression', error.error.message);
         }
+        this.btnLoading = null;
       }
     );
   }
@@ -262,16 +249,22 @@ export class MaterialTechniqueComponent implements OnInit {
         this.close();
         this.addSingle('success', 'Ajout', 'Matière/technique ' + item.label + ' ajoutée avec succés');
         this.getAllItems();
+        this.btnLoading = null;
       },
       (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Ajout', tabRefFormBackendErrorMessage);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        }
+        this.btnLoading = null;
       }
     );
   }
+
   visibleItem(data: any) {
     data.active = !data.active;
     this.simpleTabsRef.tabRef = 'materialTechniques';
-    this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
+    this.simpleTabsRef.editItem({ active: data.active }, data.id).subscribe(
       (result) => {
         if (data.active) {
           this.addSingle('success', 'Activation', 'Matière/technique ' + data.label + ' activée avec succés');
@@ -279,13 +272,16 @@ export class MaterialTechniqueComponent implements OnInit {
           this.addSingle('success', 'Activation', 'Matière/technique ' + data.label + ' désactivée avec succés');
         }
         this.getAllItems();
+        this.btnLoading = null;
       },
 
       (error) => {
         this.addSingle('error', 'Modification', error.error.message);
+        this.btnLoading = null;
       }
     );
   }
+
   editItems(item: any, id: number) {
     this.btnLoading = '';
 
@@ -295,10 +291,15 @@ export class MaterialTechniqueComponent implements OnInit {
         this.close();
         this.addSingle('success', 'Modification', 'Matière/technique ' + item.label + ' modifiée avec succés');
         this.getAllItems();
+        this.btnLoading = null;
       },
 
       (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Modification', tabRefFormBackendErrorMessage);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        }
+        this.btnLoading = null;
       }
     );
   }
@@ -339,29 +340,25 @@ export class MaterialTechniqueComponent implements OnInit {
     }
   }
 
-  getAllDenominations() {
-    this.simpleTabsRef.tabRef = 'denominations';
-    this.simpleTabsRef.getAllItems({}).subscribe(
+  addNotActiveEntities() {
+    if (this.selectedDenominations) {
+      this.selectedDenominations.forEach((item: any) => {
+        if (!this.activeDenominations.some((activeItem) => activeItem.id === item.id)) {
+          this.activeDenominations.push(item);
+        }
+      });
+    }
+  }
+
+  getActiveDenominations() {
+    this.simpleTabsRef.getAllItems({ 'active[eq]': 1 }, 'denominations').subscribe(
       (result) => {
-        this.denominations = result;
-        this.denominations = this.denominations.results;
+        this.activeDenominations = result.results;
+        this.addNotActiveEntities();
       },
       (error) => {
         console.log(error.error.message);
       }
     );
-  }
-  onSelect(item: any) {}
-  public onDeSelect(item: any) {
-    this.selectedDenominations = this.selectedDenominations.filter((denomination: any) => {
-      return denomination !== item.id;
-    });
-  }
-
-  public onSelectAll(items: any) {
-    items.map((item: any) => this.selectedDenominations.push(item.id));
-  }
-  public onDeSelectAll(items: any) {
-    this.selectedDenominations = [];
   }
 }
