@@ -8,7 +8,6 @@ import { FieldsService } from '@app/@shared/services/fields.service';
 import { StylesService } from '@app/@shared/services/styles.service';
 import { SimpleTabsRefService } from '@app/@shared/services/simple-tabs-ref.service';
 import { MaterialTechniqueService } from '@app/@shared/services/material-technique.service';
-import { retry } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-descriptions',
@@ -49,9 +48,9 @@ export class AddDescriptionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.initFilterData();
-    // if (this.denomination && this.field) {
-    //   this.getAttributes();
-    // }
+    if (this.denomination && this.field) {
+      this.getAttributes();
+    }
   }
   get f() {
     return this.descriptifForm.controls;
@@ -65,7 +64,6 @@ export class AddDescriptionsComponent implements OnInit {
   getAttributes() {
     this.workOfArtService.getAttributes(this.field, this.denomination).subscribe((result) => {
       this.attributeToShow = result;
-      console.log(result);
     });
   }
   getTabRefData(result: any[]) {

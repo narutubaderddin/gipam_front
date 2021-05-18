@@ -64,12 +64,11 @@ export class AddRemarquerComponent implements OnInit {
     private router: Router,
     private messageService: MessageService
   ) {
-    // this.routeSubscription = this.route.paramMap.subscribe((params: ParamMap) => {
-    //   const artWorkData = this.route.snapshot.data.addRemarquer;
-    //   if (artWorkData) {
-    //     this.inProgressNotice = artWorkData;
-    //   }
-    // });
+    this.routeSubscription = this.route.data.subscribe((res: any) => {
+      if (res) {
+        this.inProgressNotice = res.addRemarquer;
+      }
+    });
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     const type = this.route.snapshot.paramMap.get('type');
     if (type === 'propriété') {
@@ -103,40 +102,62 @@ export class AddRemarquerComponent implements OnInit {
   }
   initDescriptifForm() {
     this.descriptifForm = this.fb.group({
-      title: [''],
-      field: [null],
-      denomination: [null],
-      materialTechnique: [null],
-      numberOfUnit: [''],
-      authors: [],
-      creationDate: [],
-      length: [],
+      title: this.inProgressNotice && this.inProgressNotice.title ? this.inProgressNotice.title : '',
+      field: this.inProgressNotice && this.inProgressNotice.field ? this.inProgressNotice.field.id : null,
+      denomination:
+        this.inProgressNotice && this.inProgressNotice.denomination ? this.inProgressNotice.denomination.id : null,
+      materialTechnique:
+        this.inProgressNotice && this.inProgressNotice.materialTechnique
+          ? this.inProgressNotice.materialTechnique
+          : [null],
+      numberOfUnit: [
+        this.inProgressNotice && this.inProgressNotice.numberOfUnit ? this.inProgressNotice.numberOfUnit : '',
+      ],
+      authors: [this.inProgressNotice && this.inProgressNotice.authors ? this.inProgressNotice.authors : null],
+      creationDate: [
+        this.inProgressNotice && this.inProgressNotice.creationDate ? this.inProgressNotice.creationDate : null,
+      ],
+      length: [this.inProgressNotice && this.inProgressNotice.length ? this.inProgressNotice.length : null],
       lengthUnit: ['1'],
-      width: [],
+      width: [this.inProgressNotice && this.inProgressNotice.width ? this.inProgressNotice.width : null],
       widthUnit: ['1'],
-      height: [],
+      height: [this.inProgressNotice && this.inProgressNotice.height ? this.inProgressNotice.height : null],
       heightUnit: ['1'],
-      depth: [],
-      depthUnit: [],
-      weight: [],
+      depth: [this.inProgressNotice && this.inProgressNotice.depth ? this.inProgressNotice.depth : null],
+      depthUnit: ['1'],
+      weight: [this.inProgressNotice && this.inProgressNotice.weight ? this.inProgressNotice.weight : null],
       weightUnit: ['1'],
-      diameter: [],
+      diameter: [this.inProgressNotice && this.inProgressNotice.diameter ? this.inProgressNotice.diameter : null],
       diameterUnit: ['1'],
-      era: [],
-      style: [],
-      totalLength: [],
+      era: [this.inProgressNotice && this.inProgressNotice.era ? this.inProgressNotice.era.id : null],
+      style: [this.inProgressNotice && this.inProgressNotice.style ? this.inProgressNotice.style.id : null],
+      totalLength: [
+        this.inProgressNotice && this.inProgressNotice.totalLength ? this.inProgressNotice.totalLength : null,
+      ],
       totlLengthUnit: ['1'],
-      totalWidth: [],
+      totalWidth: [this.inProgressNotice && this.inProgressNotice.totalWidth ? this.inProgressNotice.totalWidth : null],
       totalWidthUnit: [1],
-      totalHeight: [],
+      totalHeight: [
+        this.inProgressNotice && this.inProgressNotice.totalHeight ? this.inProgressNotice.totalHeight : null,
+      ],
       totalHeightUnit: ['1'],
-      descriptiveWords: [],
-      description: [],
-      registrationSignature: [],
-      otherRegistrations: [],
-      marking: [],
+      descriptiveWords: [
+        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.descriptiveWords : null,
+      ],
+      description: [
+        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.description : null,
+      ],
+      registrationSignature: [
+        this.inProgressNotice && this.inProgressNotice.status
+          ? this.inProgressNotice.status.registrationSignature
+          : null,
+      ],
+      otherRegistrations: [
+        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.otherRegistrations : null,
+      ],
+      marking: [this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.marking : null],
       photographies: [],
-      status: this.addProperty ? this.propertyStatusForm : this.depositStatusForm,
+      status: [],
       parent: [],
       hyperlinks: [],
       attachments: this.attachmentForm.value.attachments,
@@ -144,22 +165,40 @@ export class AddRemarquerComponent implements OnInit {
   }
   initPropertyStatusForm() {
     this.propertyStatusForm = this.fb.group({
-      entryMode: [''],
-      entryDate: [''],
+      entryMode: [
+        this.inProgressNotice && this.inProgressNotice.status.entryMode
+          ? this.inProgressNotice.status.entryMode.id
+          : null,
+      ],
+      entryDate: [
+        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.entryDate : null,
+      ],
       marking: [''],
-      category: [''],
+      category: [
+        this.inProgressNotice && this.inProgressNotice.status.category
+          ? this.inProgressNotice.status.category.id
+          : null,
+      ],
       registrationSignature: [''],
       descriptiveWords: [''],
-      insuranceValue: [''],
-      insuranceValueDate: [''],
+      insuranceValue: [
+        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.insuranceValue : null,
+      ],
+      insuranceValueDate: [
+        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.insuranceValueDate : null,
+      ],
       otherRegistrations: [''],
       description: [''],
     });
   }
   initDepositStatusForm() {
     this.depositStatusForm = this.fb.group({
-      depositDate: [''],
-      stopNumber: [''],
+      depositDate: [
+        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.depositDate : null,
+      ],
+      stopNumber: [
+        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.stopNumber : null,
+      ],
     });
   }
   initHyperLink() {

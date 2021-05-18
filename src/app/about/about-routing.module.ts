@@ -74,7 +74,12 @@ const routes: Routes = [
         },
       },
       { path: 'portail', component: PortailComponent },
-      { path: 'creation-notice/:type', component: AddRemarquerComponent, canDeactivate: [DirtyCheckGuard] },
+      {
+        path: 'creation-notice/:type',
+        component: AddRemarquerComponent,
+        canDeactivate: [DirtyCheckGuard],
+        resolve: { addRemarquer: AddRemarquerResolver },
+      },
       { path: 'notices-list', component: NoticeListComponent },
       { path: 'recolements-list', component: RecolementListComponent },
       { path: 'alerts-list', component: AlertListComponent },
