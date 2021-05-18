@@ -8,6 +8,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class HypertextLinksComponent implements OnInit {
   @Input() add: false;
   @Input() linksForm: FormGroup;
+  @Input() existingLinks: any[]=[];
   get hyperlinks(): FormArray {
     return this.linksForm.get('hyperlinks') as FormArray;
   }
@@ -17,12 +18,12 @@ export class HypertextLinksComponent implements OnInit {
   deleteDialog: boolean = false;
   itemToDelete: string = '';
   selectedItem: any;
-  existingLinks: any[] = [
-    {
-      url: 'string',
-      name: 'string',
-    },
-  ];
+  // existingLinks: any[] = [
+  //   {
+  //     url: 'string',
+  //     name: 'string',
+  //   },
+  // ];
 
   get liens(): FormArray {
     return this.myForm.get('liens') as FormArray;

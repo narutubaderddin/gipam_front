@@ -22,6 +22,7 @@ export class ItemDetailsComponent implements OnInit {
   @ViewChild('stickyMenu') menuElement: ElementRef;
 
   elementPosition: any = 2;
+<<<<<<< HEAD
   workArt: {
     id: 145;
     titre: 'Titre';
@@ -38,7 +39,32 @@ export class ItemDetailsComponent implements OnInit {
     denomination: 'Affiche';
     createdAt: '22/01/2020';
   };
+=======
+  workArt:{
+    id: 145,
+    titre: 'Titre',
+    domain: 'Art graphique',
+    field: 'Art graphique',
+    height: '85',
+    width: '85',
+    authors: 'Auteur 1, Auteur 11',
+    totalWidth: '',
+    totalHeight: '',
+    era: '',
+    materialTechnique: '',
+    status: '',
+    denomination: 'Affiche',
+    createdAt: '22/01/2020',
+  }
+  parent:any='';
+  children:any=[];
+  hypertextLinks:any[]=[];
+  attachments:any[]=[];
+  status:any={};
+>>>>>>> 605f43484239defaf5fff3c796f8649e7272195c
   type = 'depot';
+  addProperty=false;
+  addDepot=false;
   page: any = 5;
   edit = false;
   depositStatusForm: FormGroup;
@@ -221,6 +247,12 @@ export class ItemDetailsComponent implements OnInit {
             imageName: el.imageName,
           });
         });
+        result.status.statusType==="PropertyStatus"? this.addProperty=true: this.addDepot=true;
+        this.status= result.status;
+        this.attachments= result.attachments;
+        this.hypertextLinks = result.hyperlinks;
+        this.parent= result.parent;
+        this.children= result.children;
         console.log(this.workArt);
       },
       (error) => {

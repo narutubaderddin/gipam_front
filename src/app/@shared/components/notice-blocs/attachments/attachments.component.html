@@ -22,7 +22,6 @@
                 <i class="fas fa-file-download" *ngIf="!itemDetails"></i>
                 <i class="fa fa-trash ml-2" (click)="deleteAttachment(item.id)" *ngIf="!itemDetails"></i>
 
-                <h4 class="card-header attachment-name" *ngIf="itemDetails">{{ item.attachment.name }}</h4>
                 <i class="fas fa-file-download" pTooltip="Télécharger" tooltipPosition="top" *ngIf="itemDetails"></i>
                 <i
                   class="far fa-trash-alt p-1"
@@ -44,7 +43,7 @@
                 <div class="form-group col-12 mb-0 p-0">
                   <label *ngIf="itemDetails" class="col-md-12">Type</label>
                   <p *ngIf="itemDetails && !filesProperties[getIndex(item)].edit" class="col-md-12">
-                    {{ item.attachmentType }}
+                    {{ item.attachmentType.type }}
                   </p>
 
                   <p-dropdown
@@ -65,7 +64,7 @@
                 >
                   <button (click)="cancelEditAttachment(item, getIndex(item))" class="mr-2 cancel-btn">Annuler</button>
                   <button
-                    (click)="editAttachmentForm(getIndex(item), item.attachment, item.attachmentType)"
+                    (click)="editAttachmentForm(getIndex(item), item.link, item.attachmentType)"
                     class="valid-btn"
                   >
                     Valider
