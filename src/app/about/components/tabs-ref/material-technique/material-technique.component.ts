@@ -106,9 +106,20 @@ export class MaterialTechniqueComponent implements OnInit {
 
   ngOnInit(): void {
     this.simpleTabsRef.tabRef = 'materialTechniques';
+    this.initFilterData();
     this.getAllItems();
-    // this.getAllFields();
     this.initForm();
+  }
+
+  initFilterData() {
+    const params = {
+      page: 1,
+      serializer_group: JSON.stringify(['short']),
+    };
+    this.simpleTabsRef.getAllItems(params, 'denominations').subscribe((result: any) => {
+      this.denominationsFilter = this.simpleTabsRef.getTabRefFilterData(result.results);
+      this.denominationsColumn.selectData = this.denominationsFilter;
+    });
   }
 
   initForm() {
