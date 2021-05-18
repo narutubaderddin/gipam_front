@@ -38,7 +38,7 @@
           <div class="form-group col-md-12">
             <label class="col-md-5">Photographie</label>
             <p *ngIf="!add && !addImage" class="col-7">{{ imageName }}</p>
-            <div class="input-group input-group-sm upload-file" *ngIf="add">
+            <div class="input-group input-group-sm upload-file" *ngIf="add||addImage">
               <div class="input-group input-group-sm h-auto">
                 <input
                   class="form-control"
@@ -58,7 +58,7 @@
             </div>
             <div class="form-group">
               <label class="col-md-5">Date</label>
-              <p *ngIf="!add && !addImage" class="col-7">{{ photographyDate }}</p>
+              <p *ngIf="!add && !addImage" class="col-7">{{ photographyDate|date: viewDateFormat }}</p>
               <p-calendar
                 class="col-md-12"
                 *ngIf="addImage || add"

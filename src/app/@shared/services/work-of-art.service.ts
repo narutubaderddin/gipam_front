@@ -727,4 +727,7 @@ export class WorkOfArtService {
       observe: 'response',
     });
   }
+  getWorkOfArtById(id: any): Observable<any> {
+     return this.http.get('/artWorks/'+ id);
+  }
 }

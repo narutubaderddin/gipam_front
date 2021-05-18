@@ -1,9 +1,9 @@
 <form [formGroup]="descriptifForm">
-  <div class="form-bloc">
+  <div class="form-bloc" *ngIf="attributeToShow">
     <div class="col-md-6">
       <div class="form-group flex-wrap flex-sm-nowrap">
         <label class="">Titre<span class="mandatory" *ngIf="edit">*</span></label>
-        <div class="value" *ngIf="!edit">{{ artwork.titre }}</div>
+        <div class="value" *ngIf="!edit">{{ artwork.title }}</div>
         <input type="text" class="form-control value col-12 col-sm-7" formControlName="title" *ngIf="edit" />
       </div>
       <div
@@ -20,7 +20,7 @@
     <div class="col-md-6">
       <div class="form-group flex-wrap flex-sm-nowrap">
         <label>Domaine<span class="mandatory" *ngIf="edit">*</span></label>
-        <div class="value" *ngIf="!edit">{{ artwork.domain }}</div>
+        <div class="value" *ngIf="!edit">{{ artwork.field.label }}</div>
         <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
           <p-dropdown
             class="col-md-12"
@@ -49,7 +49,7 @@
     <div class="col-md-6">
       <div class="form-group flex-wrap flex-sm-nowrap">
         <label class="-4">Dénomination<span class="mandatory" *ngIf="edit">*</span></label>
-        <div class="value" *ngIf="!edit">{{ artwork.denomination }}</div>
+        <div class="value" *ngIf="!edit">{{ artwork.denomination.label }}</div>
         <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
           <p-dropdown
             class="col-md-12"
@@ -80,7 +80,11 @@
     <div class="divider"></div>
     <div class="form-group col-md-12 flex-wrap flex-wrap" style="max-width: 98%">
       <label style="margin-right: -17%; width: 18%" class="col-sm-5">Auteurs</label>
-      <div class="value" *ngIf="!edit">{{ artwork.authors }}</div>
+      <div class="value" *ngIf="!edit">
+        <ng-container *ngFor="let author of artwork.authors; let i">
+        {{ author.firstName+' '+author.lastName}}<span *ngIf="i<(artwork.authors).length">, </span>
+      </ng-container>
+      </div>
       <p-multiSelect
         *ngIf="edit"
         class="select col-md-4 col-sm-7 p-sm-0 col-12"
@@ -99,11 +103,12 @@
       </div>
     </div>
     <div class="col-md-8"></div>
-    <div class="d-flex flex-wrap justify-content-between" *ngIf="selectedDomain || artwork.field">
+    <div class="d-flex flex-wrap justify-content-between" *ngIf="(selectedDomain || artwork.field) && attributeToShow">
       <div class="divider"></div>
       <div
         class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="!['Art textile'].includes(selectedDomain) || artwork.height"
+
+        *ngIf="attributeToShow.includes('height')"
       >
         <label class="">Hauteur</label>
         <div class="value" *ngIf="!edit">{{ artwork.height }}</div>
@@ -117,7 +122,7 @@
       </div>
       <div
         class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="!['Sculpture', 'Luminaire', 'Pièce de musée', 'Horlogerie', 'Objet décoratif'].includes(selectedDomain)"
+        *ngIf="attributeToShow.includes('width')"
       >
         <label class="">Largeur</label>
         <div class="value" *ngIf="!edit">{{ artwork.width }}</div>
@@ -131,7 +136,7 @@
       </div>
       <div
         class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="['Sculpture', 'Peinture', 'Art graphique'].includes(selectedDomain)"
+        *ngIf="attributeToShow.includes('totalWidth')"
       >
         <label class="">Largeur Tot </label>
         <div class="value" *ngIf="!edit">{{ artwork.totalWidth }}</div>
@@ -145,7 +150,7 @@
       </div>
       <div
         class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="['Peinture', 'Art graphique'].includes(selectedDomain)"
+        *ngIf="attributeToShow.includes('totalHeight')"
       >
         <label class="">Hauteur Tot</label>
         <div class="value" *ngIf="!edit">85cm</div>
@@ -157,7 +162,8 @@
           </select>
         </div>
       </div>
-      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="!['Art graphique'].includes(selectedDomain)">
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap"
+           *ngIf="attributeToShow.includes('length')">
         <label class="">Longueur</label>
         <div class="value" *ngIf="!edit">{{ artwork.width }}</div>
         <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
@@ -170,10 +176,10 @@
       </div>
       <div
         class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="['Sculpture', 'Mobilier Patrimonial', 'Objet décoratif'].includes(selectedDomain)"
+        *ngIf="attributeToShow.includes('depth')"
       >
         <label class="">Profondeur</label>
-        <div class="value" *ngIf="!edit">85cm</div>
+        <div class="value" *ngIf="!edit">{{artwork.depth}}</div>
         <div class="d-flex value" *ngIf="edit">
           <input class="col-md-8 form-control col-12 col-sm-7" type="number" formControlName="depth" />
           <select class="col-md-4 col-sm-4 form-control">
@@ -184,7 +190,7 @@
       </div>
       <div
         class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="['Peinture', 'Pièce de musée'].includes(selectedDomain)"
+        *ngIf="attributeToShow.includes('weight')"
       >
         <label class="col-md-3">Poids</label>
         <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
@@ -196,7 +202,7 @@
       </div>
       <div
         class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="['Luminaire', 'Pièce de musée', 'Decor mural'].includes(selectedDomain)"
+        *ngIf="attributeToShow.includes('diameter')"
       >
         <label class="">Diamètre</label>
         <div class="value" *ngIf="!edit">{{ artwork.Diameter }}</div>
@@ -210,7 +216,8 @@
       </div>
       <div class="col-md-4"></div>
       <div class="divider"></div>
-      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap"
+           *ngIf="attributeToShow.includes('era')">
         <label class="">Epoque</label>
         <div class="value" *ngIf="!edit">{{ artwork.era }}</div>
         <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
@@ -225,7 +232,7 @@
           ></p-dropdown>
         </div>
       </div>
-      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('style')">
         <label class="">Style</label>
         <div class="value" *ngIf="!edit">{{ artwork.style }}</div>
         <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
@@ -255,7 +262,7 @@
         </div>
       </div>
       <div class="col-md-6">
-        <div class="form-group flex-wrap flex-sm-nowrap">
+        <div class="form-group flex-wrap flex-sm-nowrap"  *ngIf="attributeToShow.includes('materialTechnique')">
           <label class="">Matières <span class="mandatory" *ngIf="edit">*</span></label>
           <div class="value" *ngIf="!edit">{{ artwork.materialTechnique }}</div>
           <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
@@ -283,7 +290,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6" *ngIf="['Art de la table', 'Objet décoratif'].includes(selectedDomain)">
+      <div class="col-md-6" *ngIf="attributeToShow.includes('numberOfUnit')">
         <div class="form-group flex-wrap flex-sm-nowrap">
           <label class="">Nombre unité<span class="mandatory" *ngIf="edit">*</span></label>
           <div class="value" *ngIf="!edit">{{ artwork.nbrunite }}</div>

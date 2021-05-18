@@ -4,11 +4,17 @@ import { NotificationsService } from 'angular2-notifications';
 import { SharedService } from '@shared/services/shared.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PdfGeneratorService } from '@shared/services/pdf-generator.service';
+import {ActivatedRoute} from '@angular/router';
+import {WorkOfArtService} from '@shared/services/work-of-art.service';
+import {MessageService} from 'primeng/api';
+import {dateTimeFormat} from '@shared/utils/helpers';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-item-details',
   templateUrl: './item-details.component.html',
   styleUrls: ['./item-details.component.scss'],
+  providers: [DatePipe],
 })
 export class ItemDetailsComponent implements OnInit {
   @ViewChildren('accordionSectionDOM', { read: ElementRef }) accordionsDOM: QueryList<ElementRef>;
@@ -16,51 +22,7 @@ export class ItemDetailsComponent implements OnInit {
   @ViewChild('stickyMenu') menuElement: ElementRef;
 
   elementPosition: any = 2;
-
-  type: string = 'depot';
-  page: any = 5;
-  edit = false;
-  depositStatusForm: FormGroup;
-  descriptifForm: FormGroup;
-  attachmentForm: FormGroup;
-  propertyStatusForm: FormGroup;
-  linksForm: FormGroup;
-  linkArtWorkForm: FormGroup;
-  photographies: any[] = [
-    // get images of item
-    {
-      imageUrl: 'assets/images/573.jpg',
-      alt: 'description',
-      i: 0,
-      image: 'palette 1.jpg',
-      photography: 'assets/images/573.jpg',
-      photographyDate: '12/2/2020',
-      photographyName: 'profil.jpg',
-      photographyType: { name: 'Etat' },
-      imageName: 'imageName',
-    },
-    {
-      imageUrl: 'assets/images/365.jpg',
-      alt: 'description',
-      i: 1,
-      image: 'palette 2.jpg',
-      photography: 'assets/images/365.jpg',
-      photographyDate: '12/2/2020',
-      photographyName: 'profil.jpg',
-      photographyType: { name: 'Identification' },
-      imageName: 'imageName12',
-    },
-  ];
-  imgSrc: string = this.photographies[0] ? this.photographies[0].imageUrl : '';
-  moreDetails = ['19-01-2020', '23-02-2020', '01-03-2020', '25-03-2020', '20-04-2020'];
-
-  dynamic: boolean = false;
-  openImg: boolean = false;
-  sticky: boolean = false;
-
-  photographiesForm: FormGroup;
-
-  artwork = {
+  workArt:{
     id: 145,
     titre: 'Titre',
     domain: 'Art graphique',
@@ -75,6 +37,49 @@ export class ItemDetailsComponent implements OnInit {
     status: '',
     denomination: 'Affiche',
     createdAt: '22/01/2020',
+  }
+  parent:any='';
+  children:any=[];
+  hypertextLinks:any[]=[];
+  attachments:any[]=[];
+  status:any={};
+  type = 'depot';
+  addProperty=false;
+  addDepot=false;
+  page: any = 5;
+  edit = false;
+  depositStatusForm: FormGroup;
+  descriptifForm: FormGroup;
+  attachmentForm: FormGroup;
+  propertyStatusForm: FormGroup;
+  linksForm: FormGroup;
+  linkArtWorkForm: FormGroup;
+  photographies: any[] = [];
+  imgSrc: string = this.photographies[0] ? this.photographies[0].imageUrl : '';
+  moreDetails = ['19-01-2020', '23-02-2020', '01-03-2020', '25-03-2020', '20-04-2020'];
+
+  dynamic = false;
+  openImg = false;
+  sticky = false;
+
+  photographiesForm: FormGroup;
+
+  artwork =
+  {
+    id: 145,
+    titre: 'Titre',
+    domain: 'Art graphique',
+    field: 'Art graphique',
+    height: '85',
+    width: '85',
+    authors: 'Auteur 1, Auteur 11',
+    totalWidth:'',
+    totalHeight:'',
+    era:'',
+    materialTechnique:'',
+    status:'',
+    denomination:'Affiche',
+    createdAt:'22/01/2020'
   };
   artWorksToPrint: any = [];
 
@@ -83,7 +88,11 @@ export class ItemDetailsComponent implements OnInit {
     private notificationsService: NotificationsService,
     private sharedService: SharedService,
     private fb: FormBuilder,
-    private pdfGeneratorService: PdfGeneratorService
+    private pdfGeneratorService: PdfGeneratorService,
+    private route: ActivatedRoute,
+    private workOfArtService: WorkOfArtService,
+    private messageService: MessageService,
+    private datePipe: DatePipe
   ) {
     config.interval = 10000;
     config.wrap = false;
@@ -91,6 +100,7 @@ export class ItemDetailsComponent implements OnInit {
     config.pauseOnHover = false;
   }
   ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
     this.initDescriptifForm();
     this.initDepositStatusForm();
     this.initPhotographiesForm();
@@ -99,6 +109,7 @@ export class ItemDetailsComponent implements OnInit {
     this.initDepositStatusForm();
     this.initHyperLink();
     this.initLinks();
+    this.getArtWork(id);
   }
 
   initPhotographiesForm() {
@@ -177,7 +188,6 @@ export class ItemDetailsComponent implements OnInit {
   }
   f1(e: any) {
     this.dynamic = e;
-    console.log(this.dynamic);
   }
 
   onEditMode() {
@@ -190,12 +200,10 @@ export class ItemDetailsComponent implements OnInit {
 
   showImg() {
     this.openImg = !this.openImg;
-    // console.log(this.openImg);
   }
 
   src(event: any) {
     this.imgSrc = event;
-    console.log(event);
   }
 
   downloadPDF() {
@@ -203,4 +211,40 @@ export class ItemDetailsComponent implements OnInit {
     const element = document.getElementById('appItemDetailsPdf');
     this.pdfGeneratorService.downloadPDFFromHTML(element, this.artwork.titre + '.pdf');
   }
+  getArtWork(id:any){
+    console.log('id', id)
+    this.workOfArtService.getWorkOfArtById(id).subscribe(
+      result=>{
+        this.workArt= result;
+        result.photographies.map((el:any, index:number)=>{
+          this.photographies.push({
+            imageUrl: el.imagePreview,
+            alt: 'description',
+            i: index,
+            image: el.imageName,
+            // photography: 'assets/images/573.jpg',
+            photographyDate: this.datePipe.transform(el.date, dateTimeFormat),
+            photographyName: el.imageName,
+            photographyType: { name: el.photographyType.type },
+            imageName: el.imageName,
+          })
+        });
+        result.status.statusType==="PropertyStatus"? this.addProperty=true: this.addDepot=true;
+        this.status= result.status;
+        this.attachments= result.attachments;
+        this.hypertextLinks = result.hyperlinks;
+        this.parent= result.parent;
+        this.children= result.children;
+        console.log(this.workArt);
+      },
+      error => {
+        console.log(error);
+        this.addSingle('error', 'Erreur Technique', error.error.message);
+      }
+    )
+  }
+  addSingle(type: string, sum: string, msg: string) {
+    this.messageService.add({ severity: type, summary: sum, detail: msg });
+  }
+
 }
