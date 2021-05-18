@@ -38,7 +38,14 @@ export class ItemDetailsComponent implements OnInit {
     denomination: 'Affiche',
     createdAt: '22/01/2020',
   }
+  parent:any='';
+  children:any=[];
+  hypertextLinks:any[]=[];
+  attachments:any[]=[];
+  status:any={};
   type = 'depot';
+  addProperty=false;
+  addDepot=false;
   page: any = 5;
   edit = false;
   depositStatusForm: FormGroup;
@@ -222,6 +229,12 @@ export class ItemDetailsComponent implements OnInit {
             imageName: el.imageName,
           })
         });
+        result.status.statusType==="PropertyStatus"? this.addProperty=true: this.addDepot=true;
+        this.status= result.status;
+        this.attachments= result.attachments;
+        this.hypertextLinks = result.hyperlinks;
+        this.parent= result.parent;
+        this.children= result.children;
         console.log(this.workArt);
       },
       error => {

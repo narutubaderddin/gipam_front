@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
-
+import { viewDateFormat } from '@shared/utils/helpers';
 @Component({
   selector: 'app-status',
   templateUrl: './status.component.html',
@@ -15,10 +15,12 @@ export class StatusComponent implements OnInit {
   @Input() addDeposit = false;
   @Input() propertyStatusForm: FormGroup;
   @Input() depositStatusForm: FormGroup;
+  @Input() statusData: any={};
   isCollapsed = false;
   categories: any[] = [];
   entryModes: any[] = [];
   params: { limit: number; page: number };
+  viewDateFormat = viewDateFormat;
   constructor(private simpleTabsRef: SimpleTabsRefService) {}
 
   ngOnInit(): void {
