@@ -20,6 +20,7 @@ export class NoticeListComponent implements OnInit {
   page = 1;
   end: number;
   start: number;
+  loading = false;
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -30,15 +31,13 @@ export class NoticeListComponent implements OnInit {
   ngOnInit(): void {
     this.filter = this.activatedRoute.snapshot.queryParams['filter'].length > 0;
     this.initData();
-
   }
   initData() {
     let params = {
-      page : this.page,
-      limit : this.limit
+      page: this.page,
+      limit: this.limit,
     };
     this.workOfArtService.getInProgressNotices(params).subscribe((res) => {
-      console.log(res);
       this.remarquers = res.result;
       this.total = res.totalQuantity;
       this.totalFiltred = this.total;
@@ -46,7 +45,6 @@ export class NoticeListComponent implements OnInit {
       this.end = (this.page - 1) * this.limit + this.remarquers.length;
     });
     this.initColumnsDef();
-
   }
   initColumnsDef() {
     this.columns = [
@@ -131,7 +129,7 @@ export class NoticeListComponent implements OnInit {
       },
       {
         header: 'Type de Statut',
-        field: 'property',
+        field: 'status',
         cellRenderer: 'statusTypeRender',
         width: '200px',
         sortable: false,

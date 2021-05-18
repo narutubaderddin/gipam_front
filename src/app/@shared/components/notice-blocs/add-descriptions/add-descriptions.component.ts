@@ -49,6 +49,9 @@ export class AddDescriptionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.initFilterData();
+    // if (this.denomination && this.field) {
+    //   this.getAttributes();
+    // }
   }
   get f() {
     return this.descriptifForm.controls;

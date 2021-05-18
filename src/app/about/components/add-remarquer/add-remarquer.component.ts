@@ -1,10 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { NgWizardConfig, NgWizardService, StepChangedArgs, StepValidationArgs, THEME } from 'ng-wizard';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 
 @Component({
@@ -52,7 +52,9 @@ export class AddRemarquerComponent implements OnInit {
   isDirty = false;
   value: boolean;
   url: string;
-
+  inProgressNotice: any;
+  id: string;
+  routeSubscription: Subscription;
   constructor(
     public workOfArtService: WorkOfArtService,
     private ngWizardService: NgWizardService,
@@ -62,6 +64,12 @@ export class AddRemarquerComponent implements OnInit {
     private router: Router,
     private messageService: MessageService
   ) {
+    // this.routeSubscription = this.route.paramMap.subscribe((params: ParamMap) => {
+    //   const artWorkData = this.route.snapshot.data.addRemarquer;
+    //   if (artWorkData) {
+    //     this.inProgressNotice = artWorkData;
+    //   }
+    // });
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     const type = this.route.snapshot.paramMap.get('type');
     if (type === 'propriété') {
@@ -81,7 +89,7 @@ export class AddRemarquerComponent implements OnInit {
   }
 
   canDeactivate(): boolean | Observable<boolean> {
-    this.submit();
+    // this.submit();
     return true;
   }
   initForms() {
@@ -225,14 +233,15 @@ export class AddRemarquerComponent implements OnInit {
     this.descriptifForm.get('hyperlinks').setValue(this.linksForm.value.hyperlinks);
     this.descriptifForm.get('parent').setValue(this.linkArtWorkForm.value.parent);
     this.descriptifForm.get('attachments').setValue(this.attachmentForm.value.attachments);
-    this.propertyStatusForm.get('marking').setValue(this.descriptifForm.get('marking').value);
-    this.propertyStatusForm
-      .get('registrationSignature')
-      .setValue(this.descriptifForm.get('registrationSignature').value);
-    this.propertyStatusForm.get('descriptiveWords').setValue(this.descriptifForm.get('descriptiveWords').value);
-    this.propertyStatusForm.get('description').setValue(this.descriptifForm.get('description').value);
+
     this.formatData();
     if (this.addProperty) {
+      this.propertyStatusForm.get('marking').setValue(this.descriptifForm.get('marking').value);
+      this.propertyStatusForm
+        .get('registrationSignature')
+        .setValue(this.descriptifForm.get('registrationSignature').value);
+      this.propertyStatusForm.get('descriptiveWords').setValue(this.descriptifForm.get('descriptiveWords').value);
+      this.propertyStatusForm.get('description').setValue(this.descriptifForm.get('description').value);
       this.workOfArtService.addWorkOfArt(this.descriptifForm.value).subscribe(
         (result) => {
           this.addSingle('success', 'Ajout', result.msg);

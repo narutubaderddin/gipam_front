@@ -667,7 +667,7 @@ export class WorkOfArtService {
     const headers = new HttpHeaders({
       'Content-Type': 'multipart/form-data;boundary=' + Math.random(),
     });
-    return this.http.post('/notices/property', data, { headers: headers });
+    return this.http.post('/notices/property', data);
   }
   addDepositWorkOfArt(data: any): Observable<any> {
     return this.http.post('/notices/deposit', data);
