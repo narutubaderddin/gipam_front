@@ -123,6 +123,7 @@ export class DomainsComponent implements OnInit {
     modalRef.result.then(
       (result) => {
         if (result === 'delete') {
+          this.loading = true;
           return this.deleteItemss(this.itemToDelete);
         }
         if (this.addItem) {
@@ -198,9 +199,10 @@ export class DomainsComponent implements OnInit {
   }
 
   visibleItem(data: any) {
+    this.loading = true;
     data.active = !data.active;
 
-    this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
+    this.simpleTabsRef.editItem({ active: data.active }, data.id).subscribe(
       (result) => {
         if (data.active) {
           this.addSingle('success', 'Activation', 'Domaine ' + data.label + ' activée avec succés');
@@ -209,8 +211,8 @@ export class DomainsComponent implements OnInit {
         }
         this.getAllItems();
       },
-
       (error) => {
+        this.loading = null;
         this.addSingle('error', 'Modification', error.error.message);
       }
     );
@@ -263,12 +265,17 @@ export class DomainsComponent implements OnInit {
     this.btnLoading = '';
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
-        this.close();
         this.addSingle('success', 'Ajout', 'Domaine ' + item.label + ' ajoutée avec succés');
         this.getAllItems();
+        this.close();
       },
       (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Ajout', 'Erreur de validation.');
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        }
+        this.btnLoading = null;
+        this.close();
       }
     );
   }
@@ -300,20 +307,26 @@ export class DomainsComponent implements OnInit {
         this.addSingle('success', 'Modification', 'Domaine ' + item.label + ' modifiée avec succés');
         this.getAllItems();
       },
-
       (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Modification', error.error.message);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        }
+        this.btnLoading = null;
+        this.close();
       }
     );
   }
 
   deleteItemss(item: any) {
+    this.loading = true;
     this.btnLoading = '';
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
         this.close();
         this.addSingle('success', 'Suppression', 'Domaine ' + item.label + ' supprimée avec succés');
         this.getAllItems();
+        this.loading = null;
       },
       (error: any) => {
         this.close();
@@ -322,6 +335,7 @@ export class DomainsComponent implements OnInit {
         } else {
           this.addSingle('error', 'Suppression', error.error.message);
         }
+        this.loading = null;
       }
     );
   }

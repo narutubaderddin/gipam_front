@@ -91,14 +91,14 @@ export class SimpleTabsRefService {
     return items;
   }
 
-  getFormErrors(errors: any, sum: string) {
+  getFormErrors(errors: any, title: string) {
     if (!errors) {
       return;
     }
     Object.keys(errors).forEach((key) => {
       if (Array.isArray(errors[key])) {
         errors[key].forEach((error: any) => {
-          this.messageService.add({ severity: 'error', summary: sum, detail: error });
+          this.messageService.add({ severity: 'error', summary: title, detail: error });
         });
       }
     });
