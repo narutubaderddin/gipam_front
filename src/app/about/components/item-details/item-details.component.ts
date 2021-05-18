@@ -22,24 +22,6 @@ export class ItemDetailsComponent implements OnInit {
   @ViewChild('stickyMenu') menuElement: ElementRef;
 
   elementPosition: any = 2;
-<<<<<<< HEAD
-  workArt: {
-    id: 145;
-    titre: 'Titre';
-    domain: 'Art graphique';
-    field: 'Art graphique';
-    height: '85';
-    width: '85';
-    authors: 'Auteur 1, Auteur 11';
-    totalWidth: '';
-    totalHeight: '';
-    era: '';
-    materialTechnique: '';
-    status: '';
-    denomination: 'Affiche';
-    createdAt: '22/01/2020';
-  };
-=======
   workArt:{
     id: 145,
     titre: 'Titre',
@@ -61,7 +43,6 @@ export class ItemDetailsComponent implements OnInit {
   hypertextLinks:any[]=[];
   attachments:any[]=[];
   status:any={};
->>>>>>> 605f43484239defaf5fff3c796f8649e7272195c
   type = 'depot';
   addProperty=false;
   addDepot=false;
