@@ -1,5 +1,5 @@
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FieldsService } from '@shared/services/fields.service';
@@ -52,7 +52,7 @@ export class DescritifComponent implements OnInit, OnChanges {
     private workOfArtService: WorkOfArtService
   ) {}
   get item() {
-    console.log(this.artwork)
+    console.log(this.artwork);
     return this.artwork;
   }
   get field() {
@@ -63,15 +63,15 @@ export class DescritifComponent implements OnInit, OnChanges {
   }
 
   getAttributes() {
-    let field=this.artwork.field.id;
-    let denomination=this.artwork.denomination.id;
-    if(this.edit){
-       field=this.field;
-       denomination=this.denomination;
+    let field = this.artwork.field.id;
+    let denomination = this.artwork.denomination.id;
+    if (this.edit) {
+      field = this.field;
+      denomination = this.denomination;
     }
     this.workOfArtService.getAttributes(field, denomination).subscribe((result) => {
       this.attributeToShow = result;
-      console.log('attributeToShow',result);
+      console.log('attributeToShow', result);
     });
   }
   ngOnInit(): void {
@@ -80,8 +80,8 @@ export class DescritifComponent implements OnInit, OnChanges {
     this.initData();
   }
   ngOnChanges() {
-    if(this.artwork){
-      console.log('artwork',this.artwork);
+    if (this.artwork) {
+      console.log('artwork', this.artwork);
     }
   }
 

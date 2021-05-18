@@ -4,11 +4,11 @@ import { NotificationsService } from 'angular2-notifications';
 import { SharedService } from '@shared/services/shared.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PdfGeneratorService } from '@shared/services/pdf-generator.service';
-import {ActivatedRoute} from '@angular/router';
-import {WorkOfArtService} from '@shared/services/work-of-art.service';
-import {MessageService} from 'primeng/api';
-import {dateTimeFormat} from '@shared/utils/helpers';
-import {DatePipe} from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { WorkOfArtService } from '@shared/services/work-of-art.service';
+import { MessageService } from 'primeng/api';
+import { dateTimeFormat } from '@shared/utils/helpers';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-item-details',
@@ -64,8 +64,7 @@ export class ItemDetailsComponent implements OnInit {
 
   photographiesForm: FormGroup;
 
-  artwork =
-  {
+  artwork = {
     id: 145,
     titre: 'Titre',
     domain: 'Art graphique',
@@ -73,13 +72,13 @@ export class ItemDetailsComponent implements OnInit {
     height: '85',
     width: '85',
     authors: 'Auteur 1, Auteur 11',
-    totalWidth:'',
-    totalHeight:'',
-    era:'',
-    materialTechnique:'',
-    status:'',
-    denomination:'Affiche',
-    createdAt:'22/01/2020'
+    totalWidth: '',
+    totalHeight: '',
+    era: '',
+    materialTechnique: '',
+    status: '',
+    denomination: 'Affiche',
+    createdAt: '22/01/2020',
   };
   artWorksToPrint: any = [];
 
@@ -211,12 +210,12 @@ export class ItemDetailsComponent implements OnInit {
     const element = document.getElementById('appItemDetailsPdf');
     this.pdfGeneratorService.downloadPDFFromHTML(element, this.artwork.titre + '.pdf');
   }
-  getArtWork(id:any){
-    console.log('id', id)
+  getArtWork(id: any) {
+    console.log('id', id);
     this.workOfArtService.getWorkOfArtById(id).subscribe(
-      result=>{
-        this.workArt= result;
-        result.photographies.map((el:any, index:number)=>{
+      (result) => {
+        this.workArt = result;
+        result.photographies.map((el: any, index: number) => {
           this.photographies.push({
             imageUrl: el.imagePreview,
             alt: 'description',
@@ -227,7 +226,7 @@ export class ItemDetailsComponent implements OnInit {
             photographyName: el.imageName,
             photographyType: { name: el.photographyType.type },
             imageName: el.imageName,
-          })
+          });
         });
         result.status.statusType==="PropertyStatus"? this.addProperty=true: this.addDepot=true;
         this.status= result.status;
@@ -237,14 +236,13 @@ export class ItemDetailsComponent implements OnInit {
         this.children= result.children;
         console.log(this.workArt);
       },
-      error => {
+      (error) => {
         console.log(error);
         this.addSingle('error', 'Erreur Technique', error.error.message);
       }
-    )
+    );
   }
   addSingle(type: string, sum: string, msg: string) {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
   }
-
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { WorkOfArtService } from '@shared/services/work-of-art.service';
 @Component({
   selector: 'app-administrator-home-page',
   templateUrl: './administrator-home-page.component.html',
@@ -38,10 +39,22 @@ export class AdministratorHomePageComponent implements OnInit {
       alt: 'Image alt', //Optional: You can use this key if want to show image with alt
     },
   ];
+  remarquers: any[] = [];
 
-  constructor(private router: Router) {}
-  ngOnInit(): void {}
+  constructor(private router: Router, private workOfArtService: WorkOfArtService) {}
+  ngOnInit(): void {
+    this.initData();
+  }
 
+  initData() {
+    let params = {
+      page: 1,
+      limit: 2,
+    };
+    this.workOfArtService.getInProgressNotices(params).subscribe((res) => {
+      this.remarquers = res.result;
+    });
+  }
   onNoticeClick() {
     this.router.navigate(['notices-list'], { queryParams: { filter: 'en-cours' } });
   }

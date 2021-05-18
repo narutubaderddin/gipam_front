@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TreeviewItem } from 'ngx-treeview';
-import { HttpClient, HttpParameterCodec, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParameterCodec, HttpParams } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class WorkOfArtService {
-  private _selectedArtWorks: any[] = [];
+  _selectedArtWorks: any[] = [];
   statusType = [
     {
       id: 'depot',
@@ -587,47 +587,7 @@ export class WorkOfArtService {
       ],
     },
   ];
-  getDomains(): TreeviewItem[] {
-    return [
-      new TreeviewItem({
-        text: 'Art textile',
-        value: 'Art textile',
-        collapsed: true,
-        children: [
-          { text: 'Tapis', value: 'Tapis', checked: false },
-          { text: 'Tapisserie', value: 'Tapisserie', checked: false },
-          { text: 'Rideaux', value: 'Rideaux', checked: false },
-        ],
-        checked: false,
-      }),
-      new TreeviewItem({ text: 'Art graphique', value: 'Art graphique', checked: false }),
-      new TreeviewItem({
-        text: 'Horlogerie',
-        collapsed: true,
-        value: 'Horlogerie',
-        children: [
-          { text: 'Horloge', value: 'Horlogerie', checked: false },
-          { text: 'Pendule', value: 'Pendule', checked: false },
-          { text: 'Régulateur', value: 'Régulateur', checked: false },
-        ],
-        checked: false,
-      }),
-      new TreeviewItem({
-        text: 'Mobilier',
-        value: 'Mobilier',
-        collapsed: true,
-        children: [
-          { text: 'denom 1', value: 'denom 1', checked: false },
-          { text: 'denom 2', value: 'denom 2', checked: false },
-        ],
-        checked: false,
-      }),
-      new TreeviewItem({ text: 'Luminaire', value: 'Luminaire', checked: false }),
-      new TreeviewItem({ text: 'Object décoratif', value: 'Object décoratif', checked: false }),
-      new TreeviewItem({ text: 'Decor monumental', value: 'Decor monumental', checked: false }),
-      new TreeviewItem({ text: 'Art de la table', value: 'Art de la table', checked: false }),
-    ];
-  }
+
   constructor(private http: HttpClient) {}
   getOeuvres(filterObj: any): Observable<any> {
     let filter: string = `limit=40&page=${filterObj.page}`;
@@ -636,7 +596,7 @@ export class WorkOfArtService {
     return this.http.get('/artWorks/search?' + filter);
   }
 
-  private extractedQuery(filterObj: any, filter: string) {
+  extractedQuery(filterObj: any, filter: string) {
     if (filterObj.search) {
       filter += '&searchArt[eq]=' + filterObj.search;
     }
@@ -704,6 +664,9 @@ export class WorkOfArtService {
     localStorage.removeItem('selectedArtWorks');
   }
   addWorkOfArt(data: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'multipart/form-data;boundary=' + Math.random(),
+    });
     return this.http.post('/notices/property', data);
   }
   addDepositWorkOfArt(data: any): Observable<any> {
@@ -717,17 +680,28 @@ export class WorkOfArtService {
 
     return this.http.get('/notices/attributes', { params });
   }
+
+  getInProgressNotices(data: any): Observable<any> {
+    let params = new HttpParams();
+    Object.keys(data).forEach((key) => {
+      if (data[key]) {
+        params = params.append(key, data[key]);
+      }
+    });
+    return this.http.get('/notices/get-art-works-in-progress', { params });
+  }
+
   exportArtWorks(filterObj: any): Observable<any> {
-    let filter : string = "";
-    filter+="?limit="+filterObj.limit
+    let filter: string = '';
+    filter += '?limit=' + filterObj.limit;
     filter = this.extractedQuery(filterObj, filter);
     filter += '&sort_by=field';
-    return this.http.get('/artWorks/exportListArtWorks'+filter, {
+    return this.http.get('/artWorks/exportListArtWorks' + filter, {
       responseType: 'blob',
       observe: 'response',
     });
   }
   getWorkOfArtById(id: any): Observable<any> {
-     return this.http.get('/artWorks/'+ id);
+    return this.http.get('/artWorks/' + id);
   }
 }

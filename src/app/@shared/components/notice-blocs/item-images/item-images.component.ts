@@ -41,7 +41,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   }
   constructor(private modalService: NgbModal, public fb: FormBuilder, private simpleTabsRef: SimpleTabsRefService) {}
   ngOnInit(): void {
-
     this.getAllTypes();
     this.images.map((el: any) =>
       this.photographies.push(
@@ -77,8 +76,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.types = result.results;
-
-        },
+      },
       (error: any) => {}
     );
   }
@@ -145,7 +143,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
           )
         );
 
-        if(this.addImage){
+        if (this.addImage) {
           this.addItem();
         }
       } else {
@@ -167,18 +165,19 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   buildFormData(file: File): FormData {
     const formData = new FormData();
     formData.append('imagePreview', file, file.name);
-
     return formData;
   }
-  handleFileInput(file: FileList) {
-    this.fileToUpload = file.item(0);
-    let reader = new FileReader();
-    reader.onload = (event: any) => {
+  handleFileInput(e: any) {
+    const file = e.target.files.item(0);
+    this.fileToUpload = file;
+
+    const fReader = new FileReader();
+    fReader.readAsDataURL(file);
+    fReader.onload = (event: any) => {
       this.photography = event.target.result;
     };
-    reader.readAsDataURL(this.fileToUpload);
-    reader.onloadend = (_event: any) => {
-      this.imageName = this.fileToUpload.name;
+    fReader.onloadend = (_event: any) => {
+      this.imageName = file.name;
     };
   }
   addImg() {
@@ -238,6 +237,5 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   cancelDelete() {
     this.deleteDialog = false;
   }
-  addItem(){
-  }
+  addItem() {}
 }
