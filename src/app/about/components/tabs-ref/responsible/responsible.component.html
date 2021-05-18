@@ -59,8 +59,6 @@
               (sort)="sortEvent($event)"
               [component]="'tabRefStyle'"
               [columns]="columns"
-              [frozenCols]="[]"
-              [frozenWidth]="'0px'"
               [checkBoxSelection]="false"
               [data]="items"
               [totalFiltred]="totalFiltred"
@@ -69,6 +67,7 @@
               [limit]="limit"
               [end]="end"
               [start]="start"
+              [columnResizeMode]="'expand'"
             >
             </app-ng-data-table>
           </div>
@@ -154,6 +153,7 @@
         <div class="select col-sm-7 p-0">
           <p-dropdown
             formControlName="region"
+            [showClear]="true"
             [options]="relatedEntities.regions"
             optionLabel="name"
             [placeholder]="'Sélectionner une région'"
@@ -177,6 +177,7 @@
             optionLabel="name"
             display="chip"
             placeholder="Sélectionner des départements"
+            emptyFilterMessage="Aucun résultat trouvé"
             [class.ng-invalid]="tabForm.errors && tabForm.errors.oneOfTheseFields"
           >
           </p-multiSelect>
@@ -190,8 +191,9 @@
             field="name"
             emptyMessage="Aucun résultat trouvé"
             placeholder="Filtrer bâtiments par commune"
-            (completeMethod)="autoComplete($event, 'commune', 'name', 'department', tabForm.get('departments').value)"
+            (completeMethod)="autoCompleteCommune($event, 'commune', 'name')"
             (onSelect)="getDropdownData('building', 'commune', selectedRelated.commune)"
+            (change)="selectedRelated.commune ? resetRelatedEntities('buildings') : ''"
             [suggestions]="relatedEntities.communes"
             [(ngModel)]="selectedRelated.commune"
             [ngModelOptions]="{ standalone: true }"
@@ -224,6 +226,7 @@
             optionLabel="name"
             display="chip"
             placeholder="Sélectionner des bâtiments"
+            emptyFilterMessage="Aucun résultat trouvé"
             aria-describedby="buildingHelp"
             [class.ng-invalid]="tabForm.errors && tabForm.errors.oneOfTheseFields"
           >

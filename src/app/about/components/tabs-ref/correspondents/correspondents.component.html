@@ -69,6 +69,7 @@
               [limit]="limit"
               [end]="end"
               [start]="start"
+              [columnResizeMode]="'expand'"
             >
             </app-ng-data-table>
           </div>
@@ -78,19 +79,18 @@
   </div>
 </div>
 <ng-template #content let-modal>
-  <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
-    <div class="modal-header">
-      <h4 class="modal-title" *ngIf="editItem">Modification de correspondant "{{ itemLabel }}"</h4>
-      <h4 class="modal-title" *ngIf="addItem">Ajout de correspondant</h4>
-      <h4 class="modal-title" *ngIf="deleteItems">Suppression de correspondant "{{ itemLabel }}"</h4>
-      <h4 class="modal-title" *ngIf="editVisibility">Activation / désactivation de correspondant " {{ itemLabel }}"</h4>
-      <button type="button" class="close" aria-label="Close" (click)="close()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer le correspondant "{{ itemLabel }}" ?</div>
-
+  <div class="modal-header">
+    <h4 class="modal-title" *ngIf="editItem">Modification de correspondant "{{ itemLabel }}"</h4>
+    <h4 class="modal-title" *ngIf="addItem">Ajout de correspondant</h4>
+    <h4 class="modal-title" *ngIf="deleteItems">Suppression de correspondant "{{ itemLabel }}"</h4>
+    <h4 class="modal-title" *ngIf="editVisibility">Activation / désactivation de correspondant " {{ itemLabel }}"</h4>
+    <button type="button" class="close" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer le correspondant "{{ itemLabel }}" ?</div>
+    <form [formGroup]="tabForm">
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-5">Nom<span class="mandatory"> *</span></label>
         <input
@@ -110,7 +110,7 @@
         />
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Fonction</label>
+        <label class="col-sm-5">Fonction<span class="mandatory"> *</span></label>
         <input
           type="text"
           class="form-control col-sm-7"
@@ -119,7 +119,7 @@
         />
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Téléphone</label>
+        <label class="col-sm-5">Téléphone<span class="mandatory"> *</span></label>
         <input
           type="number"
           min="0"
@@ -129,7 +129,7 @@
         />
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Fax</label>
+        <label class="col-sm-5">Fax<span class="mandatory"> *</span></label>
         <input
           type="number"
           min="0"
@@ -139,7 +139,7 @@
         />
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">E-mail</label>
+        <label class="col-sm-5">E-mail<span class="mandatory"> *</span></label>
         <input
           type="text"
           class="form-control col-sm-7"
@@ -157,60 +157,60 @@
         />
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Etablissement</label>
+        <label class="col-sm-5">Etablissement<span class="mandatory"> *</span></label>
         <div class="autocomplete form-control value col-12 col-sm-7">
           <p-dropdown
             class="col-md-7 p-0"
-            [style]="{ minWidth: '100%' }"
-            [options]="activeEstablishments"
+            [options]="relatedEntities.establishments"
             formControlName="establishment"
             placeholder="Choisir un établissement"
-            optionLabel="name"
-            [showClear]="false"
+            emptyFilterMessage="Aucun résultat trouvé"
+            optionLabel="label"
+            [showClear]="true"
             (onChange)="onEstablishmentSelect($event)"
-            [placeholder]="selectedEstablishment && editItem ? selectedEstablishment : 'Sélectionner un établissement'"
+            [placeholder]="'Sélectionner un établissement'"
             [filter]="true"
           ></p-dropdown>
         </div>
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Sous direction</label>
+        <label class="col-sm-5">Sous-Direction</label>
         <div class="autocomplete form-control value col-12 col-sm-7">
-          <p-dropdown
+          <p-multiSelect
             class="col-md-7 p-0"
-            [style]="{ minWidth: '100%' }"
-            [options]="activeSubDivisions"
-            optionLabel="name"
-            formControlName="subDivision"
-            placeholder="Choisir une sous direction"
-            [showClear]="false"
+            [options]="relatedEntities.subDivisions"
+            optionLabel="label"
+            formControlName="subDivisions"
+            placeholder="Choisir une Sous-Direction"
+            emptyFilterMessage="Aucun résultat trouvé"
             (onChange)="onSubDivisionSelect($event)"
-            [placeholder]="selectedSubDivision && editItem ? selectedSubDivision : 'Sélectionner une sous direction'"
+            [placeholder]="'Sélectionner une sous-direction'"
             [filter]="true"
-          ></p-dropdown>
+            [class.ng-invalid]="tabForm.errors && tabForm.errors.oneOfTheseFields"
+          ></p-multiSelect>
         </div>
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-5">Service</label>
         <div class="autocomplete form-control value col-12 col-sm-7">
-          <p-dropdown
+          <p-multiSelect
             class="col-md-7 p-0"
-            [style]="{ minWidth: '100%' }"
-            [options]="activeServices"
-            optionLabel="name"
-            formControlName="service"
+            [options]="relatedEntities.services"
+            optionLabel="label"
+            formControlName="services"
             placeholder="Choisir un service"
-            [showClear]="false"
+            emptyFilterMessage="Aucun résultat trouvé"
             (onChange)="onServiceSelect($event)"
-            [placeholder]="selectedService && editItem ? selectedService : 'Sélectionner un service'"
+            [placeholder]="'Sélectionner un service'"
             [filter]="true"
-          ></p-dropdown>
+            [class.ng-invalid]="tabForm.errors && tabForm.errors.oneOfTheseFields"
+          ></p-multiSelect>
         </div>
       </div>
 
       <div
         class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
-        *ngIf="editItem || addItem || editVisibility"
+        *ngIf="addItem || editVisibility"
       >
         <label class="col-sm-5">Date début de validité<span class="mandatory"> *</span></label>
         <input type="date" name="datepicker" class="form-control date-input col-sm-7" formControlName="startDate" />
@@ -218,7 +218,7 @@
 
       <div
         class="form-group col-md-12 d-flex justify-content-between align-items-baseline"
-        *ngIf="editItem || addItem || editVisibility"
+        *ngIf="addItem || editVisibility"
       >
         <label class="col-sm-5">Date fin de validité</label>
         <input
@@ -229,29 +229,36 @@
           [class.ng-invalid]="tabForm.errors && tabForm.errors.dateInvalid"
         />
       </div>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-light cancel-btn" (click)="close()">Annuler</button>
-      <button
-        type="submit"
-        class="btn btn-light valid-btn"
-        *ngIf="editItem || editVisibility"
-        [attr.disabled]="btnLoading"
-      >
-        Modifier
-      </button>
-      <button type="submit" class="btn btn-light valid-btn" *ngIf="addItem" [attr.disabled]="btnLoading">
-        Ajouter
-      </button>
-      <button
-        type="button"
-        class="btn btn-light valid-btn"
-        *ngIf="deleteItems"
-        (click)="deleteItemss(itemToDelete)"
-        [attr.disabled]="btnLoading"
-      >
-        Supprimer
-      </button>
-    </div>
-  </form>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light cancel-btn" (click)="close()">Annuler</button>
+    <button
+      *ngIf="editItem || editVisibility"
+      type="submit"
+      class="btn btn-light valid-btn"
+      [attr.disabled]="btnLoading"
+      (click)="submit()"
+    >
+      Modifier
+    </button>
+    <button
+      *ngIf="addItem"
+      type="submit"
+      class="btn btn-light valid-btn"
+      [attr.disabled]="btnLoading"
+      (click)="submit()"
+    >
+      Ajouter
+    </button>
+    <button
+      type="button"
+      class="btn btn-light valid-btn"
+      *ngIf="deleteItems"
+      (click)="deleteItemss(itemToDelete)"
+      [attr.disabled]="btnLoading"
+    >
+      Supprimer
+    </button>
+  </div>
 </ng-template>

@@ -42,6 +42,7 @@ export class NgDataTableComponent implements OnInit {
   @Input() errorMessage = 'Une erreur technique est survenue';
   @Input() noDataMessage = 'Aucun élément à afficher';
   @Input() loading = false;
+  @Input() columnResizeMode = 'fit';
   @Input() columns: any[];
   @Input() expandColumns: any[] = [];
   @Input() frozenCols: any[] = [];
