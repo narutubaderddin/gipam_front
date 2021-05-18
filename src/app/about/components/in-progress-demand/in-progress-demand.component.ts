@@ -185,12 +185,12 @@ export class InProgressDemandComponent {
         this.loading = false;
         this.requests = response;
         this.requests.results = this.requests.results.map((elm: any) => {
-          let nameApplicant : string = "";
-          if(elm.firstNameApplicant){
-            nameApplicant+=elm.firstNameApplicant;
+          let nameApplicant: string = '';
+          if (elm.firstNameApplicant) {
+            nameApplicant += elm.firstNameApplicant;
           }
-          if(elm.lastNameApplicant){
-            nameApplicant+=elm.lastNameApplicant;
+          if (elm.lastNameApplicant) {
+            nameApplicant += elm.lastNameApplicant;
           }
           return {
             ...elm,
@@ -235,5 +235,12 @@ export class InProgressDemandComponent {
 
   changeRequestStatus(request: any) {
     this.demandService.changeStatus(request).subscribe((response) => {});
+
+    //const status = event.target.innerHTML === "Valider la demande" ? "Valider" : "Refuser";
+    console.log(request);
+    //console.log(event.target.attributes.id);
+    this.demandService.changeStatus(request).subscribe((response) => {
+      console.log(response);
+    });
   }
 }

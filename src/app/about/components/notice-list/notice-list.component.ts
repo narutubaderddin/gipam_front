@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkOfArtService } from '@app/@shared/services/work-of-art.service';
 
@@ -8,23 +8,42 @@ import { WorkOfArtService } from '@app/@shared/services/work-of-art.service';
   styleUrls: ['./notice-list.component.scss'],
 })
 export class NoticeListComponent implements OnInit {
-  remarquers: any;
+  remarquers: any[] = [];
   columns: any[];
-
-  gridReady = false;
   rowCount: any = 5;
-  filter = false;
   selectedItem: any;
   frozenCols: any = [];
+  filter: any;
+  totalFiltred: any;
+  total: any;
+  limit = 5;
+  page = 1;
+  end: number;
+  start: number;
+  loading = false;
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private workOfArtService: WorkOfArtService
+    private workOfArtService: WorkOfArtService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this.remarquers = this.workOfArtService.oeuvres[0].items;
     this.filter = this.activatedRoute.snapshot.queryParams['filter'].length > 0;
+    this.initData();
+  }
+  initData() {
+    let params = {
+      page: this.page,
+      limit: this.limit,
+    };
+    this.workOfArtService.getInProgressNotices(params).subscribe((res) => {
+      this.remarquers = res.result;
+      this.total = res.totalQuantity;
+      this.totalFiltred = this.total;
+      this.start = (this.page - 1) * this.limit + 1;
+      this.end = (this.page - 1) * this.limit + this.remarquers.length;
+    });
     this.initColumnsDef();
   }
   initColumnsDef() {
@@ -39,7 +58,7 @@ export class NoticeListComponent implements OnInit {
       },
       {
         header: 'Titre',
-        field: 'titre',
+        field: 'title',
         type: 'key',
         width: '150px',
         filter: true,
@@ -48,14 +67,15 @@ export class NoticeListComponent implements OnInit {
       },
       {
         header: 'Domaine',
-        field: 'domaine',
+        field: 'field',
         sortable: true,
         width: '150px',
         filter: true,
         filterType: 'multiselect',
         placeholder: 'Choisir des Domaine',
         selectData: this.workOfArtService.domaine,
-        type: 'key',
+        type: 'key-array',
+        key_data: ['field', 'label'],
       },
       {
         header: 'Dénomination',
@@ -65,16 +85,18 @@ export class NoticeListComponent implements OnInit {
         filter: true,
         filterType: 'multiselect',
         selectData: this.workOfArtService.denominations,
-        type: 'key',
+        type: 'key-array',
+        key_data: ['denomination', 'label'],
       },
       {
         header: 'Matière',
-        field: 'matiere',
+        field: 'materialTechnique',
         sortable: true,
         width: '150px',
         filter: true,
         filterType: 'text',
-        type: 'key',
+        type: 'key-multiple-data',
+        key_multiple_data: ['materialTechnique', 'label'],
       },
       {
         header: 'Style',
@@ -83,7 +105,18 @@ export class NoticeListComponent implements OnInit {
         width: '150px',
         filter: true,
         filterType: 'text',
-        type: 'key',
+        type: 'key-array',
+        key_data: ['style', 'label'],
+      },
+      {
+        header: 'Epoque',
+        field: 'era',
+        sortable: true,
+        width: '150px',
+        filter: true,
+        filterType: 'text',
+        type: 'key-array',
+        key_data: ['era', 'label'],
       },
       {
         header: 'Date création',
@@ -96,7 +129,7 @@ export class NoticeListComponent implements OnInit {
       },
       {
         header: 'Type de Statut',
-        field: 'property',
+        field: 'status',
         cellRenderer: 'statusTypeRender',
         width: '200px',
         sortable: false,
@@ -106,6 +139,15 @@ export class NoticeListComponent implements OnInit {
         selectData: this.workOfArtService.statusType,
       },
     ];
+  }
+  pagination(e: any) {
+    if (e.page < this.total / parseInt(this.limit.toString(), 0)) {
+      this.page = e.page + 1;
+    } else {
+      this.page = this.total / parseInt(this.limit.toString(), 0);
+    }
+    this.cdr.detectChanges();
+    this.initData();
   }
   resetFilter() {}
 

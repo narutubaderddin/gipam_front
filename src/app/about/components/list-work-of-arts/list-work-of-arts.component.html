@@ -1232,7 +1232,9 @@
               </button>
               <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">
                 <ul class="list-group">
-                  <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter Notices style catalogue</li>
+                  <li class="list-group-item" (click)="exportNotices('catalogue')">
+                    <i class="fas fa-file-export"></i> Exporter Notices style catalogue
+                  </li>
                   <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter Notices techniques</li>
                   <li class="list-group-item">
                     <i class="fas fa-file-export"></i> Exporter Notices complètes techniques
@@ -1417,7 +1419,11 @@
                       <div class="p-2">
                         <div class="card-block flip">
                           <div class="check-card"></div>
-                          <img class="card-img-top img-fluid" [src]="'assets/images/2.jpg'" alt="Card image cap" />
+                          <img
+                            class="card-img-top img-fluid"
+                            [src]="section.principalPhoto?.imagePreview"
+                            alt="Card image cap"
+                          />
                           <strong>{{ section.titre }}</strong>
                           <p>N°: {{ section.id }}</p>
                         </div>
@@ -1476,7 +1482,7 @@
 <div hidden>
   <div id="printNoticesPDF">
     <br />
-    <app-item-details-pdf [artWorksToPrint]="selectedRow"></app-item-details-pdf>
+    <app-item-details-pdf [artWorksToPrint]="selectedRows"></app-item-details-pdf>
     <br />
   </div>
 </div>

@@ -654,7 +654,11 @@
                       alt="Card image cap"
                     />
                   </div>-->
-                    <img class="card-img-top img-fluid" src="assets/images/2.jpg" alt="Card image cap" />
+                    <img
+                      class="card-img-top img-fluid"
+                      [src]="items.principalPhoto?.imagePreview"
+                      alt="Card image cap"
+                    />
                     <strong>{{ items.title }}</strong>
                     <ul>
                       <li *ngFor="let author of items.authors">{{ author.firstName }} {{ author.lastName }}</li>
