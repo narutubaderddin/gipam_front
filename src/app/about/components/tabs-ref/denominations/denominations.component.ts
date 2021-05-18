@@ -7,6 +7,7 @@ import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { tabRefFormBackendErrorMessage } from '@shared/utils/helpers';
 
 @Component({
   selector: 'app-denominations',
@@ -37,15 +38,10 @@ export class DenominationsComponent implements OnInit {
   addItem = false;
   deleteItems = false;
   editVisibility = false;
-  dropdownSettings: IDropdownSettings;
   disappearanceDate: string;
   active = true;
-  dropdownList: any;
   itemLabel: any;
 
-  filter: any;
-  sortBy = 'label';
-  sort = 'asc';
   totalFiltred: any;
   total: any;
   limit = 5;
@@ -57,7 +53,19 @@ export class DenominationsComponent implements OnInit {
   dataTableSort: any = {};
   dataTableSearchBar: any = {};
   items: any[] = [];
-  today: string;
+  fields: any[] = [];
+
+  fieldColumn = {
+    header: 'Domaine',
+    field: 'field',
+    type: 'key-array',
+    key_data: ['field', 'label'],
+    filter: true,
+    filterType: 'multiselect',
+    placeholder: 'Domaine',
+    selectData: this.fields,
+    sortable: true,
+  };
 
   columns = [
     {
@@ -68,12 +76,7 @@ export class DenominationsComponent implements OnInit {
       filterType: 'text',
       sortable: true,
     },
-    {
-      header: 'Domaine',
-      field: 'field',
-      type: 'key-array',
-      key_data: ['field', 'label'],
-    },
+    this.fieldColumn,
     {
       header: 'Actions',
       field: 'action',
@@ -89,7 +92,6 @@ export class DenominationsComponent implements OnInit {
     private modalService: NgbModal,
     private activatedRoute: ActivatedRoute,
     private simpleTabsRef: SimpleTabsRefService,
-    private fieldsService: FieldsService,
     public fb: FormBuilder,
     config: NgbModalConfig,
     private messageService: MessageService
@@ -100,8 +102,20 @@ export class DenominationsComponent implements OnInit {
 
   ngOnInit(): void {
     this.simpleTabsRef.tabRef = 'denominations';
+    this.initFilterData();
     this.getAllItems();
     this.initForm();
+  }
+
+  initFilterData() {
+    const params = {
+      page: 1,
+      serializer_group: JSON.stringify(['short']),
+    };
+    this.simpleTabsRef.getAllItems(params, 'fields').subscribe((result: any) => {
+      this.fields = this.simpleTabsRef.getTabRefFilterData(result.results);
+      this.fieldColumn.selectData = this.fields;
+    });
   }
 
   initForm() {
@@ -111,8 +125,6 @@ export class DenominationsComponent implements OnInit {
       field: [this.selectedRelatedEntity ? this.selectedRelatedEntity : { label: '' }, [Validators.required]],
     });
   }
-
-  resetFilter() {}
 
   openModal(item: any) {
     this.btnLoading = null;
@@ -134,19 +146,15 @@ export class DenominationsComponent implements OnInit {
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
+
   onFieldSelect(item: any) {
     this.selectedRelatedEntity = item;
   }
-  onSelectAll(items: any) {}
 
   getRelatedEntity(): any {
-    const previousUrl = this.simpleTabsRef.tabRef;
-    this.simpleTabsRef.tabRef = 'fields';
-
-    this.simpleTabsRef.getAllItems({}).subscribe((result: any) => {
+    this.simpleTabsRef.getAllItems({ 'active[eq]': 1 }, 'fields').subscribe((result: any) => {
       this.relatedEntities = result.results;
     });
-    this.simpleTabsRef.tabRef = previousUrl;
   }
 
   submit() {
@@ -212,22 +220,23 @@ export class DenominationsComponent implements OnInit {
   }
 
   changeVisibilityAction(data: any) {
+    this.loading = true;
     this.editVisibility = true;
 
     data.active = !data.active;
 
-    this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
+    this.simpleTabsRef.editItem({ active: data.active }, data.id).subscribe(
       (result) => {
         if (data.active) {
-          this.addSingle('success', 'Activation', 'Dénomination ' + data.label + ' activée avec succés');
+          this.addSingle('success', 'Activation', 'Dénomination "' + data.label + '" activée avec succés');
         } else {
-          this.addSingle('success', 'Activation', 'Dénomination ' + data.label + ' désactivée avec succés');
+          this.addSingle('success', 'Activation', 'Dénomination "' + data.label + '" désactivée avec succés');
         }
         this.getAllItems();
       },
-
       (error) => {
         this.addSingle('error', 'Modification', error.error.message);
+        this.loading = false;
       }
     );
   }
@@ -237,8 +246,6 @@ export class DenominationsComponent implements OnInit {
     let params = {
       limit: this.limit,
       page: this.page,
-      sort_by: this.sortBy,
-      sort: this.sort,
     };
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
@@ -270,16 +277,14 @@ export class DenominationsComponent implements OnInit {
     this.simpleTabsRef.deleteItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Suppression', 'Dénomination ' + item.label + ' supprimée avec succés');
+        this.addSingle('success', 'Suppression', 'Dénomination "' + item.label + '" supprimée avec succés');
         this.getAllItems();
         this.deleteItems = false;
       },
       (error: any) => {
         this.close();
         if (error.error.code === 400) {
-          this.addSingle('error', 'Suppression', 'Dénomination ' + item.label + ' admet une relation');
-        } else {
-          this.addSingle('error', 'Suppression', error.error.message);
+          this.addSingle('error', 'Suppression', 'Dénomination "' + item.label + '" admet une relation');
         }
       }
     );
@@ -290,12 +295,15 @@ export class DenominationsComponent implements OnInit {
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
-        this.addSingle('success', 'Ajout', 'Dénomination ' + item.label + ' ajoutée avec succés');
+        this.addSingle('success', 'Ajout', 'Dénomination "' + item.label + '" ajoutée avec succés');
         this.getAllItems();
         this.addItem = false;
       },
       (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Ajout', tabRefFormBackendErrorMessage);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        }
       }
     );
   }
@@ -305,14 +313,16 @@ export class DenominationsComponent implements OnInit {
     this.simpleTabsRef.editItem(item, id).subscribe(
       (result) => {
         this.close();
-        this.addSingle('success', 'Modification', 'Dénomination ' + item.label + ' modifiée avec succés');
+        this.addSingle('success', 'Modification', 'Dénomination "' + item.label + '" modifiée avec succés');
         this.getAllItems();
         this.editItem = false;
         this.editVisibility = false;
       },
-
       (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Modification', tabRefFormBackendErrorMessage);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        }
       }
     );
   }

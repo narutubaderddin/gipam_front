@@ -8,6 +8,7 @@ import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-t
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { ModalTabsRefComponent } from '@app/about/components/tabs-ref/modal-tabs-ref/modal-tabs-ref.component';
+import { tabRefFormBackendErrorMessage } from '@shared/utils/helpers';
 
 @Component({
   selector: 'app-domains',
@@ -270,10 +271,6 @@ export class DomainsComponent implements OnInit {
         this.close();
       },
       (error) => {
-        if (error.error.code === 400) {
-          this.addSingle('error', 'Ajout', 'Erreur de validation.');
-          this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
-        }
         this.btnLoading = null;
         this.close();
       }
@@ -309,7 +306,7 @@ export class DomainsComponent implements OnInit {
       },
       (error) => {
         if (error.error.code === 400) {
-          this.addSingle('error', 'Modification', error.error.message);
+          this.addSingle('error', 'Modification', tabRefFormBackendErrorMessage);
           this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
         }
         this.btnLoading = null;
@@ -332,8 +329,6 @@ export class DomainsComponent implements OnInit {
         this.close();
         if (error.error.code === 400) {
           this.addSingle('error', 'Suppression', 'Domaine ' + item.label + ' admet une relation');
-        } else {
-          this.addSingle('error', 'Suppression', error.error.message);
         }
         this.loading = null;
       }
