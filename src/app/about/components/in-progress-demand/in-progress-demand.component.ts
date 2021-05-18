@@ -235,5 +235,12 @@ export class InProgressDemandComponent {
 
   changeRequestStatus(request: any) {
     this.demandService.changeStatus(request).subscribe((response) => {});
+
+    //const status = event.target.innerHTML === "Valider la demande" ? "Valider" : "Refuser";
+    console.log(request);
+    //console.log(event.target.attributes.id);
+    this.demandService.changeStatus(request).subscribe((response) => {
+      console.log(response);
+    });
   }
 }
