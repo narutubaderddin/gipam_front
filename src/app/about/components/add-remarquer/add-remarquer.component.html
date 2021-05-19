@@ -44,7 +44,6 @@
                           <app-item-images
                             [photographiesForm]="photographiesForm"
                             [add]="true"
-                            [addPropert]="addProperty"
                             [edit]="false"
                             class="col-12"
                           ></app-item-images>
@@ -60,6 +59,7 @@
                               <a ngbNavLink><i class="far fa-file-alt mr-2"></i>Descriptifs physiques</a>
                               <ng-template ngbNavContent>
                                 <app-add-descriptions
+                                  [addProperty]="addProperty"
                                   [addDepot]="false"
                                   [descriptifForm]="descriptifForm"
                                 ></app-add-descriptions>

@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkOfArtService } from '@app/@shared/services/work-of-art.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-notice-list',

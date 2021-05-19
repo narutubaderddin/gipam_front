@@ -4,9 +4,8 @@ import { NgWizardConfig, NgWizardService, StepChangedArgs, StepValidationArgs, T
 import { Observable, of, Subscription } from 'rxjs';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { serialize } from 'object-to-formdata';
 
 @Component({
   selector: 'app-add-remarquer',
