@@ -69,6 +69,7 @@
               [limit]="limit"
               [end]="end"
               [start]="start"
+              [columnResizeMode]="'expand'"
             >
             </app-ng-data-table>
           </div>
@@ -78,21 +79,18 @@
   </div>
 </div>
 <ng-template #content let-modal>
-  <form [formGroup]="tabForm" appFlashFormErrors (appFormSubmit)="submit()">
-    <div class="modal-header">
-      <h4 class="modal-title" *ngIf="editItem">Modification de bâtiment "{{ selectedItem.name }}"</h4>
-      <h4 class="modal-title" *ngIf="addItem">Ajout de bâtiment</h4>
-      <h4 class="modal-title" *ngIf="deleteItems">Suppression de bâtiment "{{ selectedItem.name }}"</h4>
-      <h4 class="modal-title" *ngIf="editVisibility">
-        Activation / désactivation de bâtiment "{{ selectedItem.name }}"
-      </h4>
-      <button type="button" class="close" aria-label="Close" (click)="close()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer le bâtiment "{{ itemLabel }}" ?</div>
-
+  <div class="modal-header">
+    <h4 class="modal-title" *ngIf="editItem">Modification de bâtiment "{{ selectedItem.name }}"</h4>
+    <h4 class="modal-title" *ngIf="addItem">Ajout de bâtiment</h4>
+    <h4 class="modal-title" *ngIf="deleteItems">Suppression de bâtiment "{{ selectedItem.name }}"</h4>
+    <h4 class="modal-title" *ngIf="editVisibility">Activation / désactivation de bâtiment "{{ selectedItem.name }}"</h4>
+    <button type="button" class="close" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer le bâtiment "{{ itemLabel }}" ?</div>
+    <form [formGroup]="tabForm">
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-5">Libellé<span class="mandatory"> *</span></label>
         <input
@@ -132,36 +130,34 @@
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-5">Site</label>
-        <div class="autocomplete form-control value col-12 col-sm-7">
-          <p-dropdown
-            class="col-md-7 p-0"
-            [style]="{ minWidth: '100%' }"
-            [options]="sites"
+        <div class="select col-sm-7 p-0">
+          <p-autoComplete
             formControlName="site"
+            [minLength]="3"
+            field="label"
+            emptyMessage="Aucun résultat trouvé"
             placeholder="Choisir un site"
-            optionLabel="label"
-            [showClear]="false"
-            (onChange)="onSiteSelect($event)"
-            [placeholder]="selectedSite && editItem ? selectedSite : 'Sélectionner un site'"
-            [filter]="true"
-          ></p-dropdown>
+            (completeMethod)="autoCompleteSites($event)"
+            (change)="onSiteSelect($event)"
+            [suggestions]="sites"
+            [class.ng-invalid]="tabForm.errors && tabForm.errors.oneOfTheseFields"
+          ></p-autoComplete>
         </div>
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-5">Commune</label>
-        <div class="autocomplete form-control value col-12 col-sm-7">
-          <p-dropdown
-            class="col-md-7 p-0"
-            [style]="{ minWidth: '100%' }"
-            [options]="communes"
-            optionLabel="name"
+        <div class="select col-sm-7 p-0">
+          <p-autoComplete
             formControlName="commune"
+            [minLength]="3"
+            field="name"
+            emptyMessage="Aucun résultat trouvé"
             placeholder="Choisir une commune"
-            [showClear]="false"
-            (onChange)="onCommuneSelect($event)"
-            [placeholder]="selectedCommune && editItem ? selectedCommune : 'Sélectionner une commune'"
-            [filter]="true"
-          ></p-dropdown>
+            (completeMethod)="autoCompleteCommunes($event)"
+            (change)="onCommuneSelect($event)"
+            [suggestions]="communes"
+            [class.ng-invalid]="tabForm.errors && tabForm.errors.oneOfTheseFields"
+          ></p-autoComplete>
         </div>
       </div>
 
@@ -186,29 +182,36 @@
           [class.ng-invalid]="tabForm.errors && tabForm.errors.dateInvalid"
         />
       </div>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-light cancel-btn" (click)="close()">Annuler</button>
-      <button
-        type="submit"
-        class="btn btn-light valid-btn"
-        *ngIf="editItem || editVisibility"
-        [attr.disabled]="btnLoading"
-      >
-        Modifier
-      </button>
-      <button type="submit" class="btn btn-light valid-btn" *ngIf="addItem" [attr.disabled]="btnLoading">
-        Ajouter
-      </button>
-      <button
-        type="button"
-        class="btn btn-light valid-btn"
-        *ngIf="deleteItems"
-        (click)="deleteItemss(itemToDelete)"
-        [attr.disabled]="btnLoading"
-      >
-        Supprimer
-      </button>
-    </div>
-  </form>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light cancel-btn" (click)="close()">Annuler</button>
+    <button
+      type="submit"
+      class="btn btn-light valid-btn"
+      *ngIf="editItem || editVisibility"
+      [attr.disabled]="btnLoading"
+      (click)="submit()"
+    >
+      Modifier
+    </button>
+    <button
+      type="submit"
+      class="btn btn-light valid-btn"
+      *ngIf="addItem"
+      [attr.disabled]="btnLoading"
+      (click)="submit()"
+    >
+      Ajouter
+    </button>
+    <button
+      type="button"
+      class="btn btn-light valid-btn"
+      *ngIf="deleteItems"
+      (click)="deleteItemss(itemToDelete)"
+      [attr.disabled]="btnLoading"
+    >
+      Supprimer
+    </button>
+  </div>
 </ng-template>
