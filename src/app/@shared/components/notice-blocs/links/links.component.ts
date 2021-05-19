@@ -14,7 +14,7 @@ export class LinksComponent implements OnInit {
   @Input() linkArtWorkForm: FormGroup;
   @Input() add: false;
   @Input() itemDetails: boolean = false;
-  @Input() parentLink: any='';
+  @Input() parentLink: any = '';
   @Input() children: any = '';
   addLinks: boolean = false;
   artWorksData: any[] = [];
@@ -83,7 +83,6 @@ export class LinksComponent implements OnInit {
   }
   handleSelect(item: any) {
     this.linkArtWorkForm.get('parent').setValue(item.id);
-    console.log(this.linkArtWorkForm);
   }
   addNewLinks() {
     this.addLinks = !this.addLinks;

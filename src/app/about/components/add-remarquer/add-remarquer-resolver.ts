@@ -10,7 +10,11 @@ export class AddRemarquerResolver implements Resolve<any> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
     const id = route.queryParamMap.get('id');
     if (id) {
-      return this.workOfArtService.getWorkOfArtById(id);
+      let params = {
+        serializer_group: JSON.stringify(['response', 'artwork']),
+      };
+
+      return this.workOfArtService.getWorkOfArtById(id, params);
     } else {
       return of(false);
     }

@@ -665,7 +665,7 @@ export class WorkOfArtService {
   }
   addWorkOfArt(data: any): Observable<any> {
     const headers = new HttpHeaders({
-      'Content-Type': 'multipart/form-data;boundary=' + Math.random(),
+      Accept: 'application/json',
     });
     return this.http.post('/notices/property', data);
   }
@@ -701,7 +701,14 @@ export class WorkOfArtService {
       observe: 'response',
     });
   }
-  getWorkOfArtById(id: any): Observable<any> {
-    return this.http.get('/artWorks/' + id);
+  getWorkOfArtById(id: any, data: any): Observable<any> {
+    let params = new HttpParams();
+
+    Object.keys(data).forEach((key) => {
+      if (data[key]) {
+        params = params.append(key, data[key]);
+      }
+    });
+    return this.http.get('/artWorks/' + id, { params });
   }
 }
