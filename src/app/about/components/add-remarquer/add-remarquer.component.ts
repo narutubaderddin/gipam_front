@@ -130,7 +130,9 @@ export class AddRemarquerComponent implements OnInit {
         this.inProgressNotice && this.inProgressNotice.numberOfUnit ? this.inProgressNotice.numberOfUnit : null,
       authors: [this.inProgressNotice && this.inProgressNotice.authors ? this.inProgressNotice.authors : null],
       creationDate: [
-        this.inProgressNotice && this.inProgressNotice.creationDate ? this.inProgressNotice.creationDate : null,
+        this.inProgressNotice && this.inProgressNotice.creationDate
+          ? this.datePipe.transform(this.inProgressNotice.creationDate, 'yyyy')
+          : null,
       ],
       length: this.inProgressNotice && this.inProgressNotice.length ? this.inProgressNotice.length : null,
       lengthUnit: ['1'],

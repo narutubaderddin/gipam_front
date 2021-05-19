@@ -258,6 +258,11 @@
               <span *ngSwitchCase="'date'"> {{ item[col.field] | date: viewDateFormat }} </span>
               <app-in-progress-notice-renderer [value]="item" *ngSwitchCase="'app-in-progress-notice-renderer'">
               </app-in-progress-notice-renderer>
+              <app-creation-date-notice-renderer
+                [value]="item[col.field]"
+                *ngSwitchCase="'app-creation-date-notice-renderer'"
+              >
+              </app-creation-date-notice-renderer>
 
               <span *ngSwitchDefault> {{ item[col.field] }} </span>
             </span>
