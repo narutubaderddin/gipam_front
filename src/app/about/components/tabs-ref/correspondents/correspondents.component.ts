@@ -627,6 +627,8 @@ export class CorrespondentsComponent implements OnInit {
       },
       (error) => {
         this.addSingle('error', 'Ajout', error.error.message);
+        this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        this.btnLoading = null;
       }
     );
   }
@@ -644,9 +646,10 @@ export class CorrespondentsComponent implements OnInit {
         this.getAllItems();
         this.editItem = false;
       },
-
       (error) => {
         this.addSingle('error', 'Modification', error.error.message);
+        this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        this.btnLoading = null;
       }
     );
   }

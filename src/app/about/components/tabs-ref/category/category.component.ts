@@ -9,6 +9,7 @@ import { MessageService } from 'primeng/api';
 
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { tabRefFormBackendErrorMessage } from '@shared/utils/helpers';
 
 @Component({
   selector: 'app-category',
@@ -22,7 +23,7 @@ export class CategoryComponent implements OnInit {
   loading = true;
   btnLoading: any = null;
   myModal: any;
-  selectedItem: string;
+  selectedItem: any;
 
   itemToEdit: any;
   itemToDelete: string;
@@ -104,8 +105,8 @@ export class CategoryComponent implements OnInit {
 
   initForm() {
     this.tabForm = this.fb.group({
-      style: [this.selectedItem, [Validators.required]],
-      active: [true],
+      style: [this.selectedItem ? this.selectedItem.label : '', [Validators.required]],
+      active: [this.selectedItem ? this.selectedItem.active : true],
     });
   }
 
@@ -135,8 +136,7 @@ export class CategoryComponent implements OnInit {
       this.addItem = true;
     }
 
-    // console.log(item);
-    this.selectedItem = item.label;
+    this.selectedItem = item;
 
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
@@ -161,7 +161,6 @@ export class CategoryComponent implements OnInit {
     this.addItem = false;
     this.deleteItems = false;
 
-    // this.myModal.close('Close click');
     this.myModal.dismiss('Cross click');
   }
 
@@ -174,7 +173,6 @@ export class CategoryComponent implements OnInit {
   }
 
   actionMethod(e: any) {
-    console.log(e);
     switch (e.method) {
       case 'delete':
         this.deleteItem(e.item);
@@ -253,13 +251,17 @@ export class CategoryComponent implements OnInit {
         this.getAllItems();
       },
       (error) => {
-        this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Ajout', tabRefFormBackendErrorMessage);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        }
         this.btnLoading = null;
       }
     );
   }
 
   visibleItem(data: any) {
+    this.loading = true;
     data.active = !data.active;
     this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
       (result) => {
@@ -273,6 +275,7 @@ export class CategoryComponent implements OnInit {
 
       (error) => {
         this.addSingle('error', 'Modification', error.error.message);
+        this.loading = false;
       }
     );
   }
@@ -286,7 +289,10 @@ export class CategoryComponent implements OnInit {
         this.getAllItems();
       },
       (error) => {
-        this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Modification', tabRefFormBackendErrorMessage);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        }
         this.btnLoading = null;
       }
     );

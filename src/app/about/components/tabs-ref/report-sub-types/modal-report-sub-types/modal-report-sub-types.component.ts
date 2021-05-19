@@ -33,7 +33,6 @@ export class ModalReportSubTypesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initForm();
     this.dropdownSettings = {
       singleSelection: true,
       textField: 'label',
@@ -41,8 +40,8 @@ export class ModalReportSubTypesComponent implements OnInit {
       itemsShowLimit: 1,
       allowSearchFilter: true,
     };
-
     this.addItem = this.fromParent.addItem;
+
     this.deleteItems = this.fromParent.deleteItems;
     this.editItem = this.fromParent.editItem;
     this.itemToDelete = this.fromParent.itemToDelete;
@@ -52,18 +51,19 @@ export class ModalReportSubTypesComponent implements OnInit {
     this.name = this.fromParent.name;
     this.selectedreportType = this.fromParent.selectedReportType;
     this.reportTypes = this.fromParent.activeRelatedEntities;
+    this.initForm();
   }
   initForm() {
     this.tabForm = this.fb.group({
-      reportType: [this.selectedItem, [Validators.required]],
       label: [this.selectedItem, [Validators.required]],
-      active: [true],
+      reportType: [this.selectedreportType ? this.selectedreportType.label : '', [Validators.required]],
+      active: [this.active],
     });
   }
 
   submit() {
     const item = {
-      reportType: this.tabForm.value.reportType[0].id,
+      reportType: this.tabForm.value.reportType.id,
       label: this.tabForm.value.label,
       active: this.tabForm.value.active,
     };

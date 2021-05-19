@@ -55,11 +55,12 @@
           </div>
           <div class="datatable mt-4">
             <app-ng-data-table
+              [loading]="loading"
               (action)="actionMethod($event)"
               (pageChanged)="pagination($event)"
               (filterValue)="filters($event)"
               (sort)="sortEvent($event)"
-              [component]="'tabRefMaterial'"
+              [component]="'tabRefStyle'"
               [columns]="columns"
               [frozenCols]="[]"
               [frozenWidth]="'0px'"
@@ -69,9 +70,8 @@
               [total]="total"
               [page]="page"
               [limit]="limit"
-              [start]="start"
               [end]="end"
-              [loading]="loading"
+              [start]="start"
             >
             </app-ng-data-table>
           </div>
@@ -94,23 +94,6 @@
     <div class="modal-body">
       <div class="col-md-12" *ngIf="deleteItems">Voulez-vous supprimer la matière / technique "{{ itemLabel }}" ?</div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-4">Dénomination<span class="mandatory"> *</span></label>
-
-        <div class="select col-sm-7 p-0">
-          <p-multiSelect
-            class="select col-md-4 col-sm-7 p-sm-0 col-12 p-0"
-            [options]="denominations"
-            formControlName="denomination"
-            optionLabel="label"
-            display="chip"
-            [filter]="true"
-            (onPanelHide)="onSelect($event)"
-            [placeholder]="selectedDenomination && editItem ? selectedDenomination : 'Sélectionner des dénominations'"
-          >
-          </p-multiSelect>
-        </div>
-      </div>
-      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-3">Libellé<span class="mandatory"> *</span></label>
         <input
           type="text"
@@ -119,7 +102,22 @@
           formControlName="material"
         />
       </div>
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
+        <label class="col-sm-4">Dénomination<span class="mandatory"> *</span></label>
 
+        <div class="select col-sm-7 p-0">
+          <p-multiSelect
+            class="select col-md-4 col-sm-7 p-sm-0 col-12 p-0"
+            [options]="activeDenominations"
+            formControlName="denominations"
+            optionLabel="label"
+            display="chip"
+            [filter]="true"
+            [placeholder]="'Sélectionner des dénominations'"
+          >
+          </p-multiSelect>
+        </div>
+      </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-3">Type</label>
         <input
@@ -143,9 +141,19 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-light cancel-btn" (click)="close()">Annuler</button>
-      <button type="submit" class="btn btn-light valid-btn" *ngIf="editItem">Modifier</button>
-      <button type="submit" class="btn btn-light valid-btn" *ngIf="addItem">Ajouter</button>
-      <button type="button" class="btn btn-light valid-btn" *ngIf="deleteItems" (click)="deleteItemss(itemToDelete)">
+      <button type="submit" class="btn btn-light valid-btn" *ngIf="editItem" [attr.disabled]="btnLoading">
+        Modifier
+      </button>
+      <button type="submit" class="btn btn-light valid-btn" *ngIf="addItem" [attr.disabled]="btnLoading">
+        Ajouter
+      </button>
+      <button
+        type="button"
+        class="btn btn-light valid-btn"
+        *ngIf="deleteItems"
+        (click)="deleteItemss(itemToDelete)"
+        [attr.disabled]="btnLoading"
+      >
         Supprimer
       </button>
     </div>
