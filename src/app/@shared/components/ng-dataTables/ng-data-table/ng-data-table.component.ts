@@ -422,39 +422,38 @@ export class NgDataTableComponent implements OnInit {
     return items;
   }
   onChangeRequestStatus(request: any, status: any) {
-
-    if(status === "Annulée"){
+    if (status === 'Annulée') {
       request.requestStatus = status;
-    }else{
-      let allArtWorksAccepted : boolean = true;
-      let allArtWorksRefused : boolean = true;
-      let validSelectedRequest : boolean = false;
-      request.expandData.forEach((artWork:any)=>{
-        if(artWork.requestStatus){
+    } else {
+      let allArtWorksAccepted: boolean = true;
+      let allArtWorksRefused: boolean = true;
+      let validSelectedRequest: boolean = false;
+      request.expandData.forEach((artWork: any) => {
+        if (artWork.requestStatus) {
           validSelectedRequest = true;
-          if(artWork.requestStatus !== "Accepté"){
+          if (artWork.requestStatus !== 'Accepté') {
             allArtWorksAccepted = false;
           }
-          if(artWork.requestStatus !== "Refusé"){
+          if (artWork.requestStatus !== 'Refusé') {
             allArtWorksRefused = false;
           }
         }
       });
-      if(!validSelectedRequest){
+      if (!validSelectedRequest) {
         return false;
-      }else{
-        if(allArtWorksAccepted){
-          request.requestStatus = "Acceptée";
-        }else if(allArtWorksRefused){
-          request.requestStatus = "Refusée";
-        }else{
-          request.requestStatus = "Partiellement acceptée";
+      } else {
+        if (allArtWorksAccepted) {
+          request.requestStatus = 'Acceptée';
+        } else if (allArtWorksRefused) {
+          request.requestStatus = 'Refusée';
+        } else {
+          request.requestStatus = 'Partiellement acceptée';
         }
       }
     }
     this.changeRequestStatus.emit(request);
   }
-  onSelectedStatus($event:any,expandItem:any){
+  onSelectedStatus($event: any, expandItem: any) {
     expandItem.requestStatus = $event;
   }
 }

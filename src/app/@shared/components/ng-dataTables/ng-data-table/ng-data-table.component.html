@@ -293,9 +293,9 @@
                         <span *ngSwitchDefault> {{ expandItem[col.field] }} </span>
                         <app-select-button-render
                           *ngSwitchCase="'app-select-button-render'"
-                          (selectedStatus)="onSelectedStatus($event,expandItem)"
+                          (selectedStatus)="onSelectedStatus($event, expandItem)"
                           [value]="expandItem.requestStatus"
-                          [disabled]="item.requestStatus!='En cours'"
+                          [disabled]="item.requestStatus != 'En cours'"
                         ></app-select-button-render>
                       </span>
                     </td>
@@ -312,14 +312,14 @@
                   <button
                     pButton
                     type="button"
-                    [disabled]="item.requestStatus!='En cours'"
+                    [disabled]="item.requestStatus != 'En cours'"
                     label="Valider la demande"
                     (click)="onChangeRequestStatus(item, 'Acceptée')"
                   ></button>
                   <button
                     pButton
                     type="button"
-                    [disabled]="item.requestStatus!='En cours'"
+                    [disabled]="item.requestStatus != 'En cours'"
                     label="Annuler la demande"
                     (click)="onChangeRequestStatus(item, 'Annulée')"
                     class="p-button-secondary"

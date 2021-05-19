@@ -27,8 +27,8 @@ export class RequestService {
     const filter: string = '?batiment=' + params.building + '&level=' + params.level;
     return this.http.get('/rooms/findRoomsRefByCriteria' + filter);
   }
-  exportRequest(artWorks:any): Observable<any> {
-    return this.http.get('/requests/exportCurrentRequests?artWorks=['+artWorks+']', {
+  exportRequest(artWorks: any): Observable<any> {
+    return this.http.get('/requests/exportCurrentRequests?artWorks=[' + artWorks + ']', {
       responseType: 'blob',
       observe: 'response',
     });

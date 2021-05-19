@@ -612,10 +612,10 @@ export class PortailComponent implements OnInit {
   selectedLevel: any;
 
   exportRequests() {
-    let artWorksIds : any = [];
-    this.selectedOeuvre.forEach((elm)=>{
+    let artWorksIds: any = [];
+    this.selectedOeuvre.forEach((elm) => {
       artWorksIds.push(elm.id);
-    })
+    });
     this.requestService.exportRequest(artWorksIds).subscribe((response: Response | any) => {
       this.requestService.manageFileResponseDownload(response, 'Oeuvres Graphiques');
     });

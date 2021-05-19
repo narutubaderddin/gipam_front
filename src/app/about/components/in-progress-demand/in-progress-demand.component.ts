@@ -78,25 +78,23 @@ export class InProgressDemandComponent {
     },
   ];
 
-
   requests: any = [];
   loading: boolean = false;
   page: any = 1;
-  filter: any = "";
+  filter: any = '';
   constructor(private demandService: DemandService, public sharedService: SharedService) {
     this.getListDemands();
   }
-  getListDemands(params:any=null) {
+  getListDemands(params: any = null) {
     this.loading = true;
 
     let payload: any = {
       page: this.page,
     };
-    let filter = '?limit=5&page='+this.page;
-    if(params){
-      filter+=params;
+    let filter = '?limit=5&page=' + this.page;
+    if (params) {
+      filter += params;
     }
-
 
     this.demandService.getDemands(filter).subscribe(
       (response) => {
@@ -152,34 +150,33 @@ export class InProgressDemandComponent {
   }
 
   changeRequestStatus(request: any) {
-    let payload : any  = {...request};
+    let payload: any = { ...request };
     this.demandService.changeStatus(payload).subscribe((response) => {});
   }
   onDataTableFilterChange(headersFilter: any) {
-    let filter : string = "";
-    if(headersFilter.establishement){
-      filter+='&establishement[contains]='+headersFilter.establishement.value;
+    let filter: string = '';
+    if (headersFilter.establishement) {
+      filter += '&establishement[contains]=' + headersFilter.establishement.value;
     }
-    if(headersFilter.subDivision){
-      filter+='&subDivision[contains]='+headersFilter.subDivision.value;
+    if (headersFilter.subDivision) {
+      filter += '&subDivision[contains]=' + headersFilter.subDivision.value;
     }
-    if(headersFilter.name){
-      filter+='&search='+headersFilter.name.value;
+    if (headersFilter.name) {
+      filter += '&search=' + headersFilter.name.value;
     }
-    if(headersFilter.nameApplicant){
-      filter+='&search='+headersFilter.nameApplicant.value;
+    if (headersFilter.nameApplicant) {
+      filter += '&search=' + headersFilter.nameApplicant.value;
     }
-    if(headersFilter.requestStatus){
-      let status : any = [];
-      headersFilter.requestStatus.value.forEach((stat:any)=>{
-        status.push('"'+stat.name+'"');
+    if (headersFilter.requestStatus) {
+      let status: any = [];
+      headersFilter.requestStatus.value.forEach((stat: any) => {
+        status.push('"' + stat.name + '"');
       });
-      filter+='&requestStatus[in]=['+status+']';
+      filter += '&requestStatus[in]=[' + status + ']';
     }
-    if(headersFilter.createdAt){
+    if (headersFilter.createdAt) {
     }
     this.filter = filter;
     this.getListDemands(filter);
   }
-
 }

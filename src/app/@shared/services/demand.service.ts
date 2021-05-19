@@ -41,7 +41,7 @@ export class DemandService {
   changeStatus(request: any) {
     const payload = {
       requestStatus: request.requestStatus,
-      listArtWorks: request.expandData
+      listArtWorks: request.expandData,
     };
     return this.http.put('/requests/' + request.id, payload);
   }
