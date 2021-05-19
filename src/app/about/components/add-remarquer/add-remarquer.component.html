@@ -27,7 +27,12 @@
       [canExit]="isValidFunctionReturnsBoolean.bind(this)"
     >
       <div class="d-flex flex-end justify-content-end pr-5">
-        <button class="btn-primary" (click)="submit()" style="font-size: 12px; background-color: #00d6d4">
+        <button
+          class="btn-primary"
+          [disabled]="!isDirty"
+          (click)="submit()"
+          style="font-size: 12px; background-color: #00d6d4"
+        >
           <i class="fas fa-cog fa-spin" [hidden]="!isLoading"></i>
           Enregistrer
         </button>

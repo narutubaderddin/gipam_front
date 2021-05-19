@@ -29,7 +29,6 @@ export class AddRemarquerComponent implements OnInit {
   descriptionTitle = '';
   domains: any[] = [];
   keyword = 'name';
-
   display: Observable<boolean>;
   config: NgWizardConfig = {
     selected: 0,
@@ -42,8 +41,6 @@ export class AddRemarquerComponent implements OnInit {
           class: 'btn btn-info',
           event: () => {
             this.open(this.ngTemplate.nativeElement);
-            console.log(this.ngTemplate.nativeElement);
-            // alert('veuillez enregistrer');
           },
         },
       ],
@@ -62,7 +59,7 @@ export class AddRemarquerComponent implements OnInit {
   strIntoObj: any[] = [];
   createdNoticeId = 'null';
   toCreateNoticeId = 'null';
-
+  submitted = false;
   constructor(
     public workOfArtService: WorkOfArtService,
     private ngWizardService: NgWizardService,
@@ -101,11 +98,11 @@ export class AddRemarquerComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForms();
-    this.descriptifForm.valueChanges.subscribe((e) => (this.isDirty = true));
+    this.descriptifForm.valueChanges.subscribe((e) => ((this.isDirty = true), this.cdr.detectChanges()));
   }
 
   canDeactivate(): boolean | Observable<boolean> {
-    this.submit();
+    this.isDirty && !this.submitted ? this.submit() : null;
     return true;
   }
   initForms() {
@@ -125,12 +122,14 @@ export class AddRemarquerComponent implements OnInit {
         this.inProgressNotice && this.inProgressNotice.denomination ? this.inProgressNotice.denomination.id : null,
       materialTechnique: [
         this.inProgressNotice && this.inProgressNotice.materialTechnique
-          ? this.inProgressNotice.materialTechnique
+          ? this.formatArray(this.inProgressNotice.materialTechnique)
           : null,
       ],
       numberOfUnit:
         this.inProgressNotice && this.inProgressNotice.numberOfUnit ? this.inProgressNotice.numberOfUnit : null,
-      authors: [this.inProgressNotice && this.inProgressNotice.authors ? this.inProgressNotice.authors : null],
+      authors: [
+        this.inProgressNotice && this.inProgressNotice.authors ? this.formatArray(this.inProgressNotice.authors) : null,
+      ],
       creationDate: [
         this.inProgressNotice && this.inProgressNotice.creationDate
           ? this.datePipe.transform(this.inProgressNotice.creationDate, 'yyyy')
@@ -181,8 +180,6 @@ export class AddRemarquerComponent implements OnInit {
       hyperlinks: null,
       attachments: null,
     });
-    console.log(this.descriptifForm.value);
-    console.log(this.inProgressNotice);
   }
   initPropertyStatusForm() {
     this.propertyStatusForm = this.fb.group({
@@ -193,7 +190,7 @@ export class AddRemarquerComponent implements OnInit {
       ],
       entryDate: [
         this.inProgressNotice && this.inProgressNotice.status
-          ? this.datePipe.transform(this.inProgressNotice.status.entryDate, 'yy-mm-dd')
+          ? this.datePipe.transform(this.inProgressNotice.status.entryDate, 'yyyy-MM-dd')
           : null,
       ],
       marking: [''],
@@ -209,7 +206,7 @@ export class AddRemarquerComponent implements OnInit {
       ],
       insuranceValueDate: [
         this.inProgressNotice && this.inProgressNotice.status
-          ? this.datePipe.transform(this.inProgressNotice.status.insuranceValueDate, 'yy-mm-dd')
+          ? this.datePipe.transform(this.inProgressNotice.status.insuranceValueDate, 'yyyy-MM-dd')
           : null,
       ],
       otherRegistrations: [''],
@@ -220,7 +217,7 @@ export class AddRemarquerComponent implements OnInit {
     this.depositStatusForm = this.fb.group({
       depositDate: [
         this.inProgressNotice && this.inProgressNotice.status
-          ? this.datePipe.transform(this.inProgressNotice.status.depositDate, 'yy-mm-dd')
+          ? this.datePipe.transform(this.inProgressNotice.status.depositDate, 'yyyy-MM-dd')
           : null,
       ],
       stopNumber: [
@@ -288,6 +285,16 @@ export class AddRemarquerComponent implements OnInit {
   isValidFunctionReturnsObservable(args: StepValidationArgs) {
     return of(true);
   }
+  formatArray(array: any) {
+    let test: any[] = [];
+    if (array.length) {
+      array.forEach((value: any) => {
+        test.push(value.id);
+      });
+      return test;
+    }
+    return null;
+  }
   formatData() {
     const keys = ['height', 'width', 'length', 'totalHeight', 'totalWidth', 'totalLength', 'depth', 'diameter'];
     keys.forEach((key: string) => {
@@ -342,6 +349,7 @@ export class AddRemarquerComponent implements OnInit {
         .setValue(this.descriptifForm.get('registrationSignature').value);
       this.propertyStatusForm.get('descriptiveWords').setValue(this.descriptifForm.get('descriptiveWords').value);
       this.propertyStatusForm.get('description').setValue(this.descriptifForm.get('description').value);
+      console.log(this.descriptifForm.value);
       this.buildFormData(formData);
       this.inProgressNotice
         ? (this.toCreateNoticeId = this.inProgressNotice.id)
@@ -350,15 +358,8 @@ export class AddRemarquerComponent implements OnInit {
         (result) => {
           this.addSingle('success', 'Ajout', result.msg);
           this.isLoading = false;
+          this.submitted = true;
           this.createdNoticeId = result.res.id;
-          // this.createdNoticeId = result.id;
-          // this.router.navigate([], {
-          //   relativeTo: this.route,
-          //   queryParams: {
-          //     id: result.id
-          //   },
-          //   queryParamsHandling: 'merge',
-          // });
         },
         (err) => {
           this.addSingle('error', 'Ajout', "Une erreur est survenue lors de l'ajout");
@@ -368,14 +369,17 @@ export class AddRemarquerComponent implements OnInit {
       this.buildFormData(formData);
       this.workOfArtService.addDepositWorkOfArt(formData).subscribe(
         (result) => {
+          this.isLoading = false;
+          this.submitted = true;
+          this.createdNoticeId = result.res.id;
           this.addSingle('success', 'Ajout', 'La notice a été ajoutée avec succès');
-          this.router.navigate([], {
-            relativeTo: this.route,
-            queryParams: {
-              id: result.id,
-            },
-            queryParamsHandling: 'merge',
-          });
+          // this.router.navigate([], {
+          //   relativeTo: this.route,
+          //   queryParams: {
+          //     id: result.id,
+          //   },
+          //   queryParamsHandling: 'merge',
+          // });
         },
         (err) => {
           this.addSingle('error', 'Ajout', "Une erreur est survenue lors de l'ajout");
