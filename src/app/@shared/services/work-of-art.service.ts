@@ -665,7 +665,7 @@ export class WorkOfArtService {
   }
   addWorkOfArt(data: any): Observable<any> {
     const headers = new HttpHeaders({
-      'Content-Type': 'multipart/form-data;boundary=' + Math.random(),
+      Accept: 'application/json',
     });
     return this.http.post('/notices/property', data);
   }

@@ -146,9 +146,9 @@ export class AttachmentsComponent implements OnInit, OnChanges {
       }
       if (this.selectedAttachment == this.attachments.value.length || this.itemDetails) {
         this.files.push(this.addedFile);
-        this.attachments.push(this.createAttachment(this.addedFile.name, this.attachmentType));
+        this.attachments.push(this.createAttachment(this.addedFile, this.attachmentType));
       } else {
-        this.editAttachmentForm(this.selectedAttachment, this.addedFile.name, this.attachmentType);
+        this.editAttachmentForm(this.selectedAttachment, this.addedFile, this.attachmentType);
       }
       this.initData();
       this.attachmentInsertionNumber++;
