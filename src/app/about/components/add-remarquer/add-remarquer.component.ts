@@ -54,13 +54,14 @@ export class AddRemarquerComponent implements OnInit {
   isDirty = false;
   value: boolean;
   url: string;
-  inProgressNotice: any;
+  inProgressNotice: any = [];
   id: string;
   routeSubscription: Subscription;
   isLoading = false;
   loadingData = true;
   strIntoObj: any[] = [];
   createdNoticeId = 'null';
+  toCreateNoticeId = 'null';
 
   constructor(
     public workOfArtService: WorkOfArtService,
@@ -104,7 +105,7 @@ export class AddRemarquerComponent implements OnInit {
   }
 
   canDeactivate(): boolean | Observable<boolean> {
-    // this.submit();
+    this.submit();
     return true;
   }
   initForms() {
@@ -180,6 +181,8 @@ export class AddRemarquerComponent implements OnInit {
       hyperlinks: null,
       attachments: null,
     });
+    console.log(this.descriptifForm.value);
+    console.log(this.inProgressNotice);
   }
   initPropertyStatusForm() {
     this.propertyStatusForm = this.fb.group({
@@ -306,9 +309,7 @@ export class AddRemarquerComponent implements OnInit {
           }
         }
       } else if (dataKey == 'status') {
-        console.log(this.descriptifForm.value[dataKey]);
         for (let previewKey in this.descriptifForm.value[dataKey]) {
-          console.log(`${dataKey}[${previewKey}]`, this.descriptifForm.value[dataKey][previewKey]);
           formData.append(`${dataKey}[${previewKey}]`, this.descriptifForm.value[dataKey][previewKey]);
         }
       } else {
@@ -342,13 +343,14 @@ export class AddRemarquerComponent implements OnInit {
       this.propertyStatusForm.get('descriptiveWords').setValue(this.descriptifForm.get('descriptiveWords').value);
       this.propertyStatusForm.get('description').setValue(this.descriptifForm.get('description').value);
       this.buildFormData(formData);
-      if (this.inProgressNotice) {
-        this.createdNoticeId = this.inProgressNotice.id;
-      }
-      this.workOfArtService.addWorkOfArt(formData, this.createdNoticeId).subscribe(
+      this.inProgressNotice
+        ? (this.toCreateNoticeId = this.inProgressNotice.id)
+        : (this.toCreateNoticeId = this.createdNoticeId);
+      this.workOfArtService.addWorkOfArt(formData, this.toCreateNoticeId).subscribe(
         (result) => {
           this.addSingle('success', 'Ajout', result.msg);
           this.isLoading = false;
+          this.createdNoticeId = result.res.id;
           // this.createdNoticeId = result.id;
           // this.router.navigate([], {
           //   relativeTo: this.route,

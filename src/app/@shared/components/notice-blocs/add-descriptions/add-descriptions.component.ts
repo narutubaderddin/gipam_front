@@ -168,7 +168,6 @@ export class AddDescriptionsComponent implements OnInit {
         const denomination = this.denominationData.filter((den: any) => {
           return den.id === value.value;
         });
-        this.field ? (materialApiData['fields'] = JSON.stringify([this.field])) : '';
         materialApiData['denominations'] = JSON.stringify([this.denomination]);
         forkJoin([this.materialTechniqueService.getFilteredMaterialTechnique(materialApiData)]).subscribe(
           ([materialTechniquesResults]) => {
