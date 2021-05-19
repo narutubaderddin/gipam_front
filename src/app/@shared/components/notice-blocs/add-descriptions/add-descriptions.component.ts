@@ -37,7 +37,6 @@ export class AddDescriptionsComponent implements OnInit {
   materialTechniques: any;
   attributeToShow: any;
   descriptiveWords: any[] = [];
-  strIntoObj: any;
   constructor(
     private fieldService: FieldsService,
     private denominationsService: DenominationsService,
@@ -52,6 +51,17 @@ export class AddDescriptionsComponent implements OnInit {
     this.initFilterData();
     if (this.denomination && this.field) {
       this.getAttributes();
+      const apiData = {
+        page: 1,
+        'active[eq]': 1,
+      };
+      const materialApiData = Object.assign({}, apiData);
+      materialApiData['denominations'] = JSON.stringify([this.denomination]);
+      forkJoin([this.materialTechniqueService.getFilteredMaterialTechnique(materialApiData)]).subscribe(
+        ([materialTechniquesResults]) => {
+          this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
+        }
+      );
     }
   }
   get f() {
