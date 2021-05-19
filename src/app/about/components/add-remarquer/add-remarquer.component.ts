@@ -161,7 +161,7 @@ export class AddRemarquerComponent implements OnInit {
       ],
       marking: [this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.marking : null],
       photographies: null,
-      status: null,
+      status: this.addProperty ? this.propertyStatusForm : this.depositStatusForm,
       parent: null,
       hyperlinks: null,
       attachments: null,
@@ -212,7 +212,7 @@ export class AddRemarquerComponent implements OnInit {
   }
   initLinks() {
     this.linkArtWorkForm = this.fb.group({
-      parent: [1],
+      parent: [],
     });
   }
   initAttachmentForm() {
@@ -280,6 +280,12 @@ export class AddRemarquerComponent implements OnInit {
           for (let key in this.descriptifForm.value[dataKey][previewKey]) {
             formData.append(`${dataKey}[${previewKey}][${key}]`, this.descriptifForm.value[dataKey][previewKey][key]);
           }
+        }
+      } else if (dataKey == 'status') {
+        console.log(this.descriptifForm.value[dataKey]);
+        for (let previewKey in this.descriptifForm.value[dataKey]) {
+          console.log(`${dataKey}[${previewKey}]`);
+          formData.append(`${dataKey}[${previewKey}]`, this.descriptifForm.value[dataKey][previewKey]);
         }
       } else {
         if (['field', 'denomination'].includes(dataKey)) {

@@ -19,7 +19,7 @@ export class AddDescriptionsComponent implements OnInit {
   @Input() keyword: string;
   @Input() addDepot = false;
   @Input() descriptifForm: FormGroup;
-
+  @Input() addProperty: boolean;
   items: any = [];
   domain = '';
   denominations: any;
@@ -36,6 +36,7 @@ export class AddDescriptionsComponent implements OnInit {
   entryModesData: any[];
   materialTechniques: any;
   attributeToShow: any;
+  descriptiveWords: any[] = [];
   constructor(
     private fieldService: FieldsService,
     private denominationsService: DenominationsService,
@@ -116,12 +117,18 @@ export class AddDescriptionsComponent implements OnInit {
     );
   }
 
-  onTagEdited(e: any) {
-    console.log(e);
+  addWord(event: any) {
+    this.descriptiveWords.push(event.value);
+    this.descriptifForm.get('descriptiveWords').setValue(this.descriptiveWords);
   }
 
   onCollapse() {
     this.isCollapsed = !this.isCollapsed;
+  }
+  onChange(event: Date) {
+    if (event && !isNaN(event.getFullYear())) {
+      this.descriptifForm.get('creationDate').setValue(event.getFullYear());
+    }
   }
   onSelect(value: any, key: string) {
     const apiData = {
