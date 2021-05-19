@@ -646,6 +646,7 @@ export class WorkOfArtService {
   addSelectedArtWorks(item: any) {
     this._selectedArtWorks.push(item);
     localStorage.setItem('selectedArtWorks', JSON.stringify(this._selectedArtWorks));
+    return this._selectedArtWorks;
   }
 
   getSelectedArtWorks(): any[] {
@@ -661,11 +662,12 @@ export class WorkOfArtService {
   }
 
   removeSelectedArtWorks() {
+    this._selectedArtWorks = [];
     localStorage.removeItem('selectedArtWorks');
   }
   addWorkOfArt(data: any): Observable<any> {
     const headers = new HttpHeaders({
-      'Content-Type': 'multipart/form-data;boundary=' + Math.random(),
+      Accept: 'application/json',
     });
     return this.http.post('/notices/property', data);
   }
@@ -701,7 +703,14 @@ export class WorkOfArtService {
       observe: 'response',
     });
   }
-  getWorkOfArtById(id: any): Observable<any> {
-    return this.http.get('/artWorks/' + id);
+  getWorkOfArtById(id: any, data: any): Observable<any> {
+    let params = new HttpParams();
+
+    Object.keys(data).forEach((key) => {
+      if (data[key]) {
+        params = params.append(key, data[key]);
+      }
+    });
+    return this.http.get('/artWorks/' + id, { params });
   }
 }

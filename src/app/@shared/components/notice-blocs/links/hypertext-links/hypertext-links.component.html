@@ -31,7 +31,7 @@
       <div [formGroupName]="i" class="mt-1" *ngFor="let lien of liens.controls; let i = index">
         <div class="d-flex">
           <div class="form-group col-md-5 d-flex p-0">
-            <input class="form-control" placeholder="Nom URL" formControlName="urlName" />
+            <input class="form-control" placeholder="Nom URL" formControlName="url" />
           </div>
           <div class="form-group col-md-5 d-flex p-0">
             <input class="form-control" placeholder="URL" formControlName="url" />
@@ -55,22 +55,22 @@
   <div class="form-group" class="col-md-12 d-flex flex-column p-0">
     <h5 class="col-md-12 p-0 m-0">Liens hypertextes</h5>
     <div class="col-md-12 p-1 mt-1 hyperlink-container">
-      <button class="btn add-action col-7 ml-2" (click)="addBook()" *ngIf="!hyperlinks.value.length">
+      <button class="btn add-action col-7 ml-2" (click)="addHyperlink()" *ngIf="!hyperlinks.value.length">
         <i class="fas fa-plus mr-2"></i>Ajouter un lien hypertexte
       </button>
       <div formArrayName="hyperlinks" class="hyperlink-bloc">
         <div [formGroupName]="i" class="mt-1" *ngFor="let lien of hyperlinks.controls; let i = index">
           <div class="d-flex">
             <div class="form-group col-md-5 d-flex p-0">
-              <input class="form-control" placeholder="Nom URL" formControlName="urlName" />
+              <input class="form-control" placeholder="Nom URL" formControlName="name" />
             </div>
             <div class="form-group col-md-5 d-flex p-0">
               <input class="form-control" placeholder="URL" formControlName="url" />
             </div>
 
             <div class="col-1 col-md-2 align-self-center d-flex p-0">
-              <i class="fas fa-trash-alt delete" style="color: gray" (click)="removeLink(i)" *ngIf="i > 0"></i>
-              <i class="add ml-1 mt-1 fas fa-plus" style="color: gray" (click)="addLink()"></i>
+              <i class="fas fa-trash-alt delete" style="color: gray" (click)="removeHyperLinks(i)" *ngIf="i > 0"></i>
+              <i class="add ml-1 mt-1 fas fa-plus" style="color: gray" (click)="addHyperlink()"></i>
             </div>
           </div>
         </div>

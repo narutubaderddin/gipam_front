@@ -1,1 +1,7 @@
-<p-selectButton [options]="stateOptions" [(ngModel)]="value" optionLabel="label" optionValue="value"> </p-selectButton>
+<p-selectButton [options]="stateOptions"
+                [(ngModel)]="value"
+                optionLabel="label"
+                [disabled]="disabled"
+                (onChange)="changeArtWorkStatus($event)"
+                optionValue="value">
+</p-selectButton>
