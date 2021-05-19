@@ -9,6 +9,7 @@ import { MessageService } from 'primeng/api';
 import { ModalReportSubTypesComponent } from '@app/about/components/tabs-ref/report-sub-types/modal-report-sub-types/modal-report-sub-types.component';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 import { forkJoin } from 'rxjs';
+import { tabRefFormBackendErrorMessage } from '@shared/utils/helpers';
 
 @Component({
   selector: 'app-report-sub-types',
@@ -138,16 +139,17 @@ export class ReportSubTypesComponent implements OnInit {
         this.editItem = true;
         this.itemToEdit = item;
         this.itemLabel = item.label;
+        this.selectedItem = item.label;
         this.selectedreportType = {
           id: item.reportType.id,
           label: item.reportType.label,
         };
+        this.active = item.active;
       } else {
         this.addItem = true;
+        this.active = true;
       }
     }
-
-    this.selectedItem = item.label;
     const ngbModalOptions: NgbModalOptions = {
       backdropClass: 'modal-container',
       centered: true,
@@ -297,12 +299,16 @@ export class ReportSubTypesComponent implements OnInit {
         this.getAllItems();
       },
       (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Ajout', tabRefFormBackendErrorMessage);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        }
       }
     );
   }
 
   visibleItem(data: any) {
+    this.loading = true;
     this.simpleTabsRef.tabRef = 'reportSubTypes';
     data.active = !data.active;
     this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
@@ -316,6 +322,7 @@ export class ReportSubTypesComponent implements OnInit {
       },
 
       (error) => {
+        this.loading = false;
         this.addSingle('error', 'Modification', error.error.message);
       }
     );
@@ -332,7 +339,10 @@ export class ReportSubTypesComponent implements OnInit {
       },
 
       (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Modification', tabRefFormBackendErrorMessage);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        }
       }
     );
   }
