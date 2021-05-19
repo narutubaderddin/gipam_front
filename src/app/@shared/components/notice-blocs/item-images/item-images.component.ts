@@ -143,7 +143,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         this.photographies.push(
           this.createPhotography(this.fileToUpload, this.photographyDate, this.photographyType, this.imageName)
         );
-        console.log(this.photographies);
         if (this.addImage) {
           this.addItem();
         }
