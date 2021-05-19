@@ -56,7 +56,8 @@ export class AddRemarquerComponent implements OnInit {
   id: string;
   routeSubscription: Subscription;
   isLoading = false;
-  loadingData = true;
+  loadingData = false;
+  strIntoObj: any[] = [];
   constructor(
     public workOfArtService: WorkOfArtService,
     private ngWizardService: NgWizardService,
@@ -69,7 +70,13 @@ export class AddRemarquerComponent implements OnInit {
     this.routeSubscription = this.route.data.subscribe((res: any) => {
       if (res) {
         this.inProgressNotice = res.addRemarquer;
-        this.loadingData = false;
+        if (this.inProgressNotice.status.descriptiveWords.length) {
+          let str: string = this.inProgressNotice.status.descriptiveWords;
+          let strIntoOb = str.split(',');
+          strIntoOb.forEach((value: any) => {
+            this.strIntoObj.push({ display: value, value: value });
+          });
+        }
       }
     });
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -145,7 +152,7 @@ export class AddRemarquerComponent implements OnInit {
       ],
       totalHeightUnit: ['1'],
       descriptiveWords: [
-        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.descriptiveWords : null,
+        this.inProgressNotice && this.inProgressNotice.status.descriptiveWords ? this.strIntoObj : null,
       ],
       description: [
         this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.description : null,

@@ -37,6 +37,7 @@ export class AddDescriptionsComponent implements OnInit {
   materialTechniques: any;
   attributeToShow: any;
   descriptiveWords: any[] = [];
+  strIntoObj: any;
   constructor(
     private fieldService: FieldsService,
     private denominationsService: DenominationsService,
