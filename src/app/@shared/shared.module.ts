@@ -50,6 +50,7 @@ import { ToastModule } from 'primeng/toast';
 import { ChipModule } from 'primeng/chip';
 import { InProgressNoticeRendererComponent } from './components/ng-dataTables/in-progress-notice-renderer/in-progress-notice-renderer.component';
 import { RouterModule } from '@angular/router';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @NgModule({
   imports: [
@@ -85,6 +86,7 @@ import { RouterModule } from '@angular/router';
     ToastModule,
     ChipModule,
     RouterModule,
+    BsDatepickerModule,
   ],
   declarations: [
     LoaderComponent,

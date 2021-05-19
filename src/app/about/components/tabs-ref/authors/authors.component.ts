@@ -163,6 +163,9 @@ export class AuthorsComponent implements OnInit {
       serializer_group: JSON.stringify(['short']),
       'active[eq]': 1,
     };
+    this.tabForm.get('people').disable();
+    this.tabForm.get('type').disable();
+
     forkJoin([
       this.simpleTabsRef.getAllItems(data, 'authorTypes'),
       this.simpleTabsRef.getAllItems(data, 'persons'),
@@ -170,6 +173,8 @@ export class AuthorsComponent implements OnInit {
       ([typesResults, peopleResults]) => {
         this.activeTypes = typesResults.results;
         this.activePeople = peopleResults.results;
+        this.tabForm.get('people').enable();
+        this.tabForm.get('type').enable();
         this.addNotActiveEntities();
       },
       (error: any) => {
@@ -194,6 +199,8 @@ export class AuthorsComponent implements OnInit {
   }
 
   openModal(item: any) {
+    console.log('item to edit', item);
+
     this.btnLoading = null;
     this.selectedItem = item;
     if (this.editItem) {

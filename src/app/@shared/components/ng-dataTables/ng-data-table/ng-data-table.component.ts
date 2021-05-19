@@ -42,6 +42,7 @@ export class NgDataTableComponent implements OnInit {
   @Input() errorMessage = 'Une erreur technique est survenue';
   @Input() noDataMessage = 'Aucun élément à afficher';
   @Input() loading = false;
+  @Input() columnResizeMode = 'fit';
   @Input() columns: any[];
   @Input() expandColumns: any[] = [];
   @Input() frozenCols: any[] = [];
@@ -420,13 +421,39 @@ export class NgDataTableComponent implements OnInit {
     });
     return items;
   }
-  onChangeRequestStatus(requestID: any, status: any) {
-    console.log('requestID');
-    console.log(requestID);
-    const newRequest = {
-      id: requestID,
-      requestStatus: status,
-    };
-    this.changeRequestStatus.emit(newRequest);
+  onChangeRequestStatus(request: any, status: any) {
+    if (status === 'Annulée') {
+      request.requestStatus = status;
+    } else {
+      let allArtWorksAccepted: boolean = true;
+      let allArtWorksRefused: boolean = true;
+      let validSelectedRequest: boolean = false;
+      request.expandData.forEach((artWork: any) => {
+        if (artWork.requestStatus) {
+          validSelectedRequest = true;
+          if (artWork.requestStatus !== 'Accepté') {
+            allArtWorksAccepted = false;
+          }
+          if (artWork.requestStatus !== 'Refusé') {
+            allArtWorksRefused = false;
+          }
+        }
+      });
+      if (!validSelectedRequest) {
+        return false;
+      } else {
+        if (allArtWorksAccepted) {
+          request.requestStatus = 'Acceptée';
+        } else if (allArtWorksRefused) {
+          request.requestStatus = 'Refusée';
+        } else {
+          request.requestStatus = 'Partiellement acceptée';
+        }
+      }
+    }
+    this.changeRequestStatus.emit(request);
+  }
+  onSelectedStatus($event: any, expandItem: any) {
+    expandItem.requestStatus = $event;
   }
 }

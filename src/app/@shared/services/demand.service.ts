@@ -11,19 +11,38 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class DemandService {
+  statusType = [
+    {
+      id: 'En cours',
+      name: 'En cours',
+    },
+    {
+      id: 'Acceptée',
+      name: 'Acceptée',
+    },
+    {
+      id: 'Refusée',
+      name: 'Refusée',
+    },
+    {
+      id: 'Annulée',
+      name: 'Annulée',
+    },
+    {
+      id: 'Partiellement_acceptée',
+      name: 'Partiellement acceptée',
+    },
+  ];
   constructor(private http: HttpClient) {}
 
-  getDemands(params: any): Observable<any> {
-    let filter: any = '?limit=5';
-    if (params.page) {
-      filter += '&page=' + params.page;
-    }
+  getDemands(filter: any): Observable<any> {
     return this.http.get('/requests' + filter);
   }
   changeStatus(request: any) {
     const payload = {
       requestStatus: request.requestStatus,
+      listArtWorks: request.expandData,
     };
-    return this.http.patch('/requests/' + request.id, payload);
+    return this.http.put('/requests/' + request.id, payload);
   }
 }

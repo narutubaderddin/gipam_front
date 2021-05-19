@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 
@@ -11,7 +11,7 @@ export class AttachmentsComponent implements OnInit, OnChanges {
   @Input() add = false;
   @Input() attachmentForm: FormGroup;
   @Input() itemDetails: boolean = false;
-  @Input() existingAttachments: any=[];
+  @Input() existingAttachments: any = [];
   attachmentType: any;
   files: any[] = [];
   validation = true;
@@ -29,26 +29,25 @@ export class AttachmentsComponent implements OnInit, OnChanges {
     lang: {},
   };
 
-
   // existingAttachments = [
-    // {
-    //   attachment: {
-    //     name: 'details.pdf',
-    //   },
-    //   attachmentType: 'type 2',
-    // },
-    // {
-    //   attachment: {
-    //     name: 'fichier',
-    //   },
-    //   attachmentType: 'type 2',
-    // },
-    // {
-    //   attachment: {
-    //     name: 'exemple.pdf',
-    //   },
-    //   attachmentType: 'type 1',
-    // },
+  // {
+  //   attachment: {
+  //     name: 'details.pdf',
+  //   },
+  //   attachmentType: 'type 2',
+  // },
+  // {
+  //   attachment: {
+  //     name: 'fichier',
+  //   },
+  //   attachmentType: 'type 2',
+  // },
+  // {
+  //   attachment: {
+  //     name: 'exemple.pdf',
+  //   },
+  //   attachmentType: 'type 1',
+  // },
   // ];
 
   responsiveOptions = [
@@ -79,25 +78,20 @@ export class AttachmentsComponent implements OnInit, OnChanges {
     this.getAllTypes();
     if (this.itemDetails) {
       this.existingAttachments.map((el: any) => {
-
         this.filesProperties.push({ edit: false, delete: false });
         this.files.push(el.link);
         this.attachments.push(this.createAttachment(el.link, el.attachementType.id));
       });
-      console.log(this.files,this.attachments)
     }
   }
   ngOnChanges() {
-    if(this.existingAttachments){
-      console.log('artwork',this.existingAttachments);
+    if (this.existingAttachments) {
       if (this.itemDetails) {
         this.existingAttachments.map((el: any) => {
-
           this.filesProperties.push({ edit: false, delete: false });
           this.files.push(el.link);
           this.attachments.push(this.createAttachment(el.link, el.attachmentType.id));
         });
-        console.log(this.files,this.attachments)
       }
     }
   }
@@ -120,7 +114,7 @@ export class AttachmentsComponent implements OnInit, OnChanges {
     );
   }
   createAttachment(attachment?: any, attachmentType?: any): FormGroup {
-    console.log(attachment,attachmentType)
+    console.log(attachment, attachmentType);
     // this.filesProperties.push({ edit: false, delete: false });
     return this.fb.group({
       link: [attachment, [Validators.required]],
@@ -152,9 +146,9 @@ export class AttachmentsComponent implements OnInit, OnChanges {
       }
       if (this.selectedAttachment == this.attachments.value.length || this.itemDetails) {
         this.files.push(this.addedFile);
-        this.attachments.push(this.createAttachment(this.addedFile.name, this.attachmentType));
+        this.attachments.push(this.createAttachment(this.addedFile, this.attachmentType));
       } else {
-        this.editAttachmentForm(this.selectedAttachment, this.addedFile.name, this.attachmentType);
+        this.editAttachmentForm(this.selectedAttachment, this.addedFile, this.attachmentType);
       }
       this.initData();
       this.attachmentInsertionNumber++;

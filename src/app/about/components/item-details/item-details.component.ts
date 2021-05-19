@@ -22,30 +22,30 @@ export class ItemDetailsComponent implements OnInit {
   @ViewChild('stickyMenu') menuElement: ElementRef;
 
   elementPosition: any = 2;
-  workArt:{
-    id: 145,
-    titre: 'Titre',
-    domain: 'Art graphique',
-    field: 'Art graphique',
-    height: '85',
-    width: '85',
-    authors: 'Auteur 1, Auteur 11',
-    totalWidth: '',
-    totalHeight: '',
-    era: '',
-    materialTechnique: '',
-    status: '',
-    denomination: 'Affiche',
-    createdAt: '22/01/2020',
-  }
-  parent:any='';
-  children:any=[];
-  hypertextLinks:any[]=[];
-  attachments:any[]=[];
-  status:any={};
+  workArt: {
+    id: 145;
+    titre: 'Titre';
+    domain: 'Art graphique';
+    field: 'Art graphique';
+    height: '85';
+    width: '85';
+    authors: 'Auteur 1, Auteur 11';
+    totalWidth: '';
+    totalHeight: '';
+    era: '';
+    materialTechnique: '';
+    status: '';
+    denomination: 'Affiche';
+    createdAt: '22/01/2020';
+  };
+  parent: any = '';
+  children: any = [];
+  hypertextLinks: any[] = [];
+  attachments: any[] = [];
+  status: any = {};
   type = 'depot';
-  addProperty=false;
-  addDepot=false;
+  addProperty = false;
+  addDepot = false;
   page: any = 5;
   edit = false;
   depositStatusForm: FormGroup;
@@ -212,7 +212,10 @@ export class ItemDetailsComponent implements OnInit {
   }
   getArtWork(id: any) {
     console.log('id', id);
-    this.workOfArtService.getWorkOfArtById(id).subscribe(
+    const params = {
+      serializer_group: JSON.stringify(['response', 'art_work_list', 'hyperLink_furniture', 'id', 'art_work_details']),
+    };
+    this.workOfArtService.getWorkOfArtById(id, params).subscribe(
       (result) => {
         this.workArt = result;
         result.photographies.map((el: any, index: number) => {
@@ -228,12 +231,12 @@ export class ItemDetailsComponent implements OnInit {
             imageName: el.imageName,
           });
         });
-        result.status.statusType==="PropertyStatus"? this.addProperty=true: this.addDepot=true;
-        this.status= result.status;
-        this.attachments= result.attachments;
+        result.status.statusType === 'PropertyStatus' ? (this.addProperty = true) : (this.addDepot = true);
+        this.status = result.status;
+        this.attachments = result.attachments;
         this.hypertextLinks = result.hyperlinks;
-        this.parent= result.parent;
-        this.children= result.children;
+        this.parent = result.parent;
+        this.children = result.children;
         console.log(this.workArt);
       },
       (error) => {

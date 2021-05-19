@@ -8,6 +8,7 @@ import { MessageService } from 'primeng/api';
 import { ModalMvtActionTypesComponent } from '@app/about/components/tabs-ref/movement-action-types/modal-mvt-action-types/modal-mvt-action-types.component';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
 import { forkJoin } from 'rxjs';
+import { tabRefFormBackendErrorMessage } from '@shared/utils/helpers';
 
 @Component({
   selector: 'app-movement-action-types',
@@ -291,12 +292,13 @@ export class MovementActionTypesComponent implements OnInit {
       }
     );
     this.btnLoading = false;
+    this.close();
   }
 
   addItems(item: any) {
     this.simpleTabsRef.tabRef = 'movementActionTypes';
     this.btnLoading = '';
-
+    this.loading = true;
     this.simpleTabsRef.addItem(item).subscribe(
       (result: any) => {
         this.close();
@@ -304,12 +306,18 @@ export class MovementActionTypesComponent implements OnInit {
         this.getAllItems();
       },
       (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Ajout', tabRefFormBackendErrorMessage);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+          this.loading = false;
+        }
       }
     );
+    this.close();
   }
 
   visibleItem(data: any) {
+    this.loading = true;
     this.simpleTabsRef.tabRef = 'movementActionTypes';
     data.active = !data.active;
     this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
@@ -324,11 +332,14 @@ export class MovementActionTypesComponent implements OnInit {
 
       (error) => {
         this.addSingle('error', 'Modification', error.error.message);
+        this.loading = false;
       }
     );
+    this.close();
   }
 
   editItems(item: any, id: number) {
+    this.loading = true;
     this.simpleTabsRef.tabRef = 'movementActionTypes';
     this.btnLoading = '';
     this.simpleTabsRef.editItem(item, id).subscribe(
@@ -338,9 +349,14 @@ export class MovementActionTypesComponent implements OnInit {
         this.getAllItems();
       },
       (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Modification', tabRefFormBackendErrorMessage);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+          this.loading = false;
+        }
       }
     );
+    this.close();
   }
 
   addSingle(type: string, sum: string, msg: string) {
