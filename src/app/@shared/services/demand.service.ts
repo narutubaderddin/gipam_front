@@ -21,16 +21,16 @@ export class DemandService {
       name: 'Acceptée',
     },
     {
+      id: 'Partiellement_acceptée',
+      name: 'Partiellement acceptée',
+    },
+    {
       id: 'Refusée',
       name: 'Refusée',
     },
     {
       id: 'Annulée',
       name: 'Annulée',
-    },
-    {
-      id: 'Partiellement_acceptée',
-      name: 'Partiellement acceptée',
     },
   ];
   constructor(private http: HttpClient) {}

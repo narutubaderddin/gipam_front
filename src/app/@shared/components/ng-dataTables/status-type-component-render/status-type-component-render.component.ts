@@ -17,5 +17,26 @@ export class StatusTypeComponentRenderComponent implements OnInit {
     } else {
       this.class = 'class2';
     }
+    switch (this.value){
+      case 'Dépôt':
+        this.class = 'class1';
+        break;
+      case 'Prorièté':
+      case 'Partiellement acceptée':
+        this.class = 'class2';
+        break;
+      case 'Refusée':
+        this.class = 'class_refused';
+        break;
+      case 'Annulée':
+        this.class = 'class_canceled';
+        break;
+      case 'En cours':
+        this.class = 'class_in_progress';
+        break;
+      case 'Acceptée':
+        this.class = 'class_accepted';
+        break;
+    }
   }
 }

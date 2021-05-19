@@ -35,6 +35,7 @@
               (filterValue)="onDataTableFilterChange($event)"
               (pageChanged)="pagination($event)"
               (changeRequestStatus)="changeRequestStatus($event)"
+              (sort)="sortEvent($event)"
               [frozenCols]="[]"
               [totalFiltred]="requests.filteredQuantity"
               [total]="requests.totalQuantity"
