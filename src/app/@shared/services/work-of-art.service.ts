@@ -646,6 +646,7 @@ export class WorkOfArtService {
   addSelectedArtWorks(item: any) {
     this._selectedArtWorks.push(item);
     localStorage.setItem('selectedArtWorks', JSON.stringify(this._selectedArtWorks));
+    return this._selectedArtWorks;
   }
 
   getSelectedArtWorks(): any[] {
@@ -661,6 +662,7 @@ export class WorkOfArtService {
   }
 
   removeSelectedArtWorks() {
+    this._selectedArtWorks = [];
     localStorage.removeItem('selectedArtWorks');
   }
   addWorkOfArt(data: any): Observable<any> {

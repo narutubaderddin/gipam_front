@@ -13,26 +13,45 @@ export class InProgressDemandComponent {
     {
       header: 'Date de la demande',
       field: 'createdAt',
+      sortable: true,
+      filter: true,
+      type: 'key',
+      filterType: 'range-date',
     },
     {
       header: 'Bénéficiaire',
       field: 'name',
+      filter: true,
+      filterType: 'text',
     },
     {
       header: 'Demandeur',
       field: 'nameApplicant',
+      filter: true,
+      filterType: 'text',
     },
     {
       header: 'Direction',
       field: 'establishement',
+      filter: true,
+      filterType: 'text',
     },
     {
       header: 'Sous-direction',
       field: 'subDivision',
+      filter: true,
+      filterType: 'text',
     },
     {
       header: 'Status',
       field: 'requestStatus',
+      cellRenderer: 'statusTypeRender',
+      sortable: false,
+      filter: true,
+      type: 'app-status-component-render',
+      filterType: 'multiselect',
+      selectData: this.demandService.statusType,
+      isVisible: true,
     },
   ];
   expandColumns = [
@@ -59,128 +78,27 @@ export class InProgressDemandComponent {
     },
   ];
 
-  products: any[] = [
-    {
-      id: '1000',
-      code: 'f230fh0g3',
-      name: 'Bamboo Watch',
-      description: 'Product Description',
-      image: 'bamboo-watch.jpg',
-      price: 65,
-      category: 'Accessories',
-      quantity: 24,
-      inventoryStatus: 'INSTOCK',
-      date: '2020-09-13',
-      rating: 5,
-      expandData: [
-        {
-          id: '1002',
-          productCode: 'f230fh0g3',
-          date: '2019-01-04',
-          amount: 65,
-          select: 'oui',
-          quantity: 1,
-          customer: 'Juan Alejandro',
-          status: 'RETURNED',
-        },
-        {
-          id: '1003',
-          productCode: 'f230fh0g3',
-          date: '2020-09-13',
-          amount: 195,
-          select: 'oui',
-          quantity: 3,
-          customer: 'Claire Morrow',
-          status: 'CANCELLED',
-        },
-      ],
-    },
-    {
-      id: '1001',
-      code: 'nvklal433',
-      name: 'Black Watch',
-      description: 'Product Description',
-      image: 'black-watch.jpg',
-      price: 72,
-      category: 'Accessories',
-      quantity: 61,
-      inventoryStatus: 'INSTOCK',
-      rating: 4,
-      date: '2019-01-04',
-      expandData: [
-        {
-          id: '2000',
-          productCode: 'nvklal433',
-          date: '2020-05-14',
-          amount: 72,
-          quantity: 1,
-          select: 'non',
-          customer: 'Maisha Jefferson',
-          status: 'DELIVERED',
-        },
-        {
-          id: '2001',
-          productCode: 'nvklal433',
-          date: '2020-02-28',
-          amount: 144,
-          quantity: 2,
-          select: 'oui',
-          customer: 'Octavia Murillo',
-          status: 'PENDING',
-        },
-      ],
-    },
-    {
-      id: '1002',
-      code: 'zz21cz3c1',
-      name: 'Blue Band',
-      description: 'Product Description',
-      image: 'blue-band.jpg',
-      price: 79,
-      category: 'Fitness',
-      quantity: 2,
-      inventoryStatus: 'LOWSTOCK',
-      date: '2020-07-05',
-      rating: 3,
-      expandData: [
-        {
-          id: '3000',
-          productCode: 'zz21cz3c1',
-          date: '2020-07-05',
-          amount: 79,
-          select: 'oui',
-          quantity: 1,
-          customer: 'Stacey Leja',
-          status: 'DELIVERED',
-        },
-        {
-          id: '3001',
-          productCode: 'zz21cz3c1',
-          date: '2020-02-06',
-          amount: 79,
-          select: 'non',
-          quantity: 1,
-          customer: 'Ashley Wickens',
-          status: 'DELIVERED',
-        },
-      ],
-    },
-  ];
 
   requests: any = [];
   loading: boolean = false;
   page: any = 1;
+  filter: any = "";
   constructor(private demandService: DemandService, public sharedService: SharedService) {
     this.getListDemands();
   }
-  getListDemands() {
+  getListDemands(params:any=null) {
     this.loading = true;
 
     let payload: any = {
       page: this.page,
     };
+    let filter = '?limit=5&page='+this.page;
+    if(params){
+      filter+=params;
+    }
 
-    this.demandService.getDemands(payload).subscribe(
+
+    this.demandService.getDemands(filter).subscribe(
       (response) => {
         this.loading = false;
         this.requests = response;
@@ -230,17 +148,38 @@ export class InProgressDemandComponent {
     } else {
       this.requests.page = this.requests.totalQuantity / parseInt(this.requests.size.toString(), 0);
     }
-    this.getListDemands();
+    this.getListDemands(this.filter);
   }
 
   changeRequestStatus(request: any) {
-    this.demandService.changeStatus(request).subscribe((response) => {});
-
-    //const status = event.target.innerHTML === "Valider la demande" ? "Valider" : "Refuser";
-    console.log(request);
-    //console.log(event.target.attributes.id);
-    this.demandService.changeStatus(request).subscribe((response) => {
-      console.log(response);
-    });
+    let payload : any  = {...request};
+    this.demandService.changeStatus(payload).subscribe((response) => {});
   }
+  onDataTableFilterChange(headersFilter: any) {
+    let filter : string = "";
+    if(headersFilter.establishement){
+      filter+='&establishement[contains]='+headersFilter.establishement.value;
+    }
+    if(headersFilter.subDivision){
+      filter+='&subDivision[contains]='+headersFilter.subDivision.value;
+    }
+    if(headersFilter.name){
+      filter+='&search='+headersFilter.name.value;
+    }
+    if(headersFilter.nameApplicant){
+      filter+='&search='+headersFilter.nameApplicant.value;
+    }
+    if(headersFilter.requestStatus){
+      let status : any = [];
+      headersFilter.requestStatus.value.forEach((stat:any)=>{
+        status.push('"'+stat.name+'"');
+      });
+      filter+='&requestStatus[in]=['+status+']';
+    }
+    if(headersFilter.createdAt){
+    }
+    this.filter = filter;
+    this.getListDemands(filter);
+  }
+
 }

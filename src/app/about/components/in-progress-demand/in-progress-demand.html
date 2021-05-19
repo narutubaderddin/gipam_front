@@ -32,6 +32,7 @@
               [singleSelect]="false"
               [loading]="loading"
               frozenWidth="'0px'"
+              (filterValue)="onDataTableFilterChange($event)"
               (pageChanged)="pagination($event)"
               (changeRequestStatus)="changeRequestStatus($event)"
               [frozenCols]="[]"
