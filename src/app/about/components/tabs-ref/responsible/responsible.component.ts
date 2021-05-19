@@ -545,8 +545,6 @@ export class ResponsibleComponent implements OnInit {
     let params = {
       limit: this.limit,
       page: this.page,
-      sort_by: this.sortBy,
-      sort: this.sort,
     };
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);
