@@ -12,7 +12,6 @@ export class InProgressNoticeRendererComponent implements OnInit {
 
   ngOnInit(): void {}
   goToCreation(value: any) {
-    console.log(value);
-    this.router.navigate(['/creation-notice/propriété']);
+    this.router.navigate(['/creation-notice/propriété'], { queryParams: { id: this.value.id } });
   }
 }

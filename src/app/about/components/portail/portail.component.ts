@@ -408,7 +408,7 @@ export class PortailComponent implements OnInit {
     if (this.formModesValues && this.formModesValues.length == 1) {
       mode = this.formModesValues[0];
     }
-    return  {
+    return {
       height: height,
       width: width,
       weight: weight,
@@ -622,7 +622,7 @@ export class PortailComponent implements OnInit {
   }
 
   exportArtWorks() {
-    let filter : any = {};
+    let filter: any = {};
     filter = this.extractedFilterOeuvres();
     filter.limit = this.totalOeuvres;
     delete filter['page'];

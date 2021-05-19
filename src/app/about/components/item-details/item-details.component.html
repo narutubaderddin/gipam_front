@@ -29,8 +29,8 @@
                 Titre de l'Oeuvre
                 <span
                   class="type"
-                  [ngStyle]="type == 'propiete' ? { backgroundColor: '#00D6D4' } : { backgroundColor: '#0080FF' }"
-                  >{{ type == 'propiete' ? 'Propriété' : 'Dépot' }}</span
+                  [ngStyle]="addProperty? { backgroundColor: '#00D6D4' } : { backgroundColor: '#0080FF' }"
+                  >{{ addProperty? 'Propriété' : 'Dépot' }}</span
                 >
               </div>
               <div class="col-md-4 col-xs-12 mt-2 mt-md-0 icons p-0">
@@ -51,6 +51,7 @@
                   <div class="detail-image">
                     <div class="col-md-12 d-flex p-0 img-wrapper mt-2 mt-sm-0">
                       <app-item-images
+                        *ngIf="photographies.length"
                         [photographiesForm]="photographiesForm"
                         [edit]="edit"
                         [images]="photographies"
@@ -58,7 +59,7 @@
                         class="col-12"
                       ></app-item-images>
                     </div>
-                    <i class="fas fa-eye" title="voir image" (click)="showImg()"></i>
+                    <i class="fas fa-eye" title="voir image" (click)="showImg()" *ngIf="photographies.length"></i>
                   </div>
                 </div>
                 <!--Modal-->
@@ -75,8 +76,9 @@
                           <a ngbNavLink><i class="far fa-file-alt mr-2"></i>Descriptifs physiques</a>
                           <ng-template ngbNavContent>
                             <app-descritif
+                              *ngIf="workArt"
                               [edit]="edit"
-                              [artwork]="artwork"
+                              [artwork]="workArt"
                               [addProperty]="false"
                               [addDepot]="false"
                               [descriptifForm]="descriptifForm"
@@ -89,7 +91,10 @@
                             <app-status
                               [edit]="edit"
                               [depositStatusForm]="depositStatusForm"
-                              [addDeposit]="true"
+                              [propertyStatusForm]="propertyStatusForm"
+                              [addDeposit]="addDepot"
+                              [addProperty]="addProperty"
+                              [statusData]="status"
                             ></app-status>
                           </ng-template>
                         </ng-container>
@@ -110,14 +115,25 @@
                           [attachmentForm]="attachmentForm"
                           [add]="false"
                           [itemDetails]="true"
+                          [existingAttachments]="attachments"
                         ></app-attachments>
                       </div>
                       <div class="attachments-container ml-2 col-md-5 p-0 mt-2 mt-xl-0">
-                        <app-links style="width: 100%" [add]="false" [itemDetails]="true"></app-links>
+                        <app-links
+                          style="width: 100%"
+                          [parentLink]="parent"
+                          [children]="children"
+                          [add]="false"
+                          [itemDetails]="true"></app-links>
                       </div>
                     </div>
                     <div class="attachments-container col-md-12 p-0 row m-0 align-baseline">
-                      <app-hypertext-links style="width: 100%" [add]="false" [itemDetails]="true" class="mt-2 mb-2">
+                      <app-hypertext-links
+                        style="width: 100%"
+                        [add]="false"
+                        [itemDetails]="true"
+                        [existingLinks]="hypertextLinks"
+                       class="mt-2 mb-2">
                       </app-hypertext-links>
                     </div>
                   </div>
@@ -141,3 +157,4 @@
     <br />
   </div>
 </div>
+<p-toast></p-toast>

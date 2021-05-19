@@ -14,7 +14,8 @@ export class LinksComponent implements OnInit {
   @Input() linkArtWorkForm: FormGroup;
   @Input() add: false;
   @Input() itemDetails: boolean = false;
-
+  @Input() parentLink: any='';
+  @Input() children: any = '';
   addLinks: boolean = false;
   artWorksData: any[] = [];
   page = 1;
@@ -89,7 +90,6 @@ export class LinksComponent implements OnInit {
   }
   addLink() {
     this.existingLinks.push({
-      // i: this.photographyInsertionNumber,
       url: 'string',
       name: 'string',
     });

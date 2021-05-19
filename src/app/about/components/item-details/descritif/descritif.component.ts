@@ -1,5 +1,5 @@
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FieldsService } from '@shared/services/fields.service';
@@ -14,7 +14,7 @@ import { forkJoin } from 'rxjs';
   templateUrl: './descritif.component.html',
   styleUrls: ['./descritif.component.scss'],
 })
-export class DescritifComponent implements OnInit {
+export class DescritifComponent implements OnInit, OnChanges {
   domains: any;
   @Input() keyword: string;
   @Input() edit = false;
@@ -22,10 +22,11 @@ export class DescritifComponent implements OnInit {
   @Input() addProperty = true;
   @Input() descriptifForm: FormGroup;
   @Input() artwork: any;
+
   items: any = [];
   domain = '';
   denominations: any;
-  denomination: any;
+  // denomination: any;
   selectedDomain = '';
   isCollapsed = true;
   dropdownSettings: IDropdownSettings;
@@ -40,19 +41,50 @@ export class DescritifComponent implements OnInit {
   eraData: any[];
   entryModesData: any[];
   materialTechniques: any;
+  attributeToShow: any;
   constructor(
     private fieldService: FieldsService,
     private denominationsService: DenominationsService,
     private styleService: StylesService,
     private simpleTabsRefService: SimpleTabsRefService,
     private materialTechniqueService: MaterialTechniqueService,
-    public fb: FormBuilder
+    public fb: FormBuilder,
+    private workOfArtService: WorkOfArtService
   ) {}
+  get item() {
+    console.log(this.artwork);
+    return this.artwork;
+  }
+  get field() {
+    return this.descriptifForm.get('field').value;
+  }
+  get denomination() {
+    return this.descriptifForm.get('denomination').value;
+  }
 
+  getAttributes() {
+    let field = this.artwork.field.id;
+    let denomination = this.artwork.denomination.id;
+    if (this.edit) {
+      field = this.field;
+      denomination = this.denomination;
+    }
+    this.workOfArtService.getAttributes(field, denomination).subscribe((result) => {
+      this.attributeToShow = result;
+      console.log('attributeToShow', result);
+    });
+  }
   ngOnInit(): void {
+    this.getAttributes();
     this.initFilterData();
     this.initData();
   }
+  ngOnChanges() {
+    if (this.artwork) {
+      console.log('artwork', this.artwork);
+    }
+  }
+
   get f() {
     return this.descriptifForm.controls;
   }

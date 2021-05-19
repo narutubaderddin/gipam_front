@@ -48,6 +48,7 @@ import { RoomsComponent } from '@app/about/components/tabs-ref/rooms/rooms.compo
 import { AuthorsComponent } from '@app/about/components/tabs-ref/authors/authors.component';
 import { ReportModelsComponent } from '@app/about/components/tabs-ref/report-models/report-models.component';
 import { ReservesComponent } from '@app/about/components/tabs-ref/reserves/reserves.component';
+import { AddRemarquerResolver } from '@app/about/components/add-remarquer/add-remarquer-resolver';
 
 const routes: Routes = [
   {
@@ -56,7 +57,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'accueil', pathMatch: 'full' },
       { path: 'accueil', component: AdministratorHomePageComponent, data: { title: 'Accueil' } },
-      { path: 'details', component: ItemDetailsComponent },
+      { path: 'details/:id', component: ItemDetailsComponent },
       { path: 'portail-details/:id', component: PortailItemDetailsComponent },
       {
         path: 'oeuvres-list',
@@ -77,10 +78,14 @@ const routes: Routes = [
       { path: 'notices-list', component: NoticeListComponent },
       { path: 'recolements-list', component: RecolementListComponent },
       { path: 'alerts-list', component: AlertListComponent },
-      { path: 'tab-ref-domaine', component: DomainsComponent },
-      { path: 'tab-ref-dénomination', component: DenominationsComponent },
-      { path: 'tab-ref-style', component: StylesComponent },
-      { path: 'tab-ref-matière', component: MaterialTechniqueComponent },
+      { path: 'tab-ref-domaine', component: DomainsComponent, data: { title: 'Liste des domaines' } },
+      { path: 'tab-ref-dénomination', component: DenominationsComponent, data: { title: 'Liste des dénomination' } },
+      { path: 'tab-ref-style', component: StylesComponent, data: { title: 'Liste des styles' } },
+      {
+        path: 'tab-ref-matière',
+        component: MaterialTechniqueComponent,
+        data: { title: 'Liste des matières et techniques' },
+      },
       { path: 'tab-ref-type-déposant', component: DepositTypesComponent, data: { title: 'Liste des types déposant' } },
       { path: 'tab-ref-type-constat', component: ReportTypesComponent, data: { title: 'Liste des types constat' } },
       {
@@ -109,15 +114,27 @@ const routes: Routes = [
         component: RegionsComponent,
         data: { title: 'Liste des régions' },
       },
-      { path: 'tab-ref-époque', component: EpoquesComponent },
-      { path: 'tab-ref-type-mouvement', component: TypeMvtComponent },
-      { path: 'tab-ref-type-action-mouvement', component: MovementActionTypesComponent },
-      { path: 'tab-ref-sous-type-constat', component: ReportSubTypesComponent },
-      { path: 'tab-ref-ministère', component: MinistryComponent },
-      { path: 'tab-ref-bâtiment', component: BuildingsComponent },
-      { path: 'tab-ref-commune', component: CommunesComponent },
-      { path: 'tab-ref-departement', component: DepartmentsComponent },
-      { path: 'tab-ref-type-localisation', component: LocalisationTypeComponent },
+      { path: 'tab-ref-époque', component: EpoquesComponent, data: { title: 'Liste des époques' } },
+      { path: 'tab-ref-type-mouvement', component: TypeMvtComponent, data: { title: 'Liste des types mouvements' } },
+      {
+        path: 'tab-ref-type-action-mouvement',
+        component: MovementActionTypesComponent,
+        data: { title: 'Liste des types mouvement-actions' },
+      },
+      {
+        path: 'tab-ref-sous-type-constat',
+        component: ReportSubTypesComponent,
+        data: { title: 'Liste des sous-types constat' },
+      },
+      { path: 'tab-ref-ministère', component: MinistryComponent, data: { title: 'Liste des minitères' } },
+      { path: 'tab-ref-bâtiment', component: BuildingsComponent, data: { title: 'Liste des bâtiments' } },
+      { path: 'tab-ref-commune', component: CommunesComponent, data: { title: 'Liste des communes' } },
+      { path: 'tab-ref-departement', component: DepartmentsComponent, data: { title: 'Liste des départements' } },
+      {
+        path: 'tab-ref-type-localisation',
+        component: LocalisationTypeComponent,
+        data: { title: 'Liste des types localisation' },
+      },
 
       {
         path: 'tab-ref-service',
@@ -179,8 +196,12 @@ const routes: Routes = [
         component: ReservesComponent,
         data: { title: 'Liste des réserves' },
       },
-      { path: 'tab-ref-correspondant', component: CorrespondentsComponent },
-      { path: 'tab-ref-responsable', component: ResponsibleComponent },
+      {
+        path: 'tab-ref-correspondant',
+        component: CorrespondentsComponent,
+        data: { title: 'Liste des correspondants' },
+      },
+      { path: 'tab-ref-responsable', component: ResponsibleComponent, data: { title: 'Liste des responsables' } },
     ],
   },
 ];

@@ -1,12 +1,11 @@
 <div class="form-bloc">
-  <h5 class="col-md-12"><i class="far fa-calendar-alt"></i> Status</h5>
+  <h5 class="col-md-12"><i class="far fa-calendar-alt"></i> Statut</h5>
   <div class="form-bloc pl-0" *ngIf="addDeposit">
     <div class="form-bloc pl-0" *ngIf="addDeposit" [formGroup]="depositStatusForm">
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
         <label class="">Date de dépôt</label>
-        <div class="autocomplete form-control value col-12 col-sm-7">
+        <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
           <p-calendar
-            *ngIf="edit"
             class="col-md-12"
             [style]="{ minWidth: '100%' }"
             formControlName="depositDate"
@@ -14,7 +13,7 @@
             inputId="icon"
           ></p-calendar>
         </div>
-        <div class="value" *ngIf="!edit">12/01/2020</div>
+        <div class="value" *ngIf="!edit">{{statusData.depositDate|date: viewDateFormat}}</div>
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
         <label class="">N° arrêt</label>
@@ -25,7 +24,7 @@
           formControlName="stopNumber"
           placeholder="N° arrêt"
         />
-        <p class="value" *ngIf="!edit">11111</p>
+        <p class="value" *ngIf="!edit">{{statusData.stopNumber}}</p>
       </div>
     </div>
 
@@ -44,7 +43,7 @@
           defaultLabel="Sélectionner des déposants"
         >
         </p-multiSelect>
-        <div class="value" *ngIf="!edit">Déposant 1</div>
+        <div class="value" *ngIf="!edit">{{statusData.depsitorName}}</div>
       </div>
       <div class="col-md-4 link" *ngIf="edit">
         <a href="">Ajouter un nouveau déposant</a>
@@ -61,13 +60,13 @@
         *ngIf="edit"
         formControlName="insuranceValue"
       />
-      <p class="value" *ngIf="!edit">111111</p>
+      <p class="value" *ngIf="!edit">{{statusData.insuranceValue}}</p>
     </div>
     <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
       <label class="col-sm-4">Date d'assurrance</label>
-      <div class="autocomplete form-control value col-12 col-sm-7">
+      <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
         <p-calendar
-          *ngIf="edit"
+
           class="col-md-12"
           [style]="{ minWidth: '100%' }"
           formControlName="insuranceValueDate"
@@ -75,7 +74,7 @@
           inputId="icon"
         ></p-calendar>
       </div>
-      <div class="value" *ngIf="!edit">12/01/2020</div>
+      <div class="value" *ngIf="!edit">{{statusData.insuranceValueDate|date: viewDateFormat}}</div>
     </div>
 
     <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
@@ -90,15 +89,17 @@
           [filter]="true"
           defaultLabel="Sélectionner un mode d'entrée"
           formControlName="entryMode"
+          *ngIf="edit"
         >
         </p-dropdown>
       </div>
+      <div class="value" *ngIf="!edit">{{statusData.entryMode}}</div>
     </div>
     <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
       <label class="col-sm-4">Date d'entrée</label>
-      <div class="autocomplete form-control value col-12 col-sm-7">
+      <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
         <p-calendar
-          *ngIf="edit"
+
           class="col-md-12"
           [style]="{ minWidth: '100%' }"
           formControlName="entryDate"
@@ -106,11 +107,11 @@
           inputId="icon"
         ></p-calendar>
       </div>
-      <div class="value" *ngIf="!edit">12/01/2020</div>
+      <div class="value" *ngIf="!edit">{{statusData.entryDate|date: viewDateFormat}}</div>
     </div>
     <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
       <label class="col-sm-4">Catégorie de bien</label>
-      <div class="d-flex value col-12 col-sm-7 p-0">
+      <div class="d-flex value col-12 col-sm-7 p-0" *ngIf="edit">
         <p-dropdown
           class="select col-md-12 col-sm-12 p-sm-0 col-12"
           [style]="{ width: '100%' }"
@@ -123,6 +124,8 @@
         >
         </p-dropdown>
       </div>
+      <div class="value" *ngIf="!edit">{{statusData.category}}</div>
+
     </div>
   </div>
 </div>

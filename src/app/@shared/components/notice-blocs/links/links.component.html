@@ -1,14 +1,14 @@
 <div class="col-md-12 pl-0">
   <div class="col-md-12 p-0">
     <h5 class="pl-0">Liens avec oeuvres</h5>
-    <div class="d-flex justify-content-end" *ngIf="(addLinks || existingLinks.length) && !add">
+    <div class="d-flex justify-content-end" *ngIf="(addLinks || existingLinks.length) && !parentLink && !add">
       <button class="btn add-action col-7" (click)="addNewLinks()">
         <i class="fas fa-plus mr-2"></i>Ajouter fait partie de
       </button>
     </div>
 
     <ol class="rounded-list" *ngIf="!add">
-      <li *ngIf="addLinks || existingLinks.length || add">Fait partie de:</li>
+      <li *ngIf="addLinks || existingLinks.length || parentLink|| add">Fait partie de:</li>
       <li *ngIf="addLinks">
         <p-autoComplete
           #autocompletePanel
@@ -30,10 +30,10 @@
           <button (click)="addLink()" class="valid-btn">Valider</button>
         </div>
       </li>
-      <ng-template ngFor let-item pTemplate="item" [ngForOf]="existingLinks" let-i="index">
-        <li>
+      <ng-template ngFor let-item pTemplate="item" [ngForOf]="parentLink" let-i="index">
+        <li *ngIf="parentLink">
           <span
-            ><a href="#">{{ item.url }}</a> | {{ item.name }}
+            ><a href="#">{{ item.name }}</a>
             <div>
               <i class="far fa-edit col-1 mr-2" (click)="editLink()" pTooltip="Modifier" tooltipPosition="top"></i>
               <i
@@ -47,7 +47,7 @@
           </span>
         </li>
       </ng-template>
-      <li>
+      <li *ngIf="children">
         Composé de :
         <ol>
           <li>

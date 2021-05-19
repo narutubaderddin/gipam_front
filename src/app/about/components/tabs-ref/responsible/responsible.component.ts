@@ -8,7 +8,14 @@ import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
-import { datePickerDateFormat, dateTimeFormat } from '@shared/utils/helpers';
+import {
+  datePickerDateFormat,
+  dateTimeFormat,
+  getMultiSelectIds,
+  markAsDirtyDeep,
+  oneOfTheseFields,
+  towDatesCompare,
+} from '@shared/utils/helpers';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -39,11 +46,44 @@ export class ResponsibleComponent implements OnInit {
     startDate: '';
     endDate: '';
   };
+
+  relatedEntities: {
+    regions: any[];
+    departments: any[];
+    communes: any[];
+    sites: any[];
+    buildings: any[];
+  } = {
+    regions: [],
+    departments: [],
+    communes: [],
+    sites: [],
+    buildings: [],
+  };
+
+  selectedRelated: {
+    region: any;
+    departments: any[];
+    commune: any;
+    site: any;
+    buildings: any[];
+  } = {
+    region: null,
+    departments: [],
+    commune: null,
+    site: null,
+    buildings: [],
+  };
+
   buildings: any[] = [];
+  departments: any[] = [];
+  regions: any[] = [];
 
   activeBuildings: any[] = [];
 
+  selectedRegion: any;
   selectedBuildings: any[] = [];
+  selectedDepartments: any[] = [];
 
   itemToEdit: any;
   itemToDelete: string;
@@ -75,14 +115,35 @@ export class ResponsibleComponent implements OnInit {
   today: string;
 
   relatedBuildingsColumn = {
-    header: 'Bâtiment',
+    header: 'Bâtiments',
     field: 'buildings',
-    type: 'key-array',
-    key_data: ['buildings', 'name'],
+    type: 'key-multiple-data',
+    key_multiple_data: ['buildings', 'name'],
     filter: true,
     filterType: 'multiselect',
-    placeholder: 'Bâtiments',
+    placeholder: 'Filtrer par bâtiments',
     selectData: this.buildings,
+  };
+
+  relatedRegionColumn = {
+    header: 'Region',
+    field: 'region',
+    type: 'key-array',
+    key_data: ['region', 'name'],
+    filter: true,
+    filterType: 'multiselect',
+    placeholder: 'Filtrer par régions',
+    selectData: this.regions,
+  };
+  relatedDepartmentsColumn = {
+    header: 'Départements',
+    field: 'departments',
+    type: 'key-multiple-data',
+    key_multiple_data: ['departments', 'name'],
+    filter: true,
+    filterType: 'multiselect',
+    placeholder: 'Filtrer par départements',
+    selectData: this.departments,
   };
 
   columns = [
@@ -135,7 +196,9 @@ export class ResponsibleComponent implements OnInit {
       filterType: 'text',
       sortable: true,
     },
-
+    this.relatedRegionColumn,
+    this.relatedDepartmentsColumn,
+    this.relatedBuildingsColumn,
     {
       header: 'Date début de validité',
       field: 'startDate',
@@ -194,32 +257,49 @@ export class ResponsibleComponent implements OnInit {
       datePickerDateFormat
     );
     this.tabForm = this.fb.group({
-      firstName: [this.selectedItem ? this.selectedItem.firstName : '', [Validators.required]],
-      lastName: [this.selectedItem ? this.selectedItem.lastName : '', [Validators.required]],
+      firstName: [this.selectedItem ? this.selectedItem.firstName : null, [Validators.required]],
+      lastName: [this.selectedItem ? this.selectedItem.lastName : null, [Validators.required]],
 
       login: [this.selectedItem ? this.selectedItem.login : '', []],
 
-      phone: [this.selectedItem ? this.selectedItem.phone : '', []],
-      fax: [this.selectedItem ? this.selectedItem.fax : '', []],
-      mail: [this.selectedItem ? this.selectedItem.mail : '', [Validators.email]],
+      phone: [this.selectedItem ? this.selectedItem.phone : '', [Validators.required]],
+      fax: [this.selectedItem ? this.selectedItem.fax : '', [Validators.required]],
+      mail: [this.selectedItem ? this.selectedItem.mail : '', [Validators.required, Validators.email]],
       startDate: [startDate, [Validators.required]],
       endDate: [disappearanceDate, []],
-      buildings: [this.selectedBuildings ? this.selectedBuildings : { name: '' }, []],
+      region: [this.selectedRegion, []],
+      buildings: [
+        {
+          value: this.selectedBuildings,
+          disabled: !this.selectedRelated.commune && !this.selectedRelated.site && this.selectedBuildings.length === 0,
+        },
+        [],
+      ],
+      departments: [this.selectedDepartments, []],
     });
-    this.tabForm.setValidators(this.ValidateDate());
+    this.tabForm.setValidators([
+      towDatesCompare('startDate', 'endDate'),
+      oneOfTheseFields('region', 'departments', 'buildings'),
+    ]);
   }
+
   initFilterData() {
     const data = {
       page: 1,
       'active[eq]': 1,
       serializer_group: JSON.stringify(['response', 'short']),
     };
-    forkJoin([this.simpleTabsRef.getAllItems(data, 'buildings')]).subscribe(
-      ([relatedServicesResults]) => {
-        this.buildings = this.simpleTabsRef.getTabRefFilterData(relatedServicesResults.results);
-        this.activeBuildings = this.simpleTabsRef
-          .getTabRefFilterData(relatedServicesResults.results)
-          .filter((value: any) => this.isActive(value.disappearanceDate));
+    forkJoin([
+      this.simpleTabsRef.getAllItems(data, 'regions'),
+      this.simpleTabsRef.getAllItems(data, 'departments'),
+      this.simpleTabsRef.getAllItems(data, 'buildings'),
+    ]).subscribe(
+      ([regionsResults, departmentsResults, buildingsResults]) => {
+        this.regions = this.simpleTabsRef.getTabRefFilterData(regionsResults.results);
+        this.relatedRegionColumn.selectData = this.regions;
+        this.departments = this.simpleTabsRef.getTabRefFilterData(departmentsResults.results);
+        this.relatedDepartmentsColumn.selectData = this.departments;
+        this.buildings = this.simpleTabsRef.getTabRefFilterData(buildingsResults.results);
         this.relatedBuildingsColumn.selectData = this.buildings;
       },
       (error: any) => {
@@ -228,74 +308,96 @@ export class ResponsibleComponent implements OnInit {
     );
   }
 
+  initFormDropdowns() {
+    const data = {
+      page: 1,
+      serializer_group: JSON.stringify(['short']),
+      'disappearanceDate[gtOrNull]': this.datePipe.transform(new Date(), dateTimeFormat),
+    };
+    forkJoin([
+      this.simpleTabsRef.getAllItems(data, 'regions'),
+      this.simpleTabsRef.getAllItems(data, 'departments'),
+    ]).subscribe(
+      ([regionsResults, departmentsResults]) => {
+        this.relatedEntities.regions = regionsResults.results;
+        this.relatedEntities.departments = departmentsResults.results;
+      },
+      (error: any) => {
+        this.addSingle('error', 'Erreur Technique', 'Une erreur technique est survenue');
+      }
+    );
+  }
+
   openModal(item: any) {
+    this.resetRelatedEntities();
+    this.initFormDropdowns();
     this.btnLoading = null;
 
-    if (this.editItem || this.addItem) {
-      this.initFilterData();
-    }
     if (this.editItem || this.editVisibility) {
       this.itemToEdit = item;
       this.itemLabel = item.firstName + ' ' + item.lastName;
-      if (item.buildings) {
-        item.buildings.map((el: any) => {
-          this.selectedBuildings.push({ id: el.id, name: el.name });
-        });
-      }
+      this.selectedDepartments = item.departments;
+      this.selectedRegion = item.region;
+      this.relatedEntities.departments = item.departments;
+      this.selectedBuildings = item.buildings;
+      this.relatedEntities.buildings = item.buildings;
+      this.tabForm.get('departments').enable();
+      this.tabForm.get('buildings').enable();
     }
     this.selectedItem = item;
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
 
-  onSelectBuildings(event: Event) {}
-  onSelectAll(items: any) {}
-
-  ValidateDate(): ValidatorFn {
-    return (cc: FormGroup): ValidationErrors => {
-      if (!cc.get('startDate')) {
-        return null;
-      }
-      if (cc.get('startDate').value > cc.get('endDate').value) {
-        return { dateInvalid: 'Date début supérieur date fin' };
-      }
-      return null;
-    };
-  }
-
-  transformDateToDateTime(input: string, format: string, addTime: boolean = true) {
-    // 1984-06-05 12:15:30
-    if (input !== '' && input) {
-      if (addTime) {
-        return this.datePipe.transform(input, format) + ' 00:00:00';
-      }
-      return this.datePipe.transform(input, format);
-    }
-    return '';
-  }
-
   submit() {
+    if (this.tabForm.invalid) {
+      markAsDirtyDeep(this.tabForm);
+      this.addSingle('error', 'Erreur', 'Veuillez vérifier tous les champs encadrés en rouge');
+      if (this.tabForm.errors?.oneOfTheseFields) {
+        this.addSingle(
+          'error',
+          'Erreur',
+          'Un responsable doit avoir au moins une Région ou un Département ou un Bâtiment'
+        );
+      }
+      if (this.tabForm.errors?.dateInvalid) {
+        this.addSingle('error', 'Erreur', this.tabForm.errors.dateInvalid);
+      }
+      return;
+    }
+
     this.btnLoading = null;
-    const selectedBuildings: any[] = [];
-    this.tabForm.value.buildings.map((el: any) => selectedBuildings.push(el.id));
+    // this.tabForm.value.buildings.map((el: any) => selectedBuildings.push(el.id));
 
-    const item = {
-      firstName: this.tabForm.value.firstName,
-      lastName: this.tabForm.value.lastName,
-
-      login: this.tabForm.value.login,
-      phone: this.tabForm.value.phone,
-      fax: this.tabForm.value.fax,
-      mail: this.tabForm.value.mail,
-      buildings: selectedBuildings,
-      startDate: this.datePipe.transform(this.tabForm.value.startDate, dateTimeFormat),
-      endDate: this.datePipe.transform(this.tabForm.value.endDate, dateTimeFormat),
-    };
+    let item = {};
+    if (this.addItem || this.editItem) {
+      item = {
+        firstName: this.tabForm.value.firstName,
+        lastName: this.tabForm.value.lastName,
+        login: this.tabForm.value.login,
+        phone: this.tabForm.value.phone,
+        fax: this.tabForm.value.fax,
+        mail: this.tabForm.value.mail,
+        region: this.tabForm.value.region?.id,
+        departments: getMultiSelectIds(this.tabForm.value.departments),
+        buildings: getMultiSelectIds(this.tabForm.value.buildings),
+        startDate: this.datePipe.transform(this.tabForm.value.startDate, dateTimeFormat),
+        endDate: this.datePipe.transform(this.tabForm.value.endDate, dateTimeFormat),
+      };
+    }
     if (this.addItem) {
       this.addItems(item);
+      return;
+    }
+    if (this.editVisibility) {
+      item = {
+        startDate: this.datePipe.transform(this.tabForm.value.startDate, dateTimeFormat),
+        endDate: this.datePipe.transform(this.tabForm.value.endDate, dateTimeFormat),
+      };
     }
     if (this.editItem || this.editVisibility) {
       this.editField(item, this.itemToEdit.id);
+      return;
     }
   }
 
@@ -304,6 +406,8 @@ export class ResponsibleComponent implements OnInit {
     this.addItem = false;
     this.deleteItems = false;
     this.editVisibility = false;
+    this.selectedDepartments = [];
+    this.selectedRegion = null;
     this.selectedBuildings = [];
     this.myModal.dismiss('Cross click');
   }
@@ -327,7 +431,6 @@ export class ResponsibleComponent implements OnInit {
   addItemAction() {
     this.addItem = true;
     this.selectedItem = null;
-    this.selectedBuildings = [];
 
     this.openModal('');
   }
@@ -352,8 +455,88 @@ export class ResponsibleComponent implements OnInit {
     this.openModal(item);
   }
 
+  getDropdownData(entity: string, relatedEntityName?: string, relatedEntity?: any) {
+    const params = {
+      page: 1,
+      serializer_group: JSON.stringify(['short']),
+      'disappearanceDate[gtOrNull]': this.datePipe.transform(new Date(), dateTimeFormat),
+    };
+    if (relatedEntity) {
+      if (!Array.isArray(relatedEntity)) {
+        params[relatedEntityName + '[eq]'] = relatedEntity.id;
+      } else {
+        params[relatedEntityName + '[in]'] = getMultiSelectIds(relatedEntity);
+      }
+    }
+
+    this.resetRelatedEntities(relatedEntityName);
+    entity = entity + 's';
+    this.relatedEntities[entity] = [];
+    this.simpleTabsRef.getAllItems(params, entity).subscribe((dataResult) => {
+      this.relatedEntities[entity] = dataResult.results;
+    });
+  }
+
+  resetRelatedEntities(relatedEntityName?: string) {
+    if (!relatedEntityName) {
+      Object.keys(this.selectedRelated).forEach((key) => {
+        this.selectedRelated[key] = null;
+      });
+      Object.keys(this.relatedEntities).forEach((key) => {
+        this.relatedEntities[key] = [];
+      });
+    }
+    if (relatedEntityName === 'region') {
+      this.tabForm.get('departments').setValue(null);
+      this.tabForm.get('departments').enable();
+    }
+    if (relatedEntityName === 'site') {
+      this.tabForm.get('buildings').setValue(null);
+      this.tabForm.get('buildings').enable();
+      this.relatedEntities.communes = [];
+      this.selectedRelated.commune = null;
+    }
+    if (relatedEntityName === 'commune') {
+      this.tabForm.get('buildings').setValue(null);
+      this.tabForm.get('buildings').enable();
+      this.relatedEntities.sites = [];
+      this.selectedRelated.site = null;
+    }
+  }
+
+  autoComplete(event: any, entity: string, field: string) {
+    const params = {
+      page: 1,
+      serializer_group: JSON.stringify(['short']),
+    };
+    params[field + '[startsWith]'] = event.query;
+    entity = entity + 's';
+    this.simpleTabsRef.getAllItems(params, entity).subscribe((dataResult) => {
+      this.relatedEntities[entity] = dataResult.results;
+    });
+  }
+
+  autoCompleteCommune(event: any, entity: string, field: string) {
+    const params = {
+      page: 1,
+      serializer_group: JSON.stringify(['short', 'response']),
+      search: event.query,
+    };
+    params[field + '[startsWith]'] = event.query;
+    if (this.tabForm.get('region').value) {
+      params['region'] = JSON.stringify([this.tabForm.get('region').value.id]);
+    }
+    if (this.tabForm.get('departments').value && this.tabForm.get('departments').value.length !== 0) {
+      params['department'] = JSON.stringify(getMultiSelectIds(this.tabForm.get('departments').value));
+    }
+    entity = entity + 's';
+    this.simpleTabsRef.getItemsByCriteria(params, entity).subscribe((dataResult) => {
+      this.relatedEntities[entity] = dataResult.results;
+    });
+  }
+
   isActive(endDate: string) {
-    const today = this.datePipe.transform(new Date(), 'yyyy/MM/dd');
+    const today = this.datePipe.transform(new Date(), datePickerDateFormat);
     return !(endDate !== '' && endDate && endDate <= today);
   }
 
@@ -372,7 +555,7 @@ export class ResponsibleComponent implements OnInit {
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results.map((item: any) => {
-          return Object.assign({ active: this.isActive(item.disappearanceDate) }, item);
+          return Object.assign({ active: this.isActive(item.endDate) }, item);
         });
 
         this.totalFiltred = result.filteredQuantity;
@@ -435,7 +618,12 @@ export class ResponsibleComponent implements OnInit {
         this.addItem = false;
       },
       (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
+        if (error.error.code !== 400) {
+          this.addSingle('error', 'Ajout', error.error.message);
+        } else {
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        }
+        this.btnLoading = null;
       }
     );
   }
@@ -453,9 +641,13 @@ export class ResponsibleComponent implements OnInit {
         this.getAllItems();
         this.editItem = false;
       },
-
       (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
+        if (error.error.code !== 400) {
+          this.addSingle('error', 'Modification', error.error.message);
+        } else {
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        }
+        this.btnLoading = null;
       }
     );
   }
@@ -492,6 +684,7 @@ export class ResponsibleComponent implements OnInit {
     this.dataTableSearchBar = { search: input };
     this.getAllItems();
   }
+
   ClearSearch(event: Event, input: string) {
     if (!event['inputType']) {
       this.search(input);

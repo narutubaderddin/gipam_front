@@ -7,6 +7,7 @@ import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 import { ModalTabsRefComponent } from '@app/about/components/tabs-ref/modal-tabs-ref/modal-tabs-ref.component';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { tabRefFormBackendErrorMessage } from '@shared/utils/helpers';
 
 @Component({
   selector: 'app-type-mvt',
@@ -239,6 +240,7 @@ export class TypeMvtComponent implements OnInit {
       }
     );
     this.btnLoading = false;
+    this.close();
   }
 
   addItems(item: any) {
@@ -250,12 +252,17 @@ export class TypeMvtComponent implements OnInit {
         this.getAllItems();
       },
       (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Ajout', tabRefFormBackendErrorMessage);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        }
       }
     );
+    this.close();
   }
 
   visibleItem(data: any) {
+    this.loading = true;
     data.active = !data.active;
     this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
       (result) => {
@@ -269,8 +276,10 @@ export class TypeMvtComponent implements OnInit {
 
       (error) => {
         this.addSingle('error', 'Modification', error.error.message);
+        this.loading = false;
       }
     );
+    this.close();
   }
 
   editItems(item: any, id: number) {
@@ -283,9 +292,13 @@ export class TypeMvtComponent implements OnInit {
       },
 
       (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Modification', tabRefFormBackendErrorMessage);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        }
       }
     );
+    this.close();
   }
 
   addSingle(type: string, sum: string, msg: string) {

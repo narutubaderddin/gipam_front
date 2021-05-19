@@ -103,12 +103,12 @@ export class InProgressDemandComponent {
         this.loading = false;
         this.requests = response;
         this.requests.results = this.requests.results.map((elm: any) => {
-          let nameApplicant : string = "";
-          if(elm.firstNameApplicant){
-            nameApplicant+=elm.firstNameApplicant;
+          let nameApplicant: string = '';
+          if (elm.firstNameApplicant) {
+            nameApplicant += elm.firstNameApplicant;
           }
-          if(elm.lastNameApplicant){
-            nameApplicant+=elm.lastNameApplicant;
+          if (elm.lastNameApplicant) {
+            nameApplicant += elm.lastNameApplicant;
           }
           return {
             ...elm,

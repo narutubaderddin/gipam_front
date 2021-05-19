@@ -57,7 +57,9 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     }
   }
   ngOnChanges(changements: SimpleChanges) {}
-
+  get items() {
+    return this.images;
+  }
   initData(photography?: string, photographyDate?: Date, photographyType?: any, imageName?: string) {
     this.photography = photography;
     this.photographyDate = photographyDate;
@@ -140,6 +142,10 @@ export class ItemImagesComponent implements OnInit, OnChanges {
             this.imageName
           )
         );
+
+        if (this.addImage) {
+          this.addItem();
+        }
       } else {
         this.editPhotographyForm(
           this.selectedPhotography,
@@ -149,7 +155,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
           this.imageName
         );
       }
-      this.verifyIdentification();
+      // this.verifyIdentification();
       this.initData('', new Date());
       this.photographyInsertionNumber++;
       this.selectedPhotography = this.photographies.value.length;
@@ -161,15 +167,17 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     formData.append('imagePreview', file, file.name);
     return formData;
   }
-  handleFileInput(file: FileList) {
-    this.fileToUpload = file.item(0);
-    let reader = new FileReader();
-    reader.onload = (event: any) => {
+  handleFileInput(e: any) {
+    const file = e.target.files.item(0);
+    this.fileToUpload = file;
+
+    const fReader = new FileReader();
+    fReader.readAsDataURL(file);
+    fReader.onload = (event: any) => {
       this.photography = event.target.result;
     };
-    reader.readAsDataURL(this.fileToUpload);
-    reader.onloadend = (_event: any) => {
-      this.imageName = this.fileToUpload.name;
+    fReader.onloadend = (_event: any) => {
+      this.imageName = file.name;
     };
   }
   addImg() {
@@ -229,4 +237,5 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   cancelDelete() {
     this.deleteDialog = false;
   }
+  addItem() {}
 }
