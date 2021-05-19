@@ -406,3 +406,7 @@ input:checked + .slider:before {
   font-weight: bold;
   color: #838a90;
 }
+
+.modal-header {
+  padding: 0.4rem 1rem !important;
+}
