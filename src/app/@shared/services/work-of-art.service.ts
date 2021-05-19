@@ -665,11 +665,10 @@ export class WorkOfArtService {
     this._selectedArtWorks = [];
     localStorage.removeItem('selectedArtWorks');
   }
-  addWorkOfArt(data: any): Observable<any> {
-    const headers = new HttpHeaders({
-      Accept: 'application/json',
-    });
-    return this.http.post('/notices/property', data);
+  addWorkOfArt(data: any, id: any): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('id', id);
+    return this.http.post('/notices/property', data, { params: params });
   }
   addDepositWorkOfArt(data: any): Observable<any> {
     return this.http.post('/notices/deposit', data);

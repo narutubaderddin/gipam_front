@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -20,6 +20,7 @@ export class AddDescriptionsComponent implements OnInit {
   @Input() addDepot = false;
   @Input() descriptifForm: FormGroup;
   @Input() addProperty: boolean;
+  @Output() countChanged: EventEmitter<boolean> = new EventEmitter();
   items: any = [];
   domain = '';
   denominations: any;
@@ -126,6 +127,7 @@ export class AddDescriptionsComponent implements OnInit {
         this.entryModesData = this.getTabRefData(entryModesData['results']);
       }
     );
+    this.countChanged.emit(true);
   }
 
   addWord(event: any) {

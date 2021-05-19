@@ -60,7 +60,7 @@ export class AddRemarquerComponent implements OnInit {
   isLoading = false;
   loadingData = false;
   strIntoObj: any[] = [];
-  createdNoticeId: number;
+  createdNoticeId = 'null';
 
   constructor(
     public workOfArtService: WorkOfArtService,
@@ -337,11 +337,21 @@ export class AddRemarquerComponent implements OnInit {
       this.propertyStatusForm.get('descriptiveWords').setValue(this.descriptifForm.get('descriptiveWords').value);
       this.propertyStatusForm.get('description').setValue(this.descriptifForm.get('description').value);
       this.buildFormData(formData);
-      this.workOfArtService.addWorkOfArt(formData).subscribe(
+      if (this.inProgressNotice) {
+        this.createdNoticeId = this.inProgressNotice.id;
+      }
+      this.workOfArtService.addWorkOfArt(formData, this.createdNoticeId).subscribe(
         (result) => {
           this.addSingle('success', 'Ajout', result.msg);
           this.isLoading = false;
-          this.router.navigate([['/creation-notice/propriété'], { queryParams: { id: result.id } }]);
+          // this.createdNoticeId = result.id;
+          // this.router.navigate([], {
+          //   relativeTo: this.route,
+          //   queryParams: {
+          //     id: result.id
+          //   },
+          //   queryParamsHandling: 'merge',
+          // });
         },
         (err) => {
           this.addSingle('error', 'Ajout', "Une erreur est survenue lors de l'ajout");
@@ -352,7 +362,13 @@ export class AddRemarquerComponent implements OnInit {
       this.workOfArtService.addDepositWorkOfArt(formData).subscribe(
         (result) => {
           this.addSingle('success', 'Ajout', 'La notice a été ajoutée avec succès');
-          this.router.navigate([['/creation-notice/dépôt'], { queryParams: { id: result.id } }]);
+          this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: {
+              id: result.id,
+            },
+            queryParamsHandling: 'merge',
+          });
         },
         (err) => {
           this.addSingle('error', 'Ajout', "Une erreur est survenue lors de l'ajout");
