@@ -21,6 +21,8 @@ export class ItemDetailsComponent implements OnInit {
   @ViewChild('accordionDOM') public parentRef: ElementRef<HTMLElement>;
   @ViewChild('stickyMenu') menuElement: ElementRef;
 
+  btnLoading: any = null;
+  attributes: any[]=[];
   elementPosition: any = 2;
   workArt:{
     id: 145,
@@ -38,6 +40,7 @@ export class ItemDetailsComponent implements OnInit {
     denomination: 'Affiche',
     createdAt: '22/01/2020',
   }
+  editLink:boolean=true;
   parent:any='';
   children:any=[];
   hypertextLinks:any[]=[];
@@ -63,7 +66,7 @@ export class ItemDetailsComponent implements OnInit {
   sticky = false;
 
   photographiesForm: FormGroup;
-
+  artWorkId:any;
   artwork =
   {
     id: 145,
@@ -83,6 +86,7 @@ export class ItemDetailsComponent implements OnInit {
   };
   artWorksToPrint: any = [];
 
+
   constructor(
     config: NgbCarouselConfig,
     private notificationsService: NotificationsService,
@@ -100,8 +104,8 @@ export class ItemDetailsComponent implements OnInit {
     config.pauseOnHover = false;
   }
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
-    this.initDescriptifForm();
+    this.artWorkId = this.route.snapshot.paramMap.get('id');
+    // this.initDescriptifForm();
     this.initDepositStatusForm();
     this.initPhotographiesForm();
     this.initAttachmentForm();
@@ -109,9 +113,23 @@ export class ItemDetailsComponent implements OnInit {
     this.initDepositStatusForm();
     this.initHyperLink();
     this.initLinks();
-    this.getArtWork(id);
+    this.getArtWork(this.artWorkId);
   }
-
+  getParentApi(): ParentComponentApi {
+    return {
+      callParentMethod: (id) => {
+        this.getArtWork(id)
+      }
+    }
+  }
+  getParentlinkApi(): ParentComponentApi {
+    return {
+      callParentMethod: () => {
+        console.log("linksForm", this.linksForm.value)
+        // this.onSave()
+      }
+    }
+  }
   initPhotographiesForm() {
     this.photographiesForm = new FormGroup({
       photographies: this.fb.array([]),
@@ -131,48 +149,67 @@ export class ItemDetailsComponent implements OnInit {
       this.sticky = false;
     }
   }
-  initDescriptifForm() {
+  getTabRefData(result: any[]) {
+    let items: any[] = [];
+    result?.forEach((item: any) => {
+      if (item.hasOwnProperty('label')) {
+        items.push({ id: item.id, name: item.label });
+      } else {
+        items.push({ id: item.id, name: item.name });
+      }
+    });
+    return items;
+  }
+  initDescriptifForm(data?:any) {
+
+    // let materialTechnique:any[]=[];
+    // data?.materialTechnique.map((el:any)=>{
+    //   materialTechnique.push({id:el.id, name:el.label})
+    // })
+
     this.descriptifForm = this.fb.group({
-      title: ['', Validators.required],
-      field: ['', Validators.required],
-      denomination: ['', Validators.required],
-      materialTechnique: ['', Validators.required],
-      numberOfUnit: ['', Validators.required],
-      authors: [],
-      creationDate: [],
-      length: [],
-      width: [],
-      height: [],
-      depth: [],
-      weight: [],
-      diameter: [],
-      era: [],
-      style: [],
-      totalLength: [],
-      totalWidth: [],
-      totalHeight: [],
-      descriptiveWords: [],
-      items: [],
+      title: [data?.title, Validators.required],
+      field: [{id:data?.field.id, name: data?.field.label
+    }, Validators.required],
+      denomination: [data?.denomination, Validators.required],
+      materialTechnique: [[], Validators.required],
+      numberOfUnit: [data?.numberOfUnit, Validators.required],
+      authors: [data.authors? data.authors:[]],
+      creationDate: [new Date(data?.creationDate)],
+      length: [data?.length],
+      width: [data?.width],
+      height: [data?.height],
+      depth: [data?.depth],
+      weight: [data?.weight],
+      diameter: [data?.diameter],
+      era: [data?.era],
+      style: [data?.style],
+      totalLength: [data?.totalLength],
+      totalWidth: [data?.totalWidth],
+      totalHeight: [data?.totalHeight],
+      descriptiveWords: [data?.descriptiveWords],
+      items: [data?.items],
     });
   }
-  initDepositStatusForm() {
+  initDepositStatusForm(data?:any) {
     this.depositStatusForm = this.fb.group({
-      depositDate: [''],
-      stopNumber: [''],
+      depositDate: [data?.depositDate],
+      stopNumber: [data?.stopNumber],
     });
+
   }
-  initPropertyStatusForm() {
+  initPropertyStatusForm(data?:any) {
     this.propertyStatusForm = this.fb.group({
-      entryMode: [''],
-      entryDate: [''],
-      marking: [''],
-      category: [''],
-      registrationSignature: [''],
-      descriptiveWords: [''],
-      insuranceValue: [''],
-      insuranceValueDate: [''],
-      otherRegistrations: [''],
-      description: [''],
+      entryMode: [data?.entryMode],
+      entryDate: [data?.entryDate],
+      marking: [data?.marking],
+      category: [data?.category],
+      registrationSignature: [data?.registrationSignature],
+      descriptiveWords: [data?.descriptiveWords],
+      insuranceValue: [data?.insuranceValue],
+      insuranceValueDate: [data?.insuranceValueDate],
+      otherRegistrations: [data?.otherRegistrations],
+      description: [data?.description],
     });
   }
 
@@ -193,9 +230,54 @@ export class ItemDetailsComponent implements OnInit {
   onEditMode() {
     this.edit = !this.edit;
   }
-  onSave() {
-    this.notificationsService.success('Succès', 'l\'Oeuvre "n° inventaire" a été mise à jour avec succès');
-    this.edit = false;
+  formatData() {
+    const keys = ['width', 'length', 'totalHeight', 'totalWidth', 'totalLength', 'depth', 'diameter'];
+    const filteredKeys = keys.filter(value => this.attributes.includes(value));
+    filteredKeys.forEach((key: string) => {
+      if (this.descriptifForm.get(key).value) {
+
+        this.descriptifForm
+          .get(key)
+          .setValue(+this.descriptifForm.get(key).value);
+      }
+    });
+  }
+  onSave(parent?:any) {
+    this.editLink=true;
+    this.btnLoading = '';
+    this.formatData();
+
+    const authorsId:any[]=[]
+    this.descriptifForm.value.authors?.map((el:any)=>{
+      authorsId.push(el.id);
+    })
+    const materialId:any[]=[]
+    this.descriptifForm.value.materialTechnique?.map((el:any)=>{
+      materialId.push(el.id);
+    })
+    const data={
+      ...this.descriptifForm.value,
+      field:this.descriptifForm.value.field.id,
+      denomination:this.descriptifForm.value.denomination.id,
+      authors: authorsId,
+      materialTechnique:materialId,
+      status:this.addProperty?this.propertyStatusForm.value:this.depositStatusForm.value,
+      parent: parent
+    }
+
+    this.workOfArtService.updateWorkOfArt(data, this.artWorkId).subscribe(
+      result=>{
+        this.getArtWork(this.artWorkId);
+        this.addSingle('success', 'Modification','Notice modifiée avec succée')
+        this.edit = false;
+        this.editLink=false;
+      },
+      error=>{
+        this.btnLoading = null;
+        this.workOfArtService.getFormErrors(error.error.errors, 'Modification');
+
+      }
+    )
   }
 
   showImg() {
@@ -212,12 +294,19 @@ export class ItemDetailsComponent implements OnInit {
     this.pdfGeneratorService.downloadPDFFromHTML(element, this.artwork.titre + '.pdf');
   }
   getArtWork(id:any){
-    console.log('id', id)
-    this.workOfArtService.getWorkOfArtById(id).subscribe(
+
+    this.workOfArtService.getWorkOfArtById(id,
+      {serializer_group:JSON.stringify(['art_work_details', 'short'])}).subscribe(
       result=>{
+        this.photographies=[];
+
         this.workArt= result;
+        this.initDescriptifForm(result);
         result.photographies.map((el:any, index:number)=>{
+          console.log("photography", el.photographyType)
           this.photographies.push({
+            workArtId: result.id,
+            id:el.id,
             imageUrl: el.imagePreview,
             alt: 'description',
             i: index,
@@ -225,20 +314,22 @@ export class ItemDetailsComponent implements OnInit {
             // photography: 'assets/images/573.jpg',
             photographyDate: this.datePipe.transform(el.date, dateTimeFormat),
             photographyName: el.imageName,
-            photographyType: { name: el.photographyType.type },
+            photographyType: el.photographyType,
             imageName: el.imageName,
           })
         });
         result.status.statusType==="PropertyStatus"? this.addProperty=true: this.addDepot=true;
         this.status= result.status;
+        this.addProperty?this.initDepositStatusForm(result.status): this.initPropertyStatusForm(result.status);
         this.attachments= result.attachments;
+        console.log("attachments", this.attachments)
         this.hypertextLinks = result.hyperlinks;
         this.parent= result.parent;
+        console.log("parent", this.parent);
         this.children= result.children;
-        console.log(this.workArt);
       },
       error => {
-        console.log(error);
+
         this.addSingle('error', 'Erreur Technique', error.error.message);
       }
     )
@@ -247,4 +338,16 @@ export class ItemDetailsComponent implements OnInit {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
   }
 
+  getAttributes($event:any) {
+
+    this.attributes=$event;
+    console.log('attributes',this.attributes)
+  }
+
+  onCancel() {
+    this.edit=false;
+  }
+}
+export interface ParentComponentApi {
+  callParentMethod: (string?:any) => void
 }
