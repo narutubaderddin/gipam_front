@@ -1461,7 +1461,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.showDatatable = true;
   }
 
-  exportNotices(type: String) {
+  exportNotices(type: string) {
     //Show the loader.
     this.firstLoading = true;
     this.loading = true;
