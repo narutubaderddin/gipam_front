@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-select-button-render',
@@ -7,13 +7,18 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class SelectButtonRenderComponent implements OnInit {
   @Input() value: string;
+  @Input() disabled: boolean;
+  @Output() selectedStatus = new EventEmitter();
   stateOptions: any[];
   constructor() {}
 
   ngOnInit(): void {
     this.stateOptions = [
-      { label: 'Accepté', value: 'oui' },
-      { label: 'Refusé', value: 'non' },
+      { label: 'Accepté', value: 'Accepté' },
+      { label: 'Refusé', value: 'Refusé' },
     ];
+  }
+  changeArtWorkStatus($event: any) {
+    this.selectedStatus.emit($event.value);
   }
 }

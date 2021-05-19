@@ -1461,7 +1461,11 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.showDatatable = true;
   }
 
-  exportNotices(type: String) {
+  exportNotices(type: string) {
+    //Show the loader.
+    this.firstLoading = true;
+    this.loading = true;
+
     //get artwork's to get theire PDF.
     let artWorkids = [];
     if (this.selectedRowCount) {
@@ -1475,8 +1479,11 @@ export class ListWorkOfArtsComponent implements OnInit {
       sort: this.dataTableSort.hasOwnProperty('sort') ? this.dataTableSort['sort'] : 'asc',
       sortBy: this.dataTableSort.hasOwnProperty('sort_by') ? this.dataTableSort['sort_by'] : 'id',
     };
-    this.requestService.exportNotices(dataTosend).subscribe((response: Response | any) => {
+    this.requestService.exportNotices(dataTosend, type).subscribe((response: Response | any) => {
       this.requestService.manageFileResponseDownload(response, type);
+
+      this.firstLoading = false;
+      this.loading = false;
     });
   }
 }
