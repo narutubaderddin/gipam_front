@@ -9,6 +9,7 @@ import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { MessageService } from 'primeng/api';
 import { dateTimeFormat } from '@shared/utils/helpers';
 import { DatePipe } from '@angular/common';
+import { ArtWorkService } from '@app/about/services/art-work.service';
 
 @Component({
   selector: 'app-item-details',
@@ -82,6 +83,8 @@ export class ItemDetailsComponent implements OnInit {
   };
   artWorksToPrint: any = [];
 
+  currentId: string;
+
   constructor(
     config: NgbCarouselConfig,
     private notificationsService: NotificationsService,
@@ -90,6 +93,7 @@ export class ItemDetailsComponent implements OnInit {
     private pdfGeneratorService: PdfGeneratorService,
     private route: ActivatedRoute,
     private workOfArtService: WorkOfArtService,
+    private artWorkService: ArtWorkService,
     private messageService: MessageService,
     private datePipe: DatePipe
   ) {
@@ -98,8 +102,10 @@ export class ItemDetailsComponent implements OnInit {
     config.keyboard = false;
     config.pauseOnHover = false;
   }
+
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
+    this.currentId = this.route.snapshot.paramMap.get('id');
+
     this.initDescriptifForm();
     this.initDepositStatusForm();
     this.initPhotographiesForm();
@@ -108,7 +114,7 @@ export class ItemDetailsComponent implements OnInit {
     this.initDepositStatusForm();
     this.initHyperLink();
     this.initLinks();
-    this.getArtWork(id);
+    this.getArtWork(this.currentId);
   }
 
   initPhotographiesForm() {
@@ -116,11 +122,13 @@ export class ItemDetailsComponent implements OnInit {
       photographies: this.fb.array([]),
     });
   }
+
   initAttachmentForm() {
     this.attachmentForm = new FormGroup({
       attachments: this.fb.array([]),
     });
   }
+
   @HostListener('window:scroll', ['$event'])
   handleScroll() {
     const windowScroll = window.pageYOffset;
@@ -130,6 +138,7 @@ export class ItemDetailsComponent implements OnInit {
       this.sticky = false;
     }
   }
+
   initDescriptifForm() {
     this.descriptifForm = this.fb.group({
       title: ['', Validators.required],
@@ -154,12 +163,14 @@ export class ItemDetailsComponent implements OnInit {
       items: [],
     });
   }
+
   initDepositStatusForm() {
     this.depositStatusForm = this.fb.group({
       depositDate: [''],
       stopNumber: [''],
     });
   }
+
   initPropertyStatusForm() {
     this.propertyStatusForm = this.fb.group({
       entryMode: [''],
@@ -180,11 +191,13 @@ export class ItemDetailsComponent implements OnInit {
       hyperlinks: this.fb.array([]),
     });
   }
+
   initLinks() {
     this.linkArtWorkForm = this.fb.group({
       parent: [''],
     });
   }
+
   f1(e: any) {
     this.dynamic = e;
   }
@@ -192,6 +205,7 @@ export class ItemDetailsComponent implements OnInit {
   onEditMode() {
     this.edit = !this.edit;
   }
+
   onSave() {
     this.notificationsService.success('Succès', 'l\'Oeuvre "n° inventaire" a été mise à jour avec succès');
     this.edit = false;
@@ -210,8 +224,40 @@ export class ItemDetailsComponent implements OnInit {
     const element = document.getElementById('appItemDetailsPdf');
     this.pdfGeneratorService.downloadPDFFromHTML(element, this.artwork.titre + '.pdf');
   }
+
   getArtWork(id: any) {
-    console.log('id', id);
+    /// new get
+    const newParams = JSON.parse(localStorage.getItem('searchPageFilter'));
+    const lastItemsIds = JSON.parse(localStorage.getItem('searchPageFilterLastItemsIds'));
+    const index = lastItemsIds.indexOf(Number(id)) + 1;
+
+    let newPage = newParams.limit * (newParams.page - 1) + index;
+    newPage = newPage <= 0 ? 1 : newPage; // if new page is lower than or equal to 0 then get the first element
+
+    this.artWorkService
+      .getArtWorksData(
+        newParams.filter,
+        newParams.advancedFilter,
+        newParams.headerFilters,
+        newPage,
+        1,
+        newParams.sortBy,
+        newParams.sort,
+        newParams.globalSearch,
+        newParams.searchQuery
+      )
+      .subscribe(
+        (result) => {
+          console.log('lastItemsIds', lastItemsIds);
+          console.log('new artWork', result);
+        },
+        (error) => {
+          console.log(error);
+          this.addSingle('error', 'Erreur Technique', error.error.message);
+        }
+      );
+
+    /// old get
     const params = {
       serializer_group: JSON.stringify(['response', 'art_work_list', 'hyperLink_furniture', 'id', 'art_work_details']),
     };
@@ -237,7 +283,7 @@ export class ItemDetailsComponent implements OnInit {
         this.hypertextLinks = result.hyperlinks;
         this.parent = result.parent;
         this.children = result.children;
-        console.log(this.workArt);
+        console.log('ol artWork', this.workArt);
       },
       (error) => {
         console.log(error);
@@ -245,6 +291,7 @@ export class ItemDetailsComponent implements OnInit {
       }
     );
   }
+
   addSingle(type: string, sum: string, msg: string) {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
   }

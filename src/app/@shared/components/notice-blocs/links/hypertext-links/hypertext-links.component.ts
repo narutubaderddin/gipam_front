@@ -26,7 +26,7 @@ export class HypertextLinksComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
-    //this.configForm();
+    this.configForm();
   }
 
   createHyperLink(name?: any, url?: any): FormGroup {

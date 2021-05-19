@@ -156,13 +156,14 @@ export class ListWorkOfArtsComponent implements OnInit {
       sort = this.dataTableSort['sort'];
       sortBy = this.dataTableSort['sort_by'];
     }
+    const limit = this.mode === 'pictures' ? 20 : 5;
     this.artWorkService
       .getArtWorksData(
         filter,
         advancedFilter,
         headerFilters,
         page,
-        this.mode == 'pictures' ? 20 : 5,
+        limit,
         sortBy,
         sort,
         this.globalSearch,
@@ -170,15 +171,34 @@ export class ListWorkOfArtsComponent implements OnInit {
       )
       .subscribe(
         (artWorksData: ArtWorksDataModel) => {
-          if (this.mode == 'pictures' && page > 1) {
+          const searchPageFilter = {
+            mode: this.mode,
+            filter,
+            advancedFilter,
+            headerFilters,
+            page,
+            limit,
+            sortBy,
+            sort,
+            globalSearch: this.globalSearch,
+            searchQuery: this.searchQuery,
+          };
+          localStorage.setItem('searchPageFilter', JSON.stringify(searchPageFilter));
+          console.log('filters', JSON.parse(localStorage.getItem('searchPageFilter')));
+          if (this.mode === 'pictures' && page > 1) {
             artWorksData.results.forEach((oeuvre: any) => {
               this.artWorkResults.push(oeuvre);
             });
           } else {
             this.artWorkResults = artWorksData.results;
             this.artWorksData = artWorksData;
+            // to know the index of clicked input
+            localStorage.setItem(
+              'searchPageFilterLastItemsIds',
+              JSON.stringify(this.artWorkResults.map((items) => items.id))
+            );
+            console.log('lastIds', JSON.parse(localStorage.getItem('searchPageFilterLastItemsIds')));
           }
-
           this.start = (this.artWorksData.page - 1) * this.artWorksData.size + 1;
           this.end = (this.artWorksData.page - 1) * this.artWorksData.size + this.artWorksData.results.length;
           this.loading = false;
