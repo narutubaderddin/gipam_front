@@ -13,20 +13,24 @@ const httpOptions = {
 export class DemandService {
   statusType = [
     {
+      id: 'En cours',
+      name: 'En cours',
+    },
+    {
       id: 'Acceptée',
-      name: 'Acceptée ',
+      name: 'Acceptée',
     },
     {
       id: 'Refusée',
-      name: 'Refusée ',
+      name: 'Refusée',
     },
     {
       id: 'Annulée',
-      name: 'Annulée ',
+      name: 'Annulée',
     },
     {
       id: 'Partiellement_acceptée',
-      name: 'Partiellement acceptée ',
+      name: 'Partiellement acceptée',
     },
   ];
   constructor(private http: HttpClient) {}

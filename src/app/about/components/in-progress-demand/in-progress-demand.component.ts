@@ -82,6 +82,7 @@ export class InProgressDemandComponent {
   requests: any = [];
   loading: boolean = false;
   page: any = 1;
+  filter: any = "";
   constructor(private demandService: DemandService, public sharedService: SharedService) {
     this.getListDemands();
   }
@@ -147,7 +148,7 @@ export class InProgressDemandComponent {
     } else {
       this.requests.page = this.requests.totalQuantity / parseInt(this.requests.size.toString(), 0);
     }
-    this.getListDemands();
+    this.getListDemands(this.filter);
   }
 
   changeRequestStatus(request: any) {
@@ -166,16 +167,18 @@ export class InProgressDemandComponent {
       filter+='&search='+headersFilter.name.value;
     }
     if(headersFilter.nameApplicant){
+      filter+='&search='+headersFilter.nameApplicant.value;
     }
     if(headersFilter.requestStatus){
-      /*let status : any = [];
-      headersFilter.requestStatus.forEach((stat:any)=>{
-        status.push(stat.value);
+      let status : any = [];
+      headersFilter.requestStatus.value.forEach((stat:any)=>{
+        status.push('"'+stat.name+'"');
       });
-      filter+='&requestStatus[in]=['+status+']';*/
+      filter+='&requestStatus[in]=['+status+']';
     }
     if(headersFilter.createdAt){
     }
+    this.filter = filter;
     this.getListDemands(filter);
   }
 
