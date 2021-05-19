@@ -20,7 +20,7 @@ export class AddDescriptionsComponent implements OnInit {
   @Input() addDepot = false;
   @Input() descriptifForm: FormGroup;
   @Input() addProperty: boolean;
-  @Output() countChanged: EventEmitter<boolean> = new EventEmitter();
+  @Output() isLoading: EventEmitter<boolean> = new EventEmitter();
   items: any = [];
   domain = '';
   denominations: any;
@@ -125,9 +125,9 @@ export class AddDescriptionsComponent implements OnInit {
         this.depositorsData = this.getTabRefData(depositorsResults['results']);
         this.eraData = this.getTabRefData(eraResults['results']);
         this.entryModesData = this.getTabRefData(entryModesData['results']);
+        this.isLoading.emit(false);
       }
     );
-    this.countChanged.emit(true);
   }
 
   addWord(event: any) {

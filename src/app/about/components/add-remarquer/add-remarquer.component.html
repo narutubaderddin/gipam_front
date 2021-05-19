@@ -1,4 +1,4 @@
-<div *ngIf="loadingData; else content" class="scroll-loading">
+<div *ngIf="loadingData" class="scroll-loading">
   <p-progressSpinner></p-progressSpinner>
 </div>
 <p-dialog header=" " [modal]="true" [(visible)]="value" #dialog>
@@ -18,7 +18,7 @@
     </button>
   </ng-template>
 </p-dialog>
-<ng-template #content>
+<div [ngClass]="loadingData ? 'loading-data-true' : 'loading-data-false'">
   <ng-wizard [config]="config" (stepChanged)="stepChanged($event)">
     <ng-wizard-step
       [title]="'1'"
@@ -66,6 +66,7 @@
                                     [addProperty]="addProperty"
                                     [addDepot]="false"
                                     [descriptifForm]="descriptifForm"
+                                    (isLoading)="loadingHandler($event)"
                                   ></app-add-descriptions>
                                 </ng-template>
                               </ng-container>
@@ -154,4 +155,4 @@
     </ng-template>
     <p-toast></p-toast>
   </ng-wizard>
-</ng-template>
+</div>

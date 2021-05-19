@@ -7,7 +7,12 @@ a:not([href]) {
   background-color: transparent !important;
   font-size: 14px;
 }
-
+.loading-data-true {
+  display: none;
+}
+.loading-data-false {
+  display: block;
+}
 .modal-content {
   width: 90%;
   margin: auto;

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { NgWizardConfig, NgWizardService, StepChangedArgs, StepValidationArgs, THEME } from 'ng-wizard';
 import { Observable, of, Subscription } from 'rxjs';
@@ -58,7 +58,7 @@ export class AddRemarquerComponent implements OnInit {
   id: string;
   routeSubscription: Subscription;
   isLoading = false;
-  loadingData = false;
+  loadingData = true;
   strIntoObj: any[] = [];
   createdNoticeId = 'null';
 
@@ -70,7 +70,8 @@ export class AddRemarquerComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private messageService: MessageService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private cdr: ChangeDetectorRef
   ) {
     this.routeSubscription = this.route.data.subscribe((res: any) => {
       if (res) {
@@ -243,6 +244,10 @@ export class AddRemarquerComponent implements OnInit {
     this.photographiesForm = new FormGroup({
       photographies: this.fb.array([]),
     });
+  }
+  loadingHandler(event: boolean) {
+    this.loadingData = event;
+    this.cdr.detectChanges();
   }
 
   addSingle(type: string, sum: string, msg: string) {
