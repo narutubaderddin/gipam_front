@@ -49,6 +49,7 @@ import { RemarquerDetailsLinkRendererComponent } from './components/ng-dataTable
 import { ToastModule } from 'primeng/toast';
 import { ChipModule } from 'primeng/chip';
 import { InProgressNoticeRendererComponent } from './components/ng-dataTables/in-progress-notice-renderer/in-progress-notice-renderer.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @NgModule({
   imports: [
@@ -83,6 +84,7 @@ import { InProgressNoticeRendererComponent } from './components/ng-dataTables/in
     AutoCompleteModule,
     ToastModule,
     ChipModule,
+    BsDatepickerModule,
   ],
   declarations: [
     LoaderComponent,

@@ -1,13 +1,14 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { NgbModal, NgbModalOptions, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
-import { AddImgModalComponent } from '@shared/components/notice-blocs/item-images/add-img-modal/add-img-modal.component';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { viewDateFormat } from '@shared/utils/helpers';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-item-images',
   templateUrl: './item-images.component.html',
   styleUrls: ['./item-images.component.scss'],
+  providers: [DatePipe],
 })
 export class ItemImagesComponent implements OnInit, OnChanges {
   @ViewChild('file') file: any;
@@ -39,7 +40,12 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   get photographies(): FormArray {
     return this.photographiesForm.get('photographies') as FormArray;
   }
-  constructor(private modalService: NgbModal, public fb: FormBuilder, private simpleTabsRef: SimpleTabsRefService) {}
+  constructor(
+    private modalService: NgbModal,
+    public fb: FormBuilder,
+    private simpleTabsRef: SimpleTabsRefService,
+    private datePipe: DatePipe
+  ) {}
   ngOnInit(): void {
     this.getAllTypes();
     this.images.map((el: any) =>
@@ -88,7 +94,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     imageName?: string
   ): FormGroup {
     return this.fb.group({
-      date: [photographyDate],
+      date: [this.datePipe.transform(photographyDate, 'yyyy-MM-dd')],
       imagePreview: [photography],
       photographyType: [photographyType.id],
       // imageName: [imageName],
@@ -96,7 +102,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   }
   editPhotographyForm(i: number, photography: string, photographyType: any, photographyDate: Date, imageName: string) {
     this.photographies.value[i].photographyType = photographyType;
-    this.photographies.value[i].date = photographyDate;
+    this.photographies.value[i].date = this.datePipe.transform(photographyDate, 'yyyy-MM-dd');
     // this.photographies.value[i].imageName = imageName;
     this.photographies.value[i].imagePreview = photography;
     this.images[i].imageUrl = photography;
@@ -135,14 +141,9 @@ export class ItemImagesComponent implements OnInit, OnChanges {
           photographyDate: this.photographyDate,
         });
         this.photographies.push(
-          this.createPhotography(
-            this.buildFormData(this.fileToUpload),
-            this.photographyDate,
-            this.photographyType,
-            this.imageName
-          )
+          this.createPhotography(this.fileToUpload, this.photographyDate, this.photographyType, this.imageName)
         );
-
+        console.log(this.photographies);
         if (this.addImage) {
           this.addItem();
         }

@@ -216,15 +216,17 @@
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
         <label class="">Date de création</label>
-        <div class="autocomplete form-control value col-12 col-sm-7">
-          <p-calendar
-            class="col-md-12"
-            [style]="{ minWidth: '100%' }"
-            formControlName="creationDate"
-            [showIcon]="true"
-            inputId="icon"
-          ></p-calendar>
-        </div>
+        <input
+          class="col-12 col-sm-7 form-control"
+          autocomplete="off"
+          name="date"
+          (bsValueChange)="onChange($event)"
+          [bsConfig]="{ dateInputFormat: 'YYYY' }"
+          bsDatepicker
+          minMode="year"
+          placeholder="YYYY"
+          formControlName="creationDate"
+        />
       </div>
       <div class="col-md-6" *ngIf="attributeToShow.includes('materialTechnique')">
         <div class="form-group flex-wrap flex-sm-nowrap">
@@ -274,11 +276,11 @@
         </div>
       </div>
       <div class="divider"></div>
-      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="addProperty">
         <label>Marquage</label>
         <input class="form-control value col-12 col-sm-7" placeholder="Marquage" formControlName="marking" />
       </div>
-      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="addProperty">
         <label>Signature inscription</label>
         <input
           class="form-control value col-12 col-sm-7"
@@ -287,18 +289,18 @@
         />
       </div>
 
-      <div class="form-group d-flex align-items-center col-md-6">
+      <div class="form-group d-flex align-items-center col-md-6" *ngIf="addProperty">
         <label class="">Mots descriptifs</label>
         <tag-input
           formControlName="descriptiveWords"
-          [editable]="true"
-          (onTagEdited)="onTagEdited($event)"
+          [editable]="false"
+          (onAdd)="addWord($event)"
           secondaryPlaceholder="Entrer mots descriptifs"
           class="value"
           placeholder=" +Mots descriptifs"
         ></tag-input>
       </div>
-      <div class="col-md-12">
+      <div class="col-md-12" *ngIf="addProperty">
         <div class="d-flex form-group col-md-12 p-0">
           <label>Commentaire</label>
           <textarea

@@ -4,7 +4,7 @@ import { NgWizardConfig, NgWizardService, StepChangedArgs, StepValidationArgs, T
 import { Observable, of, Subscription } from 'rxjs';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 
 @Component({
@@ -55,6 +55,8 @@ export class AddRemarquerComponent implements OnInit {
   inProgressNotice: any;
   id: string;
   routeSubscription: Subscription;
+  isLoading = false;
+  loadingData = true;
   constructor(
     public workOfArtService: WorkOfArtService,
     private ngWizardService: NgWizardService,
@@ -64,12 +66,12 @@ export class AddRemarquerComponent implements OnInit {
     private router: Router,
     private messageService: MessageService
   ) {
-    // this.routeSubscription = this.route.paramMap.subscribe((params: ParamMap) => {
-    //   const artWorkData = this.route.snapshot.data.addRemarquer;
-    //   if (artWorkData) {
-    //     this.inProgressNotice = artWorkData;
-    //   }
-    // });
+    this.routeSubscription = this.route.data.subscribe((res: any) => {
+      if (res) {
+        this.inProgressNotice = res.addRemarquer;
+        this.loadingData = false;
+      }
+    });
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     const type = this.route.snapshot.paramMap.get('type');
     if (type === 'propriété') {
@@ -103,63 +105,103 @@ export class AddRemarquerComponent implements OnInit {
   }
   initDescriptifForm() {
     this.descriptifForm = this.fb.group({
-      title: [''],
-      field: [null],
-      denomination: [null],
-      materialTechnique: [null],
-      numberOfUnit: [''],
-      authors: [],
-      creationDate: [],
-      length: [],
+      title: this.inProgressNotice && this.inProgressNotice.title ? this.inProgressNotice.title : '',
+      field: this.inProgressNotice && this.inProgressNotice.field ? this.inProgressNotice.field.id : null,
+      denomination:
+        this.inProgressNotice && this.inProgressNotice.denomination ? this.inProgressNotice.denomination.id : null,
+      materialTechnique: [
+        this.inProgressNotice && this.inProgressNotice.materialTechnique
+          ? this.inProgressNotice.materialTechnique
+          : null,
+      ],
+      numberOfUnit:
+        this.inProgressNotice && this.inProgressNotice.numberOfUnit ? this.inProgressNotice.numberOfUnit : null,
+      authors: [this.inProgressNotice && this.inProgressNotice.authors ? this.inProgressNotice.authors : null],
+      creationDate: [
+        this.inProgressNotice && this.inProgressNotice.creationDate ? this.inProgressNotice.creationDate : null,
+      ],
+      length: this.inProgressNotice && this.inProgressNotice.length ? this.inProgressNotice.length : null,
       lengthUnit: ['1'],
-      width: [],
+      width: this.inProgressNotice && this.inProgressNotice.width ? this.inProgressNotice.width : null,
       widthUnit: ['1'],
-      height: [],
+      height: [this.inProgressNotice && this.inProgressNotice.height ? this.inProgressNotice.height : null],
       heightUnit: ['1'],
-      depth: [],
-      depthUnit: [],
-      weight: [],
+      depth: [this.inProgressNotice && this.inProgressNotice.depth ? this.inProgressNotice.depth : null],
+      depthUnit: ['1'],
+      weight: [this.inProgressNotice && this.inProgressNotice.weight ? this.inProgressNotice.weight : null],
       weightUnit: ['1'],
-      diameter: [],
+      diameter: [this.inProgressNotice && this.inProgressNotice.diameter ? this.inProgressNotice.diameter : null],
       diameterUnit: ['1'],
-      era: [],
-      style: [],
-      totalLength: [],
+      era: this.inProgressNotice && this.inProgressNotice.era ? this.inProgressNotice.era.id : null,
+      style: this.inProgressNotice && this.inProgressNotice.style ? this.inProgressNotice.style.id : null,
+      totalLength: [
+        this.inProgressNotice && this.inProgressNotice.totalLength ? this.inProgressNotice.totalLength : null,
+      ],
       totlLengthUnit: ['1'],
-      totalWidth: [],
+      totalWidth: [this.inProgressNotice && this.inProgressNotice.totalWidth ? this.inProgressNotice.totalWidth : null],
       totalWidthUnit: [1],
-      totalHeight: [],
+      totalHeight: [
+        this.inProgressNotice && this.inProgressNotice.totalHeight ? this.inProgressNotice.totalHeight : null,
+      ],
       totalHeightUnit: ['1'],
-      descriptiveWords: [],
-      description: [],
-      registrationSignature: [],
-      otherRegistrations: [],
-      marking: [],
-      photographies: [],
+      descriptiveWords: [
+        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.descriptiveWords : null,
+      ],
+      description: [
+        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.description : null,
+      ],
+      registrationSignature: [
+        this.inProgressNotice && this.inProgressNotice.status
+          ? this.inProgressNotice.status.registrationSignature
+          : null,
+      ],
+      otherRegistrations: [
+        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.otherRegistrations : null,
+      ],
+      marking: [this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.marking : null],
+      photographies: null,
       status: this.addProperty ? this.propertyStatusForm : this.depositStatusForm,
-      parent: [],
-      hyperlinks: [],
-      attachments: this.attachmentForm.value.attachments,
+      parent: null,
+      hyperlinks: null,
+      attachments: null,
     });
   }
   initPropertyStatusForm() {
     this.propertyStatusForm = this.fb.group({
-      entryMode: [''],
-      entryDate: [''],
+      entryMode: [
+        this.inProgressNotice && this.inProgressNotice.status.entryMode
+          ? this.inProgressNotice.status.entryMode.id
+          : null,
+      ],
+      entryDate: [
+        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.entryDate : null,
+      ],
       marking: [''],
-      category: [''],
+      category: [
+        this.inProgressNotice && this.inProgressNotice.status.category
+          ? this.inProgressNotice.status.category.id
+          : null,
+      ],
       registrationSignature: [''],
       descriptiveWords: [''],
-      insuranceValue: [''],
-      insuranceValueDate: [''],
+      insuranceValue: [
+        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.insuranceValue : null,
+      ],
+      insuranceValueDate: [
+        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.insuranceValueDate : null,
+      ],
       otherRegistrations: [''],
       description: [''],
     });
   }
   initDepositStatusForm() {
     this.depositStatusForm = this.fb.group({
-      depositDate: [''],
-      stopNumber: [''],
+      depositDate: [
+        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.depositDate : null,
+      ],
+      stopNumber: [
+        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.stopNumber : null,
+      ],
     });
   }
   initHyperLink() {
@@ -169,7 +211,7 @@ export class AddRemarquerComponent implements OnInit {
   }
   initLinks() {
     this.linkArtWorkForm = this.fb.group({
-      parent: [1],
+      parent: [],
     });
   }
   initAttachmentForm() {
@@ -228,13 +270,45 @@ export class AddRemarquerComponent implements OnInit {
       }
     });
   }
+
+  buildFormData(formData: FormData) {
+    for (let dataKey in this.descriptifForm.value) {
+      if (dataKey == 'photographies' || dataKey == 'attachments' || dataKey == 'hyperlinks') {
+        // append nested object
+        for (let previewKey in this.descriptifForm.value[dataKey]) {
+          for (let key in this.descriptifForm.value[dataKey][previewKey]) {
+            formData.append(`${dataKey}[${previewKey}][${key}]`, this.descriptifForm.value[dataKey][previewKey][key]);
+          }
+        }
+      } else if (dataKey == 'status') {
+        console.log(this.descriptifForm.value[dataKey]);
+        for (let previewKey in this.descriptifForm.value[dataKey]) {
+          console.log(`${dataKey}[${previewKey}]`);
+          formData.append(`${dataKey}[${previewKey}]`, this.descriptifForm.value[dataKey][previewKey]);
+        }
+      } else {
+        if (['field', 'denomination'].includes(dataKey)) {
+          formData.append(dataKey, this.descriptifForm.value[dataKey]);
+        } else {
+          if (this.descriptifForm.value[dataKey] !== null) {
+            formData.append(dataKey, this.descriptifForm.value[dataKey]);
+          }
+        }
+      }
+    }
+  }
+
   submit() {
+    this.isLoading = true;
     this.descriptifForm.get('photographies').setValue(this.photographiesForm.value.photographies);
     this.descriptifForm.get('hyperlinks').setValue(this.linksForm.value.hyperlinks);
     this.descriptifForm.get('parent').setValue(this.linkArtWorkForm.value.parent);
     this.descriptifForm.get('attachments').setValue(this.attachmentForm.value.attachments);
 
     this.formatData();
+
+    let formData = new FormData();
+
     if (this.addProperty) {
       this.propertyStatusForm.get('marking').setValue(this.descriptifForm.get('marking').value);
       this.propertyStatusForm
@@ -242,17 +316,20 @@ export class AddRemarquerComponent implements OnInit {
         .setValue(this.descriptifForm.get('registrationSignature').value);
       this.propertyStatusForm.get('descriptiveWords').setValue(this.descriptifForm.get('descriptiveWords').value);
       this.propertyStatusForm.get('description').setValue(this.descriptifForm.get('description').value);
-      this.workOfArtService.addWorkOfArt(this.descriptifForm.value).subscribe(
+      this.buildFormData(formData);
+      this.workOfArtService.addWorkOfArt(formData).subscribe(
         (result) => {
           this.addSingle('success', 'Ajout', result.msg);
           this.initForms();
+          this.isLoading = false;
         },
         (err) => {
           this.addSingle('error', 'Ajout', "Une erreur est survenue lors de l'ajout");
         }
       );
     } else {
-      this.workOfArtService.addDepositWorkOfArt(this.descriptifForm.value).subscribe(
+      this.buildFormData(formData);
+      this.workOfArtService.addDepositWorkOfArt(formData).subscribe(
         (res) => {
           this.addSingle('success', 'Ajout', 'La notice a été ajoutée avec succès');
           this.initForms();
