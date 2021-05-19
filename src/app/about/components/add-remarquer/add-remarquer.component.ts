@@ -70,7 +70,7 @@ export class AddRemarquerComponent implements OnInit {
     this.routeSubscription = this.route.data.subscribe((res: any) => {
       if (res) {
         this.inProgressNotice = res.addRemarquer;
-        if (this.inProgressNotice.status.descriptiveWords.length) {
+        if (this.inProgressNotice.status && this.inProgressNotice.status.descriptiveWords) {
           let str: string = this.inProgressNotice.status.descriptiveWords;
           let strIntoOb = str.split(',');
           strIntoOb.forEach((value: any) => {
@@ -290,7 +290,7 @@ export class AddRemarquerComponent implements OnInit {
       } else if (dataKey == 'status') {
         console.log(this.descriptifForm.value[dataKey]);
         for (let previewKey in this.descriptifForm.value[dataKey]) {
-          console.log(`${dataKey}[${previewKey}]`);
+          console.log(`${dataKey}[${previewKey}]`, this.descriptifForm.value[dataKey][previewKey]);
           formData.append(`${dataKey}[${previewKey}]`, this.descriptifForm.value[dataKey][previewKey]);
         }
       } else {
