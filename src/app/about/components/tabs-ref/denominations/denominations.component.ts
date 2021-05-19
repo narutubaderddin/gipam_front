@@ -121,7 +121,7 @@ export class DenominationsComponent implements OnInit {
   initForm() {
     this.tabForm = this.fb.group({
       label: [this.selectedItem ? this.selectedItem.label : '', [Validators.required]],
-      active: [true],
+      active: [this.selectedItem ? this.selectedItem.active : true],
       field: [this.selectedRelatedEntity ? this.selectedRelatedEntity : { label: '' }, [Validators.required]],
     });
   }
