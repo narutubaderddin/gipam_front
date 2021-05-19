@@ -8,7 +8,7 @@ import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
-import { datePickerDateFormat, dateTimeFormat } from '@shared/utils/helpers';
+import { datePickerDateFormat, dateTimeFormat, tabRefFormBackendErrorMessage } from '@shared/utils/helpers';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -358,8 +358,10 @@ export class PersonsComponent implements OnInit {
         this.addItem = false;
       },
       (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
-        this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Ajout', tabRefFormBackendErrorMessage);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        }
         this.btnLoading = null;
       }
     );
@@ -379,8 +381,10 @@ export class PersonsComponent implements OnInit {
         this.editItem = false;
       },
       (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
-        this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Modification', tabRefFormBackendErrorMessage);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        }
         this.btnLoading = null;
       }
     );
