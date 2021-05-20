@@ -133,6 +133,7 @@ export class DescritifComponent implements OnInit, OnChanges {
         this.authorData = authorResults['results'];
         this.categoriesData = this.getTabRefData(categoriesResults['results']);
         this.depositorsData = this.getTabRefData(depositorsResults['results']);
+        console.log(this.depositorsData);
         this.eraData = this.getTabRefData(eraResults['results']);
         this.entryModesData = this.getTabRefData(entryModesData['results']);
         if (this.field && this.denomination && this.denominationData) {
@@ -202,7 +203,11 @@ export class DescritifComponent implements OnInit, OnChanges {
       }
     );
   }
-
+  onChange(event: Date) {
+    if (event && !isNaN(event.getFullYear())) {
+      this.descriptifForm.get('creationDate').setValue(event.getFullYear());
+    }
+  }
   private initData() {
     if (this.artwork) {
       this.selectedDomain = this.artwork['field'];

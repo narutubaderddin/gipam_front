@@ -1,4 +1,4 @@
-<form [formGroup]="descriptifForm">
+<form [formGroup]="descriptifForm" *ngIf="descriptifForm">
   <div class="form-bloc" *ngIf="attributeToShow">
     <div class="col-md-6">
       <div class="form-group flex-wrap flex-sm-nowrap">
@@ -87,7 +87,7 @@
         </ng-container>
       </div>
       <p-multiSelect
-        *ngIf="edit"
+        *ngIf="edit&&authorData&&authorData.length>0"
         class="select col-md-4 col-sm-7 p-sm-0 col-12"
         selectionLimit="5"
         [maxSelectedLabels]="2"
@@ -231,13 +231,18 @@
         <div class="value" *ngIf="!edit">{{ artwork.createdAt }}</div>
 
         <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
-          <p-calendar
-            class="col-md-12"
+          <input
+            class="col-12 col-sm-7 form-control"
+            autocomplete="off"
+            name="date"
+            (bsValueChange)="onChange($event)"
+            [bsConfig]="{ dateInputFormat: 'YYYY' }"
+            bsDatepicker
             [style]="{ minWidth: '100%' }"
+            minMode="year"
+            placeholder="YYYY"
             formControlName="creationDate"
-            [showIcon]="true"
-            inputId="dateIcon"
-          ></p-calendar>
+          />
         </div>
       </div>
       <div class="col-md-6">
@@ -251,6 +256,7 @@
 
           <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
             <p-multiSelect
+              *ngIf="edit&&materialTechniquesData&&materialTechniquesData.length>0"
               selectionLimit="5"
               [maxSelectedLabels]="2"
               [style]="{ width: '100%' }"
@@ -296,17 +302,17 @@
         </div>
       </div>
       <div class="divider"></div>
-      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="addProperty">
         <label>Marquage</label>
         <div class="value" *ngIf="!edit">{{ artwork.marquage }}</div>
         <input *ngIf="edit" class="form-control value col-12 col-sm-7" placeholder="Marquage" />
       </div>
-      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="addProperty">
         <label>Signature inscription</label>
         <input *ngIf="edit" class="form-control value col-12 col-sm-7" placeholder="Signature inscription" />
       </div>
 
-      <div class="form-group d-flex align-items-center col-md-6">
+      <div class="form-group d-flex align-items-center col-md-6" *ngIf="addProperty">
         <label class="">Mots descriptifs</label>
         <div class="value" *ngIf="!edit">{{ artwork.desc }}</div>
         <tag-input
@@ -319,7 +325,7 @@
           placeholder=" +Mots descriptifs"
         ></tag-input>
       </div>
-      <div class="col-md-12">
+      <div class="col-md-12" *ngIf="addProperty">
         <div class="d-flex form-group col-md-12 p-0">
           <label>Commentaire</label>
           <div class="value" *ngIf="!edit">{{ artwork.comment }}</div>
