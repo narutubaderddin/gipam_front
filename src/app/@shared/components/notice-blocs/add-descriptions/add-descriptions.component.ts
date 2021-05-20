@@ -24,21 +24,20 @@ export class AddDescriptionsComponent implements OnInit {
   @Input() addDepot = false;
   @Input() descriptifForm: FormGroup;
   @Input() addProperty: boolean;
-  @Output() isLoading: EventEmitter<boolean> = new EventEmitter();
   items: any = [];
   domain = '';
   denominations: any;
   isCollapsed = true;
   dropdownSettings: IDropdownSettings;
-  domainData: any[];
-  denominationData: any[];
-  styleData: any[];
+  @Input() domainData: any[];
+  @Input() denominationData: any[];
+  @Input() styleData: any[];
   materialTechniquesData: any[];
-  authorData: any[];
-  categoriesData: any[];
-  depositorsData: any[];
-  eraData: any[];
-  entryModesData: any[];
+  @Input() authorData: any[];
+  @Input() categoriesData: any[];
+  @Input() depositorsData: any[];
+  @Input() eraData: any[];
+  @Input() entryModesData: any[];
   materialTechniques: any;
   attributeToShow: any;
   descriptiveWords: any[] = [];
@@ -71,8 +70,8 @@ export class AddDescriptionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.descriptiveWords = this.descriptifForm.get('descriptiveWords').value;
+    this.denominations = this.denominationData;
     this.simpleTabsRefService.tabRef = 'authors';
-    this.initFilterData();
     if (this.denomination && this.field) {
       this.getAttributes();
       const apiData = {
@@ -121,40 +120,6 @@ export class AddDescriptionsComponent implements OnInit {
       }
     });
     return items;
-  }
-  initFilterData() {
-    forkJoin([
-      this.fieldService.getAllFields(this.data),
-      this.denominationsService.getAllDenominations(this.data),
-      this.styleService.getAllItems(this.data),
-      this.simpleTabsRefService.getAllItems(this.data, 'eras'),
-      this.simpleTabsRefService.getAllItems(this.data, 'authors'),
-      this.simpleTabsRefService.getAllItems(this.data, 'propertyStatusCategories'),
-      this.simpleTabsRefService.getAllItems(this.data, 'depositors'),
-      this.simpleTabsRefService.getAllItems(this.data, 'entryModes'),
-    ]).subscribe(
-      ([
-        fieldsResults,
-        denominationResults,
-        styleResults,
-        eraResults,
-        authorResults,
-        categoriesResults,
-        depositorsResults,
-        entryModesData,
-      ]) => {
-        this.domainData = this.getTabRefData(fieldsResults['results']);
-        this.denominationData = denominationResults['results'];
-        this.denominations = denominationResults['results'];
-        this.styleData = this.getTabRefData(styleResults['results']);
-        this.authorData = this.getTabRefData(authorResults['results']);
-        this.categoriesData = this.getTabRefData(categoriesResults['results']);
-        this.depositorsData = this.getTabRefData(depositorsResults['results']);
-        this.eraData = this.getTabRefData(eraResults['results']);
-        this.entryModesData = this.getTabRefData(entryModesData['results']);
-        this.isLoading.emit(false);
-      }
-    );
   }
 
   addWord(event: any) {
@@ -226,9 +191,6 @@ export class AddDescriptionsComponent implements OnInit {
           type: result.type,
           people: result.people,
           active: result.active,
-        });
-        forkJoin([this.simpleTabsRefService.getAllItems(this.data, 'authors')]).subscribe(([authorResults]) => {
-          this.authorData = this.getTabRefData(authorResults['results']);
         });
       },
       (error) => {

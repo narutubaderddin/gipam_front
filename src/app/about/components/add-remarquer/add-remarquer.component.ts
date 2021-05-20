@@ -1,12 +1,16 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { NgWizardConfig, NgWizardService, StepChangedArgs, StepValidationArgs, THEME } from 'ng-wizard';
-import { Observable, of, Subscription } from 'rxjs';
+import { forkJoin, Observable, of, Subscription } from 'rxjs';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
+import { FieldsService } from '@shared/services/fields.service';
+import { DenominationsService } from '@shared/services/denominations.service';
+import { StylesService } from '@shared/services/styles.service';
+import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 
 @Component({
   selector: 'app-add-remarquer',
@@ -16,6 +20,19 @@ import { DatePipe } from '@angular/common';
 })
 export class AddRemarquerComponent implements OnInit {
   @ViewChild('content') ngTemplate: ElementRef;
+  domainData: any[];
+  denominationData: any[];
+  styleData: any[];
+  authorData: any[];
+  categoriesData: any[];
+  depositorsData: any[];
+  eraData: any[];
+  entryModesData: any[];
+  data = {
+    page: 1,
+    serializer_group: JSON.stringify(['short']),
+    'active[eq]': 1,
+  };
   btnLoading: any = null;
   descriptifForm: FormGroup;
   attachmentForm: FormGroup;
@@ -73,7 +90,11 @@ export class AddRemarquerComponent implements OnInit {
     private router: Router,
     private messageService: MessageService,
     private datePipe: DatePipe,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private fieldService: FieldsService,
+    private denominationsService: DenominationsService,
+    private styleService: StylesService,
+    private simpleTabsRefService: SimpleTabsRefService
   ) {
     this.routeSubscription = this.route.data.subscribe((res: any) => {
       if (res) {
@@ -106,7 +127,37 @@ export class AddRemarquerComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForms();
+    this.initFilterData();
     this.descriptifForm.valueChanges.subscribe((e) => ((this.isDirty = true), this.cdr.detectChanges()));
+  }
+  getTabRefData(result: any[]) {
+    let items: any[] = [];
+    result.forEach((item: any) => {
+      if (item.hasOwnProperty('label')) {
+        items.push({ id: item.id, name: item.label });
+      } else {
+        items.push({ id: item.id, name: item.name });
+      }
+    });
+    return items;
+  }
+  initFilterData() {
+    forkJoin([
+      this.fieldService.getAllFields(this.data),
+      this.denominationsService.getAllDenominations(this.data),
+      this.styleService.getAllItems(this.data),
+      this.simpleTabsRefService.getAllItems(this.data, 'eras'),
+      this.simpleTabsRefService.getAllItems(this.data, 'authors'),
+      this.simpleTabsRefService.getAllItems(this.data, 'depositors'),
+    ]).subscribe(([fieldsResults, denominationResults, styleResults, eraResults, authorResults, depositorsResults]) => {
+      this.domainData = this.getTabRefData(fieldsResults['results']);
+      this.denominationData = denominationResults['results'];
+      this.styleData = this.getTabRefData(styleResults['results']);
+      this.authorData = this.getTabRefData(authorResults['results']);
+      this.depositorsData = this.getTabRefData(depositorsResults['results']);
+      this.eraData = this.getTabRefData(eraResults['results']);
+      this.loadingData = false;
+    });
   }
 
   canDeactivate(): boolean | Observable<boolean> {
@@ -121,7 +172,6 @@ export class AddRemarquerComponent implements OnInit {
     this.initHyperLink();
     this.initLinks();
     this.initDescriptifForm();
-    console.log(this.descriptifForm.value);
   }
   initDescriptifForm() {
     this.descriptifForm = this.fb.group({
