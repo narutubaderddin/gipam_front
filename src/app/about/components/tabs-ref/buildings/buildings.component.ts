@@ -8,6 +8,14 @@ import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
+import {
+  datePickerDateFormat,
+  dateTimeFormat,
+  markAsDirtyDeep,
+  oneOfTheseFields,
+  tabRefFormBackendErrorMessage,
+  towDatesCompare,
+} from '@shared/utils/helpers';
 
 @Component({
   selector: 'app-buildings',
@@ -40,8 +48,8 @@ export class BuildingsComponent implements OnInit {
   };
   sites: any[] = [];
   communes: any[] = [];
-  selectedSite: any[] = [];
-  selectedCommune: any[] = [];
+  selectedSite: any;
+  selectedCommune: any;
   itemToEdit: any;
   itemToDelete: string;
   tabForm: FormGroup;
@@ -121,7 +129,7 @@ export class BuildingsComponent implements OnInit {
     {
       header: 'Date début de validité',
       field: 'startDate',
-      type: 'key',
+      type: 'date',
       filter: true,
       filterType: 'range-date',
       sortable: true,
@@ -130,7 +138,7 @@ export class BuildingsComponent implements OnInit {
     {
       header: 'Date fin de validité',
       field: 'disappearanceDate',
-      type: 'key',
+      type: 'date',
       filter: true,
       filterType: 'range-date',
       sortable: true,
@@ -169,36 +177,39 @@ export class BuildingsComponent implements OnInit {
   }
 
   initForm() {
-    const startDate = this.datePipe.transform(this.selectedItem ? this.selectedItem.startDate : '', 'yyyy-MM-dd');
+    const startDate = this.datePipe.transform(
+      this.selectedItem ? this.selectedItem.startDate : new Date(),
+      datePickerDateFormat
+    );
     const disappearanceDate = this.datePipe.transform(
       this.selectedItem ? this.selectedItem.disappearanceDate : '',
-      'yyyy-MM-dd'
+      datePickerDateFormat
     );
     this.tabForm = this.fb.group({
       label: [this.selectedItem ? this.selectedItem.name : '', [Validators.required]],
       address: [this.selectedItem ? this.selectedItem.address : '', []],
       distrib: [this.selectedItem ? this.selectedItem.distrib : '', []],
-      cedex: [this.selectedItem ? this.selectedItem.cedex : '', []],
+      cedex: [this.selectedItem ? this.selectedItem.cedex : '', [Validators.required]],
       startDate: [startDate, [Validators.required]],
       disappearanceDate: [disappearanceDate, []],
       site: [this.selectedSite, []],
       commune: [this.selectedCommune, []],
       responsibles: ['', []],
     });
-    this.tabForm.setValidators(this.ValidateDate());
+    this.tabForm.setValidators([
+      towDatesCompare('startDate', 'disappearanceDate'),
+      oneOfTheseFields('commune', 'site'),
+    ]);
   }
 
   openModal(item: any) {
+    console.log('edit item', item);
     this.btnLoading = null;
-    if (this.editItem || this.addItem) {
-      this.getSites();
-      this.getCommunes();
-    }
     if (this.editItem || this.editVisibility) {
       this.itemToEdit = item;
       this.itemLabel = item.label;
-      this.selectedSite = item.site ? item.site.label : '';
-      this.selectedCommune = item.commune ? item.commune.name : '';
+      this.selectedSite = item.site;
+      this.selectedCommune = item.commune;
     }
     this.selectedItem = item;
     this.initForm();
@@ -207,60 +218,40 @@ export class BuildingsComponent implements OnInit {
 
   onSiteSelect(item: any) {
     this.selectedSite = item;
+    this.tabForm.get('commune').setValue(null);
   }
   onCommuneSelect(item: any) {
     this.selectedCommune = item;
+    this.tabForm.get('site').setValue(null);
   }
-  getSites() {
-    const previousUrl = this.simpleTabsRef.tabRef;
 
-    this.simpleTabsRef.tabRef = 'sites';
-    const param = {
-      serializer_group: JSON.stringify(['response', 'short']),
-      limit: '100',
+  autoCompleteCommunes(event: any) {
+    this.tabForm.get('commune').setValue(null);
+    const params = {
+      page: 1,
+      serializer_group: JSON.stringify(['short']),
+      'disappearanceDate[gtOrNull]': this.datePipe.transform(new Date(), dateTimeFormat),
+      'name[startsWith]': event.query,
     };
-    this.simpleTabsRef.getAllItems(param).subscribe(
-      (result: any) => {
-        this.sites = result.results.filter((value: any) => this.isActive(value.disappearanceDate));
-      },
-      (error: any) => {
-        this.addSingle('error', '', error.error.message);
-      }
-    );
-    this.simpleTabsRef.tabRef = previousUrl;
+    this.simpleTabsRef.getAllItems(params, 'communes').subscribe((dataResult) => {
+      this.communes = dataResult.results;
+    });
   }
 
-  getCommunes() {
-    const previousUrl = this.simpleTabsRef.tabRef;
-
-    this.simpleTabsRef.tabRef = 'communes';
-    const param = {
-      serializer_group: JSON.stringify(['response', 'short']),
-      limit: '100',
+  autoCompleteSites(event: any) {
+    this.tabForm.get('site').setValue(null);
+    const params = {
+      page: 1,
+      serializer_group: JSON.stringify(['short']),
+      'disappearanceDate[gtOrNull]': this.datePipe.transform(new Date(), dateTimeFormat),
+      'label[startsWith]': event.query,
     };
-    this.simpleTabsRef.getAllItems(param).subscribe(
-      (result: any) => {
-        this.communes = result.results.filter((value: any) => this.isActive(value.disappearanceDate));
-      },
-      (error: any) => {
-        this.addSingle('error', '', error.error.message);
-      }
-    );
-    this.simpleTabsRef.tabRef = previousUrl;
+    this.simpleTabsRef.getAllItems(params, 'sites').subscribe((dataResult) => {
+      this.sites = dataResult.results;
+    });
   }
+
   onSelectAll(items: any) {}
-
-  ValidateDate(): ValidatorFn {
-    return (cc: FormGroup): ValidationErrors => {
-      if (!cc.get('startDate')) {
-        return null;
-      }
-      if (cc.get('startDate').value > cc.get('disappearanceDate').value) {
-        return { dateInvalid: 'Date début supérieur date fin' };
-      }
-      return null;
-    };
-  }
 
   transformDateToDateTime(input: string, format: string, addTime: boolean = true) {
     // 1984-06-05 12:15:30
@@ -274,14 +265,25 @@ export class BuildingsComponent implements OnInit {
   }
 
   submit() {
+    if (this.tabForm.invalid) {
+      markAsDirtyDeep(this.tabForm);
+      this.addSingle('error', 'Erreur', 'Veuillez vérifier tous les champs encadrés en rouge');
+      if (this.tabForm.errors?.oneOfTheseFields) {
+        this.addSingle('error', 'Erreur', 'Un bâtiment doit être lié à une Commune ou un Site');
+      }
+      if (this.tabForm.errors?.dateInvalid) {
+        this.addSingle('error', 'Erreur', this.tabForm.errors.dateInvalid);
+      }
+      return;
+    }
     this.btnLoading = null;
     const item = {
       name: this.tabForm.value.label,
       address: this.tabForm.value.address,
       cedex: this.tabForm.value.cedex,
       distrib: this.tabForm.value.distrib,
-      site: this.tabForm.value.site.id,
-      commune: this.tabForm.value.commune.id,
+      site: this.tabForm.value.site?.id,
+      commune: this.tabForm.value.commune?.id,
       startDate: this.transformDateToDateTime(this.tabForm.value.startDate, 'yyy-MM-dd'),
       disappearanceDate: this.transformDateToDateTime(this.tabForm.value.disappearanceDate, 'yyy-MM-dd'),
     };
@@ -348,27 +350,6 @@ export class BuildingsComponent implements OnInit {
     return !(endDate !== '' && endDate && endDate <= today);
   }
 
-  convertItem(item: any) {
-    const newItem = {
-      id: item.id,
-      name: item.name,
-      address: item.address,
-      cedex: item.cedex,
-      distrib: item.distrib,
-      startDate: item.startDate,
-      disappearanceDate: item.disappearanceDate,
-      site: item.site ? item.site : '',
-      commune: item.commune ? item.commune : '',
-      active: true,
-    };
-    newItem.startDate = item.startDate ? this.datePipe.transform(item.startDate, 'yyyy/MM/dd') : null;
-    newItem.disappearanceDate = item.disappearanceDate
-      ? this.datePipe.transform(item.disappearanceDate, 'yyyy/MM/dd')
-      : null;
-    newItem.active = this.isActive(newItem.disappearanceDate);
-    return newItem;
-  }
-
   getAllItems() {
     this.loading = true;
     let params = {
@@ -384,7 +365,7 @@ export class BuildingsComponent implements OnInit {
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.items = result.results.map((item: any) => {
-          return this.convertItem(item);
+          return Object.assign({ active: this.isActive(item.disappearanceDate) }, item);
         });
 
         this.totalFiltred = result.filteredQuantity;
@@ -435,7 +416,10 @@ export class BuildingsComponent implements OnInit {
         this.addItem = false;
       },
       (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Ajout', tabRefFormBackendErrorMessage);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        }
       }
     );
   }
@@ -451,7 +435,10 @@ export class BuildingsComponent implements OnInit {
       },
 
       (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Modification', tabRefFormBackendErrorMessage);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        }
       }
     );
   }

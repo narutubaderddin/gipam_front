@@ -107,11 +107,7 @@
     <div class="col-md-8"></div>
     <div class="d-flex flex-wrap justify-content-between" *ngIf="(selectedDomain || artwork.field) && attributeToShow">
       <div class="divider"></div>
-      <div
-        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-
-        *ngIf="attributeToShow.includes('height')"
-      >
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('height')">
         <label class="">Hauteur</label>
         <div class="value" *ngIf="!edit">{{ artwork.height }}</div>
         <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
@@ -122,10 +118,7 @@
           </select>
         </div>
       </div>
-      <div
-        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="attributeToShow.includes('width')"
-      >
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('width')">
         <label class="">Largeur</label>
         <div class="value" *ngIf="!edit">{{ artwork.width }}</div>
         <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
@@ -136,10 +129,7 @@
           </select>
         </div>
       </div>
-      <div
-        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="attributeToShow.includes('totalWidth')"
-      >
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('totalWidth')">
         <label class="">Largeur Tot </label>
         <div class="value" *ngIf="!edit">{{ artwork.totalWidth }}</div>
         <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
@@ -150,10 +140,7 @@
           </select>
         </div>
       </div>
-      <div
-        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="attributeToShow.includes('totalHeight')"
-      >
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('totalHeight')">
         <label class="">Hauteur Tot</label>
         <div class="value" *ngIf="!edit">{{artwork.totalHeight}}</div>
         <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
@@ -164,8 +151,7 @@
           </select>
         </div>
       </div>
-      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-           *ngIf="attributeToShow.includes('length')">
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('length')">
         <label class="">Longueur</label>
         <div class="value" *ngIf="!edit">{{ artwork.length }}</div>
         <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
@@ -176,12 +162,9 @@
           </select>
         </div>
       </div>
-      <div
-        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="attributeToShow.includes('depth')"
-      >
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('depth')">
         <label class="">Profondeur</label>
-        <div class="value" *ngIf="!edit">{{artwork.depth}}</div>
+        <div class="value" *ngIf="!edit">{{ artwork.depth }}</div>
         <div class="d-flex value" *ngIf="edit">
           <input class="col-md-8 form-control col-12 col-sm-7" type="number" formControlName="depth" />
           <select class="col-md-4 col-sm-4 form-control">
@@ -190,10 +173,7 @@
           </select>
         </div>
       </div>
-      <div
-        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="attributeToShow.includes('weight')"
-      >
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('weight')">
         <label class="col-md-3">Poids</label>
         <div class="value" *ngIf="!edit">{{artwork.weight}}</div>
         <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
@@ -203,10 +183,7 @@
           </select>
         </div>
       </div>
-      <div
-        class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-        *ngIf="attributeToShow.includes('diameter')"
-      >
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('diameter')">
         <label class="">Diamètre</label>
         <div class="value" *ngIf="!edit">{{ artwork.diameter }}</div>
         <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
@@ -219,8 +196,7 @@
       </div>
       <div class="col-md-4"></div>
       <div class="divider"></div>
-      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap"
-           *ngIf="attributeToShow.includes('era')">
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('era')">
         <label class="">Epoque</label>
         <div class="value" *ngIf="!edit">{{ artwork?.era?.label}}</div>
         <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
@@ -265,7 +241,7 @@
         </div>
       </div>
       <div class="col-md-6">
-        <div class="form-group flex-wrap flex-sm-nowrap"  *ngIf="attributeToShow.includes('materialTechnique')">
+        <div class="form-group flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('materialTechnique')">
           <label class="">Matières <span class="mandatory" *ngIf="edit">*</span></label>
           <div class="value" *ngIf="!edit">
           <ng-container *ngFor="let materialTechnique of artwork.materialTechnique; let i= index;">

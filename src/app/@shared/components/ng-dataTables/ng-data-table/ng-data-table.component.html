@@ -16,6 +16,7 @@
       selectionMode=""
       [totalRecords]="total"
       [resizableColumns]="true"
+      [columnResizeMode]="columnResizeMode"
       [rowHover]="false"
       sortMode="single"
       [multiSortMeta]="sortMeta"
@@ -257,6 +258,11 @@
               <span *ngSwitchCase="'date'"> {{ item[col.field] | date: viewDateFormat }} </span>
               <app-in-progress-notice-renderer [value]="item" *ngSwitchCase="'app-in-progress-notice-renderer'">
               </app-in-progress-notice-renderer>
+              <app-creation-date-notice-renderer
+                [value]="item[col.field]"
+                *ngSwitchCase="'app-creation-date-notice-renderer'"
+              >
+              </app-creation-date-notice-renderer>
 
               <span *ngSwitchDefault> {{ item[col.field] }} </span>
             </span>
@@ -292,7 +298,9 @@
                         <span *ngSwitchDefault> {{ expandItem[col.field] }} </span>
                         <app-select-button-render
                           *ngSwitchCase="'app-select-button-render'"
-                          [value]="expandItem[col.field]"
+                          (selectedStatus)="onSelectedStatus($event, expandItem)"
+                          [value]="expandItem.requestStatus"
+                          [disabled]="item.requestStatus != 'En cours'"
                         ></app-select-button-render>
                       </span>
                     </td>
@@ -309,14 +317,16 @@
                   <button
                     pButton
                     type="button"
+                    [disabled]="item.requestStatus != 'En cours'"
                     label="Valider la demande"
-                    (click)="onChangeRequestStatus(item.id, 'Accepter')"
+                    (click)="onChangeRequestStatus(item, 'Acceptée')"
                   ></button>
                   <button
                     pButton
                     type="button"
+                    [disabled]="item.requestStatus != 'En cours'"
                     label="Annuler la demande"
-                    (click)="onChangeRequestStatus(item.id, 'Refuser')"
+                    (click)="onChangeRequestStatus(item, 'Annulée')"
                     class="p-button-secondary"
                   ></button>
                 </td>

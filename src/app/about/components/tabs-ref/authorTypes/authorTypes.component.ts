@@ -9,6 +9,7 @@ import { MessageService } from 'primeng/api';
 
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { tabRefFormBackendErrorMessage } from '@shared/utils/helpers';
 
 @Component({
   selector: 'app-author-types',
@@ -248,7 +249,10 @@ export class AuthorTypesComponent implements OnInit {
         this.getAllItems();
       },
       (error) => {
-        this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Ajout', tabRefFormBackendErrorMessage);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        }
         this.btnLoading = null;
       }
     );
@@ -282,7 +286,10 @@ export class AuthorTypesComponent implements OnInit {
         this.selectedItem = null;
       },
       (error) => {
-        this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Modification', tabRefFormBackendErrorMessage);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        }
         this.btnLoading = null;
       }
     );

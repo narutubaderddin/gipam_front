@@ -55,11 +55,18 @@
             <app-ng-data-table
               [columns]="columns"
               [data]="remarquers"
+              (pageChanged)="pagination($event)"
               [frozenCols]="[]"
               [frozenWidth]="'0px'"
               [checkBoxSelection]="false"
               [singleSelect]="true"
               (singleSelectionEvent)="onRowsSelection($event)"
+              [totalFiltred]="totalFiltred"
+              [total]="total"
+              [page]="page"
+              [limit]="limit"
+              [end]="end"
+              [start]="start"
             >
             </app-ng-data-table>
           </div>
@@ -67,4 +74,7 @@
       </div>
     </div>
   </div>
+</div>
+<div class="loading-spinner" *ngIf="loading">
+  <p-progressSpinner></p-progressSpinner>
 </div>

@@ -22,32 +22,32 @@ export class HypertextLinksComponent implements OnInit, OnChanges {
   get liens(): FormArray {
     return this.myForm.get('liens') as FormArray;
   }
+
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
     this.configForm();
-    console.log("liens", this.existingLinks)
   }
   ngOnChanges(changes: SimpleChanges) {
-    console.log(this.existingLinks)
   }
 
-  createAttachment(attachment?: any, attachmentType?: any): FormGroup {
+  createHyperLink(name?: any, url?: any): FormGroup {
     return this.fb.group({
-      name: [attachment],
-      url: [attachmentType],
+      name: [name],
+      url: [url],
     });
   }
 
-  addBook() {
-    this.hyperlinks.push(this.createAttachment());
+  addHyperlink() {
+    this.hyperlinks.push(this.createHyperLink());
   }
 
-  removeBook(i: number) {
+  removeHyperLinks(i: number) {
     this.hyperlinks.removeAt(i);
   }
+
   addLink() {
-    this.liens.push(this.buildLink());
+    this.liens.push(this.createHyperLink());
   }
 
   removeLink(i: number) {
@@ -60,16 +60,10 @@ export class HypertextLinksComponent implements OnInit, OnChanges {
 
   configForm() {
     this.myForm = this.fb.group({
-      liens: this.fb.array([this.buildLink()]),
+      liens: this.fb.array([this.createHyperLink()]),
     });
   }
 
-  buildLink(): FormGroup {
-    return this.fb.group({
-      urlName: ['', [Validators.required]],
-      url: ['', [Validators.required]],
-    });
-  }
   addNewLinks() {
     this.addLinks = true;
   }

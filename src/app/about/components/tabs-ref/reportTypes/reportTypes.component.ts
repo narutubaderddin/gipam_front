@@ -9,6 +9,7 @@ import { MessageService } from 'primeng/api';
 
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { NgDataTableComponent } from '@shared/components/ng-dataTables/ng-data-table/ng-data-table.component';
+import { tabRefFormBackendErrorMessage } from '@shared/utils/helpers';
 
 @Component({
   selector: 'app-reportTypes',
@@ -22,7 +23,7 @@ export class ReportTypesComponent implements OnInit {
   loading = true;
   btnLoading: any = null;
   myModal: any;
-  selectedItem: string;
+  selectedItem: any;
 
   itemToEdit: any;
   itemToDelete: string;
@@ -102,8 +103,8 @@ export class ReportTypesComponent implements OnInit {
 
   initForm() {
     this.tabForm = this.fb.group({
-      style: [this.selectedItem, [Validators.required]],
-      active: [true],
+      style: [this.selectedItem?.label, [Validators.required]],
+      active: [this.selectedItem ? this.selectedItem.active : true],
     });
   }
 
@@ -134,7 +135,7 @@ export class ReportTypesComponent implements OnInit {
     }
 
     // console.log(item);
-    this.selectedItem = item.label;
+    this.selectedItem = item;
 
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
@@ -173,7 +174,6 @@ export class ReportTypesComponent implements OnInit {
   }
 
   actionMethod(e: any) {
-    console.log(e);
     switch (e.method) {
       case 'delete':
         this.deleteItem(e.item);
@@ -219,10 +219,6 @@ export class ReportTypesComponent implements OnInit {
     );
   }
 
-  setItems(data: any[]) {
-    this.items = [...data];
-  }
-
   deleteItemss(item: any) {
     this.btnLoading = '';
     this.simpleTabsRef.deleteItem(item).subscribe(
@@ -252,15 +248,19 @@ export class ReportTypesComponent implements OnInit {
         this.getAllItems();
       },
       (error) => {
-        this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Ajout', tabRefFormBackendErrorMessage);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        }
         this.btnLoading = null;
       }
     );
   }
 
   visibleItem(data: any) {
+    this.loading = true;
     data.active = !data.active;
-    this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
+    this.simpleTabsRef.editItem({ active: data.active }, data.id).subscribe(
       (result) => {
         if (data.active) {
           this.addSingle('success', 'Activation', 'Type constat ' + data.label + ' activée avec succés');
@@ -272,6 +272,7 @@ export class ReportTypesComponent implements OnInit {
 
       (error) => {
         this.addSingle('error', 'Modification', error.error.message);
+        this.loading = true;
       }
     );
   }
@@ -286,7 +287,10 @@ export class ReportTypesComponent implements OnInit {
       },
 
       (error) => {
-        this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Modification', tabRefFormBackendErrorMessage);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        }
         this.btnLoading = null;
       }
     );

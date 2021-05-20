@@ -4,11 +4,11 @@ import { NotificationsService } from 'angular2-notifications';
 import { SharedService } from '@shared/services/shared.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PdfGeneratorService } from '@shared/services/pdf-generator.service';
-import {ActivatedRoute} from '@angular/router';
-import {WorkOfArtService} from '@shared/services/work-of-art.service';
-import {MessageService} from 'primeng/api';
-import {dateTimeFormat} from '@shared/utils/helpers';
-import {DatePipe} from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { WorkOfArtService } from '@shared/services/work-of-art.service';
+import { MessageService } from 'primeng/api';
+import { dateTimeFormat } from '@shared/utils/helpers';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-item-details',
@@ -47,8 +47,8 @@ export class ItemDetailsComponent implements OnInit {
   attachments:any[]=[];
   status:any={};
   type = 'depot';
-  addProperty=false;
-  addDepot=false;
+  addProperty = false;
+  addDepot = false;
   page: any = 5;
   edit = false;
   depositStatusForm: FormGroup;
@@ -76,13 +76,13 @@ export class ItemDetailsComponent implements OnInit {
     height: '85',
     width: '85',
     authors: 'Auteur 1, Auteur 11',
-    totalWidth:'',
-    totalHeight:'',
-    era:'',
-    materialTechnique:'',
-    status:'',
-    denomination:'Affiche',
-    createdAt:'22/01/2020'
+    totalWidth: '',
+    totalHeight: '',
+    era: '',
+    materialTechnique: '',
+    status: '',
+    denomination: 'Affiche',
+    createdAt: '22/01/2020',
   };
   artWorksToPrint: any = [];
 
@@ -303,7 +303,7 @@ export class ItemDetailsComponent implements OnInit {
         this.workArt= result;
         this.initDescriptifForm(result);
         result.photographies.map((el:any, index:number)=>{
-          console.log("photography", el.photographyType)
+
           this.photographies.push({
             workArtId: result.id,
             id:el.id,
@@ -315,24 +315,21 @@ export class ItemDetailsComponent implements OnInit {
             photographyName: el.imageName,
             photographyType: el.photographyType,
             imageName: el.imageName,
-          })
+          });
         });
         result.status.statusType==="PropertyStatus"? this.addProperty=true: this.addDepot=true;
         this.status= result.status;
         this.addProperty?this.initDepositStatusForm(result.status): this.initPropertyStatusForm(result.status);
         this.attachments= result.attachments;
-        console.log("attachments", this.attachments)
         this.hypertextLinks = result.hyperlinks;
-        console.log("artwork",result);
         this.parent= result.parent;
-        console.log("parent", this.parent);
         this.children= result.children;
       },
       error => {
 
         this.addSingle('error', 'Erreur Technique', error.error.message);
       }
-    )
+    );
   }
   addSingle(type: string, sum: string, msg: string) {
     this.messageService.add({ severity: type, summary: sum, detail: msg });

@@ -53,7 +53,7 @@ export class DescritifComponent implements OnInit, OnChanges {
     private workOfArtService: WorkOfArtService
   ) {}
   get item() {
-    console.log(this.artwork)
+    console.log(this.artwork);
     return this.artwork;
   }
   get field() {

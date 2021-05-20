@@ -256,9 +256,8 @@ export class ResponsibleComponent implements OnInit {
       this.selectedItem ? this.selectedItem.endDate : '',
       datePickerDateFormat
     );
-    const firstName = this.selectedItem ? this.selectedItem.firstName : null;
     this.tabForm = this.fb.group({
-      firstName: [firstName, [Validators.required]],
+      firstName: [this.selectedItem ? this.selectedItem.firstName : null, [Validators.required]],
       lastName: [this.selectedItem ? this.selectedItem.lastName : null, [Validators.required]],
 
       login: [this.selectedItem ? this.selectedItem.login : '', []],
@@ -347,21 +346,21 @@ export class ResponsibleComponent implements OnInit {
     }
     this.selectedItem = item;
     this.initForm();
-    this.myModal = this.modalService.open(this.modalRef, { centered: true, scrollable: true });
+    this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
 
   submit() {
     if (this.tabForm.invalid) {
       markAsDirtyDeep(this.tabForm);
       this.addSingle('error', 'Erreur', 'Veuillez vérifier tous les champs encadrés en rouge');
-      if (this.tabForm.errors.oneOfTheseFields) {
+      if (this.tabForm.errors?.oneOfTheseFields) {
         this.addSingle(
           'error',
           'Erreur',
           'Un responsable doit avoir au moins une Région ou un Département ou un Bâtiment'
         );
       }
-      if (this.tabForm.errors.dateInvalid) {
+      if (this.tabForm.errors?.dateInvalid) {
         this.addSingle('error', 'Erreur', this.tabForm.errors.dateInvalid);
       }
       return;
@@ -505,21 +504,33 @@ export class ResponsibleComponent implements OnInit {
     }
   }
 
-  autoComplete(event: any, entity: string, field: string, relatedEntityName?: any, relatedEntity?: any) {
+  autoComplete(event: any, entity: string, field: string) {
     const params = {
       page: 1,
       serializer_group: JSON.stringify(['short']),
     };
     params[field + '[startsWith]'] = event.query;
-    if (relatedEntity) {
-      if (!Array.isArray(relatedEntity)) {
-        params[relatedEntityName + '[eq]'] = relatedEntity.id;
-      } else if (relatedEntity.length !== 0) {
-        params[relatedEntityName + '[in]'] = JSON.stringify(getMultiSelectIds(relatedEntity));
-      }
-    }
     entity = entity + 's';
     this.simpleTabsRef.getAllItems(params, entity).subscribe((dataResult) => {
+      this.relatedEntities[entity] = dataResult.results;
+    });
+  }
+
+  autoCompleteCommune(event: any, entity: string, field: string) {
+    const params = {
+      page: 1,
+      serializer_group: JSON.stringify(['short', 'response']),
+      search: event.query,
+    };
+    params[field + '[startsWith]'] = event.query;
+    if (this.tabForm.get('region').value) {
+      params['region'] = JSON.stringify([this.tabForm.get('region').value.id]);
+    }
+    if (this.tabForm.get('departments').value && this.tabForm.get('departments').value.length !== 0) {
+      params['department'] = JSON.stringify(getMultiSelectIds(this.tabForm.get('departments').value));
+    }
+    entity = entity + 's';
+    this.simpleTabsRef.getItemsByCriteria(params, entity).subscribe((dataResult) => {
       this.relatedEntities[entity] = dataResult.results;
     });
   }
@@ -534,8 +545,6 @@ export class ResponsibleComponent implements OnInit {
     let params = {
       limit: this.limit,
       page: this.page,
-      sort_by: this.sortBy,
-      sort: this.sort,
     };
     params = Object.assign(params, this.dataTableFilter);
     params = Object.assign(params, this.dataTableSort);

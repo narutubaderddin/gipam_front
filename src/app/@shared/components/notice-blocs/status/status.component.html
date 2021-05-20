@@ -4,17 +4,18 @@
     <div class="form-bloc pl-0" *ngIf="addDeposit" [formGroup]="depositStatusForm">
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
         <label class="">Date de dépôt</label>
-        <div class="autocomplete form-control value col-12 col-sm-7"  *ngIf="edit">
+        <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
           <p-calendar
-
+            dateFormat="yy-mm-dd"
             class="col-md-12"
             [style]="{ minWidth: '100%' }"
             formControlName="depositDate"
             [showIcon]="true"
             inputId="icon"
+            (onSelect)="onSelectDepositDate($event)"
           ></p-calendar>
         </div>
-        <div class="value" *ngIf="!edit">{{statusData.depositDate|date: viewDateFormat}}</div>
+        <div class="value" *ngIf="!edit">{{ statusData.depositDate | date: viewDateFormat }}</div>
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
         <label class="">N° arrêt</label>
@@ -25,7 +26,7 @@
           formControlName="stopNumber"
           placeholder="N° arrêt"
         />
-        <p class="value" *ngIf="!edit">{{statusData.stopNumber}}</p>
+        <p class="value" *ngIf="!edit">{{ statusData.stopNumber }}</p>
       </div>
     </div>
 
@@ -44,7 +45,7 @@
           defaultLabel="Sélectionner des déposants"
         >
         </p-multiSelect>
-        <div class="value" *ngIf="!edit">{{statusData.depsitorName}}</div>
+        <div class="value" *ngIf="!edit">{{ statusData.depsitorName }}</div>
       </div>
       <div class="col-md-4 link" *ngIf="edit">
         <a href="">Ajouter un nouveau déposant</a>
@@ -61,13 +62,14 @@
         *ngIf="edit"
         formControlName="insuranceValue"
       />
-      <p class="value" *ngIf="!edit">{{statusData.insuranceValue}}</p>
+      <p class="value" *ngIf="!edit">{{ statusData.insuranceValue }}</p>
     </div>
     <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
       <label class="col-sm-4">Date d'assurrance</label>
       <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
         <p-calendar
-
+          dateFormat="yy-mm-dd"
+          (onSelect)="onSelectInsuranceDate($event)"
           class="col-md-12"
           [style]="{ minWidth: '100%' }"
           formControlName="insuranceValueDate"
@@ -75,7 +77,7 @@
           inputId="icon"
         ></p-calendar>
       </div>
-      <div class="value" *ngIf="!edit">{{statusData.insuranceValueDate|date: viewDateFormat}}</div>
+      <div class="value" *ngIf="!edit">{{ statusData.insuranceValueDate | date: viewDateFormat }}</div>
     </div>
 
     <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
@@ -94,13 +96,14 @@
         >
         </p-dropdown>
       </div>
-      <div class="value" *ngIf="!edit">{{statusData.entryMode}}</div>
+      <div class="value" *ngIf="!edit">{{ statusData.entryMode }}</div>
     </div>
     <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
       <label class="col-sm-4">Date d'entrée</label>
       <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
         <p-calendar
-
+          dateFormat="yy-mm-dd"
+          (onSelect)="onSelectEntryDate($event)"
           class="col-md-12"
           [style]="{ minWidth: '100%' }"
           formControlName="entryDate"
@@ -108,7 +111,7 @@
           inputId="icon"
         ></p-calendar>
       </div>
-      <div class="value" *ngIf="!edit">{{statusData.entryDate|date: viewDateFormat}}</div>
+      <div class="value" *ngIf="!edit">{{ statusData.entryDate | date: viewDateFormat }}</div>
     </div>
     <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
       <label class="col-sm-4">Catégorie de bien</label>
@@ -125,8 +128,7 @@
         >
         </p-dropdown>
       </div>
-      <div class="value" *ngIf="!edit">{{statusData.category}}</div>
-
+      <div class="value" *ngIf="!edit">{{ statusData.category }}</div>
     </div>
   </div>
 </div>

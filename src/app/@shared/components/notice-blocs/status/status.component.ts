@@ -2,10 +2,12 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { viewDateFormat } from '@shared/utils/helpers';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-status',
   templateUrl: './status.component.html',
   styleUrls: ['./status.component.scss'],
+  providers: [DatePipe],
 })
 export class StatusComponent implements OnInit {
   @Input() domains: any;
@@ -15,13 +17,13 @@ export class StatusComponent implements OnInit {
   @Input() addDeposit = false;
   @Input() propertyStatusForm: FormGroup;
   @Input() depositStatusForm: FormGroup;
-  @Input() statusData: any={};
+  @Input() statusData: any = {};
   isCollapsed = false;
   categories: any[] = [];
   entryModes: any[] = [];
   params: { limit: number; page: number };
   viewDateFormat = viewDateFormat;
-  constructor(private simpleTabsRef: SimpleTabsRefService) {}
+  constructor(private simpleTabsRef: SimpleTabsRefService, private datePipe: DatePipe) {}
 
   ngOnInit(): void {
     this.getAllEntryModes();
@@ -53,7 +55,15 @@ export class StatusComponent implements OnInit {
       (error: any) => {}
     );
   }
-
+  onSelectInsuranceDate(event: any) {
+    this.propertyStatusForm.get('insuranceValueDate').setValue(this.datePipe.transform(event, 'yyyy-MM-dd'));
+  }
+  onSelectEntryDate(event: any) {
+    this.propertyStatusForm.get('entryDate').setValue(this.datePipe.transform(event, 'yyyy-MM-dd'));
+  }
+  onSelectDepositDate(event: any) {
+    this.depositStatusForm.get('depositDate').setValue(this.datePipe.transform(event, 'yyyy-MM-dd'));
+  }
   selectEvent(item: any) {}
 
   onChangeSearch(val: string) {

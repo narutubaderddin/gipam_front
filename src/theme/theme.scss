@@ -846,18 +846,10 @@ ng-file-drag-drop {
 }
 
 .p-autocomplete {
-  display: block !important;
   .p-autocomplete-panel {
     min-width: 100%;
     max-width: 100%;
     font-size: 12px;
-  }
-  .p-autocomplete-input {
-    min-width: 100%;
-    max-width: 100%;
-  }
-  .p-inputtext {
-    font-size: 12px !important;
   }
 }
 

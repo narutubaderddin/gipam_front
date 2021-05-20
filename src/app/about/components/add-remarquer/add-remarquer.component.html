@@ -1,3 +1,6 @@
+<div *ngIf="loadingData; else content" class="scroll-loading">
+  <p-progressSpinner></p-progressSpinner>
+</div>
 <p-dialog header=" " [modal]="true" [(visible)]="value" #dialog>
   Vous n'avez pas rempli tous les champs obligatoires !
   <h5>Voulez-vous enregistrer la notice en mode bouillon ?</h5>
@@ -15,89 +18,97 @@
     </button>
   </ng-template>
 </p-dialog>
-<ng-wizard [config]="config" (stepChanged)="stepChanged($event)">
-  <ng-wizard-step
-    [title]="'1'"
-    [description]="descriptionTitle"
-    [canEnter]="isValidTypeBoolean"
-    [canExit]="isValidFunctionReturnsBoolean.bind(this)"
-  >
-    <div class="d-flex flex-end justify-content-end pr-5">
-      <button class="btn-primary" (click)="submit()" style="font-size: 12px; background-color: #00d6d4">
-        Enregistrer
-      </button>
-    </div>
-    <div class="container-fluid d-flex">
-      <div class="second-bloc">
-        <div class="col-md-12 cadre">
-          <div class="col-md-12 main-info d-flex">
-            <div class="row-cols-lg-12">
-              <div class="col-md-12 mt-2">
-                <div>
-                  <div
-                    class="flex-column-reverse d-flex top-bloc flex-sm-column-reverse flex-md-column-reverse flex-lg-row"
-                  >
-                    <div class="col-lg-4 col-md-12 col-sm-12 col-12 image-container">
-                      <div class="detail-image">
-                        <div class="col-md-12 d-flex p-0 img-wrapper mt-2 mt-sm-0">
-                          <app-item-images
-                            [photographiesForm]="photographiesForm"
-                            [add]="true"
-                            [edit]="false"
-                            class="col-12"
-                          ></app-item-images>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="col-lg-8 col-md-12 p-0 pl-lg-4">
-                      <div class="col-12 p-0">
-                        <div class="d-flex justify-content-between">
-                          <nav ngbNav #nav="ngbNav" class="nav-tabs">
-                            <ng-container ngbNavItem>
-                              <a ngbNavLink><i class="far fa-file-alt mr-2"></i>Descriptifs physiques</a>
-                              <ng-template ngbNavContent>
-                                <app-add-descriptions
-                                  [addDepot]="false"
-                                  [descriptifForm]="descriptifForm"
-                                ></app-add-descriptions>
-                              </ng-template>
-                            </ng-container>
-                            <ng-container ngbNavItem>
-                              <a ngbNavLink><i class="fas fa-info-circle mr-2"></i>Descriptifs juridiques</a>
-                              <ng-template ngbNavContent>
-                                <app-status
-                                  [edit]="true"
-                                  [depositStatusForm]="depositStatusForm"
-                                  [propertyStatusForm]="propertyStatusForm"
-                                  [addProperty]="addProperty"
-                                  [addDeposit]="addDeposit"
-                                ></app-status>
-                              </ng-template>
-                            </ng-container>
-                          </nav>
-                        </div>
-
-                        <div [ngbNavOutlet]="nav" class=""></div>
-                      </div>
-                      <div class="d-flex col-12 p-0 flex-column">
-                        <div class="d-flex col-12 p-0 mt-4 justify-content-between flex-column flex-md-row">
-                          <div class="attachments-container mr-2 col-md-7 p-0">
-                            <app-attachments
-                              [attachmentForm]="attachmentForm"
-                              style="width: 100%"
+<ng-template #content>
+  <ng-wizard [config]="config" (stepChanged)="stepChanged($event)">
+    <ng-wizard-step
+      [title]="'1'"
+      [description]="descriptionTitle"
+      [canEnter]="isValidTypeBoolean"
+      [canExit]="isValidFunctionReturnsBoolean.bind(this)"
+    >
+      <div class="d-flex flex-end justify-content-end pr-5">
+        <button class="btn-primary" (click)="submit()" style="font-size: 12px; background-color: #00d6d4">
+          <i class="fas fa-cog fa-spin" [hidden]="!isLoading"></i>
+          Enregistrer
+        </button>
+      </div>
+      <div class="container-fluid d-flex">
+        <div class="second-bloc">
+          <div class="col-md-12 cadre">
+            <div class="col-md-12 main-info d-flex">
+              <div class="row-cols-lg-12">
+                <div class="col-md-12 mt-2">
+                  <div>
+                    <div
+                      class="flex-column-reverse d-flex top-bloc flex-sm-column-reverse flex-md-column-reverse flex-lg-row"
+                    >
+                      <div class="col-lg-4 col-md-12 col-sm-12 col-12 image-container">
+                        <div class="detail-image">
+                          <div class="col-md-12 d-flex p-0 img-wrapper mt-2 mt-sm-0">
+                            <app-item-images
+                              [photographiesForm]="photographiesForm"
                               [add]="true"
-                            ></app-attachments>
+                              [edit]="false"
+                              class="col-12"
+                            ></app-item-images>
                           </div>
-                          <div
-                            class="attachments-container ml-2 col-md-5 p-0 d-flex flex-column flex-sm-row flex-md-column"
-                          >
-                            <app-links [linkArtWorkForm]="linkArtWorkForm" style="width: 100%" [add]="true"></app-links>
-                            <app-hypertext-links
-                              [linksForm]="linksForm"
-                              style="width: 100%"
-                              [add]="true"
-                            ></app-hypertext-links>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-8 col-md-12 p-0 pl-lg-4">
+                        <div class="col-12 p-0">
+                          <div class="d-flex justify-content-between">
+                            <nav ngbNav #nav="ngbNav" class="nav-tabs">
+                              <ng-container ngbNavItem>
+                                <a ngbNavLink><i class="far fa-file-alt mr-2"></i>Descriptifs physiques</a>
+                                <ng-template ngbNavContent>
+                                  <app-add-descriptions
+                                    [addProperty]="addProperty"
+                                    [addDepot]="false"
+                                    [descriptifForm]="descriptifForm"
+                                  ></app-add-descriptions>
+                                </ng-template>
+                              </ng-container>
+                              <ng-container ngbNavItem>
+                                <a ngbNavLink><i class="fas fa-info-circle mr-2"></i>Descriptifs juridiques</a>
+                                <ng-template ngbNavContent>
+                                  <app-status
+                                    [edit]="true"
+                                    [depositStatusForm]="depositStatusForm"
+                                    [propertyStatusForm]="propertyStatusForm"
+                                    [addProperty]="addProperty"
+                                    [addDeposit]="addDeposit"
+                                  ></app-status>
+                                </ng-template>
+                              </ng-container>
+                            </nav>
+                          </div>
+
+                          <div [ngbNavOutlet]="nav" class=""></div>
+                        </div>
+                        <div class="d-flex col-12 p-0 flex-column">
+                          <div class="d-flex col-12 p-0 mt-4 justify-content-between flex-column flex-md-row">
+                            <div class="attachments-container mr-2 col-md-7 p-0">
+                              <app-attachments
+                                [attachmentForm]="attachmentForm"
+                                style="width: 100%"
+                                [add]="true"
+                              ></app-attachments>
+                            </div>
+                            <div
+                              class="attachments-container ml-2 col-md-5 p-0 d-flex flex-column flex-sm-row flex-md-column"
+                            >
+                              <app-links
+                                [linkArtWorkForm]="linkArtWorkForm"
+                                style="width: 100%"
+                                [add]="true"
+                              ></app-links>
+                              <app-hypertext-links
+                                [linksForm]="linksForm"
+                                style="width: 100%"
+                                [add]="true"
+                              ></app-hypertext-links>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -109,38 +120,38 @@
           </div>
         </div>
       </div>
-    </div>
-  </ng-wizard-step>
+    </ng-wizard-step>
 
-  <ng-wizard-step
-    [title]="'2'"
-    [description]="'Création mouvement'"
-    [canEnter]="isValidFunctionReturnsObservable.bind(this)"
-    [canExit]="isValidFunctionReturnsBoolean.bind(this)"
-  >
-    <span>Création mouvement</span>
-  </ng-wizard-step>
-  <ng-wizard-step
-    [title]="'3'"
-    [description]="'Création constat'"
-    [canEnter]="isValidFunctionReturnsObservable.bind(this)"
-    [canExit]="isValidFunctionReturnsBoolean.bind(this)"
-  >
-    <span>Création constat</span>
-  </ng-wizard-step>
-  <ng-template #content let-modal class="modal-content">
-    <div class="modal-header">
-      <h4 class="modal-title">Modal title</h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <p>One fine body&hellip;</p>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
-    </div>
-  </ng-template>
-</ng-wizard>
-<p-toast></p-toast>
+    <ng-wizard-step
+      [title]="'2'"
+      [description]="'Création mouvement'"
+      [canEnter]="isValidFunctionReturnsObservable.bind(this)"
+      [canExit]="isValidFunctionReturnsBoolean.bind(this)"
+    >
+      <span>Création mouvement</span>
+    </ng-wizard-step>
+    <ng-wizard-step
+      [title]="'3'"
+      [description]="'Création constat'"
+      [canEnter]="isValidFunctionReturnsObservable.bind(this)"
+      [canExit]="isValidFunctionReturnsBoolean.bind(this)"
+    >
+      <span>Création constat</span>
+    </ng-wizard-step>
+    <ng-template #content let-modal class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Modal title</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>One fine body&hellip;</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+      </div>
+    </ng-template>
+    <p-toast></p-toast>
+  </ng-wizard>
+</ng-template>

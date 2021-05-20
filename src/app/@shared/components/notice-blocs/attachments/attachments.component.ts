@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import {LinksService} from "@shared/services/links.service";
@@ -34,28 +34,6 @@ export class AttachmentsComponent implements OnInit, OnChanges {
     lang: {},
   };
 
-
-  // existingAttachments = [
-    // {
-    //   attachment: {
-    //     name: 'details.pdf',
-    //   },
-    //   attachmentType: 'type 2',
-    // },
-    // {
-    //   attachment: {
-    //     name: 'fichier',
-    //   },
-    //   attachmentType: 'type 2',
-    // },
-    // {
-    //   attachment: {
-    //     name: 'exemple.pdf',
-    //   },
-    //   attachmentType: 'type 1',
-    // },
-  // ];
-
   responsiveOptions = [
     {
       breakpoint: '1500px',
@@ -88,7 +66,6 @@ export class AttachmentsComponent implements OnInit, OnChanges {
     if (this.itemDetails) {
 
       this.existingAttachments.map((el: any) => {
-
         this.filesProperties.push({ edit: false, delete: false });
         this.files.push(el.link);
         this.attachments.push(this.createAttachment(el.link, el.attachementType.id, el.id));
@@ -181,9 +158,9 @@ export class AttachmentsComponent implements OnInit, OnChanges {
       }
       if (this.selectedAttachment == this.attachments.value.length || this.itemDetails) {
         this.files.push(this.addedFile);
-        this.attachments.push(this.createAttachment(this.addedFile.name, this.attachmentType));
+        this.attachments.push(this.createAttachment(this.addedFile, this.attachmentType));
       } else {
-        this.editAttachmentForm(this.selectedAttachment, this.addedFile.name, this.attachmentType);
+        this.editAttachmentForm(this.selectedAttachment, this.addedFile, this.attachmentType);
       }
       this.initData();
       this.attachmentInsertionNumber++;

@@ -8,7 +8,7 @@ import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { FieldsService } from '@shared/services/fields.service';
 import { MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
-import { datePickerDateFormat, dateTimeFormat } from '@shared/utils/helpers';
+import { datePickerDateFormat, dateTimeFormat, tabRefFormBackendErrorMessage } from '@shared/utils/helpers';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -162,7 +162,7 @@ export class PersonsComponent implements OnInit {
         [Validators.pattern('^(http\\:\\/\\/|https\\:\\/\\/)?([a-z0-9][a-z0-9\\-]*\\.)+[a-z0-9][a-z0-9\\-]*$')],
       ],
       comment: [this.selectedItem ? this.selectedItem.comment : '', []],
-      author: [this.selectedAuthor ? this.selectedAuthor.label : { fullName: '' }, []],
+      author: [this.selectedAuthor, []],
       active: [this.selectedItem ? this.selectedItem?.active : true],
     });
   }
@@ -174,13 +174,31 @@ export class PersonsComponent implements OnInit {
     forkJoin([this.simpleTabsRef.getAllItems(data, 'authors')]).subscribe(
       ([relatedAuthorsResults]) => {
         this.authors = this.simpleTabsRef.getTabRefFilterData(relatedAuthorsResults.results);
-        this.activeAuthors = relatedAuthorsResults.results.filter((value: any) => value.active === true);
         this.relatedAuthorsColumn.selectData = this.authors;
       },
       (error: any) => {
         this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
       }
     );
+  }
+
+  getActiveAuthors() {
+    const params = {
+      'active[eq]': 1,
+      serializer_group: JSON.stringify(['short']),
+    };
+    this.simpleTabsRef.getAllItems(params, 'authors').subscribe((result: any) => {
+      this.activeAuthors = result.results;
+      this.addNotActiveEntities();
+    });
+  }
+
+  addNotActiveEntities() {
+    if (this.selectedAuthor) {
+      if (!this.activeAuthors.some((activeItem) => activeItem.id === this.selectedAuthor.id)) {
+        this.activeAuthors.push(this.selectedAuthor);
+      }
+    }
   }
 
   openModal(item: any) {
@@ -191,8 +209,10 @@ export class PersonsComponent implements OnInit {
       this.itemLabel = item.firstName + ' ' + item.lastName;
       this.selectedAuthor = item.author;
     }
+    this.getActiveAuthors();
     this.selectedItem = item;
     console.log('item', item);
+    console.log('author item', this.selectedAuthor);
     this.initForm();
     this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
@@ -358,8 +378,10 @@ export class PersonsComponent implements OnInit {
         this.addItem = false;
       },
       (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
-        this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Ajout', tabRefFormBackendErrorMessage);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        }
         this.btnLoading = null;
       }
     );
@@ -379,8 +401,10 @@ export class PersonsComponent implements OnInit {
         this.editItem = false;
       },
       (error) => {
-        this.addSingle('error', 'Modification', error.error.message);
-        this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Modification', tabRefFormBackendErrorMessage);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Modification');
+        }
         this.btnLoading = null;
       }
     );

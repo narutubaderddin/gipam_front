@@ -1,17 +1,17 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { NgbModal, NgbModalOptions, NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
-import { AddImgModalComponent } from '@shared/components/notice-blocs/item-images/add-img-modal/add-img-modal.component';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
 import { viewDateFormat } from '@shared/utils/helpers';
 import {PhotographyService} from "@shared/services/photography.service";
 import {MessageService} from "primeng/api";
 import {ParentComponentApi} from "@app/about/components/item-details/item-details.component";
-
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-item-images',
   templateUrl: './item-images.component.html',
   styleUrls: ['./item-images.component.scss'],
+  providers: [DatePipe],
 })
 export class ItemImagesComponent implements OnInit, OnChanges {
   @ViewChild('file') file: any;
@@ -46,13 +46,14 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   get photographies(): FormArray {
     return this.photographiesForm.get('photographies') as FormArray;
   }
-  constructor(private modalService: NgbModal, public fb: FormBuilder,
+  constructor(private modalService: NgbModal,
+              public fb: FormBuilder,
               private  simpleTabsRef:SimpleTabsRefService,
               private photographyService: PhotographyService,
               private messageService: MessageService,
+              private datePipe: DatePipe
               ) {}
   ngOnInit(): void {
-
     this.getAllTypes();
     this.images.map((el: any) => {
         this.photographies.push(
@@ -90,8 +91,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     this.simpleTabsRef.getAllItems(params).subscribe(
       (result: any) => {
         this.types = result.results;
-
-        },
+      },
       (error: any) => {}
     );
   }
@@ -103,7 +103,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     imageName?: string
   ): FormGroup {
     return this.fb.group({
-      date: [photographyDate],
+      date: [this.datePipe.transform(photographyDate, 'yyyy-MM-dd')],
       imagePreview: [photography],
       photographyType: [photographyType.id],
       // imageName: [imageName],
@@ -111,7 +111,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   }
   editPhotographyForm(i: number, photography: string, photographyType: any, photographyDate: Date, imageName: string) {
     this.photographies.value[i].photographyType = photographyType;
-    this.photographies.value[i].date = photographyDate;
+    this.photographies.value[i].date = this.datePipe.transform(photographyDate, 'yyyy-MM-dd');
     // this.photographies.value[i].imageName = imageName;
     this.photographies.value[i].imagePreview = photography;
     this.images[i].imageUrl = photography;
@@ -153,7 +153,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         this.photographies.push(
           this.createPhotography(
             this.buildFormData(this.fileToUpload),
-            new Date(),
+            new Date(this.photographyDate),
             this.photographyType,
             this.imageName
           )
@@ -180,18 +180,19 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   buildFormData(file: File) {
     const formData = new FormData();
     formData.append('imagePreview', file, file.name);
-    console.log('formData',formData.get('imagePreview'))
-    return (formData.get('imagePreview'));
+    return formData;
   }
-  handleFileInput(file: FileList) {
-    this.fileToUpload = file.item(0);
-    let reader = new FileReader();
-    reader.onload = (event: any) => {
+  handleFileInput(e: any) {
+    const file = e.target.files.item(0);
+    this.fileToUpload = file;
+
+    const fReader = new FileReader();
+    fReader.readAsDataURL(file);
+    fReader.onload = (event: any) => {
       this.photography = event.target.result;
     };
-    reader.readAsDataURL(this.fileToUpload);
-    reader.onloadend = (_event: any) => {
-      this.imageName = this.fileToUpload.name;
+    fReader.onloadend = (_event: any) => {
+      this.imageName = file.name;
     };
   }
   addImg() {

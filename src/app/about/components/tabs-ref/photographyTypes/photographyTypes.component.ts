@@ -255,8 +255,9 @@ export class PhotographyTypesComponent implements OnInit {
   }
 
   visibleItem(data: any) {
+    this.loading = true;
     data.active = !data.active;
-    this.simpleTabsRef.editItem({ label: data.label, active: data.active }, data.id).subscribe(
+    this.simpleTabsRef.editItem({ active: data.active }, data.id).subscribe(
       (result) => {
         if (data.active) {
           this.addSingle('success', 'Activation', 'Type Photographie ' + data.type + ' activée avec succés');
@@ -268,6 +269,7 @@ export class PhotographyTypesComponent implements OnInit {
 
       (error) => {
         this.addSingle('error', 'Modification', error.error.message);
+        this.loading = false;
       }
     );
   }

@@ -15,7 +15,7 @@ export class LinksComponent implements OnInit, OnChanges{
   @Input() linkArtWorkForm: FormGroup;
   @Input() add: false;
   @Input() itemDetails: boolean = false;
-  @Input() parentLink: any='';
+  @Input() parentLink: any = '';
   @Input() children: any = '';
   @Input() editWorkArtLinks: boolean;
 

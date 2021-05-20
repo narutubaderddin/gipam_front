@@ -278,7 +278,7 @@ export class PortailComponent implements OnInit {
       return false;
     }
     item.isDemanded = true;
-    this.WorkOfArtService.addSelectedArtWorks(item);
+    this.selectedOeuvre = this.WorkOfArtService.addSelectedArtWorks(item);
   }
   oeuvreToBeremoved: any;
   removeFromBasket(event: any, item: any) {
@@ -408,7 +408,7 @@ export class PortailComponent implements OnInit {
     if (this.formModesValues && this.formModesValues.length == 1) {
       mode = this.formModesValues[0];
     }
-    return  {
+    return {
       height: height,
       width: width,
       weight: weight,
@@ -612,13 +612,17 @@ export class PortailComponent implements OnInit {
   selectedLevel: any;
 
   exportRequests() {
-    this.requestService.exportRequest().subscribe((response: Response | any) => {
-      this.requestService.manageFileResponseDownload(response, 'test');
+    let artWorksIds: any = [];
+    this.selectedOeuvre.forEach((elm) => {
+      artWorksIds.push(elm.id);
+    });
+    this.requestService.exportRequest(artWorksIds).subscribe((response: Response | any) => {
+      this.requestService.manageFileResponseDownload(response, 'Oeuvres Graphiques');
     });
   }
 
   exportArtWorks() {
-    let filter : any = {};
+    let filter: any = {};
     filter = this.extractedFilterOeuvres();
     filter.limit = this.totalOeuvres;
     delete filter['page'];

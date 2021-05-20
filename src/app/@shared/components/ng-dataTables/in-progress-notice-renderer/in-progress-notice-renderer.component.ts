@@ -8,11 +8,13 @@ import { Router } from '@angular/router';
 })
 export class InProgressNoticeRendererComponent implements OnInit {
   @Input() value: any = '';
+  statusType: string;
   constructor(private router: Router) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.value.status.statusType == 'DepositStatus' ? (this.statusType = 'dépôt') : (this.statusType = 'propriété');
+  }
   goToCreation(value: any) {
-    console.log(value);
-    this.router.navigate(['/creation-notice/propriété']);
+    this.router.navigate(['/creation-notice', this.statusType], { queryParams: { id: this.value.id } });
   }
 }
