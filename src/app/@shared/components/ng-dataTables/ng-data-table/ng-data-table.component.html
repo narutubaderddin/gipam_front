@@ -294,7 +294,7 @@
                         <app-select-button-render
                           *ngSwitchCase="'app-select-button-render'"
                           (selectedStatus)="onSelectedStatus($event,expandItem)"
-                          [value]="expandItem.requestStatus"
+                          [value]="expandItem.status"
                           [disabled]="item.requestStatus!='En cours'"
                         ></app-select-button-render>
                       </span>

@@ -1,3 +1,9 @@
-<div class="status-container" [ngClass]="class">
+<div class="status-container"
+     [ngClass]="{'class_accepted': value === 'Acceptée',
+                 'class2': value === 'Partiellement acceptée' || value === 'Prorièté' ,
+                 'class1': value === 'Dépôt',
+                 'class_refused': value === 'Refusée',
+                 'class_canceled': value === 'Annulée',
+                 'class_in_progress': value === 'En cours'}">
   <span>{{ value }}</span>
 </div>

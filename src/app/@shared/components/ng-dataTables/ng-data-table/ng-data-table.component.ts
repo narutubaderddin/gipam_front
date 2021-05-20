@@ -425,17 +425,20 @@ export class NgDataTableComponent implements OnInit {
 
     if(status === "Annulée"){
       request.requestStatus = status;
+      request.expandData.forEach((artWork:any)=>{
+        artWork.status = "Annulé";
+      });
     }else{
       let allArtWorksAccepted : boolean = true;
       let allArtWorksRefused : boolean = true;
       let validSelectedRequest : boolean = false;
       request.expandData.forEach((artWork:any)=>{
-        if(artWork.requestStatus){
+        if(artWork.status){
           validSelectedRequest = true;
-          if(artWork.requestStatus !== "Accepté"){
+          if(artWork.status !== "Accepté"){
             allArtWorksAccepted = false;
           }
-          if(artWork.requestStatus !== "Refusé"){
+          if(artWork.status !== "Refusé"){
             allArtWorksRefused = false;
           }
         }
@@ -455,6 +458,6 @@ export class NgDataTableComponent implements OnInit {
     this.changeRequestStatus.emit(request);
   }
   onSelectedStatus($event:any,expandItem:any){
-    expandItem.requestStatus = $event;
+    expandItem.status = $event;
   }
 }

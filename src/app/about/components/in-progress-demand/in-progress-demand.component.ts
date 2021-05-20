@@ -73,7 +73,7 @@ export class InProgressDemandComponent {
     },
     {
       header: 'Auteur',
-      field: 'author',
+      field: 'authorsName',
     },
     {
       header: '',
@@ -114,24 +114,20 @@ export class InProgressDemandComponent {
           if (elm.lastNameApplicant) {
             nameApplicant += elm.lastNameApplicant;
           }
+          let expendDatas : any = [];
+          elm.requestedArtWorks.forEach((requestedArtWork:any)=>{
+            expendDatas.push({
+              ...requestedArtWork.artWork,
+              status: requestedArtWork.status,
+              requestedArtWorkId: requestedArtWork.id,
+            })
+          });
           return {
             ...elm,
             createdAt: `${this.sharedService.dateToString(elm.createdAt)}`,
             name: elm.firstName + ' ' + elm.lastName,
             nameApplicant: nameApplicant,
-            expandData: elm.artWorks.map((eData: any) => {
-              let authors: string = '';
-              eData.authors.forEach((auth: any, index: number) => {
-                authors += auth.firstName + ' ' + auth.lastName;
-                if (index < eData.length - 1) {
-                  authors += ', ';
-                }
-              });
-              return {
-                ...eData,
-                author: authors,
-              };
-            }),
+            expandData: expendDatas,
           };
         });
       },
