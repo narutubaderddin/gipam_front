@@ -15,10 +15,5 @@ export class StatusTypeComponentRenderComponent implements OnInit {
     if (typeof this.value === 'object') {
       this.value.statusType == 'DepositStatus' ? (this.value = 'Dépôt') : (this.value = 'Propriété');
     }
-    if (this.value == 'Dépôt') {
-      this.class = 'class1';
-    } else {
-      this.class = 'class2';
-    }
   }
 }

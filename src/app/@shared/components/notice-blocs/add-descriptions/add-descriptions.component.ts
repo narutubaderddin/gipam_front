@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -20,6 +20,7 @@ export class AddDescriptionsComponent implements OnInit {
   @Input() addDepot = false;
   @Input() descriptifForm: FormGroup;
   @Input() addProperty: boolean;
+  @Output() isLoading: EventEmitter<boolean> = new EventEmitter();
   items: any = [];
   domain = '';
   denominations: any;
@@ -124,6 +125,7 @@ export class AddDescriptionsComponent implements OnInit {
         this.depositorsData = this.getTabRefData(depositorsResults['results']);
         this.eraData = this.getTabRefData(eraResults['results']);
         this.entryModesData = this.getTabRefData(entryModesData['results']);
+        this.isLoading.emit(false);
       }
     );
   }
@@ -166,7 +168,6 @@ export class AddDescriptionsComponent implements OnInit {
         const denomination = this.denominationData.filter((den: any) => {
           return den.id === value.value;
         });
-        this.field ? (materialApiData['fields'] = JSON.stringify([this.field])) : '';
         materialApiData['denominations'] = JSON.stringify([this.denomination]);
         forkJoin([this.materialTechniqueService.getFilteredMaterialTechnique(materialApiData)]).subscribe(
           ([materialTechniquesResults]) => {

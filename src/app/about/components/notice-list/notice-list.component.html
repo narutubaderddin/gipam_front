@@ -21,60 +21,62 @@
           </div>
         </div>
         <div class="mt-2 datagrid-bloc">
-          <div class="d-flex search-add-sectlion">
-            <div class="search-add-section-div">
-              <div class="search input-group">
-                <input
-                  class="form-control py-2 border-right-0 border search-form-control"
-                  type="search"
-                  value="Rechercher"
-                  id="example-search-input"
-                />
-                <span class="input-group-append">
-                  <button class="btn btn-outline-secondary border-left-0 border" type="button">
-                    <i class="fa fa-search"></i>
+          <ng-template #content>
+            <div class="d-flex search-add-sectlion">
+              <div class="search-add-section-div">
+                <div class="search input-group">
+                  <input
+                    class="form-control py-2 border-right-0 border search-form-control"
+                    type="search"
+                    value="Rechercher"
+                    id="example-search-input"
+                  />
+                  <span class="input-group-append">
+                    <button class="btn btn-outline-secondary border-left-0 border" type="button">
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="datatable mt-4">
+              <div *ngIf="selectedItem">
+                <div class="mass-action-container">
+                  <i class="fas fa-share"></i>
+                  <button class="btn add-action" translate>
+                    <i class="fas fa-edit"></i>
+                    Modifier
                   </button>
-                </span>
+                  <button class="btn add-action" translate>
+                    <i class="fas fa-trash-alt"></i>
+                    Supprimer
+                  </button>
+                </div>
               </div>
+              <app-ng-data-table
+                [columns]="columns"
+                [data]="remarquers"
+                (pageChanged)="pagination($event)"
+                [frozenCols]="[]"
+                [frozenWidth]="'0px'"
+                [checkBoxSelection]="false"
+                [singleSelect]="true"
+                (singleSelectionEvent)="onRowsSelection($event)"
+                [totalFiltred]="totalFiltred"
+                [total]="total"
+                [page]="page"
+                [limit]="limit"
+                [end]="end"
+                [start]="start"
+              >
+              </app-ng-data-table>
             </div>
-          </div>
-          <div class="datatable mt-4">
-            <div *ngIf="selectedItem">
-              <div class="mass-action-container">
-                <i class="fas fa-share"></i>
-                <button class="btn add-action" translate>
-                  <i class="fas fa-edit"></i>
-                  Modifier
-                </button>
-                <button class="btn add-action" translate>
-                  <i class="fas fa-trash-alt"></i>
-                  Supprimer
-                </button>
-              </div>
-            </div>
-            <app-ng-data-table
-              [columns]="columns"
-              [data]="remarquers"
-              (pageChanged)="pagination($event)"
-              [frozenCols]="[]"
-              [frozenWidth]="'0px'"
-              [checkBoxSelection]="false"
-              [singleSelect]="true"
-              (singleSelectionEvent)="onRowsSelection($event)"
-              [totalFiltred]="totalFiltred"
-              [total]="total"
-              [page]="page"
-              [limit]="limit"
-              [end]="end"
-              [start]="start"
-            >
-            </app-ng-data-table>
+          </ng-template>
+          <div class="loading-spinner" *ngIf="loadingData; else content">
+            <p-progressSpinner></p-progressSpinner>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-<div class="loading-spinner" *ngIf="loading">
-  <p-progressSpinner></p-progressSpinner>
 </div>

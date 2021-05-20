@@ -28,6 +28,7 @@ export class StatusComponent implements OnInit {
   ngOnInit(): void {
     this.getAllEntryModes();
     this.getAllCategories();
+    console.log(this.propertyStatusForm);
   }
 
   initParams(tabref: string) {

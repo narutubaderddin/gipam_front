@@ -12,10 +12,6 @@ export class DirtyCheckGuard implements CanDeactivate<AddRemarquerComponent> {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (component.canDeactivate()) {
-      return component.canDeactivate();
-    } else {
-      return true;
-    }
+    return component.canDeactivate();
   }
 }

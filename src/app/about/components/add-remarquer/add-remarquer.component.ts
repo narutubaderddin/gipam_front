@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { NgWizardConfig, NgWizardService, StepChangedArgs, StepValidationArgs, THEME } from 'ng-wizard';
 import { Observable, of, Subscription } from 'rxjs';
@@ -29,7 +29,6 @@ export class AddRemarquerComponent implements OnInit {
   descriptionTitle = '';
   domains: any[] = [];
   keyword = 'name';
-
   display: Observable<boolean>;
   config: NgWizardConfig = {
     selected: 0,
@@ -42,8 +41,6 @@ export class AddRemarquerComponent implements OnInit {
           class: 'btn btn-info',
           event: () => {
             this.open(this.ngTemplate.nativeElement);
-            console.log(this.ngTemplate.nativeElement);
-            // alert('veuillez enregistrer');
           },
         },
       ],
@@ -54,14 +51,19 @@ export class AddRemarquerComponent implements OnInit {
   isDirty = false;
   value: boolean;
   url: string;
-  inProgressNotice: any;
+  inProgressNotice: any = [];
   id: string;
   routeSubscription: Subscription;
   isLoading = false;
-  loadingData = false;
+  loadingData = true;
   strIntoObj: any[] = [];
-  createdNoticeId: number;
-
+  createdNoticeId = 'null';
+  toCreateNoticeId = 'null';
+  submitted = false;
+  attachmentData: any[] = [];
+  photographyData: any[] = [];
+  hyperLinkData: any[] = [];
+  existingLink: any;
   constructor(
     public workOfArtService: WorkOfArtService,
     private ngWizardService: NgWizardService,
@@ -70,11 +72,16 @@ export class AddRemarquerComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private messageService: MessageService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private cdr: ChangeDetectorRef
   ) {
     this.routeSubscription = this.route.data.subscribe((res: any) => {
       if (res) {
         this.inProgressNotice = res.addRemarquer;
+        this.inProgressNotice.hyperlinks ? (this.hyperLinkData = this.inProgressNotice.hyperlinks) : null;
+        this.inProgressNotice.attachments ? (this.attachmentData = this.inProgressNotice.attachments) : null;
+        this.inProgressNotice.photographies ? (this.photographyData = this.inProgressNotice.photographies) : null;
+        this.inProgressNotice.parent ? (this.existingLink = this.inProgressNotice.parent) : null;
         if (this.inProgressNotice.status && this.inProgressNotice.status.descriptiveWords) {
           let str: string = this.inProgressNotice.status.descriptiveWords;
           let strIntoOb = str.split(',');
@@ -99,11 +106,11 @@ export class AddRemarquerComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForms();
-    this.descriptifForm.valueChanges.subscribe((e) => (this.isDirty = true));
+    this.descriptifForm.valueChanges.subscribe((e) => ((this.isDirty = true), this.cdr.detectChanges()));
   }
 
   canDeactivate(): boolean | Observable<boolean> {
-    // this.submit();
+    this.isDirty && !this.submitted ? this.submit() : null;
     return true;
   }
   initForms() {
@@ -114,6 +121,7 @@ export class AddRemarquerComponent implements OnInit {
     this.initHyperLink();
     this.initLinks();
     this.initDescriptifForm();
+    console.log(this.descriptifForm.value);
   }
   initDescriptifForm() {
     this.descriptifForm = this.fb.group({
@@ -123,12 +131,14 @@ export class AddRemarquerComponent implements OnInit {
         this.inProgressNotice && this.inProgressNotice.denomination ? this.inProgressNotice.denomination.id : null,
       materialTechnique: [
         this.inProgressNotice && this.inProgressNotice.materialTechnique
-          ? this.inProgressNotice.materialTechnique
+          ? this.formatArray(this.inProgressNotice.materialTechnique)
           : null,
       ],
       numberOfUnit:
         this.inProgressNotice && this.inProgressNotice.numberOfUnit ? this.inProgressNotice.numberOfUnit : null,
-      authors: [this.inProgressNotice && this.inProgressNotice.authors ? this.inProgressNotice.authors : null],
+      authors: [
+        this.inProgressNotice && this.inProgressNotice.authors ? this.formatArray(this.inProgressNotice.authors) : null,
+      ],
       creationDate: [
         this.inProgressNotice && this.inProgressNotice.creationDate
           ? this.datePipe.transform(this.inProgressNotice.creationDate, 'yyyy')
@@ -189,7 +199,7 @@ export class AddRemarquerComponent implements OnInit {
       ],
       entryDate: [
         this.inProgressNotice && this.inProgressNotice.status
-          ? this.datePipe.transform(this.inProgressNotice.status.entryDate, 'yy-mm-dd')
+          ? this.datePipe.transform(this.inProgressNotice.status.entryDate, 'yyyy-MM-dd')
           : null,
       ],
       marking: [''],
@@ -205,7 +215,7 @@ export class AddRemarquerComponent implements OnInit {
       ],
       insuranceValueDate: [
         this.inProgressNotice && this.inProgressNotice.status
-          ? this.datePipe.transform(this.inProgressNotice.status.insuranceValueDate, 'yy-mm-dd')
+          ? this.datePipe.transform(this.inProgressNotice.status.insuranceValueDate, 'yyyy-MM-dd')
           : null,
       ],
       otherRegistrations: [''],
@@ -216,7 +226,7 @@ export class AddRemarquerComponent implements OnInit {
     this.depositStatusForm = this.fb.group({
       depositDate: [
         this.inProgressNotice && this.inProgressNotice.status
-          ? this.datePipe.transform(this.inProgressNotice.status.depositDate, 'yy-mm-dd')
+          ? this.datePipe.transform(this.inProgressNotice.status.depositDate, 'yyyy-MM-dd')
           : null,
       ],
       stopNumber: [
@@ -231,7 +241,7 @@ export class AddRemarquerComponent implements OnInit {
   }
   initLinks() {
     this.linkArtWorkForm = this.fb.group({
-      parent: [],
+      parent: this.inProgressNotice && this.inProgressNotice.parent ? this.inProgressNotice.parent.id : null,
     });
   }
   initAttachmentForm() {
@@ -243,6 +253,10 @@ export class AddRemarquerComponent implements OnInit {
     this.photographiesForm = new FormGroup({
       photographies: this.fb.array([]),
     });
+  }
+  loadingHandler(event: boolean) {
+    this.loadingData = event;
+    this.cdr.detectChanges();
   }
 
   addSingle(type: string, sum: string, msg: string) {
@@ -280,6 +294,16 @@ export class AddRemarquerComponent implements OnInit {
   isValidFunctionReturnsObservable(args: StepValidationArgs) {
     return of(true);
   }
+  formatArray(array: any) {
+    let test: any[] = [];
+    if (array.length) {
+      array.forEach((value: any) => {
+        test.push(value.id);
+      });
+      return test;
+    }
+    return null;
+  }
   formatData() {
     const keys = ['height', 'width', 'length', 'totalHeight', 'totalWidth', 'totalLength', 'depth', 'diameter'];
     keys.forEach((key: string) => {
@@ -301,9 +325,7 @@ export class AddRemarquerComponent implements OnInit {
           }
         }
       } else if (dataKey == 'status') {
-        console.log(this.descriptifForm.value[dataKey]);
         for (let previewKey in this.descriptifForm.value[dataKey]) {
-          console.log(`${dataKey}[${previewKey}]`, this.descriptifForm.value[dataKey][previewKey]);
           formData.append(`${dataKey}[${previewKey}]`, this.descriptifForm.value[dataKey][previewKey]);
         }
       } else {
@@ -336,12 +358,17 @@ export class AddRemarquerComponent implements OnInit {
         .setValue(this.descriptifForm.get('registrationSignature').value);
       this.propertyStatusForm.get('descriptiveWords').setValue(this.descriptifForm.get('descriptiveWords').value);
       this.propertyStatusForm.get('description').setValue(this.descriptifForm.get('description').value);
+      console.log(this.descriptifForm.value);
       this.buildFormData(formData);
-      this.workOfArtService.addWorkOfArt(formData).subscribe(
+      this.inProgressNotice
+        ? (this.toCreateNoticeId = this.inProgressNotice.id)
+        : (this.toCreateNoticeId = this.createdNoticeId);
+      this.workOfArtService.addWorkOfArt(formData, this.toCreateNoticeId).subscribe(
         (result) => {
           this.addSingle('success', 'Ajout', result.msg);
           this.isLoading = false;
-          this.router.navigate([['/creation-notice/propriété'], { queryParams: { id: result.id } }]);
+          this.submitted = true;
+          this.createdNoticeId = result.res.id;
         },
         (err) => {
           this.addSingle('error', 'Ajout', "Une erreur est survenue lors de l'ajout");
@@ -351,8 +378,17 @@ export class AddRemarquerComponent implements OnInit {
       this.buildFormData(formData);
       this.workOfArtService.addDepositWorkOfArt(formData).subscribe(
         (result) => {
+          this.isLoading = false;
+          this.submitted = true;
+          this.createdNoticeId = result.res.id;
           this.addSingle('success', 'Ajout', 'La notice a été ajoutée avec succès');
-          this.router.navigate([['/creation-notice/dépôt'], { queryParams: { id: result.id } }]);
+          // this.router.navigate([], {
+          //   relativeTo: this.route,
+          //   queryParams: {
+          //     id: result.id,
+          //   },
+          //   queryParamsHandling: 'merge',
+          // });
         },
         (err) => {
           this.addSingle('error', 'Ajout', "Une erreur est survenue lors de l'ajout");
