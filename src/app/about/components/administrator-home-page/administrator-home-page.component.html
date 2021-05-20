@@ -14,18 +14,24 @@
         </div>
         <div class="mt-2 wrap">
           <div class="form-group search">
-            <input type="text" class="form-control w-100" placeholder="Rechercher des oeuvres ..." />
-            <button type="submit" class="searchButton">
+            <input
+              type="text"
+              class="form-control w-100"
+              [(ngModel)]="searchQuery"
+              placeholder="Rechercher des oeuvres ..."
+              (keyup.enter)="onSeachClick()"
+            />
+            <button type="submit" class="searchButton" (click)="onSeachClick()">
               <i class="fa fa-search"></i>
             </button>
           </div>
         </div>
-        <div class="d-flex informations mt-2">
-          <div class="col-md-3">
+        <div class="d-flex informations mt-2 mb-2">
+          <div class="col-lg-3 col-md-6">
             <div class="stati bg-turquoise">
               <i class="fa fa-spinner"></i>
               <div>
-                <b>35</b>
+                <b>{{ remarquersResult['totalQuantity'] }}</b>
                 <span>
                   <a (click)="onNoticeClick()" class="flex-column">
                     <span class="title">Oeuvres</span>
@@ -38,7 +44,7 @@
                 <div
                   class="col-6"
                   style="text-align: left; width: 100% !important; font-size: 14px"
-                  *ngFor="let notice of remarquers"
+                  *ngFor="let notice of remarquersResult['result']"
                 >
                   <p>
                     <span style="display: contents !important; font-size: 16px">N° d'inventaire:</span> {{ notice.id }}
@@ -48,7 +54,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-lg-3 col-md-6 mb-2">
             <div class="stati bg-blue">
               <i class="fa fa-tasks"></i>
               <div>
@@ -74,11 +80,11 @@
             </div>
           </div>
 
-          <div class="col-md-3">
+          <div class="col-lg-3 col-md-6 mb-2">
             <div class="stati bg-grey">
               <i class="fa fa-server"></i>
               <div>
-                <b>15</b>
+                <b>{{ demandeResult['totalQuantity'] }}</b>
                 <span>
                   <a class="flex-column" href="demandes-en-cours">
                     <span class="title">Demandes</span>
@@ -87,9 +93,25 @@
                 </span>
               </div>
               <hr class="mt-5" style="border-top: 1px solid white" />
+              <div class="row w-100 mt-3">
+                <div
+                  class="col-6"
+                  style="text-align: left; width: 100% !important; font-size: 14px"
+                  *ngFor="let demande of demandeResult['results']"
+                >
+                  <p>
+                    <span style="display: contents !important; font-size: 16px">Date :</span>
+                    {{ demande['createdAt'] | date: 'dd/MM/yyyy' }}
+                  </p>
+                  <p>
+                    <span style="display: contents !important; font-size: 16px">Bénéficiaire: </span
+                    >{{ demande['firstName'] }} {{ demande['lastName'] }}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-lg-3 col-md-6 mb-2">
             <div class="stati bg-red">
               <i class="fa fa-exclamation-triangle"></i>
               <div>

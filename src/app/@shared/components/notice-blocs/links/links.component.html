@@ -8,8 +8,13 @@
     </div>
 
     <ol class="rounded-list" *ngIf="!add">
+      <<<<<<< HEAD
       <li *ngIf="addLinks || existingLinks.length || parentLink || add">Fait partie de:</li>
-      <li *ngIf="addLinks">
+      <li *ngIf="addLinks">=======</li>
+
+      <li *ngIf="addLinks || existingLinks.length || parentLink || add">Fait partie de:</li>
+      <li *ngIf="addLinks || editLinks">
+        >>>>>>> 7faeea41afe5d42fb7131483da14d45765f89fab
         <p-autoComplete
           #autocompletePanel
           class="select col-md-4 col-sm-7 p-sm-0 col-12"
@@ -18,6 +23,7 @@
           field="data"
           (completeMethod)="search($event)"
           [dropdown]="true"
+          (onSelect)="handleSelect($event)"
           (onShow)="change()"
           minLength="3"
           virtualScroll="true"
@@ -27,38 +33,37 @@
         </p-autoComplete>
         <div class="d-flex justify-content-end col-12 p-0 mt-2 mb-2">
           <button (click)="cancelLink()" class="mr-2 cancel-btn">Annuler</button>
-          <button (click)="addLink()" class="valid-btn">Valider</button>
+          <button (click)="editLinks ? updateLink() : addLink()" class="valid-btn">Valider</button>
         </div>
       </li>
-      <ng-template ngFor let-item pTemplate="item" [ngForOf]="parentLink" let-i="index">
-        <li *ngIf="parentLink">
-          <span
-            ><a href="#">{{ item.name }}</a>
-            <div>
-              <i class="far fa-edit col-1 mr-2" (click)="editLink()" pTooltip="Modifier" tooltipPosition="top"></i>
-              <i
-                class="far fa-trash-alt"
-                *ngIf="itemDetails"
-                (click)="delete(item)"
-                pTooltip="Supprimer"
-                tooltipPosition="top"
-              ></i>
-            </div>
-          </span>
-        </li>
-      </ng-template>
-      <li *ngIf="children">
+
+      <li *ngIf="parentLink">
+        <span
+          ><a style="max-width: 30%" href="&quot;details/&quot;+{{ parentLink.id }}">{{ parentLink.id }} </a>|
+          {{ parentLink.title }}
+          <div>
+            <i class="far fa-edit col-1 mr-2" (click)="editLink()" pTooltip="Modifier" tooltipPosition="top"></i>
+            <i
+              class="far fa-trash-alt"
+              *ngIf="itemDetails"
+              (click)="delete(parentLink)"
+              pTooltip="Supprimer"
+              tooltipPosition="top"
+            ></i>
+          </div>
+        </span>
+      </li>
+
+      <li *ngIf="children.length">
         Composé de :
         <ol>
-          <li>
-            <span><a href="#">149</a> | 22/01/2020 | Jean</span>
-          </li>
-          <li>
-            <span><a href="#">149</a> | 22/01/2020 | Jean</span>
-          </li>
-          <li>
-            <span><a href="#">149</a> | 22/01/2020 | Jean</span>
-          </li>
+          <ng-template ngFor let-item pTemplate="item" [ngForOf]="children" let-i="index">
+            <li>
+              <span
+                ><a style="maxwidth: 30%" href="details/+{{ item.id }}">{{ item.id }} </a>| {{ item.title }}</span
+              >
+            </li>
+          </ng-template>
         </ol>
       </li>
     </ol>

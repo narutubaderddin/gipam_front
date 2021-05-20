@@ -1,15 +1,15 @@
-import { Component, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
-import ArtWorksDataModel from '@app/about/models/art-works-model';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { ArtWorkService } from '@app/about/services/art-work.service';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { FormGroup } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-links',
   templateUrl: './links.component.html',
   styleUrls: ['./links.component.scss'],
 })
-export class LinksComponent implements OnInit {
+export class LinksComponent implements OnInit, OnChanges {
   @ViewChild('autocompletePanel') autocompletePanel: any;
   @Input() linkArtWorkForm: FormGroup;
   @Input() add: false;
@@ -17,7 +17,11 @@ export class LinksComponent implements OnInit {
   @Input() parentLink: any = '';
   @Input() children: any = '';
   @Input() existingLink: any;
+  @Input() editWorkArtLinks: boolean;
+
+  @Output() update = new EventEmitter<any>();
   addLinks: boolean = false;
+  editLinks: boolean = false;
   artWorksData: any[] = [];
   page = 1;
   query = '';
@@ -25,6 +29,7 @@ export class LinksComponent implements OnInit {
   deleteDialog: boolean = false;
   itemToDelete: string = '';
   selectedItem: any;
+  btnLoading: any = null;
   existingLinks: any[] = [
     {
       url: 'string',
@@ -34,11 +39,16 @@ export class LinksComponent implements OnInit {
   constructor(
     private artWorkService: ArtWorkService,
     private workOfArtService: WorkOfArtService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {}
-
+  ngOnChanges() {
+    if (!this.editWorkArtLinks) {
+      this.editLinks = false;
+    }
+  }
   getWorkOfArts(pageNumber: number = 1, query: string = '') {
     const filter = {
       page: pageNumber,
@@ -94,6 +104,7 @@ export class LinksComponent implements OnInit {
   }
   cancelLink() {
     this.addLinks = !this.addLinks;
+    this.editLinks = false;
   }
   delete(item: string) {
     this.deleteDialog = true;
@@ -112,6 +123,15 @@ export class LinksComponent implements OnInit {
     return this.existingLinks.indexOf(el);
   }
   editLink() {
-    this.addLinks = !this.addLinks;
+    this.editLinks = !this.editLinks;
+  }
+
+  updateLink() {
+    this.update.emit(this.linkArtWorkForm.value.parent);
+  }
+
+  addSingle(type: string, sum: string, msg: string) {
+    this.messageService.add({ severity: type, summary: sum, detail: msg });
+    this.btnLoading = null;
   }
 }

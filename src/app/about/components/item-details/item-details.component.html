@@ -29,8 +29,8 @@
                 Titre de l'Oeuvre
                 <span
                   class="type"
-                  [ngStyle]="addProperty? { backgroundColor: '#00D6D4' } : { backgroundColor: '#0080FF' }"
-                  >{{ addProperty? 'Propriété' : 'Dépot' }}</span
+                  [ngStyle]="addProperty ? { backgroundColor: '#00D6D4' } : { backgroundColor: '#0080FF' }"
+                  >{{ addProperty ? 'Propriété' : 'Dépot' }}</span
                 >
               </div>
               <div class="col-md-4 col-xs-12 mt-2 mt-md-0 icons p-0">
@@ -56,6 +56,7 @@
                         [edit]="edit"
                         [images]="photographies"
                         (imgToShow)="src($event)"
+                        [parentApi]="getParentApi()"
                         class="col-12"
                       ></app-item-images>
                     </div>
@@ -71,7 +72,7 @@
                 <div class="col-lg-8 col-md-12 p-0 pl-lg-4">
                   <div class="col-12 p-0">
                     <div class="d-flex justify-content-between">
-                      <nav ngbNav #nav="ngbNav" class="nav-tabs">
+                      <nav ngbNav #nav="ngbNav" class="nav-tabs" [destroyOnHide]="false">
                         <ng-container ngbNavItem>
                           <a ngbNavLink><i class="far fa-file-alt mr-2"></i>Descriptifs physiques</a>
                           <ng-template ngbNavContent>
@@ -82,6 +83,7 @@
                               [addProperty]="false"
                               [addDepot]="false"
                               [descriptifForm]="descriptifForm"
+                              (attributes)="getAttributes($event)"
                             ></app-descritif>
                           </ng-template>
                         </ng-container>
@@ -104,7 +106,7 @@
                     <div [ngbNavOutlet]="nav" class=""></div>
                     <div *ngIf="edit" class="col-md-12 p-0" style="display: flex; flex-direction: row-reverse">
                       <button class="btn valid-btn" (click)="onSave()">Enregistrer</button>
-                      <button class="btn btn-action cancel-btn">Annuler</button>
+                      <button class="btn btn-action cancel-btn" (click)="onCancel()">Annuler</button>
                     </div>
                   </div>
                   <div class="d-flex col-12 p-0 flex-column">
@@ -116,6 +118,8 @@
                           [add]="false"
                           [itemDetails]="true"
                           [existingAttachments]="attachments"
+                          [artwork]="workArt"
+                          [parentApi]="getParentApi()"
                         ></app-attachments>
                       </div>
                       <div class="attachments-container ml-2 col-md-5 p-0 mt-2 mt-xl-0">
@@ -124,7 +128,11 @@
                           [parentLink]="parent"
                           [children]="children"
                           [add]="false"
-                          [itemDetails]="true"></app-links>
+                          [itemDetails]="true"
+                          [linkArtWorkForm]="linkArtWorkForm"
+                          [editWorkArtLinks]="editLink"
+                          (update)="onSave($event)"
+                        ></app-links>
                       </div>
                     </div>
                     <div class="attachments-container col-md-12 p-0 row m-0 align-baseline">
@@ -132,8 +140,10 @@
                         style="width: 100%"
                         [add]="false"
                         [itemDetails]="true"
+                        [linksForm]="linksForm"
                         [existingLinks]="hypertextLinks"
-                       class="mt-2 mb-2">
+                        class="mt-2 mb-2"
+                      >
                       </app-hypertext-links>
                     </div>
                   </div>

@@ -79,7 +79,7 @@
                 pTooltip="Modifier"
                 tooltipPosition="top"
               ></i>
-              <p *ngIf="!editType && !add && !addImage" class="col-7">{{ photographyType['name'] }}</p>
+              <p *ngIf="!editType && !add && !addImage" class="col-7">{{ photographyType['type'] }}</p>
 
               <p-dropdown
                 class="col-md-12"
@@ -103,7 +103,12 @@
                 <button (click)="saveEditType()" class="valid-btn">Valider</button>
               </div>
             </div>
-            <button class="btn add-action mb-2 ml-3" (click)="addPhotography()" *ngIf="add || addImage">
+            <button
+              class="btn add-action mb-2 ml-3"
+              (click)="addPhotography()"
+              *ngIf="add || addImage"
+              [attr.disabled]="btnLoading"
+            >
               <i class="fas fa-plus"></i>
               Valider
             </button>
@@ -126,3 +131,4 @@
     </ng-template>
   </p-dialog>
 </div>
+<p-toast></p-toast>
