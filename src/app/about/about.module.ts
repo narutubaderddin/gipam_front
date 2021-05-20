@@ -84,6 +84,8 @@ import { ReportSubTypesComponent } from './components/tabs-ref/report-sub-types/
 import { GalleriaModule } from 'primeng/galleria';
 import { EstablishmentsComponent } from '@app/about/components/tabs-ref/establishments/establishments.component';
 import { ModalReportSubTypesComponent } from './components/tabs-ref/report-sub-types/modal-report-sub-types/modal-report-sub-types.component';
+import { TagModule } from 'primeng/tag';
+
 // import { ServicesComponent } from '@app/about/components/tabs-ref/establishment/establishments.component';
 import { MinistryComponent } from './components/tabs-ref/ministry/ministry.component';
 import { BuildingsComponent } from './components/tabs-ref/buildings/buildings.component';
@@ -247,6 +249,7 @@ const ngWizardConfig: NgWizardConfig = {
     InfiniteScrollModule,
     RadioButtonModule,
     AutoCompleteModule,
+    TagModule,
     AutosizeModule,
   ],
   providers: [
