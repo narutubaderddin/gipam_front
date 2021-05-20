@@ -44,7 +44,16 @@ export class LinksComponent implements OnInit, OnChanges {
     private messageService: MessageService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.linkArtWorkForm.value.parent) {
+      let params = {
+        serializer_group: JSON.stringify(['short_art_work']),
+      };
+      this.workOfArtService.getWorkOfArtById(this.linkArtWorkForm.value.parent, params).subscribe((res) => {
+        this.link = { data: res.id + '-' + res.title + '-' + res.field.label };
+      });
+    }
+  }
   ngOnChanges() {
     if (!this.editWorkArtLinks) {
       this.editLinks = false;

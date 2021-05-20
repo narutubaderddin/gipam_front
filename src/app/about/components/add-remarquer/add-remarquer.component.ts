@@ -24,10 +24,8 @@ export class AddRemarquerComponent implements OnInit {
   denominationData: any[];
   styleData: any[];
   authorData: any[];
-  categoriesData: any[];
   depositorsData: any[];
   eraData: any[];
-  entryModesData: any[];
   data = {
     page: 1,
     serializer_group: JSON.stringify(['short']),
@@ -154,74 +152,50 @@ export class AddRemarquerComponent implements OnInit {
     return true;
   }
   initForms() {
-    this.initPropertyStatusForm();
-    this.initDepositStatusForm();
+    this.inProgressNotice ? this.initPropertyStatusForm(this.inProgressNotice) : this.initPropertyStatusForm();
+    this.inProgressNotice ? this.initDepositStatusForm(this.inProgressNotice) : this.initDepositStatusForm();
     this.initAttachmentForm();
     this.initPhotographiesForm();
     this.initHyperLink();
     this.initLinks();
-    this.initDescriptifForm();
+    this.inProgressNotice ? this.initDescriptifForm(this.inProgressNotice) : this.initDescriptifForm();
   }
-  initDescriptifForm() {
+  initDescriptifForm(data?: any) {
     this.descriptifForm = this.fb.group({
-      title: this.inProgressNotice && this.inProgressNotice.title ? this.inProgressNotice.title : '',
-      field: this.inProgressNotice && this.inProgressNotice.field ? this.inProgressNotice.field.id : null,
-      denomination:
-        this.inProgressNotice && this.inProgressNotice.denomination ? this.inProgressNotice.denomination.id : null,
-      materialTechnique: [
-        this.inProgressNotice && this.inProgressNotice.materialTechnique
-          ? this.formatArray(this.inProgressNotice.materialTechnique)
-          : null,
-      ],
-      numberOfUnit:
-        this.inProgressNotice && this.inProgressNotice.numberOfUnit ? this.inProgressNotice.numberOfUnit : null,
-      authors: [
-        this.inProgressNotice && this.inProgressNotice.authors ? this.formatArray(this.inProgressNotice.authors) : null,
-      ],
+      title: data && data.title ? this.inProgressNotice.title : '',
+      field: data && data.field ? this.inProgressNotice.field.id : null,
+      denomination: data && data.denomination ? data.denomination.id : null,
+      materialTechnique: [data && data.materialTechnique ? this.formatArray(data.materialTechnique) : null],
+      numberOfUnit: data && data.numberOfUnit ? data.numberOfUnit : null,
+      authors: [data && data.authors ? this.formatArray(data.authors) : null],
       creationDate: [
-        this.inProgressNotice && this.inProgressNotice.creationDate
-          ? this.datePipe.transform(this.inProgressNotice.creationDate, 'yyyy')
-          : null,
+        data && data.creationDate ? this.datePipe.transform(this.inProgressNotice.creationDate, 'yyyy') : null,
       ],
-      length: this.inProgressNotice && this.inProgressNotice.length ? this.inProgressNotice.length : null,
+      length: data && data.length ? data.length : null,
       lengthUnit: ['1'],
-      width: this.inProgressNotice && this.inProgressNotice.width ? this.inProgressNotice.width : null,
+      width: data && data.width ? data.width : null,
       widthUnit: ['1'],
-      height: [this.inProgressNotice && this.inProgressNotice.height ? this.inProgressNotice.height : null],
+      height: [data && data.height ? data.height : null],
       heightUnit: ['1'],
-      depth: [this.inProgressNotice && this.inProgressNotice.depth ? this.inProgressNotice.depth : null],
+      depth: [data && data.depth ? data.depth : null],
       depthUnit: ['1'],
-      weight: [this.inProgressNotice && this.inProgressNotice.weight ? this.inProgressNotice.weight : null],
+      weight: [data && data.weight ? data.weight : null],
       weightUnit: ['1'],
-      diameter: [this.inProgressNotice && this.inProgressNotice.diameter ? this.inProgressNotice.diameter : null],
+      diameter: [data && data.diameter ? data.diameter : null],
       diameterUnit: ['1'],
-      era: this.inProgressNotice && this.inProgressNotice.era ? this.inProgressNotice.era.id : null,
-      style: this.inProgressNotice && this.inProgressNotice.style ? this.inProgressNotice.style.id : null,
-      totalLength: [
-        this.inProgressNotice && this.inProgressNotice.totalLength ? this.inProgressNotice.totalLength : null,
-      ],
+      era: data && data.era ? data.era.id : null,
+      style: data && data.style ? data.style.id : null,
+      totalLength: [data && data.totalLength ? data.totalLength : null],
       totlLengthUnit: ['1'],
-      totalWidth: [this.inProgressNotice && this.inProgressNotice.totalWidth ? this.inProgressNotice.totalWidth : null],
+      totalWidth: [data && data.totalWidth ? data.totalWidth : null],
       totalWidthUnit: [1],
-      totalHeight: [
-        this.inProgressNotice && this.inProgressNotice.totalHeight ? this.inProgressNotice.totalHeight : null,
-      ],
+      totalHeight: [data && data.totalHeight ? data.totalHeight : null],
       totalHeightUnit: ['1'],
-      descriptiveWords: [
-        this.inProgressNotice && this.inProgressNotice.status.descriptiveWords ? this.strIntoObj : null,
-      ],
-      description: [
-        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.description : null,
-      ],
-      registrationSignature: [
-        this.inProgressNotice && this.inProgressNotice.status
-          ? this.inProgressNotice.status.registrationSignature
-          : null,
-      ],
-      otherRegistrations: [
-        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.otherRegistrations : null,
-      ],
-      marking: [this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.marking : null],
+      descriptiveWords: [data && data.status.descriptiveWords ? this.strIntoObj : null],
+      description: [data && data.status ? data.status.description : null],
+      registrationSignature: [data && data.status ? data.status.registrationSignature : null],
+      otherRegistrations: [data && data.status ? data.status.otherRegistrations : null],
+      marking: [data && data.status ? data.status.marking : null],
       photographies: null,
       status: this.addProperty ? this.propertyStatusForm : this.depositStatusForm,
       parent: null,
@@ -229,48 +203,28 @@ export class AddRemarquerComponent implements OnInit {
       attachments: null,
     });
   }
-  initPropertyStatusForm() {
+  initPropertyStatusForm(data?: any) {
     this.propertyStatusForm = this.fb.group({
-      entryMode: [
-        this.inProgressNotice && this.inProgressNotice.status.entryMode
-          ? this.inProgressNotice.status.entryMode.id
-          : null,
-      ],
+      entryMode: [data && data.status.entryMode ? data.status.entryMode.id : null],
       entryDate: [
-        this.inProgressNotice && this.inProgressNotice.status
-          ? this.datePipe.transform(this.inProgressNotice.status.entryDate, 'yyyy-MM-dd')
-          : null,
+        data && data.status ? this.datePipe.transform(this.inProgressNotice.status.entryDate, 'yyyy-MM-dd') : null,
       ],
       marking: [''],
-      category: [
-        this.inProgressNotice && this.inProgressNotice.status.category
-          ? this.inProgressNotice.status.category.id
-          : null,
-      ],
+      category: [data && data.status.category ? data.status.category.id : null],
       registrationSignature: [''],
       descriptiveWords: [''],
-      insuranceValue: [
-        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.insuranceValue : null,
-      ],
+      insuranceValue: [data && data.status ? data.status.insuranceValue : null],
       insuranceValueDate: [
-        this.inProgressNotice && this.inProgressNotice.status
-          ? this.datePipe.transform(this.inProgressNotice.status.insuranceValueDate, 'yyyy-MM-dd')
-          : null,
+        data && data.status ? this.datePipe.transform(data.status.insuranceValueDate, 'yyyy-MM-dd') : null,
       ],
       otherRegistrations: [''],
       description: [''],
     });
   }
-  initDepositStatusForm() {
+  initDepositStatusForm(data?: any) {
     this.depositStatusForm = this.fb.group({
-      depositDate: [
-        this.inProgressNotice && this.inProgressNotice.status
-          ? this.datePipe.transform(this.inProgressNotice.status.depositDate, 'yyyy-MM-dd')
-          : null,
-      ],
-      stopNumber: [
-        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.stopNumber : null,
-      ],
+      depositDate: [data && data.status ? this.datePipe.transform(data.status.depositDate, 'yyyy-MM-dd') : null],
+      stopNumber: [data && data.status ? data.status.stopNumber : null],
     });
   }
   initHyperLink() {
@@ -292,10 +246,6 @@ export class AddRemarquerComponent implements OnInit {
     this.photographiesForm = new FormGroup({
       photographies: this.fb.array([]),
     });
-  }
-  loadingHandler(event: boolean) {
-    this.loadingData = event;
-    this.cdr.detectChanges();
   }
 
   addSingle(type: string, sum: string, msg: string) {
@@ -421,13 +371,6 @@ export class AddRemarquerComponent implements OnInit {
           this.submitted = true;
           this.createdNoticeId = result.res.id;
           this.addSingle('success', 'Ajout', 'La notice a été ajoutée avec succès');
-          // this.router.navigate([], {
-          //   relativeTo: this.route,
-          //   queryParams: {
-          //     id: result.id,
-          //   },
-          //   queryParamsHandling: 'merge',
-          // });
         },
         (err) => {
           this.addSingle('error', 'Ajout', "Une erreur est survenue lors de l'ajout");
