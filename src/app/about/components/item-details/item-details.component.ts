@@ -103,8 +103,7 @@ export class ItemDetailsComponent implements OnInit {
   }
   ngOnInit() {
     this.artWorkId = this.route.snapshot.paramMap.get('id');
-    // this.initDescriptifForm();
-    this.initDepositStatusForm();
+
     this.initPhotographiesForm();
     this.initAttachmentForm();
     this.initPropertyStatusForm();
@@ -123,14 +122,15 @@ export class ItemDetailsComponent implements OnInit {
   getParentlinkApi(): ParentComponentApi {
     return {
       callParentMethod: () => {
-        console.log('linksForm', this.linksForm.value);
         // this.onSave()
       },
     };
   }
   initPhotographiesForm() {
     this.photographiesForm = new FormGroup({
-      photographies: this.fb.array([]),
+      photographies: this.fb.array([
+
+      ]),
     });
   }
   initAttachmentForm() {
@@ -187,22 +187,23 @@ export class ItemDetailsComponent implements OnInit {
       items: [data?.items],
     });
   }
-  initDepositStatusForm(data?: any) {
+  initDepositStatusForm(data?:any) {
     this.depositStatusForm = this.fb.group({
-      depositDate: [data?.depositDate],
+      depositDate: [new Date(data?.depositDate)],
       stopNumber: [data?.stopNumber],
+      depositor:[data?.depositor? data.depositor?.id:'']
     });
   }
   initPropertyStatusForm(data?: any) {
     this.propertyStatusForm = this.fb.group({
-      entryMode: [data?.entryMode],
-      entryDate: [data?.entryDate],
+      entryMode: [data?.entryMode?.id],
+      entryDate: [new Date(data?.entryDate)],
       marking: [data?.marking],
-      category: [data?.category],
+      category: [data?.category?.id],
       registrationSignature: [data?.registrationSignature],
       descriptiveWords: [data?.descriptiveWords],
       insuranceValue: [data?.insuranceValue],
-      insuranceValueDate: [data?.insuranceValueDate],
+      insuranceValueDate: [new Date(data?.insuranceValueDate)],
       otherRegistrations: [data?.otherRegistrations],
       description: [data?.description],
     });
@@ -223,7 +224,7 @@ export class ItemDetailsComponent implements OnInit {
   }
 
   onEditMode() {
-    this.edit = !this.edit;
+    this.edit = true;
   }
   formatData() {
     const keys = ['width', 'length', 'totalHeight', 'totalWidth', 'totalLength', 'depth', 'diameter'];
@@ -252,10 +253,10 @@ export class ItemDetailsComponent implements OnInit {
       field: this.descriptifForm.value.field.id,
       denomination: this.descriptifForm.value.denomination.id,
       authors: authorsId,
-      materialTechnique: materialId,
-      status: this.addProperty ? this.propertyStatusForm.value : this.depositStatusForm.value,
-      parent: parent,
-    };
+      materialTechnique:materialId,
+      status:this.addProperty?this.propertyStatusForm.value:this.depositStatusForm.value,
+      parent: parent
+    }
 
     this.workOfArtService.updateWorkOfArt(data, this.artWorkId).subscribe(
       (result) => {
@@ -291,42 +292,46 @@ export class ItemDetailsComponent implements OnInit {
         (result) => {
           this.photographies = [];
 
-          this.workArt = result;
-          this.initDescriptifForm(result);
-          result.photographies.map((el: any, index: number) => {
-            this.photographies.push({
-              workArtId: result.id,
-              id: el.id,
-              imageUrl: el.imagePreview,
-              alt: 'description',
-              i: index,
-              image: el.imageName,
-              photographyDate: this.datePipe.transform(el.date, dateTimeFormat),
-              photographyName: el.imageName,
-              photographyType: el.photographyType,
-              imageName: el.imageName,
-            });
+        this.workArt= result;
+        this.initDescriptifForm(result);
+        result.photographies.map((el:any, index:number)=>{
+
+          this.photographies.push({
+            workArtId: result.id,
+            id:el.id,
+            imageUrl: el.imagePreview,
+            alt: 'description',
+            i: index,
+            image: el.imageName,
+            photographyDate: this.datePipe.transform(el.date, dateTimeFormat),
+            photographyName: el.imageName,
+            photographyType: el.photographyType,
+            imageName: el.imageName,
           });
-          result.status.statusType === 'PropertyStatus' ? (this.addProperty = true) : (this.addDepot = true);
-          this.status = result.status;
-          this.addProperty ? this.initDepositStatusForm(result.status) : this.initPropertyStatusForm(result.status);
-          this.attachments = result.attachments;
-          this.hypertextLinks = result.hyperlinks;
-          this.parent = result.parent;
-          this.children = result.children;
-        },
-        (error) => {
-          this.addSingle('error', 'Erreur Technique', error.error.message);
-        }
-      );
+        });
+        result.status.statusType==="PropertyStatus"? this.addProperty=true: this.addDepot=true;
+        this.status= result.status;
+        this.addProperty?this.initPropertyStatusForm(result.status): this.initDepositStatusForm(result.status);
+        this.attachments= result.attachments;
+        this.hypertextLinks = result.hyperlinks;
+        this.parent= result.parent;
+        this.children= result.children;
+
+      },
+      error => {
+
+        this.addSingle('error', 'Erreur Technique', error.error.message);
+      }
+    );
   }
   addSingle(type: string, sum: string, msg: string) {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
   }
 
-  getAttributes($event: any) {
-    this.attributes = $event;
-    console.log('attributes', this.attributes);
+  getAttributes($event:any) {
+
+    this.attributes=$event;
+
   }
 
   onCancel() {

@@ -86,6 +86,7 @@ export class InProgressDemandComponent {
   requests: any = [];
   loading: boolean = false;
   isValidationRequest: boolean = false;
+  isCancelingRequest: boolean = false;
   page: any = 1;
   filter: any = "";
   constructor(private demandService: DemandService, public sharedService: SharedService) {
@@ -157,11 +158,15 @@ export class InProgressDemandComponent {
     this.getListDemands(this.filter);
   }
 
-  changeRequestStatus(request: any) {
-    let payload : any  = {...request};
-    this.isValidationRequest = true;
+  changeRequestStatus($event: any) {
+    let payload : any  = {...$event.request};
+    if($event.status=="Annulée"){
+      this.isCancelingRequest = true;
+    }else{
+      this.isValidationRequest = true;
+    }
     this.demandService.changeStatus(payload).subscribe((response) => {
-      this.isValidationRequest = false;
+      this.isValidationRequest = this.isCancelingRequest = false;
     });
   }
   onDataTableFilterChange(headersFilter: any) {
