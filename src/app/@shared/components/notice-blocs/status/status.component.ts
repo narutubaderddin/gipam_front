@@ -23,11 +23,13 @@ export class StatusComponent implements OnInit {
   entryModes: any[] = [];
   params: { limit: number; page: number };
   viewDateFormat = viewDateFormat;
+  depositors: any[] = [];
   constructor(private simpleTabsRef: SimpleTabsRefService, private datePipe: DatePipe) {}
 
   ngOnInit(): void {
     this.getAllEntryModes();
     this.getAllCategories();
+    this.getAllDepositors();
   }
 
   initParams(tabref: string) {
@@ -55,6 +57,18 @@ export class StatusComponent implements OnInit {
       (error: any) => {}
     );
   }
+  getAllDepositors() {
+    this.initParams('depositors');
+    this.simpleTabsRef.getAllItems(this.params).subscribe(
+      (result: any) => {
+        this.depositors = result.results;
+        console.log(this.depositors)
+      },
+      (error: any) => {
+        console.log(error)
+      }
+    );
+  }
   onSelectInsuranceDate(event: any) {
     this.propertyStatusForm.get('insuranceValueDate').setValue(this.datePipe.transform(event, 'yyyy-MM-dd'));
   }
@@ -76,5 +90,14 @@ export class StatusComponent implements OnInit {
   }
   onCollapse() {
     this.isCollapsed = !this.isCollapsed;
+  }
+
+  onSelect(event: any, key:string) {
+    console.log("event",event)
+    if(this.addDeposit) {
+      this.depositStatusForm.get(key).setValue(event.value);
+    }else{
+      this.propertyStatusForm.get(key).setValue(event.value);
+    }
   }
 }

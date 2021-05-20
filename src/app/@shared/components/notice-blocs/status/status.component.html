@@ -1,7 +1,8 @@
 <div class="form-bloc">
   <h5 class="col-md-12"><i class="far fa-calendar-alt"></i> Statut</h5>
   <div class="form-bloc pl-0" *ngIf="addDeposit">
-    <div class="form-bloc pl-0" *ngIf="addDeposit" [formGroup]="depositStatusForm">
+    <form [formGroup]="depositStatusForm" class="form-bloc pl-0">
+    <div class="form-bloc pl-0" *ngIf="addDeposit" >
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
         <label class="">Date de dépôt</label>
         <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
@@ -33,26 +34,29 @@
     <div class="form-group col-md-12 flex-wrap flex-sm-nowrap">
       <div class="form-group col-md-8 pl-0">
         <label style="" class="">Déposant</label>
-        <p-multiSelect
-          *ngIf="edit"
-          class="select col-md-7 col-sm-7 p-sm-0 col-12"
-          selectionLimit="5"
-          [maxSelectedLabels]="2"
+        <p-dropdown
+          class="select col-md-12 col-sm-12 p-sm-0 col-12"
           [style]="{ width: '100%' }"
-          [options]=""
+          [options]="depositors"
           optionLabel="name"
+          optionValue="id"
           [filter]="true"
           defaultLabel="Sélectionner des déposants"
+          formControlName="depositor"
+          (onChange)="onSelect($event, 'depositor')"
+          *ngIf="edit"
         >
-        </p-multiSelect>
+        </p-dropdown>
         <div class="value" *ngIf="!edit">{{ statusData.depsitorName }}</div>
       </div>
       <div class="col-md-4 link" *ngIf="edit">
         <a href="">Ajouter un nouveau déposant</a>
       </div>
     </div>
+    </form>
   </div>
-  <div class="form-bloc pl-0" *ngIf="addProperty" [formGroup]="propertyStatusForm">
+  <form class="form-bloc pl-0" [formGroup]="propertyStatusForm">
+  <div class="form-bloc pl-0" *ngIf="addProperty" >
     <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
       <label class="col-sm-4">Valeur assurance</label>
       <input
@@ -92,11 +96,12 @@
           [filter]="true"
           defaultLabel="Sélectionner un mode d'entrée"
           formControlName="entryMode"
+          (onChange)="onSelect($event, 'entryMode')"
           *ngIf="edit"
         >
         </p-dropdown>
       </div>
-      <div class="value" *ngIf="!edit">{{ statusData.entryMode }}</div>
+      <div class="value" *ngIf="!edit">{{ statusData.entryMode?.label }}</div>
     </div>
     <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
       <label class="col-sm-4">Date d'entrée</label>
@@ -125,10 +130,12 @@
           [filter]="true"
           defaultLabel="Sélectionner une catégorie de bien"
           formControlName="category"
+          (onChange)="onSelect($event, 'category')"
         >
         </p-dropdown>
       </div>
-      <div class="value" *ngIf="!edit">{{ statusData.category }}</div>
+      <div class="value" *ngIf="!edit">{{ statusData.category.label }}</div>
     </div>
   </div>
+  </form>
 </div>

@@ -105,8 +105,7 @@ export class ItemDetailsComponent implements OnInit {
   }
   ngOnInit() {
     this.artWorkId = this.route.snapshot.paramMap.get('id');
-    // this.initDescriptifForm();
-    this.initDepositStatusForm();
+
     this.initPhotographiesForm();
     this.initAttachmentForm();
     this.initPropertyStatusForm();
@@ -132,7 +131,9 @@ export class ItemDetailsComponent implements OnInit {
   }
   initPhotographiesForm() {
     this.photographiesForm = new FormGroup({
-      photographies: this.fb.array([]),
+      photographies: this.fb.array([
+
+      ]),
     });
   }
   initAttachmentForm() {
@@ -192,22 +193,24 @@ export class ItemDetailsComponent implements OnInit {
     });
   }
   initDepositStatusForm(data?:any) {
+
     this.depositStatusForm = this.fb.group({
-      depositDate: [data?.depositDate],
+      depositDate: [new Date(data?.depositDate)],
       stopNumber: [data?.stopNumber],
+      depositor:[data?.depositor? data.depositor?.id:'']
     });
 
   }
   initPropertyStatusForm(data?:any) {
     this.propertyStatusForm = this.fb.group({
-      entryMode: [data?.entryMode],
-      entryDate: [data?.entryDate],
+      entryMode: [data?.entryMode?.id],
+      entryDate: [new Date(data?.entryDate)],
       marking: [data?.marking],
-      category: [data?.category],
+      category: [data?.category?.id],
       registrationSignature: [data?.registrationSignature],
       descriptiveWords: [data?.descriptiveWords],
       insuranceValue: [data?.insuranceValue],
-      insuranceValueDate: [data?.insuranceValueDate],
+      insuranceValueDate: [new Date(data?.insuranceValueDate)],
       otherRegistrations: [data?.otherRegistrations],
       description: [data?.description],
     });
@@ -228,7 +231,7 @@ export class ItemDetailsComponent implements OnInit {
   }
 
   onEditMode() {
-    this.edit = !this.edit;
+    this.edit = true;
   }
   formatData() {
     const keys = ['width', 'length', 'totalHeight', 'totalWidth', 'totalLength', 'depth', 'diameter'];
@@ -264,7 +267,7 @@ export class ItemDetailsComponent implements OnInit {
       status:this.addProperty?this.propertyStatusForm.value:this.depositStatusForm.value,
       parent: parent
     }
-
+console.log(this.propertyStatusForm.value)
     this.workOfArtService.updateWorkOfArt(data, this.artWorkId).subscribe(
       result=>{
         this.getArtWork(this.artWorkId);
@@ -319,11 +322,13 @@ export class ItemDetailsComponent implements OnInit {
         });
         result.status.statusType==="PropertyStatus"? this.addProperty=true: this.addDepot=true;
         this.status= result.status;
-        this.addProperty?this.initDepositStatusForm(result.status): this.initPropertyStatusForm(result.status);
+        this.addProperty?this.initPropertyStatusForm(result.status): this.initDepositStatusForm(result.status);
         this.attachments= result.attachments;
         this.hypertextLinks = result.hyperlinks;
         this.parent= result.parent;
         this.children= result.children;
+        console.log('workart', result)
+        console.log('status',this.status)
       },
       error => {
 
