@@ -6,11 +6,13 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-add-remarquer',
   templateUrl: './add-remarquer.component.html',
   styleUrls: ['./add-remarquer.component.scss'],
+  providers: [DatePipe],
 })
 export class AddRemarquerComponent implements OnInit {
   @ViewChild('content') ngTemplate: ElementRef;
@@ -56,7 +58,10 @@ export class AddRemarquerComponent implements OnInit {
   id: string;
   routeSubscription: Subscription;
   isLoading = false;
-  loadingData = true;
+  loadingData = false;
+  strIntoObj: any[] = [];
+  createdNoticeId: number;
+
   constructor(
     public workOfArtService: WorkOfArtService,
     private ngWizardService: NgWizardService,
@@ -64,12 +69,19 @@ export class AddRemarquerComponent implements OnInit {
     public fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private datePipe: DatePipe
   ) {
     this.routeSubscription = this.route.data.subscribe((res: any) => {
       if (res) {
         this.inProgressNotice = res.addRemarquer;
-        this.loadingData = false;
+        if (this.inProgressNotice.status && this.inProgressNotice.status.descriptiveWords) {
+          let str: string = this.inProgressNotice.status.descriptiveWords;
+          let strIntoOb = str.split(',');
+          strIntoOb.forEach((value: any) => {
+            this.strIntoObj.push({ display: value, value: value });
+          });
+        }
       }
     });
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -118,7 +130,9 @@ export class AddRemarquerComponent implements OnInit {
         this.inProgressNotice && this.inProgressNotice.numberOfUnit ? this.inProgressNotice.numberOfUnit : null,
       authors: [this.inProgressNotice && this.inProgressNotice.authors ? this.inProgressNotice.authors : null],
       creationDate: [
-        this.inProgressNotice && this.inProgressNotice.creationDate ? this.inProgressNotice.creationDate : null,
+        this.inProgressNotice && this.inProgressNotice.creationDate
+          ? this.datePipe.transform(this.inProgressNotice.creationDate, 'yyyy')
+          : null,
       ],
       length: this.inProgressNotice && this.inProgressNotice.length ? this.inProgressNotice.length : null,
       lengthUnit: ['1'],
@@ -145,7 +159,7 @@ export class AddRemarquerComponent implements OnInit {
       ],
       totalHeightUnit: ['1'],
       descriptiveWords: [
-        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.descriptiveWords : null,
+        this.inProgressNotice && this.inProgressNotice.status.descriptiveWords ? this.strIntoObj : null,
       ],
       description: [
         this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.description : null,
@@ -174,7 +188,9 @@ export class AddRemarquerComponent implements OnInit {
           : null,
       ],
       entryDate: [
-        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.entryDate : null,
+        this.inProgressNotice && this.inProgressNotice.status
+          ? this.datePipe.transform(this.inProgressNotice.status.entryDate, 'yy-mm-dd')
+          : null,
       ],
       marking: [''],
       category: [
@@ -188,7 +204,9 @@ export class AddRemarquerComponent implements OnInit {
         this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.insuranceValue : null,
       ],
       insuranceValueDate: [
-        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.insuranceValueDate : null,
+        this.inProgressNotice && this.inProgressNotice.status
+          ? this.datePipe.transform(this.inProgressNotice.status.insuranceValueDate, 'yy-mm-dd')
+          : null,
       ],
       otherRegistrations: [''],
       description: [''],
@@ -197,7 +215,9 @@ export class AddRemarquerComponent implements OnInit {
   initDepositStatusForm() {
     this.depositStatusForm = this.fb.group({
       depositDate: [
-        this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.depositDate : null,
+        this.inProgressNotice && this.inProgressNotice.status
+          ? this.datePipe.transform(this.inProgressNotice.status.depositDate, 'yy-mm-dd')
+          : null,
       ],
       stopNumber: [
         this.inProgressNotice && this.inProgressNotice.status ? this.inProgressNotice.status.stopNumber : null,
@@ -283,7 +303,7 @@ export class AddRemarquerComponent implements OnInit {
       } else if (dataKey == 'status') {
         console.log(this.descriptifForm.value[dataKey]);
         for (let previewKey in this.descriptifForm.value[dataKey]) {
-          console.log(`${dataKey}[${previewKey}]`);
+          console.log(`${dataKey}[${previewKey}]`, this.descriptifForm.value[dataKey][previewKey]);
           formData.append(`${dataKey}[${previewKey}]`, this.descriptifForm.value[dataKey][previewKey]);
         }
       } else {
@@ -320,8 +340,8 @@ export class AddRemarquerComponent implements OnInit {
       this.workOfArtService.addWorkOfArt(formData).subscribe(
         (result) => {
           this.addSingle('success', 'Ajout', result.msg);
-          this.initForms();
           this.isLoading = false;
+          this.router.navigate([['/creation-notice/propriété'], { queryParams: { id: result.id } }]);
         },
         (err) => {
           this.addSingle('error', 'Ajout', "Une erreur est survenue lors de l'ajout");
@@ -330,9 +350,9 @@ export class AddRemarquerComponent implements OnInit {
     } else {
       this.buildFormData(formData);
       this.workOfArtService.addDepositWorkOfArt(formData).subscribe(
-        (res) => {
+        (result) => {
           this.addSingle('success', 'Ajout', 'La notice a été ajoutée avec succès');
-          this.initForms();
+          this.router.navigate([['/creation-notice/dépôt'], { queryParams: { id: result.id } }]);
         },
         (err) => {
           this.addSingle('error', 'Ajout', "Une erreur est survenue lors de l'ajout");
