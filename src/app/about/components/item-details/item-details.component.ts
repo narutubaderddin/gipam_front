@@ -9,6 +9,7 @@ import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { MessageService } from 'primeng/api';
 import { dateTimeFormat, lastArtOfWorkDetailIndex, searchPageFilter } from '@shared/utils/helpers';
 import { DatePipe } from '@angular/common';
+import { ArtWorkService } from '@app/about/services/art-work.service';
 
 @Component({
   selector: 'app-item-details',
@@ -367,7 +368,7 @@ export class ItemDetailsComponent implements OnInit {
           this.setArtwork(apiResult);
           this.loadingData = false;
         },
-        (error) => {
+        (error: any) => {
           this.loadingData = false;
           console.log(error);
           this.addSingle('error', 'Erreur Technique', error.error.message);
