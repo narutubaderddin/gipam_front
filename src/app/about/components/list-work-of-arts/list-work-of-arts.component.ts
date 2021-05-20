@@ -187,7 +187,6 @@ export class ListWorkOfArtsComponent implements OnInit {
             totalFiltered: artWorksData.filteredQuantity,
           };
           localStorage.setItem('searchPageFilter', JSON.stringify(searchPageFilter));
-          console.log('filters', JSON.parse(localStorage.getItem('searchPageFilter')));
           if (this.mode === 'pictures' && page > 1) {
             artWorksData.results.forEach((oeuvre: any) => {
               this.artWorkResults.push(oeuvre);
@@ -200,7 +199,6 @@ export class ListWorkOfArtsComponent implements OnInit {
               'searchPageFilterLastItemsIds',
               JSON.stringify(this.artWorkResults.map((items) => items.id))
             );
-            console.log('lastIds', JSON.parse(localStorage.getItem('searchPageFilterLastItemsIds')));
           }
 
           this.start = (this.artWorksData.page - 1) * this.artWorksData.size + 1;

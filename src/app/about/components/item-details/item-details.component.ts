@@ -88,9 +88,9 @@ export class ItemDetailsComponent implements OnInit {
   artWorksToPrint: any = [];
 
   currentId: string;
-  nextId: string;
-  previousId: string;
-  paginationIndexes: {
+  nextId: number;
+  previousId: number;
+  paginationIds: {
     current: number;
     next: number;
     previous: number;
@@ -111,7 +111,7 @@ export class ItemDetailsComponent implements OnInit {
     searchQuery: any;
     totalFiltered: any;
   };
-
+  loadingData = false;
   constructor(
     config: NgbCarouselConfig,
     private notificationsService: NotificationsService,
@@ -130,6 +130,7 @@ export class ItemDetailsComponent implements OnInit {
     config.keyboard = false;
     config.pauseOnHover = false;
   }
+
   ngOnInit() {
     this.artWorkId = this.route.snapshot.paramMap.get('id');
     // this.initDescriptifForm();
@@ -142,9 +143,10 @@ export class ItemDetailsComponent implements OnInit {
     this.initDepositStatusForm();
     this.initHyperLink();
     this.initLinks();
-    this.getArtWork(this.artWorkId);
-    this.initPagination();
+    this.setPage();
+    this.paginate();
   }
+
   getParentApi(): ParentComponentApi {
     return {
       callParentMethod: (id) => {
@@ -152,6 +154,7 @@ export class ItemDetailsComponent implements OnInit {
       },
     };
   }
+
   getParentlinkApi(): ParentComponentApi {
     return {
       callParentMethod: () => {
@@ -160,16 +163,19 @@ export class ItemDetailsComponent implements OnInit {
       },
     };
   }
+
   initPhotographiesForm() {
     this.photographiesForm = new FormGroup({
       photographies: this.fb.array([]),
     });
   }
+
   initAttachmentForm() {
     this.attachmentForm = new FormGroup({
       attachments: this.fb.array([]),
     });
   }
+
   @HostListener('window:scroll', ['$event'])
   handleScroll() {
     const windowScroll = window.pageYOffset;
@@ -179,6 +185,7 @@ export class ItemDetailsComponent implements OnInit {
       this.sticky = false;
     }
   }
+
   getTabRefData(result: any[]) {
     let items: any[] = [];
     result?.forEach((item: any) => {
@@ -190,6 +197,7 @@ export class ItemDetailsComponent implements OnInit {
     });
     return items;
   }
+
   initDescriptifForm(data?: any) {
     let materialTechnique: any[] = [];
     data?.materialTechnique.map((el: any) => {
@@ -219,12 +227,14 @@ export class ItemDetailsComponent implements OnInit {
       items: [data?.items],
     });
   }
+
   initDepositStatusForm(data?: any) {
     this.depositStatusForm = this.fb.group({
       depositDate: [data?.depositDate],
       stopNumber: [data?.stopNumber],
     });
   }
+
   initPropertyStatusForm(data?: any) {
     this.propertyStatusForm = this.fb.group({
       entryMode: [data?.entryMode],
@@ -245,11 +255,13 @@ export class ItemDetailsComponent implements OnInit {
       hyperlinks: this.fb.array([]),
     });
   }
+
   initLinks() {
     this.linkArtWorkForm = this.fb.group({
       parent: [''],
     });
   }
+
   f1(e: any) {
     this.dynamic = e;
   }
@@ -257,6 +269,7 @@ export class ItemDetailsComponent implements OnInit {
   onEditMode() {
     this.edit = !this.edit;
   }
+
   formatData() {
     const keys = ['width', 'length', 'totalHeight', 'totalWidth', 'totalLength', 'depth', 'diameter'];
     const filteredKeys = keys.filter((value) => this.attributes.includes(value));
@@ -266,6 +279,7 @@ export class ItemDetailsComponent implements OnInit {
       }
     });
   }
+
   onSave(parent?: any) {
     this.editLink = true;
     this.btnLoading = '';
@@ -316,6 +330,7 @@ export class ItemDetailsComponent implements OnInit {
     const element = document.getElementById('appItemDetailsPdf');
     this.pdfGeneratorService.downloadPDFFromHTML(element, this.artwork.titre + '.pdf');
   }
+
   initSearchPageParam() {
     const newParams = JSON.parse(localStorage.getItem(searchPageFilter));
 
@@ -334,146 +349,59 @@ export class ItemDetailsComponent implements OnInit {
     };
   }
 
-  paginate(by: number) {
-    this.page = this.page + by;
-
+  paginate(by?: number, to?: any) {
+    if (by) {
+      this.page = this.page + by;
+    }
+    if (this.page < 0) {
+      this.page = 0;
+    }
+    const urlParams = {
+      offset: this.page,
+      limit: 1,
+      sort_by: this.searchPageParam.sortBy,
+      sort: this.searchPageParam.sort,
+      searchQuery: this.searchPageParam.searchQuery,
+      globalSearch: this.searchPageParam.globalSearch,
+      serializer_group: JSON.stringify(['response', 'art_work_details', 'short']),
+    };
+    this.loadingData = true;
     this.artWorkService
-      .getArtWorksData(
+      .getArtWorksDetail(
         this.searchPageParam.filter,
         this.searchPageParam.advancedFilter,
         this.searchPageParam.headerFilters,
-        this.page,
-        1,
-        this.searchPageParam.sortBy,
-        this.searchPageParam.sort,
-        this.searchPageParam.globalSearch,
-        this.searchPageParam.searchQuery
+        urlParams
       )
       .subscribe(
-        (result) => {
-          this.currentId = result.results[0].id;
-          console.log('new artWork id', this.currentId);
-          this.router.navigate(['/details/' + this.currentId]);
-          this.getArtWork(this.currentId);
-          // this.workArt = result.results[0];
-          // console.log('paginate', this.workArt)
-          // result.photographies.map((el: any, index: number) => {
-          //   this.photographies.push({
-          //     imageUrl: el.imagePreview,
-          //     alt: 'description',
-          //     i: index,
-          //     image: el.imageName,
-          //     // photography: 'assets/images/573.jpg',
-          //     photographyDate: this.datePipe.transform(el.date, dateTimeFormat),
-          //     photographyName: el.imageName,
-          //     photographyType: { name: el.photographyType.type },
-          //     imageName: el.imageName,
-          //   });
-          // });
-          // result.status.statusType === 'PropertyStatus' ? (this.addProperty = true) : (this.addDepot = true);
-          // this.status = result.status;
-          // this.attachments = result.attachments;
-          // this.hypertextLinks = result.hyperlinks;
-          // this.parent = result.parent;
-          // this.children = result.children;
+        (result: any) => {
+          const apiResult = result.result;
+          this.artWorkId = apiResult.id;
+          this.previousId = result.previousId;
+          this.nextId = result.nextId;
+          this.router.navigate(['/details/' + this.artWorkId]);
+          this.setArtwork(apiResult);
+          this.loadingData = false;
         },
         (error) => {
+          this.loadingData = false;
           console.log(error);
           this.addSingle('error', 'Erreur Technique', error.error.message);
         }
       );
-  }
-
-  inPage(index: number, pageLimit: number) {
-    index = index % 5;
-    return (index - 1) * (index - pageLimit) < 0;
   }
 
   setPage() {
-    const index = JSON.parse(localStorage.getItem(lastArtOfWorkDetailIndex)) + 1;
-    console.log('index', index);
+    const index = JSON.parse(localStorage.getItem(lastArtOfWorkDetailIndex));
     this.page = index;
-
     if (this.searchPageParam.mode !== 'pictures') {
       // when datatable display mode is selected in search page
       this.page = this.searchPageParam.limit * (this.searchPageParam.page - 1) + index;
-      if (this.page <= 0) {
-        // it could be : if new page is lower than or equal to 0 then get the first element
-        this.page = 1;
+      if (this.page < 0) {
+        // it could be : if new page is lower than 0 then get the first element
+        this.page = 0;
       }
     }
-    if (this.page === 1) {
-      this.setPaginationIndexes(this.searchPageParam.totalFiltered, 'previous');
-      return;
-    }
-    if (this.page === this.searchPageParam.totalFiltered) {
-      this.setPaginationIndexes(1, 'next');
-      return;
-    }
-    if (index === 0 && this.page > 1) {
-      this.setPaginationIndexes(this.page - 1, 'previous');
-      return;
-    }
-    if (index === this.searchPageParam.limit && this.page > 1) {
-      this.setPaginationIndexes(this.page - 1, 'previous');
-      return;
-    }
-  }
-
-  setPaginationIndexes(page: number, index: string) {
-    this.artWorkService
-      .getArtWorksData(
-        this.searchPageParam.filter,
-        this.searchPageParam.advancedFilter,
-        this.searchPageParam.headerFilters,
-        this.searchPageParam.totalFiltered,
-        1,
-        this.searchPageParam.sortBy,
-        this.searchPageParam.sort,
-        this.searchPageParam.globalSearch,
-        this.searchPageParam.searchQuery,
-        JSON.stringify(['response', 'art_work_list', 'hyperLink_furniture', 'id', 'art_work_details'])
-      )
-      .subscribe(
-        (result) => {
-          this.paginationIndexes[index] = result.results[0].id;
-        },
-        (error) => {
-          console.log(error);
-          this.addSingle('error', 'Erreur Technique', error.error.message);
-        }
-      );
-  }
-
-  initPagination() {
-    /// new get
-    const lastItemsIds = JSON.parse(localStorage.getItem('searchPageFilterLastItemsIds'));
-    // const index = lastItemsIds.indexOf(Number(id)) + 1;
-    this.setPage();
-    this.artWorkService
-      .getArtWorksData(
-        this.searchPageParam.filter,
-        this.searchPageParam.advancedFilter,
-        this.searchPageParam.headerFilters,
-        this.page,
-        1,
-        this.searchPageParam.sortBy,
-        this.searchPageParam.sort,
-        this.searchPageParam.globalSearch,
-        this.searchPageParam.searchQuery,
-        JSON.stringify(['response', 'art_work_list', 'hyperLink_furniture', 'id', 'art_work_details'])
-      )
-      .subscribe(
-        (result) => {
-          console.log('lastItemsIds', lastItemsIds);
-          this.currentId = result.results[0].id;
-          console.log('new artWork id', this.currentId);
-        },
-        (error) => {
-          console.log(error);
-          this.addSingle('error', 'Erreur Technique', error.error.message);
-        }
-      );
   }
 
   getArtWork(id: any) {
@@ -481,37 +409,42 @@ export class ItemDetailsComponent implements OnInit {
       .getWorkOfArtById(id, { serializer_group: JSON.stringify(['art_work_details', 'short']) })
       .subscribe(
         (result) => {
-          this.photographies = [];
-
-          this.workArt = result;
-          this.initDescriptifForm(result);
-          result.photographies.map((el: any, index: number) => {
-            this.photographies.push({
-              workArtId: result.id,
-              id: el.id,
-              imageUrl: el.imagePreview,
-              alt: 'description',
-              i: index,
-              image: el.imageName,
-              photographyDate: this.datePipe.transform(el.date, dateTimeFormat),
-              photographyName: el.imageName,
-              photographyType: el.photographyType,
-              imageName: el.imageName,
-            });
-          });
-          result.status.statusType === 'PropertyStatus' ? (this.addProperty = true) : (this.addDepot = true);
-          this.status = result.status;
-          this.addProperty ? this.initDepositStatusForm(result.status) : this.initPropertyStatusForm(result.status);
-          this.attachments = result.attachments;
-          this.hypertextLinks = result.hyperlinks;
-          this.parent = result.parent;
-          this.children = result.children;
+          this.setArtwork(result);
         },
         (error) => {
           this.addSingle('error', 'Erreur Technique', error.error.message);
         }
       );
   }
+
+  setArtwork(apiResult: any) {
+    this.photographies = [];
+
+    this.workArt = apiResult;
+    this.initDescriptifForm(apiResult);
+    apiResult.photographies.map((el: any, index: number) => {
+      this.photographies.push({
+        workArtId: apiResult.id,
+        id: el.id,
+        imageUrl: el.imagePreview,
+        alt: 'description',
+        i: index,
+        image: el.imageName,
+        photographyDate: this.datePipe.transform(el.date, dateTimeFormat),
+        photographyName: el.imageName,
+        photographyType: el.photographyType,
+        imageName: el.imageName,
+      });
+    });
+    apiResult.status.statusType === 'PropertyStatus' ? (this.addProperty = true) : (this.addDepot = true);
+    this.status = apiResult.status;
+    this.addProperty ? this.initDepositStatusForm(apiResult.status) : this.initPropertyStatusForm(apiResult.status);
+    this.attachments = apiResult.attachments;
+    this.hypertextLinks = apiResult.hyperlinks;
+    this.parent = apiResult.parent;
+    this.children = apiResult.children;
+  }
+
   addSingle(type: string, sum: string, msg: string) {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
   }
@@ -525,6 +458,7 @@ export class ItemDetailsComponent implements OnInit {
     this.edit = false;
   }
 }
+
 export interface ParentComponentApi {
   callParentMethod: (string?: any) => void;
 }
