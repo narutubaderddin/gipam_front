@@ -133,7 +133,7 @@ export class ItemDetailsComponent implements OnInit {
   ngOnInit() {
     this.artWorkId = this.route.snapshot.paramMap.get('id');
     // this.initDescriptifForm();
-    this.currentId = this.route.snapshot.paramMap.get('id');
+    // this.currentId = this.route.snapshot.paramMap.get('id');
     this.initSearchPageParam();
     this.initDepositStatusForm();
     this.initPhotographiesForm();
@@ -324,7 +324,7 @@ export class ItemDetailsComponent implements OnInit {
       filter: newParams.filter,
       advancedFilter: newParams.advancedFilter,
       headerFilters: newParams.headerFilters,
-      page: this.page,
+      page: newParams.page,
       limit: newParams.limit,
       sortBy: newParams.sortBy,
       sort: newParams.sort,
