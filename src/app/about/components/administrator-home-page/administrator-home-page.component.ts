@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
+import { DemandService } from '@shared/services/demand.service';
+import { forkJoin } from 'rxjs';
 @Component({
   selector: 'app-administrator-home-page',
   templateUrl: './administrator-home-page.component.html',
@@ -39,9 +41,15 @@ export class AdministratorHomePageComponent implements OnInit {
       alt: 'Image alt', //Optional: You can use this key if want to show image with alt
     },
   ];
-  remarquers: any[] = [];
+  remarquersResult: any[] = [];
+  demandeResult: any[] = [];
+  searchQuery: any;
 
-  constructor(private router: Router, private workOfArtService: WorkOfArtService) {}
+  constructor(
+    private router: Router,
+    private workOfArtService: WorkOfArtService,
+    private demandService: DemandService
+  ) {}
   ngOnInit(): void {
     this.initData();
   }
@@ -51,12 +59,19 @@ export class AdministratorHomePageComponent implements OnInit {
       page: 1,
       limit: 2,
     };
-    this.workOfArtService.getInProgressNotices(params).subscribe((res) => {
-      this.remarquers = res.result;
-    });
+    let filter = '?limit=2&page=' + 1;
+    forkJoin([this.workOfArtService.getInProgressNotices(params), this.demandService.getDemands(filter)]).subscribe(
+      ([workOfArtResults, demandeResults]) => {
+        this.remarquersResult = workOfArtResults;
+        this.demandeResult = demandeResults;
+      }
+    );
   }
   onNoticeClick() {
     this.router.navigate(['notices-list'], { queryParams: { filter: 'en-cours' } });
+  }
+  onDemandeClick() {
+    this.router.navigate(['demandes-en-cours']);
   }
 
   onRecolementClick() {
@@ -64,5 +79,9 @@ export class AdministratorHomePageComponent implements OnInit {
   }
   onAlertClick() {
     this.router.navigate(['alerts-list'], { queryParams: { filter: 'en-cours' } });
+  }
+
+  onSeachClick() {
+    this.router.navigate(['oeuvres-list'], { queryParams: { search: this.searchQuery } });
   }
 }

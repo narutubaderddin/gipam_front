@@ -58,13 +58,14 @@
             </div>
             <div class="form-group">
               <label class="col-md-5">Date</label>
-              <p *ngIf="!add && !addImage" class="col-7">{{ photographyDate|date: viewDateFormat }}</p>
+              <p *ngIf="!add && !addImage" class="col-7">{{ photographyDate | date: viewDateFormat }}</p>
               <p-calendar
                 class="col-md-12"
                 *ngIf="addImage || add"
                 [style]="{ minWidth: '100%' }"
                 [(ngModel)]="photographyDate"
                 [showIcon]="true"
+                dateFormat="yy-mm-dd"
                 inputId="icon"
               ></p-calendar>
             </div>
@@ -102,8 +103,12 @@
                 <button (click)="saveEditType()" class="valid-btn">Valider</button>
               </div>
             </div>
-            <button class="btn add-action mb-2 ml-3" (click)="addPhotography()" *ngIf="add || addImage"
-                    [attr.disabled]="btnLoading">
+            <button
+              class="btn add-action mb-2 ml-3"
+              (click)="addPhotography()"
+              *ngIf="add || addImage"
+              [attr.disabled]="btnLoading"
+            >
               <i class="fas fa-plus"></i>
               Valider
             </button>

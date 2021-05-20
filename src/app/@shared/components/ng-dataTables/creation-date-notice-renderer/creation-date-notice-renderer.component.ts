@@ -9,7 +9,5 @@ export class CreationDateNoticeRendererComponent implements OnInit {
   @Input() value: any;
   constructor() {}
 
-  ngOnInit(): void {
-    console.log(this.value);
-  }
+  ngOnInit(): void {}
 }

@@ -29,8 +29,8 @@
                 Titre de l'Oeuvre
                 <span
                   class="type"
-                  [ngStyle]="addProperty? { backgroundColor: '#00D6D4' } : { backgroundColor: '#0080FF' }"
-                  >{{ addProperty? 'Propriété' : 'Dépot' }}</span
+                  [ngStyle]="addProperty ? { backgroundColor: '#00D6D4' } : { backgroundColor: '#0080FF' }"
+                  >{{ addProperty ? 'Propriété' : 'Dépot' }}</span
                 >
               </div>
               <div class="col-md-4 col-xs-12 mt-2 mt-md-0 icons p-0">
@@ -142,7 +142,8 @@
                         [itemDetails]="true"
                         [linksForm]="linksForm"
                         [existingLinks]="hypertextLinks"
-                       class="mt-2 mb-2">
+                        class="mt-2 mb-2"
+                      >
                       </app-hypertext-links>
                     </div>
                   </div>

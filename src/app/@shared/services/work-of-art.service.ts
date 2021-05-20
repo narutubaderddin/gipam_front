@@ -3,7 +3,7 @@ import { TreeviewItem } from 'ngx-treeview';
 import { HttpClient, HttpHeaders, HttpParameterCodec, HttpParams } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
-import {MessageService} from "primeng/api";
+import { MessageService } from 'primeng/api';
 
 @Injectable({
   providedIn: 'root',
@@ -590,6 +590,7 @@ export class WorkOfArtService {
   ];
 
   constructor(private http: HttpClient, private messageService: MessageService) {}
+
   getOeuvres(filterObj: any): Observable<any> {
     let filter: string = `limit=40&page=${filterObj.page}`;
     filter = this.extractedQuery(filterObj, filter);
@@ -644,6 +645,7 @@ export class WorkOfArtService {
   getOeuvreDetails(id: string): Observable<any> {
     return this.http.get('/artWorks/' + id);
   }
+
   addSelectedArtWorks(item: any) {
     this._selectedArtWorks.push(item);
     localStorage.setItem('selectedArtWorks', JSON.stringify(this._selectedArtWorks));
@@ -666,12 +668,13 @@ export class WorkOfArtService {
     this._selectedArtWorks = [];
     localStorage.removeItem('selectedArtWorks');
   }
-  addWorkOfArt(data: any): Observable<any> {
-    const headers = new HttpHeaders({
-      Accept: 'application/json',
-    });
-    return this.http.post('/notices/property', data);
+
+  addWorkOfArt(data: any, id: any): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('id', id);
+    return this.http.post('/notices/property', data, { params: params });
   }
+
   addDepositWorkOfArt(data: any): Observable<any> {
     return this.http.post('/notices/deposit', data);
   }
@@ -704,20 +707,23 @@ export class WorkOfArtService {
       observe: 'response',
     });
   }
-  getWorkOfArtById(id: any, data?:any): Observable<any> {
+
+  getWorkOfArtById(id: any, data?: any): Observable<any> {
     let params = new HttpParams();
-  if(data) {
-    Object.keys(data).forEach((key) => {
-      if (data[key]) {
-        params = params.append(key, data[key]);
-      }
-    });
+    if (data) {
+      Object.keys(data).forEach((key) => {
+        if (data[key]) {
+          params = params.append(key, data[key]);
+        }
+      });
+    }
+    return this.http.get('/artWorks/' + id, { params });
   }
-     return this.http.get('/artWorks/'+ id, {params});
-  }
-  updateWorkOfArt(workOfArt: any, id:any): Observable<any> {
+
+  updateWorkOfArt(workOfArt: any, id: any): Observable<any> {
     return this.http.patch(`/notices/${id}`, workOfArt);
   }
+
   getFormErrors(errors: any, sum: string) {
     if (!errors) {
       return;

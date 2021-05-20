@@ -1,6 +1,6 @@
 <div class="breadcrumb">
-  <a href="accueil">Accueil</a>
-  <a href="accueil" class="selected-item">
+  <a [routerLink]="['accueil']">Accueil</a>
+  <a [routerLink]="['accueil']" class="selected-item">
     <i class="fas fa-chevron-right"></i>
     Liste des demandes en cours
   </a>
@@ -31,10 +31,13 @@
               [checkBoxSelection]="false"
               [singleSelect]="false"
               [loading]="loading"
+              [isValidationRequest]="isValidationRequest"
+              [isCancelingRequest]="isCancelingRequest"
               frozenWidth="'0px'"
               (filterValue)="onDataTableFilterChange($event)"
               (pageChanged)="pagination($event)"
               (changeRequestStatus)="changeRequestStatus($event)"
+              (sort)="sortEvent($event)"
               [frozenCols]="[]"
               [totalFiltred]="requests.filteredQuantity"
               [total]="requests.totalQuantity"

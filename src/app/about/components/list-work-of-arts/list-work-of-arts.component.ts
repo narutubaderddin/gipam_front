@@ -1,6 +1,6 @@
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
-import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ColumnFilterService } from '@shared/services/column-filter.service';
 import { forkJoin } from 'rxjs';
@@ -137,6 +137,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     private datePipe: DatePipe,
     private router: Router,
     private artWorkService: ArtWorkService,
+    private activatedRoute: ActivatedRoute,
     private fieldService: FieldsService,
     private denominationsService: DenominationsService,
     private styleService: StylesService,
@@ -165,8 +166,8 @@ export class ListWorkOfArtsComponent implements OnInit {
         this.mode == 'pictures' ? 20 : 5,
         sortBy,
         sort,
-        this.globalSearch,
-        this.searchQuery
+        this.searchQuery,
+        this.globalSearch
       )
       .subscribe(
         (artWorksData: ArtWorksDataModel) => {
@@ -196,6 +197,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   }
   selectedOeuvres: any[] = [];
   artWorkResults: any[] = [];
+  @ViewChild('globalSearch') searchButton: Input;
   ngOnInit(): void {
     this.initFilterData();
     this.oeuvreToShow = this.oeuvres;
@@ -211,8 +213,12 @@ export class ListWorkOfArtsComponent implements OnInit {
       allowSearchFilter: true,
     };
     this.initForms();
-
     this.onChanges();
+    this.globalSearch = this.activatedRoute.snapshot.queryParams['search'];
+    if (this.globalSearch && this.globalSearch.length > 0) {
+      this.router.navigate(['.'], { relativeTo: this.activatedRoute, queryParams: {} });
+      this.onSearchClick('global');
+    }
     this.inventoryOptions = {
       floor: 0,
       ceil: 9999,

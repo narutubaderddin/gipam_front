@@ -1,23 +1,19 @@
 import { Injectable } from '@angular/core';
-import {Observable} from "rxjs";
-import {HttpClient} from "@angular/common/http";
-import {MessageService} from "primeng/api";
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { MessageService } from 'primeng/api';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LinksService {
+  constructor(private http: HttpClient, private messageService: MessageService) {}
 
-  constructor(
-    private http: HttpClient,
-    private messageService: MessageService
-  ) { }
-
-  updateLinks(data: any, id:any): Observable<any> {
+  updateLinks(data: any, id: any): Observable<any> {
     return this.http.patch(`/photography/${id}`, data);
   }
-  updateAttachments(data: any, id:any): Observable<any> {
-    console.log(data, id)
+  updateAttachments(data: any, id: any): Observable<any> {
+    console.log(data, id);
     return this.http.patch(`/attachments/${id}`, data);
   }
   getFormErrors(errors: any, sum: string) {
@@ -32,5 +28,4 @@ export class LinksService {
       }
     });
   }
-
 }

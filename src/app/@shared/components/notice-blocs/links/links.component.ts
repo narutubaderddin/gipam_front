@@ -1,27 +1,27 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, Renderer2, ViewChild} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { ArtWorkService } from '@app/about/services/art-work.service';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { FormGroup } from '@angular/forms';
-import {MessageService} from "primeng/api";
-
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-links',
   templateUrl: './links.component.html',
   styleUrls: ['./links.component.scss'],
 })
-export class LinksComponent implements OnInit, OnChanges{
+export class LinksComponent implements OnInit, OnChanges {
   @ViewChild('autocompletePanel') autocompletePanel: any;
   @Input() linkArtWorkForm: FormGroup;
   @Input() add: false;
   @Input() itemDetails: boolean = false;
   @Input() parentLink: any = '';
   @Input() children: any = '';
+  @Input() existingLink: any;
   @Input() editWorkArtLinks: boolean;
 
-  @Output() update= new EventEmitter<any>();
+  @Output() update = new EventEmitter<any>();
   addLinks: boolean = false;
-  editLinks: boolean=false;
+  editLinks: boolean = false;
   artWorksData: any[] = [];
   page = 1;
   query = '';
@@ -36,18 +36,18 @@ export class LinksComponent implements OnInit, OnChanges{
       name: 'string',
     },
   ];
-
+  link: any;
   constructor(
     private artWorkService: ArtWorkService,
     private workOfArtService: WorkOfArtService,
     private renderer: Renderer2,
-    private messageService: MessageService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {}
   ngOnChanges() {
-    if(!this.editWorkArtLinks){
-      this.editLinks=false
+    if (!this.editWorkArtLinks) {
+      this.editLinks = false;
     }
   }
   getWorkOfArts(pageNumber: number = 1, query: string = '') {
@@ -105,7 +105,7 @@ export class LinksComponent implements OnInit, OnChanges{
   }
   cancelLink() {
     this.addLinks = !this.addLinks;
-    this.editLinks=false
+    this.editLinks = false;
   }
   delete(item: string) {
     this.deleteDialog = true;
@@ -127,14 +127,12 @@ export class LinksComponent implements OnInit, OnChanges{
     this.editLinks = !this.editLinks;
   }
 
-  updateLink(){
-
-    this.update.emit(this.linkArtWorkForm.value.parent)
+  updateLink() {
+    this.update.emit(this.linkArtWorkForm.value.parent);
   }
 
   addSingle(type: string, sum: string, msg: string) {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
     this.btnLoading = null;
   }
-
 }

@@ -1,5 +1,5 @@
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
-import {Component, Input, OnChanges, OnInit, Output, EventEmitter} from '@angular/core';
+import { Component, Input, OnChanges, OnInit, Output, EventEmitter } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FieldsService } from '@shared/services/fields.service';
@@ -15,7 +15,6 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./descritif.component.scss'],
 })
 export class DescritifComponent implements OnInit, OnChanges {
-
   domains: any;
   @Input() keyword: string;
   @Input() edit = false;
@@ -64,12 +63,11 @@ export class DescritifComponent implements OnInit, OnChanges {
   }
 
   getAttributes() {
-
-    let field=this.artwork.field.id;
-    let denomination=this.artwork.denomination.id;
-    if(this.edit){
-       field=this.field.id;
-       denomination=this.denomination.id;
+    let field = this.artwork.field.id;
+    let denomination = this.artwork.denomination.id;
+    if (this.edit) {
+      field = this.field.id;
+      denomination = this.denomination.id;
     }
 
     this.workOfArtService.getAttributes(field, denomination).subscribe((result) => {
@@ -81,12 +79,10 @@ export class DescritifComponent implements OnInit, OnChanges {
     this.getAttributes();
     this.initFilterData();
     this.initData();
-
   }
   ngOnChanges() {
-    if(this.artwork){
+    if (this.artwork) {
     }
-
   }
 
   get f() {
@@ -140,8 +136,8 @@ export class DescritifComponent implements OnInit, OnChanges {
         console.log(this.depositorsData);
         this.eraData = this.getTabRefData(eraResults['results']);
         this.entryModesData = this.getTabRefData(entryModesData['results']);
-        if(this.field && this.denomination && this.denominationData) {
-          this.getMaterialData()
+        if (this.field && this.denomination && this.denominationData) {
+          this.getMaterialData();
         }
       }
     );
@@ -160,13 +156,11 @@ export class DescritifComponent implements OnInit, OnChanges {
       'active[eq]': 1,
     };
 
-
     const materialApiData = Object.assign({}, apiData);
 
     switch (key) {
       case 'field':
         this.denominationData = this.denominations.filter((denomi: any) => {
-
           return denomi.field.id === value.value.id;
         });
         const isTrue = this.denominationData.filter((den: any) => {
@@ -188,14 +182,13 @@ export class DescritifComponent implements OnInit, OnChanges {
         forkJoin([this.materialTechniqueService.getFilteredMaterialTechnique(materialApiData)]).subscribe(
           ([materialTechniquesResults]) => {
             this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
-
           }
         );
         break;
     }
   }
 
-  getMaterialData(){
+  getMaterialData() {
     const apiData = {
       page: 1,
       'active[eq]': 1,
@@ -207,7 +200,8 @@ export class DescritifComponent implements OnInit, OnChanges {
     forkJoin([this.materialTechniqueService.getFilteredMaterialTechnique(materialApiData)]).subscribe(
       ([materialTechniquesResults]) => {
         this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
-      })
+      }
+    );
   }
   onChange(event: Date) {
     if (event && !isNaN(event.getFullYear())) {
@@ -219,6 +213,4 @@ export class DescritifComponent implements OnInit, OnChanges {
       this.selectedDomain = this.artwork['field'];
     }
   }
-
-
 }

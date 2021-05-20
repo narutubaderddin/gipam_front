@@ -1,5 +1,5 @@
 <div class="breadcrumb">
-  <a href="accueil" class="selected-item"> Liste oeuvres d'art </a>
+  <a [routerLink]="['accueil']" class="selected-item"> Liste oeuvres d'art </a>
 </div>
 <div class="container-fluid">
   <div class="body">
@@ -1384,7 +1384,6 @@
             [frozenCols]="frozenCols"
             [frozenWidth]="'200px'"
             [checkBoxSelection]="true"
-
             (sort)="sortEvent($event)"
             [loading]="loading"
             (pageChanged)="pagination($event)"

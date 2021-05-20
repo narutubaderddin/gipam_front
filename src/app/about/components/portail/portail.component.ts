@@ -105,6 +105,7 @@ export class PortailComponent implements OnInit {
   firstSearchDrop = false;
   showForm1End = false;
   requestForm: any;
+  loadingCreatingRequest : boolean = false;
 
   constructor(
     private WorkOfArtService: WorkOfArtService,
@@ -546,6 +547,7 @@ export class PortailComponent implements OnInit {
   }
   request: any;
   onSubmitRequest(request: any) {
+    this.loadingCreatingRequest = true;
     let payload: any = {
       ...this.requestForm.value,
       requestStatus: 'En cours',
@@ -558,6 +560,7 @@ export class PortailComponent implements OnInit {
       payload.artWorks = artWorks;
     }
     this.requestService.newRequest(payload).subscribe((response: any) => {
+      this.loadingCreatingRequest = false;
       this.modalService.dismissAll('NgbdModal1Content');
       this.requestForm.reset();
       this.selectedBuilding = this.selectedLevel = this.selectedEstablishment = this.selectedPieceNumber = this.selectedSubDirection = null;
