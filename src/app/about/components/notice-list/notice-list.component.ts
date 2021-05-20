@@ -124,7 +124,7 @@ export class NoticeListComponent implements OnInit {
         sortable: true,
         width: '150px',
         filter: true,
-        type: 'key',
+        type: 'app-creation-date-notice-renderer',
         filterType: 'range-date',
       },
       {

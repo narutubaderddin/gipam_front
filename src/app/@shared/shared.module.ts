@@ -49,7 +49,9 @@ import { RemarquerDetailsLinkRendererComponent } from './components/ng-dataTable
 import { ToastModule } from 'primeng/toast';
 import { ChipModule } from 'primeng/chip';
 import { InProgressNoticeRendererComponent } from './components/ng-dataTables/in-progress-notice-renderer/in-progress-notice-renderer.component';
+import { RouterModule } from '@angular/router';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { CreationDateNoticeRendererComponent } from './components/ng-dataTables/creation-date-notice-renderer/creation-date-notice-renderer.component';
 
 @NgModule({
   imports: [
@@ -84,6 +86,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     AutoCompleteModule,
     ToastModule,
     ChipModule,
+    RouterModule,
     BsDatepickerModule,
   ],
   declarations: [
@@ -110,6 +113,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     HypertextLinksComponent,
     RemarquerDetailsLinkRendererComponent,
     InProgressNoticeRendererComponent,
+    CreationDateNoticeRendererComponent,
   ],
   exports: [
     LoaderComponent,
