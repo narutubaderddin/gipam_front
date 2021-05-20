@@ -1417,6 +1417,8 @@ export class ListWorkOfArtsComponent implements OnInit {
 
   changeMode(mode: string) {
     this.mode = mode;
+    this.selectedRows = [];
+    this.selectedRowCount = 0;
     if (this.showDatatable) {
       let data = this.formatFormsData({}, [
         this.form1.value,
@@ -1437,12 +1439,13 @@ export class ListWorkOfArtsComponent implements OnInit {
   selectOeuvre(item: any, index: number) {
     item.active = !item.active;
     if (item.active) {
-      this.selectedOeuvres.push(item);
+      this.selectedRows.push(item);
     } else {
-      this.selectedOeuvres = this.selectedOeuvres.filter((oeuvre) => {
+      this.selectedRows = this.selectedOeuvres.filter((oeuvre) => {
         return oeuvre.id !== item.id;
       });
     }
+    this.selectedRowCount = this.selectedRows.length;
   }
 
   throttle = 300;
