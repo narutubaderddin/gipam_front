@@ -53,9 +53,11 @@
           >
             {{ col.header }}
             <p-sortIcon
+              #sortIcon
               *ngIf="col.sortable"
               [field]="col.header"
               [pSortableColumn]="col.sortable ? col.header : ''"
+              (click)="sortHeader(sortIcon, col)"
             ></p-sortIcon>
             <i
               class="fas fa-filter"
@@ -298,9 +300,9 @@
                         <span *ngSwitchDefault> {{ expandItem[col.field] }} </span>
                         <app-select-button-render
                           *ngSwitchCase="'app-select-button-render'"
-                          (selectedStatus)="onSelectedStatus($event,expandItem,item)"
+                          (selectedStatus)="onSelectedStatus($event, expandItem, item)"
                           [value]="expandItem.status"
-                          [disabled]="item.requestStatus!='En cours'"
+                          [disabled]="item.requestStatus != 'En cours'"
                         ></app-select-button-render>
                       </span>
                     </td>
@@ -317,21 +319,23 @@
                   <button
                     pButton
                     type="button"
-                    [disabled]="item.requestStatus!='En cours' || item.validatedRequestArtWork.length!= item.expandData.length"
+                    [disabled]="
+                      item.requestStatus != 'En cours' || item.validatedRequestArtWork.length != item.expandData.length
+                    "
                     label="Valider la demande"
                     (click)="onChangeRequestStatus(item, 'Acceptée')"
                   >
-                    <i class="fas fa-cog fa-spin" [hidden]="!isValidationRequest" ></i>
+                    <i class="fas fa-cog fa-spin" [hidden]="!isValidationRequest"></i>
                   </button>
                   <button
                     pButton
                     type="button"
-                    [disabled]="item.requestStatus!='En cours'"
+                    [disabled]="item.requestStatus != 'En cours'"
                     label="Annuler la demande"
                     (click)="onChangeRequestStatus(item, 'Annulée')"
                     class="p-button-secondary"
                   >
-                    <i class="fas fa-cog fa-spin" [hidden]="!isCancelingRequest" ></i>
+                    <i class="fas fa-cog fa-spin" [hidden]="!isCancelingRequest"></i>
                   </button>
                 </td>
               </tr>
