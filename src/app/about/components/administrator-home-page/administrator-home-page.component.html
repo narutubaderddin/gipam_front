@@ -1,5 +1,5 @@
 <div class="breadcrumb">
-  <a href="accueil">Accueil</a>
+  <a [routerLink]="['accueil']">Accueil</a>
 </div>
 <div class="container-fluid">
   <div class="body d-flex">
@@ -86,7 +86,7 @@
               <div>
                 <b>{{ demandeResult['totalQuantity'] }}</b>
                 <span>
-                  <a class="flex-column" href="demandes-en-cours">
+                  <a class="flex-column" (click)="onDemandeClick()">
                     <span class="title">Demandes</span>
                     <span class="title">en cours </span>
                   </a>

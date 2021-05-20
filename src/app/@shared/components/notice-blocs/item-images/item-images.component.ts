@@ -19,6 +19,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   @Input() edit = false;
   @Input() images: any[] = [];
   @Input() photographiesForm: FormGroup;
+  @Input() existingPhotographies: any[] = [];
   @Output() imgToShow = new EventEmitter();
   @Input() parentApi: ParentComponentApi;
 
@@ -26,7 +27,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   activeIndex = 0;
   editType = false;
   photography: string = '';
-  photographyDate: Date = new Date();
+  photographyDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
   photographyType: any[] = [];
   previousPhotographyType: any[] = [];
   types: any[];
@@ -69,15 +70,27 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         this.images[this.activeIndex].image
       );
     }
+    if (this.existingPhotographies.length) {
+      this.existingPhotographies.map((el: any) => {
+        this.photographies.push(this.createPhotography(el.imagePreview, el.date, el.photographyType, el.imageName));
+        this.images.push({
+          imageUrl: el.imagePreview,
+          photographyType: el.photographyType,
+          photographyDate: el.date,
+          image: el.imageName,
+        });
+      });
+      this.initData();
+    }
   }
   ngOnChanges(changements: SimpleChanges) {}
   get items() {
     console.log('images', this.images);
     return this.images;
   }
-  initData(photography?: string, photographyDate?: Date, photographyType?: any, imageName?: string) {
+  initData(photography?: string, photographyDate?: any, photographyType?: any, imageName?: string) {
     this.photography = photography;
-    this.photographyDate = photographyDate;
+    this.photographyDate = this.datePipe.transform(photographyDate, 'yyyy-MM-dd');
     this.photographyType = photographyType;
     this.imageName = imageName;
   }
@@ -96,7 +109,12 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     );
   }
 
-  createPhotography(photography?: any, photographyDate?: Date, photographyType?: any, imageName?: string): FormGroup {
+  createPhotography(
+    photography?: FormData,
+    photographyDate?: any,
+    photographyType?: any,
+    imageName?: string
+  ): FormGroup {
     return this.fb.group({
       date: [this.datePipe.transform(photographyDate, 'yyyy-MM-dd')],
       imagePreview: [photography],
@@ -104,10 +122,9 @@ export class ItemImagesComponent implements OnInit, OnChanges {
       // imageName: [imageName],
     });
   }
-  editPhotographyForm(i: number, photography: string, photographyType: any, photographyDate: Date, imageName: string) {
+  editPhotographyForm(i: number, photography: string, photographyType: any, photographyDate: any, imageName: string) {
     this.photographies.value[i].photographyType = photographyType;
     this.photographies.value[i].date = this.datePipe.transform(photographyDate, 'yyyy-MM-dd');
-    // this.photographies.value[i].imageName = imageName;
     this.photographies.value[i].imagePreview = photography;
     this.images[i].imageUrl = photography;
     this.images[i].image = imageName;
@@ -130,6 +147,11 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         this.types[0].disabled = false;
       }
     }
+  }
+  buildFormData(file: File) {
+    const formData = new FormData();
+    formData.append('imagePreview', file, file.name);
+    return formData;
   }
   addPhotography(): void {
     if (!this.photography.length || !this.photographyType || !this.imageName.length) {
@@ -172,11 +194,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
       this.validate = true;
     }
   }
-  buildFormData(file: File) {
-    const formData = new FormData();
-    formData.append('imagePreview', file, file.name);
-    return formData;
-  }
   handleFileInput(e: any) {
     const file = e.target.files.item(0);
     this.fileToUpload = file;
@@ -199,7 +216,9 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   addFile() {
     this.file.nativeElement.click();
   }
+
   show(item: any) {
+    console.log(item);
     this.initData(item.imageUrl, item.photographyDate, item.photographyType, item.image);
     this.selectedPhotography = item.i;
     this.imgToShow.emit(item.imageUrl);

@@ -9,9 +9,6 @@ import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { MessageService } from 'primeng/api';
 import { dateTimeFormat, lastArtOfWorkDetailIndex, searchPageFilter } from '@shared/utils/helpers';
 import { DatePipe } from '@angular/common';
-import { ArtWorkService } from '@app/about/services/art-work.service';
-import { Util } from 'leaflet';
-import formatNum = Util.formatNum;
 
 @Component({
   selector: 'app-item-details',
@@ -133,10 +130,8 @@ export class ItemDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.artWorkId = this.route.snapshot.paramMap.get('id');
-    // this.initDescriptifForm();
-    // this.currentId = this.route.snapshot.paramMap.get('id');
     this.initSearchPageParam();
-    this.initDepositStatusForm();
+
     this.initPhotographiesForm();
     this.initAttachmentForm();
     this.initPropertyStatusForm();
@@ -158,24 +153,20 @@ export class ItemDetailsComponent implements OnInit {
   getParentlinkApi(): ParentComponentApi {
     return {
       callParentMethod: () => {
-        console.log('linksForm', this.linksForm.value);
         // this.onSave()
       },
     };
   }
-
   initPhotographiesForm() {
     this.photographiesForm = new FormGroup({
       photographies: this.fb.array([]),
     });
   }
-
   initAttachmentForm() {
     this.attachmentForm = new FormGroup({
       attachments: this.fb.array([]),
     });
   }
-
   @HostListener('window:scroll', ['$event'])
   handleScroll() {
     const windowScroll = window.pageYOffset;
@@ -185,7 +176,6 @@ export class ItemDetailsComponent implements OnInit {
       this.sticky = false;
     }
   }
-
   getTabRefData(result: any[]) {
     let items: any[] = [];
     result?.forEach((item: any) => {
@@ -197,7 +187,6 @@ export class ItemDetailsComponent implements OnInit {
     });
     return items;
   }
-
   initDescriptifForm(data?: any) {
     let materialTechnique: any[] = [];
     data?.materialTechnique.map((el: any) => {
@@ -227,24 +216,23 @@ export class ItemDetailsComponent implements OnInit {
       items: [data?.items],
     });
   }
-
   initDepositStatusForm(data?: any) {
     this.depositStatusForm = this.fb.group({
-      depositDate: [data?.depositDate],
+      depositDate: [new Date(data?.depositDate)],
       stopNumber: [data?.stopNumber],
+      depositor: [data?.depositor ? data.depositor?.id : ''],
     });
   }
-
   initPropertyStatusForm(data?: any) {
     this.propertyStatusForm = this.fb.group({
-      entryMode: [data?.entryMode],
-      entryDate: [data?.entryDate],
+      entryMode: [data?.entryMode?.id],
+      entryDate: [new Date(data?.entryDate)],
       marking: [data?.marking],
-      category: [data?.category],
+      category: [data?.category?.id],
       registrationSignature: [data?.registrationSignature],
       descriptiveWords: [data?.descriptiveWords],
       insuranceValue: [data?.insuranceValue],
-      insuranceValueDate: [data?.insuranceValueDate],
+      insuranceValueDate: [new Date(data?.insuranceValueDate)],
       otherRegistrations: [data?.otherRegistrations],
       description: [data?.description],
     });
@@ -255,21 +243,18 @@ export class ItemDetailsComponent implements OnInit {
       hyperlinks: this.fb.array([]),
     });
   }
-
   initLinks() {
     this.linkArtWorkForm = this.fb.group({
       parent: [''],
     });
   }
-
   f1(e: any) {
     this.dynamic = e;
   }
 
   onEditMode() {
-    this.edit = !this.edit;
+    this.edit = true;
   }
-
   formatData() {
     const keys = ['width', 'length', 'totalHeight', 'totalWidth', 'totalLength', 'depth', 'diameter'];
     const filteredKeys = keys.filter((value) => this.attributes.includes(value));
@@ -279,7 +264,6 @@ export class ItemDetailsComponent implements OnInit {
       }
     });
   }
-
   onSave(parent?: any) {
     this.editLink = true;
     this.btnLoading = '';
@@ -438,7 +422,7 @@ export class ItemDetailsComponent implements OnInit {
     });
     apiResult.status.statusType === 'PropertyStatus' ? (this.addProperty = true) : (this.addDepot = true);
     this.status = apiResult.status;
-    this.addProperty ? this.initDepositStatusForm(apiResult.status) : this.initPropertyStatusForm(apiResult.status);
+    this.addProperty ? this.initPropertyStatusForm(apiResult.status) : this.initDepositStatusForm(apiResult.status);
     this.attachments = apiResult.attachments;
     this.hypertextLinks = apiResult.hyperlinks;
     this.parent = apiResult.parent;
@@ -451,7 +435,6 @@ export class ItemDetailsComponent implements OnInit {
 
   getAttributes($event: any) {
     this.attributes = $event;
-    console.log('attributes', this.attributes);
   }
 
   onCancel() {

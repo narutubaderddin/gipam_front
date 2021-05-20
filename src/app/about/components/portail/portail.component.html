@@ -226,7 +226,14 @@
                                   <tr *ngFor="let oeuvre of selectedOeuvre; let index = index">
                                     <td>
                                       <figure class="itemside align-items-center">
-                                        <div class="aside"><img src="assets/images/2.jpg" class="img-sm" /></div>
+                                        <div class="aside">
+                                          <!--<img src="assets/images/2.jpg" class="img-sm" />-->
+                                          <img
+                                            class="card-img-top img-fluid"
+                                            [src]="oeuvre.principalPhoto?.imagePreview"
+                                            alt="Card image cap"
+                                          />
+                                        </div>
                                         <figcaption class="info">
                                           <a class="title text-dark" data-abc="true">{{ oeuvre.title }}</a>
                                           <!--<p class="text-muted small">SIZE: L <br> Brand: MAXTRA</p>-->
@@ -272,6 +279,7 @@
                     type="submit"
                     [disabled]="!requestForm.valid"
                   >
+                    <i class="fas fa-cog fa-spin" [hidden]="!loadingCreatingRequest"></i>
                     <!--(click)="modal.dismiss('Cross click')"-->
                     Valider
                   </button>
@@ -662,7 +670,7 @@
                     <strong>{{ items.title }}</strong>
                     <ul>
                       <li *ngFor="let author of items.authors">{{ author.firstName }} {{ author.lastName }}</li>
-                      <li>
+                      <li *ngIf="!items.isInRequest">
                         <i
                           class="fa fa-eye icon"
                           aria-hidden="true"
@@ -672,7 +680,7 @@
                         >
                         </i>
                       </li>
-                      <li *ngIf="!items.isDemanded; else removeOuvre" class="shopping">
+                      <li *ngIf="!items.isDemanded && !items.isInRequest; else removeOuvre" class="shopping">
                         <i
                           data-toggle="tooltip"
                           data-placement="top"
@@ -683,7 +691,7 @@
                         ></i>
                       </li>
                       <ng-template #removeOuvre>
-                        <li class="shopping">
+                        <li class="shopping" *ngIf="!items.isInRequest">
                           <i
                             placement="top"
                             ngbTooltip="Retirer du panier"
@@ -693,6 +701,9 @@
                           ></i>
                         </li>
                       </ng-template>
+                      <li *ngIf="items.isInRequest">
+                        <p-tag value="réservée"></p-tag>
+                      </li>
                     </ul>
                   </div>
                 </div>

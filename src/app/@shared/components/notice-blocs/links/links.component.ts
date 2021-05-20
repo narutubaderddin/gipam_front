@@ -16,6 +16,7 @@ export class LinksComponent implements OnInit, OnChanges {
   @Input() itemDetails: boolean = false;
   @Input() parentLink: any = '';
   @Input() children: any = '';
+  @Input() existingLink: any;
   @Input() editWorkArtLinks: boolean;
 
   @Output() update = new EventEmitter<any>();
@@ -35,7 +36,7 @@ export class LinksComponent implements OnInit, OnChanges {
       name: 'string',
     },
   ];
-
+  link: any;
   constructor(
     private artWorkService: ArtWorkService,
     private workOfArtService: WorkOfArtService,

@@ -26,13 +26,6 @@ export class AttachmentsComponent implements OnInit, OnChanges {
   edit = false;
   display = false;
   types: any;
-  slide = 1;
-
-  dragDropConfig = {
-    showList: false,
-    showProgress: true,
-    lang: {},
-  };
 
   responsiveOptions = [
     {

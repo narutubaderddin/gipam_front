@@ -31,7 +31,6 @@
           <button (click)="editLinks ? updateLink() : addLink()" class="valid-btn">Valider</button>
         </div>
       </li>
-
       <li *ngIf="parentLink">
         <span
           ><a style="max-width: 30%" href="&quot;details/&quot;+{{ parentLink.id }}">{{ parentLink.id }} </a>|
@@ -48,7 +47,6 @@
           </div>
         </span>
       </li>
-
       <li *ngIf="children.length">
         Composé de :
         <ol>
@@ -77,6 +75,7 @@
         (onSelect)="handleSelect($event)"
         [dropdown]="true"
         (onShow)="change()"
+        [(ngModel)]="link"
         minLength="3"
         virtualScroll="true"
         defaultLabel="Sélectionner un numéro d'inventaire"

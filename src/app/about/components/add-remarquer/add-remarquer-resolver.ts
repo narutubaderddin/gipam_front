@@ -16,7 +16,7 @@ export class AddRemarquerResolver implements Resolve<any> {
 
       return this.workOfArtService.getWorkOfArtById(id, params);
     } else {
-      return of(false);
+      return false;
     }
   }
 }
