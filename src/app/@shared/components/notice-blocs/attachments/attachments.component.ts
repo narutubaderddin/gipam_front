@@ -21,34 +21,6 @@ export class AttachmentsComponent implements OnInit, OnChanges {
   edit = false;
   display = false;
   types: any;
-  slide = 1;
-
-  dragDropConfig = {
-    showList: false,
-    showProgress: true,
-    lang: {},
-  };
-
-  // existingAttachments = [
-  // {
-  //   attachment: {
-  //     name: 'details.pdf',
-  //   },
-  //   attachmentType: 'type 2',
-  // },
-  // {
-  //   attachment: {
-  //     name: 'fichier',
-  //   },
-  //   attachmentType: 'type 2',
-  // },
-  // {
-  //   attachment: {
-  //     name: 'exemple.pdf',
-  //   },
-  //   attachmentType: 'type 1',
-  // },
-  // ];
 
   responsiveOptions = [
     {

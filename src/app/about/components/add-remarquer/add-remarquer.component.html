@@ -54,6 +54,7 @@
                               [photographiesForm]="photographiesForm"
                               [add]="true"
                               [edit]="false"
+                              [existingPhotographies]="photographyData"
                               class="col-12"
                             ></app-item-images>
                           </div>
@@ -97,6 +98,7 @@
                             <div class="attachments-container mr-2 col-md-7 p-0">
                               <app-attachments
                                 [attachmentForm]="attachmentForm"
+                                [existingAttachments]="attachmentData"
                                 style="width: 100%"
                                 [add]="true"
                               ></app-attachments>
@@ -106,11 +108,13 @@
                             >
                               <app-links
                                 [linkArtWorkForm]="linkArtWorkForm"
+                                [existingLink]="existingLink"
                                 style="width: 100%"
                                 [add]="true"
                               ></app-links>
                               <app-hypertext-links
                                 [linksForm]="linksForm"
+                                [existingLinks]="hyperLinkData"
                                 style="width: 100%"
                                 [add]="true"
                               ></app-hypertext-links>

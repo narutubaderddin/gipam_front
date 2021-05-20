@@ -60,6 +60,10 @@ export class AddRemarquerComponent implements OnInit {
   createdNoticeId = 'null';
   toCreateNoticeId = 'null';
   submitted = false;
+  attachmentData: any[] = [];
+  photographyData: any[] = [];
+  hyperLinkData: any[] = [];
+  existingLink: any;
   constructor(
     public workOfArtService: WorkOfArtService,
     private ngWizardService: NgWizardService,
@@ -74,6 +78,10 @@ export class AddRemarquerComponent implements OnInit {
     this.routeSubscription = this.route.data.subscribe((res: any) => {
       if (res) {
         this.inProgressNotice = res.addRemarquer;
+        this.inProgressNotice.hyperlinks ? (this.hyperLinkData = this.inProgressNotice.hyperlinks) : null;
+        this.inProgressNotice.attachments ? (this.attachmentData = this.inProgressNotice.attachments) : null;
+        this.inProgressNotice.photographies ? (this.photographyData = this.inProgressNotice.photographies) : null;
+        this.inProgressNotice.parent ? (this.existingLink = this.inProgressNotice.parent) : null;
         if (this.inProgressNotice.status && this.inProgressNotice.status.descriptiveWords) {
           let str: string = this.inProgressNotice.status.descriptiveWords;
           let strIntoOb = str.split(',');
@@ -113,6 +121,7 @@ export class AddRemarquerComponent implements OnInit {
     this.initHyperLink();
     this.initLinks();
     this.initDescriptifForm();
+    console.log(this.descriptifForm.value);
   }
   initDescriptifForm() {
     this.descriptifForm = this.fb.group({
@@ -232,7 +241,7 @@ export class AddRemarquerComponent implements OnInit {
   }
   initLinks() {
     this.linkArtWorkForm = this.fb.group({
-      parent: [],
+      parent: this.inProgressNotice && this.inProgressNotice.parent ? this.inProgressNotice.parent.id : null,
     });
   }
   initAttachmentForm() {

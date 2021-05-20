@@ -16,6 +16,7 @@ export class LinksComponent implements OnInit {
   @Input() itemDetails: boolean = false;
   @Input() parentLink: any = '';
   @Input() children: any = '';
+  @Input() existingLink: any;
   addLinks: boolean = false;
   artWorksData: any[] = [];
   page = 1;
@@ -30,7 +31,6 @@ export class LinksComponent implements OnInit {
       name: 'string',
     },
   ];
-
   constructor(
     private artWorkService: ArtWorkService,
     private workOfArtService: WorkOfArtService,
