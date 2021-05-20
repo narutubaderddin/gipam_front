@@ -15,12 +15,7 @@ export class HypertextLinksComponent implements OnInit, OnChanges {
   deleteDialog: boolean = false;
   itemToDelete: string = '';
   selectedItem: any;
-  // existingLinks: any[] = [
-  //   {
-  //     url: 'string',
-  //     name: 'string',
-  //   },
-  // ];
+
   get hyperlinks(): FormArray {
     return this.linksForm.get('hyperlinks') as FormArray;
   }

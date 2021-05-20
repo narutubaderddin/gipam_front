@@ -162,17 +162,17 @@ export class ItemDetailsComponent implements OnInit {
   }
   initDescriptifForm(data?:any) {
 
-    // let materialTechnique:any[]=[];
-    // data?.materialTechnique.map((el:any)=>{
-    //   materialTechnique.push({id:el.id, name:el.label})
-    // })
+    let materialTechnique:any[]=[];
+    data?.materialTechnique.map((el:any)=>{
+      materialTechnique.push({id:el.id, name:el.label})
+    })
 
     this.descriptifForm = this.fb.group({
       title: [data?.title, Validators.required],
       field: [{id:data?.field.id, name: data?.field.label
     }, Validators.required],
       denomination: [data?.denomination, Validators.required],
-      materialTechnique: [[], Validators.required],
+      materialTechnique: [data?.materialTechnique, Validators.required],
       numberOfUnit: [data?.numberOfUnit, Validators.required],
       authors: [data.authors? data.authors:[]],
       creationDate: [new Date(data?.creationDate)],
@@ -311,7 +311,6 @@ export class ItemDetailsComponent implements OnInit {
             alt: 'description',
             i: index,
             image: el.imageName,
-            // photography: 'assets/images/573.jpg',
             photographyDate: this.datePipe.transform(el.date, dateTimeFormat),
             photographyName: el.imageName,
             photographyType: el.photographyType,
@@ -324,6 +323,7 @@ export class ItemDetailsComponent implements OnInit {
         this.attachments= result.attachments;
         console.log("attachments", this.attachments)
         this.hypertextLinks = result.hyperlinks;
+        console.log("artwork",result);
         this.parent= result.parent;
         console.log("parent", this.parent);
         this.children= result.children;

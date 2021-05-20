@@ -268,7 +268,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     this.photographyService.addPhotography(data).subscribe(
       (result: any) => {
         this.addSingle('success', 'Ajout', 'Photographie ' + data + ' ajoutée avec succés');
-        // this.getAllItems();
       },
       (error) => {
         this.addSingle('error', 'Ajout', error.error.message);
