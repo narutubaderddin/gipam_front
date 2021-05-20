@@ -8,13 +8,8 @@
     </div>
 
     <ol class="rounded-list" *ngIf="!add">
-      <<<<<<< HEAD
-      <li *ngIf="addLinks || existingLinks.length || parentLink || add">Fait partie de:</li>
-      <li *ngIf="addLinks">=======</li>
-
       <li *ngIf="addLinks || existingLinks.length || parentLink || add">Fait partie de:</li>
       <li *ngIf="addLinks || editLinks">
-        >>>>>>> 7faeea41afe5d42fb7131483da14d45765f89fab
         <p-autoComplete
           #autocompletePanel
           class="select col-md-4 col-sm-7 p-sm-0 col-12"
@@ -36,7 +31,6 @@
           <button (click)="editLinks ? updateLink() : addLink()" class="valid-btn">Valider</button>
         </div>
       </li>
-
       <li *ngIf="parentLink">
         <span
           ><a style="max-width: 30%" href="&quot;details/&quot;+{{ parentLink.id }}">{{ parentLink.id }} </a>|
@@ -53,7 +47,6 @@
           </div>
         </span>
       </li>
-
       <li *ngIf="children.length">
         Composé de :
         <ol>
