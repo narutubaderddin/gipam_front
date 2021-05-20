@@ -64,6 +64,7 @@ export class NgDataTableComponent implements OnInit {
   @Input() expand: Boolean = false;
   @Input() showConfirmRequest: Boolean = false;
   @Input() isValidationRequest: Boolean = false;
+  @Input() isCancelingRequest: Boolean = false;
   @Input() page: any;
   @Input() limit: any;
   @Input() identifierKey: any;
@@ -422,10 +423,12 @@ export class NgDataTableComponent implements OnInit {
     });
     return items;
   }
+  currentStatus : any;
+  selectedRequest : any;
   onChangeRequestStatus(request: any, status: any) {
-
+    this.selectedRequest = request;
     if(status === "Annulée"){
-      request.requestStatus = status;
+      this.currentStatus = status;
       request.expandData.forEach((artWork:any)=>{
         artWork.status = "Annulé";
       });
@@ -448,20 +451,31 @@ export class NgDataTableComponent implements OnInit {
         return false;
       }else{
         if(allArtWorksAccepted){
-          request.requestStatus = "Acceptée";
+          this.currentStatus = "Acceptée";
         }else if(allArtWorksRefused){
-          request.requestStatus = "Refusée";
+          this.currentStatus = "Refusée";
         }else{
-          request.requestStatus = "Partiellement acceptée";
+          this.currentStatus = "Partiellement acceptée";
         }
       }
     }
-    this.changeRequestStatus.emit(request);
+    let payload = {
+      request: {...request},
+      status:status
+    }
+    payload.request.requestStatus = this.currentStatus;
+    this.changeRequestStatus.emit(payload);
   }
   onSelectedStatus($event:any,expandItem:any,request:any){
     if(!request.validatedRequestArtWork.find((elm:any)=>elm.id==expandItem.id)) {
       request.validatedRequestArtWork.push(expandItem);
     }
     expandItem.status = $event;
+  }
+  ngOnChanges() {
+    if(this.selectedRequest && this.currentStatus &&
+      !this.isValidationRequest && !this.isCancelingRequest) {
+      this.selectedRequest.requestStatus = this.currentStatus;
+    }
   }
 }
