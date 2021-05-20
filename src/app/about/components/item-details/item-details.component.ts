@@ -22,30 +22,30 @@ export class ItemDetailsComponent implements OnInit {
   @ViewChild('stickyMenu') menuElement: ElementRef;
 
   btnLoading: any = null;
-  attributes: any[]=[];
+  attributes: any[] = [];
   elementPosition: any = 2;
-  workArt:{
-    id: 145,
-    titre: 'Titre',
-    domain: 'Art graphique',
-    field: 'Art graphique',
-    height: '85',
-    width: '85',
-    authors: 'Auteur 1, Auteur 11',
-    totalWidth: '',
-    totalHeight: '',
-    era: '',
-    materialTechnique: '',
-    status: '',
-    denomination: 'Affiche',
-    createdAt: '22/01/2020',
-  }
-  editLink:boolean=true;
-  parent:any='';
-  children:any=[];
-  hypertextLinks:any[]=[];
-  attachments:any[]=[];
-  status:any={};
+  workArt: {
+    id: 145;
+    titre: 'Titre';
+    domain: 'Art graphique';
+    field: 'Art graphique';
+    height: '85';
+    width: '85';
+    authors: 'Auteur 1, Auteur 11';
+    totalWidth: '';
+    totalHeight: '';
+    era: '';
+    materialTechnique: '';
+    status: '';
+    denomination: 'Affiche';
+    createdAt: '22/01/2020';
+  };
+  editLink: boolean = true;
+  parent: any = '';
+  children: any = [];
+  hypertextLinks: any[] = [];
+  attachments: any[] = [];
+  status: any = {};
   type = 'depot';
   addProperty = false;
   addDepot = false;
@@ -66,9 +66,8 @@ export class ItemDetailsComponent implements OnInit {
   sticky = false;
 
   photographiesForm: FormGroup;
-  artWorkId:any;
-  artwork =
-  {
+  artWorkId: any;
+  artwork = {
     id: 145,
     titre: 'Titre',
     domain: 'Art graphique',
@@ -85,7 +84,6 @@ export class ItemDetailsComponent implements OnInit {
     createdAt: '22/01/2020',
   };
   artWorksToPrint: any = [];
-
 
   constructor(
     config: NgbCarouselConfig,
@@ -118,17 +116,17 @@ export class ItemDetailsComponent implements OnInit {
   getParentApi(): ParentComponentApi {
     return {
       callParentMethod: (id) => {
-        this.getArtWork(id)
-      }
-    }
+        this.getArtWork(id);
+      },
+    };
   }
   getParentlinkApi(): ParentComponentApi {
     return {
       callParentMethod: () => {
-        console.log("linksForm", this.linksForm.value)
+        console.log('linksForm', this.linksForm.value);
         // this.onSave()
-      }
-    }
+      },
+    };
   }
   initPhotographiesForm() {
     this.photographiesForm = new FormGroup({
@@ -160,21 +158,19 @@ export class ItemDetailsComponent implements OnInit {
     });
     return items;
   }
-  initDescriptifForm(data?:any) {
-
-    let materialTechnique:any[]=[];
-    data?.materialTechnique.map((el:any)=>{
-      materialTechnique.push({id:el.id, name:el.label})
-    })
+  initDescriptifForm(data?: any) {
+    let materialTechnique: any[] = [];
+    data?.materialTechnique.map((el: any) => {
+      materialTechnique.push({ id: el.id, name: el.label });
+    });
 
     this.descriptifForm = this.fb.group({
       title: [data?.title, Validators.required],
-      field: [{id:data?.field.id, name: data?.field.label
-    }, Validators.required],
+      field: [{ id: data?.field.id, name: data?.field.label }, Validators.required],
       denomination: [data?.denomination, Validators.required],
       materialTechnique: [materialTechnique, Validators.required],
       numberOfUnit: [data?.numberOfUnit, Validators.required],
-      authors: [data.authors? data.authors:[]],
+      authors: [data.authors ? data.authors : []],
       creationDate: [new Date(data?.creationDate)],
       length: [data?.length],
       width: [data?.width],
@@ -191,14 +187,13 @@ export class ItemDetailsComponent implements OnInit {
       items: [data?.items],
     });
   }
-  initDepositStatusForm(data?:any) {
+  initDepositStatusForm(data?: any) {
     this.depositStatusForm = this.fb.group({
       depositDate: [data?.depositDate],
       stopNumber: [data?.stopNumber],
     });
-
   }
-  initPropertyStatusForm(data?:any) {
+  initPropertyStatusForm(data?: any) {
     this.propertyStatusForm = this.fb.group({
       entryMode: [data?.entryMode],
       entryDate: [data?.entryDate],
@@ -232,52 +227,48 @@ export class ItemDetailsComponent implements OnInit {
   }
   formatData() {
     const keys = ['width', 'length', 'totalHeight', 'totalWidth', 'totalLength', 'depth', 'diameter'];
-    const filteredKeys = keys.filter(value => this.attributes.includes(value));
+    const filteredKeys = keys.filter((value) => this.attributes.includes(value));
     filteredKeys.forEach((key: string) => {
       if (this.descriptifForm.get(key).value) {
-
-        this.descriptifForm
-          .get(key)
-          .setValue(+this.descriptifForm.get(key).value);
+        this.descriptifForm.get(key).setValue(+this.descriptifForm.get(key).value);
       }
     });
   }
-  onSave(parent?:any) {
-    this.editLink=true;
+  onSave(parent?: any) {
+    this.editLink = true;
     this.btnLoading = '';
     this.formatData();
 
-    const authorsId:any[]=[]
-    this.descriptifForm.value.authors?.map((el:any)=>{
+    const authorsId: any[] = [];
+    this.descriptifForm.value.authors?.map((el: any) => {
       authorsId.push(el.id);
-    })
-    const materialId:any[]=[]
-    this.descriptifForm.value.materialTechnique?.map((el:any)=>{
+    });
+    const materialId: any[] = [];
+    this.descriptifForm.value.materialTechnique?.map((el: any) => {
       materialId.push(el.id);
-    })
-    const data={
+    });
+    const data = {
       ...this.descriptifForm.value,
-      field:this.descriptifForm.value.field.id,
-      denomination:this.descriptifForm.value.denomination.id,
+      field: this.descriptifForm.value.field.id,
+      denomination: this.descriptifForm.value.denomination.id,
       authors: authorsId,
-      materialTechnique:materialId,
-      status:this.addProperty?this.propertyStatusForm.value:this.depositStatusForm.value,
-      parent: parent
-    }
+      materialTechnique: materialId,
+      status: this.addProperty ? this.propertyStatusForm.value : this.depositStatusForm.value,
+      parent: parent,
+    };
 
     this.workOfArtService.updateWorkOfArt(data, this.artWorkId).subscribe(
-      result=>{
+      (result) => {
         this.getArtWork(this.artWorkId);
-        this.addSingle('success', 'Modification','Notice modifiée avec succée')
+        this.addSingle('success', 'Modification', 'Notice modifiée avec succée');
         this.edit = false;
-        this.editLink=false;
+        this.editLink = false;
       },
-      error=>{
+      (error) => {
         this.btnLoading = null;
         this.workOfArtService.getFormErrors(error.error.errors, 'Modification');
-
       }
-    )
+    );
   }
 
   showImg() {
@@ -293,58 +284,55 @@ export class ItemDetailsComponent implements OnInit {
     const element = document.getElementById('appItemDetailsPdf');
     this.pdfGeneratorService.downloadPDFFromHTML(element, this.artwork.titre + '.pdf');
   }
-  getArtWork(id:any){
+  getArtWork(id: any) {
+    this.workOfArtService
+      .getWorkOfArtById(id, { serializer_group: JSON.stringify(['art_work_details', 'short']) })
+      .subscribe(
+        (result) => {
+          this.photographies = [];
 
-    this.workOfArtService.getWorkOfArtById(id,
-      {serializer_group:JSON.stringify(['art_work_details', 'short'])}).subscribe(
-      result=>{
-        this.photographies=[];
-
-        this.workArt= result;
-        this.initDescriptifForm(result);
-        result.photographies.map((el:any, index:number)=>{
-
-          this.photographies.push({
-            workArtId: result.id,
-            id:el.id,
-            imageUrl: el.imagePreview,
-            alt: 'description',
-            i: index,
-            image: el.imageName,
-            photographyDate: this.datePipe.transform(el.date, dateTimeFormat),
-            photographyName: el.imageName,
-            photographyType: el.photographyType,
-            imageName: el.imageName,
+          this.workArt = result;
+          this.initDescriptifForm(result);
+          result.photographies.map((el: any, index: number) => {
+            this.photographies.push({
+              workArtId: result.id,
+              id: el.id,
+              imageUrl: el.imagePreview,
+              alt: 'description',
+              i: index,
+              image: el.imageName,
+              photographyDate: this.datePipe.transform(el.date, dateTimeFormat),
+              photographyName: el.imageName,
+              photographyType: el.photographyType,
+              imageName: el.imageName,
+            });
           });
-        });
-        result.status.statusType==="PropertyStatus"? this.addProperty=true: this.addDepot=true;
-        this.status= result.status;
-        this.addProperty?this.initDepositStatusForm(result.status): this.initPropertyStatusForm(result.status);
-        this.attachments= result.attachments;
-        this.hypertextLinks = result.hyperlinks;
-        this.parent= result.parent;
-        this.children= result.children;
-      },
-      error => {
-
-        this.addSingle('error', 'Erreur Technique', error.error.message);
-      }
-    );
+          result.status.statusType === 'PropertyStatus' ? (this.addProperty = true) : (this.addDepot = true);
+          this.status = result.status;
+          this.addProperty ? this.initDepositStatusForm(result.status) : this.initPropertyStatusForm(result.status);
+          this.attachments = result.attachments;
+          this.hypertextLinks = result.hyperlinks;
+          this.parent = result.parent;
+          this.children = result.children;
+        },
+        (error) => {
+          this.addSingle('error', 'Erreur Technique', error.error.message);
+        }
+      );
   }
   addSingle(type: string, sum: string, msg: string) {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
   }
 
-  getAttributes($event:any) {
-
-    this.attributes=$event;
-    console.log('attributes',this.attributes)
+  getAttributes($event: any) {
+    this.attributes = $event;
+    console.log('attributes', this.attributes);
   }
 
   onCancel() {
-    this.edit=false;
+    this.edit = false;
   }
 }
 export interface ParentComponentApi {
-  callParentMethod: (string?:any) => void
+  callParentMethod: (string?: any) => void;
 }

@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-hypertext-links',
@@ -8,7 +8,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class HypertextLinksComponent implements OnInit, OnChanges {
   @Input() add: false;
   @Input() linksForm: FormGroup;
-  @Input() existingLinks: any[]=[];
+  @Input() existingLinks: any[] = [];
   @Input() itemDetails = false;
   myForm: FormGroup;
   addLinks: boolean = false;
@@ -26,10 +26,14 @@ export class HypertextLinksComponent implements OnInit, OnChanges {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
+    if (this.existingLinks.length) {
+      this.existingLinks.map((el: any) => {
+        this.hyperlinks.push(this.createHyperLink(el.name, el.url));
+      });
+    }
     this.configForm();
   }
-  ngOnChanges(changes: SimpleChanges) {
-  }
+  ngOnChanges(changes: SimpleChanges) {}
 
   createHyperLink(name?: any, url?: any): FormGroup {
     return this.fb.group({

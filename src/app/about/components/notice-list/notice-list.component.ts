@@ -20,7 +20,7 @@ export class NoticeListComponent implements OnInit {
   page = 1;
   end: number;
   start: number;
-  loading = false;
+  loadingData = true;
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -43,6 +43,7 @@ export class NoticeListComponent implements OnInit {
       this.totalFiltred = this.total;
       this.start = (this.page - 1) * this.limit + 1;
       this.end = (this.page - 1) * this.limit + this.remarquers.length;
+      this.loadingData = false;
     });
     this.initColumnsDef();
   }
@@ -146,8 +147,8 @@ export class NoticeListComponent implements OnInit {
     } else {
       this.page = this.total / parseInt(this.limit.toString(), 0);
     }
-    this.cdr.detectChanges();
     this.initData();
+    this.cdr.detectChanges();
   }
   resetFilter() {}
 
