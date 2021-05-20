@@ -1,17 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-hypertext-links',
   templateUrl: './hypertext-links.component.html',
   styleUrls: ['./hypertext-links.component.scss'],
 })
-export class HypertextLinksComponent implements OnInit {
+export class HypertextLinksComponent implements OnInit, OnChanges {
   @Input() add: false;
   @Input() linksForm: FormGroup;
   @Input() existingLinks: any[] = [];
-  get hyperlinks(): FormArray {
-    return this.linksForm.get('hyperlinks') as FormArray;
-  }
   @Input() itemDetails = false;
   myForm: FormGroup;
   addLinks: boolean = false;
@@ -19,6 +16,9 @@ export class HypertextLinksComponent implements OnInit {
   itemToDelete: string = '';
   selectedItem: any;
 
+  get hyperlinks(): FormArray {
+    return this.linksForm.get('hyperlinks') as FormArray;
+  }
   get liens(): FormArray {
     return this.myForm.get('liens') as FormArray;
   }
@@ -28,6 +28,7 @@ export class HypertextLinksComponent implements OnInit {
   ngOnInit() {
     this.configForm();
   }
+  ngOnChanges(changes: SimpleChanges) {}
 
   createHyperLink(name?: any, url?: any): FormGroup {
     return this.fb.group({

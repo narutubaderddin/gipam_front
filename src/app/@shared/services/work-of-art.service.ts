@@ -3,6 +3,7 @@ import { TreeviewItem } from 'ngx-treeview';
 import { HttpClient, HttpHeaders, HttpParameterCodec, HttpParams } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
+import { MessageService } from 'primeng/api';
 
 @Injectable({
   providedIn: 'root',
@@ -588,7 +589,7 @@ export class WorkOfArtService {
     },
   ];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private messageService: MessageService) {}
   getOeuvres(filterObj: any): Observable<any> {
     let filter: string = `limit=40&page=${filterObj.page}`;
     filter = this.extractedQuery(filterObj, filter);
@@ -703,14 +704,30 @@ export class WorkOfArtService {
       observe: 'response',
     });
   }
-  getWorkOfArtById(id: any, data: any): Observable<any> {
+  getWorkOfArtById(id: any, data?: any): Observable<any> {
     let params = new HttpParams();
-
-    Object.keys(data).forEach((key) => {
-      if (data[key]) {
-        params = params.append(key, data[key]);
+    if (data) {
+      Object.keys(data).forEach((key) => {
+        if (data[key]) {
+          params = params.append(key, data[key]);
+        }
+      });
+    }
+    return this.http.get('/artWorks/' + id, { params });
+  }
+  updateWorkOfArt(workOfArt: any, id: any): Observable<any> {
+    return this.http.patch(`/notices/${id}`, workOfArt);
+  }
+  getFormErrors(errors: any, sum: string) {
+    if (!errors) {
+      return;
+    }
+    Object.keys(errors).forEach((key) => {
+      if (Array.isArray(errors[key])) {
+        errors[key].forEach((error: any) => {
+          this.messageService.add({ severity: 'error', summary: sum, detail: error });
+        });
       }
     });
-    return this.http.get('/artWorks/' + id, { params });
   }
 }

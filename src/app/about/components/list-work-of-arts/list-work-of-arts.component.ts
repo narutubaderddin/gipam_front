@@ -1,6 +1,6 @@
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
-import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ColumnFilterService } from '@shared/services/column-filter.service';
 import { forkJoin } from 'rxjs';
@@ -138,6 +138,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     private datePipe: DatePipe,
     private router: Router,
     private artWorkService: ArtWorkService,
+    private activatedRoute: ActivatedRoute,
     private fieldService: FieldsService,
     private denominationsService: DenominationsService,
     private styleService: StylesService,
@@ -167,8 +168,8 @@ export class ListWorkOfArtsComponent implements OnInit {
         limit,
         sortBy,
         sort,
-        this.globalSearch,
-        this.searchQuery
+        this.searchQuery,
+        this.globalSearch
       )
       .subscribe(
         (artWorksData: ArtWorksDataModel) => {
@@ -217,10 +218,9 @@ export class ListWorkOfArtsComponent implements OnInit {
   addSingle(type: string, sum: string, msg: string) {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
   }
-
   selectedOeuvres: any[] = [];
   artWorkResults: any[] = [];
-
+  @ViewChild('globalSearch') searchButton: Input;
   ngOnInit(): void {
     this.initFilterData();
     this.oeuvreToShow = this.oeuvres;
@@ -236,8 +236,12 @@ export class ListWorkOfArtsComponent implements OnInit {
       allowSearchFilter: true,
     };
     this.initForms();
-
     this.onChanges();
+    this.globalSearch = this.activatedRoute.snapshot.queryParams['search'];
+    if (this.globalSearch.length > 0) {
+      this.router.navigate(['.'], { relativeTo: this.activatedRoute, queryParams: {} });
+      this.onSearchClick('global');
+    }
     this.inventoryOptions = {
       floor: 0,
       ceil: 9999,
@@ -312,7 +316,6 @@ export class ListWorkOfArtsComponent implements OnInit {
 
     return data;
   }
-
   sortEvent(e: any) {
     this.dataTableSort = e;
     let data = this.formatFormsData({}, [
@@ -326,14 +329,12 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.headerFilter = this.formatFormsData({}, [this.headerFilter], true);
     this.initData(data, advancedData, this.headerFilter, this.artWorksData.page);
   }
-
   formatAdvancedData(data: any, values: any[]) {
     values.forEach((value) => {
       data = this.getDataFromAdvancedForm(data, value);
     });
     return data;
   }
-
   getDataFromHeadersForm(data: any, value: any) {
     Object.keys(value).forEach((key) => {
       let result: any[] = [];
@@ -881,7 +882,6 @@ export class ListWorkOfArtsComponent implements OnInit {
       depotDate: new FormControl(''),
     });
   }
-
   initIdentificationForm() {
     this.form1 = new FormGroup({
       id: new FormControl(''),
@@ -925,7 +925,6 @@ export class ListWorkOfArtsComponent implements OnInit {
       correspondant: new FormControl(''),
     });
   }
-
   initAdminAdvancedForm() {
     this.advancedForm3 = new FormGroup({
       establishementType: new FormControl(''),
@@ -934,7 +933,6 @@ export class ListWorkOfArtsComponent implements OnInit {
       responsibleOperator: new FormControl('and'),
     });
   }
-
   initIdentificationAdvancedForm() {
     this.advancedForm1 = new FormGroup({
       materialTechnique: new FormControl(''),
@@ -1360,7 +1358,6 @@ export class ListWorkOfArtsComponent implements OnInit {
     }
     return data;
   }
-
   public requestAutocompleteItems = (text: string) => {
     return this.artWorkService.getAutocompleteData(text, 'description').pipe(map((data) => data));
   };
@@ -1464,9 +1461,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       this.showDatatable = true;
     }
   }
-
   selectedValues: string[] = [];
-
   selectOeuvre(item: any, index: number) {
     item.active = !item.active;
     if (item.active) {
@@ -1484,7 +1479,6 @@ export class ListWorkOfArtsComponent implements OnInit {
   direction = '';
   page = 1;
   loadingScroll: boolean = false;
-
   onScrollDown() {
     this.page++;
     let data = this.formatFormsData({}, [
