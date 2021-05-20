@@ -183,6 +183,7 @@ export class ListWorkOfArtsComponent implements OnInit {
             sort,
             globalSearch: this.globalSearch,
             searchQuery: this.searchQuery,
+            totalFiltered: artWorksData.filteredQuantity,
           };
           localStorage.setItem('searchPageFilter', JSON.stringify(searchPageFilter));
           console.log('filters', JSON.parse(localStorage.getItem('searchPageFilter')));

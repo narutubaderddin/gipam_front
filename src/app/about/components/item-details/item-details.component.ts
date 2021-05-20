@@ -10,6 +10,8 @@ import { MessageService } from 'primeng/api';
 import { dateTimeFormat, lastArtOfWorkDetailIndex, searchPageFilter } from '@shared/utils/helpers';
 import { DatePipe } from '@angular/common';
 import { ArtWorkService } from '@app/about/services/art-work.service';
+import { Util } from 'leaflet';
+import formatNum = Util.formatNum;
 
 @Component({
   selector: 'app-item-details',
@@ -82,9 +84,29 @@ export class ItemDetailsComponent implements OnInit {
 
   artWorksToPrint: any = [];
   currentId: string;
+  nextId: string;
+  previousId: string;
+  paginationIndexes: {
+    current: number;
+    next: number;
+    previous: number;
+  };
 
   page = 1;
   artWorkIds: any[] = [];
+  searchPageParam: {
+    mode: any;
+    filter: any;
+    advancedFilter: any;
+    headerFilters: any;
+    page: any;
+    limit: any;
+    sortBy: any;
+    sort: any;
+    globalSearch: any;
+    searchQuery: any;
+    totalFiltered: any;
+  };
 
   constructor(
     config: NgbCarouselConfig,
@@ -107,7 +129,7 @@ export class ItemDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.currentId = this.route.snapshot.paramMap.get('id');
-
+    this.initSearchPageParam();
     this.initDescriptifForm();
     this.initDepositStatusForm();
     this.initPhotographiesForm();
@@ -117,7 +139,7 @@ export class ItemDetailsComponent implements OnInit {
     this.initHyperLink();
     this.initLinks();
     this.getArtWork(this.currentId);
-    this.initPage();
+    this.initPagination();
   }
 
   initPhotographiesForm() {
@@ -228,21 +250,38 @@ export class ItemDetailsComponent implements OnInit {
     this.pdfGeneratorService.downloadPDFFromHTML(element, this.artwork.titre + '.pdf');
   }
 
+  initSearchPageParam() {
+    const newParams = JSON.parse(localStorage.getItem(searchPageFilter));
+
+    this.searchPageParam = {
+      mode: newParams.mode,
+      filter: newParams.filter,
+      advancedFilter: newParams.advancedFilter,
+      headerFilters: newParams.headerFilters,
+      page: this.page,
+      limit: newParams.limit,
+      sortBy: newParams.sortBy,
+      sort: newParams.sort,
+      globalSearch: newParams.globalSearch,
+      searchQuery: newParams.searchQuery,
+      totalFiltered: newParams.totalFiltered,
+    };
+  }
+
   paginate(by: number) {
     this.page = this.page + by;
-    const newParams = JSON.parse(localStorage.getItem(searchPageFilter));
 
     this.artWorkService
       .getArtWorksData(
-        newParams.filter,
-        newParams.advancedFilter,
-        newParams.headerFilters,
+        this.searchPageParam.filter,
+        this.searchPageParam.advancedFilter,
+        this.searchPageParam.headerFilters,
         this.page,
         1,
-        newParams.sortBy,
-        newParams.sort,
-        newParams.globalSearch,
-        newParams.searchQuery
+        this.searchPageParam.sortBy,
+        this.searchPageParam.sort,
+        this.searchPageParam.globalSearch,
+        this.searchPageParam.searchQuery
       )
       .subscribe(
         (result) => {
@@ -250,7 +289,7 @@ export class ItemDetailsComponent implements OnInit {
           console.log('new artWork id', this.currentId);
           this.router.navigate(['/details/' + this.currentId]);
           this.getArtWork(this.currentId);
-          this.workArt = result.results[0];
+          // this.workArt = result.results[0];
           // console.log('paginate', this.workArt)
           // result.photographies.map((el: any, index: number) => {
           //   this.photographies.push({
@@ -279,35 +318,83 @@ export class ItemDetailsComponent implements OnInit {
       );
   }
 
-  initPage() {
-    /// new get
-    const newParams = JSON.parse(localStorage.getItem(searchPageFilter));
-    const lastItemsIds = JSON.parse(localStorage.getItem('searchPageFilterLastItemsIds'));
-    // const index = lastItemsIds.indexOf(Number(id)) + 1;
+  inPage(index: number, pageLimit: number) {
+    index = index % 5;
+    return (index - 1) * (index - pageLimit) < 0;
+  }
+
+  setPage() {
     const index = JSON.parse(localStorage.getItem(lastArtOfWorkDetailIndex)) + 1;
     console.log('index', index);
     this.page = index;
 
-    if (newParams.mode !== 'pictures') {
+    if (this.searchPageParam.mode !== 'pictures') {
       // when datatable display mode is selected in search page
-      this.page = newParams.limit * (newParams.page - 1) + index;
+      this.page = this.searchPageParam.limit * (this.searchPageParam.page - 1) + index;
       if (this.page <= 0) {
         // it could be : if new page is lower than or equal to 0 then get the first element
         this.page = 1;
       }
     }
+    if (this.page === 1) {
+      this.setPaginationIndexes(this.searchPageParam.totalFiltered, 'previous');
+      return;
+    }
+    if (this.page === this.searchPageParam.totalFiltered) {
+      this.setPaginationIndexes(1, 'next');
+      return;
+    }
+    if (index === 0 && this.page > 1) {
+      this.setPaginationIndexes(this.page - 1, 'previous');
+      return;
+    }
+    if (index === this.searchPageParam.limit && this.page > 1) {
+      this.setPaginationIndexes(this.page - 1, 'previous');
+      return;
+    }
+  }
 
+  setPaginationIndexes(page: number, index: string) {
     this.artWorkService
       .getArtWorksData(
-        newParams.filter,
-        newParams.advancedFilter,
-        newParams.headerFilters,
+        this.searchPageParam.filter,
+        this.searchPageParam.advancedFilter,
+        this.searchPageParam.headerFilters,
+        this.searchPageParam.totalFiltered,
+        1,
+        this.searchPageParam.sortBy,
+        this.searchPageParam.sort,
+        this.searchPageParam.globalSearch,
+        this.searchPageParam.searchQuery,
+        JSON.stringify(['response', 'art_work_list', 'hyperLink_furniture', 'id', 'art_work_details'])
+      )
+      .subscribe(
+        (result) => {
+          this.paginationIndexes[index] = result.results[0].id;
+        },
+        (error) => {
+          console.log(error);
+          this.addSingle('error', 'Erreur Technique', error.error.message);
+        }
+      );
+  }
+
+  initPagination() {
+    /// new get
+    const lastItemsIds = JSON.parse(localStorage.getItem('searchPageFilterLastItemsIds'));
+    // const index = lastItemsIds.indexOf(Number(id)) + 1;
+    this.setPage();
+    this.artWorkService
+      .getArtWorksData(
+        this.searchPageParam.filter,
+        this.searchPageParam.advancedFilter,
+        this.searchPageParam.headerFilters,
         this.page,
         1,
-        newParams.sortBy,
-        newParams.sort,
-        newParams.globalSearch,
-        newParams.searchQuery,
+        this.searchPageParam.sortBy,
+        this.searchPageParam.sort,
+        this.searchPageParam.globalSearch,
+        this.searchPageParam.searchQuery,
         JSON.stringify(['response', 'art_work_list', 'hyperLink_furniture', 'id', 'art_work_details'])
       )
       .subscribe(
