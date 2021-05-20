@@ -85,6 +85,7 @@ export class InProgressDemandComponent {
 
   requests: any = [];
   loading: boolean = false;
+  isValidationRequest: boolean = false;
   page: any = 1;
   filter: any = "";
   constructor(private demandService: DemandService, public sharedService: SharedService) {
@@ -115,7 +116,11 @@ export class InProgressDemandComponent {
             nameApplicant += elm.lastNameApplicant;
           }
           let expendDatas : any = [];
+          let validatedRequestArtWork : any = [];
           elm.requestedArtWorks.forEach((requestedArtWork:any)=>{
+            if(requestedArtWork.status == 'Accepté' || requestedArtWork.status == 'Refusé'){
+              validatedRequestArtWork.push(requestedArtWork);
+            }
             expendDatas.push({
               ...requestedArtWork.artWork,
               status: requestedArtWork.status,
@@ -128,6 +133,7 @@ export class InProgressDemandComponent {
             name: elm.firstName + ' ' + elm.lastName,
             nameApplicant: nameApplicant,
             expandData: expendDatas,
+            validatedRequestArtWork: validatedRequestArtWork
           };
         });
       },
@@ -153,7 +159,10 @@ export class InProgressDemandComponent {
 
   changeRequestStatus(request: any) {
     let payload : any  = {...request};
-    this.demandService.changeStatus(payload).subscribe((response) => {});
+    this.isValidationRequest = true;
+    this.demandService.changeStatus(payload).subscribe((response) => {
+      this.isValidationRequest = false;
+    });
   }
   onDataTableFilterChange(headersFilter: any) {
     let filter : string = "";

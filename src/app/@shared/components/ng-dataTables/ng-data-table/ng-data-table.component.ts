@@ -63,6 +63,7 @@ export class NgDataTableComponent implements OnInit {
   @Input() singleSelect: Boolean = false;
   @Input() expand: Boolean = false;
   @Input() showConfirmRequest: Boolean = false;
+  @Input() isValidationRequest: Boolean = false;
   @Input() page: any;
   @Input() limit: any;
   @Input() identifierKey: any;
@@ -457,7 +458,10 @@ export class NgDataTableComponent implements OnInit {
     }
     this.changeRequestStatus.emit(request);
   }
-  onSelectedStatus($event:any,expandItem:any){
+  onSelectedStatus($event:any,expandItem:any,request:any){
+    if(!request.validatedRequestArtWork.find((elm:any)=>elm.id==expandItem.id)) {
+      request.validatedRequestArtWork.push(expandItem);
+    }
     expandItem.status = $event;
   }
 }
