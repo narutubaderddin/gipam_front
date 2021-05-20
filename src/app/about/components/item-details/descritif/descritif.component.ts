@@ -81,6 +81,7 @@ export class DescritifComponent implements OnInit, OnChanges {
     this.getAttributes();
     this.initFilterData();
     this.initData();
+
   }
   ngOnChanges() {
     if(this.artwork){
@@ -138,7 +139,9 @@ export class DescritifComponent implements OnInit, OnChanges {
         this.depositorsData = this.getTabRefData(depositorsResults['results']);
         this.eraData = this.getTabRefData(eraResults['results']);
         this.entryModesData = this.getTabRefData(entryModesData['results']);
-
+        if(this.field && this.denomination && this.denominationData) {
+          this.getMaterialData()
+        }
       }
     );
   }
@@ -155,6 +158,8 @@ export class DescritifComponent implements OnInit, OnChanges {
       page: 1,
       'active[eq]': 1,
     };
+
+
     const materialApiData = Object.assign({}, apiData);
 
     switch (key) {
@@ -182,10 +187,26 @@ export class DescritifComponent implements OnInit, OnChanges {
         forkJoin([this.materialTechniqueService.getFilteredMaterialTechnique(materialApiData)]).subscribe(
           ([materialTechniquesResults]) => {
             this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
+
           }
         );
         break;
     }
+  }
+
+  getMaterialData(){
+    const apiData = {
+      page: 1,
+      'active[eq]': 1,
+    };
+    const materialApiData = Object.assign({}, apiData);
+
+    this.field ? (materialApiData['fields'] = JSON.stringify([this.field])) : '';
+    materialApiData['denominations'] = JSON.stringify([this.denomination]);
+    forkJoin([this.materialTechniqueService.getFilteredMaterialTechnique(materialApiData)]).subscribe(
+      ([materialTechniquesResults]) => {
+        this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
+      })
   }
 
   private initData() {

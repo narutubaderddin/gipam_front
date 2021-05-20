@@ -172,7 +172,7 @@ export class ItemDetailsComponent implements OnInit {
       field: [{id:data?.field.id, name: data?.field.label
     }, Validators.required],
       denomination: [data?.denomination, Validators.required],
-      materialTechnique: [data?.materialTechnique, Validators.required],
+      materialTechnique: [materialTechnique, Validators.required],
       numberOfUnit: [data?.numberOfUnit, Validators.required],
       authors: [data.authors? data.authors:[]],
       creationDate: [new Date(data?.creationDate)],
