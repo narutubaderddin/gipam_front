@@ -130,17 +130,6 @@ export class AddRemarquerComponent implements OnInit {
     this.initFilterData();
     this.descriptifForm.valueChanges.subscribe((e) => ((this.isDirty = true), this.cdr.detectChanges()));
   }
-  getTabRefData(result: any[]) {
-    let items: any[] = [];
-    result.forEach((item: any) => {
-      if (item.hasOwnProperty('label')) {
-        items.push({ id: item.id, name: item.label });
-      } else {
-        items.push({ id: item.id, name: item.name });
-      }
-    });
-    return items;
-  }
   initFilterData() {
     forkJoin([
       this.fieldService.getAllFields(this.data),
@@ -150,12 +139,12 @@ export class AddRemarquerComponent implements OnInit {
       this.simpleTabsRefService.getAllItems(this.data, 'authors'),
       this.simpleTabsRefService.getAllItems(this.data, 'depositors'),
     ]).subscribe(([fieldsResults, denominationResults, styleResults, eraResults, authorResults, depositorsResults]) => {
-      this.domainData = this.getTabRefData(fieldsResults['results']);
+      this.domainData = this.simpleTabsRefService.getTabRefFilterData(fieldsResults['results']);
       this.denominationData = denominationResults['results'];
-      this.styleData = this.getTabRefData(styleResults['results']);
-      this.authorData = this.getTabRefData(authorResults['results']);
-      this.depositorsData = this.getTabRefData(depositorsResults['results']);
-      this.eraData = this.getTabRefData(eraResults['results']);
+      this.styleData = this.simpleTabsRefService.getTabRefFilterData(styleResults['results']);
+      this.authorData = this.simpleTabsRefService.getTabRefFilterData(authorResults['results']);
+      this.depositorsData = this.simpleTabsRefService.getTabRefFilterData(depositorsResults['results']);
+      this.eraData = this.simpleTabsRefService.getTabRefFilterData(eraResults['results']);
       this.loadingData = false;
     });
   }

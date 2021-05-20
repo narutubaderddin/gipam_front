@@ -34,10 +34,8 @@ export class AddDescriptionsComponent implements OnInit {
   @Input() styleData: any[];
   materialTechniquesData: any[];
   @Input() authorData: any[];
-  @Input() categoriesData: any[];
   @Input() depositorsData: any[];
   @Input() eraData: any[];
-  @Input() entryModesData: any[];
   materialTechniques: any;
   attributeToShow: any;
   descriptiveWords: any[] = [];
@@ -82,7 +80,9 @@ export class AddDescriptionsComponent implements OnInit {
       materialApiData['denominations'] = JSON.stringify([this.denomination]);
       forkJoin([this.materialTechniqueService.getFilteredMaterialTechnique(materialApiData)]).subscribe(
         ([materialTechniquesResults]) => {
-          this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
+          this.materialTechniquesData = this.simpleTabsRefService.getTabRefFilterData(
+            materialTechniquesResults['results']
+          );
         }
       );
     }
@@ -109,17 +109,6 @@ export class AddDescriptionsComponent implements OnInit {
     this.workOfArtService.getAttributes(this.field, this.denomination).subscribe((result) => {
       this.attributeToShow = result;
     });
-  }
-  getTabRefData(result: any[]) {
-    let items: any[] = [];
-    result.forEach((item: any) => {
-      if (item.hasOwnProperty('label')) {
-        items.push({ id: item.id, name: item.label });
-      } else {
-        items.push({ id: item.id, name: item.name });
-      }
-    });
-    return items;
   }
 
   addWord(event: any) {
@@ -158,13 +147,12 @@ export class AddDescriptionsComponent implements OnInit {
         break;
       case 'denomination':
         this.field && this.denomination ? this.getAttributes() : '';
-        const denomination = this.denominationData.filter((den: any) => {
-          return den.id === value.value;
-        });
         materialApiData['denominations'] = JSON.stringify([this.denomination]);
         forkJoin([this.materialTechniqueService.getFilteredMaterialTechnique(materialApiData)]).subscribe(
           ([materialTechniquesResults]) => {
-            this.materialTechniquesData = this.getTabRefData(materialTechniquesResults['results']);
+            this.materialTechniquesData = this.simpleTabsRefService.getTabRefFilterData(
+              materialTechniquesResults['results']
+            );
           }
         );
         break;
