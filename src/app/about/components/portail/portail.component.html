@@ -272,6 +272,7 @@
                     type="submit"
                     [disabled]="!requestForm.valid"
                   >
+                    <i class="fas fa-cog fa-spin" [hidden]="!loadingCreatingRequest" ></i>
                     <!--(click)="modal.dismiss('Cross click')"-->
                     Valider
                   </button>
