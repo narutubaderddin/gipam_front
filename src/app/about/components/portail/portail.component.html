@@ -279,7 +279,7 @@
                     type="submit"
                     [disabled]="!requestForm.valid"
                   >
-                    <i class="fas fa-cog fa-spin" [hidden]="!loadingCreatingRequest" ></i>
+                    <i class="fas fa-cog fa-spin" [hidden]="!loadingCreatingRequest"></i>
                     <!--(click)="modal.dismiss('Cross click')"-->
                     Valider
                   </button>
@@ -680,7 +680,7 @@
                         >
                         </i>
                       </li>
-                      <li *ngIf="!items.isDemanded && !items.isInRequest ; else removeOuvre" class="shopping">
+                      <li *ngIf="!items.isDemanded && !items.isInRequest; else removeOuvre" class="shopping">
                         <i
                           data-toggle="tooltip"
                           data-placement="top"

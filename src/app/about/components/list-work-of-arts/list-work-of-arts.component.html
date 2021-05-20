@@ -1427,7 +1427,15 @@
                             alt="Card image cap"
                           />
                           <strong>{{ section.titre }}</strong>
-                          <p>N°: {{ section.id }}</p>
+                          <p>
+                            N°:
+                            <a
+                              [routerLink]="['/details', section.id]"
+                              class="header-cell"
+                              (click)="saveArtOfWorkIndex(index)"
+                              >{{ section.id }}</a
+                            >
+                          </p>
                         </div>
                       </div>
                       <div

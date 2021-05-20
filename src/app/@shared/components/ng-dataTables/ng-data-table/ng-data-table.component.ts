@@ -423,58 +423,57 @@ export class NgDataTableComponent implements OnInit {
     });
     return items;
   }
-  currentStatus : any;
-  selectedRequest : any;
+  currentStatus: any;
+  selectedRequest: any;
   onChangeRequestStatus(request: any, status: any) {
     this.selectedRequest = request;
-    if(status === "Annulée"){
+    if (status === 'Annulée') {
       this.currentStatus = status;
-      request.expandData.forEach((artWork:any)=>{
-        artWork.status = "Annulé";
+      request.expandData.forEach((artWork: any) => {
+        artWork.status = 'Annulé';
       });
-    }else{
-      let allArtWorksAccepted : boolean = true;
-      let allArtWorksRefused : boolean = true;
-      let validSelectedRequest : boolean = false;
-      request.expandData.forEach((artWork:any)=>{
-        if(artWork.status){
+    } else {
+      let allArtWorksAccepted: boolean = true;
+      let allArtWorksRefused: boolean = true;
+      let validSelectedRequest: boolean = false;
+      request.expandData.forEach((artWork: any) => {
+        if (artWork.status) {
           validSelectedRequest = true;
-          if(artWork.status !== "Accepté"){
+          if (artWork.status !== 'Accepté') {
             allArtWorksAccepted = false;
           }
-          if(artWork.status !== "Refusé"){
+          if (artWork.status !== 'Refusé') {
             allArtWorksRefused = false;
           }
         }
       });
-      if(!validSelectedRequest){
+      if (!validSelectedRequest) {
         return false;
-      }else{
-        if(allArtWorksAccepted){
-          this.currentStatus = "Acceptée";
-        }else if(allArtWorksRefused){
-          this.currentStatus = "Refusée";
-        }else{
-          this.currentStatus = "Partiellement acceptée";
+      } else {
+        if (allArtWorksAccepted) {
+          this.currentStatus = 'Acceptée';
+        } else if (allArtWorksRefused) {
+          this.currentStatus = 'Refusée';
+        } else {
+          this.currentStatus = 'Partiellement acceptée';
         }
       }
     }
     let payload = {
-      request: {...request},
-      status:status
-    }
+      request: { ...request },
+      status: status,
+    };
     payload.request.requestStatus = this.currentStatus;
     this.changeRequestStatus.emit(payload);
   }
-  onSelectedStatus($event:any,expandItem:any,request:any){
-    if(!request.validatedRequestArtWork.find((elm:any)=>elm.id==expandItem.id)) {
+  onSelectedStatus($event: any, expandItem: any, request: any) {
+    if (!request.validatedRequestArtWork.find((elm: any) => elm.id == expandItem.id)) {
       request.validatedRequestArtWork.push(expandItem);
     }
     expandItem.status = $event;
   }
   ngOnChanges() {
-    if(this.selectedRequest && this.currentStatus &&
-      !this.isValidationRequest && !this.isCancelingRequest) {
+    if (this.selectedRequest && this.currentStatus && !this.isValidationRequest && !this.isCancelingRequest) {
       this.selectedRequest.requestStatus = this.currentStatus;
     }
   }

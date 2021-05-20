@@ -21,6 +21,7 @@ import { map } from 'rxjs/operators';
 import { RoomService } from '@shared/services/room.service';
 import { PdfGeneratorService } from '@shared/services/pdf-generator.service';
 import { RequestService } from '@shared/services/request.service';
+import { lastArtOfWorkDetailIndex } from '@shared/utils/helpers';
 
 @Component({
   selector: 'app-list-work-of-arts',
@@ -157,13 +158,14 @@ export class ListWorkOfArtsComponent implements OnInit {
       sort = this.dataTableSort['sort'];
       sortBy = this.dataTableSort['sort_by'];
     }
+    const limit = this.mode === 'pictures' ? 20 : 5;
     this.artWorkService
       .getArtWorksData(
         filter,
         advancedFilter,
         headerFilters,
         page,
-        this.mode == 'pictures' ? 20 : 5,
+        limit,
         sortBy,
         sort,
         this.searchQuery,
@@ -171,13 +173,32 @@ export class ListWorkOfArtsComponent implements OnInit {
       )
       .subscribe(
         (artWorksData: ArtWorksDataModel) => {
-          if (this.mode == 'pictures' && page > 1) {
+          const searchPageFilter = {
+            mode: this.mode,
+            filter,
+            advancedFilter,
+            headerFilters,
+            page,
+            limit,
+            sortBy,
+            sort,
+            globalSearch: this.globalSearch,
+            searchQuery: this.searchQuery,
+            totalFiltered: artWorksData.filteredQuantity,
+          };
+          localStorage.setItem('searchPageFilter', JSON.stringify(searchPageFilter));
+          if (this.mode === 'pictures' && page > 1) {
             artWorksData.results.forEach((oeuvre: any) => {
               this.artWorkResults.push(oeuvre);
             });
           } else {
             this.artWorkResults = artWorksData.results;
             this.artWorksData = artWorksData;
+            // to know the index of clicked input
+            localStorage.setItem(
+              'searchPageFilterLastItemsIds',
+              JSON.stringify(this.artWorkResults.map((items) => items.id))
+            );
           }
 
           this.start = (this.artWorksData.page - 1) * this.artWorksData.size + 1;
@@ -223,6 +244,11 @@ export class ListWorkOfArtsComponent implements OnInit {
       floor: 0,
       ceil: 9999,
     };
+  }
+
+  saveArtOfWorkIndex(index: number) {
+    localStorage.setItem(lastArtOfWorkDetailIndex, JSON.stringify(index));
+    console.log('lastArtOfWorkDetailIndex', JSON.parse(localStorage.getItem(lastArtOfWorkDetailIndex)));
   }
 
   onHeaderToggle(column: any, event: MouseEvent): void {

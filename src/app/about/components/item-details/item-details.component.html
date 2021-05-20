@@ -1,3 +1,10 @@
+<div
+  class="loading-data container-fluid d-flex justify-content-center align-items-center"
+  id="loading_data"
+  *ngIf="loadingData"
+>
+  <p-progressSpinner></p-progressSpinner>
+</div>
 <div class="container-fluid d-flex">
   <div class="second-bloc">
     <div class="col-md-12 cadre">
@@ -19,11 +26,14 @@
               <div style="width: 10rem"></div>
             </div>
             <div class="first-bloc col-md-12 row justify-content-between">
-              <a href="#"><i class="zmdi zmdi-caret-left"></i> Précédant | 144</a>
-              <span class="titre1">N° inventaire 145</span>
-              <a href="#">146 | Suivant <i class="zmdi zmdi-caret-right"></i></a>
+              <a (click)="previousId && paginate(-1, previousId)" [class.disabled]="!previousId"
+                ><i class="zmdi zmdi-caret-left"></i> Précédant | {{ previousId ? previousId : '' }}</a
+              >
+              <span class="titre1">N° inventaire {{ artWorkId }}</span>
+              <a (click)="nextId && paginate(1, nextId)" [class.disabled]="!nextId"
+                >{{ nextId ? nextId : '' }} | Suivant <i class="zmdi zmdi-caret-right"></i
+              ></a>
             </div>
-
             <div class="title-box d-flex flex-wrap justify-content-between">
               <div class="titre p-0 d-flex justify-content-between justify-content-md-start">
                 Titre de l'Oeuvre

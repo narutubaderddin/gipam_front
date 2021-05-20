@@ -105,7 +105,7 @@ export class PortailComponent implements OnInit {
   firstSearchDrop = false;
   showForm1End = false;
   requestForm: any;
-  loadingCreatingRequest : boolean = false;
+  loadingCreatingRequest: boolean = false;
 
   constructor(
     private WorkOfArtService: WorkOfArtService,
