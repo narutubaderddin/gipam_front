@@ -215,7 +215,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.initForms();
     this.onChanges();
     this.globalSearch = this.activatedRoute.snapshot.queryParams['search'];
-    if (this.globalSearch.length > 0) {
+    if (this.globalSearch && this.globalSearch.length > 0) {
       this.router.navigate(['.'], { relativeTo: this.activatedRoute, queryParams: {} });
       this.onSearchClick('global');
     }

@@ -64,12 +64,8 @@ export class AdministratorHomePageComponent implements OnInit {
       ([workOfArtResults, demandeResults]) => {
         this.remarquersResult = workOfArtResults;
         this.demandeResult = demandeResults;
-        console.log(demandeResults);
       }
     );
-    // this.workOfArtService.getInProgressNotices(params).subscribe((res) => {
-    //   this.remarquersResult = res;
-    // });
   }
   onNoticeClick() {
     this.router.navigate(['notices-list'], { queryParams: { filter: 'en-cours' } });

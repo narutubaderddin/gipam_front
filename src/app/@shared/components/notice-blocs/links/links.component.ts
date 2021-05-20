@@ -36,6 +36,7 @@ export class LinksComponent implements OnInit, OnChanges {
       name: 'string',
     },
   ];
+  link: any;
   constructor(
     private artWorkService: ArtWorkService,
     private workOfArtService: WorkOfArtService,

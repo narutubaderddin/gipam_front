@@ -148,6 +148,11 @@ export class ItemImagesComponent implements OnInit, OnChanges {
       }
     }
   }
+  buildFormData(file: File) {
+    const formData = new FormData();
+    formData.append('imagePreview', file, file.name);
+    return formData;
+  }
   addPhotography(): void {
     if (!this.photography.length || !this.photographyType || !this.imageName.length) {
       this.validate = false;
@@ -211,6 +216,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   addFile() {
     this.file.nativeElement.click();
   }
+
   show(item: any) {
     console.log(item);
     this.initData(item.imageUrl, item.photographyDate, item.photographyType, item.image);
