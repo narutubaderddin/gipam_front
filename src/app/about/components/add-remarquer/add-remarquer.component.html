@@ -25,6 +25,7 @@
       [description]="descriptionTitle"
       [canEnter]="isValidTypeBoolean"
       [canExit]="isValidFunctionReturnsBoolean.bind(this)"
+      class="col-sm-12"
     >
       <div class="d-flex flex-end justify-content-end pr-5">
         <button
@@ -145,6 +146,7 @@
       [description]="'Création constat'"
       [canEnter]="isValidFunctionReturnsObservable.bind(this)"
       [canExit]="isValidFunctionReturnsBoolean.bind(this)"
+      class="col-sm-12"
     >
       <span>Création constat</span>
     </ng-wizard-step>

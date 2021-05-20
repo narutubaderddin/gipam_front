@@ -861,10 +861,11 @@ ng-file-drag-drop {
   border-radius: 0px;
 }
 .cancel-btn,
-cancel-btn:hover cancel-btn:focus {
+.cancel-btn:hover,
+.cancel-btn:focus {
   background-color: #6c7681c9;
   color: white;
   font-size: 10px;
-  border: none;
+  border-color: #6c7681c9;
   border-radius: 0px;
 }

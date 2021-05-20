@@ -207,4 +207,7 @@ export class AttachmentsComponent implements OnInit, OnChanges {
   callParent() {
     this.parentApi.callParentMethod(this.artwork.id);
   }
+  closeModal() {
+    this.display = false;
+  }
 }

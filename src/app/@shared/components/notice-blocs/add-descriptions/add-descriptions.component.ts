@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, Renderer2, TemplateRef, ViewChild } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -8,6 +8,9 @@ import { FieldsService } from '@app/@shared/services/fields.service';
 import { StylesService } from '@app/@shared/services/styles.service';
 import { SimpleTabsRefService } from '@app/@shared/services/simple-tabs-ref.service';
 import { MaterialTechniqueService } from '@app/@shared/services/material-technique.service';
+import { getMultiSelectIds } from '@shared/utils/helpers';
+import { MessageService } from 'primeng/api';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-add-descriptions',
@@ -15,6 +18,7 @@ import { MaterialTechniqueService } from '@app/@shared/services/material-techniq
   styleUrls: ['./add-descriptions.component.scss'],
 })
 export class AddDescriptionsComponent implements OnInit {
+  @ViewChild('content') modalRef: TemplateRef<any>;
   domains: any;
   @Input() keyword: string;
   @Input() addDepot = false;
@@ -38,6 +42,17 @@ export class AddDescriptionsComponent implements OnInit {
   materialTechniques: any;
   attributeToShow: any;
   descriptiveWords: any[] = [];
+  page = 1;
+  query = '';
+  same = true;
+  authorForm: FormGroup;
+  selectedAuthor: any;
+  selectedAuthorType: any;
+  selectedPeople: any;
+  btnLoading: any = null;
+  myModal: any;
+  activeTypes: any;
+  activePeople: any;
   constructor(
     private fieldService: FieldsService,
     private denominationsService: DenominationsService,
@@ -45,7 +60,10 @@ export class AddDescriptionsComponent implements OnInit {
     private simpleTabsRefService: SimpleTabsRefService,
     private materialTechniqueService: MaterialTechniqueService,
     private workOfArtService: WorkOfArtService,
-    public fb: FormBuilder
+    public fb: FormBuilder,
+    private renderer: Renderer2,
+    private messageService: MessageService,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -74,6 +92,15 @@ export class AddDescriptionsComponent implements OnInit {
   get denomination() {
     return this.descriptifForm.get('denomination').value;
   }
+  initForm() {
+    this.authorForm = this.fb.group({
+      firstName: [this.selectedAuthor ? this.selectedAuthor.firstName : '', [Validators.required]],
+      lastName: [this.selectedAuthor ? this.selectedAuthor.lastName : '', [Validators.required]],
+      type: [this.selectedAuthorType ? this.selectedAuthorType : '', []],
+      people: [this.selectedPeople ? this.selectedPeople : [], []],
+      active: [this.selectedAuthor ? this.selectedAuthor?.active : true],
+    });
+  }
   getAttributes() {
     this.workOfArtService.getAttributes(this.field, this.denomination).subscribe((result) => {
       this.attributeToShow = result;
@@ -96,12 +123,17 @@ export class AddDescriptionsComponent implements OnInit {
       'active[eq]': 1,
       serializer_group: JSON.stringify(['response', 'short']),
     };
+    const authorData = {
+      page: 1,
+      'active[eq]': 1,
+      serializer_group: JSON.stringify(['response', 'short']),
+    };
     forkJoin([
       this.fieldService.getAllFields(data),
       this.denominationsService.getAllDenominations(data),
       this.styleService.getAllItems(data),
       this.simpleTabsRefService.getAllItems(data, 'eras'),
-      this.simpleTabsRefService.getAllItems(data, 'authors'),
+      this.simpleTabsRefService.getAllItems(authorData, 'authors'),
       this.simpleTabsRefService.getAllItems(data, 'propertyStatusCategories'),
       this.simpleTabsRefService.getAllItems(data, 'depositors'),
       this.simpleTabsRefService.getAllItems(data, 'entryModes'),
@@ -152,6 +184,7 @@ export class AddDescriptionsComponent implements OnInit {
 
     switch (key) {
       case 'field':
+        console.log(this.denominations);
         this.denominationData = this.denominations.filter((denomi: any) => {
           return denomi.field.id === value.value;
         });
@@ -176,5 +209,59 @@ export class AddDescriptionsComponent implements OnInit {
         );
         break;
     }
+  }
+
+  submit() {
+    this.btnLoading = true;
+    const item = {
+      firstName: this.authorForm.value.firstName,
+      lastName: this.authorForm.value.lastName,
+      type: this.authorForm.value.type.id,
+      people: getMultiSelectIds(this.authorForm.value.people),
+      active: this.authorForm.value.active,
+    };
+    this.simpleTabsRefService.addItem(item).subscribe(
+      (result: any) => {
+        this.myModal.dismiss('Cross click');
+        this.addSingle('success', 'Ajout', 'Auteur ' + item.firstName + ' ' + item.lastName + ' ajoutée avec succés');
+      },
+      (error) => {
+        this.addSingle('error', 'Ajout', error.error.message);
+        this.simpleTabsRefService.getFormErrors(error.error.errors, 'Ajout');
+      }
+    );
+  }
+  addSingle(type: string, sum: string, msg: string) {
+    this.messageService.add({ severity: type, summary: sum, detail: msg });
+    this.btnLoading = null;
+  }
+  getActiveRelatedEntities() {
+    const data = {
+      page: 1,
+      serializer_group: JSON.stringify(['short']),
+      'active[eq]': 1,
+    };
+    this.authorForm.get('people').disable();
+    this.authorForm.get('type').disable();
+
+    forkJoin([
+      this.simpleTabsRefService.getAllItems(data, 'authorTypes'),
+      this.simpleTabsRefService.getAllItems(data, 'persons'),
+    ]).subscribe(
+      ([typesResults, peopleResults]) => {
+        this.activeTypes = typesResults.results;
+        this.activePeople = peopleResults.results;
+        this.authorForm.get('people').enable();
+        this.authorForm.get('type').enable();
+      },
+      (error: any) => {
+        this.addSingle('error', 'Erreur Technique', ' Message: ' + error.error.message);
+      }
+    );
+  }
+  openModal() {
+    this.initForm();
+    this.getActiveRelatedEntities();
+    this.myModal = this.modalService.open(this.modalRef, { centered: true });
   }
 }
