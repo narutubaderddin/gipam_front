@@ -53,9 +53,11 @@
           >
             {{ col.header }}
             <p-sortIcon
+              #sortIcon
               *ngIf="col.sortable"
               [field]="col.header"
               [pSortableColumn]="col.sortable ? col.header : ''"
+              (click)="sortHeader(sortIcon, col)"
             ></p-sortIcon>
             <i
               class="fas fa-filter"
