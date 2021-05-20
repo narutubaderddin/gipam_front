@@ -40,6 +40,7 @@ export class AdministratorHomePageComponent implements OnInit {
     },
   ];
   remarquers: any[] = [];
+  searchQuery: any;
 
   constructor(private router: Router, private workOfArtService: WorkOfArtService) {}
   ngOnInit(): void {
@@ -64,5 +65,9 @@ export class AdministratorHomePageComponent implements OnInit {
   }
   onAlertClick() {
     this.router.navigate(['alerts-list'], { queryParams: { filter: 'en-cours' } });
+  }
+
+  onSeachClick() {
+    this.router.navigate(['oeuvres-list'], { queryParams: { search: this.searchQuery } });
   }
 }

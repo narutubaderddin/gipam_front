@@ -14,8 +14,14 @@
         </div>
         <div class="mt-2 wrap">
           <div class="form-group search">
-            <input type="text" class="form-control w-100" placeholder="Rechercher des oeuvres ..." />
-            <button type="submit" class="searchButton">
+            <input
+              type="text"
+              class="form-control w-100"
+              [(ngModel)]="searchQuery"
+              placeholder="Rechercher des oeuvres ..."
+              (keyup.enter)="onSeachClick()"
+            />
+            <button type="submit" class="searchButton" (click)="onSeachClick()">
               <i class="fa fa-search"></i>
             </button>
           </div>
