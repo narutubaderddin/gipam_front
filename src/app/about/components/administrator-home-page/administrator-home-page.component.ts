@@ -70,6 +70,9 @@ export class AdministratorHomePageComponent implements OnInit {
   onNoticeClick() {
     this.router.navigate(['notices-list'], { queryParams: { filter: 'en-cours' } });
   }
+  onDemandeClick() {
+    this.router.navigate(['demandes-en-cours']);
+  }
 
   onRecolementClick() {
     this.router.navigate(['recolements-list'], { queryParams: { filter: 'en-cours' } });
