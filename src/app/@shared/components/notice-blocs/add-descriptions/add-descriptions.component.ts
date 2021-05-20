@@ -47,12 +47,15 @@ export class AddDescriptionsComponent implements OnInit {
   same = true;
   authorForm: FormGroup;
   selectedAuthor: any;
-  selectedAuthorType: any;
-  selectedPeople: any;
   btnLoading: any = null;
   myModal: any;
   activeTypes: any;
   activePeople: any;
+  data = {
+    page: 1,
+    serializer_group: JSON.stringify(['short']),
+    'active[eq]': 1,
+  };
   constructor(
     private fieldService: FieldsService,
     private denominationsService: DenominationsService,
@@ -67,6 +70,8 @@ export class AddDescriptionsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.descriptiveWords = this.descriptifForm.get('descriptiveWords').value;
+    this.simpleTabsRefService.tabRef = 'authors';
     this.initFilterData();
     if (this.denomination && this.field) {
       this.getAttributes();
@@ -94,11 +99,11 @@ export class AddDescriptionsComponent implements OnInit {
   }
   initForm() {
     this.authorForm = this.fb.group({
-      firstName: [this.selectedAuthor ? this.selectedAuthor.firstName : '', [Validators.required]],
-      lastName: [this.selectedAuthor ? this.selectedAuthor.lastName : '', [Validators.required]],
-      type: [this.selectedAuthorType ? this.selectedAuthorType : '', []],
-      people: [this.selectedPeople ? this.selectedPeople : [], []],
-      active: [this.selectedAuthor ? this.selectedAuthor?.active : true],
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      type: ['', []],
+      people: [[], []],
+      active: [true],
     });
   }
   getAttributes() {
@@ -118,25 +123,15 @@ export class AddDescriptionsComponent implements OnInit {
     return items;
   }
   initFilterData() {
-    const data = {
-      page: 1,
-      'active[eq]': 1,
-      serializer_group: JSON.stringify(['response', 'short']),
-    };
-    const authorData = {
-      page: 1,
-      'active[eq]': 1,
-      serializer_group: JSON.stringify(['response', 'short']),
-    };
     forkJoin([
-      this.fieldService.getAllFields(data),
-      this.denominationsService.getAllDenominations(data),
-      this.styleService.getAllItems(data),
-      this.simpleTabsRefService.getAllItems(data, 'eras'),
-      this.simpleTabsRefService.getAllItems(authorData, 'authors'),
-      this.simpleTabsRefService.getAllItems(data, 'propertyStatusCategories'),
-      this.simpleTabsRefService.getAllItems(data, 'depositors'),
-      this.simpleTabsRefService.getAllItems(data, 'entryModes'),
+      this.fieldService.getAllFields(this.data),
+      this.denominationsService.getAllDenominations(this.data),
+      this.styleService.getAllItems(this.data),
+      this.simpleTabsRefService.getAllItems(this.data, 'eras'),
+      this.simpleTabsRefService.getAllItems(this.data, 'authors'),
+      this.simpleTabsRefService.getAllItems(this.data, 'propertyStatusCategories'),
+      this.simpleTabsRefService.getAllItems(this.data, 'depositors'),
+      this.simpleTabsRefService.getAllItems(this.data, 'entryModes'),
     ]).subscribe(
       ([
         fieldsResults,
@@ -224,6 +219,17 @@ export class AddDescriptionsComponent implements OnInit {
       (result: any) => {
         this.myModal.dismiss('Cross click');
         this.addSingle('success', 'Ajout', 'Auteur ' + item.firstName + ' ' + item.lastName + ' ajoutée avec succés');
+        this.authorData.push({
+          id: result.id,
+          firstName: item.firstName,
+          lastName: item.lastName,
+          type: result.type,
+          people: result.people,
+          active: result.active,
+        });
+        forkJoin([this.simpleTabsRefService.getAllItems(this.data, 'authors')]).subscribe(([authorResults]) => {
+          this.authorData = this.getTabRefData(authorResults['results']);
+        });
       },
       (error) => {
         this.addSingle('error', 'Ajout', error.error.message);

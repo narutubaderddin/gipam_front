@@ -86,7 +86,7 @@ export class AddRemarquerComponent implements OnInit {
           let str: string = this.inProgressNotice.status.descriptiveWords;
           let strIntoOb = str.split(',');
           strIntoOb.forEach((value: any) => {
-            this.strIntoObj.push({ display: value, value: value });
+            this.strIntoObj.push(value);
           });
         }
       }
