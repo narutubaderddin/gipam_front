@@ -4,10 +4,10 @@ import { NotificationsService } from 'angular2-notifications';
 import { SharedService } from '@shared/services/shared.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PdfGeneratorService } from '@shared/services/pdf-generator.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { MessageService } from 'primeng/api';
-import { dateTimeFormat } from '@shared/utils/helpers';
+import { dateTimeFormat, lastArtOfWorkDetailIndex, searchPageFilter } from '@shared/utils/helpers';
 import { DatePipe } from '@angular/common';
 import { ArtWorkService } from '@app/about/services/art-work.service';
 
@@ -47,7 +47,6 @@ export class ItemDetailsComponent implements OnInit {
   type = 'depot';
   addProperty = false;
   addDepot = false;
-  page: any = 5;
   edit = false;
   depositStatusForm: FormGroup;
   descriptifForm: FormGroup;
@@ -58,11 +57,10 @@ export class ItemDetailsComponent implements OnInit {
   photographies: any[] = [];
   imgSrc: string = this.photographies[0] ? this.photographies[0].imageUrl : '';
   moreDetails = ['19-01-2020', '23-02-2020', '01-03-2020', '25-03-2020', '20-04-2020'];
-
   dynamic = false;
+
   openImg = false;
   sticky = false;
-
   photographiesForm: FormGroup;
 
   artwork = {
@@ -81,9 +79,12 @@ export class ItemDetailsComponent implements OnInit {
     denomination: 'Affiche',
     createdAt: '22/01/2020',
   };
-  artWorksToPrint: any = [];
 
+  artWorksToPrint: any = [];
   currentId: string;
+
+  page = 1;
+  artWorkIds: any[] = [];
 
   constructor(
     config: NgbCarouselConfig,
@@ -95,7 +96,8 @@ export class ItemDetailsComponent implements OnInit {
     private workOfArtService: WorkOfArtService,
     private artWorkService: ArtWorkService,
     private messageService: MessageService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private router: Router
   ) {
     config.interval = 10000;
     config.wrap = false;
@@ -115,6 +117,7 @@ export class ItemDetailsComponent implements OnInit {
     this.initHyperLink();
     this.initLinks();
     this.getArtWork(this.currentId);
+    this.initPage();
   }
 
   initPhotographiesForm() {
@@ -225,21 +228,16 @@ export class ItemDetailsComponent implements OnInit {
     this.pdfGeneratorService.downloadPDFFromHTML(element, this.artwork.titre + '.pdf');
   }
 
-  getArtWork(id: any) {
-    /// new get
-    const newParams = JSON.parse(localStorage.getItem('searchPageFilter'));
-    const lastItemsIds = JSON.parse(localStorage.getItem('searchPageFilterLastItemsIds'));
-    const index = lastItemsIds.indexOf(Number(id)) + 1;
-
-    let newPage = newParams.limit * (newParams.page - 1) + index;
-    newPage = newPage <= 0 ? 1 : newPage; // if new page is lower than or equal to 0 then get the first element
+  paginate(by: number) {
+    this.page = this.page + by;
+    const newParams = JSON.parse(localStorage.getItem(searchPageFilter));
 
     this.artWorkService
       .getArtWorksData(
         newParams.filter,
         newParams.advancedFilter,
         newParams.headerFilters,
-        newPage,
+        this.page,
         1,
         newParams.sortBy,
         newParams.sort,
@@ -248,15 +246,84 @@ export class ItemDetailsComponent implements OnInit {
       )
       .subscribe(
         (result) => {
-          console.log('lastItemsIds', lastItemsIds);
-          console.log('new artWork', result);
+          this.currentId = result.results[0].id;
+          console.log('new artWork id', this.currentId);
+          this.router.navigate(['/details/' + this.currentId]);
+          this.getArtWork(this.currentId);
+          this.workArt = result.results[0];
+          // console.log('paginate', this.workArt)
+          // result.photographies.map((el: any, index: number) => {
+          //   this.photographies.push({
+          //     imageUrl: el.imagePreview,
+          //     alt: 'description',
+          //     i: index,
+          //     image: el.imageName,
+          //     // photography: 'assets/images/573.jpg',
+          //     photographyDate: this.datePipe.transform(el.date, dateTimeFormat),
+          //     photographyName: el.imageName,
+          //     photographyType: { name: el.photographyType.type },
+          //     imageName: el.imageName,
+          //   });
+          // });
+          // result.status.statusType === 'PropertyStatus' ? (this.addProperty = true) : (this.addDepot = true);
+          // this.status = result.status;
+          // this.attachments = result.attachments;
+          // this.hypertextLinks = result.hyperlinks;
+          // this.parent = result.parent;
+          // this.children = result.children;
         },
         (error) => {
           console.log(error);
           this.addSingle('error', 'Erreur Technique', error.error.message);
         }
       );
+  }
 
+  initPage() {
+    /// new get
+    const newParams = JSON.parse(localStorage.getItem(searchPageFilter));
+    const lastItemsIds = JSON.parse(localStorage.getItem('searchPageFilterLastItemsIds'));
+    // const index = lastItemsIds.indexOf(Number(id)) + 1;
+    const index = JSON.parse(localStorage.getItem(lastArtOfWorkDetailIndex)) + 1;
+    console.log('index', index);
+    this.page = index;
+
+    if (newParams.mode !== 'pictures') {
+      // when datatable display mode is selected in search page
+      this.page = newParams.limit * (newParams.page - 1) + index;
+      if (this.page <= 0) {
+        // it could be : if new page is lower than or equal to 0 then get the first element
+        this.page = 1;
+      }
+    }
+
+    this.artWorkService
+      .getArtWorksData(
+        newParams.filter,
+        newParams.advancedFilter,
+        newParams.headerFilters,
+        this.page,
+        1,
+        newParams.sortBy,
+        newParams.sort,
+        newParams.globalSearch,
+        newParams.searchQuery,
+        JSON.stringify(['response', 'art_work_list', 'hyperLink_furniture', 'id', 'art_work_details'])
+      )
+      .subscribe(
+        (result) => {
+          console.log('lastItemsIds', lastItemsIds);
+          this.currentId = result.results[0].id;
+          console.log('new artWork id', this.currentId);
+        },
+        (error) => {
+          console.log(error);
+          this.addSingle('error', 'Erreur Technique', error.error.message);
+        }
+      );
+  }
+
+  getArtWork(id: any) {
     /// old get
     const params = {
       serializer_group: JSON.stringify(['response', 'art_work_list', 'hyperLink_furniture', 'id', 'art_work_details']),

@@ -21,6 +21,7 @@ import { map } from 'rxjs/operators';
 import { RoomService } from '@shared/services/room.service';
 import { PdfGeneratorService } from '@shared/services/pdf-generator.service';
 import { RequestService } from '@shared/services/request.service';
+import { lastArtOfWorkDetailIndex } from '@shared/utils/helpers';
 
 @Component({
   selector: 'app-list-work-of-arts',
@@ -199,6 +200,7 @@ export class ListWorkOfArtsComponent implements OnInit {
             );
             console.log('lastIds', JSON.parse(localStorage.getItem('searchPageFilterLastItemsIds')));
           }
+
           this.start = (this.artWorksData.page - 1) * this.artWorksData.size + 1;
           this.end = (this.artWorksData.page - 1) * this.artWorksData.size + this.artWorksData.results.length;
           this.loading = false;
@@ -214,8 +216,10 @@ export class ListWorkOfArtsComponent implements OnInit {
   addSingle(type: string, sum: string, msg: string) {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
   }
+
   selectedOeuvres: any[] = [];
   artWorkResults: any[] = [];
+
   ngOnInit(): void {
     this.initFilterData();
     this.oeuvreToShow = this.oeuvres;
@@ -237,6 +241,11 @@ export class ListWorkOfArtsComponent implements OnInit {
       floor: 0,
       ceil: 9999,
     };
+  }
+
+  saveArtOfWorkIndex(index: number) {
+    localStorage.setItem(lastArtOfWorkDetailIndex, JSON.stringify(index));
+    console.log('lastArtOfWorkDetailIndex', JSON.parse(localStorage.getItem(lastArtOfWorkDetailIndex)));
   }
 
   onHeaderToggle(column: any, event: MouseEvent): void {
@@ -302,6 +311,7 @@ export class ListWorkOfArtsComponent implements OnInit {
 
     return data;
   }
+
   sortEvent(e: any) {
     this.dataTableSort = e;
     let data = this.formatFormsData({}, [
@@ -315,12 +325,14 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.headerFilter = this.formatFormsData({}, [this.headerFilter], true);
     this.initData(data, advancedData, this.headerFilter, this.artWorksData.page);
   }
+
   formatAdvancedData(data: any, values: any[]) {
     values.forEach((value) => {
       data = this.getDataFromAdvancedForm(data, value);
     });
     return data;
   }
+
   getDataFromHeadersForm(data: any, value: any) {
     Object.keys(value).forEach((key) => {
       let result: any[] = [];
@@ -868,6 +880,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       depotDate: new FormControl(''),
     });
   }
+
   initIdentificationForm() {
     this.form1 = new FormGroup({
       id: new FormControl(''),
@@ -911,6 +924,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       correspondant: new FormControl(''),
     });
   }
+
   initAdminAdvancedForm() {
     this.advancedForm3 = new FormGroup({
       establishementType: new FormControl(''),
@@ -919,6 +933,7 @@ export class ListWorkOfArtsComponent implements OnInit {
       responsibleOperator: new FormControl('and'),
     });
   }
+
   initIdentificationAdvancedForm() {
     this.advancedForm1 = new FormGroup({
       materialTechnique: new FormControl(''),
@@ -1344,6 +1359,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     }
     return data;
   }
+
   public requestAutocompleteItems = (text: string) => {
     return this.artWorkService.getAutocompleteData(text, 'description').pipe(map((data) => data));
   };
@@ -1447,7 +1463,9 @@ export class ListWorkOfArtsComponent implements OnInit {
       this.showDatatable = true;
     }
   }
+
   selectedValues: string[] = [];
+
   selectOeuvre(item: any, index: number) {
     item.active = !item.active;
     if (item.active) {
@@ -1465,6 +1483,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   direction = '';
   page = 1;
   loadingScroll: boolean = false;
+
   onScrollDown() {
     this.page++;
     let data = this.formatFormsData({}, [

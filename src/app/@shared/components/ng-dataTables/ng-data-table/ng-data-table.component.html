@@ -191,7 +191,13 @@
           </th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="frozenbody" let-item let-columns="columns" let-expanded="expanded">
+      <ng-template
+        pTemplate="frozenbody"
+        let-item
+        let-columns="columns"
+        let-expanded="expanded"
+        let-rowIndex="rowIndex"
+      >
         <tr>
           <td *ngIf="checkBoxSelection">
             <p-tableCheckbox [value]="item"></p-tableCheckbox>
@@ -205,6 +211,7 @@
               <app-remarquer-details-link-renderer
                 *ngSwitchCase="'app-remarquer-details-link-render'"
                 [value]="item[col.field]"
+                [rowNumber]="rowIndex"
               ></app-remarquer-details-link-renderer>
               <span *ngSwitchDefault> {{ item[col.field] }} </span>
             </span>
@@ -284,11 +291,12 @@
 
                 <ng-template pTemplate="body" let-expandItem>
                   <tr>
-                    <td *ngFor="let col of expandColumns">
+                    <td *ngFor="let col of expandColumns; let index = index">
                       <span [ngSwitch]="col.type">
                         <app-remarquer-details-link-renderer
                           *ngSwitchCase="'app-remarquer-details-link-render'"
                           [value]="expandItem[col.field]"
+                          [rowNumber]="index"
                         ></app-remarquer-details-link-renderer>
                         <span *ngSwitchDefault> {{ expandItem[col.field] }} </span>
                         <app-select-button-render

@@ -22,9 +22,10 @@ export class ArtWorkService {
     sortField = 'id',
     sortDirection = 'asc',
     search = '',
-    globalSearch = ''
+    globalSearch = '',
+    serializerGroups?: string
   ) {
-    const url =
+    let url =
       ART_WORKS_API_URL +
       '?page=' +
       page +
@@ -38,6 +39,9 @@ export class ArtWorkService {
       search +
       '&globalSearch=' +
       globalSearch;
+    if (serializerGroups) {
+      url = url + '&serializer_group=' + serializerGroups;
+    }
     return this.http
       .post(url, { filter: filter, advancedFilter: advancedFilter, headerFilters: headerFilters }, {})
       .pipe(
