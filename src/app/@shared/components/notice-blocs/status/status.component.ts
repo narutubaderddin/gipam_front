@@ -62,7 +62,6 @@ export class StatusComponent implements OnInit {
     this.simpleTabsRef.getAllItems(this.params).subscribe(
       (result: any) => {
         this.depositors = result.results;
-        console.log(this.depositors);
       },
       (error: any) => {
         console.log(error);
@@ -92,9 +91,8 @@ export class StatusComponent implements OnInit {
     this.isCollapsed = !this.isCollapsed;
   }
 
-  onSelect(event: any, key: string) {
-    console.log('event', event);
-    if (this.addDeposit) {
+  onSelect(event: any, key:string) {
+    if(this.addDeposit) {
       this.depositStatusForm.get(key).setValue(event.value);
     } else {
       this.propertyStatusForm.get(key).setValue(event.value);

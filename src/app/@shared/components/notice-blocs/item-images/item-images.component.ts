@@ -57,11 +57,13 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   ) {}
   ngOnInit(): void {
     this.getAllTypes();
+
     this.images.map((el: any) => {
       this.photographies.push(
-        this.createPhotography(el.photography, el.photographyDate, el.photographyType, el.imageName)
+        this.createPhotography(el.imagePreview, el.date, el.photographyType, el.imageName)
       );
     });
+
     if (this.images[this.activeIndex]) {
       this.initData(
         this.images[this.activeIndex].photography,
@@ -83,9 +85,12 @@ export class ItemImagesComponent implements OnInit, OnChanges {
       this.initData();
     }
   }
-  ngOnChanges(changements: SimpleChanges) {}
+  ngOnChanges(changements: SimpleChanges) {
+    // if(this.images) {
+    //   console.log("images", this.images)
+    // }
+  }
   get items() {
-    console.log('images', this.images);
     return this.images;
   }
   initData(photography?: string, photographyDate?: any, photographyType?: any, imageName?: string) {
@@ -245,6 +250,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         this.addSingle('success', 'Modification', 'Photographie " ' + result.imageName + ' " modifiée avec succés');
         this.editType = false;
         this.validate = true;
+        this.btnLoading = null;
       },
       (error) => {
         console.log(error);
@@ -263,8 +269,22 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   }
 
   delete() {
-    this.photographies.removeAt(this.activeIndex);
-    this.images.splice(this.activeIndex, 1);
+    this.btnLoading = '';
+    const el=this.images[this.activeIndex];
+    this.photographyService.deletePhotography({furniture:el.workArtId},el.id).subscribe(
+      result=>{
+        this.callParent();
+        this.addSingle('success', 'Suppresion', 'Photographie supprimée avec succés');
+        this.btnLoading = null;
+        this.deleteDialog = false;
+
+      },
+      error=>{
+        console.log(error)
+        this.addSingle('error', 'Suppresion', error.error.message);
+        this.btnLoading = null;
+      }
+    )
   }
 
   deleteItem(item: string) {

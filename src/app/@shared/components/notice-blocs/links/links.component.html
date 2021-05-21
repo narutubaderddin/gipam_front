@@ -1,14 +1,15 @@
 <div class="col-md-12 pl-0">
   <div class="col-md-12 p-0" *ngIf="!add">
     <h5 class="pl-0">Liens avec oeuvres</h5>
-    <div class="d-flex justify-content-end" *ngIf="(addLinks || existingLinks.length) && !parentLink && !add">
-      <button class="btn add-action col-7" (click)="addNewLinks()">
-        <i class="fas fa-plus mr-2"></i>Ajouter fait partie de
-      </button>
-    </div>
+
 
     <ol class="rounded-list" *ngIf="!add">
-      <li *ngIf="addLinks || existingLinks.length || parentLink || add">Fait partie de:</li>
+      <li *ngIf="addLinks || parentLink || add">Fait partie de:</li>
+      <div class="d-flex justify-content-end" *ngIf="(addLinks || existingLinks.length) && !parentLink && !add">
+        <button class="btn add-action col-7" (click)="addNewLinks()">
+          <i class="fas fa-plus mr-2"></i>Ajouter fait partie de
+        </button>
+      </div>
       <li *ngIf="addLinks || editLinks">
         <p-autoComplete
           #autocompletePanel
@@ -96,7 +97,7 @@
     </div>
   </div>
   <ng-template pTemplate="footer">
-    <button class="cancel-btn" (click)="cancelDelete()" style="font-size: 12px">Annuler</button>
-    <button class="valid-btn" (click)="removeLink(getIndex(selectedItem))" style="font-size: 12px">supprimer</button>
+    <button class="btn cancel-btn"  (click)="cancelDelete()" style="font-size: 12px">Annuler</button>
+    <button class="btn valid-btn"  (click)="removeLink(getIndex(selectedItem))" style="font-size: 12px">supprimer</button>
   </ng-template>
 </p-dialog>

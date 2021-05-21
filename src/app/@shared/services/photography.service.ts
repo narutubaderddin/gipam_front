@@ -21,6 +21,15 @@ export class PhotographyService {
   updatePhotography(data: any, id: any): Observable<any> {
     return this.http.patch(`/photography/${id}`, data);
   }
+  deletePhotography(data: any, id: any) : Observable<any> {
+    let params = new HttpParams();
+    Object.keys(data).forEach((key) => {
+      if (data[key]) {
+        params = params.append(key, data[key]);
+      }
+    });
+    return this.http.delete<any>(`/photography/${id}`, {params});
+  }
   getFormErrors(errors: any, sum: string) {
     if (!errors) {
       return;
@@ -33,4 +42,6 @@ export class PhotographyService {
       }
     });
   }
+
+
 }
