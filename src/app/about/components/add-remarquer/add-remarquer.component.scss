@@ -40,6 +40,23 @@ a:not([href]) {
     color: #fff;
     background: #7cbfe3;
   }
+  @media (max-width: 620px) {
+    .nav {
+      flex-direction: column;
+      padding-left: 20px;
+    }
+    li {
+      height: 40px;
+    }
+    .nav-link {
+      display: flex !important;
+      flex-direction: row;
+      &::before,
+      &::after {
+        display: none !important;
+      }
+    }
+  }
 }
 
 .bloc-header {

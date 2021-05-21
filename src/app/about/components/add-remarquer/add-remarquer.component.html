@@ -25,6 +25,7 @@
       [description]="descriptionTitle"
       [canEnter]="isValidTypeBoolean"
       [canExit]="isValidFunctionReturnsBoolean.bind(this)"
+      class="col-sm-12"
     >
       <div class="d-flex flex-end justify-content-end pr-5">
         <button
@@ -72,7 +73,11 @@
                                     [addProperty]="addProperty"
                                     [addDepot]="false"
                                     [descriptifForm]="descriptifForm"
-                                    (isLoading)="loadingHandler($event)"
+                                    [domainData]="domainData"
+                                    [denominationData]="denominationData"
+                                    [styleData]="styleData"
+                                    [eraData]="eraData"
+                                    [authorData]="authorData"
                                   ></app-add-descriptions>
                                 </ng-template>
                               </ng-container>
@@ -145,6 +150,7 @@
       [description]="'Création constat'"
       [canEnter]="isValidFunctionReturnsObservable.bind(this)"
       [canExit]="isValidFunctionReturnsBoolean.bind(this)"
+      class="col-sm-12"
     >
       <span>Création constat</span>
     </ng-wizard-step>

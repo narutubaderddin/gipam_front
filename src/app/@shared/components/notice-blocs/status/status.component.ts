@@ -64,7 +64,7 @@ export class StatusComponent implements OnInit {
         this.depositors = result.results;
       },
       (error: any) => {
-        console.log(error)
+        console.log(error);
       }
     );
   }
@@ -94,7 +94,7 @@ export class StatusComponent implements OnInit {
   onSelect(event: any, key:string) {
     if(this.addDeposit) {
       this.depositStatusForm.get(key).setValue(event.value);
-    }else{
+    } else {
       this.propertyStatusForm.get(key).setValue(event.value);
     }
   }

@@ -1,12 +1,13 @@
 <div class="container p-0">
-  <div class="d-flex justify-content-between">
+  <div class="d-flex justify-content-between" *ngIf="!add">
     <h5>Pièces jointes</h5>
   </div>
   <div class="attachement-container p-2">
-    <button class="btn add-action col-7" (click)="addAttachment()">
-      <i class="fas fa-plus mr-2"></i>Ajouter une/plusieurs pièce(s) jointe(s)
-    </button>
-
+    <div class="col-12 d-flex justify-content-center">
+      <button class="btn add-action col-7" (click)="addAttachment()">
+        <i class="fas fa-plus mr-2"></i>Ajouter une/plusieurs pièce(s) jointe(s)
+      </button>
+    </div>
     <p-carousel
       [responsiveOptions]="responsiveOptions"
       [value]="itemDetails ? existingAttachments : attachments.value"
@@ -129,10 +130,8 @@
     </div>
   </div>
   <ng-template pTemplate="footer">
-    <button class="btn-primary" style="font-size: 12px; background-color: lightgray">Annuler</button>
-    <button class="btn-primary" (click)="validate()" style="font-size: 12px; background-color: #00d6d4">
-      Enregistrer
-    </button>
+    <button class="btn-primary cancel-btn" (click)="closeModal()">Annuler</button>
+    <button class="btn-primary valid-btn" (click)="validate()">Enregistrer</button>
   </ng-template>
 </p-dialog>
 <p-dialog header="Supprimer une pièce jointe" [modal]="true" [(visible)]="deleteDialog" [style]="{ width: '30vw' }">

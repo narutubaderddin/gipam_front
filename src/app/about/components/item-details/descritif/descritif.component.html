@@ -87,7 +87,7 @@
         </ng-container>
       </div>
       <p-multiSelect
-        *ngIf="edit&&authorData&&authorData.length>0"
+        *ngIf="edit && authorData && authorData.length > 0"
         class="select col-md-4 col-sm-7 p-sm-0 col-12"
         selectionLimit="5"
         [maxSelectedLabels]="2"
@@ -257,7 +257,7 @@
 
           <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
             <p-multiSelect
-              *ngIf="edit&&materialTechniquesData&&materialTechniquesData.length>0"
+              *ngIf="edit && materialTechniquesData && materialTechniquesData.length > 0"
               selectionLimit="5"
               [maxSelectedLabels]="2"
               [style]="{ width: '100%' }"

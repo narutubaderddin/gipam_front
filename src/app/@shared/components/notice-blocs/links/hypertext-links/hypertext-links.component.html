@@ -53,11 +53,13 @@
 
 <form class="col-md-12 d-flex pl-0 align-items-baseline" [formGroup]="linksForm" *ngIf="add">
   <div class="form-group" class="col-md-12 d-flex flex-column p-0">
-    <h5 class="col-md-12 p-0 m-0">Liens hypertextes</h5>
     <div class="col-md-12 p-1 mt-1 hyperlink-container">
-      <button class="btn add-action col-7 ml-2" (click)="addHyperlink()" *ngIf="!hyperlinks.value.length">
-        <i class="fas fa-plus mr-2"></i>Ajouter un lien hypertexte
-      </button>
+      <div class="col-12 d-flex justify-content-center">
+        <button class="btn add-action col-7 ml-2" (click)="addHyperlink()" *ngIf="!hyperlinks.value.length">
+          <i class="fas fa-plus mr-2"></i>Ajouter un lien hypertexte
+        </button>
+      </div>
+
       <div formArrayName="hyperlinks" class="hyperlink-bloc">
         <div [formGroupName]="i" class="mt-1" *ngFor="let lien of hyperlinks.controls; let i = index">
           <div class="d-flex">

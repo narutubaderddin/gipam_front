@@ -123,8 +123,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     return this.fb.group({
       date: [this.datePipe.transform(photographyDate, 'yyyy-MM-dd')],
       imagePreview: [photography],
-      photographyType: [photographyType],
-      imageName: [imageName],
+      photographyType: [photographyType.id],
     });
   }
   editPhotographyForm(i: number, photography: string, photographyType: any, photographyDate: any, imageName: string) {
@@ -174,7 +173,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
 
         this.photographies.push(
           this.createPhotography(
-            this.buildFormData(this.fileToUpload),
+            this.fileToUpload,
             new Date(this.photographyDate),
             this.photographyType,
             this.imageName
@@ -245,7 +244,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   editTypePhotography(type: any) {
     this.btnLoading = '';
     const data = { photographyType: type.id };
-    console.log(data, this.images[this.selectedPhotography].id);
     this.photographyService.updatePhotography(data, this.images[this.selectedPhotography].id).subscribe(
       (result) => {
         this.callParent();
@@ -298,7 +296,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   }
   addItem(data: any) {
     this.btnLoading = '';
-    console.log('data', data);
     this.photographyService.addPhotography(data).subscribe(
       (result: any) => {
         this.addSingle('success', 'Ajout', 'Photographie ' + data + ' ajoutée avec succés');
