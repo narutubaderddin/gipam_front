@@ -34,6 +34,8 @@ export class ListWorkOfArtsComponent implements OnInit {
   @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
   isCollapsed = true;
   showDatatable = false;
+  printingNotice = false;
+  exportingNotice = false;
   data = false;
   mode = 'liste';
   filterFormGroup: FormGroup;
@@ -1423,12 +1425,14 @@ export class ListWorkOfArtsComponent implements OnInit {
 
   //Print notice to pdf
   PrinNoticePDF() {
+    this.printingNotice = true;
     let title: string = 'Détails_notices.pdf';
     if (this.selectedRowCount == 1) {
       title = this.selectedRows[0].titre;
     }
     const element = document.getElementById('printNoticesPDF');
     this.pdfGeneratorService.downloadPDFFromHTML(element, title);
+    this.printingNotice = false;
   }
 
   onSelectEtage() {
@@ -1540,6 +1544,14 @@ export class ListWorkOfArtsComponent implements OnInit {
       this.firstLoading = false;
       this.loading = false;
     });
+  }
+
+  duplicate() {
+    this.exportingNotice = true;
+    let artWork = this.selectedRows[0];
+    WorkOfArtService;
+    this.router.navigate(['creation-notice', artWork.status], { queryParams: { id: artWork.id } });
+    this.exportingNotice = false;
   }
 
   formsReset() {

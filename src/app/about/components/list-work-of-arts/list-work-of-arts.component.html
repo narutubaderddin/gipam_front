@@ -1252,6 +1252,7 @@
                 translate
                 style="background-color: #0466c8"
               >
+                <i class="fas fa-cog fa-spin" [hidden]="!exportingNotice" style="color: white"></i>
                 <i class="fas fa-file-export" style="color: white"></i>
               </button>
               <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">
@@ -1346,6 +1347,7 @@
                 Créer recolement
               </button>
               <button class="btn add-action" (click)="PrinNoticePDF()" translate>
+                <i class="fas fa-cog fa-spin" [hidden]="!printingNotice"></i>
                 <i class="fas fa-print"></i>
                 Imprimer
               </button>
@@ -1387,6 +1389,7 @@
                 Modifier
               </button>
               <button class="btn add-action" (click)="PrinNoticePDF()" translate>
+                <i class="fas fa-cog fa-spin" [hidden]="!printingNotice"></i>
                 <i class="fas fa-print"></i>
                 Imprimer
               </button>
@@ -1394,7 +1397,7 @@
                 <i class="fas fa-file-export"></i>
                 Export
               </button>
-              <button class="btn add-action" translate>
+              <button class="btn add-action" (click)="duplicate()" translate>
                 <i class="fas fa-copy"></i>
                 Dupliquer
               </button>
