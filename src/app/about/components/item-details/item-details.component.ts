@@ -4,11 +4,12 @@ import { NotificationsService } from 'angular2-notifications';
 import { SharedService } from '@shared/services/shared.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PdfGeneratorService } from '@shared/services/pdf-generator.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { MessageService } from 'primeng/api';
-import { dateTimeFormat } from '@shared/utils/helpers';
+import { dateTimeFormat, lastArtOfWorkDetailIndex, searchPageFilter } from '@shared/utils/helpers';
 import { DatePipe } from '@angular/common';
+import { ArtWorkService } from '@app/about/services/art-work.service';
 
 @Component({
   selector: 'app-item-details',
@@ -49,7 +50,6 @@ export class ItemDetailsComponent implements OnInit {
   type = 'depot';
   addProperty = false;
   addDepot = false;
-  page: any = 5;
   edit = false;
   depositStatusForm: FormGroup;
   descriptifForm: FormGroup;
@@ -85,6 +85,31 @@ export class ItemDetailsComponent implements OnInit {
   };
   artWorksToPrint: any = [];
 
+  currentId: string;
+  nextId: number;
+  previousId: number;
+  paginationIds: {
+    current: number;
+    next: number;
+    previous: number;
+  };
+
+  page = 1;
+  artWorkIds: any[] = [];
+  searchPageParam: {
+    mode: any;
+    filter: any;
+    advancedFilter: any;
+    headerFilters: any;
+    page: any;
+    limit: any;
+    sortBy: any;
+    sort: any;
+    globalSearch: any;
+    searchQuery: any;
+    totalFiltered: any;
+  };
+  loadingData = false;
   constructor(
     config: NgbCarouselConfig,
     private notificationsService: NotificationsService,
@@ -93,16 +118,20 @@ export class ItemDetailsComponent implements OnInit {
     private pdfGeneratorService: PdfGeneratorService,
     private route: ActivatedRoute,
     private workOfArtService: WorkOfArtService,
+    private artWorkService: ArtWorkService,
     private messageService: MessageService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private router: Router
   ) {
     config.interval = 10000;
     config.wrap = false;
     config.keyboard = false;
     config.pauseOnHover = false;
   }
+
   ngOnInit() {
     this.artWorkId = this.route.snapshot.paramMap.get('id');
+    this.initSearchPageParam();
 
     this.initPhotographiesForm();
     this.initAttachmentForm();
@@ -110,8 +139,10 @@ export class ItemDetailsComponent implements OnInit {
     this.initDepositStatusForm();
     this.initHyperLink();
     this.initLinks();
-    this.getArtWork(this.artWorkId);
+    this.setPage();
+    this.paginate();
   }
+
   getParentApi(): ParentComponentApi {
     return {
       callParentMethod: (id) => {
@@ -119,6 +150,7 @@ export class ItemDetailsComponent implements OnInit {
       },
     };
   }
+
   getParentlinkApi(): ParentComponentApi {
     return {
       callParentMethod: () => {
@@ -128,9 +160,7 @@ export class ItemDetailsComponent implements OnInit {
   }
   initPhotographiesForm() {
     this.photographiesForm = new FormGroup({
-      photographies: this.fb.array([
-
-      ]),
+      photographies: this.fb.array([]),
     });
   }
   initAttachmentForm() {
@@ -187,11 +217,11 @@ export class ItemDetailsComponent implements OnInit {
       items: [data?.items],
     });
   }
-  initDepositStatusForm(data?:any) {
+  initDepositStatusForm(data?: any) {
     this.depositStatusForm = this.fb.group({
       depositDate: [new Date(data?.depositDate)],
       stopNumber: [data?.stopNumber],
-      depositor:[data?.depositor? data.depositor?.id:'']
+      depositor: [data?.depositor ? data.depositor?.id : ''],
     });
   }
   initPropertyStatusForm(data?: any) {
@@ -253,10 +283,10 @@ export class ItemDetailsComponent implements OnInit {
       field: this.descriptifForm.value.field.id,
       denomination: this.descriptifForm.value.denomination.id,
       authors: authorsId,
-      materialTechnique:materialId,
-      status:this.addProperty?this.propertyStatusForm.value:this.depositStatusForm.value,
-      parent: parent
-    }
+      materialTechnique: materialId,
+      status: this.addProperty ? this.propertyStatusForm.value : this.depositStatusForm.value,
+      parent: parent,
+    };
 
     this.workOfArtService.updateWorkOfArt(data, this.artWorkId).subscribe(
       (result) => {
@@ -285,59 +315,134 @@ export class ItemDetailsComponent implements OnInit {
     const element = document.getElementById('appItemDetailsPdf');
     this.pdfGeneratorService.downloadPDFFromHTML(element, this.artwork.titre + '.pdf');
   }
+
+  initSearchPageParam() {
+    const newParams = JSON.parse(localStorage.getItem(searchPageFilter));
+
+    this.searchPageParam = {
+      mode: newParams.mode,
+      filter: newParams.filter,
+      advancedFilter: newParams.advancedFilter,
+      headerFilters: newParams.headerFilters,
+      page: newParams.page,
+      limit: newParams.limit,
+      sortBy: newParams.sortBy,
+      sort: newParams.sort,
+      globalSearch: newParams.globalSearch,
+      searchQuery: newParams.searchQuery,
+      totalFiltered: newParams.totalFiltered,
+    };
+  }
+
+  paginate(by?: number, to?: any) {
+    if (by) {
+      this.page = this.page + by;
+    }
+    if (this.page < 0) {
+      this.page = 0;
+    }
+    const urlParams = {
+      offset: this.page,
+      limit: 1,
+      sort_by: this.searchPageParam.sortBy,
+      sort: this.searchPageParam.sort,
+      searchQuery: this.searchPageParam.searchQuery,
+      globalSearch: this.searchPageParam.globalSearch,
+      serializer_group: JSON.stringify(['response', 'art_work_details', 'short']),
+    };
+    this.loadingData = true;
+    this.artWorkService
+      .getArtWorksDetail(
+        this.searchPageParam.filter,
+        this.searchPageParam.advancedFilter,
+        this.searchPageParam.headerFilters,
+        urlParams
+      )
+      .subscribe(
+        (result: any) => {
+          const apiResult = result.result;
+          this.artWorkId = apiResult.id;
+          this.previousId = result.previousId;
+          this.nextId = result.nextId;
+          this.router.navigate(['/details/' + this.artWorkId]);
+          this.setArtwork(apiResult);
+          this.loadingData = false;
+        },
+        (error: any) => {
+          this.loadingData = false;
+          console.log(error);
+          this.addSingle('error', 'Erreur Technique', error.error.message);
+        }
+      );
+  }
+
+  setPage() {
+    const index = JSON.parse(localStorage.getItem(lastArtOfWorkDetailIndex));
+    this.page = index;
+    if (this.searchPageParam.mode !== 'pictures') {
+      // when datatable display mode is selected in search page
+      this.page = this.searchPageParam.limit * (this.searchPageParam.page - 1) + index;
+      if (this.page < 0) {
+        // it could be : if new page is lower than 0 then get the first element
+        this.page = 0;
+      }
+    }
+  }
+
   getArtWork(id: any) {
     this.workOfArtService
       .getWorkOfArtById(id, { serializer_group: JSON.stringify(['art_work_details', 'short']) })
       .subscribe(
         (result) => {
-          this.photographies = [];
-
-        this.workArt= result;
-        this.initDescriptifForm(result);
-        result.photographies.map((el:any, index:number)=>{
-
-          this.photographies.push({
-            workArtId: result.id,
-            id:el.id,
-            imageUrl: el.imagePreview,
-            alt: 'description',
-            i: index,
-            image: el.imageName,
-            photographyDate: this.datePipe.transform(el.date, dateTimeFormat),
-            photographyName: el.imageName,
-            photographyType: el.photographyType,
-            imageName: el.imageName,
-          });
-        });
-        result.status.statusType==="PropertyStatus"? this.addProperty=true: this.addDepot=true;
-        this.status= result.status;
-        this.addProperty?this.initPropertyStatusForm(result.status): this.initDepositStatusForm(result.status);
-        this.attachments= result.attachments;
-        this.hypertextLinks = result.hyperlinks;
-        this.parent= result.parent;
-        this.children= result.children;
-
-      },
-      error => {
-
-        this.addSingle('error', 'Erreur Technique', error.error.message);
-      }
-    );
+          this.setArtwork(result);
+        },
+        (error) => {
+          this.addSingle('error', 'Erreur Technique', error.error.message);
+        }
+      );
   }
+
+  setArtwork(apiResult: any) {
+    this.photographies = [];
+
+    this.workArt = apiResult;
+    this.initDescriptifForm(apiResult);
+    apiResult.photographies.map((el: any, index: number) => {
+      this.photographies.push({
+        workArtId: apiResult.id,
+        id: el.id,
+        imageUrl: el.imagePreview,
+        alt: 'description',
+        i: index,
+        image: el.imageName,
+        photographyDate: this.datePipe.transform(el.date, dateTimeFormat),
+        photographyName: el.imageName,
+        photographyType: el.photographyType,
+        imageName: el.imageName,
+      });
+    });
+    apiResult.status.statusType === 'PropertyStatus' ? (this.addProperty = true) : (this.addDepot = true);
+    this.status = apiResult.status;
+    this.addProperty ? this.initPropertyStatusForm(apiResult.status) : this.initDepositStatusForm(apiResult.status);
+    this.attachments = apiResult.attachments;
+    this.hypertextLinks = apiResult.hyperlinks;
+    this.parent = apiResult.parent;
+    this.children = apiResult.children;
+  }
+
   addSingle(type: string, sum: string, msg: string) {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
   }
 
-  getAttributes($event:any) {
-
-    this.attributes=$event;
-
+  getAttributes($event: any) {
+    this.attributes = $event;
   }
 
   onCancel() {
     this.edit = false;
   }
 }
+
 export interface ParentComponentApi {
   callParentMethod: (string?: any) => void;
 }

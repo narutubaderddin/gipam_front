@@ -53,9 +53,11 @@
           >
             {{ col.header }}
             <p-sortIcon
+              #sortIcon
               *ngIf="col.sortable"
               [field]="col.header"
               [pSortableColumn]="col.sortable ? col.header : ''"
+              (click)="sortHeader(sortIcon, col)"
             ></p-sortIcon>
             <i
               class="fas fa-filter"
@@ -191,7 +193,13 @@
           </th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="frozenbody" let-item let-columns="columns" let-expanded="expanded">
+      <ng-template
+        pTemplate="frozenbody"
+        let-item
+        let-columns="columns"
+        let-expanded="expanded"
+        let-rowIndex="rowIndex"
+      >
         <tr>
           <td *ngIf="checkBoxSelection">
             <p-tableCheckbox [value]="item"></p-tableCheckbox>
@@ -205,6 +213,7 @@
               <app-remarquer-details-link-renderer
                 *ngSwitchCase="'app-remarquer-details-link-render'"
                 [value]="item[col.field]"
+                [rowNumber]="rowIndex"
               ></app-remarquer-details-link-renderer>
               <span *ngSwitchDefault> {{ item[col.field] }} </span>
             </span>
@@ -289,18 +298,19 @@
 
                 <ng-template pTemplate="body" let-expandItem>
                   <tr>
-                    <td *ngFor="let col of expandColumns">
+                    <td *ngFor="let col of expandColumns; let index = index">
                       <span [ngSwitch]="col.type">
                         <app-remarquer-details-link-renderer
                           *ngSwitchCase="'app-remarquer-details-link-render'"
                           [value]="expandItem[col.field]"
+                          [rowNumber]="index"
                         ></app-remarquer-details-link-renderer>
                         <span *ngSwitchDefault> {{ expandItem[col.field] }} </span>
                         <app-select-button-render
                           *ngSwitchCase="'app-select-button-render'"
-                          (selectedStatus)="onSelectedStatus($event,expandItem,item)"
+                          (selectedStatus)="onSelectedStatus($event, expandItem, item)"
                           [value]="expandItem.status"
-                          [disabled]="item.requestStatus!='En cours'"
+                          [disabled]="item.requestStatus != 'En cours'"
                         ></app-select-button-render>
                       </span>
                     </td>
@@ -317,21 +327,23 @@
                   <button
                     pButton
                     type="button"
-                    [disabled]="item.requestStatus!='En cours' || item.validatedRequestArtWork.length!= item.expandData.length"
+                    [disabled]="
+                      item.requestStatus != 'En cours' || item.validatedRequestArtWork.length != item.expandData.length
+                    "
                     label="Valider la demande"
                     (click)="onChangeRequestStatus(item, 'Acceptée')"
                   >
-                    <i class="fas fa-cog fa-spin" [hidden]="!isValidationRequest" ></i>
+                    <i class="fas fa-cog fa-spin" [hidden]="!isValidationRequest"></i>
                   </button>
                   <button
                     pButton
                     type="button"
-                    [disabled]="item.requestStatus!='En cours'"
+                    [disabled]="item.requestStatus != 'En cours'"
                     label="Annuler la demande"
                     (click)="onChangeRequestStatus(item, 'Annulée')"
                     class="p-button-secondary"
                   >
-                    <i class="fas fa-cog fa-spin" [hidden]="!isCancelingRequest" ></i>
+                    <i class="fas fa-cog fa-spin" [hidden]="!isCancelingRequest"></i>
                   </button>
                 </td>
               </tr>
