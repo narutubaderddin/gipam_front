@@ -134,8 +134,10 @@ export class ListWorkOfArtsComponent implements OnInit {
   advancedForm3: FormGroup;
   formStatusValue: any[] = [];
   statusFormSearchDrop: any;
-  private showFormStatusEnd: boolean = false;
+  lastFilter = { empty: true };
+  filterChanged = false;
 
+  private showFormStatusEnd: boolean = false;
   constructor(
     private fb: FormBuilder,
     public columnFilterService: ColumnFilterService,
@@ -156,7 +158,6 @@ export class ListWorkOfArtsComponent implements OnInit {
   ) {}
 
   initData(filter: any, advancedFilter: any, headerFilters: any = {}, page = 1) {
-    this.loading = true;
     let sort = 'desc';
     let sortBy = 'creationDate';
     if (this.dataTableSort.hasOwnProperty('sort')) {
@@ -164,6 +165,26 @@ export class ListWorkOfArtsComponent implements OnInit {
       sortBy = this.dataTableSort['sort_by'];
     }
     const limit = this.mode === 'pictures' ? 20 : 5;
+    const searchPageFilter = {
+      mode: this.mode,
+      filter,
+      advancedFilter,
+      headerFilters,
+      page,
+      limit,
+      sortBy,
+      sort,
+      globalSearch: this.globalSearch,
+      searchQuery: this.searchQuery,
+    };
+    if (!this.isFilterChanged(searchPageFilter)) {
+      return;
+    }
+    this.loading = true;
+    this.loadingScroll = true;
+    if (this.mode === 'pictures') {
+      this.firstLoading = true;
+    }
     this.artWorkService
       .getArtWorksData(
         filter,
@@ -178,19 +199,6 @@ export class ListWorkOfArtsComponent implements OnInit {
       )
       .subscribe(
         (artWorksData: ArtWorksDataModel) => {
-          const searchPageFilter = {
-            mode: this.mode,
-            filter,
-            advancedFilter,
-            headerFilters,
-            page,
-            limit,
-            sortBy,
-            sort,
-            globalSearch: this.globalSearch,
-            searchQuery: this.searchQuery,
-            totalFiltered: artWorksData.filteredQuantity,
-          };
           localStorage.setItem('searchPageFilter', JSON.stringify(searchPageFilter));
           if (this.mode === 'pictures' && page > 1) {
             artWorksData.results.forEach((oeuvre: any) => {
@@ -199,11 +207,6 @@ export class ListWorkOfArtsComponent implements OnInit {
           } else {
             this.artWorkResults = artWorksData.results;
             this.artWorksData = artWorksData;
-            // to know the index of clicked input
-            localStorage.setItem(
-              'searchPageFilterLastItemsIds',
-              JSON.stringify(this.artWorkResults.map((items) => items.id))
-            );
           }
 
           this.start = (this.artWorksData.page - 1) * this.artWorksData.size + 1;
@@ -213,9 +216,21 @@ export class ListWorkOfArtsComponent implements OnInit {
           this.firstLoading = false;
         },
         (error: any) => {
+          this.loading = false;
+          this.loadingScroll = false;
+          this.firstLoading = false;
           this.addSingle('error', '', error.error.message);
         }
       );
+  }
+
+  isFilterChanged(newFilter: any): boolean {
+    if (JSON.stringify(newFilter) !== JSON.stringify(this.lastFilter)) {
+      this.lastFilter = Object.assign({}, newFilter);
+      this.filterChanged = true;
+      return true;
+    }
+    return false;
   }
 
   addSingle(type: string, sum: string, msg: string) {
@@ -225,6 +240,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   artWorkResults: any[] = [];
   @ViewChild('globalSearch') searchButton: Input;
   ngOnInit(): void {
+    this.searchQuery = '';
     this.initFilterData();
     this.oeuvreToShow = this.oeuvres;
     this.initFilterFormGroup();
@@ -253,7 +269,6 @@ export class ListWorkOfArtsComponent implements OnInit {
 
   saveArtOfWorkIndex(index: number) {
     localStorage.setItem(lastArtOfWorkDetailIndex, JSON.stringify(index));
-    console.log('lastArtOfWorkDetailIndex', JSON.parse(localStorage.getItem(lastArtOfWorkDetailIndex)));
   }
 
   onHeaderToggle(column: any, event: MouseEvent): void {
@@ -521,10 +536,11 @@ export class ListWorkOfArtsComponent implements OnInit {
       ]);
       let advancedData = this.formatAdvancedData({}, [this.advancedForm1.value, this.advancedForm3.value]);
       this.headerFilter = this.formatFormsData({}, [this.headerFilter], true);
-      if (this.mode == 'pictures') {
-        this.loading = true;
-        this.firstLoading = true;
-      }
+      // todo loading
+      // if (this.mode == 'pictures') {
+      //   this.loading = true;
+      //   this.firstLoading = true;
+      // }
       this.showDatatable = true;
       this.initData(data, advancedData, this.headerFilter);
     }
@@ -1479,8 +1495,9 @@ export class ListWorkOfArtsComponent implements OnInit {
       ]);
       let advancedData = this.formatAdvancedData({}, [this.advancedForm1.value, this.advancedForm3.value]);
       this.headerFilter = this.formatFormsData({}, [this.headerFilter], true);
-      this.loading = true;
-      this.firstLoading = true;
+      // todo loading
+      // this.loading = true;
+      // this.firstLoading = true;
       this.initData(data, advancedData, this.headerFilter, 1);
       this.showDatatable = true;
     }
@@ -1515,11 +1532,11 @@ export class ListWorkOfArtsComponent implements OnInit {
     ]);
     let advancedData = this.formatAdvancedData({}, [this.advancedForm1.value, this.advancedForm3.value]);
     this.headerFilter = this.formatFormsData({}, [this.headerFilter], true);
-    this.loadingScroll = true;
+    // todo loading
+    // this.loadingScroll = true;
     this.initData(data, advancedData, this.headerFilter, this.page);
     this.showDatatable = true;
   }
-
   exportNotices(type: string) {
     //Show the loader.
     this.firstLoading = true;
@@ -1632,5 +1649,17 @@ export class ListWorkOfArtsComponent implements OnInit {
       creationDate: '',
       creationDateOperator: 'and',
     });
+    console.log('filter reset');
+    const data = this.formatFormsData({}, [
+      this.form1.value,
+      this.form2.value,
+      this.form3.value,
+      this.form4.value,
+      this.formStatus.value,
+    ]);
+    this.searchQuery = '';
+    this.globalSearch = '';
+    const advancedData = this.formatAdvancedData({}, [this.advancedForm1.value, this.advancedForm3.value]);
+    this.initData(data, advancedData, {});
   }
 }
