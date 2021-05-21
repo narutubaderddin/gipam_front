@@ -22,7 +22,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   @Input() existingPhotographies: any[] = [];
   @Output() imgToShow = new EventEmitter();
   @Input() parentApi: ParentComponentApi;
-  @Input() artWorkId: number;
+  @Input() artWorkId: any;
   addImage = false;
   activeIndex = 0;
   editType = false;
@@ -302,7 +302,8 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     this.btnLoading = '';
     this.photographyService.addPhotography(data).subscribe(
       (result: any) => {
-        this.addSingle('success', 'Ajout', 'Photographie ' + data + ' ajoutée avec succés');
+        this.callParent();
+        this.addSingle('success', 'Ajout', 'Photographie ajoutée avec succés');
       },
       (error) => {
         this.addSingle('error', 'Ajout', error.error.message);

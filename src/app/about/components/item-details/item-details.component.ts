@@ -269,7 +269,7 @@ export class ItemDetailsComponent implements OnInit {
     });
   }
 
-  onSave(parent?: any, deletePar?:boolean) {
+  onSave(parent?: any, deletePar?:boolean, addPar?:boolean) {
     this.editLink = true;
     this.btnLoading = '';
     this.formatData();
@@ -283,7 +283,7 @@ export class ItemDetailsComponent implements OnInit {
       materialId.push(el.id);
     });
     let data:any;
-    if(deletePar){
+    if(deletePar||addPar){
       data = {
         field: this.workArt?.field?.id,
         denomination: this.workArt?.denomination?.id,
@@ -306,6 +306,8 @@ export class ItemDetailsComponent implements OnInit {
         this.getArtWork(this.artWorkId);
         if(deletePar){
           this.addSingle('success', 'Suppression', 'Lien avec oeuvres supprimé avec succée');
+        }else if(addPar){
+          this.addSingle('success', 'Ajout', 'Lien avec oeuvres ajouté avec succée');
         }else {
           this.addSingle('success', 'Modification', 'Notice modifiée avec succée');
         }
