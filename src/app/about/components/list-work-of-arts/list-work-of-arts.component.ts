@@ -130,6 +130,9 @@ export class ListWorkOfArtsComponent implements OnInit {
   ];
   titleData: any[] = [];
   advancedForm3: FormGroup;
+  formStatusValue: any[] = [];
+  statusFormSearchDrop: any;
+  private showFormStatusEnd: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -376,6 +379,7 @@ export class ListWorkOfArtsComponent implements OnInit {
           case 'style':
           case 'materialTechnique':
           case 'responsible':
+          case 'era':
             let result: any[] = [];
             if (Array.isArray(value[key])) {
               value[key].forEach((item: any) => {
@@ -501,6 +505,9 @@ export class ListWorkOfArtsComponent implements OnInit {
       case 'form4':
         this.fourthSearchDrop = event;
         break;
+      case 'statusForm':
+        this.statusFormSearchDrop = event;
+        break;
     }
     if (event == false) {
       let data = this.formatFormsData({}, [
@@ -525,6 +532,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.onForm1Change();
     this.onForm2Change();
     this.onForm3Change();
+    this.onFormStatusChange();
     this.onForm4Change();
   }
 
@@ -538,12 +546,24 @@ export class ListWorkOfArtsComponent implements OnInit {
           let value = this.checkFormvalues(val, key);
           this.form1Values.push(value);
         }
-
-        this.showForm1End = count > 4;
       });
+      this.showForm1End = count > 4;
     });
   }
-
+  onFormStatusChange() {
+    this.formStatus.valueChanges.subscribe((val) => {
+      let count = 0;
+      this.formStatusValue = [];
+      Object.keys(val).forEach((key: any) => {
+        if (val[key] != '') {
+          count++;
+          let value = this.checkFormvalues(val, key);
+          this.formStatusValue.push(value);
+        }
+      });
+      this.showFormStatusEnd = count > 4;
+    });
+  }
   private checkFormvalues(val: any, key: string) {
     let value = '';
     if (['string', 'boolean', 'object', 'number'].indexOf(typeof val[key]) == -1) {
@@ -1519,6 +1539,86 @@ export class ListWorkOfArtsComponent implements OnInit {
 
       this.firstLoading = false;
       this.loading = false;
+    });
+  }
+
+  formsReset() {
+    this.formStatus.reset({
+      status: [],
+      deposant: [],
+      entryDate: '',
+      categorie: [],
+      entryMode: [],
+      arretNumber: '',
+      depotDate: '',
+    });
+    this.form1.reset({
+      id: '',
+      titre: '',
+      domaine: [],
+      denomination: [],
+      auteurs: [],
+    });
+    this.form2.reset({
+      mouvement: [],
+      mouvementAction: [],
+      constat: [],
+      constatAction: [],
+      perseption: false,
+    });
+    this.form3.reset({
+      ministry: [],
+      etablissement: [],
+      sousDirection: [],
+      services: [],
+      correspondant: [],
+    });
+    this.form4.reset({
+      localType: [],
+      region: [],
+      departement: [],
+      communes: [],
+      batiment: [],
+      sites: [],
+      level: [],
+      pieceNumber: [],
+      correspondant: [],
+    });
+    this.advancedForm3.reset({
+      establishementType: [],
+      establishementTypeOperator: [],
+      responsible: [],
+      responsibleOperator: [],
+    });
+    this.advancedForm1.reset({
+      materialTechnique: [],
+      materialTechniqueOperator: 'and',
+      style: [],
+      styleOperator: 'and',
+      length: '',
+      lengthOperator: 'and',
+      lengthTotal: '',
+      lengthTotalOperator: 'and',
+      heightTotal: '',
+      heightTotalOperator: 'and',
+      widthTotal: '',
+      widthTotalOperator: 'and',
+      depth: '',
+      depthOperator: 'and',
+      weight: '',
+      weightOperator: 'and',
+      height: '',
+      heightOperator: 'and',
+      width: '',
+      widthOperator: 'and',
+      era: [],
+      eraOperator: 'and',
+      unitNumber: '',
+      unitNumberOperator: 'and',
+      description: '',
+      descriptionOperator: 'and',
+      creationDate: '',
+      creationDateOperator: 'and',
     });
   }
 }
