@@ -121,16 +121,6 @@
         />
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Fax<span class="mandatory"> *</span></label>
-        <input
-          formControlName="fax"
-          type="number"
-          min="0"
-          class="form-control col-sm-7"
-          value="{{ editItem ? selectedItem.fax : '' }}"
-        />
-      </div>
-      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
         <label class="col-sm-5">E-mail<span class="mandatory"> *</span></label>
         <input
           formControlName="mail"
@@ -140,7 +130,7 @@
         />
       </div>
       <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline" *ngIf="editItem || addItem">
-        <label class="col-sm-5">Connexion</label>
+        <label class="col-sm-5">Login</label>
         <input
           type="text"
           class="form-control col-sm-7"

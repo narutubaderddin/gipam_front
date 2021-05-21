@@ -37,7 +37,6 @@ export class ResponsibleComponent implements OnInit {
 
     login: '';
     phone: '';
-    fax: '';
     mail: '';
     building: {
       id: number;
@@ -173,14 +172,6 @@ export class ResponsibleComponent implements OnInit {
       sortable: true,
     },
     {
-      header: 'FAX',
-      field: 'fax',
-      type: 'key',
-      filter: true,
-      filterType: 'text',
-      sortable: true,
-    },
-    {
       header: 'E-mail',
       field: 'mail',
       type: 'key',
@@ -263,7 +254,6 @@ export class ResponsibleComponent implements OnInit {
       login: [this.selectedItem ? this.selectedItem.login : '', []],
 
       phone: [this.selectedItem ? this.selectedItem.phone : '', [Validators.required]],
-      fax: [this.selectedItem ? this.selectedItem.fax : '', [Validators.required]],
       mail: [this.selectedItem ? this.selectedItem.mail : '', [Validators.required, Validators.email]],
       startDate: [startDate, [Validators.required]],
       endDate: [disappearanceDate, []],
@@ -376,7 +366,6 @@ export class ResponsibleComponent implements OnInit {
         lastName: this.tabForm.value.lastName,
         login: this.tabForm.value.login,
         phone: this.tabForm.value.phone,
-        fax: this.tabForm.value.fax,
         mail: this.tabForm.value.mail,
         region: this.tabForm.value.region?.id,
         departments: getMultiSelectIds(this.tabForm.value.departments),

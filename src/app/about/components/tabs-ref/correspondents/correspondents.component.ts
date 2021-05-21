@@ -37,7 +37,6 @@ export class CorrespondentsComponent implements OnInit {
     function: '';
     login: '';
     phone: '';
-    fax: '';
     mail: '';
     establishment: {
       id: number;
@@ -181,14 +180,6 @@ export class CorrespondentsComponent implements OnInit {
       sortable: true,
     },
     {
-      header: 'FAX',
-      field: 'fax',
-      type: 'key',
-      filter: true,
-      filterType: 'text',
-      sortable: true,
-    },
-    {
       header: 'E-mail',
       field: 'mail',
       type: 'key',
@@ -271,9 +262,7 @@ export class CorrespondentsComponent implements OnInit {
       lastName: [this.selectedItem ? this.selectedItem.lastName : '', [Validators.required]],
       function: [this.selectedItem ? this.selectedItem.function : '', [Validators.required]],
       login: [this.selectedItem ? this.selectedItem.login : '', []],
-
       phone: [this.selectedItem ? this.selectedItem.phone : '', [Validators.required]],
-      fax: [this.selectedItem ? this.selectedItem.fax : '', [Validators.required]],
       mail: [this.selectedItem ? this.selectedItem.mail : '', [Validators.required, Validators.email]],
       startDate: [startDate, [Validators.required]],
       endDate: [disappearanceDate, []],
@@ -462,7 +451,6 @@ export class CorrespondentsComponent implements OnInit {
         function: this.tabForm.value.function,
         login: this.tabForm.value.login,
         phone: this.tabForm.value.phone,
-        fax: this.tabForm.value.fax,
         mail: this.tabForm.value.mail,
         establishment: this.tabForm.value.establishment.id,
         subDivisions: getMultiSelectIds(this.tabForm.value.subDivisions),
