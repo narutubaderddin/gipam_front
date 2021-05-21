@@ -1430,12 +1430,9 @@
                           <strong>{{ section.titre }}</strong>
                           <p>
                             N°:
-                            <a
-                              [routerLink]="['/details', section.id]"
-                              class="header-cell"
-                              (click)="saveArtOfWorkIndex(index)"
-                              >{{ section.id }}</a
-                            >
+                            <a [routerLink]="['/details']" class="header-cell" (click)="saveArtOfWorkIndex(index)">{{
+                              section.id
+                            }}</a>
                           </p>
                         </div>
                       </div>

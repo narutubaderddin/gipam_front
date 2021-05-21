@@ -57,7 +57,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'accueil', pathMatch: 'full' },
       { path: 'accueil', component: AdministratorHomePageComponent, data: { title: 'Accueil' } },
-      { path: 'details/:id', component: ItemDetailsComponent },
+      { path: 'details', component: ItemDetailsComponent },
       { path: 'portail-details/:id', component: PortailItemDetailsComponent },
       {
         path: 'oeuvres-list',
