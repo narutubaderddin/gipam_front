@@ -36,12 +36,19 @@
                   <div class="shop-container container-fluid">
                     <div class="row" *ngIf="selectedOeuvre.length > 0">
                       <div class="col-md-12">
-                        <i
-                          class="float-right fas fa-file-download d-inline p-2"
-                          placement="top"
-                          ngbTooltip="Exporter"
-                          (click)="exportRequests()"
-                        ></i>
+                        <div class="container-file" style="float: right">
+                          <div class="content-file">
+                            <i
+                              class="float-right fas fa-file-download d-inline p-2"
+                              placement="top"
+                              ngbTooltip="Exporter"
+                              (click)="exportRequests()"
+                            ></i>
+                          </div>
+                          <div class="overlay" [hidden]="!loadingExportMyRequests">
+                            <i class="float-right fas fa-cog fa-spin" style="padding: 15%;color: #2196F3"></i>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div class="col-md-12" *ngIf="selectedOeuvre.length === 0; else existSelectedOeuvre">
@@ -286,7 +293,22 @@
                 </div>
               </form>
             </ng-template>
-            <i class="fas fa-file-download d-inline p-2" (click)="exportArtWorks()"></i>
+            <!--<i class="fas fa-file-download d-inline p-2" (click)="exportArtWorks()"></i>-->
+            <div class="panier d-inline p-2">
+              <div class="container-file">
+                <div class="content-file">
+                  <i
+                    class="float-right fas fa-file-download"
+                    placement="top"
+                    ngbTooltip="Exporter"
+                    (click)="exportArtWorks()"
+                  ></i>
+                </div>
+                <div class="overlay" [hidden]="!loadingExportFilteredRequests" >
+                  <i class="float-right fas fa-cog fa-spin" style="padding: 3%;color: #2196F3"></i>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="col-md-12">
@@ -702,7 +724,7 @@
                         </li>
                       </ng-template>
                       <li *ngIf="items.isInRequest">
-                        <p-tag value="réservée"></p-tag>
+                        <p-tag severity="danger" value="Réservée"></p-tag>
                       </li>
                     </ul>
                   </div>

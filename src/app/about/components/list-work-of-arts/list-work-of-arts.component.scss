@@ -458,6 +458,9 @@ input:checked + .slider:before {
   .p-datatable-scrollable-wrapper {
     height: 360px !important;
   }
+  .p-multiselect-label-container {
+    min-width: initial;
+  }
 }
 .loading-spinner {
   margin-left: 40%;
