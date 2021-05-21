@@ -1305,7 +1305,7 @@
         <p-progressSpinner></p-progressSpinner>
       </div>
       <ng-template #dataTable>
-        <div class="datatable mt-4" *ngIf="showDatatable && artWorkResults.length > 0 && this.columns?.length > 0">
+        <div class="datatable mt-4" *ngIf="showDatatable && artWorkResults?.length >= 0 && this.columns?.length > 0">
           <div *ngIf="selectedRowCount > 1">
             <div class="mass-action-container">
               <i class="fas fa-share"></i>
@@ -1384,6 +1384,7 @@
             [frozenCols]="frozenCols"
             [frozenWidth]="'200px'"
             [checkBoxSelection]="true"
+            identifierKey="id"
             (sort)="sortEvent($event)"
             [loading]="loading"
             (pageChanged)="pagination($event)"
@@ -1454,9 +1455,6 @@
                             </td>
                             <td pTooltip="Imprimer" tooltipPosition="top">
                               <i class="fas fa-print icon-media" (click)="PrinNoticePDF()"></i>
-                            </td>
-                            <td pTooltip="Partager" tooltipPosition="top">
-                              <i class="fas fa-share icon-media"></i>
                             </td>
                             <td pTooltip="Export" tooltipPosition="top">
                               <i class="fas fa-file-export icon-media"></i>

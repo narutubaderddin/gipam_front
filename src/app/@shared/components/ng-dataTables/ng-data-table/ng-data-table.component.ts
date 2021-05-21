@@ -128,18 +128,6 @@ export class NgDataTableComponent implements OnInit {
     this.form = this.formBuilder.group({});
     this.initForm(this.columns);
     this.filterFormValues = Object.assign({}, this.form.value);
-    // console.log('filter', this.filter);
-    // this.expandColumns = [
-    //   {
-    //     header: 'Numéro inventaire',
-    //     field: 'id'
-    //   },
-    //   {
-    //     header: '',
-    //     field: 'select',
-    //     type: 'app-select-button-render'
-    //   }
-    // ];
     this.dropdownSettings = {
       singleSelection: false,
       idField: 'id',
