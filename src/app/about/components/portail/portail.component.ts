@@ -106,6 +106,8 @@ export class PortailComponent implements OnInit {
   showForm1End = false;
   requestForm: any;
   loadingCreatingRequest: boolean = false;
+  loadingExportMyRequests: boolean = false;
+  loadingExportFilteredRequests: boolean = false;
 
   constructor(
     private WorkOfArtService: WorkOfArtService,
@@ -615,22 +617,31 @@ export class PortailComponent implements OnInit {
   selectedLevel: any;
 
   exportRequests() {
+    this.loadingExportMyRequests = true;
     let artWorksIds: any = [];
     this.selectedOeuvre.forEach((elm) => {
       artWorksIds.push(elm.id);
     });
     this.requestService.exportRequest(artWorksIds).subscribe((response: Response | any) => {
+      this.loadingExportMyRequests = false;
       this.requestService.manageFileResponseDownload(response, 'Oeuvres Graphiques');
     });
   }
 
   exportArtWorks() {
+    this.loadingExportFilteredRequests = true;
     let filter: any = {};
     filter = this.extractedFilterOeuvres();
     filter.limit = this.totalOeuvres;
     delete filter['page'];
     this.WorkOfArtService.exportArtWorks(filter).subscribe((response: Response | any) => {
       this.requestService.manageFileResponseDownload(response, 'Oeuvres Graphiques');
+    },
+      (error) => {
+        this.loadingExportFilteredRequests = false;
+    },
+    () => {
+      this.loadingExportFilteredRequests = false;
     });
   }
 }
