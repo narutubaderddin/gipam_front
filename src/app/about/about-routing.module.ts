@@ -49,6 +49,7 @@ import { AuthorsComponent } from '@app/about/components/tabs-ref/authors/authors
 import { ReportModelsComponent } from '@app/about/components/tabs-ref/report-models/report-models.component';
 import { ReservesComponent } from '@app/about/components/tabs-ref/reserves/reserves.component';
 import { AddRemarquerResolver } from '@app/about/components/add-remarquer/add-remarquer-resolver';
+import { ItemDetailsGuard } from '@app/about/guards/item-details-guard.guard';
 
 const routes: Routes = [
   {
@@ -57,7 +58,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'accueil', pathMatch: 'full' },
       { path: 'accueil', component: AdministratorHomePageComponent, data: { title: 'Accueil' } },
-      { path: 'details', component: ItemDetailsComponent },
+      { path: 'details', component: ItemDetailsComponent, canActivate: [ItemDetailsGuard] },
       { path: 'portail-details/:id', component: PortailItemDetailsComponent },
       {
         path: 'oeuvres-list',
