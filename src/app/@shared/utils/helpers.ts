@@ -4,6 +4,8 @@ export const dateTimeFormat = 'yyyy-MM-dd HH:mm:ss';
 export const datePickerDateFormat = 'yyyy-MM-dd';
 export const viewDateFormat = 'dd/MM/yyyy';
 export const tabRefFormBackendErrorMessage = 'Erreur de validation';
+export const lastArtOfWorkDetailIndex = 'lastArtOfWorkDetailIndex';
+export const searchPageFilter = 'searchPageFilter';
 
 export function markAsTouchedDeep(control: AbstractControl): void {
   control.markAsTouched();

@@ -82,27 +82,25 @@ export class InProgressDemandComponent {
     },
   ];
 
-
   requests: any = [];
   loading: boolean = false;
   isValidationRequest: boolean = false;
   isCancelingRequest: boolean = false;
   page: any = 1;
-  filter: any = "";
+  filter: any = '';
   constructor(private demandService: DemandService, public sharedService: SharedService) {
     this.getListDemands();
   }
-  getListDemands(params:any=null) {
+  getListDemands(params: any = null) {
     this.loading = true;
 
     let payload: any = {
       page: this.page,
     };
-    let filter = '?sort_by=createdAt&sort=desc&limit=5&page='+this.page;
-    if(params){
-      filter+=params;
+    let filter = '?sort_by=createdAt&sort=desc&limit=5&page=' + this.page;
+    if (params) {
+      filter += params;
     }
-
 
     this.demandService.getDemands(filter).subscribe(
       (response) => {
@@ -116,17 +114,17 @@ export class InProgressDemandComponent {
           if (elm.lastNameApplicant) {
             nameApplicant += elm.lastNameApplicant;
           }
-          let expendDatas : any = [];
-          let validatedRequestArtWork : any = [];
-          elm.requestedArtWorks.forEach((requestedArtWork:any)=>{
-            if(requestedArtWork.status == 'Accepté' || requestedArtWork.status == 'Refusé'){
+          let expendDatas: any = [];
+          let validatedRequestArtWork: any = [];
+          elm.requestedArtWorks.forEach((requestedArtWork: any) => {
+            if (requestedArtWork.status == 'Accepté' || requestedArtWork.status == 'Refusé') {
               validatedRequestArtWork.push(requestedArtWork);
             }
             expendDatas.push({
               ...requestedArtWork.artWork,
               status: requestedArtWork.status,
               requestedArtWorkId: requestedArtWork.id,
-            })
+            });
           });
           return {
             ...elm,
@@ -134,7 +132,7 @@ export class InProgressDemandComponent {
             name: elm.firstName + ' ' + elm.lastName,
             nameApplicant: nameApplicant,
             expandData: expendDatas,
-            validatedRequestArtWork: validatedRequestArtWork
+            validatedRequestArtWork: validatedRequestArtWork,
           };
         });
       },
@@ -159,10 +157,10 @@ export class InProgressDemandComponent {
   }
 
   changeRequestStatus($event: any) {
-    let payload : any  = {...$event.request};
-    if($event.status=="Annulée"){
+    let payload: any = { ...$event.request };
+    if ($event.status == 'Annulée') {
       this.isCancelingRequest = true;
-    }else{
+    } else {
       this.isValidationRequest = true;
     }
     this.demandService.changeStatus(payload).subscribe((response) => {
@@ -170,31 +168,31 @@ export class InProgressDemandComponent {
     });
   }
   onDataTableFilterChange(headersFilter: any) {
-    let filter : string = "";
-    if(headersFilter.establishement){
-      filter+='&establishement[contains]='+headersFilter.establishement.value;
+    let filter: string = '';
+    if (headersFilter.establishement) {
+      filter += '&establishement[contains]=' + headersFilter.establishement.value;
     }
-    if(headersFilter.subDivision){
-      filter+='&subDivision[contains]='+headersFilter.subDivision.value;
+    if (headersFilter.subDivision) {
+      filter += '&subDivision[contains]=' + headersFilter.subDivision.value;
     }
-    if(headersFilter.name){
-      filter+='&search='+headersFilter.name.value;
+    if (headersFilter.name) {
+      filter += '&search=' + headersFilter.name.value;
     }
-    if(headersFilter.nameApplicant){
-      filter+='&search='+headersFilter.nameApplicant.value;
+    if (headersFilter.nameApplicant) {
+      filter += '&search=' + headersFilter.nameApplicant.value;
     }
-    if(headersFilter.requestStatus){
-      let status : any = [];
-      headersFilter.requestStatus.value.forEach((stat:any)=>{
-        status.push('"'+stat.name+'"');
+    if (headersFilter.requestStatus) {
+      let status: any = [];
+      headersFilter.requestStatus.value.forEach((stat: any) => {
+        status.push('"' + stat.name + '"');
       });
-      filter+='&requestStatus[in]=['+status+']';
+      filter += '&requestStatus[in]=[' + status + ']';
     }
-    if(headersFilter.createdAt){
-      if(headersFilter.createdAt.operator === 'eq'){
-        filter+='&createdAt[equalDate]='+headersFilter.createdAt.value;
-      }else {
-        filter+=`&createdAt[${headersFilter.createdAt.operator}]=`+headersFilter.createdAt.value;
+    if (headersFilter.createdAt) {
+      if (headersFilter.createdAt.operator === 'eq') {
+        filter += '&createdAt[equalDate]=' + headersFilter.createdAt.value;
+      } else {
+        filter += `&createdAt[${headersFilter.createdAt.operator}]=` + headersFilter.createdAt.value;
       }
     }
     this.filter = filter;
@@ -203,15 +201,14 @@ export class InProgressDemandComponent {
 
   sortEvent(e: any) {
     let sortBy = e.sort_by;
-    if(sortBy==='name'){
+    if (sortBy === 'name') {
       sortBy = 'firstName';
     }
-    if(sortBy==='nameApplicant'){
+    if (sortBy === 'nameApplicant') {
       sortBy = 'firstNameApplicant';
     }
     let filter = `&sort_by=${sortBy}&sort=${e.sort}`;
-    this.filter+=filter;
+    this.filter += filter;
     this.getListDemands(filter);
   }
-
 }

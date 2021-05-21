@@ -1351,7 +1351,7 @@
               </button>
             </div>
           </div>
-          <div *ngIf="selectedRowCount == 1">
+          <div *ngIf="selectedRowCount == 1 && mode == 'liste'">
             <div class="mass-action-container">
               <i class="fas fa-share"></i>
               <button class="btn add-action" translate>
@@ -1427,7 +1427,15 @@
                             alt="Card image cap"
                           />
                           <strong>{{ section.titre }}</strong>
-                          <p>N°: {{ section.id }}</p>
+                          <p>
+                            N°:
+                            <a
+                              [routerLink]="['/details', section.id]"
+                              class="header-cell"
+                              (click)="saveArtOfWorkIndex(index)"
+                              >{{ section.id }}</a
+                            >
+                          </p>
                         </div>
                       </div>
                       <div
@@ -1438,16 +1446,22 @@
                       >
                         <table class="tab-oeuvre-actions">
                           <tr>
-                            <td pTooltip="Partager" tooltipPosition="top">
-                              <i class="fas fa-share icon-media"></i>
-                            </td>
                             <td pTooltip="Historique" tooltipPosition="top">
                               <i class="fas fa-history icon-media"></i>
                             </td>
                             <td pTooltip="Modifier" tooltipPosition="top">
                               <i class="fas fa-edit icon-media"></i>
                             </td>
-                            <td pTooltip="Copier" tooltipPosition="top">
+                            <td pTooltip="Imprimer" tooltipPosition="top">
+                              <i class="fas fa-print icon-media" (click)="PrinNoticePDF()"></i>
+                            </td>
+                            <td pTooltip="Partager" tooltipPosition="top">
+                              <i class="fas fa-share icon-media"></i>
+                            </td>
+                            <td pTooltip="Export" tooltipPosition="top">
+                              <i class="fas fa-file-export icon-media"></i>
+                            </td>
+                            <td pTooltip="Dupliquer" tooltipPosition="top">
                               <i class="fas fa-copy icon-media"></i>
                             </td>
                             <td>

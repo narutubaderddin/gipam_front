@@ -93,11 +93,13 @@
         optionValue="id"
         optionLabel="name"
         [filter]="true"
+        [virtualScroll]="true"
+        itemSize="30"
         defaultLabel="Sélectionner des auteurs"
       >
       </p-multiSelect>
       <div class="col-md-4 col-12 p-sm-0 link value">
-        <a href="">Ajouter un nouvel auteur</a>
+        <a (click)="openModal()">Ajouter un nouvel auteur</a>
       </div>
     </div>
     <div class="col-md-8"></div>
@@ -296,7 +298,7 @@
           [editable]="false"
           (onAdd)="addWord($event)"
           secondaryPlaceholder="Entrer mots descriptifs"
-          class="value"
+          [modelAsStrings]="true"
           placeholder=" +Mots descriptifs"
         ></tag-input>
       </div>
@@ -315,3 +317,80 @@
   </div>
 </form>
 <p-toast></p-toast>
+<ng-template #content let-modal>
+  <form [formGroup]="authorForm" appFlashFormErrors (appFormSubmit)="submit()">
+    <div class="modal-header">
+      <h4 class="modal-title">Ajout d'un auteur</h4>
+      <button type="button" class="close" aria-label="Close" (click)="myModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline">
+        <label class="col-sm-5">Nom<span class="mandatory"> *</span></label>
+        <input
+          type="text"
+          class="form-control col-sm-7"
+          value="{{ selectedAuthor ? selectedAuthor.lastName : '' }}"
+          formControlName="lastName"
+        />
+      </div>
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline">
+        <label class="col-sm-5">Prénom<span class="mandatory"> *</span></label>
+        <input
+          type="text"
+          class="form-control col-sm-7"
+          value="{{ selectedAuthor ? selectedAuthor.firstName : '' }}"
+          formControlName="firstName"
+        />
+      </div>
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline">
+        <label class="col-sm-5">Type</label>
+        <div class="select col-sm-7 p-0">
+          <p-dropdown
+            [options]="activeTypes"
+            optionLabel="label"
+            formControlName="type"
+            placeholder="Sélectionner un type"
+            emptyFilterMessage="Aucun résultat trouvé"
+            [filter]="true"
+            [filterBy]="'label'"
+            [virtualScroll]="true"
+            itemSize="5"
+          ></p-dropdown>
+        </div>
+      </div>
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline">
+        <label class="col-sm-5">Personnes ayant-droit</label>
+        <div class="select col-sm-7 p-0">
+          <p-multiSelect
+            [options]="activePeople"
+            [virtualScroll]="true"
+            formControlName="people"
+            emptyFilterMessage="Aucun résultat trouvé"
+            optionLabel="label"
+            display="chip"
+            [filter]="true"
+            [filterBy]="'label'"
+            placeholder="Sélectionner des personnes"
+          ></p-multiSelect>
+        </div>
+      </div>
+      <div class="form-group col-md-12 d-flex align-items-baseline">
+        <label class="col-sm-5">visibilité<span class="mandatory"> *</span></label>
+        <div class="btn-slider mr-2 col-3">
+          <label [class.active]="authorForm.get('active').value === true"></label>
+          <label class="switch">
+            <input type="checkbox" [checked]="true" formControlName="active" />
+            <span class="slider round"></span>
+          </label>
+          <label [class.active]="!authorForm.get('active').value == false"></label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light cancel-btn" (click)="myModal.dismiss('Cross click')">Annuler</button>
+      <button type="submit" class="btn btn-light valid-btn" [attr.disabled]="btnLoading">Ajouter</button>
+    </div>
+  </form>
+</ng-template>

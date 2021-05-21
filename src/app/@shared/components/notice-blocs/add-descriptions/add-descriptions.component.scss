@@ -1,3 +1,10 @@
+a:not([href]) {
+  color: #407ca8;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
 hr {
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -39,4 +46,16 @@ label {
 }
 .form-control {
   font-size: 12px;
+}
+//css modal
+.modal-title {
+  color: #0ec7c6;
+  font-size: 16px;
+  font-weight: 700;
+  background-color: white;
+  border: none;
+}
+.modal-header,
+.modal-footer {
+  border: none;
 }
