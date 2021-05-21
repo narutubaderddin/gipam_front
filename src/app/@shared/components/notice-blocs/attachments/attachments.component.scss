@@ -33,6 +33,11 @@
 .file-list {
   overflow-y: scroll;
 }
+.cancel-btn,
+.valid-btn {
+  font-size: 12px;
+  border-radius: 4px;
+}
 h5 {
   color: #347898;
   font-weight: 600;
