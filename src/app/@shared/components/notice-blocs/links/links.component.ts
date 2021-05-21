@@ -48,7 +48,7 @@ export class LinksComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
-    if (this.linkArtWorkForm.value.parent) {
+    if (this.linkArtWorkForm?.value?.parent) {
       let params = {
         serializer_group: JSON.stringify(['short_art_work']),
       };

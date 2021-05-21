@@ -337,7 +337,7 @@ export class ItemDetailsComponent implements OnInit {
     const newParams = JSON.parse(localStorage.getItem(searchPageFilter));
 
     this.searchPageParam = {
-      mode: newParams.mode,
+      mode: newParams?.mode,
       filter: newParams.filter,
       advancedFilter: newParams.advancedFilter,
       headerFilters: newParams.headerFilters,
@@ -443,7 +443,7 @@ export class ItemDetailsComponent implements OnInit {
         });
           apiResult.status.statusType==="PropertyStatus"? this.addProperty=true: this.addDepot=true;
         this.status= apiResult.status;
-        this.addProperty?this.initPropertyStatusForm(apiResult.status): this.initDepositStatusForm(result.status);
+        this.addProperty?this.initPropertyStatusForm(apiResult.status): this.initDepositStatusForm(apiResult.status);
         this.attachments= apiResult.attachments;
         this.hypertextLinks = apiResult.hyperlinks;
         this.parent= apiResult.parent;
