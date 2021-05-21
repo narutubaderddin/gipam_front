@@ -29,7 +29,9 @@ export class ItemDetailsComponent implements OnInit {
     id: 145;
     titre: 'Titre';
     domain: 'Art graphique';
-    field: 'Art graphique';
+    field: { id:1,
+      label:'Art graphique'
+    };
     height: '85';
     width: '85';
     authors: 'Auteur 1, Auteur 11';
@@ -38,7 +40,9 @@ export class ItemDetailsComponent implements OnInit {
     era: '';
     materialTechnique: '';
     status: '';
-    denomination: 'Affiche';
+    denomination: { id:1,
+      label:'Affiche'
+    };
     createdAt: '22/01/2020';
   };
   editLink: boolean = true;
@@ -154,7 +158,6 @@ export class ItemDetailsComponent implements OnInit {
   getParentlinkApi(): ParentComponentApi {
     return {
       callParentMethod: () => {
-        // this.onSave()
       },
     };
   }
@@ -197,7 +200,7 @@ export class ItemDetailsComponent implements OnInit {
     this.descriptifForm = this.fb.group({
       title: [data?.title, Validators.required],
       field: [{ id: data?.field.id, name: data?.field.label }, Validators.required],
-      denomination: [data?.denomination, Validators.required],
+      denomination: [data?.denomination.id, Validators.required],
       materialTechnique: [materialTechnique, Validators.required],
       numberOfUnit: [data?.numberOfUnit, Validators.required],
       authors: [data.authors ? data.authors : []],
@@ -208,7 +211,7 @@ export class ItemDetailsComponent implements OnInit {
       depth: [data?.depth],
       weight: [data?.weight],
       diameter: [data?.diameter],
-      era: [data?.era],
+      era: [data?.era?.id],
       style: [data?.style],
       totalLength: [data?.totalLength],
       totalWidth: [data?.totalWidth],
@@ -265,7 +268,8 @@ export class ItemDetailsComponent implements OnInit {
       }
     });
   }
-  onSave(parent?: any) {
+
+  onSave(parent?: any, deletePar?:boolean) {
     this.editLink = true;
     this.btnLoading = '';
     this.formatData();
@@ -278,20 +282,33 @@ export class ItemDetailsComponent implements OnInit {
     this.descriptifForm.value.materialTechnique?.map((el: any) => {
       materialId.push(el.id);
     });
-    const data = {
-      ...this.descriptifForm.value,
-      field: this.descriptifForm.value.field.id,
-      denomination: this.descriptifForm.value.denomination.id,
-      authors: authorsId,
-      materialTechnique: materialId,
-      status: this.addProperty ? this.propertyStatusForm.value : this.depositStatusForm.value,
-      parent: parent,
-    };
+    let data:any;
+    if(deletePar){
+      data = {
+        field: this.workArt?.field?.id,
+        denomination: this.workArt?.denomination?.id,
+        parent: parent
+      }
+    }else{
+      data = {
+        ...this.descriptifForm.value,
+        field: this.descriptifForm.value.field.id,
+        denomination: this.descriptifForm.value.denomination.id,
+        authors: authorsId,
+        materialTechnique:materialId,
+        status:this.addProperty?this.propertyStatusForm.value:this.depositStatusForm.value,
+        parent: parent
+      }
+    }
 
-    this.workOfArtService.updateWorkOfArt(data, this.artWorkId).subscribe(
+      this.workOfArtService.updateWorkOfArt(data, this.artWorkId).subscribe(
       (result) => {
         this.getArtWork(this.artWorkId);
-        this.addSingle('success', 'Modification', 'Notice modifiée avec succée');
+        if(deletePar){
+          this.addSingle('success', 'Suppression', 'Lien avec oeuvres supprimé avec succée');
+        }else {
+          this.addSingle('success', 'Modification', 'Notice modifiée avec succée');
+        }
         this.edit = false;
         this.editLink = false;
       },
@@ -320,7 +337,7 @@ export class ItemDetailsComponent implements OnInit {
     const newParams = JSON.parse(localStorage.getItem(searchPageFilter));
 
     this.searchPageParam = {
-      mode: newParams.mode,
+      mode: newParams?.mode,
       filter: newParams.filter,
       advancedFilter: newParams.advancedFilter,
       headerFilters: newParams.headerFilters,
@@ -405,29 +422,32 @@ export class ItemDetailsComponent implements OnInit {
   setArtwork(apiResult: any) {
     this.photographies = [];
 
-    this.workArt = apiResult;
-    this.initDescriptifForm(apiResult);
-    apiResult.photographies.map((el: any, index: number) => {
-      this.photographies.push({
-        workArtId: apiResult.id,
-        id: el.id,
-        imageUrl: el.imagePreview,
-        alt: 'description',
-        i: index,
-        image: el.imageName,
-        photographyDate: this.datePipe.transform(el.date, dateTimeFormat),
-        photographyName: el.imageName,
-        photographyType: el.photographyType,
-        imageName: el.imageName,
-      });
-    });
-    apiResult.status.statusType === 'PropertyStatus' ? (this.addProperty = true) : (this.addDepot = true);
-    this.status = apiResult.status;
-    this.addProperty ? this.initPropertyStatusForm(apiResult.status) : this.initDepositStatusForm(apiResult.status);
-    this.attachments = apiResult.attachments;
-    this.hypertextLinks = apiResult.hyperlinks;
-    this.parent = apiResult.parent;
-    this.children = apiResult.children;
+        this.workArt= apiResult;
+        this.initDescriptifForm(apiResult);
+          apiResult.photographies.map((el:any, index:number)=>{
+          this.photographies.push({
+            workArtId: apiResult.id,
+            id:el.id,
+            imageUrl: el.imagePreview,
+            imagePreview: el.imagePreview,
+            alt: 'description',
+            i: index,
+            image: el.imageName,
+            date:this.datePipe.transform(el.date, dateTimeFormat),
+            photographyDate: this.datePipe.transform(el.date, dateTimeFormat),
+            photographyName: el.imageName,
+            photographyType: el.photographyType,
+            imageName: el.imageName,
+
+          });
+        });
+          apiResult.status.statusType==="PropertyStatus"? this.addProperty=true: this.addDepot=true;
+        this.status= apiResult.status;
+        this.addProperty?this.initPropertyStatusForm(apiResult.status): this.initDepositStatusForm(apiResult.status);
+        this.attachments= apiResult.attachments;
+        this.hypertextLinks = apiResult.hyperlinks;
+        this.parent= apiResult.parent;
+        this.children= apiResult.children;
   }
 
   addSingle(type: string, sum: string, msg: string) {

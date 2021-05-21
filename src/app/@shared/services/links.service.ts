@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 
 @Injectable({
@@ -15,6 +15,24 @@ export class LinksService {
   updateAttachments(data: any, id: any): Observable<any> {
     console.log(data, id);
     return this.http.patch(`/attachments/${id}`, data);
+  }
+  deleteAttachments(data: any, id: any) : Observable<any> {
+    let params = new HttpParams();
+    Object.keys(data).forEach((key) => {
+      if (data[key]) {
+        params = params.append(key, data[key]);
+      }
+    });
+    return this.http.delete<any>(`/attachments/${id}`, {params});
+  }
+  deleteLinks(data: any, id: any) : Observable<any> {
+    let params = new HttpParams();
+    Object.keys(data).forEach((key) => {
+      if (data[key]) {
+        params = params.append(key, data[key]);
+      }
+    });
+    return this.http.delete<any>(`/hyperLink/${id}`, {params});
   }
   getFormErrors(errors: any, sum: string) {
     if (!errors) {
