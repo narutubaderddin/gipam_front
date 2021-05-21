@@ -18,8 +18,10 @@ export class LinksComponent implements OnInit, OnChanges {
   @Input() children: any = '';
   @Input() existingLink: any;
   @Input() editWorkArtLinks: boolean;
-
+  @Input() loadingData: any= null;
   @Output() update = new EventEmitter<any>();
+  @Output() deleteParent = new EventEmitter<any>();
+
   addLinks: boolean = false;
   editLinks: boolean = false;
   artWorksData: any[] = [];
@@ -37,6 +39,7 @@ export class LinksComponent implements OnInit, OnChanges {
     },
   ];
   link: any;
+
   constructor(
     private artWorkService: ArtWorkService,
     private workOfArtService: WorkOfArtService,
@@ -119,6 +122,9 @@ export class LinksComponent implements OnInit, OnChanges {
   removeLink(i: number) {
     this.existingLinks.splice(i, 1);
     this.deleteDialog = false;
+
+    this.linkArtWorkForm.get('parent').setValue(null)
+    this.deleteParent.emit(this.linkArtWorkForm.value.parent);
   }
   getIndex(el: any) {
     return this.existingLinks.indexOf(el);

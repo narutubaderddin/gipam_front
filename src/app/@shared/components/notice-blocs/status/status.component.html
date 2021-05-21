@@ -1,7 +1,7 @@
 <div class="form-bloc">
   <h5 class="col-md-12"><i class="far fa-calendar-alt"></i> Statut</h5>
   <div class="form-bloc pl-0" *ngIf="addDeposit">
-    <form [formGroup]="depositStatusForm" class="form-bloc pl-0">
+    <form [formGroup]="depositStatusForm" *ngIf="depositStatusForm" class="form-bloc pl-0">
     <div class="form-bloc pl-0" *ngIf="addDeposit" >
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
         <label class="">Date de dépôt</label>
@@ -46,6 +46,7 @@
           formControlName="depositor"
           (onChange)="onSelect($event, 'depositor')"
           id="deposant"
+          *ngIf="edit"
         >
         </p-dropdown>
         <div class="value" *ngIf="!edit">{{ statusData.depsitorName }}</div>
@@ -138,7 +139,7 @@
         >
         </p-dropdown>
       </div>
-      <div class="value" *ngIf="!edit">{{ statusData.category.label }}</div>
+      <div class="value" *ngIf="!edit">{{ statusData?.category?.label }}</div>
     </div>
   </div>
   </form>

@@ -44,7 +44,7 @@ export class AttachmentsComponent implements OnInit, OnChanges {
 
   previousType: any;
   deleteDialog: boolean = false;
-  itemToDelete: string;
+  itemToDelete: any={};
   btnLoading: any = null;
   get attachments(): FormArray {
     return this.attachmentForm.get('attachments') as FormArray;
@@ -58,24 +58,21 @@ export class AttachmentsComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.getAllTypes();
-    if (this.itemDetails) {
+
+    if (this.itemDetails && this.existingAttachments.length) {
       this.existingAttachments.map((el: any) => {
+        console.log('here')
         this.filesProperties.push({ edit: false, delete: false });
         this.files.push(el.link);
         this.attachments.push(this.createAttachment(el.link, el.attachementType.id, el.id));
       });
     }
   }
+  get items() {
+    return this.existingAttachments;
+  }
   ngOnChanges() {
-    if (this.existingAttachments) {
-      if (this.itemDetails) {
-        this.existingAttachments.map((el: any) => {
-          this.filesProperties.push({ edit: false, delete: false });
-          this.files.push(el.link);
-          this.attachments.push(this.createAttachment(el.link, el.attachmentType.id, el.id));
-        });
-      }
-    }
+
   }
 
   initData(photography?: any, photographyType?: any) {
@@ -135,10 +132,27 @@ export class AttachmentsComponent implements OnInit, OnChanges {
   }
 
   deleteAttachment(index: number) {
-    this.files.splice(index, 1);
-    this.attachments.removeAt(index);
-    this.deleteDialog = false;
+    // this.files.splice(index, 1);
+    // this.attachments.removeAt(index);
+
+      this.btnLoading = '';
+      this.linksService.deleteAttachments({furniture:this.artwork.id},this.itemToDelete.id).subscribe(
+        result=>{
+          this.callParent();
+          this.addSingle('success', 'Suppresion', 'Pièce jointe supprimée avec succés');
+          this.btnLoading = null;
+          this.deleteDialog = false;
+
+        },
+        error=>{
+          console.log(error)
+          this.addSingle('error', 'Suppresion', error.error.message);
+          this.btnLoading = null;
+        }
+      )
+
   }
+
 
   validate() {
     if (!this.addedFile || !this.attachmentType) {
@@ -198,7 +212,7 @@ export class AttachmentsComponent implements OnInit, OnChanges {
   }
   cancelDelete() {
     this.deleteDialog = false;
-    this.itemToDelete = '';
+    this.itemToDelete = {};
   }
   addSingle(type: string, sum: string, msg: string) {
     this.messageService.add({ severity: type, summary: sum, detail: msg });

@@ -51,7 +51,7 @@
                   <div class="detail-image">
                     <div class="col-md-12 d-flex p-0 img-wrapper mt-2 mt-sm-0">
                       <app-item-images
-                        *ngIf="photographies.length"
+                        [existingPhotographies]="photographies"
                         [photographiesForm]="photographiesForm"
                         [edit]="edit"
                         [images]="photographies"
@@ -80,7 +80,7 @@
                               *ngIf="workArt"
                               [edit]="edit"
                               [artwork]="workArt"
-                              [addProperty]="false"
+                              [addProperty]="addProperty"
                               [addDepot]="false"
                               [descriptifForm]="descriptifForm"
                               (attributes)="getAttributes($event)"
@@ -131,7 +131,9 @@
                           [itemDetails]="true"
                           [linkArtWorkForm]="linkArtWorkForm"
                           [editWorkArtLinks]="editLink"
+                          [loadingData]="btnLoading"
                           (update)="onSave($event)"
+                          (deleteParent)="onSave($event,true)"
                         ></app-links>
                       </div>
                     </div>
@@ -142,6 +144,8 @@
                         [itemDetails]="true"
                         [linksForm]="linksForm"
                         [existingLinks]="hypertextLinks"
+                        [artwork]="workArt"
+                        [parentApi]="getParentApi()"
                         class="mt-2 mb-2"
                       >
                       </app-hypertext-links>
