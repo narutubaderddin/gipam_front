@@ -992,3 +992,10 @@ div.mode {
     color: #607d8b !important;
   }
 }
+.container-file {
+  display: inline-grid;
+}
+
+.content-file, .overlay {
+  grid-area: 1 / 1;
+}
