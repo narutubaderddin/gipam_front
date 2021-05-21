@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
+import {RequestService} from '@shared/services/request.service';
 
 @Component({
   selector: 'app-portail-img-details',
@@ -11,7 +12,9 @@ export class PortailImgDetailsComponent implements OnInit {
   source: string;
   showMore: boolean;
 
-  constructor(private route: ActivatedRoute, private workOfArtService: WorkOfArtService) {}
+  constructor(private route: ActivatedRoute,
+              private workOfArtService: WorkOfArtService,
+              private requestService: RequestService) {}
   isCollapsed: boolean = true;
   artWorkId: string;
   artWork: any;
@@ -37,5 +40,11 @@ export class PortailImgDetailsComponent implements OnInit {
   }
   showDetails(e: any) {
     this.showMore = e;
+  }
+  exportArtWork(){
+    const artWorksIds: any = [this.artWorkId];
+    this.requestService.exportRequest(artWorksIds).subscribe((response: Response | any) => {
+      this.requestService.manageFileResponseDownload(response, 'Oeuvre Graphique');
+    });
   }
 }
