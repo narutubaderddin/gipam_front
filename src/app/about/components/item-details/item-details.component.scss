@@ -589,3 +589,9 @@ button {
   z-index: 9999;
   margin: 0;
 }
+
+:host a.disabled {
+  color: white !important;
+  cursor: default !important;
+  pointer-events: none;
+}
