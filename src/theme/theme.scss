@@ -835,6 +835,16 @@ ng-file-drag-drop {
     }
   }
 }
+.p-multiselect .p-multiselect-trigger {
+  background: #2196f3 !important;
+  color: #ffff;
+  width: 1.9rem;
+}
+.p-dropdown .p-dropdown-trigger {
+  background: #2196f3 !important;
+  color: #ffff;
+  width: 1.9rem;
+}
 .p-multiselect-label-container {
   overflow: hidden;
   max-width: 15rem;
