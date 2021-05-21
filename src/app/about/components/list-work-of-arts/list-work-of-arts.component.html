@@ -513,11 +513,14 @@
                             ></ngx-slider>
                           </div>
                         </div>
-                        <select class="select-style input-form-control col-md-2" formControlName="weightOperator">
-                          <option value="and">Et</option>
-                          <option value="or">Ou</option>
-                          <option value="not">Sauf</option>
-                        </select>
+                        <div class="col-md-2 multiSelectBlock">
+                          <p-dropdown
+                            [options]="operatorData"
+                            formControlName="weightOperator"
+                            optionLabel="name"
+                            optionValue="id"
+                          ></p-dropdown>
+                        </div>
                       </div>
                       <div class="form-group slider-bloc row">
                         <div class="row col-12">
@@ -562,13 +565,15 @@
           placement="bottom-left"
           autoClose="outside"
           container="body"
-          (openChange)="onToggel($event, 'form1')"
+          (openChange)="onToggel($event, 'statusForm')"
           class="d-inline-block drop-bloc"
         >
-          <ng-template #TemplateForm1>
-            <p *ngFor="let value of form1Values; let index = index">
-              <span>{{ value | formValue }}</span>
-            </p>
+          <ng-template #TemplateStatusForm>
+            <div class="width:500px">
+              <p *ngFor="let value of formStatusValue; let index = index">
+                <span>{{ value | formValue }}</span>
+              </p>
+            </div>
           </ng-template>
           <button
             class="btn dropdown-btn list quick-filter-btn"
@@ -582,10 +587,17 @@
               <i class="fa fa-sort-down" *ngIf="!firstSearchDrop && form1Values.length > 0"></i>
             </span>
             <div
-              [ngbTooltip]="form1Values.length > 0 ? TemplateForm1 : ''"
+              [ngbTooltip]="formStatusValue.length > 0 ? TemplateStatusForm : ''"
               placement="right"
-              *ngIf="!firstSearchDrop && form1Values.length > 0"
-            ></div>
+              *ngIf="!statusFormSearchDrop && formStatusValue.length > 0"
+            >
+              <div class="mt-3">
+                <p *ngFor="let value of formStatusValue; let index = index">
+                  <span *ngIf="index < 4">{{ value | formValue }}</span>
+                </p>
+                <p *ngIf="showForm1End">...</p>
+              </div>
+            </div>
           </button>
           <div
             class="py-0 ng-dropdown"
@@ -1213,6 +1225,18 @@
     <div *ngIf="showDatatable">
       <div class="filter-bloc d-flex">
         <div class="d-flex">
+          <div class="mb-2 mr-2 mb-sm-0">
+            <div>
+              <button
+                (click)="formsReset()"
+                id="dropdownBasisch"
+                translate
+                style="border-color: transparent; background: transparent; color: black; font-size: 23px"
+              >
+                <i class="fas fa-ban"></i>
+              </button>
+            </div>
+          </div>
           <div class="dropdown-container mb-2 mr-2 mb-sm-0">
             <div
               ngbDropdown
@@ -1228,6 +1252,7 @@
                 translate
                 style="background-color: #0466c8"
               >
+                <i class="fas fa-cog fa-spin" [hidden]="!exportingNotice" style="color: white"></i>
                 <i class="fas fa-file-export" style="color: white"></i>
               </button>
               <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">
@@ -1305,7 +1330,7 @@
         <p-progressSpinner></p-progressSpinner>
       </div>
       <ng-template #dataTable>
-        <div class="datatable mt-4" *ngIf="showDatatable && artWorkResults.length > 0 && this.columns?.length > 0">
+        <div class="datatable mt-4" *ngIf="showDatatable && artWorkResults?.length >= 0 && this.columns?.length > 0">
           <div *ngIf="selectedRowCount > 1">
             <div class="mass-action-container">
               <i class="fas fa-share"></i>
@@ -1322,6 +1347,7 @@
                 Créer recolement
               </button>
               <button class="btn add-action" (click)="PrinNoticePDF()" translate>
+                <i class="fas fa-cog fa-spin" [hidden]="!printingNotice"></i>
                 <i class="fas fa-print"></i>
                 Imprimer
               </button>
@@ -1363,6 +1389,7 @@
                 Modifier
               </button>
               <button class="btn add-action" (click)="PrinNoticePDF()" translate>
+                <i class="fas fa-cog fa-spin" [hidden]="!printingNotice"></i>
                 <i class="fas fa-print"></i>
                 Imprimer
               </button>
@@ -1370,7 +1397,7 @@
                 <i class="fas fa-file-export"></i>
                 Export
               </button>
-              <button class="btn add-action" translate>
+              <button class="btn add-action" (click)="duplicate()" translate>
                 <i class="fas fa-copy"></i>
                 Dupliquer
               </button>
@@ -1384,6 +1411,7 @@
             [frozenCols]="frozenCols"
             [frozenWidth]="'200px'"
             [checkBoxSelection]="true"
+            identifierKey="id"
             (sort)="sortEvent($event)"
             [loading]="loading"
             (pageChanged)="pagination($event)"
@@ -1454,9 +1482,6 @@
                             </td>
                             <td pTooltip="Imprimer" tooltipPosition="top">
                               <i class="fas fa-print icon-media" (click)="PrinNoticePDF()"></i>
-                            </td>
-                            <td pTooltip="Partager" tooltipPosition="top">
-                              <i class="fas fa-share icon-media"></i>
                             </td>
                             <td pTooltip="Export" tooltipPosition="top">
                               <i class="fas fa-file-export icon-media"></i>

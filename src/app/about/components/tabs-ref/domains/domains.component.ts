@@ -272,6 +272,10 @@ export class DomainsComponent implements OnInit {
       },
       (error) => {
         this.btnLoading = null;
+        if (error.error.code === 400) {
+          this.addSingle('error', 'Ajout', tabRefFormBackendErrorMessage);
+          this.simpleTabsRef.getFormErrors(error.error.errors, 'Ajout');
+        }
         this.close();
       }
     );
