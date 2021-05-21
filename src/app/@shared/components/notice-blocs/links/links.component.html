@@ -1,5 +1,5 @@
 <div class="col-md-12 pl-0">
-  <div class="col-md-12 p-0">
+  <div class="col-md-12 p-0" *ngIf="!add">
     <h5 class="pl-0">Liens avec oeuvres</h5>
     <div class="d-flex justify-content-end" *ngIf="(addLinks || existingLinks.length) && !parentLink && !add">
       <button class="btn add-action col-7" (click)="addNewLinks()">
@@ -18,8 +18,10 @@
           field="data"
           (completeMethod)="search($event)"
           [dropdown]="true"
+          [ngModelOptions]="{ standalone: true }"
           (onSelect)="handleSelect($event)"
           (onShow)="change()"
+          [(ngModel)]="link"
           minLength="3"
           virtualScroll="true"
           defaultLabel="Sélectionner un numéro d'inventaire"
