@@ -1223,89 +1223,11 @@
       </div>
     </div>
     <div *ngIf="showDatatable">
-      <div class="filter-bloc d-flex align-content-center">
-        <div class="d-flex">
-          <button
-            class="btn dropdown-container headers-btn mr-2"
-            title="Supprimer les filtres"
-            (click)="formsReset()"
-            translate
-          >
-            <i class="pi pi-filter-slash"></i>
-          </button>
-          <div
-            ngbDropdown
-            placement="bottom-right"
-            class="d-inline-block drop-bloc mr-2"
-            autoClose="outside"
-            container="body"
-          >
-            <button
-              class="btn dropdown-btn headers-btn"
-              id="dropdownBasic"
-              ngbDropdownToggle
-              translate
-              style="background-color: #0466c8"
-              title="Exporter les notices"
-            >
-              <i class="fas fa-cog fa-spin" [hidden]="!exportingNotice" style="color: white"></i>
-              <i class="fas fa-file-export" style="color: white"></i>
-              Exporter
-            </button>
-            <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">
-              <ul class="list-group">
-                <li class="list-group-item" (click)="exportNotices('catalogue')">
-                  <i class="fas fa-file-export"></i> Exporter Notices style catalogue
-                </li>
-                <li class="list-group-item" (click)="exportNotices('techniques')">
-                  <i class="fas fa-file-export"></i> Exporter Notices techniques
-                </li>
-                <li class="list-group-item">
-                  <i class="fas fa-file-export"></i> Exporter Notices complètes techniques
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div
-            ngbDropdown
-            placement="bottom-right"
-            class="d-inline-block drop-bloc mr-2"
-            autoClose="outside"
-            container="body"
-          >
-            <button
-              title="Configurer les colonnes"
-              class="btn dropdown-btn headers-btn"
-              id="dropdownBasic1"
-              ngbDropdownToggle
-              translate
-            >
-              <i class="fas fa-cog"></i>
-              Colonnes
-            </button>
-            <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic1">
-              <div class="columns-dropdown header-dropdown">
-                <div class="col-12 col-sm-6 pt-1 column-check" *ngFor="let headerCol of visibleCol">
-                  <label class="checkbox-container" translate
-                    >{{ headerCol.header }}
-                    <input
-                      type="checkbox"
-                      #headerCheck
-                      (click)="onHeaderToggle(headerCol, $event)"
-                      [checked]="headerCol.isVisible"
-                    />
-                    <span class="checkmark"></span>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="search-quick-fliter-bloc d-flex flex-content-between">
+      <div class="search-quick-fliter-bloc d-flex flex-content-between mt-3">
         <div class="d-flex">
           <div class="search-panel">
             <input
+              [hidden]="mode === 'pictures'"
               (keyup.enter)="onSearchClick('local')"
               class="form-control"
               type="text"
@@ -1314,6 +1236,85 @@
               autocomplete="off"
               placeholder="Recherche"
             />
+          </div>
+        </div>
+        <div class="filter-bloc d-flex align-content-center">
+          <div class="d-flex">
+            <button
+              class="btn btn-sm headers-btn mr-2 d-flex align-items-center"
+              title="Supprimer les filtres"
+              (click)="formsReset()"
+              translate
+            >
+              <span class="pi pi-filter-slash"></span>
+            </button>
+            <div
+              ngbDropdown
+              placement="bottom-right"
+              class="d-inline-block drop-bloc mr-2"
+              autoClose="outside"
+              container="body"
+            >
+              <button
+                class="btn btn-sm dropdown-toggle headers-btn"
+                id="dropdownBasic"
+                ngbDropdownToggle
+                translate
+                style="background-color: #0466c8"
+                title="Exporter les notices"
+              >
+                <i class="fas fa-cog fa-spin" [hidden]="!exportingNotice" style="color: white"></i>
+                <i class="fas fa-file-export" style="color: white"></i>
+                Exporter
+              </button>
+              <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">
+                <ul class="list-group">
+                  <li class="list-group-item" (click)="exportNotices('catalogue')">
+                    <i class="fas fa-file-export"></i> Exporter Notices style catalogue
+                  </li>
+                  <li class="list-group-item" (click)="exportNotices('techniques')">
+                    <i class="fas fa-file-export"></i> Exporter Notices techniques
+                  </li>
+                  <li class="list-group-item">
+                    <i class="fas fa-file-export"></i> Exporter Notices complètes techniques
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div
+              ngbDropdown
+              placement="bottom-right"
+              class="d-inline-block drop-bloc"
+              autoClose="outside"
+              container="body"
+            >
+              <button
+                title="Configurer les colonnes"
+                class="btn btn-sm dropdown-toggle headers-btn"
+                id="dropdownBasic1"
+                ngbDropdownToggle
+                translate
+              >
+                <i class="fas fa-cog"></i>
+                Colonnes
+              </button>
+              <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <div class="columns-dropdown header-dropdown">
+                  <div class="col-12 col-sm-6 pt-1 column-check" *ngFor="let headerCol of visibleCol">
+                    <label class="checkbox-container" translate
+                      >{{ headerCol.header }}
+                      <input
+                        type="checkbox"
+                        #headerCheck
+                        (click)="onHeaderToggle(headerCol, $event)"
+                        [checked]="headerCol.isVisible"
+                      />
+                      <span class="checkmark"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -32,6 +32,8 @@ import { lastArtOfWorkDetailIndex } from '@shared/utils/helpers';
 export class ListWorkOfArtsComponent implements OnInit {
   @ViewChildren('accordionSectionDOM', { read: ElementRef }) accordionsDOM: QueryList<ElementRef>;
   @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
+  @ViewChild('globalSearch') searchButton: Input;
+
   isCollapsed = true;
   showDatatable = false;
   printingNotice = false;
@@ -136,8 +138,11 @@ export class ListWorkOfArtsComponent implements OnInit {
   statusFormSearchDrop: any;
   lastFilter = { empty: true };
   filterChanged = false;
+  selectedOeuvres: any[] = [];
+  artWorkResults: any[] = [];
 
   private showFormStatusEnd: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     public columnFilterService: ColumnFilterService,
@@ -156,6 +161,34 @@ export class ListWorkOfArtsComponent implements OnInit {
     private pdfGeneratorService: PdfGeneratorService,
     private requestService: RequestService
   ) {}
+
+  ngOnInit(): void {
+    this.searchQuery = '';
+    this.initFilterData();
+    this.oeuvreToShow = this.oeuvres;
+    this.initFilterFormGroup();
+    this.domaine = this.WorkOfArtService.domaine;
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'name',
+      selectAllText: 'Sélectionner tout',
+      unSelectAllText: 'Supprimer les sélections',
+      // itemsShowLimit: 2,
+      allowSearchFilter: true,
+    };
+    this.initForms();
+    this.onChanges();
+    this.globalSearch = this.activatedRoute.snapshot.queryParams['search'];
+    if (this.globalSearch && this.globalSearch.length > 0) {
+      this.router.navigate(['.'], { relativeTo: this.activatedRoute, queryParams: {} });
+      this.onSearchClick('global');
+    }
+    this.inventoryOptions = {
+      floor: 0,
+      ceil: 9999,
+    };
+  }
 
   initData(filter: any, advancedFilter: any, headerFilters: any = {}, page = 1) {
     let sort = 'desc';
@@ -230,41 +263,12 @@ export class ListWorkOfArtsComponent implements OnInit {
       this.filterChanged = true;
       return true;
     }
+    this.filterChanged = false;
     return false;
   }
 
   addSingle(type: string, sum: string, msg: string) {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
-  }
-  selectedOeuvres: any[] = [];
-  artWorkResults: any[] = [];
-  @ViewChild('globalSearch') searchButton: Input;
-  ngOnInit(): void {
-    this.searchQuery = '';
-    this.initFilterData();
-    this.oeuvreToShow = this.oeuvres;
-    this.initFilterFormGroup();
-    this.domaine = this.WorkOfArtService.domaine;
-    this.dropdownSettings = {
-      singleSelection: false,
-      idField: 'id',
-      textField: 'name',
-      selectAllText: 'Sélectionner tout',
-      unSelectAllText: 'Supprimer les sélections',
-      // itemsShowLimit: 2,
-      allowSearchFilter: true,
-    };
-    this.initForms();
-    this.onChanges();
-    this.globalSearch = this.activatedRoute.snapshot.queryParams['search'];
-    if (this.globalSearch && this.globalSearch.length > 0) {
-      this.router.navigate(['.'], { relativeTo: this.activatedRoute, queryParams: {} });
-      this.onSearchClick('global');
-    }
-    this.inventoryOptions = {
-      floor: 0,
-      ceil: 9999,
-    };
   }
 
   saveArtOfWorkIndex(index: number) {
@@ -1572,6 +1576,9 @@ export class ListWorkOfArtsComponent implements OnInit {
   }
 
   formsReset() {
+    if (!this.filterChanged) {
+      return;
+    }
     this.formStatus.reset({
       status: [],
       deposant: [],
