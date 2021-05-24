@@ -199,8 +199,8 @@ export class ItemDetailsComponent implements OnInit {
   initDescriptifForm(data?: any) {
     this.descriptifForm = this.fb.group({
       title: [data?.title, Validators.required],
-      field: [{ id: data?.field.id, name: data?.field.label }, Validators.required],
-      denomination: [{ id: data?.denomination.id, name: data?.denomination.label }, Validators.required],
+      field: [{ id: data?.field?.id, name: data?.field.label }, Validators.required],
+      denomination: [{ id: data?.denomination?.id, name: data?.denomination.label }, Validators.required],
       materialTechnique: [
         data && data.materialTechnique ? this.formatArray(data.materialTechnique) : null,
         Validators.required,
@@ -489,12 +489,7 @@ export class ItemDetailsComponent implements OnInit {
         imageName: el.imageName,
       });
     });
-    // this.photographies.map((el: any) => {
-    //   this.images2.push(
-    //     this.createPhotography(el.imagePreview, el.date, el.photographyType, el.imageName)
-    //   );
-    // });
-    console.log("images2", this.images2)
+
     apiResult.status.statusType === 'PropertyStatus' ? (this.addProperty = true) : (this.addDepot = true);
     this.status = apiResult.status;
     this.addProperty ? this.initPropertyStatusForm(apiResult.status) : this.initDepositStatusForm(apiResult.status);
