@@ -95,6 +95,7 @@
               <p-dropdown
                 class="col-md-12"
                 *ngIf="addImage || editType || add"
+                (onShow)="verifyIdentification($event)"
                 [style]="{ minWidth: '100%' }"
                 [options]="types"
                 [(ngModel)]="photographyType"
