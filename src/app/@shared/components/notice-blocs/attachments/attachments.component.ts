@@ -92,12 +92,20 @@ export class AttachmentsComponent implements OnInit, OnChanges {
   }
   createAttachment(attachment?: any, attachmentType?: any, id?: any): FormGroup {
     // this.filesProperties.push({ edit: false, delete: false });
-    return this.fb.group({
-      id: [id],
-      link: [attachment, [Validators.required]],
-      attachmentType: [attachmentType, [Validators.required]],
-      comment: [''],
-    });
+    if (this.itemDetails) {
+      return this.fb.group({
+        id: [id],
+        link: [attachment, [Validators.required]],
+        attachmentType: [attachmentType, [Validators.required]],
+        comment: [''],
+      });
+    } else {
+      return this.fb.group({
+        link: [attachment, [Validators.required]],
+        attachmentType: [attachmentType, [Validators.required]],
+        comment: [''],
+      });
+    }
   }
   editAttachmentForm(index?: any, attachment?: any, attachmentType?: any, item?: any) {
     if (this.itemDetails) {
