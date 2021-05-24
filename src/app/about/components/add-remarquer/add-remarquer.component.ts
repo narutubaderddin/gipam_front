@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { NgWizardConfig, NgWizardService, StepChangedArgs, StepValidationArgs, THEME } from 'ng-wizard';
 import { forkJoin, Observable, of, Subscription } from 'rxjs';
@@ -18,7 +18,7 @@ import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
   styleUrls: ['./add-remarquer.component.scss'],
   providers: [DatePipe],
 })
-export class AddRemarquerComponent implements OnInit {
+export class AddRemarquerComponent implements OnInit, OnDestroy {
   @ViewChild('content') ngTemplate: ElementRef;
   domainData: any[];
   denominationData: any[];
@@ -72,7 +72,7 @@ export class AddRemarquerComponent implements OnInit {
   isLoading = false;
   loadingData = true;
   strIntoObj: any[] = [];
-  createdNoticeId = 'null';
+  createdNoticeId: any = null;
   toCreateNoticeId = 'null';
   submitted = false;
   attachmentData: any[] = [];
@@ -97,6 +97,7 @@ export class AddRemarquerComponent implements OnInit {
     this.routeSubscription = this.route.data.subscribe((res: any) => {
       if (res) {
         this.inProgressNotice = res.addRemarquer;
+        console.log(this.inProgressNotice);
         this.inProgressNotice.hyperlinks ? (this.hyperLinkData = this.inProgressNotice.hyperlinks) : null;
         this.inProgressNotice.attachments ? (this.attachmentData = this.inProgressNotice.attachments) : null;
         this.inProgressNotice.photographies ? (this.photographyData = this.inProgressNotice.photographies) : null;
@@ -121,6 +122,11 @@ export class AddRemarquerComponent implements OnInit {
       this.addProperty = false;
       this.descriptionTitle = "Création d'une notice en dépôt";
     }
+  }
+
+  ngOnDestroy(): void {
+    // this.inProgressNotice = [];
+    // this.initForms();
   }
 
   ngOnInit(): void {
@@ -310,6 +316,7 @@ export class AddRemarquerComponent implements OnInit {
         // append nested object
         for (let previewKey in this.descriptifForm.value[dataKey]) {
           for (let key in this.descriptifForm.value[dataKey][previewKey]) {
+            console.log([dataKey][previewKey][key], this.descriptifForm.value[dataKey][previewKey][key]);
             formData.append(`${dataKey}[${previewKey}][${key}]`, this.descriptifForm.value[dataKey][previewKey][key]);
           }
         }
@@ -339,38 +346,51 @@ export class AddRemarquerComponent implements OnInit {
     this.formatData();
 
     let formData = new FormData();
-
-    if (this.addProperty) {
-      this.propertyStatusForm.get('marking').setValue(this.descriptifForm.get('marking').value);
-      this.propertyStatusForm
-        .get('registrationSignature')
-        .setValue(this.descriptifForm.get('registrationSignature').value);
-      this.propertyStatusForm.get('descriptiveWords').setValue(this.descriptifForm.get('descriptiveWords').value);
-      this.propertyStatusForm.get('description').setValue(this.descriptifForm.get('description').value);
-      console.log(this.descriptifForm.value);
+    this.inProgressNotice
+      ? (this.toCreateNoticeId = this.inProgressNotice.id)
+      : (this.toCreateNoticeId = this.createdNoticeId);
+    if (!this.toCreateNoticeId) {
+      if (this.addProperty) {
+        this.propertyStatusForm.get('marking').setValue(this.descriptifForm.get('marking').value);
+        this.propertyStatusForm
+          .get('registrationSignature')
+          .setValue(this.descriptifForm.get('registrationSignature').value);
+        this.propertyStatusForm.get('descriptiveWords').setValue(this.descriptifForm.get('descriptiveWords').value);
+        this.propertyStatusForm.get('description').setValue(this.descriptifForm.get('description').value);
+        this.buildFormData(formData);
+        this.workOfArtService.addWorkOfArt(formData).subscribe(
+          (result) => {
+            this.addSingle('success', 'Ajout', result.msg);
+            this.isLoading = false;
+            this.submitted = true;
+            this.createdNoticeId = result.res.id;
+          },
+          (err) => {
+            this.addSingle('error', 'Ajout', "Une erreur est survenue lors de l'ajout");
+          }
+        );
+      } else {
+        this.buildFormData(formData);
+        this.workOfArtService.addDepositWorkOfArt(formData).subscribe(
+          (result) => {
+            this.isLoading = false;
+            this.submitted = true;
+            this.createdNoticeId = result.res.id;
+            this.addSingle('success', 'Ajout', 'La notice a été ajoutée avec succès');
+          },
+          (err) => {
+            this.addSingle('error', 'Ajout', "Une erreur est survenue lors de l'ajout");
+          }
+        );
+      }
+    } else {
       this.buildFormData(formData);
-      this.inProgressNotice
-        ? (this.toCreateNoticeId = this.inProgressNotice.id)
-        : (this.toCreateNoticeId = this.createdNoticeId);
-      this.workOfArtService.addWorkOfArt(formData, this.toCreateNoticeId).subscribe(
+      this.workOfArtService.updateInProgressArtWork(formData, this.toCreateNoticeId).subscribe(
         (result) => {
           this.addSingle('success', 'Ajout', result.msg);
           this.isLoading = false;
           this.submitted = true;
           this.createdNoticeId = result.res.id;
-        },
-        (err) => {
-          this.addSingle('error', 'Ajout', "Une erreur est survenue lors de l'ajout");
-        }
-      );
-    } else {
-      this.buildFormData(formData);
-      this.workOfArtService.addDepositWorkOfArt(formData).subscribe(
-        (result) => {
-          this.isLoading = false;
-          this.submitted = true;
-          this.createdNoticeId = result.res.id;
-          this.addSingle('success', 'Ajout', 'La notice a été ajoutée avec succès');
         },
         (err) => {
           this.addSingle('error', 'Ajout', "Une erreur est survenue lors de l'ajout");

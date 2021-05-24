@@ -2,59 +2,59 @@
   <h5 class="col-md-12"><i class="far fa-calendar-alt"></i> Statut</h5>
   <div class="form-bloc pl-0" *ngIf="addDeposit">
     <form [formGroup]="depositStatusForm" *ngIf="depositStatusForm" class="form-bloc pl-0">
-    <div class="form-bloc pl-0" *ngIf="addDeposit" >
-      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
-        <label class="">Date de dépôt</label>
-        <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
-          <p-calendar
-            dateFormat="yy-mm-dd"
-            class="col-md-12"
-            [style]="{ minWidth: '100%' }"
-            formControlName="depositDate"
-            [showIcon]="true"
-            inputId="icon"
-            (onSelect)="onSelectDepositDate($event)"
-          ></p-calendar>
+      <div class="form-bloc pl-0" *ngIf="addDeposit">
+        <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
+          <label class="">Date de dépôt</label>
+          <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
+            <p-calendar
+              dateFormat="yy-mm-dd"
+              class="col-md-12"
+              [style]="{ minWidth: '100%' }"
+              formControlName="depositDate"
+              [showIcon]="true"
+              inputId="icon"
+              (onSelect)="onSelectDepositDate($event)"
+            ></p-calendar>
+          </div>
+          <div class="value" *ngIf="!edit">{{ statusData.depositDate | date: viewDateFormat }}</div>
         </div>
-        <div class="value" *ngIf="!edit">{{ statusData.depositDate | date: viewDateFormat }}</div>
+        <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
+          <label class="">N° arrêt</label>
+          <input
+            type="number"
+            class="form-control value col-12 col-sm-7"
+            *ngIf="edit"
+            formControlName="stopNumber"
+            placeholder="N° arrêt"
+            id="number"
+          />
+          <p class="value" *ngIf="!edit">{{ statusData.stopNumber }}</p>
+        </div>
       </div>
-      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
-        <label class="">N° arrêt</label>
-        <input
-          type="number"
-          class="form-control value col-12 col-sm-7"
-          *ngIf="edit"
-          formControlName="stopNumber"
-          placeholder="N° arrêt"
-          id="number"
-        />
-        <p class="value" *ngIf="!edit">{{ statusData.stopNumber }}</p>
-      </div>
-    </div>
 
-    <div class="form-group col-md-12 flex-wrap flex-sm-nowrap">
-      <div class="form-group col-md-8 pl-0">
-        <label style="" class="">Déposant</label>
-        <p-dropdown
-          class="select col-md-12 col-sm-12 p-sm-0 col-12"
-          [style]="{ width: '100%' }"
-          [options]="depositors"
-          optionLabel="name"
-          optionValue="id"
-          [filter]="true"
-          defaultLabel="Sélectionner des déposants"
-          formControlName="depositor"
-          (onChange)="onSelect($event, 'depositor')"
-          id="deposant"
-          *ngIf="edit"
-        >
-        </p-dropdown>
-        <div class="value" *ngIf="!edit">{{ statusData.depsitorName }}</div>
+      <div class="form-group col-md-12 flex-wrap flex-sm-nowrap">
+        <div class="form-group col-md-8 pl-0">
+          <label style="" class="">Déposant</label>
+          <p-dropdown
+            class="select col-md-12 col-sm-12 p-sm-0 col-12"
+            [style]="{ width: '100%' }"
+            [options]="depositors"
+            optionLabel="name"
+            optionValue="id"
+            [filter]="true"
+            defaultLabel="Sélectionner des déposants"
+            formControlName="depositor"
+            (onChange)="onSelect($event, 'depositor')"
+            id="deposant"
+            *ngIf="edit"
+          >
+          </p-dropdown>
+          <div class="value" *ngIf="!edit">{{ statusData.depsitorName }}</div>
+        </div>
+        <div class="col-md-4 link" *ngIf="edit">
+          <a href="">Ajouter un nouveau déposant</a>
+        </div>
       </div>
-      <div class="col-md-4 link" *ngIf="edit">
-        <a href="">Ajouter un nouveau déposant</a>
-      </div>
-    </div>
     </form>
   </div>
   <form class="form-bloc pl-0" [formGroup]="propertyStatusForm">
@@ -105,43 +105,42 @@
           </p-dropdown>
         </div>
         <div class="value" *ngIf="!edit">{{ statusData.entryMode?.label }}</div>
-
       </div>
 
-    <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
-      <label class="col-sm-4">Date d'entrée</label>
-      <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
-        <p-calendar
-          dateFormat="yy-mm-dd"
-          (onSelect)="onSelectEntryDate($event)"
-          class="col-md-12"
-          [style]="{ minWidth: '100%' }"
-          formControlName="entryDate"
-          [showIcon]="true"
-          inputId="icon"
-        ></p-calendar>
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
+        <label class="col-sm-4">Date d'entrée</label>
+        <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
+          <p-calendar
+            dateFormat="yy-mm-dd"
+            (onSelect)="onSelectEntryDate($event)"
+            class="col-md-12"
+            [style]="{ minWidth: '100%' }"
+            formControlName="entryDate"
+            [showIcon]="true"
+            inputId="icon"
+          ></p-calendar>
+        </div>
+        <div class="value" *ngIf="!edit">{{ statusData.entryDate | date: viewDateFormat }}</div>
       </div>
-      <div class="value" *ngIf="!edit">{{ statusData.entryDate | date: viewDateFormat }}</div>
-    </div>
-    <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
-      <label class="col-sm-4">Catégorie de bien</label>
-      <div class="d-flex value col-12 col-sm-7 p-0" *ngIf="edit">
-        <p-dropdown
-          class="select col-md-12 col-sm-12 p-sm-0 col-12"
-          [style]="{ width: '100%' }"
-          [options]="categories"
-          optionLabel="label"
-          optionValue="id"
-          [filter]="true"
-          placeholder="Choisir une catégorie"
-          formControlName="category"
-          id="cat"
-          (onChange)="onSelect($event, 'category')"
-        >
-        </p-dropdown>
+      <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
+        <label class="col-sm-4">Catégorie de bien</label>
+        <div class="d-flex value col-12 col-sm-7 p-0" *ngIf="edit">
+          <p-dropdown
+            class="select col-md-12 col-sm-12 p-sm-0 col-12"
+            [style]="{ width: '100%' }"
+            [options]="categories"
+            optionLabel="label"
+            optionValue="id"
+            [filter]="true"
+            placeholder="Choisir une catégorie"
+            formControlName="category"
+            id="cat"
+            (onChange)="onSelect($event, 'category')"
+          >
+          </p-dropdown>
+        </div>
+        <div class="value" *ngIf="!edit">{{ statusData?.category?.label }}</div>
       </div>
-      <div class="value" *ngIf="!edit">{{ statusData?.category?.label }}</div>
     </div>
-  </div>
   </form>
 </div>

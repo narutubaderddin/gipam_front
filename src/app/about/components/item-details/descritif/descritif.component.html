@@ -121,7 +121,7 @@
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('width')">
         <label class="">Largeur</label>
-        <div class="value" *ngIf="!edit">{{ artwork.width }} {{artwork.widthUnit}}</div>
+        <div class="value" *ngIf="!edit">{{ artwork.width }} {{ artwork.widthUnit }}</div>
         <div class="d-flex value col-12 col-sm-7 p-0" *ngIf="edit">
           <input class="col-md-8 form-control" type="number" formControlName="width" />
           <select class="col-md-4 col-sm-4 form-control">
@@ -154,12 +154,10 @@
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('length')">
         <label class="">Longueur</label>
-        <div class="value" *ngIf="!edit">{{ artwork.length }} {{artwork.lengthUnit}}</div>
+        <div class="value" *ngIf="!edit">{{ artwork.length }} {{ artwork.lengthUnit }}</div>
         <div class="d-flex value col-12 col-sm-7 p-0" *ngIf="edit">
           <input class="col-md-8 form-control" type="number" formControlName="length" />
-          <select class="col-md-4 col-sm-4 form-control"
-                  formControlName="lengthUnit"
-          >
+          <select class="col-md-4 col-sm-4 form-control" formControlName="lengthUnit">
             <option class="active" value="1">cm</option>
             <option value="100">m</option>
           </select>
@@ -190,7 +188,12 @@
         <label class="">Diamètre</label>
         <div class="value" *ngIf="!edit">{{ artwork.diameter }}</div>
         <div class="d-flex value col-12 col-sm-7 p-0" *ngIf="edit">
-          <input class="col-md-8 form-control" type="number" formControlName="diameter" formControlName="diameterUnit"/>
+          <input
+            class="col-md-8 form-control"
+            type="number"
+            formControlName="diameter"
+            formControlName="diameterUnit"
+          />
           <select class="col-md-4 form-control">
             <option class="active" value="1">cm</option>
             <option value="100">m</option>
@@ -232,7 +235,7 @@
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
         <label class="">Date de création</label>
-        <div class="value" *ngIf="!edit">{{ artwork.creationDate| date:'yyyy'  }}</div>
+        <div class="value" *ngIf="!edit">{{ artwork.creationDate | date: 'yyyy' }}</div>
 
         <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
           <input
@@ -291,8 +294,7 @@
           <label class="">Nombre unité<span class="mandatory" *ngIf="edit">*</span></label>
           <div class="value" *ngIf="!edit">{{ artwork.nbrunite }}</div>
           <div class="d-flex value col-12 col-sm-7">
-            <input *ngIf="edit" class="col-md-12 form-control" type="number" value="0"
-                   formControlNAme="numberOfUnit" />
+            <input *ngIf="edit" class="col-md-12 form-control" type="number" value="0" formControlNAme="numberOfUnit" />
           </div>
         </div>
         <div
@@ -311,17 +313,22 @@
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="addProperty">
         <label>Marquage</label>
         <div class="value" *ngIf="!edit">{{ artwork?.status?.marking }}</div>
-        <input *ngIf="edit" class="form-control value col-12 col-sm-7" formControlName="marking" placeholder="Marquage" />
+        <input
+          *ngIf="edit"
+          class="form-control value col-12 col-sm-7"
+          formControlName="marking"
+          placeholder="Marquage"
+        />
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="addProperty">
         <label>Signature inscription</label>
-        <div class="value" *ngIf="!edit">{{artwork?.status?.registrationSignature }}</div>
+        <div class="value" *ngIf="!edit">{{ artwork?.status?.registrationSignature }}</div>
 
         <input
           *ngIf="edit"
-           formControlName="registrationSignature"
-           class="form-control value col-12 col-sm-7"
-           placeholder="Signature inscription"
+          formControlName="registrationSignature"
+          class="form-control value col-12 col-sm-7"
+          placeholder="Signature inscription"
         />
       </div>
 
@@ -348,7 +355,8 @@
             class="form-control"
             placeholder="Commentaire ..."
             formControlName="description"
-            *ngIf="edit"></textarea>
+            *ngIf="edit"
+          ></textarea>
         </div>
       </div>
     </div>

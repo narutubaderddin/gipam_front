@@ -10,7 +10,6 @@
   width: calc(100% - 60px);
   margin-left: 60px;
   left: 0;
-
 }
 .sticky {
   position: fixed;
@@ -189,7 +188,7 @@ button {
   @media (max-width: 427px) {
     margin-top: 15rem;
   }
-  @media (max-width: 778px) and (min-width: 428px){
+  @media (max-width: 778px) and (min-width: 428px) {
     margin-top: 12rem;
   }
   margin-top: 9rem;

@@ -26,7 +26,7 @@ export class AddDescriptionsComponent implements OnInit {
   @Input() addProperty: boolean;
   items: any = [];
   domain = '';
-  denominations: any;
+  @Input() denominations: any;
   isCollapsed = true;
   dropdownSettings: IDropdownSettings;
   @Input() domainData: any[];
@@ -67,8 +67,9 @@ export class AddDescriptionsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.descriptiveWords = this.descriptifForm.get('descriptiveWords').value;
-    this.denominations = this.denominationData;
+    this.descriptifForm.get('descriptiveWords').value
+      ? (this.descriptiveWords = this.descriptifForm.get('descriptiveWords').value)
+      : (this.descriptiveWords = []);
     this.simpleTabsRefService.tabRef = 'authors';
     if (this.denomination && this.field) {
       this.getAttributes();
@@ -112,6 +113,7 @@ export class AddDescriptionsComponent implements OnInit {
   }
 
   addWord(event: any) {
+    console.log(event);
     this.descriptiveWords.push(event.value);
     this.descriptifForm.get('descriptiveWords').setValue(this.descriptiveWords);
   }
@@ -133,7 +135,7 @@ export class AddDescriptionsComponent implements OnInit {
 
     switch (key) {
       case 'field':
-        console.log(this.denominations);
+        console.log(value);
         this.denominationData = this.denominations.filter((denomi: any) => {
           return denomi.field.id === value.value;
         });
@@ -172,13 +174,9 @@ export class AddDescriptionsComponent implements OnInit {
       (result: any) => {
         this.myModal.dismiss('Cross click');
         this.addSingle('success', 'Ajout', 'Auteur ' + item.firstName + ' ' + item.lastName + ' ajoutée avec succés');
-        this.authorData.push({
-          id: result.id,
-          firstName: item.firstName,
-          lastName: item.lastName,
-          type: result.type,
-          people: result.people,
-          active: result.active,
+        //this.authorData.push(result);
+        forkJoin([this.simpleTabsRefService.getAllItems(this.data, 'authors')]).subscribe(([authorResults]) => {
+          this.authorData = this.simpleTabsRefService.getTabRefFilterData(authorResults['results']);
         });
       },
       (error) => {
