@@ -44,11 +44,6 @@ a:not([href]) {
     .nav {
       flex-direction: column;
       padding-left: 20px;
-      &.completed .ng-wizard-main ul li a {
-        &::after {
-          background-color: red !important;
-        }
-      }
     }
     li {
       height: 40px;
@@ -62,6 +57,11 @@ a:not([href]) {
       }
     }
   }
+}
+::ng-deep .completed .ng-wizard-main ul li a {
+  //&::after {
+  //  background-color: red !important;
+  //}
 }
 
 .bloc-header {

@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren, Inpu
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'angular2-notifications';
 import { SharedService } from '@shared/services/shared.service';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PdfGeneratorService } from '@shared/services/pdf-generator.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';

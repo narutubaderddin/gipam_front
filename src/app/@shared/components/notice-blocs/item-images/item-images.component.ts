@@ -44,7 +44,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   viewDateFormat = viewDateFormat;
   btnLoading: any = null;
 
-
   get photographies(): FormArray {
     return this.photographiesForm.get('photographies') as FormArray;
   }
@@ -86,7 +85,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
       });
       this.initData();
     }
-
   }
   ngOnChanges(changements: SimpleChanges) {}
   get items() {
@@ -228,7 +226,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   }
 
   show(item: any) {
-
     this.initData(item.imageUrl, item.photographyDate, item.photographyType, item.image);
     this.selectedPhotography = item.i;
     this.imgToShow.emit(item.imageUrl);
@@ -241,7 +238,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     if (!this.photographyType) {
       this.validate = false;
     } else {
-        this.editTypePhotography(this.photographyType);
+      this.editTypePhotography(this.photographyType);
     }
   }
   editTypePhotography(type: any) {
@@ -256,9 +253,9 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         this.btnLoading = null;
       },
       (error) => {
-        if(error.error.msg) {
+        if (error.error.msg) {
           this.addSingle('error', 'Modification', error.error.msg);
-        }else {
+        } else {
           this.photographyService.getFormErrors(error.error.errors, 'Modification');
         }
         this.btnLoading = null;
@@ -284,7 +281,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         this.btnLoading = null;
         this.deleteDialog = false;
       },
-      error=>{
+      (error) => {
         this.addSingle('error', 'Suppresion', error.error.message);
         this.btnLoading = null;
       }
@@ -326,5 +323,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     if (index > -1) {
       this.images.splice(index, 1);
     }
+    this.photographyInsertionNumber = this.photographyInsertionNumber - 1;
+    this.selectedPhotography = this.selectedPhotography - 1;
   }
 }
