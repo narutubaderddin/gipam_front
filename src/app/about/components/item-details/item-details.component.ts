@@ -392,12 +392,20 @@ export class ItemDetailsComponent implements OnInit {
     };
   }
 
-  paginate(by?: number, to?: any) {
+  saveArtOfWorkIndex(index: number) {
+    localStorage.setItem(lastArtOfWorkDetailIndex, JSON.stringify(index));
+  }
+
+  paginate(click: boolean = false, by?: number, to?: any) {
     if (by) {
       this.page = this.page + by;
     }
     if (this.page < 0) {
       this.page = 0;
+    }
+    this.saveArtOfWorkIndex(this.page);
+    if (click) {
+      window.location.reload();
     }
     const urlParams = {
       offset: this.page,

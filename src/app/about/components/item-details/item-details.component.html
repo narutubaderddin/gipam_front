@@ -26,11 +26,11 @@
               <div style="width: 10rem"></div>
             </div>
             <div class="first-bloc col-md-12 row justify-content-between">
-              <a (click)="previousId && paginate(-1, previousId)" [class.disabled]="!previousId"
+              <a (click)="previousId && paginate(true, -1, previousId)" [class.disabled]="!previousId"
                 ><i class="zmdi zmdi-caret-left"></i> Précédant | {{ previousId ? previousId : '0000' }}</a
               >
               <span class="titre1">N° inventaire {{ artWorkId }}</span>
-              <a (click)="nextId && paginate(1, nextId)" [class.disabled]="!nextId"
+              <a (click)="nextId && paginate(true, 1, nextId)" [class.disabled]="!nextId"
                 >{{ nextId ? nextId : '0000' }} | Suivant <i class="zmdi zmdi-caret-right"></i
               ></a>
             </div>
