@@ -360,6 +360,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     });
     return data;
   }
+
   getDataFromHeadersForm(data: any, value: any) {
     Object.keys(value).forEach((key) => {
       let result: any[] = [];
@@ -370,7 +371,6 @@ export class ListWorkOfArtsComponent implements OnInit {
         case 'style':
         case 'communes':
         case 'era':
-        case 'field':
         case 'status':
           if (Array.isArray(value[key]['value'])) {
             value[key]['value'].forEach((item: any) => {
@@ -386,6 +386,14 @@ export class ListWorkOfArtsComponent implements OnInit {
             });
           }
           data['auteurs'] = result;
+          break;
+        case 'field':
+          if (Array.isArray(value[key]['value'])) {
+            value[key]['value'].forEach((item: any) => {
+              result.push(item['id']);
+            });
+          }
+          data['domaine'] = result;
           break;
         default:
           data[key] = value[key]['value'];
