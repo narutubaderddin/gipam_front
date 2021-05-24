@@ -29,9 +29,7 @@ export class ItemDetailsComponent implements OnInit {
     id: 145;
     titre: 'Titre';
     domain: 'Art graphique';
-    field: { id:1,
-      label:'Art graphique'
-    };
+    field: { id: 1; label: 'Art graphique' };
     height: '85';
     width: '85';
     authors: 'Auteur 1, Auteur 11';
@@ -40,9 +38,7 @@ export class ItemDetailsComponent implements OnInit {
     era: '';
     materialTechnique: '';
     status: '';
-    denomination: { id:1,
-      label:'Affiche'
-    };
+    denomination: { id: 1; label: 'Affiche' };
     createdAt: '22/01/2020';
   };
   editLink: boolean = true;
@@ -157,8 +153,7 @@ export class ItemDetailsComponent implements OnInit {
 
   getParentlinkApi(): ParentComponentApi {
     return {
-      callParentMethod: () => {
-      },
+      callParentMethod: () => {},
     };
   }
   initPhotographiesForm() {
@@ -269,7 +264,7 @@ export class ItemDetailsComponent implements OnInit {
     });
   }
 
-  onSave(parent?: any, deletePar?:boolean) {
+  onSave(parent?: any, deletePar?: boolean) {
     this.editLink = true;
     this.btnLoading = '';
     this.formatData();
@@ -282,31 +277,31 @@ export class ItemDetailsComponent implements OnInit {
     this.descriptifForm.value.materialTechnique?.map((el: any) => {
       materialId.push(el.id);
     });
-    let data:any;
-    if(deletePar){
+    let data: any;
+    if (deletePar) {
       data = {
         field: this.workArt?.field?.id,
         denomination: this.workArt?.denomination?.id,
-        parent: parent
-      }
-    }else{
+        parent: parent,
+      };
+    } else {
       data = {
         ...this.descriptifForm.value,
         field: this.descriptifForm.value.field.id,
         denomination: this.descriptifForm.value.denomination.id,
         authors: authorsId,
-        materialTechnique:materialId,
-        status:this.addProperty?this.propertyStatusForm.value:this.depositStatusForm.value,
-        parent: parent
-      }
+        materialTechnique: materialId,
+        status: this.addProperty ? this.propertyStatusForm.value : this.depositStatusForm.value,
+        parent: parent,
+      };
     }
 
-      this.workOfArtService.updateWorkOfArt(data, this.artWorkId).subscribe(
+    this.workOfArtService.updateWorkOfArt(data, this.artWorkId).subscribe(
       (result) => {
         this.getArtWork(this.artWorkId);
-        if(deletePar){
+        if (deletePar) {
           this.addSingle('success', 'Suppression', 'Lien avec oeuvres supprimé avec succée');
-        }else {
+        } else {
           this.addSingle('success', 'Modification', 'Notice modifiée avec succée');
         }
         this.edit = false;
@@ -335,12 +330,7 @@ export class ItemDetailsComponent implements OnInit {
 
   initSearchPageParam() {
     const newParams = JSON.parse(localStorage.getItem(searchPageFilter));
-    const index = JSON.parse(localStorage.getItem(lastArtOfWorkDetailIndex));
 
-    if (!newParams?.page || !index) {
-      this.router.navigate(['/oeuvres-list']);
-      return;
-    }
     this.searchPageParam = {
       mode: newParams?.mode,
       filter: newParams.filter,
@@ -399,6 +389,7 @@ export class ItemDetailsComponent implements OnInit {
 
   setPage() {
     const index = JSON.parse(localStorage.getItem(lastArtOfWorkDetailIndex));
+    console.log('index', index);
     this.page = index;
     if (this.searchPageParam.mode !== 'pictures') {
       // when datatable display mode is selected in search page
@@ -408,6 +399,7 @@ export class ItemDetailsComponent implements OnInit {
         this.page = 0;
       }
     }
+    console.log('this.page', this.page);
   }
 
   getArtWork(id: any) {
@@ -426,32 +418,31 @@ export class ItemDetailsComponent implements OnInit {
   setArtwork(apiResult: any) {
     this.photographies = [];
 
-        this.workArt= apiResult;
-        this.initDescriptifForm(apiResult);
-          apiResult.photographies.map((el:any, index:number)=>{
-          this.photographies.push({
-            workArtId: apiResult.id,
-            id:el.id,
-            imageUrl: el.imagePreview,
-            imagePreview: el.imagePreview,
-            alt: 'description',
-            i: index,
-            image: el.imageName,
-            date:this.datePipe.transform(el.date, dateTimeFormat),
-            photographyDate: this.datePipe.transform(el.date, dateTimeFormat),
-            photographyName: el.imageName,
-            photographyType: el.photographyType,
-            imageName: el.imageName,
-
-          });
-        });
-          apiResult.status.statusType==="PropertyStatus"? this.addProperty=true: this.addDepot=true;
-        this.status= apiResult.status;
-        this.addProperty?this.initPropertyStatusForm(apiResult.status): this.initDepositStatusForm(apiResult.status);
-        this.attachments= apiResult.attachments;
-        this.hypertextLinks = apiResult.hyperlinks;
-        this.parent= apiResult.parent;
-        this.children= apiResult.children;
+    this.workArt = apiResult;
+    this.initDescriptifForm(apiResult);
+    apiResult.photographies.map((el: any, index: number) => {
+      this.photographies.push({
+        workArtId: apiResult.id,
+        id: el.id,
+        imageUrl: el.imagePreview,
+        imagePreview: el.imagePreview,
+        alt: 'description',
+        i: index,
+        image: el.imageName,
+        date: this.datePipe.transform(el.date, dateTimeFormat),
+        photographyDate: this.datePipe.transform(el.date, dateTimeFormat),
+        photographyName: el.imageName,
+        photographyType: el.photographyType,
+        imageName: el.imageName,
+      });
+    });
+    apiResult.status.statusType === 'PropertyStatus' ? (this.addProperty = true) : (this.addDepot = true);
+    this.status = apiResult.status;
+    this.addProperty ? this.initPropertyStatusForm(apiResult.status) : this.initDepositStatusForm(apiResult.status);
+    this.attachments = apiResult.attachments;
+    this.hypertextLinks = apiResult.hyperlinks;
+    this.parent = apiResult.parent;
+    this.children = apiResult.children;
   }
 
   addSingle(type: string, sum: string, msg: string) {
