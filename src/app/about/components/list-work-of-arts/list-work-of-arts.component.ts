@@ -21,7 +21,7 @@ import { map } from 'rxjs/operators';
 import { RoomService } from '@shared/services/room.service';
 import { PdfGeneratorService } from '@shared/services/pdf-generator.service';
 import { RequestService } from '@shared/services/request.service';
-import { lastArtOfWorkDetailIndex } from '@shared/utils/helpers';
+import { lastArtOfWorkDetailIndex, searchPageFilter } from '@shared/utils/helpers';
 
 @Component({
   selector: 'app-list-work-of-arts',
@@ -32,8 +32,6 @@ import { lastArtOfWorkDetailIndex } from '@shared/utils/helpers';
 export class ListWorkOfArtsComponent implements OnInit {
   @ViewChildren('accordionSectionDOM', { read: ElementRef }) accordionsDOM: QueryList<ElementRef>;
   @ViewChild(NgDataTableComponent, { static: false }) dataTableComponent: NgDataTableComponent;
-  @ViewChild('globalSearch') searchButton: Input;
-
   isCollapsed = true;
   showDatatable = false;
   printingNotice = false;
@@ -138,8 +136,6 @@ export class ListWorkOfArtsComponent implements OnInit {
   statusFormSearchDrop: any;
   lastFilter = { empty: true };
   filterChanged = false;
-  selectedOeuvres: any[] = [];
-  artWorkResults: any[] = [];
 
   private showFormStatusEnd: boolean = false;
 
@@ -162,8 +158,95 @@ export class ListWorkOfArtsComponent implements OnInit {
     private requestService: RequestService
   ) {}
 
+  initData(filter: any, advancedFilter: any, headerFilters: any = {}, page = 1) {
+    let sort = 'desc';
+    let sortBy = 'creationDate';
+    if (this.dataTableSort.hasOwnProperty('sort')) {
+      sort = this.dataTableSort['sort'];
+      sortBy = this.dataTableSort['sort_by'];
+    }
+    const limit = this.mode === 'pictures' ? 20 : 5;
+    const filters = {
+      mode: this.mode,
+      filter,
+      advancedFilter,
+      headerFilters,
+      page,
+      limit,
+      sortBy,
+      sort,
+      globalSearch: this.globalSearch,
+      searchQuery: this.searchQuery,
+    };
+    if (!this.isFilterChanged(filters)) {
+      return;
+    }
+    if (this.mode === 'pictures') {
+      if (page === 1) {
+        console.log('changed');
+        this.artWorkResults = [];
+        this.firstLoading = true;
+      }
+    }
+    this.loading = true;
+    this.artWorkService
+      .getArtWorksData(
+        filter,
+        advancedFilter,
+        headerFilters,
+        page,
+        limit,
+        sortBy,
+        sort,
+        this.searchQuery,
+        this.globalSearch
+      )
+      .subscribe(
+        (artWorksData: ArtWorksDataModel) => {
+          localStorage.setItem(searchPageFilter, JSON.stringify(filters));
+          if (this.mode === 'pictures' && page > 1) {
+            artWorksData.results.forEach((oeuvre: any) => {
+              this.artWorkResults.push(oeuvre);
+            });
+          } else {
+            this.artWorkResults = artWorksData.results;
+            this.artWorksData = artWorksData;
+            // to know the index of clicked input
+            localStorage.setItem(
+              'searchPageFilterLastItemsIds',
+              JSON.stringify(this.artWorkResults.map((items) => items.id))
+            );
+          }
+          this.page = this.artWorksData.page;
+          this.start = (this.artWorksData.page - 1) * this.artWorksData.size + 1;
+          this.end = (this.artWorksData.page - 1) * this.artWorksData.size + this.artWorksData.results.length;
+          this.loading = false;
+          this.loadingScroll = false;
+          this.firstLoading = false;
+        },
+        (error: any) => {
+          this.addSingle('error', '', error.error.message);
+        }
+      );
+  }
+
+  isFilterChanged(newFilter: any): boolean {
+    if (JSON.stringify(newFilter) !== JSON.stringify(this.lastFilter)) {
+      this.lastFilter = Object.assign({}, newFilter);
+      this.filterChanged = true;
+      return true;
+    }
+    this.filterChanged = false;
+    return false;
+  }
+
+  addSingle(type: string, sum: string, msg: string) {
+    this.messageService.add({ severity: type, summary: sum, detail: msg });
+  }
+  selectedOeuvres: any[] = [];
+  artWorkResults: any[] = [];
+  @ViewChild('globalSearch') searchButton: Input;
   ngOnInit(): void {
-    this.searchQuery = '';
     this.initFilterData();
     this.oeuvreToShow = this.oeuvres;
     this.initFilterFormGroup();
@@ -190,89 +273,9 @@ export class ListWorkOfArtsComponent implements OnInit {
     };
   }
 
-  initData(filter: any, advancedFilter: any, headerFilters: any = {}, page = 1) {
-    let sort = 'desc';
-    let sortBy = 'creationDate';
-    if (this.dataTableSort.hasOwnProperty('sort')) {
-      sort = this.dataTableSort['sort'];
-      sortBy = this.dataTableSort['sort_by'];
-    }
-    const limit = this.mode === 'pictures' ? 20 : 5;
-    const searchPageFilter = {
-      mode: this.mode,
-      filter,
-      advancedFilter,
-      headerFilters,
-      page,
-      limit,
-      sortBy,
-      sort,
-      globalSearch: this.globalSearch,
-      searchQuery: this.searchQuery,
-    };
-    if (!this.isFilterChanged(searchPageFilter)) {
-      return;
-    }
-    this.loading = true;
-    this.loadingScroll = true;
-    if (this.mode === 'pictures') {
-      this.firstLoading = true;
-    }
-    this.artWorkService
-      .getArtWorksData(
-        filter,
-        advancedFilter,
-        headerFilters,
-        page,
-        limit,
-        sortBy,
-        sort,
-        this.searchQuery,
-        this.globalSearch
-      )
-      .subscribe(
-        (artWorksData: ArtWorksDataModel) => {
-          localStorage.setItem('searchPageFilter', JSON.stringify(searchPageFilter));
-          if (this.mode === 'pictures' && page > 1) {
-            artWorksData.results.forEach((oeuvre: any) => {
-              this.artWorkResults.push(oeuvre);
-            });
-          } else {
-            this.artWorkResults = artWorksData.results;
-            this.artWorksData = artWorksData;
-          }
-
-          this.start = (this.artWorksData.page - 1) * this.artWorksData.size + 1;
-          this.end = (this.artWorksData.page - 1) * this.artWorksData.size + this.artWorksData.results.length;
-          this.loading = false;
-          this.loadingScroll = false;
-          this.firstLoading = false;
-        },
-        (error: any) => {
-          this.loading = false;
-          this.loadingScroll = false;
-          this.firstLoading = false;
-          this.addSingle('error', '', error.error.message);
-        }
-      );
-  }
-
-  isFilterChanged(newFilter: any): boolean {
-    if (JSON.stringify(newFilter) !== JSON.stringify(this.lastFilter)) {
-      this.lastFilter = Object.assign({}, newFilter);
-      this.filterChanged = true;
-      return true;
-    }
-    this.filterChanged = false;
-    return false;
-  }
-
-  addSingle(type: string, sum: string, msg: string) {
-    this.messageService.add({ severity: type, summary: sum, detail: msg });
-  }
-
   saveArtOfWorkIndex(index: number) {
     localStorage.setItem(lastArtOfWorkDetailIndex, JSON.stringify(index));
+    console.log('lastArtOfWorkDetailIndex', JSON.parse(localStorage.getItem(lastArtOfWorkDetailIndex)));
   }
 
   onHeaderToggle(column: any, event: MouseEvent): void {
@@ -357,6 +360,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     });
     return data;
   }
+
   getDataFromHeadersForm(data: any, value: any) {
     Object.keys(value).forEach((key) => {
       let result: any[] = [];
@@ -367,7 +371,6 @@ export class ListWorkOfArtsComponent implements OnInit {
         case 'style':
         case 'communes':
         case 'era':
-        case 'field':
         case 'status':
           if (Array.isArray(value[key]['value'])) {
             value[key]['value'].forEach((item: any) => {
@@ -383,6 +386,14 @@ export class ListWorkOfArtsComponent implements OnInit {
             });
           }
           data['auteurs'] = result;
+          break;
+        case 'field':
+          if (Array.isArray(value[key]['value'])) {
+            value[key]['value'].forEach((item: any) => {
+              result.push(item['id']);
+            });
+          }
+          data['domaine'] = result;
           break;
         default:
           data[key] = value[key]['value'];
@@ -540,13 +551,8 @@ export class ListWorkOfArtsComponent implements OnInit {
       ]);
       let advancedData = this.formatAdvancedData({}, [this.advancedForm1.value, this.advancedForm3.value]);
       this.headerFilter = this.formatFormsData({}, [this.headerFilter], true);
-      // todo loading
-      // if (this.mode == 'pictures') {
-      //   this.loading = true;
-      //   this.firstLoading = true;
-      // }
       this.showDatatable = true;
-      this.initData(data, advancedData, this.headerFilter);
+      this.initData(data, advancedData, this.headerFilter, this.page);
     }
   }
 
@@ -1499,9 +1505,8 @@ export class ListWorkOfArtsComponent implements OnInit {
       ]);
       let advancedData = this.formatAdvancedData({}, [this.advancedForm1.value, this.advancedForm3.value]);
       this.headerFilter = this.formatFormsData({}, [this.headerFilter], true);
-      // todo loading
-      // this.loading = true;
-      // this.firstLoading = true;
+      this.loading = true;
+      this.firstLoading = true;
       this.initData(data, advancedData, this.headerFilter, 1);
       this.showDatatable = true;
     }
@@ -1536,15 +1541,14 @@ export class ListWorkOfArtsComponent implements OnInit {
     ]);
     let advancedData = this.formatAdvancedData({}, [this.advancedForm1.value, this.advancedForm3.value]);
     this.headerFilter = this.formatFormsData({}, [this.headerFilter], true);
-    // todo loading
-    // this.loadingScroll = true;
+    this.loadingScroll = true;
     this.initData(data, advancedData, this.headerFilter, this.page);
     this.showDatatable = true;
   }
+
   exportNotices(type: string) {
     //Show the loader.
-    this.firstLoading = true;
-    this.loading = true;
+    this.exportingNotice = true;
 
     //get artwork's to get theire PDF.
     let artWorkids = [];
@@ -1562,8 +1566,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.requestService.exportNotices(dataTosend, type).subscribe((response: Response | any) => {
       this.requestService.manageFileResponseDownload(response, type);
 
-      this.firstLoading = false;
-      this.loading = false;
+      this.exportingNotice = false;
     });
   }
 
@@ -1576,9 +1579,6 @@ export class ListWorkOfArtsComponent implements OnInit {
   }
 
   formsReset() {
-    if (!this.filterChanged) {
-      return;
-    }
     this.formStatus.reset({
       status: [],
       deposant: [],
@@ -1667,6 +1667,9 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.searchQuery = '';
     this.globalSearch = '';
     const advancedData = this.formatAdvancedData({}, [this.advancedForm1.value, this.advancedForm3.value]);
-    this.initData(data, advancedData, {});
+    if (this.mode === 'pictures') {
+      this.firstLoading = true;
+    }
+    this.initData(data, advancedData, {}, this.page);
   }
 }

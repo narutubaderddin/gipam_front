@@ -27,7 +27,7 @@
           </div>
         </div>
         <div class="d-flex informations mt-2 mb-2">
-          <div class="col-lg-3 col-md-6">
+          <div class="col-lg-3 col-md-6 mb-2">
             <div class="stati bg-turquoise">
               <i class="fa fa-spinner"></i>
               <div>
@@ -84,7 +84,7 @@
             <div class="stati bg-grey">
               <i class="fa fa-server"></i>
               <div>
-                <b>{{ demandeResult['totalQuantity'] }}</b>
+                <b>{{ demandeResult['filteredQuantity'] }}</b>
                 <span>
                   <a class="flex-column" (click)="onDemandeClick()">
                     <span class="title">Demandes</span>

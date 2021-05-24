@@ -59,7 +59,7 @@ export class AdministratorHomePageComponent implements OnInit {
       page: 1,
       limit: 2,
     };
-    let filter = '?limit=2&page=' + 1;
+    let filter = '?limit=2&page=' + 1 + '&requestStatus[in]=["En cours"]';
     forkJoin([this.workOfArtService.getInProgressNotices(params), this.demandService.getDemands(filter)]).subscribe(
       ([workOfArtResults, demandeResults]) => {
         this.remarquersResult = workOfArtResults;
