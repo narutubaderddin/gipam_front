@@ -154,7 +154,7 @@
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('length')">
         <label class="">Longueur</label>
-        <div class="value" *ngIf="!edit">{{ artwork.length }} {{this.descriptifForm?.lengthUnit===1? ' cm':' m'}} </div>
+        <div class="value" *ngIf="!edit">{{ artwork.length }} </div>
         <div class="d-flex value col-12 col-sm-7 p-0" *ngIf="edit">
           <input class="col-md-8 form-control" type="number" formControlName="length" />
           <select class="col-md-4 col-sm-4 form-control" formControlName="lengthUnit">
