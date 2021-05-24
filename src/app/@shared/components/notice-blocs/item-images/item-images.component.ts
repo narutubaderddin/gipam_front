@@ -74,14 +74,16 @@ export class ItemImagesComponent implements OnInit, OnChanges {
       );
     }
     if (this.existingPhotographies.length) {
-      this.existingPhotographies.map((el: any) => {
+      this.existingPhotographies.map((el: any, index: number) => {
         this.photographies.push(this.createPhotography(el.imagePreview, el.date, el.photographyType, el.imageName));
         this.images.push({
           imageUrl: el.imagePreview,
           photographyType: el.photographyType,
           photographyDate: el.date,
           image: el.imageName,
+          i: index,
         });
+        this.photographyInsertionNumber = this.images.length;
       });
       this.initData();
     }
@@ -194,6 +196,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
           this.imageName
         );
       }
+
       // this.verifyIdentification();
       this.initData('', new Date());
       this.photographyInsertionNumber++;
@@ -318,5 +321,12 @@ export class ItemImagesComponent implements OnInit, OnChanges {
 
   callParent() {
     this.parentApi.callParentMethod(this.images[this.selectedPhotography].workArtId);
+  }
+  removePhotography(item: any) {
+    this.photographies.removeAt(item.i);
+    const index = this.images.indexOf(item, 0);
+    if (index > -1) {
+      this.images.splice(index, 1);
+    }
   }
 }
