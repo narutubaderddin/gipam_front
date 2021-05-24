@@ -54,6 +54,7 @@ export class NoticeListComponent implements OnInit {
         field: 'id',
         sortable: true,
         filter: true,
+        width: '150px',
         filterType: 'text',
         type: 'app-in-progress-notice-renderer',
       },
