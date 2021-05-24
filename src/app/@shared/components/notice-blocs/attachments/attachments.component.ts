@@ -155,6 +155,8 @@ export class AttachmentsComponent implements OnInit, OnChanges {
   removeAttachment(index: number) {
     this.files.splice(index, 1);
     this.attachments.removeAt(index);
+    this.selectedAttachment = this.selectedAttachment - 1;
+    this.attachmentInsertionNumber = this.attachmentInsertionNumber - 1;
   }
 
   addItem(data: any) {

@@ -211,7 +211,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   }
 
   show(item: any) {
-    console.log(item);
     this.initData(item.imageUrl, item.photographyDate, item.photographyType, item.image);
     this.selectedPhotography = item.i;
     this.imgToShow.emit(item.imageUrl);
@@ -310,5 +309,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     if (index > -1) {
       this.images.splice(index, 1);
     }
+    this.photographyInsertionNumber = this.photographyInsertionNumber - 1;
+    this.selectedPhotography = this.selectedPhotography - 1;
   }
 }
