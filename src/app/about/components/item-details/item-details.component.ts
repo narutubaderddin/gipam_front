@@ -29,9 +29,7 @@ export class ItemDetailsComponent implements OnInit {
     id: 145;
     titre: 'Titre';
     domain: 'Art graphique';
-    field: { id:1,
-      label:'Art graphique'
-    };
+    field: { id: 1; label: 'Art graphique' };
     height: '85';
     width: '85';
     authors: 'Auteur 1, Auteur 11';
@@ -40,9 +38,7 @@ export class ItemDetailsComponent implements OnInit {
     era: '';
     materialTechnique: '';
     status: '';
-    denomination: { id:1,
-      label:'Affiche'
-    };
+    denomination: { id: 1; label: 'Affiche' };
     createdAt: '22/01/2020';
   };
   editLink: boolean = true;
@@ -157,8 +153,7 @@ export class ItemDetailsComponent implements OnInit {
 
   getParentlinkApi(): ParentComponentApi {
     return {
-      callParentMethod: () => {
-      },
+      callParentMethod: () => {},
     };
   }
   initPhotographiesForm() {
@@ -205,15 +200,15 @@ export class ItemDetailsComponent implements OnInit {
     this.descriptifForm = this.fb.group({
       title: [data?.title, Validators.required],
       field: [{ id: data?.field.id, name: data?.field.label }, Validators.required],
-      denomination: [ { id: data?.denomination.id, name: data?.denomination.label }, Validators.required],
-      materialTechnique: [data && data.materialTechnique ? this.formatArray(data.materialTechnique) : null,
-        Validators.required],
+      denomination: [{ id: data?.denomination.id, name: data?.denomination.label }, Validators.required],
+      materialTechnique: [
+        data && data.materialTechnique ? this.formatArray(data.materialTechnique) : null,
+        Validators.required,
+      ],
 
       numberOfUnit: [data && data.numberOfUnit ? data.numberOfUnit : null, Validators.required],
       authors: [data && data.authors ? this.formatArray(data.authors) : null],
-      creationDate: [
-        data && data.creationDate ? this.datePipe.transform(data?.creationDate, 'yyyy') : null,
-      ],
+      creationDate: [data && data.creationDate ? this.datePipe.transform(data?.creationDate, 'yyyy') : null],
       length: data && data.length ? data.length : null,
       lengthUnit: ['1'],
       width: data && data.width ? data.width : null,
@@ -271,9 +266,9 @@ export class ItemDetailsComponent implements OnInit {
       hyperlinks: this.fb.array([]),
     });
   }
-  initLinks(data?:any) {
+  initLinks(data?: any) {
     this.linkArtWorkForm = this.fb.group({
-      parent: [data && data.parent ? data.parent : null,],
+      parent: [data && data.parent ? data.parent : null],
     });
   }
   f1(e: any) {
@@ -297,7 +292,7 @@ export class ItemDetailsComponent implements OnInit {
     });
   }
 
-  onSave(parent?: any, deletePar?:boolean, addPar?:boolean) {
+  onSave(parent?: any, deletePar?: boolean, addPar?: boolean) {
     this.editLink = true;
     this.btnLoading = '';
     this.formatData();
@@ -310,14 +305,14 @@ export class ItemDetailsComponent implements OnInit {
     this.descriptifForm.value.materialTechnique?.map((el: any) => {
       materialId.push(el);
     });
-    let data:any;
-    if(deletePar||addPar){
+    let data: any;
+    if (deletePar || addPar) {
       data = {
         field: this.workArt?.field?.id,
         denomination: this.workArt?.denomination?.id,
-        parent: parent
-      }
-    }else{
+        parent: parent,
+      };
+    } else {
       if (this.addProperty) {
         this.propertyStatusForm.get('marking').setValue(this.descriptifForm.get('marking').value);
         this.propertyStatusForm
@@ -339,18 +334,16 @@ export class ItemDetailsComponent implements OnInit {
         creationDate:this.descriptifForm.value.creationDate+'-01-01',
         parent: parent
       }
-      console.log(data)
-
     }
-console.log(data)
+
       this.workOfArtService.updateWorkOfArt(data, this.artWorkId).subscribe(
       (result) => {
         this.getArtWork(this.artWorkId);
-        if(deletePar){
+        if (deletePar) {
           this.addSingle('success', 'Suppression', 'Lien avec oeuvres supprimé avec succée');
-        }else if(addPar){
+        } else if (addPar) {
           this.addSingle('success', 'Ajout', 'Lien avec oeuvres ajouté avec succée');
-        }else {
+        } else {
           this.addSingle('success', 'Modification', 'Notice modifiée avec succée');
         }
         this.edit = false;
@@ -380,7 +373,12 @@ console.log(data)
 
   initSearchPageParam() {
     const newParams = JSON.parse(localStorage.getItem(searchPageFilter));
+    const index = JSON.parse(localStorage.getItem(lastArtOfWorkDetailIndex));
 
+    if (!newParams?.page || !index) {
+      this.router.navigate(['/oeuvres-list']);
+      return;
+    }
     this.searchPageParam = {
       mode: newParams?.mode,
       filter: newParams.filter,
@@ -426,7 +424,6 @@ console.log(data)
           this.artWorkId = apiResult.id;
           this.previousId = result.previousId;
           this.nextId = result.nextId;
-          this.router.navigate(['/details/' + this.artWorkId]);
           this.setArtwork(apiResult);
           this.loadingData = false;
         },
@@ -468,36 +465,35 @@ console.log(data)
 
     this.photographies = [];
 
-        this.workArt= apiResult;
-        this.initDescriptifForm(apiResult);
-        console.log(apiResult);
-          apiResult.photographies.map((el:any, index:number)=>{
-          this.photographies.push({
-            workArtId: apiResult.id,
-            id:el.id,
-            imageUrl: el.imagePreview,
-            imagePreview: el.imagePreview,
-            alt: 'description',
-            i: index,
-            image: el.imageName,
-            date:this.datePipe.transform(el.date, dateTimeFormat),
-            photographyDate: this.datePipe.transform(el.date, dateTimeFormat),
-            photographyName: el.imageName,
-            photographyType: el.photographyType,
-            imageName: el.imageName,
-
-          });
-        });
-          apiResult.status.statusType==="PropertyStatus"? this.addProperty=true: this.addDepot=true;
-        this.status= apiResult.status;
-        this.addProperty?this.initPropertyStatusForm(apiResult.status): this.initDepositStatusForm(apiResult.status);
-        this.attachments= apiResult.attachments;
-        this.hyperLinkData = apiResult.hyperlinks;
-        this.parent= apiResult.parent;
-        this.children= apiResult.children;
-        if(apiResult.parent) {
-          this.initLinks(apiResult.parent);
-        }
+    this.workArt = apiResult;
+    this.initDescriptifForm(apiResult);
+    console.log(apiResult);
+    apiResult.photographies.map((el: any, index: number) => {
+      this.photographies.push({
+        workArtId: apiResult.id,
+        id: el.id,
+        imageUrl: el.imagePreview,
+        imagePreview: el.imagePreview,
+        alt: 'description',
+        i: index,
+        image: el.imageName,
+        date: this.datePipe.transform(el.date, dateTimeFormat),
+        photographyDate: this.datePipe.transform(el.date, dateTimeFormat),
+        photographyName: el.imageName,
+        photographyType: el.photographyType,
+        imageName: el.imageName,
+      });
+    });
+    apiResult.status.statusType === 'PropertyStatus' ? (this.addProperty = true) : (this.addDepot = true);
+    this.status = apiResult.status;
+    this.addProperty ? this.initPropertyStatusForm(apiResult.status) : this.initDepositStatusForm(apiResult.status);
+    this.attachments = apiResult.attachments;
+    this.hyperLinkData = apiResult.hyperlinks;
+    this.parent = apiResult.parent;
+    this.children = apiResult.children;
+    if (apiResult.parent) {
+      this.initLinks(apiResult.parent);
+    }
 
       if (apiResult && apiResult.status && apiResult.status.descriptiveWords) {
         let str: string = apiResult.status.descriptiveWords;
@@ -507,7 +503,6 @@ console.log(data)
           this.strIntoObj.push(value);
         });
       }
-      console.log(this.strIntoObj)
   }
 
   addSingle(type: string, sum: string, msg: string) {

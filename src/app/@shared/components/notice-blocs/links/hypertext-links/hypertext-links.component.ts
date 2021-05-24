@@ -1,8 +1,8 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {ParentComponentApi} from '@app/about/components/item-details/item-details.component';
-import {LinksService} from "@shared/services/links.service";
-import {MessageService} from "primeng/api";
+import { ParentComponentApi } from '@app/about/components/item-details/item-details.component';
+import { LinksService } from '@shared/services/links.service';
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-hypertext-links',
   templateUrl: './hypertext-links.component.html',
@@ -25,9 +25,7 @@ export class HypertextLinksComponent implements OnInit, OnChanges {
     return this.linksForm.get('hyperlinks') as FormArray;
   }
 
-  constructor(private fb: FormBuilder,
-              private linksService: LinksService,
-              private messageService: MessageService) {}
+  constructor(private fb: FormBuilder, private linksService: LinksService, private messageService: MessageService) {}
 
   ngOnInit() {
     if (this.existingLinks.length) {
@@ -41,13 +39,13 @@ export class HypertextLinksComponent implements OnInit, OnChanges {
   createHyperLink(name?: any, url?: any): FormGroup {
     return this.fb.group({
       name: [name],
-      url: [url, this.itemDetails?Validators.required:''],
+      url: [url, this.itemDetails ? Validators.required : ''],
     });
   }
 
   addHyperlink() {
     this.hyperlinks.push(this.createHyperLink());
-   // console.log(this.hyperlinks.get('url'), this.hyperlinks.get('url').errors.required)
+    // console.log(this.hyperlinks.get('url'), this.hyperlinks.get('url').errors.required)
   }
 
   removeHyperLinks(i: number) {
@@ -57,26 +55,25 @@ export class HypertextLinksComponent implements OnInit, OnChanges {
   removeLink(i: number) {
     this.hyperlinks.removeAt(i);
     this.btnLoading = '';
-    this.linksService.deleteLinks({furniture:this.artwork.id},this.selectedItem.id).subscribe(
-      result=>{
+    this.linksService.deleteLinks({ furniture: this.artwork.id }, this.selectedItem.id).subscribe(
+      (result) => {
         this.callParent();
 
         this.addSingle('success', 'Suppresion', 'Lien hypertexte supprimée avec succés');
         this.btnLoading = null;
         this.deleteDialog = false;
       },
-      error=>{
-        console.log(error)
+      (error) => {
+        console.log(error);
         this.addSingle('error', 'Suppresion', error.error.message);
         this.btnLoading = null;
       }
-    )
+    );
   }
-
 
   addNewLinks() {
     this.addLinks = true;
-    this.addHyperlink()
+    this.addHyperlink();
   }
   cancelAddLinks() {
     this.addLinks = false;
@@ -103,24 +100,24 @@ export class HypertextLinksComponent implements OnInit, OnChanges {
   }
 
   addHyperLinks() {
-    this.hyperlinks.value.map((el:any, i:any)=>{
-      Object.assign(el, {furniture: this.artwork.id})
+    this.hyperlinks.value.map((el: any, i: any) => {
+      Object.assign(el, { furniture: this.artwork.id });
       let data = el;
       this.btnLoading = '';
       this.linksService.AddLinks(data).subscribe(
-        result=>{
+        (result) => {
           this.callParent();
           this.addSingle('success', 'Ajout', 'Lien hypertexte ajouté(s) avec succés');
           this.btnLoading = null;
-          this.addLinks=false;
+          this.addLinks = false;
           this.hyperlinks.clear();
         },
-        error=>{
-          console.log(error)
+        (error) => {
+          console.log(error);
           this.addSingle('error', 'Ajout', "une erreur est servenu lors de l'ajout");
           this.btnLoading = null;
         }
-      )
-    })
+      );
+    });
   }
 }

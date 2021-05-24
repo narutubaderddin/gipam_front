@@ -28,11 +28,15 @@ input::placeholder {
 
     .filter-bloc {
       justify-content: flex-end;
-
-      .search-panel {
-        padding: 0;
-      }
     }
+  }
+}
+
+:host .search-panel {
+  padding: 0 !important;
+  input {
+    margin-top: 0 !important;
+    margin-left: 0 !important;
   }
 }
 

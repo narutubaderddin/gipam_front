@@ -1223,37 +1223,48 @@
       </div>
     </div>
     <div *ngIf="showDatatable">
-      <div class="filter-bloc d-flex">
+      <div class="search-quick-fliter-bloc d-flex flex-content-between mt-3">
         <div class="d-flex">
-          <div class="mb-2 mr-2 mb-sm-0">
-            <div>
-              <button
-                (click)="formsReset()"
-                id="dropdownBasisch"
-                translate
-                style="border-color: transparent; background: transparent; color: black; font-size: 23px"
-              >
-                <i class="fas fa-ban"></i>
-              </button>
-            </div>
+          <div class="search-panel">
+            <input
+              (keyup.enter)="onSearchClick('local')"
+              class="form-control"
+              type="text"
+              [(ngModel)]="searchQuery"
+              name="search"
+              autocomplete="off"
+              placeholder="Recherche"
+            />
           </div>
-          <div class="dropdown-container mb-2 mr-2 mb-sm-0">
+        </div>
+        <div class="filter-bloc d-flex align-content-center">
+          <div class="d-flex">
+            <button
+              class="btn btn-sm headers-btn mr-2 d-flex align-items-center"
+              title="Supprimer les filtres"
+              (click)="formsReset()"
+              translate
+            >
+              <span class="pi pi-filter-slash"></span>
+            </button>
             <div
               ngbDropdown
               placement="bottom-right"
-              class="d-inline-block drop-bloc"
+              class="d-inline-block drop-bloc mr-2"
               autoClose="outside"
               container="body"
             >
               <button
-                class="btn dropdown-btn export-button"
+                class="btn btn-sm dropdown-toggle headers-btn"
                 id="dropdownBasic"
                 ngbDropdownToggle
                 translate
                 style="background-color: #0466c8"
+                title="Exporter les notices"
               >
                 <i class="fas fa-cog fa-spin" [hidden]="!exportingNotice" style="color: white"></i>
                 <i class="fas fa-file-export" style="color: white"></i>
+                Exporter
               </button>
               <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic">
                 <ul class="list-group">
@@ -1269,17 +1280,6 @@
                 </ul>
               </div>
             </div>
-          </div>
-          <div class="dropdown-container mb-2 mr-2 mb-sm-0">
-            <div
-              ngbDropdown
-              placement="bottom-right"
-              class="d-inline-block drop-bloc"
-              autoClose="outside"
-              container="body"
-            ></div>
-          </div>
-          <div class="dropdown-container mb-2 mb-sm-0">
             <div
               ngbDropdown
               placement="bottom-right"
@@ -1287,7 +1287,13 @@
               autoClose="outside"
               container="body"
             >
-              <button class="btn dropdown-btn headers-btn" id="dropdownBasic1" ngbDropdownToggle translate>
+              <button
+                title="Configurer les colonnes"
+                class="btn btn-sm dropdown-toggle headers-btn"
+                id="dropdownBasic1"
+                ngbDropdownToggle
+                translate
+              >
                 <i class="fas fa-cog"></i>
                 Colonnes
               </button>
@@ -1308,21 +1314,6 @@
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="search-quick-fliter-bloc d-flex flex-content-between">
-        <div class="d-flex">
-          <div class="search-panel">
-            <input
-              (keyup.enter)="onSearchClick('local')"
-              class="form-control"
-              type="text"
-              [(ngModel)]="searchQuery"
-              name="search"
-              autocomplete="off"
-              placeholder="Recherche"
-            />
           </div>
         </div>
       </div>
@@ -1360,14 +1351,17 @@
                   container="body"
                 >
                   <button class="btn export-button" id="dropdownBasic12" ngbDropdownToggle translate>
+                    <i class="fas fa-cog fa-spin" [hidden]="!exportingNotice"></i>
                     <i class="fas fa-file-export"></i>
                   </button>
                   <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic12">
                     <ul class="list-group">
-                      <li class="list-group-item">
+                      <li class="list-group-item" (click)="exportNotices('catalogue')">
                         <i class="fas fa-file-export"></i> Exporter Notices style catalogue
                       </li>
-                      <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter Notices techniques</li>
+                      <li class="list-group-item" (click)="exportNotices('techniques')">
+                        <i class="fas fa-file-export"></i> Exporter Notices techniques
+                      </li>
                       <li class="list-group-item">
                         <i class="fas fa-file-export"></i> Exporter Notices complètes techniques
                       </li>
@@ -1394,8 +1388,31 @@
                 Imprimer
               </button>
               <button class="btn add-action" translate>
-                <i class="fas fa-file-export"></i>
-                Export
+                <div
+                  ngbDropdown
+                  placement="bottom-right"
+                  class="d-inline-block export-dropdown-bloc"
+                  autoClose="outside"
+                  container="body"
+                >
+                  <button class="btn export-button" id="dropdownBasic15" ngbDropdownToggle translate>
+                    <i class="fas fa-cog fa-spin" [hidden]="!exportingNotice"></i>
+                    <i class="fas fa-file-export"></i>
+                  </button>
+                  <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic15">
+                    <ul class="list-group">
+                      <li class="list-group-item" (click)="exportNotices('catalogue')">
+                        <i class="fas fa-file-export"></i> Exporter Notices style catalogue
+                      </li>
+                      <li class="list-group-item" (click)="exportNotices('techniques')">
+                        <i class="fas fa-file-export"></i> Exporter Notices techniques
+                      </li>
+                      <li class="list-group-item">
+                        <i class="fas fa-file-export"></i> Exporter Notices complètes techniques
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </button>
               <button class="btn add-action" (click)="duplicate()" translate>
                 <i class="fas fa-copy"></i>
@@ -1457,12 +1474,9 @@
                           <strong>{{ section.titre }}</strong>
                           <p>
                             N°:
-                            <a
-                              [routerLink]="['/details', section.id]"
-                              class="header-cell"
-                              (click)="saveArtOfWorkIndex(index)"
-                              >{{ section.id }}</a
-                            >
+                            <a [routerLink]="['/details']" class="header-cell" (click)="saveArtOfWorkIndex(index)">{{
+                              section.id
+                            }}</a>
                           </p>
                         </div>
                       </div>

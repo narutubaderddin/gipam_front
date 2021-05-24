@@ -44,7 +44,7 @@ export class AttachmentsComponent implements OnInit, OnChanges {
 
   previousType: any;
   deleteDialog: boolean = false;
-  itemToDelete: any={};
+  itemToDelete: any = {};
   btnLoading: any = null;
   get attachments(): FormArray {
     return this.attachmentForm.get('attachments') as FormArray;
@@ -61,7 +61,7 @@ export class AttachmentsComponent implements OnInit, OnChanges {
 
     if (this.itemDetails && this.existingAttachments.length) {
       this.existingAttachments.map((el: any) => {
-        console.log('here')
+        console.log('here');
         this.filesProperties.push({ edit: false, delete: false });
         this.files.push(el.link);
         this.attachments.push(this.createAttachment(el.link, el.attachementType.id, el.id));
@@ -71,9 +71,7 @@ export class AttachmentsComponent implements OnInit, OnChanges {
   get items() {
     return this.existingAttachments;
   }
-  ngOnChanges() {
-
-  }
+  ngOnChanges() {}
 
   initData(photography?: any, photographyType?: any) {
     this.addedFile = photography;
@@ -101,17 +99,15 @@ export class AttachmentsComponent implements OnInit, OnChanges {
       comment: [''],
     });
   }
-  editAttachmentForm(index?: any, attachment?: any, attachmentType?: any, item?:any) {
-
+  editAttachmentForm(index?: any, attachment?: any, attachmentType?: any, item?: any) {
     if (this.itemDetails) {
       this.updateType(item, index, attachmentType);
     }
   }
-  updateType(item?: any, index?: any, attachmentType?: any ) {
+  updateType(item?: any, index?: any, attachmentType?: any) {
     this.btnLoading = '';
 
-      const data = {attachmentType: item? item.attachmentType.id: attachmentType};
-
+    const data = { attachmentType: item ? item.attachmentType.id : attachmentType };
 
     this.linksService.updateAttachments(data, item.id).subscribe(
       (result) => {
@@ -135,22 +131,20 @@ export class AttachmentsComponent implements OnInit, OnChanges {
     // this.files.splice(index, 1);
     // this.attachments.removeAt(index);
 
-      this.btnLoading = '';
-      this.linksService.deleteAttachments({furniture:this.artwork.id},this.itemToDelete.id).subscribe(
-        result=>{
-          this.callParent();
-          this.addSingle('success', 'Suppresion', 'Pièce jointe supprimée avec succés');
-          this.btnLoading = null;
-          this.deleteDialog = false;
-
-        },
-        error=>{
-          console.log(error)
-          this.addSingle('error', 'Suppresion', error.error.message);
-          this.btnLoading = null;
-        }
-      )
-
+    this.btnLoading = '';
+    this.linksService.deleteAttachments({ furniture: this.artwork.id }, this.itemToDelete.id).subscribe(
+      (result) => {
+        this.callParent();
+        this.addSingle('success', 'Suppresion', 'Pièce jointe supprimée avec succés');
+        this.btnLoading = null;
+        this.deleteDialog = false;
+      },
+      (error) => {
+        console.log(error);
+        this.addSingle('error', 'Suppresion', error.error.message);
+        this.btnLoading = null;
+      }
+    );
   }
 
   addItem(data: any) {
@@ -171,15 +165,14 @@ export class AttachmentsComponent implements OnInit, OnChanges {
     if (!this.addedFile || !this.attachmentType) {
       this.validation = false;
     } else {
-
       if (this.selectedAttachment == this.attachments.value.length || this.itemDetails) {
         this.files.push(this.addedFile);
         this.attachments.push(this.createAttachment(this.addedFile, this.attachmentType));
         if (this.itemDetails) {
           // this.existingAttachments.push({ attachment: this.addedFile, attachmentType: this.attachmentType });
-          console.log("itemmmmm")
-          console.log(this.attachments)
-          let data=this.buildFormData(this.attachments.value[this.attachments.value.length - 1])
+          console.log('itemmmmm');
+          console.log(this.attachments);
+          let data = this.buildFormData(this.attachments.value[this.attachments.value.length - 1]);
           this.addItem(data);
         }
       } else {
@@ -200,12 +193,12 @@ export class AttachmentsComponent implements OnInit, OnChanges {
     this.selectedAttachment = 0;
     this.edit = true;
   }
-  buildFormData(data:any) {
-    console.log(data)
+  buildFormData(data: any) {
+    console.log(data);
     const formData = new FormData();
     formData.append('link', data.link);
     formData.append('attachmentType', data.attachmentType);
-    formData.append('comment', data.comment? data.comment:"");
+    formData.append('comment', data.comment ? data.comment : '');
     formData.append('furniture', this.artwork.id);
     return formData;
   }
@@ -218,7 +211,7 @@ export class AttachmentsComponent implements OnInit, OnChanges {
       edit: true,
       delete: false,
     };
-    console.log(value)
+    console.log(value);
     this.previousType = value;
   }
   cancelEditAttachment(el: any, index: number) {
@@ -227,13 +220,11 @@ export class AttachmentsComponent implements OnInit, OnChanges {
       edit: false,
       delete: false,
     };
-    el.attachmentType=this.previousType;
+    el.attachmentType = this.previousType;
     // this.editAttachmentForm(index, el.attachment, this.previousType);
     this.existingAttachments[index].attachmentType = this.previousType;
 
-    console.log(this.previousType)
-
-
+    console.log(this.previousType);
   }
   getIndex(el: any) {
     return this.existingAttachments.indexOf(el);

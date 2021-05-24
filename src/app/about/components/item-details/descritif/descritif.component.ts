@@ -69,11 +69,11 @@ export class DescritifComponent implements OnInit, OnChanges {
   getAttributes() {
     let field = this.artwork?.field?.id;
     let denomination = this.artwork?.denomination?.id;
-    if (this.edit&&this.field&&this.denomination) {
+    if (this.edit && this.field && this.denomination) {
       field = this.field.id;
       denomination = this.denomination.id;
     }
-    if (this.field&&this.denomination) {
+    if (this.field && this.denomination) {
       this.workOfArtService.getAttributes(field, denomination).subscribe((result) => {
         this.attributeToShow = result;
         this.attributes.emit(result);
@@ -137,7 +137,7 @@ export class DescritifComponent implements OnInit, OnChanges {
         this.styleData = this.getTabRefData(styleResults['results']);
         this.authorData = authorResults['results'];
         this.categoriesData = this.getTabRefData(categoriesResults['results']);
-        this.depositorsData = this.getTabRefData(depositorsResults['results']);;
+        this.depositorsData = this.getTabRefData(depositorsResults['results']);
         this.eraData = this.getTabRefData(eraResults['results']);
         this.entryModesData = this.getTabRefData(entryModesData['results']);
         if (this.field && this.denomination && this.denominationData) {

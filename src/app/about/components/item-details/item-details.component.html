@@ -116,8 +116,8 @@
 
                     <div [ngbNavOutlet]="nav" class=""></div>
                     <div *ngIf="edit" class="col-md-12 p-0" style="display: flex; flex-direction: row-reverse">
-                      <button class="btn valid-btn" (click)="onSave()" [attr.disabled]="btnLoading" >
-                        <i class="fas fa-cog fa-spin" [hidden]="btnLoading==null"></i>
+                      <button class="btn valid-btn" (click)="onSave()" [attr.disabled]="btnLoading">
+                        <i class="fas fa-cog fa-spin" [hidden]="btnLoading == null"></i>
                         Enregistrer
                       </button>
                       <button class="btn btn-action cancel-btn" (click)="onCancel()" [attr.disabled]="btnLoading">
@@ -149,8 +149,8 @@
                           [editWorkArtLinks]="editLink"
                           [loadingData]="btnLoading"
                           (update)="onSave($event)"
-                          (deleteParent)="onSave($event,true)"
-                          (addParent)="onSave($event,false,true)"
+                          (deleteParent)="onSave($event, true)"
+                          (addParent)="onSave($event, false, true)"
                         ></app-links>
                       </div>
                     </div>

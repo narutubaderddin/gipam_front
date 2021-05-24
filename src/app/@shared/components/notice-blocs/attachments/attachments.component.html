@@ -15,7 +15,6 @@
       [numScroll]="3"
       [circular]="false"
     >
-
       <ng-template let-item pTemplate="item">
         <div class="product-item">
           <div class="product-item-content p-1">
@@ -65,13 +64,19 @@
                   class="d-flex justify-content-end col-12 p-0 mt-2 mb-2"
                   *ngIf="itemDetails && filesProperties[getIndex(item)]?.edit"
                 >
-                  <button [attr.disabled]="btnLoading" (click)="cancelEditAttachment(item, getIndex(item))"
-                          class="mr-2 btn cancel-btn">Annuler</button>
-                  <button [attr.disabled]="btnLoading"
-                    (click)="editAttachmentForm(getIndex(item), {},{} , item)"
+                  <button
+                    [attr.disabled]="btnLoading"
+                    (click)="cancelEditAttachment(item, getIndex(item))"
+                    class="mr-2 btn cancel-btn"
+                  >
+                    Annuler
+                  </button>
+                  <button
+                    [attr.disabled]="btnLoading"
+                    (click)="editAttachmentForm(getIndex(item), {}, {}, item)"
                     class="valid-btn btn"
                   >
-                    <i class="fas fa-cog fa-spin" [hidden]="btnLoading==null"></i>
+                    <i class="fas fa-cog fa-spin" [hidden]="btnLoading == null"></i>
                     Valider
                   </button>
                 </div>
@@ -135,8 +140,9 @@
   <ng-template pTemplate="footer">
     <button class="btn-primary cancel-btn" [attr.disabled]="btnLoading" (click)="closeModal()">Annuler</button>
     <button class="btn-primary valid-btn" [attr.disabled]="btnLoading" (click)="validate()">
-      <i class="fas fa-cog fa-spin" [hidden]="btnLoading==null"></i>
-      Enregistrer</button>
+      <i class="fas fa-cog fa-spin" [hidden]="btnLoading == null"></i>
+      Enregistrer
+    </button>
   </ng-template>
 </p-dialog>
 <p-dialog header="Supprimer une pièce jointe" [modal]="true" [(visible)]="deleteDialog" [style]="{ width: '30vw' }">
@@ -148,9 +154,17 @@
     </div>
   </div>
   <ng-template pTemplate="footer">
-    <button class="btn cancel-btn" [attr.disabled]="btnLoading"  (click)="cancelDelete()" style="font-size: 12px">Annuler</button>
-    <button class="btn valid-btn" [attr.disabled]="btnLoading" (click)="deleteAttachment(selectedAttachment)" style="font-size: 12px">
-      <i class="fas fa-cog fa-spin" [hidden]="btnLoading==null"></i>
-      supprimer</button>
+    <button class="btn cancel-btn" [attr.disabled]="btnLoading" (click)="cancelDelete()" style="font-size: 12px">
+      Annuler
+    </button>
+    <button
+      class="btn valid-btn"
+      [attr.disabled]="btnLoading"
+      (click)="deleteAttachment(selectedAttachment)"
+      style="font-size: 12px"
+    >
+      <i class="fas fa-cog fa-spin" [hidden]="btnLoading == null"></i>
+      supprimer
+    </button>
   </ng-template>
 </p-dialog>
