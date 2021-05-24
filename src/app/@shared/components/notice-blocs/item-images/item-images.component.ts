@@ -70,17 +70,9 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         this.images[this.activeIndex].image
       );
     }
-    console.log(this.existingPhotographies);
     if (this.existingPhotographies.length) {
       this.existingPhotographies.map((el: any, index: number) => {
-        const uploadedFile = new File([el.imagePreview], el.imagePreview.slice(30), { type: 'aarraybuffer' });
-        console.log(uploadedFile);
-        this.photographies.push(
-          this.fb.group({
-            date: [this.datePipe.transform(el.date, 'yyyy-MM-dd')],
-            photographyType: [el.photographyType.id],
-          })
-        );
+        this.photographies.push(this.createPhotography(el.imagePreview, el.date, el.photographyType, el.imageName));
         console.log(index);
         this.images.push({
           imageUrl: el.imagePreview,
@@ -89,16 +81,12 @@ export class ItemImagesComponent implements OnInit, OnChanges {
           image: el.imageName,
           i: index,
         });
-        console.log(this.photographies);
+        this.photographyInsertionNumber = this.images.length;
       });
       this.initData();
     }
   }
-  ngOnChanges(changements: SimpleChanges) {
-    // if(this.images) {
-    //   console.log("images", this.images)
-    // }
-  }
+  ngOnChanges(changements: SimpleChanges) {}
   get items() {
     return this.images;
   }
