@@ -57,18 +57,26 @@
                     [showClear]="false"
                     optionLabel="type"
                     optionValue="id"
-                    [(ngModel)]="item.attachmentType"
+                    [(ngModel)]="item.attachmentType.id"
                   ></p-dropdown>
                 </div>
                 <div
                   class="d-flex justify-content-end col-12 p-0 mt-2 mb-2"
                   *ngIf="itemDetails && filesProperties[getIndex(item)]?.edit"
                 >
-                  <button (click)="cancelEditAttachment(item, getIndex(item))" class="mr-2 cancel-btn">Annuler</button>
                   <button
-                    (click)="editAttachmentForm(getIndex(item), item.link, item.attachmentType)"
-                    class="valid-btn"
+                    [attr.disabled]="btnLoading"
+                    (click)="cancelEditAttachment(item, getIndex(item))"
+                    class="mr-2 btn cancel-btn"
                   >
+                    Annuler
+                  </button>
+                  <button
+                    [attr.disabled]="btnLoading"
+                    (click)="editAttachmentForm(getIndex(item), {}, {}, item)"
+                    class="valid-btn btn"
+                  >
+                    <i class="fas fa-cog fa-spin" [hidden]="btnLoading == null"></i>
                     Valider
                   </button>
                 </div>
@@ -130,20 +138,33 @@
     </div>
   </div>
   <ng-template pTemplate="footer">
-    <button class="btn-primary cancel-btn" (click)="closeModal()">Annuler</button>
-    <button class="btn-primary valid-btn" (click)="validate()">Enregistrer</button>
+    <button class="btn-primary cancel-btn" [attr.disabled]="btnLoading" (click)="closeModal()">Annuler</button>
+    <button class="btn-primary valid-btn" [attr.disabled]="btnLoading" (click)="validate()">
+      <i class="fas fa-cog fa-spin" [hidden]="btnLoading == null"></i>
+      Enregistrer
+    </button>
   </ng-template>
 </p-dialog>
 <p-dialog header="Supprimer une pièce jointe" [modal]="true" [(visible)]="deleteDialog" [style]="{ width: '30vw' }">
   <div class="p-0 pb-3">
     <div class="col-12">
       <span
-        >Voulez-vous supprimer la pièce jointe "<strong> {{ itemToDelete?.attachment?.name }} </strong>" ?</span
+        >Voulez-vous supprimer la pièce jointe "<strong> {{ itemToDelete?.link }} </strong>" ?</span
       >
     </div>
   </div>
   <ng-template pTemplate="footer">
-    <button class="btn cancel-btn" [attr.disabled]="btnLoading"  (click)="cancelDelete()" style="font-size: 12px">Annuler</button>
-    <button class="btn valid-btn" [attr.disabled]="btnLoading" (click)="deleteAttachment(selectedAttachment)" style="font-size: 12px">supprimer</button>
+    <button class="btn cancel-btn" [attr.disabled]="btnLoading" (click)="cancelDelete()" style="font-size: 12px">
+      Annuler
+    </button>
+    <button
+      class="btn valid-btn"
+      [attr.disabled]="btnLoading"
+      (click)="deleteAttachment(selectedAttachment)"
+      style="font-size: 12px"
+    >
+      <i class="fas fa-cog fa-spin" [hidden]="btnLoading == null"></i>
+      supprimer
+    </button>
   </ng-template>
 </p-dialog>

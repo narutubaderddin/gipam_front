@@ -18,9 +18,10 @@ export class LinksComponent implements OnInit, OnChanges {
   @Input() children: any = '';
   @Input() existingLink: any;
   @Input() editWorkArtLinks: boolean;
-  @Input() loadingData: any= null;
+  @Input() loadingData: any = null;
   @Output() update = new EventEmitter<any>();
   @Output() deleteParent = new EventEmitter<any>();
+  @Output() addParent = new EventEmitter<any>();
 
   addLinks: boolean = false;
   editLinks: boolean = false;
@@ -110,10 +111,8 @@ export class LinksComponent implements OnInit, OnChanges {
     this.addLinks = !this.addLinks;
   }
   addLink() {
-    this.existingLinks.push({
-      url: 'string',
-      name: 'string',
-    });
+    this.addParent.emit(this.linkArtWorkForm.value.parent);
+    this.addLinks = false;
   }
   cancelLink() {
     this.addLinks = !this.addLinks;
@@ -132,7 +131,7 @@ export class LinksComponent implements OnInit, OnChanges {
     this.existingLinks.splice(i, 1);
     this.deleteDialog = false;
 
-    this.linkArtWorkForm.get('parent').setValue(null)
+    this.linkArtWorkForm.get('parent').setValue(null);
     this.deleteParent.emit(this.linkArtWorkForm.value.parent);
   }
   getIndex(el: any) {
