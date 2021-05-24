@@ -1227,7 +1227,6 @@
         <div class="d-flex">
           <div class="search-panel">
             <input
-              [hidden]="mode === 'pictures'"
               (keyup.enter)="onSearchClick('local')"
               class="form-control"
               type="text"
@@ -1294,7 +1293,6 @@
                 id="dropdownBasic1"
                 ngbDropdownToggle
                 translate
-                [hidden]="mode === 'pictures'"
               >
                 <i class="fas fa-cog"></i>
                 Colonnes
