@@ -70,6 +70,21 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         this.images[this.activeIndex].image
       );
     }
+
+    if (this.existingPhotographies.length) {
+      this.existingPhotographies.map((el: any, index: number) => {
+        this.photographies.push(this.createPhotography(el.imagePreview, el.date, el.photographyType, el.imageName));
+        this.images.push({
+          imageUrl: el.imagePreview,
+          photographyType: el.photographyType,
+          photographyDate: el.date,
+          image: el.imageName,
+          i: index,
+        });
+        this.photographyInsertionNumber = this.images.length;
+      });
+      this.initData();
+    }
   }
   ngOnChanges(changements: SimpleChanges) {}
   get items() {
@@ -105,7 +120,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     return this.fb.group({
       date: [this.datePipe.transform(photographyDate, 'yyyy-MM-dd')],
       imagePreview: [photography],
-      photographyType: [photographyType.id],
+      photographyType: [photographyType],
     });
   }
   editPhotographyForm(i: number, photography: string, photographyType: any, photographyDate: any, imageName: string) {
@@ -224,9 +239,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
       this.validate = false;
     } else {
       this.editTypePhotography(this.photographyType);
-      console.log('photographyType', this.photographyType, this.images);
-      this.verifyIdentification();
-      // this.photographyInsertionNumber++;
     }
   }
   editTypePhotography(type: any) {
@@ -241,8 +253,11 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         this.btnLoading = null;
       },
       (error) => {
-        console.log(error);
-        this.photographyService.getFormErrors(error.error.errors, 'Modification');
+        if (error.error.msg) {
+          this.addSingle('error', 'Modification', error.error.msg);
+        } else {
+          this.photographyService.getFormErrors(error.error.errors, 'Modification');
+        }
         this.btnLoading = null;
       }
     );
@@ -267,7 +282,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         this.deleteDialog = false;
       },
       (error) => {
-        console.log(error);
         this.addSingle('error', 'Suppresion', error.error.message);
         this.btnLoading = null;
       }
