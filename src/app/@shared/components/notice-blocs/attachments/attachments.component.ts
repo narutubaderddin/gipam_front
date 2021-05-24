@@ -92,12 +92,20 @@ export class AttachmentsComponent implements OnInit, OnChanges {
   }
   createAttachment(attachment?: any, attachmentType?: any, id?: any): FormGroup {
     // this.filesProperties.push({ edit: false, delete: false });
-    return this.fb.group({
-      id: [id],
-      link: [attachment, [Validators.required]],
-      attachmentType: [attachmentType, [Validators.required]],
-      comment: [''],
-    });
+    if (this.itemDetails) {
+      return this.fb.group({
+        id: [id],
+        link: [attachment, [Validators.required]],
+        attachmentType: [attachmentType, [Validators.required]],
+        comment: [''],
+      });
+    } else {
+      return this.fb.group({
+        link: [attachment, [Validators.required]],
+        attachmentType: [attachmentType, [Validators.required]],
+        comment: [''],
+      });
+    }
   }
   editAttachmentForm(index?: any, attachment?: any, attachmentType?: any, item?: any) {
     if (this.itemDetails) {
@@ -128,9 +136,6 @@ export class AttachmentsComponent implements OnInit, OnChanges {
   }
 
   deleteAttachment(index: number) {
-    // this.files.splice(index, 1);
-    // this.attachments.removeAt(index);
-
     this.btnLoading = '';
     this.linksService.deleteAttachments({ furniture: this.artwork.id }, this.itemToDelete.id).subscribe(
       (result) => {
@@ -145,6 +150,11 @@ export class AttachmentsComponent implements OnInit, OnChanges {
         this.btnLoading = null;
       }
     );
+  }
+
+  removeAttachment(index: number) {
+    this.files.splice(index, 1);
+    this.attachments.removeAt(index);
   }
 
   addItem(data: any) {
@@ -167,11 +177,8 @@ export class AttachmentsComponent implements OnInit, OnChanges {
     } else {
       if (this.selectedAttachment == this.attachments.value.length || this.itemDetails) {
         this.files.push(this.addedFile);
-        this.attachments.push(this.createAttachment(this.addedFile, this.attachmentType));
+        this.attachments.push(this.createAttachment(this.addedFile, this.attachmentType.id));
         if (this.itemDetails) {
-          // this.existingAttachments.push({ attachment: this.addedFile, attachmentType: this.attachmentType });
-          console.log('itemmmmm');
-          console.log(this.attachments);
           let data = this.buildFormData(this.attachments.value[this.attachments.value.length - 1]);
           this.addItem(data);
         }

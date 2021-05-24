@@ -1,10 +1,9 @@
 <form [formGroup]="descriptifForm">
   <div class="form-bloc">
-    <div class="col-md-6" *ngIf="addDepot">
+    <div class="col-md-6" *ngIf="!addProperty">
       <div class="form-group flex-wrap flex-sm-nowrap">
         <label class="">N inventaire</label>
-
-        <input type="text" class="form-control value col-12 col-sm-7" formControlName="title" />
+        <input type="text" class="form-control value col-12 col-sm-7" formControlName="inventoryNumber" />
       </div>
     </div>
     <div class="col-md-6">
@@ -299,8 +298,11 @@
           (onAdd)="addWord($event)"
           secondaryPlaceholder="Entrer mots descriptifs"
           [modelAsStrings]="true"
+          [onTextChangeDebounce]="200"
           placeholder=" +Mots descriptifs"
-        ></tag-input>
+        >
+          <tag-input-dropdown [autocompleteObservable]="requestAutocompleteItems"> </tag-input-dropdown>
+        </tag-input>
       </div>
       <div class="col-md-12" *ngIf="addProperty">
         <div class="d-flex form-group col-md-12 p-0">
