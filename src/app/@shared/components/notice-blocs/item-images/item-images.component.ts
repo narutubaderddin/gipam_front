@@ -164,15 +164,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
       this.validate = false;
     } else {
       if (this.selectedPhotography == this.photographies.value.length || this.addImage) {
-        this.images.push({
-          i: this.photographyInsertionNumber,
-          imageUrl: this.photography,
-          alt: 'description',
-          image: this.imageName,
-          photographyType: this.photographyType,
-          photographyDate: this.photographyDate,
-        });
-
         this.photographies.push(
           this.createPhotography(
             this.fileToUpload,
@@ -181,10 +172,18 @@ export class ItemImagesComponent implements OnInit, OnChanges {
             this.imageName
           )
         );
-        console.log("photographies", this.photographies)
         if (this.addImage) {
           let data=this.buildFormData(this.photographies.value[this.photographies.value.length - 1])
           this.addItem(data);
+        }else{
+          this.images.push({
+            i: this.photographyInsertionNumber,
+            imageUrl: this.photography,
+            alt: 'description',
+            image: this.imageName,
+            photographyType: this.photographyType,
+            photographyDate: this.photographyDate,
+          });
         }
       } else {
         this.editPhotographyForm(
@@ -302,7 +301,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     this.btnLoading = '';
     this.photographyService.addPhotography(data).subscribe(
       (result: any) => {
-        this.callParent();
+        this.callParent()
         this.addSingle('success', 'Ajout', 'Photographie ajoutée avec succés');
       },
       (error) => {

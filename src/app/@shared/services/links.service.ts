@@ -51,4 +51,9 @@ export class LinksService {
     const params = new HttpParams();
     return this.http.post<any>(`/attachments`, data, {params:params});
   }
+
+  AddLinks(data: any): Observable<any> {
+    const params = new HttpParams();
+    return this.http.post<any>(`/hyperLink`, data, {params:params});
+  }
 }

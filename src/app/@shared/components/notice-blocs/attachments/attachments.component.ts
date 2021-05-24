@@ -101,19 +101,19 @@ export class AttachmentsComponent implements OnInit, OnChanges {
       comment: [''],
     });
   }
-  editAttachmentForm(index?: any, attachment?: any, attachmentType?: any) {
-    this.attachments.value[index].link = attachment;
-    this.attachments.value[index].attachmentType = attachmentType;
+  editAttachmentForm(index?: any, attachment?: any, attachmentType?: any, item?:any) {
 
     if (this.itemDetails) {
-      this.updateType(attachmentType, index);
+      this.updateType(item, index, attachmentType);
     }
   }
-  updateType(attachmentType?: any, index?: any) {
+  updateType(item?: any, index?: any, attachmentType?: any ) {
     this.btnLoading = '';
-    const data = { attachmentType: attachmentType };
 
-    this.linksService.updateAttachments(data, this.attachments.value[index].id).subscribe(
+      const data = {attachmentType: item? item.attachmentType.id: attachmentType};
+
+
+    this.linksService.updateAttachments(data, item.id).subscribe(
       (result) => {
         this.callParent();
         this.addSingle('success', 'Modification', 'Pièce jointe modifiée avec succés');
@@ -218,6 +218,7 @@ export class AttachmentsComponent implements OnInit, OnChanges {
       edit: true,
       delete: false,
     };
+    console.log(value)
     this.previousType = value;
   }
   cancelEditAttachment(el: any, index: number) {
@@ -226,8 +227,13 @@ export class AttachmentsComponent implements OnInit, OnChanges {
       edit: false,
       delete: false,
     };
-    this.editAttachmentForm(index, el.attachment, this.previousType);
+    el.attachmentType=this.previousType;
+    // this.editAttachmentForm(index, el.attachment, this.previousType);
     this.existingAttachments[index].attachmentType = this.previousType;
+
+    console.log(this.previousType)
+
+
   }
   getIndex(el: any) {
     return this.existingAttachments.indexOf(el);
