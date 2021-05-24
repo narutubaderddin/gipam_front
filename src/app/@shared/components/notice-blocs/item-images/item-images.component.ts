@@ -323,7 +323,11 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     if (index > -1) {
       this.images.splice(index, 1);
     }
-    this.photographyInsertionNumber = this.photographyInsertionNumber - 1;
     this.selectedPhotography = this.selectedPhotography - 1;
+    this.types.forEach((type) => {
+      if (type.type == 'Identification') {
+        type.disabled = false;
+      }
+    });
   }
 }
