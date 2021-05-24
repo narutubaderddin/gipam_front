@@ -28,7 +28,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   editType = false;
   photography: string = '';
   photographyDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-  photographyType: any[] = [];
+  photographyType: any = [];
   previousPhotographyType: any[] = [];
   types: any[];
   fileToUpload: any;
@@ -169,7 +169,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
           this.createPhotography(
             this.fileToUpload,
             new Date(this.photographyDate),
-            this.photographyType,
+            this.photographyType.id,
             this.imageName
           )
         );
@@ -190,7 +190,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         this.editPhotographyForm(
           this.selectedPhotography,
           this.photography,
-          this.photographyType,
+          this.photographyType.id,
           this.photographyDate,
           this.imageName
         );
