@@ -316,7 +316,7 @@ export class AddRemarquerComponent implements OnInit, OnDestroy {
         // append nested object
         for (let previewKey in this.descriptifForm.value[dataKey]) {
           for (let key in this.descriptifForm.value[dataKey][previewKey]) {
-            console.log([dataKey][previewKey][key], this.descriptifForm.value[dataKey][previewKey][key]);
+            console.log([dataKey][previewKey][key], this.descriptifForm.value[dataKey][previewKey]);
             formData.append(`${dataKey}[${previewKey}][${key}]`, this.descriptifForm.value[dataKey][previewKey][key]);
           }
         }
