@@ -22,7 +22,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   @Input() existingPhotographies: any[] = [];
   @Output() imgToShow = new EventEmitter();
   @Input() parentApi: ParentComponentApi;
-
+  @Input() artWorkId: any;
   addImage = false;
   activeIndex = 0;
   editType = false;
@@ -43,6 +43,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   itemToDelete: any;
   viewDateFormat = viewDateFormat;
   btnLoading: any = null;
+
 
   get photographies(): FormArray {
     return this.photographiesForm.get('photographies') as FormArray;
@@ -86,9 +87,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     }
   }
   ngOnChanges(changements: SimpleChanges) {
-    // if(this.images) {
-    //   console.log("images", this.images)
-    // }
+
   }
   get items() {
     return this.images;
@@ -152,9 +151,12 @@ export class ItemImagesComponent implements OnInit, OnChanges {
       }
     }
   }
-  buildFormData(file: File) {
+  buildFormData(data:any) {
     const formData = new FormData();
-    formData.append('imagePreview', file, file.name);
+    formData.append('imagePreview', data.imagePreview);
+    formData.append('photographyType', data.photographyType);
+    formData.append('date', data.date);
+    formData.append('furniture', this.artWorkId);
     return formData;
   }
   addPhotography(): void {
@@ -162,15 +164,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
       this.validate = false;
     } else {
       if (this.selectedPhotography == this.photographies.value.length || this.addImage) {
-        this.images.push({
-          i: this.photographyInsertionNumber,
-          imageUrl: this.photography,
-          alt: 'description',
-          image: this.imageName,
-          photographyType: this.photographyType,
-          photographyDate: this.photographyDate,
-        });
-
         this.photographies.push(
           this.createPhotography(
             this.fileToUpload,
@@ -180,7 +173,17 @@ export class ItemImagesComponent implements OnInit, OnChanges {
           )
         );
         if (this.addImage) {
-          this.addItem(this.photographies.value[this.photographies.value.length - 1]);
+          let data=this.buildFormData(this.photographies.value[this.photographies.value.length - 1])
+          this.addItem(data);
+        }else{
+          this.images.push({
+            i: this.photographyInsertionNumber,
+            imageUrl: this.photography,
+            alt: 'description',
+            image: this.imageName,
+            photographyType: this.photographyType,
+            photographyDate: this.photographyDate,
+          });
         }
       } else {
         this.editPhotographyForm(
@@ -298,7 +301,8 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     this.btnLoading = '';
     this.photographyService.addPhotography(data).subscribe(
       (result: any) => {
-        this.addSingle('success', 'Ajout', 'Photographie ' + data + ' ajoutée avec succés');
+        this.callParent()
+        this.addSingle('success', 'Ajout', 'Photographie ajoutée avec succés');
       },
       (error) => {
         this.addSingle('error', 'Ajout', error.error.message);

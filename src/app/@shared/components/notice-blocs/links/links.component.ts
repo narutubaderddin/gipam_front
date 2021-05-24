@@ -21,6 +21,7 @@ export class LinksComponent implements OnInit, OnChanges {
   @Input() loadingData: any= null;
   @Output() update = new EventEmitter<any>();
   @Output() deleteParent = new EventEmitter<any>();
+  @Output() addParent= new EventEmitter<any>();
 
   addLinks: boolean = false;
   editLinks: boolean = false;
@@ -110,10 +111,8 @@ export class LinksComponent implements OnInit, OnChanges {
     this.addLinks = !this.addLinks;
   }
   addLink() {
-    this.existingLinks.push({
-      url: 'string',
-      name: 'string',
-    });
+    this.addParent.emit(this.linkArtWorkForm.value.parent);
+    this.addLinks=false;
   }
   cancelLink() {
     this.addLinks = !this.addLinks;

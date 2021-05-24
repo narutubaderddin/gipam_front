@@ -16,7 +16,8 @@ export class PhotographyService {
   constructor(private http: HttpClient, private messageService: MessageService) {}
 
   addPhotography(data: any): Observable<any> {
-    return this.http.post<any>(`/photography`, data, httpOptions);
+    const params = new HttpParams();
+    return this.http.post<any>(`/photography`, data, {params:params});
   }
   updatePhotography(data: any, id: any): Observable<any> {
     return this.http.patch(`/photography/${id}`, data);

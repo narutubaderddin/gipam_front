@@ -26,6 +26,7 @@ export class DescritifComponent implements OnInit, OnChanges {
   items: any = [];
   domain = '';
   denominations: any;
+  descriptiveWords: any[] = [];
   // denomination: any;
   selectedDomain = '';
   isCollapsed = true;
@@ -212,5 +213,10 @@ export class DescritifComponent implements OnInit, OnChanges {
     if (this.artwork) {
       this.selectedDomain = this.artwork['field'];
     }
+  }
+
+  addWord(event: any) {
+    this.descriptiveWords.push(event.value);
+    this.descriptifForm.get('descriptiveWords').setValue(this.descriptiveWords);
   }
 }

@@ -85,7 +85,7 @@ h5 {
 }
 .attachment-name {
   text-overflow: ellipsis;
-
+  max-width: 100px;
   white-space: nowrap;
   overflow: hidden;
 }

@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {ParentComponentApi} from "@app/about/components/item-details/item-details.component";
+import {ParentComponentApi} from '@app/about/components/item-details/item-details.component';
 import {LinksService} from "@shared/services/links.service";
 import {MessageService} from "primeng/api";
 @Component({
@@ -15,7 +15,7 @@ export class HypertextLinksComponent implements OnInit, OnChanges {
   @Input() itemDetails = false;
   @Input() artwork: any;
   @Input() parentApi: ParentComponentApi;
-  myForm: FormGroup;
+
   addLinks: boolean = false;
   deleteDialog: boolean = false;
   itemToDelete: string = '';
@@ -23,9 +23,6 @@ export class HypertextLinksComponent implements OnInit, OnChanges {
   btnLoading: any = null;
   get hyperlinks(): FormArray {
     return this.linksForm.get('hyperlinks') as FormArray;
-  }
-  get liens(): FormArray {
-    return this.myForm.get('liens') as FormArray;
   }
 
   constructor(private fb: FormBuilder,
@@ -38,31 +35,27 @@ export class HypertextLinksComponent implements OnInit, OnChanges {
         this.hyperlinks.push(this.createHyperLink(el.name, el.url));
       });
     }
-    this.configForm();
   }
   ngOnChanges(changes: SimpleChanges) {}
 
   createHyperLink(name?: any, url?: any): FormGroup {
     return this.fb.group({
       name: [name],
-      url: [url],
+      url: [url, this.itemDetails?Validators.required:''],
     });
   }
 
   addHyperlink() {
     this.hyperlinks.push(this.createHyperLink());
+   // console.log(this.hyperlinks.get('url'), this.hyperlinks.get('url').errors.required)
   }
 
   removeHyperLinks(i: number) {
     this.hyperlinks.removeAt(i);
   }
 
-  addLink() {
-    this.liens.push(this.createHyperLink());
-  }
-
   removeLink(i: number) {
-    this.liens.removeAt(i);
+    this.hyperlinks.removeAt(i);
     this.btnLoading = '';
     this.linksService.deleteLinks({furniture:this.artwork.id},this.selectedItem.id).subscribe(
       result=>{
@@ -80,21 +73,14 @@ export class HypertextLinksComponent implements OnInit, OnChanges {
     )
   }
 
-  save() {
-    alert(`New Author created: ${this.myForm.get('author').value}`);
-  }
-
-  configForm() {
-    this.myForm = this.fb.group({
-      liens: this.fb.array([this.createHyperLink()]),
-    });
-  }
 
   addNewLinks() {
     this.addLinks = true;
+    this.addHyperlink()
   }
   cancelAddLinks() {
     this.addLinks = false;
+    this.hyperlinks.clear();
   }
   getIndex(el: any) {
     return this.existingLinks.indexOf(el);
@@ -114,5 +100,27 @@ export class HypertextLinksComponent implements OnInit, OnChanges {
   }
   callParent() {
     this.parentApi.callParentMethod(this.artwork.id);
+  }
+
+  addHyperLinks() {
+    this.hyperlinks.value.map((el:any, i:any)=>{
+      Object.assign(el, {furniture: this.artwork.id})
+      let data = el;
+      this.btnLoading = '';
+      this.linksService.AddLinks(data).subscribe(
+        result=>{
+          this.callParent();
+          this.addSingle('success', 'Ajout', 'Lien hypertexte ajouté(s) avec succés');
+          this.btnLoading = null;
+          this.addLinks=false;
+          this.hyperlinks.clear();
+        },
+        error=>{
+          console.log(error)
+          this.addSingle('error', 'Ajout', "une erreur est servenu lors de l'ajout");
+          this.btnLoading = null;
+        }
+      )
+    })
   }
 }
