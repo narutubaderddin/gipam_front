@@ -26,7 +26,7 @@ export class DescritifComponent implements OnInit, OnChanges {
   items: any = [];
   domain = '';
   denominations: any;
-  descriptiveWords: any[] = [];
+  // descriptiveWords: any[] = [];
   // denomination: any;
   selectedDomain = '';
   isCollapsed = true;
@@ -61,6 +61,9 @@ export class DescritifComponent implements OnInit, OnChanges {
   }
   get denomination() {
     return this.descriptifForm.get('denomination')?.value;
+  }
+  get descriptiveWords(){
+    return this.descriptifForm.get('descriptiveWords')?.value;
   }
 
   getAttributes() {
@@ -205,18 +208,18 @@ export class DescritifComponent implements OnInit, OnChanges {
     );
   }
   onChange(event: Date) {
+
     if (event && !isNaN(event.getFullYear())) {
       this.descriptifForm.get('creationDate').setValue(event.getFullYear());
     }
   }
-  private initData() {
+  initData() {
     if (this.artwork) {
       this.selectedDomain = this.artwork['field'];
     }
   }
 
   addWord(event: any) {
-    this.descriptiveWords.push(event.value);
     this.descriptifForm.get('descriptiveWords').setValue(this.descriptiveWords);
   }
 }

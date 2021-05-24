@@ -227,8 +227,8 @@ export class ItemDetailsComponent implements OnInit {
       diameter: [data && data.diameter ? data.diameter : null],
       diameterUnit: ['1'],
 
-      era: [data && data.era ? data.era.id : null,],
-      style: [data?.style],
+      era: [data && data.era ? data.era.id : null],
+      style: [data && data?.style ? data?.style.id : null],
 
       totalLength: [data && data.totalLength ? data.totalLength : null],
       totlLengthUnit: ['1'],
@@ -246,7 +246,7 @@ export class ItemDetailsComponent implements OnInit {
   }
   initDepositStatusForm(data?: any) {
     this.depositStatusForm = this.fb.group({
-      depositDate: [new Date(data?.depositDate)],
+      depositDate: [data && data.depositDate ? this.datePipe.transform(data?.depositDate, 'yyyy-MM-dd') : null],
       stopNumber: [data?.stopNumber],
       depositor: [data?.depositor ? data.depositor?.id : ''],
     });
@@ -254,13 +254,13 @@ export class ItemDetailsComponent implements OnInit {
   initPropertyStatusForm(data?: any) {
     this.propertyStatusForm = this.fb.group({
       entryMode: [data?.entryMode?.id],
-      entryDate: [new Date(data?.entryDate)],
+      entryDate: [data && data.entryDate ? this.datePipe.transform(data?.entryDate, 'yyyy-MM-dd') : null],
       marking: [data?.marking],
       category: [data?.category?.id],
       registrationSignature: [data?.registrationSignature],
       descriptiveWords: [data?.descriptiveWords],
       insuranceValue: [data?.insuranceValue],
-      insuranceValueDate: [new Date(data?.insuranceValueDate)],
+      insuranceValueDate: [data && data.insuranceValueDate ? this.datePipe.transform(data?.insuranceValueDate, 'yyyy-MM-dd') : null],
       otherRegistrations: [data?.otherRegistrations],
       description: [data?.description],
     });
@@ -282,6 +282,7 @@ export class ItemDetailsComponent implements OnInit {
 
   onEditMode() {
     if(this.descriptifForm) {
+      this.initDescriptifForm(this.workArt);
       this.edit = true;
     }
   }
@@ -290,7 +291,8 @@ export class ItemDetailsComponent implements OnInit {
     const filteredKeys = keys.filter((value) => this.attributes.includes(value));
     filteredKeys.forEach((key: string) => {
       if (this.descriptifForm.get(key).value) {
-        this.descriptifForm.get(key).setValue(+this.descriptifForm.get(key).value);
+        this.descriptifForm.get(key)
+        .setValue(+this.descriptifForm.get(key).value * +this.descriptifForm.get(key.concat('Unit')).value);
       }
     });
   }
@@ -321,8 +323,9 @@ export class ItemDetailsComponent implements OnInit {
         this.propertyStatusForm
           .get('registrationSignature')
           .setValue(this.descriptifForm.get('registrationSignature').value);
-        // this.propertyStatusForm.get('descriptiveWords').setValue(this.descriptifForm.get('descriptiveWords').value);
-
+        this.propertyStatusForm.get('descriptiveWords').setValue(
+          this.descriptifForm.get('descriptiveWords').value.join(', ')
+        );
         this.propertyStatusForm.get('description').setValue(this.descriptifForm.get('description').value);
       }
 
@@ -330,11 +333,16 @@ export class ItemDetailsComponent implements OnInit {
         ...this.descriptifForm.value,
         field: this.descriptifForm.value.field.id,
         denomination: this.descriptifForm.value.denomination.id,
+        style: this.descriptifForm.value.style.id,
+
         status:this.addProperty?this.propertyStatusForm.value:this.depositStatusForm.value,
+        creationDate:this.descriptifForm.value.creationDate+'-01-01',
         parent: parent
       }
-    }
+      console.log(data)
 
+    }
+console.log(data)
       this.workOfArtService.updateWorkOfArt(data, this.artWorkId).subscribe(
       (result) => {
         this.getArtWork(this.artWorkId);
@@ -457,6 +465,7 @@ export class ItemDetailsComponent implements OnInit {
   }
 
   setArtwork(apiResult: any) {
+
     this.photographies = [];
 
         this.workArt= apiResult;
@@ -493,6 +502,7 @@ export class ItemDetailsComponent implements OnInit {
       if (apiResult && apiResult.status && apiResult.status.descriptiveWords) {
         let str: string = apiResult.status.descriptiveWords;
         let strIntoOb = str.split(',');
+        this.strIntoObj=[];
         strIntoOb.forEach((value: any) => {
           this.strIntoObj.push(value);
         });
