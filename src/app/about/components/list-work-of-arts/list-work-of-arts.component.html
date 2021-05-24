@@ -1351,14 +1351,17 @@
                   container="body"
                 >
                   <button class="btn export-button" id="dropdownBasic12" ngbDropdownToggle translate>
+                    <i class="fas fa-cog fa-spin" [hidden]="!exportingNotice"></i>
                     <i class="fas fa-file-export"></i>
                   </button>
                   <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic12">
                     <ul class="list-group">
-                      <li class="list-group-item">
+                      <li class="list-group-item" (click)="exportNotices('catalogue')">
                         <i class="fas fa-file-export"></i> Exporter Notices style catalogue
                       </li>
-                      <li class="list-group-item"><i class="fas fa-file-export"></i> Exporter Notices techniques</li>
+                      <li class="list-group-item" (click)="exportNotices('techniques')">
+                        <i class="fas fa-file-export"></i> Exporter Notices techniques
+                      </li>
                       <li class="list-group-item">
                         <i class="fas fa-file-export"></i> Exporter Notices complètes techniques
                       </li>
@@ -1385,8 +1388,31 @@
                 Imprimer
               </button>
               <button class="btn add-action" translate>
-                <i class="fas fa-file-export"></i>
-                Export
+                <div
+                  ngbDropdown
+                  placement="bottom-right"
+                  class="d-inline-block export-dropdown-bloc"
+                  autoClose="outside"
+                  container="body"
+                >
+                  <button class="btn export-button" id="dropdownBasic15" ngbDropdownToggle translate>
+                    <i class="fas fa-cog fa-spin" [hidden]="!exportingNotice"></i>
+                    <i class="fas fa-file-export"></i>
+                  </button>
+                  <div class="py-0 ng-dropdown" ngbDropdownMenu aria-labelledby="dropdownBasic15">
+                    <ul class="list-group">
+                      <li class="list-group-item" (click)="exportNotices('catalogue')">
+                        <i class="fas fa-file-export"></i> Exporter Notices style catalogue
+                      </li>
+                      <li class="list-group-item" (click)="exportNotices('techniques')">
+                        <i class="fas fa-file-export"></i> Exporter Notices techniques
+                      </li>
+                      <li class="list-group-item">
+                        <i class="fas fa-file-export"></i> Exporter Notices complètes techniques
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </button>
               <button class="btn add-action" (click)="duplicate()" translate>
                 <i class="fas fa-copy"></i>
