@@ -59,7 +59,7 @@ export class HypertextLinksComponent implements OnInit, OnChanges {
       (result) => {
         this.callParent();
 
-        this.addSingle('success', 'Suppresion', 'Lien hypertexte supprimée avec succés');
+        this.addSingle('success', 'Suppresion', 'Lien hypertexte supprimé avec succés');
         this.btnLoading = null;
         this.deleteDialog = false;
       },
@@ -107,7 +107,7 @@ export class HypertextLinksComponent implements OnInit, OnChanges {
       this.linksService.AddLinks(data).subscribe(
         (result) => {
           this.callParent();
-          this.addSingle('success', 'Ajout', 'Lien hypertexte ajouté(s) avec succés');
+          this.addSingle('success', 'Ajout', 'Lien(s) hypertexte(s) ajouté(s) avec succés');
           this.btnLoading = null;
           this.addLinks = false;
           this.hyperlinks.clear();

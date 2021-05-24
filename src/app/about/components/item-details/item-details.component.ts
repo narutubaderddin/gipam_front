@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren, Inpu
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'angular2-notifications';
 import { SharedService } from '@shared/services/shared.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { PdfGeneratorService } from '@shared/services/pdf-generator.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
@@ -199,8 +199,8 @@ export class ItemDetailsComponent implements OnInit {
   initDescriptifForm(data?: any) {
     this.descriptifForm = this.fb.group({
       title: [data?.title, Validators.required],
-      field: [{ id: data?.field.id, name: data?.field.label }, Validators.required],
-      denomination: [{ id: data?.denomination.id, name: data?.denomination.label }, Validators.required],
+      field: [{ id: data?.field?.id, name: data?.field.label }, Validators.required],
+      denomination: [{ id: data?.denomination?.id, name: data?.denomination.label }, Validators.required],
       materialTechnique: [
         data && data.materialTechnique ? this.formatArray(data.materialTechnique) : null,
         Validators.required,
@@ -489,6 +489,7 @@ export class ItemDetailsComponent implements OnInit {
         imageName: el.imageName,
       });
     });
+
     apiResult.status.statusType === 'PropertyStatus' ? (this.addProperty = true) : (this.addDepot = true);
     this.status = apiResult.status;
     this.addProperty ? this.initPropertyStatusForm(apiResult.status) : this.initDepositStatusForm(apiResult.status);
@@ -509,7 +510,21 @@ export class ItemDetailsComponent implements OnInit {
       });
     }
   }
-
+  get images2(): FormArray {
+    return this.photographiesForm.get('photographies') as FormArray;
+  }
+  createPhotography(
+    photography?: FormData,
+    photographyDate?: any,
+    photographyType?: any,
+    imageName?: string
+  ): FormGroup {
+    return this.fb.group({
+      date: [this.datePipe.transform(photographyDate, 'yyyy-MM-dd')],
+      imagePreview: [photography],
+      photographyType: [photographyType],
+    });
+  }
   addSingle(type: string, sum: string, msg: string) {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
   }
