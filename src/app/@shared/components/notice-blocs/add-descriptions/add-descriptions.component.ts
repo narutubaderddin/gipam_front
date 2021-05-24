@@ -11,6 +11,8 @@ import { MaterialTechniqueService } from '@app/@shared/services/material-techniq
 import { getMultiSelectIds } from '@shared/utils/helpers';
 import { MessageService } from 'primeng/api';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { map } from 'rxjs/operators';
+import { ArtWorkService } from '@app/about/services/art-work.service';
 
 @Component({
   selector: 'app-add-descriptions',
@@ -63,7 +65,8 @@ export class AddDescriptionsComponent implements OnInit {
     public fb: FormBuilder,
     private renderer: Renderer2,
     private messageService: MessageService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private artWorkService: ArtWorkService
   ) {}
 
   ngOnInit(): void {
@@ -111,7 +114,9 @@ export class AddDescriptionsComponent implements OnInit {
       this.attributeToShow = result;
     });
   }
-
+  public requestAutocompleteItems = (text: string) => {
+    return this.artWorkService.getAutocompleteData(text, 'description').pipe(map((data) => data));
+  };
   addWord(event: any) {
     console.log(event);
     this.descriptiveWords.push(event.value);

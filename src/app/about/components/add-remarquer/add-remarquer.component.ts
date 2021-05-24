@@ -11,6 +11,8 @@ import { FieldsService } from '@shared/services/fields.service';
 import { DenominationsService } from '@shared/services/denominations.service';
 import { StylesService } from '@shared/services/styles.service';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
+import { map } from 'rxjs/operators';
+import { ArtWorkService } from '@app/about/services/art-work.service';
 
 @Component({
   selector: 'app-add-remarquer',
@@ -172,6 +174,8 @@ export class AddRemarquerComponent implements OnInit {
   }
   initDescriptifForm(data?: any) {
     this.descriptifForm = this.fb.group({
+      inventoryNumber:
+        !this.isDuplicated && this.addDeposit && data && data.status ? data.status.inventoryNumber : null,
       title: data && data.title ? this.inProgressNotice.title : '',
       field: data && data.field ? this.inProgressNotice.field.id : null,
       denomination: data && data.denomination ? data.denomination.id : null,
@@ -233,6 +237,7 @@ export class AddRemarquerComponent implements OnInit {
   }
   initDepositStatusForm(data?: any) {
     this.depositStatusForm = this.fb.group({
+      inventoryNumber: [!this.isDuplicated && data && data.status ? data.status.inventoryNumber : null],
       depositDate: [data && data.status ? this.datePipe.transform(data.status.depositDate, 'yyyy-MM-dd') : null],
       stopNumber: [data && data.status ? data.status.stopNumber : null],
       depositor: [data && data.status ? data.status.depositor : null],
@@ -353,7 +358,10 @@ export class AddRemarquerComponent implements OnInit {
         .setValue(this.descriptifForm.get('registrationSignature').value);
       this.propertyStatusForm.get('descriptiveWords').setValue(this.descriptifForm.get('descriptiveWords').value);
       this.propertyStatusForm.get('description').setValue(this.descriptifForm.get('description').value);
+    } else {
+      this.depositStatusForm.get('inventoryNumber').setValue(this.descriptifForm.get('inventoryNumber').value);
     }
+
     this.formatData();
 
     let formData = new FormData();
