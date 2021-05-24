@@ -1,16 +1,18 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
 import { NgWizardConfig, NgWizardService, StepChangedArgs, StepValidationArgs, THEME } from 'ng-wizard';
 import { forkJoin, Observable, of, Subscription } from 'rxjs';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
 import { FieldsService } from '@shared/services/fields.service';
 import { DenominationsService } from '@shared/services/denominations.service';
 import { StylesService } from '@shared/services/styles.service';
 import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
+import { map } from 'rxjs/operators';
+import { ArtWorkService } from '@app/about/services/art-work.service';
 
 @Component({
   selector: 'app-add-remarquer',
@@ -18,7 +20,7 @@ import { SimpleTabsRefService } from '@shared/services/simple-tabs-ref.service';
   styleUrls: ['./add-remarquer.component.scss'],
   providers: [DatePipe],
 })
-export class AddRemarquerComponent implements OnInit, OnDestroy {
+export class AddRemarquerComponent implements OnInit {
   @ViewChild('content') ngTemplate: ElementRef;
   domainData: any[];
   denominationData: any[];
@@ -66,7 +68,7 @@ export class AddRemarquerComponent implements OnInit, OnDestroy {
   isDirty = false;
   value: boolean;
   url: string;
-  inProgressNotice: any = [];
+  inProgressNotice: any;
   id: string;
   routeSubscription: Subscription;
   isLoading = false;
@@ -79,6 +81,8 @@ export class AddRemarquerComponent implements OnInit, OnDestroy {
   photographyData: any[] = [];
   hyperLinkData: any[] = [];
   existingLink: any;
+  isDuplicated: any;
+  isStep1Completed = false;
   constructor(
     public workOfArtService: WorkOfArtService,
     private ngWizardService: NgWizardService,
@@ -95,9 +99,11 @@ export class AddRemarquerComponent implements OnInit, OnDestroy {
     private simpleTabsRefService: SimpleTabsRefService
   ) {
     this.routeSubscription = this.route.data.subscribe((res: any) => {
-      if (res) {
-        this.inProgressNotice = res.addRemarquer;
-        console.log(this.inProgressNotice);
+      if (res.addRemarquer[0]) {
+        this.inProgressNotice = res.addRemarquer[0].artwork;
+        this.isStep1Completed = res.addRemarquer[0].step1;
+        this.isDuplicated = res.addRemarquer[1];
+        console.log(this.isStep1Completed);
         this.inProgressNotice.hyperlinks ? (this.hyperLinkData = this.inProgressNotice.hyperlinks) : null;
         this.inProgressNotice.attachments ? (this.attachmentData = this.inProgressNotice.attachments) : null;
         this.inProgressNotice.photographies ? (this.photographyData = this.inProgressNotice.photographies) : null;
@@ -124,11 +130,6 @@ export class AddRemarquerComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    // this.inProgressNotice = [];
-    // this.initForms();
-  }
-
   ngOnInit(): void {
     this.initForms();
     this.initFilterData();
@@ -150,6 +151,11 @@ export class AddRemarquerComponent implements OnInit, OnDestroy {
       this.depositorsData = this.simpleTabsRefService.getTabRefFilterData(depositorsResults['results']);
       this.eraData = this.simpleTabsRefService.getTabRefFilterData(eraResults['results']);
       this.loadingData = false;
+      if (this.inProgressNotice && this.inProgressNotice.field) {
+        this.denominationData = this.denominationData.filter((denomi: any) => {
+          return denomi.field.id === this.inProgressNotice.field.id;
+        });
+      }
     });
   }
 
@@ -168,6 +174,8 @@ export class AddRemarquerComponent implements OnInit, OnDestroy {
   }
   initDescriptifForm(data?: any) {
     this.descriptifForm = this.fb.group({
+      inventoryNumber:
+        !this.isDuplicated && this.addDeposit && data && data.status ? data.status.inventoryNumber : null,
       title: data && data.title ? this.inProgressNotice.title : '',
       field: data && data.field ? this.inProgressNotice.field.id : null,
       denomination: data && data.denomination ? data.denomination.id : null,
@@ -229,8 +237,10 @@ export class AddRemarquerComponent implements OnInit, OnDestroy {
   }
   initDepositStatusForm(data?: any) {
     this.depositStatusForm = this.fb.group({
+      inventoryNumber: [!this.isDuplicated && data && data.status ? data.status.inventoryNumber : null],
       depositDate: [data && data.status ? this.datePipe.transform(data.status.depositDate, 'yyyy-MM-dd') : null],
       stopNumber: [data && data.status ? data.status.stopNumber : null],
+      depositor: [data && data.status ? data.status.depositor : null],
     });
   }
   initHyperLink() {
@@ -316,7 +326,6 @@ export class AddRemarquerComponent implements OnInit, OnDestroy {
         // append nested object
         for (let previewKey in this.descriptifForm.value[dataKey]) {
           for (let key in this.descriptifForm.value[dataKey][previewKey]) {
-            console.log([dataKey][previewKey][key], this.descriptifForm.value[dataKey][previewKey]);
             formData.append(`${dataKey}[${previewKey}][${key}]`, this.descriptifForm.value[dataKey][previewKey][key]);
           }
         }
@@ -342,6 +351,16 @@ export class AddRemarquerComponent implements OnInit, OnDestroy {
     this.descriptifForm.get('hyperlinks').setValue(this.linksForm.value.hyperlinks);
     this.descriptifForm.get('parent').setValue(this.linkArtWorkForm.value.parent);
     this.descriptifForm.get('attachments').setValue(this.attachmentForm.value.attachments);
+    if (this.addProperty) {
+      this.propertyStatusForm.get('marking').setValue(this.descriptifForm.get('marking').value);
+      this.propertyStatusForm
+        .get('registrationSignature')
+        .setValue(this.descriptifForm.get('registrationSignature').value);
+      this.propertyStatusForm.get('descriptiveWords').setValue(this.descriptifForm.get('descriptiveWords').value);
+      this.propertyStatusForm.get('description').setValue(this.descriptifForm.get('description').value);
+    } else {
+      this.depositStatusForm.get('inventoryNumber').setValue(this.descriptifForm.get('inventoryNumber').value);
+    }
 
     this.formatData();
 
@@ -349,14 +368,8 @@ export class AddRemarquerComponent implements OnInit, OnDestroy {
     this.inProgressNotice
       ? (this.toCreateNoticeId = this.inProgressNotice.id)
       : (this.toCreateNoticeId = this.createdNoticeId);
-    if (!this.toCreateNoticeId) {
+    if (!this.inProgressNotice || this.isDuplicated === 'true') {
       if (this.addProperty) {
-        this.propertyStatusForm.get('marking').setValue(this.descriptifForm.get('marking').value);
-        this.propertyStatusForm
-          .get('registrationSignature')
-          .setValue(this.descriptifForm.get('registrationSignature').value);
-        this.propertyStatusForm.get('descriptiveWords').setValue(this.descriptifForm.get('descriptiveWords').value);
-        this.propertyStatusForm.get('description').setValue(this.descriptifForm.get('description').value);
         this.buildFormData(formData);
         this.workOfArtService.addWorkOfArt(formData).subscribe(
           (result) => {
@@ -364,6 +377,12 @@ export class AddRemarquerComponent implements OnInit, OnDestroy {
             this.isLoading = false;
             this.submitted = true;
             this.createdNoticeId = result.res.id;
+            const queryParams: Params = { id: this.createdNoticeId, dupliquer: false };
+            this.router.navigate([], {
+              relativeTo: this.route,
+              queryParams,
+              queryParamsHandling: 'merge', // remove to replace all query params by provided
+            });
           },
           (err) => {
             this.addSingle('error', 'Ajout', "Une erreur est survenue lors de l'ajout");

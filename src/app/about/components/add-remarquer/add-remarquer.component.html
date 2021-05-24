@@ -26,6 +26,7 @@
       [canEnter]="isValidTypeBoolean"
       [canExit]="isValidFunctionReturnsBoolean.bind(this)"
       class="col-sm-12"
+      [ngClass]="isStep1Completed ? 'completed' : 'not-completed'"
     >
       <div class="d-flex flex-end justify-content-end pr-5">
         <button

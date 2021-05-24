@@ -459,7 +459,7 @@ export class ItemDetailsComponent implements OnInit {
       .getWorkOfArtById(id, { serializer_group: JSON.stringify(['art_work_details', 'short']) })
       .subscribe(
         (result) => {
-          this.setArtwork(result);
+          this.setArtwork(result.artwork);
         },
         (error) => {
           this.addSingle('error', 'Erreur Technique', error.error.message);

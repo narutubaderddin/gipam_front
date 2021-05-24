@@ -136,9 +136,6 @@ export class AttachmentsComponent implements OnInit, OnChanges {
   }
 
   deleteAttachment(index: number) {
-    // this.files.splice(index, 1);
-    // this.attachments.removeAt(index);
-
     this.btnLoading = '';
     this.linksService.deleteAttachments({ furniture: this.artwork.id }, this.itemToDelete.id).subscribe(
       (result) => {
@@ -153,6 +150,11 @@ export class AttachmentsComponent implements OnInit, OnChanges {
         this.btnLoading = null;
       }
     );
+  }
+
+  removeAttachment(index: number) {
+    this.files.splice(index, 1);
+    this.attachments.removeAt(index);
   }
 
   addItem(data: any) {
@@ -175,11 +177,8 @@ export class AttachmentsComponent implements OnInit, OnChanges {
     } else {
       if (this.selectedAttachment == this.attachments.value.length || this.itemDetails) {
         this.files.push(this.addedFile);
-        this.attachments.push(this.createAttachment(this.addedFile, this.attachmentType));
+        this.attachments.push(this.createAttachment(this.addedFile, this.attachmentType.id));
         if (this.itemDetails) {
-          // this.existingAttachments.push({ attachment: this.addedFile, attachmentType: this.attachmentType });
-          console.log('itemmmmm');
-          console.log(this.attachments);
           let data = this.buildFormData(this.attachments.value[this.attachments.value.length - 1]);
           this.addItem(data);
         }
