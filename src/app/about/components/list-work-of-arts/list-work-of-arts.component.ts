@@ -1543,8 +1543,7 @@ export class ListWorkOfArtsComponent implements OnInit {
   }
   exportNotices(type: string) {
     //Show the loader.
-    this.firstLoading = true;
-    this.loading = true;
+    this.exportingNotice = true;
 
     //get artwork's to get theire PDF.
     let artWorkids = [];
@@ -1562,8 +1561,7 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.requestService.exportNotices(dataTosend, type).subscribe((response: Response | any) => {
       this.requestService.manageFileResponseDownload(response, type);
 
-      this.firstLoading = false;
-      this.loading = false;
+      this.exportingNotice = false;
     });
   }
 
