@@ -16,7 +16,7 @@ export class ItemDetailsGuard implements CanActivate {
     const newParams = JSON.parse(localStorage.getItem(searchPageFilter));
     const index = JSON.parse(localStorage.getItem(lastArtOfWorkDetailIndex));
 
-    if (newParams?.page && index) {
+    if (newParams?.page && (index || index === 0)) {
       return true;
     }
     this.router.navigate(['/oeuvres-list'], { replaceUrl: true });

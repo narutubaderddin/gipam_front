@@ -373,12 +373,7 @@ export class ItemDetailsComponent implements OnInit {
 
   initSearchPageParam() {
     const newParams = JSON.parse(localStorage.getItem(searchPageFilter));
-    const index = JSON.parse(localStorage.getItem(lastArtOfWorkDetailIndex));
 
-    if (!newParams?.page || !index) {
-      this.router.navigate(['/oeuvres-list']);
-      return;
-    }
     this.searchPageParam = {
       mode: newParams?.mode,
       filter: newParams.filter,
