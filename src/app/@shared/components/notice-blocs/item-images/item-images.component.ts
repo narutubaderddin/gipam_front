@@ -132,15 +132,16 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     this.images[i].photographyType = photographyType;
     this.photography = photography;
   }
-  verifyIdentification() {
+  verifyIdentification(event: any) {
+    console.log(event);
     this.identification = 0;
     const identificationId = this.types.filter((type: any) => {
       return type.type == 'Identification';
     });
-    if (this.photographies.value.length > 1) {
-      this.photographies.value.forEach((photography: any) => {
+    if (this.images) {
+      this.images.forEach((photography: any) => {
         console.log(photography);
-        if (photography.photographyType == identificationId) {
+        if (photography.photographyType.type == 'Identification') {
           this.types.forEach((type) => {
             if (type.type == 'Identification') {
               console.log(type);
@@ -195,7 +196,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         );
       }
 
-      this.verifyIdentification();
       this.initData('', new Date());
       this.photographyInsertionNumber++;
       this.selectedPhotography = this.photographies.value.length;
