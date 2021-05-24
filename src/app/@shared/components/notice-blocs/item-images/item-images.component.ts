@@ -116,17 +116,17 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     this.identification = 0;
     if (this.photographies.value.length > 1) {
       this.photographies.value.forEach((photography: any) => {
-        if (photography.photographyType.name != 'Identification') {
-          this.identification++;
+        if (photography.photographyType.name == 'Identification') {
+          this.types[0].disabled = true;
         }
       });
-      if (this.identification < this.photographies.value.length) {
-        this.isIdentification = true;
-        this.types[0].disabled = true;
-      } else {
-        this.isIdentification = false;
-        this.types[0].disabled = false;
-      }
+      // if (this.identification < this.photographies.value.length) {
+      //   this.isIdentification = true;
+      //
+      // } else {
+      //   this.isIdentification = false;
+      //   this.types[0].disabled = false;
+      // }
     }
   }
 
@@ -173,7 +173,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         );
       }
 
-      // this.verifyIdentification();
+      this.verifyIdentification();
       this.initData('', new Date());
       this.photographyInsertionNumber++;
       this.selectedPhotography = this.photographies.value.length;
