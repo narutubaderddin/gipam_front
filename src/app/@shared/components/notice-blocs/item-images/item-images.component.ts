@@ -70,22 +70,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         this.images[this.activeIndex].image
       );
     }
-    if (this.existingPhotographies.length) {
-      console.log('exis', this.existingPhotographies);
-
-      this.existingPhotographies.map((el: any, index: number) => {
-        // // this.photographies.push(this.createPhotography(this.sanitizer.bypassSecurityTrustResourceUrl(`data:image/png;base64, ${btoa(el.imagePreview)}`)['changingThisBreaksApplicationSecurity'], el.date, el.photographyType, el.imageName));
-        // this.images.push({
-        //   imageUrl: el.imagePreview,
-        //   photographyType: el.photographyType,
-        //   photographyDate: el.date,
-        //   image: el.imageName,
-        //   i: index,
-        // });
-        // this.photographyInsertionNumber = this.images.length;
-      });
-      this.initData();
-    }
   }
   ngOnChanges(changements: SimpleChanges) {}
   get items() {
