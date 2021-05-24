@@ -1,10 +1,13 @@
 .bloc-header {
+  @media (max-width: 778px) {
+    top: 200px;
+  }
   position: fixed;
   z-index: 10;
   background-color: white;
   top: 75px;
   padding: 1% 2% 0 1%;
-  width: calc(100% - 100px);
+  width: calc(100% - 60px);
   margin-left: 60px;
   left: 0;
 }
@@ -182,7 +185,13 @@ button {
 }
 
 .container-fluid {
-  margin-top: 12rem;
+  @media (max-width: 427px) {
+    margin-top: 15rem;
+  }
+  @media (max-width: 778px) and (min-width: 428px) {
+    margin-top: 12rem;
+  }
+  margin-top: 9rem;
   padding: 0 20px;
   p {
     font-size: 14px;
@@ -594,4 +603,9 @@ button {
   color: white !important;
   cursor: default !important;
   pointer-events: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }

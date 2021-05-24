@@ -16,19 +16,20 @@ export class PhotographyService {
   constructor(private http: HttpClient, private messageService: MessageService) {}
 
   addPhotography(data: any): Observable<any> {
-    return this.http.post<any>(`/photography`, data, httpOptions);
+    const params = new HttpParams();
+    return this.http.post<any>(`/photography`, data, { params: params });
   }
   updatePhotography(data: any, id: any): Observable<any> {
     return this.http.patch(`/photography/${id}`, data);
   }
-  deletePhotography(data: any, id: any) : Observable<any> {
+  deletePhotography(data: any, id: any): Observable<any> {
     let params = new HttpParams();
     Object.keys(data).forEach((key) => {
       if (data[key]) {
         params = params.append(key, data[key]);
       }
     });
-    return this.http.delete<any>(`/photography/${id}`, {params});
+    return this.http.delete<any>(`/photography/${id}`, { params });
   }
   getFormErrors(errors: any, sum: string) {
     if (!errors) {
@@ -42,6 +43,4 @@ export class PhotographyService {
       }
     });
   }
-
-
 }

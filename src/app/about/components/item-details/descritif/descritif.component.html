@@ -95,6 +95,7 @@
         [options]="authorData"
         formControlName="authors"
         optionLabel="label"
+        optionValue="id"
         display="chip"
         [filter]="true"
         defaultLabel="Sélectionner des auteurs"
@@ -110,7 +111,7 @@
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('height')">
         <label class="">Hauteur</label>
         <div class="value" *ngIf="!edit">{{ artwork.height }}</div>
-        <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
+        <div class="d-flex value col-12 col-sm-7 p-0" *ngIf="edit">
           <input class="col-md-8 form-control" type="number" formControlName="height" />
           <select class="col-md-4 col-sm-4 form-control">
             <option class="active">cm</option>
@@ -120,8 +121,8 @@
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('width')">
         <label class="">Largeur</label>
-        <div class="value" *ngIf="!edit">{{ artwork.width }}</div>
-        <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
+        <div class="value" *ngIf="!edit">{{ artwork.width }} {{ artwork.widthUnit }}</div>
+        <div class="d-flex value col-12 col-sm-7 p-0" *ngIf="edit">
           <input class="col-md-8 form-control" type="number" formControlName="width" />
           <select class="col-md-4 col-sm-4 form-control">
             <option class="active">cm</option>
@@ -132,7 +133,7 @@
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('totalWidth')">
         <label class="">Largeur Tot </label>
         <div class="value" *ngIf="!edit">{{ artwork.totalWidth }}</div>
-        <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
+        <div class="d-flex value col-12 col-sm-7 p-0" *ngIf="edit">
           <input class="col-md-8 form-control" type="number" formControlName="totalWidth" />
           <select class="col-md-4 col-sm-4 form-control">
             <option class="active">cm</option>
@@ -143,7 +144,7 @@
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('totalHeight')">
         <label class="">Hauteur Tot</label>
         <div class="value" *ngIf="!edit">{{ artwork.totalHeight }}</div>
-        <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
+        <div class="d-flex value col-12 col-sm-7 p-0" *ngIf="edit">
           <input class="col-md-8 form-control" type="number" formControlName="totalHeight" />
           <select class="col-md-4 col-sm-4 form-control">
             <option class="active">cm</option>
@@ -153,12 +154,12 @@
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('length')">
         <label class="">Longueur</label>
-        <div class="value" *ngIf="!edit">{{ artwork.length }}</div>
-        <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
+        <div class="value" *ngIf="!edit">{{ artwork.length }} {{ artwork.lengthUnit }}</div>
+        <div class="d-flex value col-12 col-sm-7 p-0" *ngIf="edit">
           <input class="col-md-8 form-control" type="number" formControlName="length" />
-          <select class="col-md-4 col-sm-4 form-control">
-            <option class="active">cm</option>
-            <option>m</option>
+          <select class="col-md-4 col-sm-4 form-control" formControlName="lengthUnit">
+            <option class="active" value="1">cm</option>
+            <option value="100">m</option>
           </select>
         </div>
       </div>
@@ -166,17 +167,17 @@
         <label class="">Profondeur</label>
         <div class="value" *ngIf="!edit">{{ artwork.depth }}</div>
         <div class="d-flex value" *ngIf="edit">
-          <input class="col-md-8 form-control col-12 col-sm-7" type="number" formControlName="depth" />
-          <select class="col-md-4 col-sm-4 form-control">
-            <option class="active">cm</option>
-            <option>m</option>
+          <input class="col-md-8 form-control col-12 col-sm-7 p-0" type="number" formControlName="depth" />
+          <select class="col-md-4 col-sm-4 form-control" formControlName="depthUnit">
+            <option class="active" value="1">cm</option>
+            <option value="100">m</option>
           </select>
         </div>
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('weight')">
         <label class="col-md-3">Poids</label>
         <div class="value" *ngIf="!edit">{{ artwork.weight }}</div>
-        <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
+        <div class="d-flex value col-12 col-sm-7 p-0" *ngIf="edit">
           <input class="col-md-8 form-control" type="number" formControlName="weight" />
           <select class="col-md-4 col-sm-4 form-control">
             <option class="active">Kg</option>
@@ -186,11 +187,16 @@
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('diameter')">
         <label class="">Diamètre</label>
         <div class="value" *ngIf="!edit">{{ artwork.diameter }}</div>
-        <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
-          <input class="col-md-8 form-control" type="number" formControlName="diameter" />
+        <div class="d-flex value col-12 col-sm-7 p-0" *ngIf="edit">
+          <input
+            class="col-md-8 form-control"
+            type="number"
+            formControlName="diameter"
+            formControlName="diameterUnit"
+          />
           <select class="col-md-4 form-control">
-            <option class="active">cm</option>
-            <option>m</option>
+            <option class="active" value="1">cm</option>
+            <option value="100">m</option>
           </select>
         </div>
       </div>
@@ -229,7 +235,7 @@
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
         <label class="">Date de création</label>
-        <div class="value" *ngIf="!edit">{{ artwork.createdAt }}</div>
+        <div class="value" *ngIf="!edit">{{ artwork.creationDate | date: 'yyyy' }}</div>
 
         <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
           <input
@@ -264,6 +270,7 @@
               [options]="materialTechniquesData"
               formControlName="materialTechnique"
               optionLabel="name"
+              optionValue="id"
               [filter]="true"
               display="chip"
             >
@@ -305,32 +312,51 @@
       <div class="divider"></div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="addProperty">
         <label>Marquage</label>
-        <div class="value" *ngIf="!edit">{{ artwork.marquage }}</div>
-        <input *ngIf="edit" class="form-control value col-12 col-sm-7" placeholder="Marquage" />
+        <div class="value" *ngIf="!edit">{{ artwork?.status?.marking }}</div>
+        <input
+          *ngIf="edit"
+          class="form-control value col-12 col-sm-7"
+          formControlName="marking"
+          placeholder="Marquage"
+        />
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="addProperty">
         <label>Signature inscription</label>
-        <input *ngIf="edit" class="form-control value col-12 col-sm-7" placeholder="Signature inscription" />
+        <div class="value" *ngIf="!edit">{{ artwork?.status?.registrationSignature }}</div>
+
+        <input
+          *ngIf="edit"
+          formControlName="registrationSignature"
+          class="form-control value col-12 col-sm-7"
+          placeholder="Signature inscription"
+        />
       </div>
 
       <div class="form-group d-flex align-items-center col-md-6" *ngIf="addProperty">
         <label class="">Mots descriptifs</label>
-        <div class="value" *ngIf="!edit">{{ artwork.desc }}</div>
+        <div class="value" *ngIf="!edit">{{ artwork?.status?.descriptiveWords }}</div>
         <tag-input
           *ngIf="edit"
-          formControlName="descriptiveWords"
-          [editable]="true"
-          (onTagEdited)="onTagEdited($event)"
-          secondaryPlaceholder="Entrer mots descriptifs"
           class="value"
+          formControlName="descriptiveWords"
+          [editable]="false"
+          (onAdd)="addWord($event)"
+          secondaryPlaceholder="Entrer mots descriptifs"
+          [modelAsStrings]="true"
           placeholder=" +Mots descriptifs"
         ></tag-input>
       </div>
       <div class="col-md-12" *ngIf="addProperty">
         <div class="d-flex form-group col-md-12 p-0">
           <label>Commentaire</label>
-          <div class="value" *ngIf="!edit">{{ artwork.comment }}</div>
-          <textarea type="text" class="form-control" placeholder="Commentaire ..." *ngIf="edit"></textarea>
+          <div class="value" *ngIf="!edit">{{ artwork?.status?.description }}</div>
+          <textarea
+            type="text"
+            class="form-control"
+            placeholder="Commentaire ..."
+            formControlName="description"
+            *ngIf="edit"
+          ></textarea>
         </div>
       </div>
     </div>

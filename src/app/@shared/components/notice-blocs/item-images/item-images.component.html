@@ -112,6 +112,7 @@
               *ngIf="add || addImage"
               [attr.disabled]="btnLoading"
             >
+              <i class="fas fa-cog fa-spin" [hidden]="btnLoading == null"></i>
               <i class="fas fa-plus"></i>
               Valider
             </button>
@@ -133,6 +134,7 @@
         Annuler
       </button>
       <button class="btn valid-btn" [attr.disabled]="btnLoading" (click)="delete()" style="font-size: 12px">
+        <i class="fas fa-cog fa-spin" [hidden]="btnLoading == null"></i>
         supprimer
       </button>
     </ng-template>

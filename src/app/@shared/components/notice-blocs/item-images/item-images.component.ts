@@ -22,7 +22,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   @Input() existingPhotographies: any[] = [];
   @Output() imgToShow = new EventEmitter();
   @Input() parentApi: ParentComponentApi;
-
+  @Input() artWorkId: any;
   addImage = false;
   activeIndex = 0;
   editType = false;
@@ -73,7 +73,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     if (this.existingPhotographies.length) {
       this.existingPhotographies.map((el: any, index: number) => {
         this.photographies.push(this.createPhotography(el.imagePreview, el.date, el.photographyType, el.imageName));
-        console.log(index);
         this.images.push({
           imageUrl: el.imagePreview,
           photographyType: el.photographyType,
@@ -144,6 +143,15 @@ export class ItemImagesComponent implements OnInit, OnChanges {
       }
     }
   }
+
+  buildFormData(data: any) {
+    const formData = new FormData();
+    formData.append('imagePreview', data.imagePreview);
+    formData.append('photographyType', data.photographyType);
+    formData.append('date', data.date);
+    formData.append('furniture', this.artWorkId);
+    return formData;
+  }
   addPhotography(): void {
     if (!this.photography.length || !this.photographyType || !this.imageName.length) {
       this.validate = false;
@@ -157,7 +165,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
           photographyType: this.photographyType,
           photographyDate: this.photographyDate,
         });
-        console.log(this.photographyType);
         this.photographies.push(
           this.createPhotography(
             this.fileToUpload,
@@ -167,11 +174,19 @@ export class ItemImagesComponent implements OnInit, OnChanges {
           )
         );
         if (this.addImage) {
-          this.addItem(this.photographies.value[this.photographies.value.length - 1]);
+          let data = this.buildFormData(this.photographies.value[this.photographies.value.length - 1]);
+          this.addItem(data);
+        } else {
+          this.images.push({
+            i: this.photographyInsertionNumber,
+            imageUrl: this.photography,
+            alt: 'description',
+            image: this.imageName,
+            photographyType: this.photographyType,
+            photographyDate: this.photographyDate,
+          });
         }
       } else {
-        console.log(this.selectedPhotography);
-
         this.editPhotographyForm(
           this.selectedPhotography,
           this.photography,
@@ -286,7 +301,8 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     this.btnLoading = '';
     this.photographyService.addPhotography(data).subscribe(
       (result: any) => {
-        this.addSingle('success', 'Ajout', 'Photographie ' + data + ' ajoutée avec succés');
+        this.callParent();
+        this.addSingle('success', 'Ajout', 'Photographie ajoutée avec succés');
       },
       (error) => {
         this.addSingle('error', 'Ajout', error.error.message);
