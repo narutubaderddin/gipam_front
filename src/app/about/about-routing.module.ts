@@ -80,6 +80,7 @@ const routes: Routes = [
         component: AddRemarquerComponent,
         canDeactivate: [DirtyCheckGuard],
         resolve: { addRemarquer: AddRemarquerResolver },
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange',
       },
       { path: 'notices-list', component: NoticeListComponent },
       { path: 'recolements-list', component: RecolementListComponent },

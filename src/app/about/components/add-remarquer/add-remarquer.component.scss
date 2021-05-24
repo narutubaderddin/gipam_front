@@ -58,6 +58,11 @@ a:not([href]) {
     }
   }
 }
+.completed .ng-wizard-main ul li a {
+  &::after {
+    background-color: red;
+  }
+}
 
 .bloc-header {
   position: fixed;

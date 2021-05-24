@@ -174,7 +174,6 @@ export class AddDescriptionsComponent implements OnInit {
       (result: any) => {
         this.myModal.dismiss('Cross click');
         this.addSingle('success', 'Ajout', 'Auteur ' + item.firstName + ' ' + item.lastName + ' ajoutée avec succés');
-        //this.authorData.push(result);
         forkJoin([this.simpleTabsRefService.getAllItems(this.data, 'authors')]).subscribe(([authorResults]) => {
           this.authorData = this.simpleTabsRefService.getTabRefFilterData(authorResults['results']);
         });

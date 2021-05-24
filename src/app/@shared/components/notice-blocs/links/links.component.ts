@@ -54,7 +54,7 @@ export class LinksComponent implements OnInit, OnChanges {
         serializer_group: JSON.stringify(['short_art_work']),
       };
       this.workOfArtService.getWorkOfArtById(this.linkArtWorkForm.value.parent, params).subscribe((res) => {
-        this.link = { data: res.id + '-' + res.title + '-' + res.field.label };
+        this.link = { data: res.artwork.id + '-' + res.artwork.title + '-' + res.artwork.field.label };
       });
     }
   }

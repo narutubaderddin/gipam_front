@@ -1574,7 +1574,9 @@ export class ListWorkOfArtsComponent implements OnInit {
     this.exportingNotice = true;
     let artWork = this.selectedRows[0];
     WorkOfArtService;
-    this.router.navigate(['creation-notice', artWork.status], { queryParams: { id: artWork.id } });
+    let status: any;
+    artWork.status == 'Dépôt' ? (status = 'dépôt') : (status = 'propriété');
+    this.router.navigate(['creation-notice', status], { queryParams: { id: artWork.id, dupliquer: true } });
     this.exportingNotice = false;
   }
 
