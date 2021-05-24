@@ -43,7 +43,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   itemToDelete: any;
   viewDateFormat = viewDateFormat;
   btnLoading: any = null;
-
+  i:number=0;
 
   get photographies(): FormArray {
     return this.photographiesForm.get('photographies') as FormArray;
@@ -73,6 +73,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         this.images[this.activeIndex].image
       );
     }
+
     if (this.existingPhotographies.length) {
       this.existingPhotographies.map((el: any, index: number) => {
         this.photographies.push(this.createPhotography(el.imagePreview, el.date, el.photographyType, el.imageName));
@@ -87,9 +88,9 @@ export class ItemImagesComponent implements OnInit, OnChanges {
       });
       this.initData();
     }
+
   }
   ngOnChanges(changements: SimpleChanges) {
-
   }
   get items() {
     return this.images;
@@ -124,7 +125,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     return this.fb.group({
       date: [this.datePipe.transform(photographyDate, 'yyyy-MM-dd')],
       imagePreview: [photography],
-      photographyType: [photographyType.id],
+      photographyType: [photographyType],
     });
   }
   editPhotographyForm(i: number, photography: string, photographyType: any, photographyDate: any, imageName: string) {
@@ -141,6 +142,23 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     if (this.photographies.value.length > 1) {
       this.photographies.value.forEach((photography: any) => {
         if (photography.photographyType.name != 'Identification') {
+          this.identification++;
+        }
+      });
+      if (this.identification < this.photographies.value.length) {
+        this.isIdentification = true;
+        this.types[0].disabled = true;
+      } else {
+        this.isIdentification = false;
+        this.types[0].disabled = false;
+      }
+    }
+  }
+  verifyIdentificationPhoto() {
+    this.identification = 0;
+    if (this.photographies.value.length > 1 && this.types) {
+      this.photographies.value.forEach((photography: any) => {
+        if (photography.photographyType.type != 'Identification') {
           this.identification++;
         }
       });
@@ -228,7 +246,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   }
 
   show(item: any) {
-    console.log(item);
+
     this.initData(item.imageUrl, item.photographyDate, item.photographyType, item.image);
     this.selectedPhotography = item.i;
     this.imgToShow.emit(item.imageUrl);
@@ -241,10 +259,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     if (!this.photographyType) {
       this.validate = false;
     } else {
-      this.editTypePhotography(this.photographyType);
-      console.log('photographyType', this.photographyType, this.images);
-      this.verifyIdentification();
-      // this.photographyInsertionNumber++;
+        this.editTypePhotography(this.photographyType);
     }
   }
   editTypePhotography(type: any) {
@@ -259,8 +274,11 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         this.btnLoading = null;
       },
       (error) => {
-        console.log(error);
-        this.photographyService.getFormErrors(error.error.errors, 'Modification');
+        if(error.error.msg) {
+          this.addSingle('error', 'Modification', error.error.msg);
+        }else {
+          this.photographyService.getFormErrors(error.error.errors, 'Modification');
+        }
         this.btnLoading = null;
       }
     );
@@ -286,7 +304,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
 
       },
       error=>{
-        console.log(error)
         this.addSingle('error', 'Suppresion', error.error.message);
         this.btnLoading = null;
       }
