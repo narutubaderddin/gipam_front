@@ -319,7 +319,7 @@ export class ItemDetailsComponent implements OnInit {
           .get('registrationSignature')
           .setValue(this.descriptifForm.get('registrationSignature').value);
         this.propertyStatusForm.get('descriptiveWords').setValue(
-          this.descriptifForm.get('descriptiveWords').value.join(', ')
+          this.descriptifForm?.get('descriptiveWords')?.value?.join(', ')
         );
         this.propertyStatusForm.get('description').setValue(this.descriptifForm.get('description').value);
       }
@@ -327,8 +327,8 @@ export class ItemDetailsComponent implements OnInit {
       data = {
         ...this.descriptifForm.value,
         field: this.descriptifForm.value.field.id,
-        denomination: this.descriptifForm.value.denomination.id,
-        style: this.descriptifForm.value.style.id,
+        denomination: this.descriptifForm?.value?.denomination?.id,
+        style: this.descriptifForm?.value?.style?.id,
 
         status:this.addProperty?this.propertyStatusForm.value:this.depositStatusForm.value,
         creationDate:this.descriptifForm.value.creationDate+'-01-01',
