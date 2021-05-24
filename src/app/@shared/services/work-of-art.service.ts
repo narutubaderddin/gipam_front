@@ -673,9 +673,7 @@ export class WorkOfArtService {
     return this.http.post('/notices/property', data);
   }
   updateInProgressArtWork(data: any, id: any): Observable<any> {
-    let params = new HttpParams();
-    params.append('_method', 'PATCH');
-    return this.http.post('/notices/update-in-progress-notice/' + id + '?_method=PATCH', data);
+    return this.http.post(`/notices/update-in-progress-notice/${id}?_method=PATCH`, data);
   }
   addDepositWorkOfArt(data: any): Observable<any> {
     return this.http.post('/notices/deposit', data);

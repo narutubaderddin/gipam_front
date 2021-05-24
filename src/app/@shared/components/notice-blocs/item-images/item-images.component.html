@@ -20,6 +20,14 @@
           >
             <ng-template pTemplate="item" let-item>
               <img width="100%" height="200" [src]="item.imageUrl" [alt]="" />
+              <i
+                [style]="{ top: '0rem' }"
+                class="far fa-trash-alt"
+                *ngIf="add && images.length"
+                (click)="removePhotography(item)"
+                pTooltip="Supprimer"
+                tooltipPosition="top"
+              ></i>
             </ng-template>
             <ng-template pTemplate="thumbnail" let-item>
               <div class="p-grid p-nogutter p-justify-center">
