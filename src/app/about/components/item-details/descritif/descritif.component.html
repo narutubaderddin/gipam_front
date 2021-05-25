@@ -236,7 +236,7 @@
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
         <label class="">Date de création</label>
-        <div class="value" *ngIf="!edit">{{ artwork?.creationDate? artwork.creationDate : ''  | date: 'yyyy' }}</div>
+        <div class="value" *ngIf="!edit">{{ artwork?.creationDate | date: 'yyyy' }}</div>
 
         <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
           <input

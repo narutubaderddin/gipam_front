@@ -140,7 +140,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   buildFormData(data: any) {
     const formData = new FormData();
     formData.append('imagePreview', data.imagePreview);
-    formData.append('photographyType', data.photographyType.id);
+    formData.append('photographyType', data.photographyType);
     formData.append('date', data.date);
     formData.append('furniture', this.artWorkId);
 
