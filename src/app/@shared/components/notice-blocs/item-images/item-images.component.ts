@@ -156,9 +156,10 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   buildFormData(data: any) {
     const formData = new FormData();
     formData.append('imagePreview', data.imagePreview);
-    formData.append('photographyType', data.photographyType);
+    formData.append('photographyType', data.photographyType.id);
     formData.append('date', data.date);
     formData.append('furniture', this.artWorkId);
+
     return formData;
   }
   addPhotography(): void {
@@ -175,6 +176,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
           )
         );
         if (this.addImage) {
+          console.log(this.photographies.value[this.photographies.value.length - 1]);
           let data = this.buildFormData(this.photographies.value[this.photographies.value.length - 1]);
           this.addItem(data);
         } else {
@@ -259,7 +261,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         if(error.error.msg) {
           this.addSingle('error', 'Modification', error.error.msg);
         }else {
-          this.photographyService.getFormErrors(error.error.errors, 'Modification');
+          this.addSingle('error', 'Ajout', 'Erreur Servenue lors de l\'ajout');
         }
         this.btnLoading = null;
       }
@@ -292,6 +294,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   }
 
   deleteItem(item: string) {
+    console.log(item);
     this.itemToDelete = item;
     this.deleteDialog = true;
   }
@@ -300,15 +303,24 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   }
   addItem(data: any) {
     this.btnLoading = '';
+    console.log(data)
     this.photographyService.addPhotography(data).subscribe(
       (result: any) => {
         this.callParent();
         this.addSingle('success', 'Ajout', 'Photographie ajoutée avec succés');
       },
       (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
-        this.photographyService.getFormErrors(error.error.errors, 'Ajout');
         this.btnLoading = null;
+
+        if (error.error.msg) {
+          this.addSingle('error', 'Ajout', error.error.msg);
+        }else {
+        if(error.error.code==500){
+          this.addSingle('error', 'Erreur Technique', 'Une erreur est servenue lors de l\'ajout');
+        }else{
+          this.addSingle('error', 'Ajout', 'Une erreur est servenue lors de l\'ajout');
+        }
+        }
       }
     );
   }

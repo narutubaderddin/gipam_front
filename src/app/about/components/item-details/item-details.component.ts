@@ -110,6 +110,7 @@ export class ItemDetailsComponent implements OnInit {
     totalFiltered: any;
   };
   loadingData = false;
+  private draftArtWork: boolean;
   constructor(
     config: NgbCarouselConfig,
     private notificationsService: NotificationsService,
@@ -500,7 +501,16 @@ export class ItemDetailsComponent implements OnInit {
     if (apiResult.parent) {
       this.initLinks(apiResult.parent);
     }
-
+    // this.draftArtWork=apiResult.isCreated;
+    console.log(apiResult.isCreated!==this.draftArtWork && !apiResult.isCreated, this.draftArtWork )
+    if(apiResult.isCreated!==this.draftArtWork && !apiResult.isCreated){
+      this.addSingle('success', '', 'Notice en mode brouillon')
+    }
+    // if(apiResult.isCreated!==this.draftArtWork && apiResult.isCreated){
+    //   this.addSingle('success', '', 'Notice en mode brouillon')
+    // }
+    this.draftArtWork=apiResult.isCreated;
+    console.log(this.draftArtWork)
     if (apiResult && apiResult.status && apiResult.status.descriptiveWords) {
       let str: string = apiResult.status.descriptiveWords;
       let strIntoOb = str.split(',');
