@@ -669,8 +669,12 @@ export class WorkOfArtService {
     localStorage.removeItem('selectedArtWorks');
   }
 
-  addWorkOfArt(data: any): Observable<any> {
-    return this.http.post('/notices/property', data);
+  addWorkOfArt(data: any, duplication: any): Observable<any> {
+    let params = new HttpParams();
+    if (duplication) {
+      params.append('duplication', duplication);
+    }
+    return this.http.post('/notices/property', data, { params });
   }
   updateInProgressArtWork(data: any, id: any): Observable<any> {
     return this.http.post(`/notices/update-in-progress-notice/${id}?_method=PATCH`, data);
