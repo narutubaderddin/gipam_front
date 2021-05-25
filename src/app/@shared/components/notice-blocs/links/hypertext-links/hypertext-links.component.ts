@@ -65,7 +65,7 @@ export class HypertextLinksComponent implements OnInit, OnChanges {
       },
       (error) => {
         console.log(error);
-        this.addSingle('error', 'Suppresion', error.error.message);
+        this.addSingle('error', 'Suppresion', 'Erreur servenue lors de la suppression');
         this.btnLoading = null;
       }
     );
@@ -100,24 +100,27 @@ export class HypertextLinksComponent implements OnInit, OnChanges {
   }
 
   addHyperLinks() {
+    let data :any[]= [];
+
     this.hyperlinks.value.map((el: any, i: any) => {
       Object.assign(el, { furniture: this.artwork.id });
-      let data = el;
-      this.btnLoading = '';
-      this.linksService.AddLinks(data).subscribe(
-        (result) => {
-          this.callParent();
-          this.addSingle('success', 'Ajout', 'Lien(s) hypertexte(s) ajouté(s) avec succés');
-          this.btnLoading = null;
-          this.addLinks = false;
-          this.hyperlinks.clear();
-        },
-        (error) => {
-          console.log(error);
-          this.addSingle('error', 'Ajout', "une erreur est servenu lors de l'ajout");
-          this.btnLoading = null;
-        }
-      );
+      data.push(el);
     });
+    console.log(data);
+    this.btnLoading = '';
+    this.linksService.AddLinks(data).subscribe(
+      (result) => {
+        this.callParent();
+        this.addSingle('success', 'Ajout', 'Lien(s) hypertexte(s) ajouté(s) avec succés');
+        this.btnLoading = null;
+        this.addLinks = false;
+        this.hyperlinks.clear();
+      },
+      (error) => {
+        console.log(error);
+        this.addSingle('error', 'Ajout', "une erreur est servenu lors de l'ajout");
+        this.btnLoading = null;
+      }
+    );
   }
 }

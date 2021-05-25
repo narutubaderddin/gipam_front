@@ -100,7 +100,9 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   }
 
   getActivePicture() {
-    return this.images[this.activeIndex].imageUrl;
+    if (this.images[this.activeIndex]) {
+      return this.images[this.activeIndex].imageUrl;
+    }
   }
 
   ngOnChanges(changements: SimpleChanges) {
@@ -285,7 +287,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   editTypePhotography(type: any) {
     this.btnLoading = '';
     const data = { photographyType: type.id };
-    this.photographyService.updatePhotography(data, this.images[this.selectedPhotography].id).subscribe(
+    this.photographyService.updatePhotography(data, this.artWorkId).subscribe(
       (result) => {
         this.callParent();
         this.addSingle('success', 'Modification', 'Photographie " ' + result.imageName + ' " modifiée avec succés');
@@ -366,7 +368,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   }
 
   callParent() {
-    this.parentApi.callParentMethod(this.images[this.selectedPhotography].workArtId);
+    this.parentApi.callParentMethod(this.artWorkId);
   }
   removePhotography(item: any) {
     if (item.i >= this.existingPhotographies.length) {
