@@ -7,6 +7,7 @@ import { PhotographyService } from '@shared/services/photography.service';
 import { MessageService } from 'primeng/api';
 import { ParentComponentApi } from '@app/about/components/item-details/item-details.component';
 import { DatePipe } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-item-images',
   templateUrl: './item-images.component.html',
@@ -43,9 +44,15 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   itemToDelete: any;
   viewDateFormat = viewDateFormat;
   btnLoading: any = null;
-
+  existingPhotographyForm: FormGroup;
+  inputFileDisabled = false;
+  workArtId: any;
+  isSelectedImage = false;
   get photographies(): FormArray {
     return this.photographiesForm.get('photographies') as FormArray;
+  }
+  get existingPhotography(): FormArray {
+    return this.existingPhotographyForm.get('existingPhotography') as FormArray;
   }
   constructor(
     private modalService: NgbModal,
@@ -53,11 +60,13 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     private simpleTabsRef: SimpleTabsRefService,
     private photographyService: PhotographyService,
     private messageService: MessageService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private route: ActivatedRoute
   ) {}
   ngOnInit(): void {
+    this.workArtId = this.route.snapshot.queryParams.id;
     this.getAllTypes();
-
+    this.initExistingPhotography();
     this.images.map((el: any) => {
       this.photographies.push(this.createPhotography(el.imagePreview, el.date, el.photographyType, el.imageName));
     });
@@ -70,8 +79,35 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         this.images[this.activeIndex].image
       );
     }
+
+    if (this.existingPhotographies.length) {
+      this.existingPhotographies.map((el: any, index: number) => {
+        console.log(el);
+        this.existingPhotography.push(
+          this.addExistingPhotography(el.id, el.imagePreview, el.date, el.photographyType.id)
+        );
+        this.images.push({
+          imageUrl: el.imagePreview,
+          photographyType: el.photographyType,
+          photographyDate: el.date,
+          image: el.imageName,
+          i: index,
+        });
+      });
+      this.selectedPhotography = this.existingPhotographies.length;
+      this.initData();
+    }
   }
-  ngOnChanges(changements: SimpleChanges) {}
+
+  getActivePicture() {
+    return this.images[this.activeIndex].imageUrl;
+  }
+
+  ngOnChanges(changements: SimpleChanges) {
+    if (this.images[this.activeIndex]) {
+      this.show(this.images[this.activeIndex]);
+    }
+  }
   get items() {
     return this.images;
   }
@@ -108,6 +144,19 @@ export class ItemImagesComponent implements OnInit, OnChanges {
       photographyType: [photographyType],
     });
   }
+  initExistingPhotography() {
+    this.existingPhotographyForm = this.fb.group({
+      existingPhotography: this.fb.array([]),
+    });
+  }
+  addExistingPhotography(id?: number, photography?: FormData, photographyDate?: any, photographyType?: any) {
+    return this.fb.group({
+      id: [id],
+      date: [this.datePipe.transform(photographyDate, 'yyyy-MM-dd')],
+      imagePreview: [photography],
+      photographyType: [photographyType],
+    });
+  }
   editPhotographyForm(i: number, photography: string, photographyType: any, photographyDate: any, imageName: string) {
     this.photographies.value[i].photographyType = photographyType;
     this.photographies.value[i].date = this.datePipe.transform(photographyDate, 'yyyy-MM-dd');
@@ -118,18 +167,12 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     this.photography = photography;
   }
   verifyIdentification(event: any) {
-    console.log(event);
     this.identification = 0;
-    const identificationId = this.types.filter((type: any) => {
-      return type.type == 'Identification';
-    });
     if (this.images) {
       this.images.forEach((photography: any) => {
-        console.log(photography);
         if (photography.photographyType.type == 'Identification') {
           this.types.forEach((type) => {
             if (type.type == 'Identification') {
-              console.log(type);
               type.disabled = true;
             }
           });
@@ -150,7 +193,11 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     if (!this.photography.length || !this.photographyType || !this.imageName.length) {
       this.validate = false;
     } else {
-      if (this.selectedPhotography == this.photographies.value.length || this.addImage) {
+      if (
+        (this.selectedPhotography >= this.existingPhotography.value.length &&
+          this.selectedPhotography - this.existingPhotography.value.length == this.photographies.value.length) ||
+        this.addImage
+      ) {
         this.photographies.push(
           this.createPhotography(
             this.fileToUpload,
@@ -165,28 +212,32 @@ export class ItemImagesComponent implements OnInit, OnChanges {
           this.addItem(data);
         } else {
           this.images.push({
-            i: this.photographyInsertionNumber,
+            i: this.photographyInsertionNumber + this.existingPhotographies.length,
             imageUrl: this.photography,
-            alt: 'description',
             image: this.imageName,
             photographyType: this.photographyType,
             photographyDate: this.photographyDate,
           });
         }
+        this.photographyInsertionNumber++;
+        this.validate = true;
       } else {
-        this.editPhotographyForm(
-          this.selectedPhotography,
-          this.photography,
-          this.photographyType.id,
-          this.photographyDate,
-          this.imageName
-        );
+        if (this.selectedPhotography > this.existingPhotographies.length) {
+          this.editPhotographyForm(
+            this.selectedPhotography - this.existingPhotographies.length,
+            this.photography,
+            this.photographyType.id,
+            this.photographyDate,
+            this.imageName
+          );
+          this.photographyInsertionNumber++;
+          this.validate = true;
+        }
       }
-
       this.initData('', new Date());
-      this.photographyInsertionNumber++;
-      this.selectedPhotography = this.photographies.value.length;
-      this.validate = true;
+      this.inputFileDisabled = false;
+      this.selectedPhotography = this.images.length;
+      this.isSelectedImage = false;
     }
   }
   handleFileInput(e: any) {
@@ -213,12 +264,15 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   }
 
   show(item: any) {
-    this.initData(item.imageUrl, item.photographyDate, item.photographyType, item.image);
+    console.log(item);
+    item.i < this.existingPhotographies.length ? (this.inputFileDisabled = true) : (this.inputFileDisabled = false);
     this.selectedPhotography = item.i;
+    this.initData(item.imageUrl, item.photographyDate, item.photographyType, item.image);
     this.imgToShow.emit(item.imageUrl);
     this.activeIndex = item.i;
     this.addImage = false;
     this.editType = false;
+    this.isSelectedImage = true;
   }
 
   saveEditType() {
@@ -315,16 +369,32 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     this.parentApi.callParentMethod(this.images[this.selectedPhotography].workArtId);
   }
   removePhotography(item: any) {
-    this.photographies.removeAt(item.i);
+    if (item.i >= this.existingPhotographies.length) {
+      this.photographies.removeAt(item.i - this.existingPhotographies.length);
+    } else {
+      this.inputFileDisabled = false;
+      this.photographyService
+        .deletePhotography({ furniture: this.workArtId }, this.existingPhotography.value[item.i].id)
+        .subscribe(
+          (result) => {},
+          (error) => {
+            this.addSingle('error', 'Suppresion', error.error.message);
+            this.btnLoading = null;
+          }
+        );
+      this.existingPhotography.removeAt(item.i);
+    }
     const index = this.images.indexOf(item, 0);
     if (index > -1) {
       this.images.splice(index, 1);
     }
-    this.selectedPhotography = this.selectedPhotography - 1;
+    this.selectedPhotography = this.images.length;
     this.types.forEach((type) => {
       if (type.type == 'Identification') {
         type.disabled = false;
       }
     });
+    this.initData();
+    this.isSelectedImage = false;
   }
 }

@@ -398,7 +398,7 @@ export class ItemDetailsComponent implements OnInit {
     localStorage.setItem(lastArtOfWorkDetailIndex, JSON.stringify(index));
   }
 
-  paginate(click: boolean = false, by?: number, to?: any) {
+  paginate(by?: number, to?: any) {
     if (by) {
       this.page = this.page + by;
     }
@@ -406,9 +406,7 @@ export class ItemDetailsComponent implements OnInit {
       this.page = 0;
     }
     this.saveArtOfWorkIndex(this.page);
-    if (click) {
-      window.location.reload();
-    }
+
     const urlParams = {
       offset: this.page,
       limit: 1,
