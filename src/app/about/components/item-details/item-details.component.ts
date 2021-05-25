@@ -480,7 +480,7 @@ export class ItemDetailsComponent implements OnInit {
         imageUrl: el.imagePreview,
         imagePreview: el.imagePreview,
         alt: 'description',
-        i: index,
+        i: data.principalPhoto?index+1:index,
         image: el.imageName,
         date: this.datePipe.transform(el.date, dateTimeFormat),
         photographyDate: this.datePipe.transform(el.date, dateTimeFormat),
@@ -490,7 +490,21 @@ export class ItemDetailsComponent implements OnInit {
       });
     });
     if(data.principalPhoto) {
-      this.photographies.unshift(data.principalPhoto);
+      this.photographies.unshift(
+        {
+          workArtId: data.id,
+          id: data.principalPhoto.id,
+          imageUrl: data.principalPhoto.imagePreview,
+          imagePreview: data.principalPhoto.imagePreview,
+          alt: 'description',
+          i: 0,
+          image: data.principalPhoto.imageName,
+          date: this.datePipe.transform(data.principalPhoto.date, dateTimeFormat),
+          photographyDate: this.datePipe.transform(data.principalPhoto.date, dateTimeFormat),
+          photographyName: data.principalPhoto.imageName,
+          photographyType: data.principalPhoto.photographyType,
+          imageName: data.principalPhoto.imageName,
+        });
     }
   }
   setArtwork(apiResult: any) {
