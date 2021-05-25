@@ -19,14 +19,17 @@
   </ng-template>
 </p-dialog>
 <div [ngClass]="loadingData ? 'loading-data-true' : 'loading-data-false'">
-  <ng-wizard [config]="config" (stepChanged)="stepChanged($event)">
+  <ng-wizard
+    [config]="config"
+    (stepChanged)="stepChanged($event)"
+    [ngClass]="isStep1Completed ? 'completed' : 'not-completed'"
+  >
     <ng-wizard-step
       [title]="'1'"
       [description]="descriptionTitle"
       [canEnter]="isValidTypeBoolean"
       [canExit]="isValidFunctionReturnsBoolean.bind(this)"
       class="col-sm-12"
-      [ngClass]="isStep1Completed ? 'completed' : 'not-completed'"
     >
       <div class="d-flex flex-end justify-content-end pr-5">
         <button

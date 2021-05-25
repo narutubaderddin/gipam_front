@@ -28,7 +28,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   editType = false;
   photography: string = '';
   photographyDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-  photographyType: any[] = [];
+  photographyType: any = [];
   previousPhotographyType: any[] = [];
   types: any[];
   fileToUpload: any;
@@ -43,7 +43,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   itemToDelete: any;
   viewDateFormat = viewDateFormat;
   btnLoading: any = null;
-
 
   get photographies(): FormArray {
     return this.photographiesForm.get('photographies') as FormArray;
@@ -71,22 +70,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         this.images[this.activeIndex].image
       );
     }
-
-    if (this.existingPhotographies.length) {
-      this.existingPhotographies.map((el: any, index: number) => {
-        this.photographies.push(this.createPhotography(el.imagePreview, el.date, el.photographyType, el.imageName));
-        this.images.push({
-          imageUrl: el.imagePreview,
-          photographyType: el.photographyType,
-          photographyDate: el.date,
-          image: el.imageName,
-          i: index,
-        });
-        this.photographyInsertionNumber = this.images.length;
-      });
-      this.initData();
-    }
-
   }
   ngOnChanges(changements: SimpleChanges) {}
   get items() {
@@ -134,15 +117,16 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     this.images[i].photographyType = photographyType;
     this.photography = photography;
   }
-  verifyIdentification() {
+  verifyIdentification(event: any) {
+    console.log(event);
     this.identification = 0;
     const identificationId = this.types.filter((type: any) => {
       return type.type == 'Identification';
     });
-    if (this.photographies.value.length > 1) {
-      this.photographies.value.forEach((photography: any) => {
+    if (this.images) {
+      this.images.forEach((photography: any) => {
         console.log(photography);
-        if (photography.photographyType == identificationId) {
+        if (photography.photographyType.type == 'Identification') {
           this.types.forEach((type) => {
             if (type.type == 'Identification') {
               console.log(type);
@@ -171,7 +155,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
           this.createPhotography(
             this.fileToUpload,
             new Date(this.photographyDate),
-            this.photographyType,
+            this.photographyType.id,
             this.imageName
           )
         );
@@ -193,13 +177,12 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         this.editPhotographyForm(
           this.selectedPhotography,
           this.photography,
-          this.photographyType,
+          this.photographyType.id,
           this.photographyDate,
           this.imageName
         );
       }
 
-      this.verifyIdentification();
       this.initData('', new Date());
       this.photographyInsertionNumber++;
       this.selectedPhotography = this.photographies.value.length;
@@ -230,7 +213,6 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   }
 
   show(item: any) {
-
     this.initData(item.imageUrl, item.photographyDate, item.photographyType, item.image);
     this.selectedPhotography = item.i;
     this.imgToShow.emit(item.imageUrl);
@@ -243,7 +225,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     if (!this.photographyType) {
       this.validate = false;
     } else {
-        this.editTypePhotography(this.photographyType);
+      this.editTypePhotography(this.photographyType);
     }
   }
   editTypePhotography(type: any) {
@@ -258,10 +240,10 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         this.btnLoading = null;
       },
       (error) => {
-        if(error.error.msg) {
+        if (error.error.msg) {
           this.addSingle('error', 'Modification', error.error.msg);
         }else {
-          this.addSingle('error', 'Ajout', 'Erreur Servenue lors de l\'ajout');
+          this.addSingle('error', 'Modification', 'Erreur Servenue lors de la modification');
         }
         this.btnLoading = null;
       }
@@ -286,7 +268,7 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         this.btnLoading = null;
         this.deleteDialog = false;
       },
-      error=>{
+      (error) => {
         this.addSingle('error', 'Suppresion', error.error.message);
         this.btnLoading = null;
       }
@@ -338,5 +320,11 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     if (index > -1) {
       this.images.splice(index, 1);
     }
+    this.selectedPhotography = this.selectedPhotography - 1;
+    this.types.forEach((type) => {
+      if (type.type == 'Identification') {
+        type.disabled = false;
+      }
+    });
   }
 }

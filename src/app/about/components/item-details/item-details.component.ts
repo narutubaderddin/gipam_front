@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren, Inpu
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'angular2-notifications';
 import { SharedService } from '@shared/services/shared.service';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PdfGeneratorService } from '@shared/services/pdf-generator.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
@@ -370,6 +370,7 @@ export class ItemDetailsComponent implements OnInit {
   }
 
   downloadPDF() {
+    this.artWorksToPrint = [];
     this.artWorksToPrint.push(this.artwork);
     const element = document.getElementById('appItemDetailsPdf');
     this.pdfGeneratorService.downloadPDFFromHTML(element, this.artwork.titre + '.pdf');
@@ -472,6 +473,8 @@ export class ItemDetailsComponent implements OnInit {
     this.photographies = [];
 
     this.workArt = apiResult;
+    this.artwork.titre = apiResult.title;
+    this.artwork.authors = apiResult.authorsName;
     this.initDescriptifForm(apiResult);
     console.log(apiResult);
     apiResult.photographies.map((el: any, index: number) => {

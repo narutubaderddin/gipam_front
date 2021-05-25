@@ -12,7 +12,9 @@
         <div class="col-md-12 row">
           <div class="bloc-header" [class.sticky]="sticky" #stickyMenu>
             <div class="first-bloc col-md-12 row">
-              <a href="portail"><i class="zmdi zmdi-fast-rewind"></i> Retour aux résultats de la recherche</a>
+              <a [routerLink]="['/oeuvres-list']"
+                ><i class="zmdi zmdi-fast-rewind"></i> Retour aux résultats de la recherche</a
+              >
 
               <div class="d-flex justify-content-end">
                 <div class="toggle-btn d-flex" (click)="dynamic = !dynamic">
