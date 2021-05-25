@@ -23,7 +23,7 @@
               <i
                 [style]="{ top: '0rem' }"
                 class="far fa-trash-alt"
-                *ngIf="add && images.length"
+                *ngIf="add && images.length && isSelectedImage"
                 (click)="removePhotography(item)"
                 pTooltip="Supprimer"
                 tooltipPosition="top"
@@ -55,6 +55,7 @@
                   (change)="handleFileInput($event)"
                   accept=".PNG,.png,.jpg,.JPG, .jpeg, .JPEG"
                   type="file"
+                  [disabled]="inputFileDisabled"
                   #fileSelect
                 />
                 <input readonly class="form-control" [(ngModel)]="imageName" placeholder="Select file..." />
@@ -78,6 +79,7 @@
                 [showIcon]="true"
                 dateFormat="yy-mm-dd"
                 inputId="icon"
+                [disabled]="inputFileDisabled"
               ></p-calendar>
             </div>
 
@@ -102,6 +104,7 @@
                 placeholder="Choisir un type"
                 optionLabel="type"
                 [showClear]="false"
+                [disabled]="inputFileDisabled"
               ></p-dropdown>
               <ng-template let-option pTemplate="item">
                 <div>

@@ -322,7 +322,24 @@ export class AddRemarquerComponent implements OnInit {
 
   buildFormData(formData: FormData) {
     for (let dataKey in this.descriptifForm.value) {
-      if (dataKey == 'photographies' || dataKey == 'attachments' || dataKey == 'hyperlinks') {
+      if (dataKey == 'photographies') {
+        // append nested object
+        for (let previewKey in this.descriptifForm.value[dataKey]) {
+          for (let key in this.descriptifForm.value[dataKey][previewKey]) {
+            formData.append(
+              `${dataKey}[${+previewKey + this.photographyData.length}][${key}]`,
+              this.descriptifForm.value[dataKey][previewKey][key]
+            );
+          }
+        }
+      } else if (dataKey == 'attachments') {
+        // append nested object
+        for (let previewKey in this.descriptifForm.value[dataKey]) {
+          for (let key in this.descriptifForm.value[dataKey][previewKey]) {
+            formData.append(`${dataKey}[${previewKey}][${key}]`, this.descriptifForm.value[dataKey][previewKey][key]);
+          }
+        }
+      } else if (dataKey == 'hyperlinks') {
         // append nested object
         for (let previewKey in this.descriptifForm.value[dataKey]) {
           for (let key in this.descriptifForm.value[dataKey][previewKey]) {
@@ -369,9 +386,11 @@ export class AddRemarquerComponent implements OnInit {
       ? (this.toCreateNoticeId = this.inProgressNotice.id)
       : (this.toCreateNoticeId = this.createdNoticeId);
     if (!this.inProgressNotice || this.isDuplicated === 'true') {
+      let duplication = false;
+      this.inProgressNotice ? (duplication = this.inProgressNotice.id) : (duplication = null);
       if (this.addProperty) {
         this.buildFormData(formData);
-        this.workOfArtService.addWorkOfArt(formData).subscribe(
+        this.workOfArtService.addWorkOfArt(formData, duplication).subscribe(
           (result) => {
             this.addSingle('success', 'Ajout', result.msg);
             this.isLoading = false;
