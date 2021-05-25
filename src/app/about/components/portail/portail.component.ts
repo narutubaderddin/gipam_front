@@ -105,6 +105,7 @@ export class PortailComponent implements OnInit {
   firstSearchDrop = false;
   showForm1End = false;
   requestForm: any;
+  orderByFields: string[] = ['title'];
   loadingCreatingRequest: boolean = false;
   loadingExportMyRequests: boolean = false;
   loadingExportFilteredRequests: boolean = false;
@@ -420,6 +421,7 @@ export class PortailComponent implements OnInit {
       search: this.searchOeuvre,
       mode: mode,
       page: page,
+      orderByFields: this.orderByFields,
     };
   }
 
@@ -634,14 +636,31 @@ export class PortailComponent implements OnInit {
     filter = this.extractedFilterOeuvres();
     filter.limit = this.totalOeuvres;
     delete filter['page'];
-    this.WorkOfArtService.exportArtWorks(filter).subscribe((response: Response | any) => {
-      this.requestService.manageFileResponseDownload(response, 'Oeuvres Graphiques');
-    },
+    this.WorkOfArtService.exportArtWorks(filter).subscribe(
+      (response: Response | any) => {
+        this.requestService.manageFileResponseDownload(response, 'Oeuvres Graphiques');
+      },
       (error) => {
         this.loadingExportFilteredRequests = false;
-    },
-    () => {
-      this.loadingExportFilteredRequests = false;
-    });
+      },
+      () => {
+        this.loadingExportFilteredRequests = false;
+      }
+    );
+  }
+  selectOrder(orderBy: any) {
+    switch (orderBy) {
+      case 'title':
+        this.orderByFields = ['title'];
+        break;
+      case 'Recently modified':
+        this.orderByFields = ['updatedAt'];
+        break;
+      case 'Most recent':
+        this.orderByFields = ['createdAt'];
+        break;
+    }
+    this.resetSearch();
+    this.getOeuvres();
   }
 }

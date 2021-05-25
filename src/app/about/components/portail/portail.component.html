@@ -9,10 +9,14 @@
           </div>
           <div class="sort-bloc">
             <strong class="d-inline p-2">Trié par:</strong>
-            <select class="form-select d-inline p-2" aria-label="Default select example">
-              <option selected>Ordre Alphabétique</option>
-              <option value="1">Récemment modifiées</option>
-              <option value="2">Plus récentes</option>
+            <select
+              class="form-select d-inline p-2"
+              aria-label="Default select example"
+              (change)="selectOrder($event.target.value)"
+            >
+              <option selected value="title">Ordre Alphabétique</option>
+              <option value="Recently modified">Récemment modifiées</option>
+              <option value="Most recent">Plus récentes</option>
             </select>
             <div class="panier d-inline p-2">
               <i class="fa fa-shopping-basket icon" (click)="open(content)">
@@ -46,7 +50,7 @@
                             ></i>
                           </div>
                           <div class="overlay" [hidden]="!loadingExportMyRequests">
-                            <i class="float-right fas fa-cog fa-spin" style="padding: 15%;color: #2196F3"></i>
+                            <i class="float-right fas fa-cog fa-spin" style="padding: 15%; color: #2196f3"></i>
                           </div>
                         </div>
                       </div>
@@ -304,8 +308,8 @@
                     (click)="exportArtWorks()"
                   ></i>
                 </div>
-                <div class="overlay" [hidden]="!loadingExportFilteredRequests" >
-                  <i class="float-right fas fa-cog fa-spin" style="padding: 3%;color: #2196F3"></i>
+                <div class="overlay" [hidden]="!loadingExportFilteredRequests">
+                  <i class="float-right fas fa-cog fa-spin" style="padding: 3%; color: #2196f3"></i>
                 </div>
               </div>
             </div>

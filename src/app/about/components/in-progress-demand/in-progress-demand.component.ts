@@ -55,6 +55,7 @@ export class InProgressDemandComponent {
       type: 'app-status-component-render',
       filterType: 'multiselect',
       selectData: this.demandService.statusType,
+      defaultData: this.demandService.getSelectedStatus(),
       isVisible: true,
     },
   ];
@@ -89,7 +90,8 @@ export class InProgressDemandComponent {
   page: any = 1;
   filter: any = '';
   constructor(private demandService: DemandService, public sharedService: SharedService) {
-    this.getListDemands();
+    let payload: any = '&requestStatus[in]=[ "En cours" ]';
+    this.getListDemands(payload);
   }
   getListDemands(params: any = null) {
     this.loading = true;
@@ -189,10 +191,32 @@ export class InProgressDemandComponent {
       filter += '&requestStatus[in]=[' + status + ']';
     }
     if (headersFilter.createdAt) {
-      if (headersFilter.createdAt.operator === 'eq') {
-        filter += '&createdAt[equalDate]=' + headersFilter.createdAt.value;
-      } else {
-        filter += `&createdAt[${headersFilter.createdAt.operator}]=` + headersFilter.createdAt.value;
+      switch (headersFilter.createdAt.operator) {
+        case 'eq':
+          filter += '&createdAt[equalDate]=' + headersFilter.createdAt.value;
+          break;
+        case 'lte':
+          let date: any = headersFilter.createdAt.value + ' ' + '23:59:59';
+          filter += `&createdAt[${headersFilter.createdAt.operator}]=` + date;
+          break;
+        case 'lt':
+        let datelt: any = headersFilter.createdAt.value;
+        filter += `&createdAt[${headersFilter.createdAt.operator}]=` + datelt;
+        break;
+        case 'gte':
+          let dategte: any = headersFilter.createdAt.value;
+          filter += `&createdAt[${headersFilter.createdAt.operator}]=` + dategte;
+          break;
+        case 'gt':
+          let dategt: any = headersFilter.createdAt.value + ' ' + '23:59:59';
+          filter += `&createdAt[${headersFilter.createdAt.operator}]=` + dategt;
+          break;
+        case 'range':
+          let dateRgte: any = headersFilter.createdAt.value[0];
+          let dateRlte: any = headersFilter.createdAt.value[1] + ' ' + '23:59:59';
+          filter += `&createdAt[gte]=` + dateRgte;
+          filter += `&createdAt[lte]=` + dateRlte;
+          break;
       }
     }
     this.filter = filter;

@@ -996,6 +996,7 @@ div.mode {
   display: inline-grid;
 }
 
-.content-file, .overlay {
+.content-file,
+.overlay {
   grid-area: 1 / 1;
 }

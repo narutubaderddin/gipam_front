@@ -639,6 +639,16 @@ export class WorkOfArtService {
     if (filterObj.mode) {
       filter += '&mode[eq]=' + filterObj.mode;
     }
+    if (filterObj.orderByFields) {
+      filter += '&orderByFields=[';
+      filterObj.orderByFields.forEach((sortBy: any, index: any) => {
+        filter += '"' + sortBy + '"';
+        if (index < filterObj.length - 1) {
+          filter += ',';
+        }
+      });
+      filter += ']';
+    }
     return filter;
   }
 

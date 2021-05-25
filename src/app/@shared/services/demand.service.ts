@@ -45,4 +45,10 @@ export class DemandService {
     };
     return this.http.put('/requests/' + request.id, payload);
   }
+  getSelectedStatus() {
+    let defaultStatus: any[] = [];
+    let status: any = this.statusType.find((elm: any) => elm.id == 'En cours');
+    defaultStatus.push(status);
+    return defaultStatus;
+  }
 }

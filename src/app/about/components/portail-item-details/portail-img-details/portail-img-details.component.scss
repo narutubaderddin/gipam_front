@@ -63,12 +63,12 @@
     padding: 1% 3%;
     min-height: 550px;
     background-color: #fff;
-    position: absolute;
-    left: 47.5%;
-    z-index: 150;
-    display: flex;
-    flex-direction: column;
-    width: 50%;
+    //position: absolute;
+    //left: 47.5%;
+    //z-index: 150;
+    //display: flex;
+    //flex-direction: column;
+    //width: 50%;
     justify-content: center;
     .details-header {
       display: flex;
@@ -144,9 +144,51 @@
         height: auto;
       }
     }
+    /*.more-details {
+      background-color: red;
+    }*/
+  }
+  @media (max-width: 1290px) {
+    /*.more-details {
+      background-color: red;
+      width: 100%;
+    }*/
+    .flex-container {
+      flex-direction: column;
+    }
+    .container-fluid {
+      padding: 0 50px !important;
+      background-color: red !important;
+    }
   }
 }
 .loading-spinner {
   margin-left: 40%;
   margin-top: 20%;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+}
+
+.flex-item-left {
+  flex: 50%;
+  margin-bottom: 2%;
+}
+
+.flex-item-right {
+  flex: 50%;
+}
+
+/* Responsive layout - makes a one column-layout instead of two-column layout */
+@media (max-width: 800px) {
+  .flex-container {
+    flex-direction: column;
+  }
+
+}
+@media (max-width: 769px) {
+
 }

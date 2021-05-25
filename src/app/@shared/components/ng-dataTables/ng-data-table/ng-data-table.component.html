@@ -174,6 +174,7 @@
                   optionLabel="name"
                   display="chip"
                   *ngSwitchCase="'multiselect'"
+                  [(ngModel)]="col.defaultData"
                 ></p-multiSelect>
                 <p-autoComplete
                   [id]="col.field + '_id'"
