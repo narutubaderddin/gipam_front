@@ -469,17 +469,13 @@ export class ItemDetailsComponent implements OnInit {
       );
   }
 
-  setArtwork(apiResult: any) {
-    this.photographies = [];
-
-    this.workArt = apiResult;
-    this.artwork.titre = apiResult.title;
-    this.artwork.authors = apiResult.authorsName;
-    this.initDescriptifForm(apiResult);
-    console.log(apiResult);
-    apiResult.photographies.map((el: any, index: number) => {
+  setPhotographies(data?:any){
+    let noPrincipalPhoto=data.principalPhoto?data.photographies.filter((el:any)=>
+         el.id !== data.principalPhoto.id
+      ):data.photographies;
+    noPrincipalPhoto.map((el: any, index: number) => {
       this.photographies.push({
-        workArtId: apiResult.id,
+        workArtId: data.id,
         id: el.id,
         imageUrl: el.imagePreview,
         imagePreview: el.imagePreview,
@@ -493,6 +489,19 @@ export class ItemDetailsComponent implements OnInit {
         imageName: el.imageName,
       });
     });
+    if(data.principalPhoto) {
+      this.photographies.unshift(data.principalPhoto);
+    }
+  }
+  setArtwork(apiResult: any) {
+    this.photographies = [];
+
+    this.workArt = apiResult;
+    this.artwork.titre = apiResult.title;
+    this.artwork.authors = apiResult.authorsName;
+    this.initDescriptifForm(apiResult);
+    this.setPhotographies(apiResult);
+
 
     apiResult.status.statusType === 'PropertyStatus' ? (this.addProperty = true) : (this.addDepot = true);
     this.status = apiResult.status;
@@ -504,14 +513,9 @@ export class ItemDetailsComponent implements OnInit {
     if (apiResult.parent) {
       this.initLinks(apiResult.parent);
     }
-    // this.draftArtWork=apiResult.isCreated;
-    console.log(apiResult.isCreated!==this.draftArtWork && !apiResult.isCreated, this.draftArtWork )
     if(apiResult.isCreated!==this.draftArtWork && !apiResult.isCreated){
       this.addSingle('success', '', 'Notice en mode brouillon')
     }
-    // if(apiResult.isCreated!==this.draftArtWork && apiResult.isCreated){
-    //   this.addSingle('success', '', 'Notice en mode brouillon')
-    // }
     this.draftArtWork=apiResult.isCreated;
     console.log(this.draftArtWork)
     if (apiResult && apiResult.status && apiResult.status.descriptiveWords) {
@@ -522,21 +526,6 @@ export class ItemDetailsComponent implements OnInit {
         this.strIntoObj.push(value);
       });
     }
-  }
-  get images2(): FormArray {
-    return this.photographiesForm.get('photographies') as FormArray;
-  }
-  createPhotography(
-    photography?: FormData,
-    photographyDate?: any,
-    photographyType?: any,
-    imageName?: string
-  ): FormGroup {
-    return this.fb.group({
-      date: [this.datePipe.transform(photographyDate, 'yyyy-MM-dd')],
-      imagePreview: [photography],
-      photographyType: [photographyType],
-    });
   }
   addSingle(type: string, sum: string, msg: string) {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
