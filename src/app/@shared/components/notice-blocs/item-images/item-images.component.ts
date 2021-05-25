@@ -71,7 +71,16 @@ export class ItemImagesComponent implements OnInit, OnChanges {
       );
     }
   }
-  ngOnChanges(changements: SimpleChanges) {}
+  ngOnChanges(changements: SimpleChanges) {
+    if (this.images[this.activeIndex]) {
+      this.initData(
+        this.images[this.activeIndex].photography,
+        this.images[this.activeIndex].photographyDate,
+        this.images[this.activeIndex].photographyType,
+        this.images[this.activeIndex].image
+      );
+    }
+  }
   get items() {
     return this.images;
   }
