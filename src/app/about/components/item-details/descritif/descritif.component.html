@@ -3,7 +3,7 @@
     <div class="col-md-6">
       <div class="form-group flex-wrap flex-sm-nowrap">
         <label class="">Titre<span class="mandatory" *ngIf="edit">*</span></label>
-        <div class="value" *ngIf="!edit">{{ artwork.title }}</div>
+        <div class="value" *ngIf="!edit">{{ artwork?.title? artwork?.title:noData }}</div>
         <input type="text" class="form-control value col-12 col-sm-7" formControlName="title" *ngIf="edit" />
       </div>
       <div
@@ -20,7 +20,7 @@
     <div class="col-md-6">
       <div class="form-group flex-wrap flex-sm-nowrap">
         <label>Domaine<span class="mandatory" *ngIf="edit">*</span></label>
-        <div class="value" *ngIf="!edit">{{ artwork.field.label }}</div>
+        <div class="value" *ngIf="!edit">{{ artwork?.field?.label?artwork?.field?.label:noData }}</div>
         <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
           <p-dropdown
             class="col-md-12"
@@ -49,7 +49,7 @@
     <div class="col-md-6">
       <div class="form-group flex-wrap flex-sm-nowrap">
         <label class="-4">Dénomination<span class="mandatory" *ngIf="edit">*</span></label>
-        <div class="value" *ngIf="!edit">{{ artwork.denomination.label }}</div>
+        <div class="value" *ngIf="!edit">{{ artwork?.denomination?.label? artwork?.denomination?.label:noData }}</div>
         <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
           <p-dropdown
             class="col-md-12"
@@ -80,10 +80,10 @@
     </div>
     <div class="divider"></div>
     <div class="form-group col-md-12 flex-wrap flex-wrap" style="max-width: 98%">
-      <label style="margin-right: -17%; width: 18%" class="col-sm-5">Auteurs</label>
+      <label style="margin-right: -17%; width: 18%" class="col-sm-4">Auteurs</label>
       <div class="value" *ngIf="!edit">
         <ng-container *ngFor="let author of artwork.authors; let i = index">
-          {{ author.label }}<span *ngIf="i + 1 < artwork.authors.length">, </span>
+          {{ author?.label? author?.label:noData }}<span *ngIf="i + 1 < artwork.authors.length">, </span>
         </ng-container>
       </div>
       <p-multiSelect
@@ -95,13 +95,14 @@
         [options]="authorData"
         formControlName="authors"
         optionLabel="label"
+        optionValue="id"
         display="chip"
         [filter]="true"
         defaultLabel="Sélectionner des auteurs"
       >
       </p-multiSelect>
-      <div class="col-md-4 col-12 p-sm-0 link value" *ngIf="edit">
-        <a href="">Ajouter un nouvel auteur</a>
+      <div class="col-md-4 col-12 p-sm-0 link" *ngIf="edit">
+        <a (click)="openModal()">Ajouter un nouvel auteur</a>
       </div>
     </div>
     <div class="col-md-8"></div>
@@ -109,74 +110,74 @@
       <div class="divider"></div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('height')">
         <label class="">Hauteur</label>
-        <div class="value" *ngIf="!edit">{{ artwork.height }}</div>
-        <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
+        <div class="value" *ngIf="!edit">{{ artwork?.height? artwork?.height + unit:noData }}</div>
+        <div class="d-flex value col-12 col-sm-7 p-0" *ngIf="edit">
           <input class="col-md-8 form-control" type="number" formControlName="height" />
           <select class="col-md-4 col-sm-4 form-control">
-            <option class="active">cm</option>
-            <option>m</option>
+            <option class="active" value="1">cm</option>
+            <option value="100">m</option>
           </select>
         </div>
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('width')">
         <label class="">Largeur</label>
-        <div class="value" *ngIf="!edit">{{ artwork.width }}</div>
-        <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
+        <div class="value" *ngIf="!edit">{{ artwork?.width? artwork.width + unit:noData }}</div>
+        <div class="d-flex value col-12 col-sm-7 p-0" *ngIf="edit">
           <input class="col-md-8 form-control" type="number" formControlName="width" />
           <select class="col-md-4 col-sm-4 form-control">
-            <option class="active">cm</option>
-            <option>m</option>
+            <option class="active" value="1">cm</option>
+            <option value="100">m</option>
           </select>
         </div>
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('totalWidth')">
         <label class="">Largeur Tot </label>
-        <div class="value" *ngIf="!edit">{{ artwork.totalWidth }}</div>
-        <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
+        <div class="value" *ngIf="!edit">{{ artwork?.totalWidth? artwork.totalWidth + unit:noData}}</div>
+        <div class="d-flex value col-12 col-sm-7 p-0" *ngIf="edit">
           <input class="col-md-8 form-control" type="number" formControlName="totalWidth" />
           <select class="col-md-4 col-sm-4 form-control">
-            <option class="active">cm</option>
-            <option>m</option>
+            <option class="active" value="1">cm</option>
+            <option value="100">m</option>
           </select>
         </div>
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('totalHeight')">
         <label class="">Hauteur Tot</label>
-        <div class="value" *ngIf="!edit">{{ artwork.totalHeight }}</div>
-        <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
+        <div class="value" *ngIf="!edit">{{ artwork?.totalHeight? artwork.totalHeight+ unit:noData}}</div>
+        <div class="d-flex value col-12 col-sm-7 p-0" *ngIf="edit">
           <input class="col-md-8 form-control" type="number" formControlName="totalHeight" />
           <select class="col-md-4 col-sm-4 form-control">
-            <option class="active">cm</option>
-            <option>m</option>
+            <option class="active" value="1">cm</option>
+            <option value="100">m</option>
           </select>
         </div>
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('length')">
         <label class="">Longueur</label>
-        <div class="value" *ngIf="!edit">{{ artwork.length }}</div>
-        <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
+        <div class="value" *ngIf="!edit">{{ artwork?.length?artwork.length + unit:noData }} </div>
+        <div class="d-flex value col-12 col-sm-7 p-0" *ngIf="edit">
           <input class="col-md-8 form-control" type="number" formControlName="length" />
-          <select class="col-md-4 col-sm-4 form-control">
-            <option class="active">cm</option>
-            <option>m</option>
+          <select class="col-md-4 col-sm-4 form-control" formControlName="lengthUnit">
+            <option class="active" value="1">cm</option>
+            <option value="100">m</option>
           </select>
         </div>
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('depth')">
         <label class="">Profondeur</label>
-        <div class="value" *ngIf="!edit">{{ artwork.depth }}</div>
-        <div class="d-flex value" *ngIf="edit">
-          <input class="col-md-8 form-control col-12 col-sm-7" type="number" formControlName="depth" />
-          <select class="col-md-4 col-sm-4 form-control">
-            <option class="active">cm</option>
-            <option>m</option>
+        <div class="value" *ngIf="!edit">{{ artwork?.depth? artwork.depth + unit:noData}}</div>
+        <div class="d-flex value col-12 col-sm-7 p-0" *ngIf="edit">
+          <input class="col-md-8 form-control" type="number" formControlName="depth" />
+          <select class="col-md-4 col-sm-4 form-control" formControlName="depthUnit">
+            <option class="active" value="1">cm</option>
+            <option value="100">m</option>
           </select>
         </div>
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('weight')">
         <label class="col-md-3">Poids</label>
-        <div class="value" *ngIf="!edit">{{ artwork.weight }}</div>
-        <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
+        <div class="value" *ngIf="!edit">{{ artwork?.weight? artwork.weight + ' Kg ':noData}} </div>
+        <div class="d-flex value col-12 col-sm-7 p-0" *ngIf="edit">
           <input class="col-md-8 form-control" type="number" formControlName="weight" />
           <select class="col-md-4 col-sm-4 form-control">
             <option class="active">Kg</option>
@@ -185,12 +186,17 @@
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('diameter')">
         <label class="">Diamètre</label>
-        <div class="value" *ngIf="!edit">{{ artwork.diameter }}</div>
-        <div class="d-flex value col-12 col-sm-7" *ngIf="edit">
-          <input class="col-md-8 form-control" type="number" formControlName="diameter" />
+        <div class="value" *ngIf="!edit">{{ artwork?.diameter? artwork.diameter + unit:noData }} </div>
+        <div class="d-flex value col-12 col-sm-7 p-0" *ngIf="edit">
+          <input
+            class="col-md-8 form-control"
+            type="number"
+            formControlName="diameter"
+            formControlName="diameterUnit"
+          />
           <select class="col-md-4 form-control">
-            <option class="active">cm</option>
-            <option>m</option>
+            <option class="active" value="1">cm</option>
+            <option value="100">m</option>
           </select>
         </div>
       </div>
@@ -198,7 +204,7 @@
       <div class="divider"></div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('era')">
         <label class="">Epoque</label>
-        <div class="value" *ngIf="!edit">{{ artwork?.era?.label }}</div>
+        <div class="value" *ngIf="!edit">{{ artwork?.era?.label? artwork.era.label: noData }}</div>
         <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
           <p-dropdown
             class="col-md-12"
@@ -207,13 +213,14 @@
             formControlName="era"
             placeholder="Choisir une époque"
             optionLabel="name"
+            optionValue="id"
             [showClear]="false"
           ></p-dropdown>
         </div>
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="attributeToShow.includes('style')">
         <label class="">Style</label>
-        <div class="value" *ngIf="!edit">{{ artwork?.style?.label }}</div>
+        <div class="value" *ngIf="!edit">{{ artwork?.style?.label? artwork?.style?.label:noData }}</div>
         <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
           <p-dropdown
             class="col-md-12"
@@ -222,13 +229,14 @@
             formControlName="style"
             placeholder="Choisir un style"
             optionLabel="name"
+            optionValue="id"
             [showClear]="false"
           ></p-dropdown>
         </div>
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap">
         <label class="">Date de création</label>
-        <div class="value" *ngIf="!edit">{{ artwork.createdAt }}</div>
+        <div class="value" *ngIf="!edit">{{ artwork?.creationDate | date: 'yyyy' }}</div>
 
         <div class="autocomplete form-control value col-12 col-sm-7" *ngIf="edit">
           <input
@@ -250,7 +258,7 @@
           <label class="">Matières <span class="mandatory" *ngIf="edit">*</span></label>
           <div class="value" *ngIf="!edit">
             <ng-container *ngFor="let materialTechnique of artwork.materialTechnique; let i = index">
-              {{ materialTechnique.label }}<span *ngIf="i + 1 < artwork.materialTechnique.length">, </span>
+              {{ materialTechnique?.label? materialTechnique.label: noData }}<span *ngIf="i + 1 < artwork.materialTechnique.length">, </span>
             </ng-container>
           </div>
 
@@ -263,6 +271,7 @@
               [options]="materialTechniquesData"
               formControlName="materialTechnique"
               optionLabel="name"
+              optionValue="id"
               [filter]="true"
               display="chip"
             >
@@ -284,10 +293,9 @@
       <div class="col-md-6" *ngIf="attributeToShow.includes('numberOfUnit')">
         <div class="form-group flex-wrap flex-sm-nowrap">
           <label class="">Nombre unité<span class="mandatory" *ngIf="edit">*</span></label>
-          <div class="value" *ngIf="!edit">{{ artwork.nbrunite }}</div>
-          <div class="d-flex value col-12 col-sm-7">
-            <input *ngIf="edit" class="col-md-12 form-control" type="number" value="0" formControlNAme="numberOfUnit" />
-          </div>
+          <div class="value" *ngIf="!edit">{{ artwork?.numberOfUnit?artwork.numberOfUnit : noData}}</div>
+          <input *ngIf="edit" class="form-control value col-12 col-sm-7" type="number"
+                   formControlName="numberOfUnit" />
         </div>
         <div
           *ngIf="
@@ -304,34 +312,131 @@
       <div class="divider"></div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="addProperty">
         <label>Marquage</label>
-        <div class="value" *ngIf="!edit">{{ artwork.marquage }}</div>
-        <input *ngIf="edit" class="form-control value col-12 col-sm-7" placeholder="Marquage" />
+        <div class="value" *ngIf="!edit">{{ artwork?.status?.marking ?  artwork?.status?.marking:noData }}</div>
+        <input
+          *ngIf="edit"
+          class="form-control value col-12 col-sm-7"
+          formControlName="marking"
+          placeholder="Marquage"
+        />
       </div>
       <div class="form-group col-md-6 flex-wrap flex-sm-nowrap" *ngIf="addProperty">
         <label>Signature inscription</label>
-        <input *ngIf="edit" class="form-control value col-12 col-sm-7" placeholder="Signature inscription" />
+        <div class="value" *ngIf="!edit">{{ artwork?.status?.registrationSignature? artwork?.status?.registrationSignature: noData }}</div>
+
+        <input
+          *ngIf="edit"
+          formControlName="registrationSignature"
+          class="form-control value col-12 col-sm-7"
+          placeholder="Signature inscription"
+        />
       </div>
 
       <div class="form-group d-flex align-items-center col-md-6" *ngIf="addProperty">
         <label class="">Mots descriptifs</label>
-        <div class="value" *ngIf="!edit">{{ artwork.desc }}</div>
+        <div class="value" *ngIf="!edit">{{ artwork?.status?.descriptiveWords? artwork?.status?.descriptiveWords: noData }}</div>
         <tag-input
           *ngIf="edit"
-          formControlName="descriptiveWords"
-          [editable]="true"
-          (onTagEdited)="onTagEdited($event)"
-          secondaryPlaceholder="Entrer mots descriptifs"
           class="value"
+          formControlName="descriptiveWords"
+          [editable]="false"
+          (onAdd)="addWord($event)"
+          secondaryPlaceholder="Entrer mots descriptifs"
+          [modelAsStrings]="true"
           placeholder=" +Mots descriptifs"
         ></tag-input>
       </div>
       <div class="col-md-12" *ngIf="addProperty">
         <div class="d-flex form-group col-md-12 p-0">
           <label>Commentaire</label>
-          <div class="value" *ngIf="!edit">{{ artwork.comment }}</div>
-          <textarea type="text" class="form-control" placeholder="Commentaire ..." *ngIf="edit"></textarea>
+          <div class="value" *ngIf="!edit">{{ artwork?.status?.description? artwork?.status?.description:'' }}</div>
+          <textarea
+            type="text"
+            class="form-control"
+            placeholder="Commentaire ..."
+            formControlName="description"
+            *ngIf="edit"
+          ></textarea>
         </div>
       </div>
     </div>
   </div>
 </form>
+
+<ng-template #content let-modal>
+  <form [formGroup]="authorForm" appFlashFormErrors (appFormSubmit)="submit()">
+    <div class="modal-header">
+      <h4 class="modal-title">Ajout d'un auteur</h4>
+      <button type="button" class="close" aria-label="Close" (click)="myModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline">
+        <label class="col-sm-5">Nom<span class="mandatory"> *</span></label>
+        <input
+          type="text"
+          class="form-control col-sm-7"
+          value="{{ selectedAuthor ? selectedAuthor.lastName : '' }}"
+          formControlName="lastName"
+        />
+      </div>
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline">
+        <label class="col-sm-5">Prénom<span class="mandatory"> *</span></label>
+        <input
+          type="text"
+          class="form-control col-sm-7"
+          value="{{ selectedAuthor ? selectedAuthor.firstName : '' }}"
+          formControlName="firstName"
+        />
+      </div>
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline">
+        <label class="col-sm-5">Type</label>
+        <div class="select col-sm-7 p-0">
+          <p-dropdown
+            [options]="activeTypes"
+            optionLabel="label"
+            formControlName="type"
+            placeholder="Sélectionner un type"
+            emptyFilterMessage="Aucun résultat trouvé"
+            [filter]="true"
+            [filterBy]="'label'"
+            [virtualScroll]="true"
+            itemSize="5"
+          ></p-dropdown>
+        </div>
+      </div>
+      <div class="form-group col-md-12 d-flex justify-content-between align-items-baseline">
+        <label class="col-sm-5">Personnes ayant-droit</label>
+        <div class="select col-sm-7 p-0">
+          <p-multiSelect
+            [options]="activePeople"
+            [virtualScroll]="true"
+            formControlName="people"
+            emptyFilterMessage="Aucun résultat trouvé"
+            optionLabel="label"
+            display="chip"
+            [filter]="true"
+            [filterBy]="'label'"
+            placeholder="Sélectionner des personnes"
+          ></p-multiSelect>
+        </div>
+      </div>
+      <div class="form-group col-md-12 d-flex align-items-baseline">
+        <label class="col-sm-5">visibilité<span class="mandatory"> *</span></label>
+        <div class="btn-slider mr-2 col-3">
+          <label [class.active]="authorForm.get('active').value === true"></label>
+          <label class="switch">
+            <input type="checkbox" [checked]="true" formControlName="active" />
+            <span class="slider round"></span>
+          </label>
+          <label [class.active]="!authorForm.get('active').value == false"></label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light cancel-btn" (click)="myModal.dismiss('Cross click')">Annuler</button>
+      <button type="submit" class="btn btn-light valid-btn" [attr.disabled]="btnLoading">Ajouter</button>
+    </div>
+  </form>
+</ng-template>

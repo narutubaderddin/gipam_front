@@ -11,6 +11,8 @@ import { MaterialTechniqueService } from '@app/@shared/services/material-techniq
 import { getMultiSelectIds } from '@shared/utils/helpers';
 import { MessageService } from 'primeng/api';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { map } from 'rxjs/operators';
+import { ArtWorkService } from '@app/about/services/art-work.service';
 
 @Component({
   selector: 'app-add-descriptions',
@@ -26,7 +28,7 @@ export class AddDescriptionsComponent implements OnInit {
   @Input() addProperty: boolean;
   items: any = [];
   domain = '';
-  denominations: any;
+  @Input() denominations: any;
   isCollapsed = true;
   dropdownSettings: IDropdownSettings;
   @Input() domainData: any[];
@@ -63,12 +65,14 @@ export class AddDescriptionsComponent implements OnInit {
     public fb: FormBuilder,
     private renderer: Renderer2,
     private messageService: MessageService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private artWorkService: ArtWorkService
   ) {}
 
   ngOnInit(): void {
-    this.descriptiveWords = this.descriptifForm.get('descriptiveWords').value;
-    this.denominations = this.denominationData;
+    this.descriptifForm.get('descriptiveWords').value
+      ? (this.descriptiveWords = this.descriptifForm.get('descriptiveWords').value)
+      : (this.descriptiveWords = []);
     this.simpleTabsRefService.tabRef = 'authors';
     if (this.denomination && this.field) {
       this.getAttributes();
@@ -110,8 +114,11 @@ export class AddDescriptionsComponent implements OnInit {
       this.attributeToShow = result;
     });
   }
-
+  public requestAutocompleteItems = (text: string) => {
+    return this.artWorkService.getAutocompleteData(text, 'description').pipe(map((data) => data));
+  };
   addWord(event: any) {
+    console.log(event);
     this.descriptiveWords.push(event.value);
     this.descriptifForm.get('descriptiveWords').setValue(this.descriptiveWords);
   }
@@ -133,7 +140,7 @@ export class AddDescriptionsComponent implements OnInit {
 
     switch (key) {
       case 'field':
-        console.log(this.denominations);
+        console.log(value);
         this.denominationData = this.denominations.filter((denomi: any) => {
           return denomi.field.id === value.value;
         });
@@ -172,13 +179,8 @@ export class AddDescriptionsComponent implements OnInit {
       (result: any) => {
         this.myModal.dismiss('Cross click');
         this.addSingle('success', 'Ajout', 'Auteur ' + item.firstName + ' ' + item.lastName + ' ajoutée avec succés');
-        this.authorData.push({
-          id: result.id,
-          firstName: item.firstName,
-          lastName: item.lastName,
-          type: result.type,
-          people: result.people,
-          active: result.active,
+        forkJoin([this.simpleTabsRefService.getAllItems(this.data, 'authors')]).subscribe(([authorResults]) => {
+          this.authorData = this.simpleTabsRefService.getTabRefFilterData(authorResults['results']);
         });
       },
       (error) => {

@@ -19,7 +19,11 @@
   </ng-template>
 </p-dialog>
 <div [ngClass]="loadingData ? 'loading-data-true' : 'loading-data-false'">
-  <ng-wizard [config]="config" (stepChanged)="stepChanged($event)">
+  <ng-wizard
+    [config]="config"
+    (stepChanged)="stepChanged($event)"
+    [ngClass]="isStep1Completed ? 'completed' : 'not-completed'"
+  >
     <ng-wizard-step
       [title]="'1'"
       [description]="descriptionTitle"
@@ -75,6 +79,7 @@
                                     [descriptifForm]="descriptifForm"
                                     [domainData]="domainData"
                                     [denominationData]="denominationData"
+                                    [denominations]="denominationData"
                                     [styleData]="styleData"
                                     [eraData]="eraData"
                                     [authorData]="authorData"

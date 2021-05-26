@@ -38,3 +38,29 @@ label {
 .form-control {
   font-size: 12px;
 }
+//css modal
+.modal-title {
+  color: #0ec7c6;
+  font-size: 16px;
+  font-weight: 700;
+  background-color: white;
+  border: none;
+}
+.modal-header,
+.modal-footer {
+  border: none;
+}
+
+a:not([href]) {
+  color: #407ca8;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+    color: #407ca8 !important;
+  }
+}
+::ng-deep .p-multiselect-label-container {
+  overflow: hidden;
+  max-width: unset !important;
+  min-width: 10rem;
+}

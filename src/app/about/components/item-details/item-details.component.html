@@ -12,7 +12,9 @@
         <div class="col-md-12 row">
           <div class="bloc-header" [class.sticky]="sticky" #stickyMenu>
             <div class="first-bloc col-md-12 row">
-              <a href="portail"><i class="zmdi zmdi-fast-rewind"></i> Retour aux résultats de la recherche</a>
+              <a [routerLink]="['/oeuvres-list']"
+                ><i class="zmdi zmdi-fast-rewind"></i> Retour aux résultats de la recherche</a
+              >
 
               <div class="d-flex justify-content-end">
                 <div class="toggle-btn d-flex" (click)="dynamic = !dynamic">
@@ -61,10 +63,11 @@
                   <div class="detail-image">
                     <div class="col-md-12 d-flex p-0 img-wrapper mt-2 mt-sm-0">
                       <app-item-images
-                        *ngIf="photographies.length"
+                        [existingPhotographies]="photographies"
                         [photographiesForm]="photographiesForm"
                         [edit]="edit"
                         [images]="photographies"
+                        [artWorkId]="artWorkId"
                         (imgToShow)="src($event)"
                         [parentApi]="getParentApi()"
                         class="col-12"
@@ -90,7 +93,7 @@
                               *ngIf="workArt"
                               [edit]="edit"
                               [artwork]="workArt"
-                              [addProperty]="false"
+                              [addProperty]="addProperty"
                               [addDepot]="false"
                               [descriptifForm]="descriptifForm"
                               (attributes)="getAttributes($event)"
@@ -115,8 +118,13 @@
 
                     <div [ngbNavOutlet]="nav" class=""></div>
                     <div *ngIf="edit" class="col-md-12 p-0" style="display: flex; flex-direction: row-reverse">
-                      <button class="btn valid-btn" (click)="onSave()">Enregistrer</button>
-                      <button class="btn btn-action cancel-btn" (click)="onCancel()">Annuler</button>
+                      <button class="btn valid-btn" (click)="onSave()" [attr.disabled]="btnLoading">
+                        <i class="fas fa-cog fa-spin" [hidden]="btnLoading == null"></i>
+                        Enregistrer
+                      </button>
+                      <button class="btn btn-action cancel-btn" (click)="onCancel()" [attr.disabled]="btnLoading">
+                        Annuler
+                      </button>
                     </div>
                   </div>
                   <div class="d-flex col-12 p-0 flex-column">
@@ -141,7 +149,10 @@
                           [itemDetails]="true"
                           [linkArtWorkForm]="linkArtWorkForm"
                           [editWorkArtLinks]="editLink"
+                          [loadingData]="btnLoading"
                           (update)="onSave($event)"
+                          (deleteParent)="onSave($event, true)"
+                          (addParent)="onSave($event, false, true)"
                         ></app-links>
                       </div>
                     </div>
@@ -151,7 +162,9 @@
                         [add]="false"
                         [itemDetails]="true"
                         [linksForm]="linksForm"
-                        [existingLinks]="hypertextLinks"
+                        [existingLinks]="hyperLinkData"
+                        [artwork]="workArt"
+                        [parentApi]="getParentApi()"
                         class="mt-2 mb-2"
                       >
                       </app-hypertext-links>

@@ -7,6 +7,7 @@ import { PhotographyService } from '@shared/services/photography.service';
 import { MessageService } from 'primeng/api';
 import { ParentComponentApi } from '@app/about/components/item-details/item-details.component';
 import { DatePipe } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-item-images',
   templateUrl: './item-images.component.html',
@@ -22,13 +23,13 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   @Input() existingPhotographies: any[] = [];
   @Output() imgToShow = new EventEmitter();
   @Input() parentApi: ParentComponentApi;
-
+  @Input() artWorkId: any;
   addImage = false;
   activeIndex = 0;
   editType = false;
   photography: string = '';
   photographyDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-  photographyType: any[] = [];
+  photographyType: any = [];
   previousPhotographyType: any[] = [];
   types: any[];
   fileToUpload: any;
@@ -43,9 +44,15 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   itemToDelete: any;
   viewDateFormat = viewDateFormat;
   btnLoading: any = null;
-
+  existingPhotographyForm: FormGroup;
+  inputFileDisabled = false;
+  workArtId: any;
+  isSelectedImage = false;
   get photographies(): FormArray {
     return this.photographiesForm.get('photographies') as FormArray;
+  }
+  get existingPhotography(): FormArray {
+    return this.existingPhotographyForm.get('existingPhotography') as FormArray;
   }
   constructor(
     private modalService: NgbModal,
@@ -53,15 +60,17 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     private simpleTabsRef: SimpleTabsRefService,
     private photographyService: PhotographyService,
     private messageService: MessageService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private route: ActivatedRoute
   ) {}
   ngOnInit(): void {
+    this.workArtId = this.route.snapshot.queryParams.id;
     this.getAllTypes();
+    this.initExistingPhotography();
     this.images.map((el: any) => {
-      this.photographies.push(
-        this.createPhotography(el.photography, el.photographyDate, el.photographyType, el.imageName)
-      );
+      this.photographies.push(this.createPhotography(el.imagePreview, el.date, el.photographyType, el.imageName));
     });
+
     if (this.images[this.activeIndex]) {
       this.initData(
         this.images[this.activeIndex].photography,
@@ -70,22 +79,38 @@ export class ItemImagesComponent implements OnInit, OnChanges {
         this.images[this.activeIndex].image
       );
     }
+
     if (this.existingPhotographies.length) {
-      this.existingPhotographies.map((el: any) => {
-        this.photographies.push(this.createPhotography(el.imagePreview, el.date, el.photographyType, el.imageName));
+      this.existingPhotographies.map((el: any, index: number) => {
+        console.log(el);
+        this.existingPhotography.push(
+          this.addExistingPhotography(el.id, el.imagePreview, el.date, el.photographyType.id)
+        );
         this.images.push({
           imageUrl: el.imagePreview,
           photographyType: el.photographyType,
           photographyDate: el.date,
           image: el.imageName,
+          i: index,
         });
       });
+      this.selectedPhotography = this.existingPhotographies.length;
       this.initData();
     }
   }
-  ngOnChanges(changements: SimpleChanges) {}
+
+  getActivePicture() {
+    if (this.images[this.activeIndex]) {
+      return this.images[this.activeIndex].imageUrl;
+    }
+  }
+
+  ngOnChanges(changements: SimpleChanges) {
+    if (this.images[this.activeIndex]) {
+      this.show(this.images[this.activeIndex]);
+    }
+  }
   get items() {
-    console.log('images', this.images);
     return this.images;
   }
   initData(photography?: string, photographyDate?: any, photographyType?: any, imageName?: string) {
@@ -118,7 +143,20 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     return this.fb.group({
       date: [this.datePipe.transform(photographyDate, 'yyyy-MM-dd')],
       imagePreview: [photography],
-      photographyType: [photographyType.id],
+      photographyType: [photographyType],
+    });
+  }
+  initExistingPhotography() {
+    this.existingPhotographyForm = this.fb.group({
+      existingPhotography: this.fb.array([]),
+    });
+  }
+  addExistingPhotography(id?: number, photography?: FormData, photographyDate?: any, photographyType?: any) {
+    return this.fb.group({
+      id: [id],
+      date: [this.datePipe.transform(photographyDate, 'yyyy-MM-dd')],
+      imagePreview: [photography],
+      photographyType: [photographyType],
     });
   }
   editPhotographyForm(i: number, photography: string, photographyType: any, photographyDate: any, imageName: string) {
@@ -130,67 +168,78 @@ export class ItemImagesComponent implements OnInit, OnChanges {
     this.images[i].photographyType = photographyType;
     this.photography = photography;
   }
-  verifyIdentification() {
+  verifyIdentification(event: any) {
     this.identification = 0;
-    if (this.photographies.value.length > 1) {
-      this.photographies.value.forEach((photography: any) => {
-        if (photography.photographyType.name != 'Identification') {
-          this.identification++;
+    if (this.images) {
+      this.images.forEach((photography: any) => {
+        if (photography.photographyType.type == 'Identification') {
+          this.types.forEach((type) => {
+            if (type.type == 'Identification') {
+              type.disabled = true;
+            }
+          });
         }
       });
-      if (this.identification < this.photographies.value.length) {
-        this.isIdentification = true;
-        this.types[0].disabled = true;
-      } else {
-        this.isIdentification = false;
-        this.types[0].disabled = false;
-      }
     }
   }
-  buildFormData(file: File) {
+  buildFormData(data: any) {
     const formData = new FormData();
-    formData.append('imagePreview', file, file.name);
+    formData.append('imagePreview', data.imagePreview);
+    formData.append('photographyType', data.photographyType);
+    formData.append('date', data.date);
+    formData.append('furniture', this.artWorkId);
+
     return formData;
   }
   addPhotography(): void {
     if (!this.photography.length || !this.photographyType || !this.imageName.length) {
       this.validate = false;
     } else {
-      if (this.selectedPhotography == this.photographies.value.length || this.addImage) {
-        this.images.push({
-          i: this.photographyInsertionNumber,
-          imageUrl: this.photography,
-          alt: 'description',
-          image: this.imageName,
-          photographyType: this.photographyType,
-          photographyDate: this.photographyDate,
-        });
-
+      if (
+        (this.selectedPhotography >= this.existingPhotography.value.length &&
+          this.selectedPhotography - this.existingPhotography.value.length == this.photographies.value.length) ||
+        this.addImage
+      ) {
         this.photographies.push(
           this.createPhotography(
             this.fileToUpload,
             new Date(this.photographyDate),
-            this.photographyType,
+            this.photographyType.id,
             this.imageName
           )
         );
         if (this.addImage) {
-          this.addItem(this.photographies.value[this.photographies.value.length - 1]);
+          console.log(this.photographies.value[this.photographies.value.length - 1]);
+          let data = this.buildFormData(this.photographies.value[this.photographies.value.length - 1]);
+          this.addItem(data);
+        } else {
+          this.images.push({
+            i: this.photographyInsertionNumber + this.existingPhotographies.length,
+            imageUrl: this.photography,
+            image: this.imageName,
+            photographyType: this.photographyType,
+            photographyDate: this.photographyDate,
+          });
         }
+        this.photographyInsertionNumber++;
+        this.validate = true;
       } else {
-        this.editPhotographyForm(
-          this.selectedPhotography,
-          this.photography,
-          this.photographyType,
-          this.photographyDate,
-          this.imageName
-        );
+        if (this.selectedPhotography > this.existingPhotographies.length) {
+          this.editPhotographyForm(
+            this.selectedPhotography - this.existingPhotographies.length,
+            this.photography,
+            this.photographyType.id,
+            this.photographyDate,
+            this.imageName
+          );
+          this.photographyInsertionNumber++;
+          this.validate = true;
+        }
       }
-      // this.verifyIdentification();
       this.initData('', new Date());
-      this.photographyInsertionNumber++;
-      this.selectedPhotography = this.photographies.value.length;
-      this.validate = true;
+      this.inputFileDisabled = false;
+      this.selectedPhotography = this.images.length;
+      this.isSelectedImage = false;
     }
   }
   handleFileInput(e: any) {
@@ -218,12 +267,14 @@ export class ItemImagesComponent implements OnInit, OnChanges {
 
   show(item: any) {
     console.log(item);
-    this.initData(item.imageUrl, item.photographyDate, item.photographyType, item.image);
+    item.i < this.existingPhotographies.length ? (this.inputFileDisabled = true) : (this.inputFileDisabled = false);
     this.selectedPhotography = item.i;
+    this.initData(item.imageUrl, item.photographyDate, item.photographyType, item.image);
     this.imgToShow.emit(item.imageUrl);
     this.activeIndex = item.i;
     this.addImage = false;
     this.editType = false;
+    this.isSelectedImage = true;
   }
 
   saveEditType() {
@@ -231,24 +282,25 @@ export class ItemImagesComponent implements OnInit, OnChanges {
       this.validate = false;
     } else {
       this.editTypePhotography(this.photographyType);
-      console.log('photographyType', this.photographyType, this.images);
-      this.verifyIdentification();
-      // this.photographyInsertionNumber++;
     }
   }
   editTypePhotography(type: any) {
     this.btnLoading = '';
     const data = { photographyType: type.id };
-    this.photographyService.updatePhotography(data, this.images[this.selectedPhotography].id).subscribe(
+    this.photographyService.updatePhotography(data, this.artWorkId).subscribe(
       (result) => {
         this.callParent();
         this.addSingle('success', 'Modification', 'Photographie " ' + result.imageName + ' " modifiée avec succés');
         this.editType = false;
         this.validate = true;
+        this.btnLoading = null;
       },
       (error) => {
-        console.log(error);
-        this.photographyService.getFormErrors(error.error.errors, 'Modification');
+        if (error.error.msg) {
+          this.addSingle('error', 'Modification', error.error.msg);
+        }else {
+          this.addSingle('error', 'Modification', 'Erreur Servenue lors de la modification');
+        }
         this.btnLoading = null;
       }
     );
@@ -263,11 +315,24 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   }
 
   delete() {
-    this.photographies.removeAt(this.activeIndex);
-    this.images.splice(this.activeIndex, 1);
+    this.btnLoading = '';
+    const el = this.images[this.activeIndex];
+    this.photographyService.deletePhotography({ furniture: el.workArtId }, el.id).subscribe(
+      (result) => {
+        this.callParent();
+        this.addSingle('success', 'Suppresion', 'Photographie supprimée avec succés');
+        this.btnLoading = null;
+        this.deleteDialog = false;
+      },
+      (error) => {
+        this.addSingle('error', 'Suppresion', error.error.message);
+        this.btnLoading = null;
+      }
+    );
   }
 
   deleteItem(item: string) {
+    console.log(item);
     this.itemToDelete = item;
     this.deleteDialog = true;
   }
@@ -276,14 +341,24 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   }
   addItem(data: any) {
     this.btnLoading = '';
+    console.log(data)
     this.photographyService.addPhotography(data).subscribe(
       (result: any) => {
-        this.addSingle('success', 'Ajout', 'Photographie ' + data + ' ajoutée avec succés');
+        this.callParent();
+        this.addSingle('success', 'Ajout', 'Photographie ajoutée avec succés');
       },
       (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
-        this.photographyService.getFormErrors(error.error.errors, 'Ajout');
         this.btnLoading = null;
+
+        if (error.error.msg) {
+          this.addSingle('error', 'Ajout', error.error.msg);
+        }else {
+        if(error.error.code==500){
+          this.addSingle('error', 'Erreur Technique', 'Une erreur est servenue lors de l\'ajout');
+        }else{
+          this.addSingle('error', 'Ajout', 'Une erreur est servenue lors de l\'ajout');
+        }
+        }
       }
     );
   }
@@ -293,6 +368,35 @@ export class ItemImagesComponent implements OnInit, OnChanges {
   }
 
   callParent() {
-    this.parentApi.callParentMethod(this.images[this.selectedPhotography].workArtId);
+    this.parentApi.callParentMethod(this.artWorkId);
+  }
+  removePhotography(item: any) {
+    if (item.i >= this.existingPhotographies.length) {
+      this.photographies.removeAt(item.i - this.existingPhotographies.length);
+    } else {
+      this.inputFileDisabled = false;
+      this.photographyService
+        .deletePhotography({ furniture: this.workArtId }, this.existingPhotography.value[item.i].id)
+        .subscribe(
+          (result) => {},
+          (error) => {
+            this.addSingle('error', 'Suppresion', error.error.message);
+            this.btnLoading = null;
+          }
+        );
+      this.existingPhotography.removeAt(item.i);
+    }
+    const index = this.images.indexOf(item, 0);
+    if (index > -1) {
+      this.images.splice(index, 1);
+    }
+    this.selectedPhotography = this.images.length;
+    this.types.forEach((type) => {
+      if (type.type == 'Identification') {
+        type.disabled = false;
+      }
+    });
+    this.initData();
+    this.isSelectedImage = false;
   }
 }

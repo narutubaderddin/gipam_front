@@ -20,15 +20,16 @@
           <div class="product-item-content p-1">
             <div class="card">
               <div class="d-flex justify-content-center card-header">
-                <h4 class="card-header mr-2 attachment-name">{{ item.link }}</h4>
-                <i class="fas fa-file-download" *ngIf="!itemDetails"></i>
-                <i class="fa fa-trash ml-2" (click)="deleteAttachment(item.id)" *ngIf="!itemDetails"></i>
+                <h4 class="card-header mr-2 attachment-name">{{ itemDetails?item.name:item.link.name }}</h4>
+                <i class="fas fa-file-download" *ngIf="!itemDetails && !add"></i>
+                <i class="fa fa-trash ml-2" (click)="deleteAttachment(item.id)" *ngIf="!itemDetails && !add"></i>
+                <i class="fa fa-trash ml-2" (click)="removeAttachment(item.id)" *ngIf="!itemDetails && add"></i>
 
                 <i class="fas fa-file-download" pTooltip="Télécharger" tooltipPosition="top" *ngIf="itemDetails"></i>
                 <i
                   class="far fa-trash-alt p-1"
                   *ngIf="itemDetails"
-                  (click)="delete(item.attachment.name)"
+                  (click)="delete(item)"
                   pTooltip="Supprimer"
                   tooltipPosition="top"
                 ></i>
@@ -44,12 +45,22 @@
               <div class="card-body p-2">
                 <div class="form-group col-12 mb-0 p-0">
                   <label *ngIf="itemDetails" class="col-md-12">Type</label>
-                  <p *ngIf="itemDetails && !filesProperties[getIndex(item)].edit" class="col-md-12">
+                  <p *ngIf="itemDetails && !filesProperties[getIndex(item)]?.edit" class="col-md-12">
                     {{ item.attachmentType.type }}
                   </p>
-
                   <p-dropdown
-                    *ngIf="add || (itemDetails && filesProperties[getIndex(item)].edit)"
+                    *ngIf="itemDetails && filesProperties[getIndex(item)]?.edit"
+                    [style]="{ minWidth: '100%' }"
+                    [options]="types"
+                    appendTo="body"
+                    placeholder="Choisir un type"
+                    [showClear]="false"
+                    optionLabel="type"
+                    optionValue="id"
+                    [(ngModel)]="item.attachmentType.id"
+                  ></p-dropdown>
+                  <p-dropdown
+                    *ngIf="add"
                     [style]="{ minWidth: '100%' }"
                     [options]="types"
                     appendTo="body"
@@ -62,13 +73,21 @@
                 </div>
                 <div
                   class="d-flex justify-content-end col-12 p-0 mt-2 mb-2"
-                  *ngIf="itemDetails && filesProperties[getIndex(item)].edit"
+                  *ngIf="itemDetails && filesProperties[getIndex(item)]?.edit"
                 >
-                  <button (click)="cancelEditAttachment(item, getIndex(item))" class="mr-2 cancel-btn">Annuler</button>
                   <button
-                    (click)="editAttachmentForm(getIndex(item), item.link, item.attachmentType)"
-                    class="valid-btn"
+                    [attr.disabled]="btnLoading"
+                    (click)="cancelEditAttachment(item, getIndex(item))"
+                    class="mr-2 btn cancel-btn"
                   >
+                    Annuler
+                  </button>
+                  <button
+                    [attr.disabled]="btnLoading"
+                    (click)="editAttachmentForm(getIndex(item), {}, {}, item)"
+                    class="valid-btn btn"
+                  >
+                    <i class="fas fa-cog fa-spin" [hidden]="btnLoading == null"></i>
                     Valider
                   </button>
                 </div>
@@ -119,7 +138,6 @@
         [style]="{ minWidth: '100%' }"
         appendTo="body"
         optionLabel="type"
-        optionValue="id"
         [options]="types"
         placeholder="Choisir un type"
         [showClear]="false"
@@ -130,20 +148,33 @@
     </div>
   </div>
   <ng-template pTemplate="footer">
-    <button class="btn-primary cancel-btn" (click)="closeModal()">Annuler</button>
-    <button class="btn-primary valid-btn" (click)="validate()">Enregistrer</button>
+    <button class="btn-primary cancel-btn" [attr.disabled]="btnLoading" (click)="closeModal()">Annuler</button>
+    <button class="btn-primary valid-btn" [attr.disabled]="btnLoading" (click)="validate()">
+      <i class="fas fa-cog fa-spin" [hidden]="btnLoading == null"></i>
+      Enregistrer
+    </button>
   </ng-template>
 </p-dialog>
 <p-dialog header="Supprimer une pièce jointe" [modal]="true" [(visible)]="deleteDialog" [style]="{ width: '30vw' }">
   <div class="p-0 pb-3">
     <div class="col-12">
       <span
-        >Voulez-vous supprimer la pièce jointe "<strong> {{ itemToDelete }} </strong>" ?</span
+        >Voulez-vous supprimer la pièce jointe "<strong> {{ itemToDelete?.link }} </strong>" ?</span
       >
     </div>
   </div>
   <ng-template pTemplate="footer">
-    <button class="cancel-btn" (click)="cancelDelete()" style="font-size: 12px">Annuler</button>
-    <button class="valid-btn" (click)="deleteAttachment(selectedAttachment)" style="font-size: 12px">supprimer</button>
+    <button class="btn cancel-btn" [attr.disabled]="btnLoading" (click)="cancelDelete()" style="font-size: 12px">
+      Annuler
+    </button>
+    <button
+      class="btn valid-btn"
+      [attr.disabled]="btnLoading"
+      (click)="deleteAttachment(selectedAttachment)"
+      style="font-size: 12px"
+    >
+      <i class="fas fa-cog fa-spin" [hidden]="btnLoading == null"></i>
+      supprimer
+    </button>
   </ng-template>
 </p-dialog>

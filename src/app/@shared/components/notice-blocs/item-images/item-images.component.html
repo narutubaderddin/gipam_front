@@ -1,9 +1,10 @@
 <div class="row images-container">
   <div class="col-12 content">
     <h5 class="col-md-12 pt-2">Photographies</h5>
+
     <i
       class="far fa-trash-alt"
-      *ngIf="!add"
+      *ngIf="!add && images.length"
       (click)="deleteItem(imageName)"
       pTooltip="Supprimer"
       tooltipPosition="top"
@@ -16,9 +17,18 @@
             [containerStyle]="{ 'max-width': '400px' }"
             [numVisible]="5"
             [activeIndex]="add ? images.length - 1 : 0"
+            [visible]="true"
           >
             <ng-template pTemplate="item" let-item>
-              <img width="100%" height="200" [src]="item.imageUrl" [alt]="item.alt" />
+              <img width="100%" height="200" [src]="getActivePicture()" [alt]="" />
+              <i
+                [style]="{ top: '0rem' }"
+                class="far fa-trash-alt"
+                *ngIf="add && images.length && isSelectedImage"
+                (click)="removePhotography(item)"
+                pTooltip="Supprimer"
+                tooltipPosition="top"
+              ></i>
             </ng-template>
             <ng-template pTemplate="thumbnail" let-item>
               <div class="p-grid p-nogutter p-justify-center">
@@ -36,8 +46,8 @@
             </button>
           </div>
           <div class="form-group col-md-12">
-            <label class="col-md-5">Photographie</label>
-            <p *ngIf="!add && !addImage" class="col-7">{{ imageName }}</p>
+            <label class="col-md-5" *ngIf="add || images.length || addImage">Photographie</label>
+            <p *ngIf="!add && !addImage && images.length" class="col-7">{{ imageName }}</p>
             <div class="input-group input-group-sm upload-file" *ngIf="add || addImage">
               <div class="input-group input-group-sm h-auto">
                 <input
@@ -46,6 +56,7 @@
                   (change)="handleFileInput($event)"
                   accept=".PNG,.png,.jpg,.JPG, .jpeg, .JPEG"
                   type="file"
+                  [disabled]="inputFileDisabled"
                   #fileSelect
                 />
                 <input readonly class="form-control" [(ngModel)]="imageName" placeholder="Select file..." />
@@ -57,8 +68,10 @@
               </div>
             </div>
             <div class="form-group">
-              <label class="col-md-5">Date</label>
-              <p *ngIf="!add && !addImage" class="col-7">{{ photographyDate | date: viewDateFormat }}</p>
+              <label class="col-md-5" *ngIf="add || addImage || images.length">Date</label>
+              <p *ngIf="!add && !addImage && images.length" class="col-7">
+                {{ photographyDate | date: viewDateFormat }}
+              </p>
               <p-calendar
                 class="col-md-12"
                 *ngIf="addImage || add"
@@ -67,29 +80,32 @@
                 [showIcon]="true"
                 dateFormat="yy-mm-dd"
                 inputId="icon"
+                [disabled]="inputFileDisabled"
               ></p-calendar>
             </div>
 
             <div class="form-group">
-              <label class="col-md-2">Type</label>
+              <label class="col-md-2" *ngIf="add || addImage || images.length">Type</label>
               <i
                 class="far fa-edit col-1"
                 (click)="editImgType()"
-                *ngIf="!editType && !add && !addImage"
+                *ngIf="!editType && !add && !addImage && images.length"
                 pTooltip="Modifier"
                 tooltipPosition="top"
               ></i>
-              <p *ngIf="!editType && !add && !addImage" class="col-7">{{ photographyType['type'] }}</p>
+              <p *ngIf="!editType && !add && !addImage && images.length" class="col-7">{{ photographyType['type'] }}</p>
 
               <p-dropdown
                 class="col-md-12"
                 *ngIf="addImage || editType || add"
+                (onShow)="verifyIdentification($event)"
                 [style]="{ minWidth: '100%' }"
                 [options]="types"
                 [(ngModel)]="photographyType"
                 placeholder="Choisir un type"
                 optionLabel="type"
                 [showClear]="false"
+                [disabled]="inputFileDisabled"
               ></p-dropdown>
               <ng-template let-option pTemplate="item">
                 <div>
@@ -99,8 +115,8 @@
               <span class="mandatory" *ngIf="!validate && !photographyType">Veuillez saisir un type</span>
 
               <div class="d-flex justify-content-end col-12 p-0 mt-2 mb-2" *ngIf="editType">
-                <button (click)="cancelEditType()" class="mr-2 cancel-btn">Annuler</button>
-                <button (click)="saveEditType()" class="valid-btn">Valider</button>
+                <button (click)="cancelEditType()" class="btn mr-2 cancel-btn">Annuler</button>
+                <button [attr.disabled]="btnLoading" (click)="saveEditType()" class="btn valid-btn">Valider</button>
               </div>
             </div>
             <button
@@ -109,6 +125,7 @@
               *ngIf="add || addImage"
               [attr.disabled]="btnLoading"
             >
+              <i class="fas fa-cog fa-spin" [hidden]="btnLoading == null"></i>
               <i class="fas fa-plus"></i>
               Valider
             </button>
@@ -126,8 +143,13 @@
       </div>
     </div>
     <ng-template pTemplate="footer">
-      <button class="cancel-btn" (click)="cancelDelete()" style="font-size: 12px">Annuler</button>
-      <button class="valid-btn" (click)="delete()" style="font-size: 12px">supprimer</button>
+      <button class="btn cancel-btn" [attr.disabled]="btnLoading" (click)="cancelDelete()" style="font-size: 12px">
+        Annuler
+      </button>
+      <button class="btn valid-btn" [attr.disabled]="btnLoading" (click)="delete()" style="font-size: 12px">
+        <i class="fas fa-cog fa-spin" [hidden]="btnLoading == null"></i>
+        supprimer
+      </button>
     </ng-template>
   </p-dialog>
 </div>

@@ -1,53 +1,57 @@
-<div [formGroup]="myForm" *ngIf="!add">
-  <div class="col-md-12 d-flex align-items-baseline flex-column flex-md-row">
-    <h5 class="col-md-4 p-0">Liens hypertextes</h5>
-    <ol class="rounded-list col-md-5">
-      <ng-template ngFor let-item pTemplate="item" [ngForOf]="existingLinks" let-i="index">
-        <li class="mb-2">
-          <span
-            ><a href="#">{{ item.url }}</a> | {{ item.name }}
-            <i
-              class="far fa-trash-alt"
-              *ngIf="itemDetails"
-              (click)="delete(item)"
-              pTooltip="Supprimer"
-              tooltipPosition="top"
-            ></i
-          ></span>
-        </li>
-      </ng-template>
-    </ol>
-    <div class="d-flex justify-content-end col-md-3 p-0" *ngIf="!add">
-      <button class="btn add-action" (click)="addNewLinks()"><i class="fas fa-plus mr-2"></i>Ajouter un lien</button>
-    </div>
+<div class="col-md-12 d-flex align-items-baseline flex-column flex-md-row">
+  <h5 class="col-md-4 p-0" *ngIf="!add">Liens hypertextes</h5>
+  <ol class="rounded-list col-md-5" *ngIf="!add">
+    <ng-template ngFor let-item pTemplate="item" [ngForOf]="existingLinks" let-i="index">
+      <li class="mb-2">
+        <span
+          ><a href="#">{{ item.url }}</a> | {{ item.name }}
+          <i
+            class="far fa-trash-alt"
+            *ngIf="itemDetails"
+            (click)="delete(item)"
+            pTooltip="Supprimer"
+            tooltipPosition="top"
+          ></i
+        ></span>
+      </li>
+    </ng-template>
+  </ol>
+  <div class="d-flex justify-content-end col-md-3 p-0" *ngIf="!add">
+    <button class="btn add-action" (click)="addNewLinks()"><i class="fas fa-plus mr-2"></i>Ajouter un lien</button>
   </div>
+</div>
 
-  <div class="col-md-12 p-1 mt-1 hyperlink-container" *ngIf="addLinks">
-    <div class="d-flex justify-content-end col-12 p-0 mt-2 mb-2">
-      <button class="mr-2 cancel-btn">Annuler</button>
-      <button class="valid-btn">Valider</button>
-    </div>
-    <div formArrayName="liens" class="hyperlink-bloc">
-      <div [formGroupName]="i" class="mt-1" *ngFor="let lien of liens.controls; let i = index">
+<div class="col-md-12 p-1 mt-1 hyperlink-container" [formGroup]="linksForm" *ngIf="addLinks">
+  <div class="d-flex justify-content-end col-12 p-0 mt-2 mb-2">
+    <button (click)="cancelAddLinks()" class="mr-2 btn cancel-btn">Annuler</button>
+    <button (click)="addHyperLinks()" [attr.disabled]="btnLoading" class="btn valid-btn">
+      <i class="fas fa-cog fa-spin" [hidden]="btnLoading == null"></i>
+      Valider
+    </button>
+  </div>
+  <div formArrayName="hyperlinks" class="hyperlinks-bloc">
+    <form [formGroupName]="i" *ngFor="let lien of hyperlinks.controls; let i = index">
+      <div class="mt-1">
         <div class="d-flex">
           <div class="form-group col-md-5 d-flex p-0">
-            <input class="form-control" placeholder="Nom URL" formControlName="url" />
+            <input class="form-control" placeholder="Nom URL" formControlName="name" />
           </div>
-          <div class="form-group col-md-5 d-flex p-0">
+          <div class="form-group col-md-5 d-flex flex-column p-0">
             <input class="form-control" placeholder="URL" formControlName="url" />
+            <div *ngIf="lien.get('url').invalid && (lien.get('url').dirty || lien.get('url').touched)">
+              <div class="mandatory" *ngIf="itemDetails && addLinks && lien.get('url').errors.required">
+                Veuillez saisir un url.
+              </div>
+            </div>
           </div>
 
           <div class="col-1 col-md-2 align-self-center d-flex p-0">
-            <i class="fas fa-trash-alt delete" style="color: gray" (click)="removeLink(i)" *ngIf="i > 0"></i>
-            <i class="add ml-1 mt-1 fas fa-plus" style="color: gray" (click)="addLink()"></i>
+            <i class="fas fa-trash-alt delete" style="color: gray" (click)="removeHyperLinks(i)" *ngIf="i > 0"></i>
+            <i class="add ml-1 mt-1 fas fa-plus" style="color: gray" (click)="addHyperlink()"></i>
           </div>
         </div>
       </div>
-    </div>
-    <div class="d-flex justify-content-end col-12 p-0 mt-2 mb-2">
-      <button (click)="cancelAddLinks()" class="mr-2 cancel-btn">Annuler</button>
-      <button (click)="save()" class="valid-btn">Valider</button>
-    </div>
+    </form>
   </div>
 </div>
 
@@ -89,7 +93,17 @@
     </div>
   </div>
   <ng-template pTemplate="footer">
-    <button class="cancel-btn" (click)="cancelDelete()" style="font-size: 12px">Annuler</button>
-    <button class="valid-btn" (click)="removeLink(getIndex(selectedItem))" style="font-size: 12px">supprimer</button>
+    <button class="btn cancel-btn" [attr.disabled]="btnLoading" (click)="cancelDelete()" style="font-size: 12px">
+      Annuler
+    </button>
+    <button
+      class="btn valid-btn"
+      [attr.disabled]="btnLoading"
+      (click)="removeLink(getIndex(selectedItem))"
+      style="font-size: 12px"
+    >
+      <i class="fas fa-cog fa-spin" [hidden]="btnLoading == null"></i>
+      supprimer
+    </button>
   </ng-template>
 </p-dialog>

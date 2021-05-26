@@ -31,7 +31,7 @@
       <ng-template pTemplate="colgroup" let-columns>
         <colgroup>
           <col *ngIf="checkBoxSelection && frozenCols.length == 0" style="width: 3em" />
-          <col *ngIf="singleSelect && frozenCols.length == 0" style="width: 2em" />
+          <col *ngIf="singleSelect && frozenCols.length == 0" style="width: 3em" />
           <col *ngIf="expand && frozenCols.length == 0" style="width: 4em" />
           <col *ngFor="let col of columns" [style.width]="col.width" />
         </colgroup>

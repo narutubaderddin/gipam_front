@@ -44,7 +44,7 @@ export class AttachmentsComponent implements OnInit, OnChanges {
 
   previousType: any;
   deleteDialog: boolean = false;
-  itemToDelete: string;
+  itemToDelete: any = {};
   btnLoading: any = null;
   get attachments(): FormArray {
     return this.attachmentForm.get('attachments') as FormArray;
@@ -58,25 +58,20 @@ export class AttachmentsComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.getAllTypes();
-    if (this.itemDetails) {
+
+    if (this.itemDetails && this.existingAttachments.length) {
       this.existingAttachments.map((el: any) => {
+        console.log('here');
         this.filesProperties.push({ edit: false, delete: false });
         this.files.push(el.link);
         this.attachments.push(this.createAttachment(el.link, el.attachementType.id, el.id));
       });
     }
   }
-  ngOnChanges() {
-    if (this.existingAttachments) {
-      if (this.itemDetails) {
-        this.existingAttachments.map((el: any) => {
-          this.filesProperties.push({ edit: false, delete: false });
-          this.files.push(el.link);
-          this.attachments.push(this.createAttachment(el.link, el.attachmentType.id, el.id));
-        });
-      }
-    }
+  get items() {
+    return this.existingAttachments;
   }
+  ngOnChanges() {}
 
   initData(photography?: any, photographyType?: any) {
     this.addedFile = photography;
@@ -97,34 +92,40 @@ export class AttachmentsComponent implements OnInit, OnChanges {
   }
   createAttachment(attachment?: any, attachmentType?: any, id?: any): FormGroup {
     // this.filesProperties.push({ edit: false, delete: false });
-    return this.fb.group({
-      id: [id],
-      link: [attachment, [Validators.required]],
-      attachmentType: [attachmentType, [Validators.required]],
-      comment: [''],
-    });
-  }
-  editAttachmentForm(index?: any, attachment?: any, attachmentType?: any) {
-    this.attachments.value[index].link = attachment;
-    this.attachments.value[index].attachmentType = attachmentType;
-
     if (this.itemDetails) {
-      this.updateType(attachmentType, index);
+      return this.fb.group({
+        id: [id],
+        link: [attachment, [Validators.required]],
+        attachmentType: [attachmentType, [Validators.required]],
+        comment: [''],
+      });
+    } else {
+      return this.fb.group({
+        link: [attachment, [Validators.required]],
+        attachmentType: [attachmentType, [Validators.required]],
+        comment: [''],
+      });
     }
   }
-  updateType(attachmentType?: any, index?: any) {
+  editAttachmentForm(index?: any, attachment?: any, attachmentType?: any, item?: any) {
+    if (this.itemDetails) {
+      this.updateType(item, index, attachmentType);
+    }
+  }
+  updateType(item?: any, index?: any, attachmentType?: any) {
     this.btnLoading = '';
-    const data = { attachmentType: attachmentType };
 
-    this.linksService.updateAttachments(data, this.attachments.value[index].id).subscribe(
+    const data = { attachmentType: item ? item.attachmentType.id : attachmentType };
+
+    this.linksService.updateAttachments(data, item.id).subscribe(
       (result) => {
         this.callParent();
         this.addSingle('success', 'Modification', 'Pièce jointe modifiée avec succés');
         this.filesProperties[index].edit = false;
       },
       (error) => {
-        console.log(error);
-        this.linksService.getFormErrors(error.error.errors, 'Modification');
+        console.log(error);;
+        this.addSingle('error', 'Modification', 'Erreur servenue lors de la modification');
         this.btnLoading = null;
       }
     );
@@ -135,21 +136,53 @@ export class AttachmentsComponent implements OnInit, OnChanges {
   }
 
   deleteAttachment(index: number) {
-    this.files.splice(index, 1);
-    this.attachments.removeAt(index);
-    this.deleteDialog = false;
+    this.btnLoading = '';
+    this.linksService.deleteAttachments({ furniture: this.artwork.id }, this.itemToDelete.id).subscribe(
+      (result) => {
+        this.callParent();
+        this.addSingle('success', 'Suppresion', 'Pièce jointe supprimée avec succés');
+        this.btnLoading = null;
+        this.deleteDialog = false;
+      },
+      (error) => {
+        console.log(error);
+        this.addSingle('error', 'Suppresion', 'Erreur servenue lors de la suppression');
+        this.btnLoading = null;
+      }
+    );
   }
 
+  removeAttachment(index: number) {
+    this.files.splice(index, 1);
+    this.attachments.removeAt(index);
+    this.selectedAttachment = this.selectedAttachment - 1;
+    this.attachmentInsertionNumber = this.attachmentInsertionNumber - 1;
+  }
+
+  addItem(data: any) {
+    this.btnLoading = '';
+    this.linksService.addAttachments(data).subscribe(
+      (result: any) => {
+        this.addSingle('success', 'Ajout', 'Pièce jointe ajoutée avec succés');
+        this.callParent();
+      },
+      (error) => {
+        this.addSingle('error', 'Ajout', 'Erreur servenue lors de l\'ajout');
+        this.btnLoading = null;
+      }
+    );
+  }
   validate() {
     if (!this.addedFile || !this.attachmentType) {
       this.validation = false;
     } else {
-      if (this.itemDetails) {
-        this.existingAttachments.push({ attachment: this.addedFile, attachmentType: this.attachmentType });
-      }
       if (this.selectedAttachment == this.attachments.value.length || this.itemDetails) {
         this.files.push(this.addedFile);
-        this.attachments.push(this.createAttachment(this.addedFile, this.attachmentType));
+        this.attachments.push(this.createAttachment(this.addedFile, this.attachmentType.id));
+        if (this.itemDetails) {
+          let data = this.buildFormData(this.attachments.value[this.attachments.value.length - 1]);
+          this.addItem(data);
+        }
       } else {
         this.editAttachmentForm(this.selectedAttachment, this.addedFile, this.attachmentType);
       }
@@ -168,7 +201,15 @@ export class AttachmentsComponent implements OnInit, OnChanges {
     this.selectedAttachment = 0;
     this.edit = true;
   }
-
+  buildFormData(data: any) {
+    console.log(data);
+    const formData = new FormData();
+    formData.append('link', data.link);
+    formData.append('attachmentType', data.attachmentType);
+    formData.append('comment', data.comment ? data.comment : '');
+    formData.append('furniture', this.artwork.id);
+    return formData;
+  }
   addAttachment() {
     this.display = true;
   }
@@ -178,6 +219,7 @@ export class AttachmentsComponent implements OnInit, OnChanges {
       edit: true,
       delete: false,
     };
+    console.log(value);
     this.previousType = value;
   }
   cancelEditAttachment(el: any, index: number) {
@@ -186,8 +228,11 @@ export class AttachmentsComponent implements OnInit, OnChanges {
       edit: false,
       delete: false,
     };
-    this.editAttachmentForm(index, el.attachment, this.previousType);
+    el.attachmentType = this.previousType;
+    // this.editAttachmentForm(index, el.attachment, this.previousType);
     this.existingAttachments[index].attachmentType = this.previousType;
+
+    console.log(this.previousType);
   }
   getIndex(el: any) {
     return this.existingAttachments.indexOf(el);
@@ -198,7 +243,7 @@ export class AttachmentsComponent implements OnInit, OnChanges {
   }
   cancelDelete() {
     this.deleteDialog = false;
-    this.itemToDelete = '';
+    this.itemToDelete = {};
   }
   addSingle(type: string, sum: string, msg: string) {
     this.messageService.add({ severity: type, summary: sum, detail: msg });

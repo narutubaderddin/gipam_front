@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren, Inpu
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsService } from 'angular2-notifications';
 import { SharedService } from '@shared/services/shared.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PdfGeneratorService } from '@shared/services/pdf-generator.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkOfArtService } from '@shared/services/work-of-art.service';
@@ -29,7 +29,7 @@ export class ItemDetailsComponent implements OnInit {
     id: 145;
     titre: 'Titre';
     domain: 'Art graphique';
-    field: 'Art graphique';
+    field: { id: 1; label: 'Art graphique' };
     height: '85';
     width: '85';
     authors: 'Auteur 1, Auteur 11';
@@ -38,13 +38,13 @@ export class ItemDetailsComponent implements OnInit {
     era: '';
     materialTechnique: '';
     status: '';
-    denomination: 'Affiche';
+    denomination: { id: 1; label: 'Affiche' };
     createdAt: '22/01/2020';
   };
   editLink: boolean = true;
   parent: any = '';
   children: any = [];
-  hypertextLinks: any[] = [];
+  hyperLinkData: any[] = [];
   attachments: any[] = [];
   status: any = {};
   type = 'depot';
@@ -60,7 +60,7 @@ export class ItemDetailsComponent implements OnInit {
   photographies: any[] = [];
   imgSrc: string = this.photographies[0] ? this.photographies[0].imageUrl : '';
   moreDetails = ['19-01-2020', '23-02-2020', '01-03-2020', '25-03-2020', '20-04-2020'];
-
+  strIntoObj: any[] = [];
   dynamic = false;
   openImg = false;
   sticky = false;
@@ -110,6 +110,7 @@ export class ItemDetailsComponent implements OnInit {
     totalFiltered: any;
   };
   loadingData = false;
+  private draftArtWork: boolean;
   constructor(
     config: NgbCarouselConfig,
     private notificationsService: NotificationsService,
@@ -153,9 +154,7 @@ export class ItemDetailsComponent implements OnInit {
 
   getParentlinkApi(): ParentComponentApi {
     return {
-      callParentMethod: () => {
-        // this.onSave()
-      },
+      callParentMethod: () => {},
     };
   }
   initPhotographiesForm() {
@@ -188,38 +187,62 @@ export class ItemDetailsComponent implements OnInit {
     });
     return items;
   }
+  formatArray(array: any) {
+    let test: any[] = [];
+    if (array.length) {
+      array.forEach((value: any) => {
+        test.push(value.id);
+      });
+      return test;
+    }
+    return null;
+  }
   initDescriptifForm(data?: any) {
-    let materialTechnique: any[] = [];
-    data?.materialTechnique.map((el: any) => {
-      materialTechnique.push({ id: el.id, name: el.label });
-    });
-
     this.descriptifForm = this.fb.group({
       title: [data?.title, Validators.required],
-      field: [{ id: data?.field.id, name: data?.field.label }, Validators.required],
-      denomination: [data?.denomination, Validators.required],
-      materialTechnique: [materialTechnique, Validators.required],
-      numberOfUnit: [data?.numberOfUnit, Validators.required],
-      authors: [data.authors ? data.authors : []],
-      creationDate: [new Date(data?.creationDate)],
-      length: [data?.length],
-      width: [data?.width],
-      height: [data?.height],
-      depth: [data?.depth],
-      weight: [data?.weight],
-      diameter: [data?.diameter],
-      era: [data?.era],
-      style: [data?.style],
-      totalLength: [data?.totalLength],
-      totalWidth: [data?.totalWidth],
-      totalHeight: [data?.totalHeight],
-      descriptiveWords: [data?.descriptiveWords],
-      items: [data?.items],
+      field: [{ id: data?.field?.id, name: data?.field.label }, Validators.required],
+      denomination: [{ id: data?.denomination?.id, name: data?.denomination.label }, Validators.required],
+      materialTechnique: [
+        data && data.materialTechnique ? this.formatArray(data.materialTechnique) : null,
+        Validators.required,
+      ],
+
+      numberOfUnit: [data && data.numberOfUnit ? data.numberOfUnit : null, Validators.required],
+      authors: [data && data.authors ? this.formatArray(data.authors) : null],
+      creationDate: [data && data.creationDate ? this.datePipe.transform(data?.creationDate, 'yyyy') : null],
+      length: data && data.length ? data.length : null,
+      lengthUnit: ['1'],
+      width: data && data.width ? data.width : null,
+      widthUnit: ['1'],
+      height: [data && data.height ? data.height : null],
+      heightUnit: ['1'],
+      depth: [data && data.depth ? data.depth : null],
+      depthUnit: ['1'],
+      weight: [data && data.weight ? data.weight : null],
+      weightUnit: ['1'],
+      diameter: [data && data.diameter ? data.diameter : null],
+      diameterUnit: ['1'],
+
+      era: [data && data.era ? data.era.id : null],
+      style: [data && data?.style ? data?.style.id : null],
+
+      totalLength: [data && data.totalLength ? data.totalLength : null],
+      totlLengthUnit: ['1'],
+      totalWidth: [data && data.totalWidth ? data.totalWidth : null],
+      totalWidthUnit: [1],
+      totalHeight: [data && data.totalHeight ? data.totalHeight : null],
+      totalHeightUnit: ['1'],
+      descriptiveWords: [data && data.status.descriptiveWords ? this.strIntoObj : null],
+
+      description: [data && data.status ? data.status.description : null],
+      registrationSignature: [data && data.status ? data.status.registrationSignature : null],
+      otherRegistrations: [data && data.status ? data.status.otherRegistrations : null],
+      marking: [data && data.status ? data.status.marking : null],
     });
   }
   initDepositStatusForm(data?: any) {
     this.depositStatusForm = this.fb.group({
-      depositDate: [new Date(data?.depositDate)],
+      depositDate: [data && data.depositDate ? this.datePipe.transform(data?.depositDate, 'yyyy-MM-dd') : null],
       stopNumber: [data?.stopNumber],
       depositor: [data?.depositor ? data.depositor?.id : ''],
     });
@@ -227,13 +250,15 @@ export class ItemDetailsComponent implements OnInit {
   initPropertyStatusForm(data?: any) {
     this.propertyStatusForm = this.fb.group({
       entryMode: [data?.entryMode?.id],
-      entryDate: [new Date(data?.entryDate)],
+      entryDate: [data && data.entryDate ? this.datePipe.transform(data?.entryDate, 'yyyy-MM-dd') : null],
       marking: [data?.marking],
       category: [data?.category?.id],
       registrationSignature: [data?.registrationSignature],
       descriptiveWords: [data?.descriptiveWords],
       insuranceValue: [data?.insuranceValue],
-      insuranceValueDate: [new Date(data?.insuranceValueDate)],
+      insuranceValueDate: [
+        data && data.insuranceValueDate ? this.datePipe.transform(data?.insuranceValueDate, 'yyyy-MM-dd') : null,
+      ],
       otherRegistrations: [data?.otherRegistrations],
       description: [data?.description],
     });
@@ -244,9 +269,9 @@ export class ItemDetailsComponent implements OnInit {
       hyperlinks: this.fb.array([]),
     });
   }
-  initLinks() {
+  initLinks(data?: any) {
     this.linkArtWorkForm = this.fb.group({
-      parent: [''],
+      parent: [data && data.parent ? data.parent : null],
     });
   }
   f1(e: any) {
@@ -254,46 +279,80 @@ export class ItemDetailsComponent implements OnInit {
   }
 
   onEditMode() {
-    this.edit = true;
+    if (this.descriptifForm) {
+      this.initDescriptifForm(this.workArt);
+      this.edit = true;
+    }
   }
   formatData() {
     const keys = ['width', 'length', 'totalHeight', 'totalWidth', 'totalLength', 'depth', 'diameter'];
     const filteredKeys = keys.filter((value) => this.attributes.includes(value));
     filteredKeys.forEach((key: string) => {
       if (this.descriptifForm.get(key).value) {
-        this.descriptifForm.get(key).setValue(+this.descriptifForm.get(key).value);
+        this.descriptifForm
+          .get(key)
+          .setValue(+this.descriptifForm.get(key).value * +this.descriptifForm.get(key.concat('Unit')).value);
       }
     });
   }
-  onSave(parent?: any) {
+
+  onSave(parent?: any, deletePar?: boolean, addPar?: boolean) {
     this.editLink = true;
     this.btnLoading = '';
     this.formatData();
 
     const authorsId: any[] = [];
     this.descriptifForm.value.authors?.map((el: any) => {
-      authorsId.push(el.id);
+      authorsId.push(el);
     });
     const materialId: any[] = [];
     this.descriptifForm.value.materialTechnique?.map((el: any) => {
-      materialId.push(el.id);
+      materialId.push(el);
     });
-    const data = {
-      ...this.descriptifForm.value,
-      field: this.descriptifForm.value.field.id,
-      denomination: this.descriptifForm.value.denomination.id,
-      authors: authorsId,
-      materialTechnique: materialId,
-      status: this.addProperty ? this.propertyStatusForm.value : this.depositStatusForm.value,
-      parent: parent,
-    };
+    let data: any;
+    if (deletePar || addPar) {
+      data = {
+        field: this.workArt?.field?.id,
+        denomination: this.workArt?.denomination?.id,
+        parent: parent,
+      };
+    } else {
+      if (this.addProperty) {
+        this.propertyStatusForm.get('marking').setValue(this.descriptifForm.get('marking').value);
+        this.propertyStatusForm
+          .get('registrationSignature')
+          .setValue(this.descriptifForm.get('registrationSignature').value);
+        this.propertyStatusForm
+          .get('descriptiveWords')
+          .setValue(this.descriptifForm?.get('descriptiveWords')?.value?.join(', '));
+        this.propertyStatusForm.get('description').setValue(this.descriptifForm.get('description').value);
+      }
+
+      data = {
+        ...this.descriptifForm.value,
+        field: this.descriptifForm.value.field.id,
+        denomination: this.descriptifForm?.value?.denomination?.id,
+        style: this.descriptifForm?.value?.style?.id,
+
+        status: this.addProperty ? this.propertyStatusForm.value : this.depositStatusForm.value,
+        creationDate: this.descriptifForm.value.creationDate + '-01-01',
+        parent: parent,
+      };
+    }
 
     this.workOfArtService.updateWorkOfArt(data, this.artWorkId).subscribe(
       (result) => {
         this.getArtWork(this.artWorkId);
-        this.addSingle('success', 'Modification', 'Notice modifiée avec succée');
+        if (deletePar) {
+          this.addSingle('success', 'Suppression', 'Lien avec oeuvres supprimé avec succée');
+        } else if (addPar) {
+          this.addSingle('success', 'Ajout', 'Lien avec oeuvres ajouté avec succée');
+        } else {
+          this.addSingle('success', 'Modification', 'Notice modifiée avec succée');
+        }
         this.edit = false;
         this.editLink = false;
+        this.btnLoading = null;
       },
       (error) => {
         this.btnLoading = null;
@@ -311,6 +370,7 @@ export class ItemDetailsComponent implements OnInit {
   }
 
   downloadPDF() {
+    this.artWorksToPrint = [];
     this.artWorksToPrint.push(this.artwork);
     const element = document.getElementById('appItemDetailsPdf');
     this.pdfGeneratorService.downloadPDFFromHTML(element, this.artwork.titre + '.pdf');
@@ -320,7 +380,7 @@ export class ItemDetailsComponent implements OnInit {
     const newParams = JSON.parse(localStorage.getItem(searchPageFilter));
 
     this.searchPageParam = {
-      mode: newParams.mode,
+      mode: newParams?.mode,
       filter: newParams.filter,
       advancedFilter: newParams.advancedFilter,
       headerFilters: newParams.headerFilters,
@@ -334,6 +394,10 @@ export class ItemDetailsComponent implements OnInit {
     };
   }
 
+  saveArtOfWorkIndex(index: number) {
+    localStorage.setItem(lastArtOfWorkDetailIndex, JSON.stringify(index));
+  }
+
   paginate(by?: number, to?: any) {
     if (by) {
       this.page = this.page + by;
@@ -341,6 +405,8 @@ export class ItemDetailsComponent implements OnInit {
     if (this.page < 0) {
       this.page = 0;
     }
+    this.saveArtOfWorkIndex(this.page);
+
     const urlParams = {
       offset: this.page,
       limit: 1,
@@ -364,7 +430,6 @@ export class ItemDetailsComponent implements OnInit {
           this.artWorkId = apiResult.id;
           this.previousId = result.previousId;
           this.nextId = result.nextId;
-          this.router.navigate(['/details/' + this.artWorkId]);
           this.setArtwork(apiResult);
           this.loadingData = false;
         },
@@ -394,7 +459,7 @@ export class ItemDetailsComponent implements OnInit {
       .getWorkOfArtById(id, { serializer_group: JSON.stringify(['art_work_details', 'short']) })
       .subscribe(
         (result) => {
-          this.setArtwork(result);
+          this.setArtwork(result.artwork);
         },
         (error) => {
           this.addSingle('error', 'Erreur Technique', error.error.message);
@@ -402,34 +467,78 @@ export class ItemDetailsComponent implements OnInit {
       );
   }
 
-  setArtwork(apiResult: any) {
-    this.photographies = [];
-
-    this.workArt = apiResult;
-    this.initDescriptifForm(apiResult);
-    apiResult.photographies.map((el: any, index: number) => {
+  setPhotographies(data?:any){
+    let noPrincipalPhoto=data.principalPhoto?data.photographies.filter((el:any)=>
+         el.id !== data.principalPhoto.id
+      ):data.photographies;
+    noPrincipalPhoto.map((el: any, index: number) => {
       this.photographies.push({
-        workArtId: apiResult.id,
+        workArtId: data.id,
         id: el.id,
         imageUrl: el.imagePreview,
+        imagePreview: el.imagePreview,
         alt: 'description',
-        i: index,
+        i: data.principalPhoto?index+1:index,
         image: el.imageName,
+        date: this.datePipe.transform(el.date, dateTimeFormat),
         photographyDate: this.datePipe.transform(el.date, dateTimeFormat),
         photographyName: el.imageName,
         photographyType: el.photographyType,
         imageName: el.imageName,
       });
     });
+    if(data.principalPhoto) {
+      this.photographies.unshift(
+        {
+          workArtId: data.id,
+          id: data.principalPhoto.id,
+          imageUrl: data.principalPhoto.imagePreview,
+          imagePreview: data.principalPhoto.imagePreview,
+          alt: 'description',
+          i: 0,
+          image: data.principalPhoto.imageName,
+          date: this.datePipe.transform(data.principalPhoto.date, dateTimeFormat),
+          photographyDate: this.datePipe.transform(data.principalPhoto.date, dateTimeFormat),
+          photographyName: data.principalPhoto.imageName,
+          photographyType: data.principalPhoto.photographyType,
+          imageName: data.principalPhoto.imageName,
+        });
+    }
+  }
+  setArtwork(apiResult: any) {
+    this.photographies = [];
+
+    this.workArt = apiResult;
+    this.artwork.titre = apiResult.title;
+    this.artwork.authors = apiResult.authorsName;
+    this.initDescriptifForm(apiResult);
+    this.setPhotographies(apiResult);
+
+
     apiResult.status.statusType === 'PropertyStatus' ? (this.addProperty = true) : (this.addDepot = true);
     this.status = apiResult.status;
     this.addProperty ? this.initPropertyStatusForm(apiResult.status) : this.initDepositStatusForm(apiResult.status);
     this.attachments = apiResult.attachments;
-    this.hypertextLinks = apiResult.hyperlinks;
+    this.hyperLinkData = apiResult.hyperlinks;
     this.parent = apiResult.parent;
     this.children = apiResult.children;
+    if (apiResult.parent) {
+      this.initLinks(apiResult.parent);
+    }
+    if(apiResult.isCreated!==this.draftArtWork && !apiResult.isCreated){
+      this.addSingle('success', '', 'Notice en mode brouillon')
+    }
+    this.draftArtWork=apiResult.isCreated;
+    console.log(this.draftArtWork)
+    if (apiResult && apiResult.status && apiResult.status.descriptiveWords) {
+      let str: string = apiResult.status.descriptiveWords;
+      let strIntoOb = str.split(',');
+      this.strIntoObj = [];
+      strIntoOb.forEach((value: any) => {
+        this.strIntoObj.push(value);
+      });
+    }
   }
-
   addSingle(type: string, sum: string, msg: string) {
     this.messageService.add({ severity: type, summary: sum, detail: msg });
   }
@@ -440,6 +549,7 @@ export class ItemDetailsComponent implements OnInit {
 
   onCancel() {
     this.edit = false;
+    this.initDescriptifForm(this.workArt);
   }
 }
 

@@ -58,6 +58,11 @@ a:not([href]) {
     }
   }
 }
+::ng-deep .completed .ng-wizard-main ul li a {
+  //&::after {
+  //  background-color: red !important;
+  //}
+}
 
 .bloc-header {
   position: fixed;

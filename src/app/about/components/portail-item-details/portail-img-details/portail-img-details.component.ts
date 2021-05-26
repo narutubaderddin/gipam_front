@@ -26,8 +26,7 @@ export class PortailImgDetailsComponent implements OnInit {
     this.loading = true;
     this.workOfArtService.getOeuvreDetails(this.artWorkId).subscribe(
       (response) => {
-        console.log(response);
-        this.artWork = response;
+        this.artWork = response.artwork;
         this.loading = false;
       },
       (error) => {

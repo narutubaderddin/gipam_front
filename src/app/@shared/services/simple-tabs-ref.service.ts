@@ -40,8 +40,9 @@ export class SimpleTabsRefService {
     return this.http.delete<any>(`/${this.tabRef}/${denomination.id}`, httpOptions);
   }
 
-  addItem(denomination: any): Observable<any> {
-    return this.http.post<any>(`/${this.tabRef}/`, denomination, httpOptions);
+  addItem(denomination: any, tabRefName: string = null): Observable<any> {
+    tabRefName = tabRefName == null ? this.tabRef : tabRefName;
+    return this.http.post<any>(`/${tabRefName}/`, denomination, httpOptions);
   }
 
   editItem(denomination: any, id: number): Observable<any> {
