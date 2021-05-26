@@ -124,8 +124,8 @@ export class AttachmentsComponent implements OnInit, OnChanges {
         this.filesProperties[index].edit = false;
       },
       (error) => {
-        console.log(error);
-        this.linksService.getFormErrors(error.error.errors, 'Modification');
+        console.log(error);;
+        this.addSingle('error', 'Modification', 'Erreur servenue lors de la modification');
         this.btnLoading = null;
       }
     );
@@ -146,7 +146,7 @@ export class AttachmentsComponent implements OnInit, OnChanges {
       },
       (error) => {
         console.log(error);
-        this.addSingle('error', 'Suppresion', error.error.message);
+        this.addSingle('error', 'Suppresion', 'Erreur servenue lors de la suppression');
         this.btnLoading = null;
       }
     );
@@ -167,8 +167,7 @@ export class AttachmentsComponent implements OnInit, OnChanges {
         this.callParent();
       },
       (error) => {
-        this.addSingle('error', 'Ajout', error.error.message);
-        this.linksService.getFormErrors(error.error.errors, 'Ajout');
+        this.addSingle('error', 'Ajout', 'Erreur servenue lors de l\'ajout');
         this.btnLoading = null;
       }
     );
