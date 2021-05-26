@@ -160,6 +160,9 @@
       padding: 0 50px !important;
       background-color: red !important;
     }
+    div.d-flex.justify-content-space-between{
+      width: 100% !important;
+    }
   }
 }
 .loading-spinner {
@@ -189,6 +192,11 @@
   }
 
 }
-@media (max-width: 769px) {
+.container-file {
+  display: inline-grid;
+}
 
+.content-file,
+.overlay {
+  grid-area: 1 / 1;
 }

@@ -21,6 +21,7 @@ export class PortailImgDetailsComponent implements OnInit {
   artWorkId: string;
   artWork: any;
   loading: boolean = false;
+  loadingExportRequests: boolean = false;
   ngOnInit(): void {
     this.artWorkId = this.route.snapshot.paramMap.get('id');
     this.loading = true;
@@ -44,7 +45,9 @@ export class PortailImgDetailsComponent implements OnInit {
   }
   exportArtWork() {
     const artWorksIds: any = [this.artWorkId];
+    this.loadingExportRequests = true;
     this.requestService.exportRequest(artWorksIds).subscribe((response: Response | any) => {
+      this.loadingExportRequests = false;
       this.requestService.manageFileResponseDownload(response, 'Oeuvre Graphique');
     });
   }

@@ -17,7 +17,7 @@
             <div class="d-flex justify-content-space-between" style="width: 50%">
               <div class="d-flex principal-img justify-content-center">
                 <!--<img class="img-fluid" src="assets/images/2.jpg" alt="" />-->
-                <img class="card-img-top img-fluid" [src]="artWork.principalPhoto?.imagePreview" alt="Card image cap" />
+                <img class="card-img-top img-fluid" [src]="artWork.principalPhoto?.imagePreview" alt="00Card image cap" />
               </div>
               <div *ngIf="showMore && isCollapsed" class="show-details" (click)="isCollapsed = !isCollapsed">
                 <a
@@ -85,6 +85,7 @@
                 <p><strong>Détails</strong></p>
               </h4>
               <a (click)="exportArtWork()" style="cursor: pointer">
+                <i [hidden]="!loadingExportRequests" class="fas fa-cog fa-spin" style="color: #ffffff"></i>
                 <i class="fas fa-file-export" title="Exporter"></i>
                 <span>Exporter</span>
               </a>
