@@ -663,4 +663,17 @@ export class PortailComponent implements OnInit {
     this.resetSearch();
     this.getOeuvres();
   }
+  panelNum : any = 1;
+  next() {
+    if (this.panelNum < 3) this.panelNum++; else this.panelNum = 1;
+  }
+
+  prev() {
+    if (this.panelNum > 1) this.panelNum--; else this.panelNum = 2;
+  }
+
+  closeRequestModal() {
+    this.modalService.dismissAll('NgbdModal1Content')
+  }
+
 }

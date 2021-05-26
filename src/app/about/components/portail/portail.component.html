@@ -41,17 +41,7 @@
                     <div class="row" *ngIf="selectedOeuvre.length > 0">
                       <div class="col-md-12">
                         <div class="container-file" style="float: right">
-                          <div class="content-file">
-                            <i
-                              class="float-right fas fa-file-download d-inline p-2"
-                              placement="top"
-                              ngbTooltip="Exporter"
-                              (click)="exportRequests()"
-                            ></i>
-                          </div>
-                          <div class="overlay" [hidden]="!loadingExportMyRequests">
-                            <i class="float-right fas fa-cog fa-spin" style="padding: 15%; color: #2196f3"></i>
-                          </div>
+
                         </div>
                       </div>
                     </div>
@@ -62,178 +52,198 @@
                     </div>
                     <ng-template #existSelectedOeuvre>
                       <div class="row">
-                        <aside class="col-lg-5">
-                          <div class="card mb-3">
-                            <div class="card-body">
-                              <div class="form-group">
-                                <div class="input-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    name="phone"
-                                    placeholder="Téléphone du bénéficiaire *"
-                                    formControlName="phone"
-                                  />
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <div class="input-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    name="Nom"
-                                    placeholder="Nom du bénéficiaire *"
-                                    formControlName="firstName"
-                                  />
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <div class="input-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    name="prenom"
-                                    placeholder="Prénom du bénéficiaire *"
-                                    formControlName="lastName"
-                                  />
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <div class="input-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    name="phone"
-                                    placeholder="Numéro de contact"
-                                    formControlName="phoneApplicant"
-                                  />
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <div class="input-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    name="firstNameApplicant"
-                                    placeholder="Nom du demandeur"
-                                    formControlName="firstNameApplicant"
-                                  />
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <div class="input-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    name="lastNameApplicant"
-                                    placeholder="Prénom du demandeur"
-                                    formControlName="lastNameApplicant"
-                                  />
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <div class="input-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    name="mail"
-                                    placeholder="Mail *"
-                                    formControlName="mail"
-                                  />
-                                </div>
-                              </div>
+                        <ng-container *ngIf="panelNum == 2">
+                          <aside class="col-lg-12">
+                            <div class="col-6">
+                              <div class="card-body">
 
-                              <div class="form-group">
-                                <div class="input-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    name="function"
-                                    placeholder="Fonction *"
-                                    formControlName="function"
-                                  />
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <div class="input-group">
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      name="phone"
+                                      placeholder="Téléphone du bénéficiaire *"
+                                      formControlName="phone"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <div class="input-group">
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      name="Nom"
+                                      placeholder="Nom du bénéficiaire *"
+                                      formControlName="firstName"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <div class="input-group">
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      name="prenom"
+                                      placeholder="Prénom du bénéficiaire *"
+                                      formControlName="lastName"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <div class="input-group">
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      name="phone"
+                                      placeholder="Numéro de contact"
+                                      formControlName="phoneApplicant"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <div class="input-group">
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      name="firstNameApplicant"
+                                      placeholder="Nom du demandeur"
+                                      formControlName="firstNameApplicant"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <div class="input-group">
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      name="lastNameApplicant"
+                                      placeholder="Prénom du demandeur"
+                                      formControlName="lastNameApplicant"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <div class="input-group">
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      name="mail"
+                                      placeholder="Mail *"
+                                      formControlName="mail"
+                                    />
+                                  </div>
                                 </div>
                               </div>
-                              <div class="form-group">
-                                <div class="input-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    name="establishement"
-                                    placeholder="Direction *"
-                                    formControlName="establishement"
-                                  />
+                              <div class="col-md-6">
+                                <div class="form-group">
+                                  <div class="input-group">
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      name="function"
+                                      placeholder="Fonction *"
+                                      formControlName="function"
+                                    />
+                                  </div>
                                 </div>
-                              </div>
-                              <div class="form-group">
-                                <div class="input-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    name="subDivision"
-                                    placeholder="Sous-direction *"
-                                    formControlName="subDivision"
-                                  />
+                                <div class="form-group">
+                                  <div class="input-group">
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      name="establishement"
+                                      placeholder="Direction *"
+                                      formControlName="establishement"
+                                    />
+                                  </div>
                                 </div>
-                              </div>
-                              <div class="form-group">
-                                <div class="input-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    name="building"
-                                    placeholder="Batiment *"
-                                    formControlName="building"
-                                  />
+                                <div class="form-group">
+                                  <div class="input-group">
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      name="subDivision"
+                                      placeholder="Sous-direction *"
+                                      formControlName="subDivision"
+                                    />
+                                  </div>
                                 </div>
-                              </div>
-                              <div class="form-group">
-                                <div class="input-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    name="level"
-                                    placeholder="Niveau *"
-                                    formControlName="level"
-                                  />
+                                <div class="form-group">
+                                  <div class="input-group">
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      name="building"
+                                      placeholder="Batiment *"
+                                      formControlName="building"
+                                    />
+                                  </div>
                                 </div>
-                              </div>
-                              <div class="form-group">
-                                <div class="input-group">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    name="pieceNumber"
-                                    placeholder="N° de piéce *"
-                                    formControlName="pieceNumber"
-                                  />
+                                <div class="form-group">
+                                  <div class="input-group">
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      name="level"
+                                      placeholder="Niveau *"
+                                      formControlName="level"
+                                    />
+                                  </div>
                                 </div>
-                              </div>
-                              <div class="form-group">
-                                <div class="input-group">
+                                <div class="form-group">
+                                  <div class="input-group">
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      name="pieceNumber"
+                                      placeholder="N° de piéce *"
+                                      formControlName="pieceNumber"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <div class="input-group">
                                   <textarea
                                     formControlName="comment"
                                     placeholder="Commentaire"
-                                    rows="2"
-                                    autosize
+                                    rows="1"
                                   ></textarea>
+                                  </div>
                                 </div>
                               </div>
                             </div>
+                          </aside>
+                        </ng-container>
+                        <ng-container *ngIf="panelNum == 1">
+                          <div class="col-md-12 container-file" style="float: right;width: 100%">
+                            <div class="content-file">
+                              <i
+                                class="float-right fas fa-file-download d-inline p-2"
+                                placement="top"
+                                ngbTooltip="Exporter"
+                                (click)="exportRequests()"
+                              ></i>
+                            </div>
+                            <div class="overlay" [hidden]="!loadingExportMyRequests">
+                              <i class="float-right fas fa-cog fa-spin" style="padding: 1%; color: #2196f3"></i>
+                            </div>
                           </div>
-                        </aside>
-                        <aside class="col-lg-7">
-                          <div class="card" style="height: 720.78px">
-                            <div class="table-responsive">
-                              <table class="table table-borderless table-shopping-cart">
-                                <thead class="text-muted">
+                          <aside class="col-lg-12">
+                            <div class="card"  style="height: 327px">
+                              <div class="table-responsive">
+                                <table style="width: 60%" class="table table-borderless table-shopping-cart">
+                                  <thead class="text-muted">
                                   <tr class="small text-uppercase">
                                     <th scope="col"></th>
-                                    <!--<th scope="col" width="120">Price</th>-->
                                     <th scope="col" class="text-right d-none d-md-block" width="100"></th>
                                   </tr>
-                                </thead>
-                                <tbody>
+                                  </thead>
+                                  <tbody>
                                   <tr *ngFor="let oeuvre of selectedOeuvre; let index = index">
                                     <td>
                                       <figure class="itemside align-items-center">
@@ -271,27 +281,46 @@
                                       </button>
                                     </td>
                                   </tr>
-                                </tbody>
-                              </table>
+                                  </tbody>
+                                </table>
+                              </div>
                             </div>
-                          </div>
-                        </aside>
+                          </aside>
+                        </ng-container>
+
+
                       </div>
                     </ng-template>
                   </div>
-                  <!-- <form>
-                  <div class="form-group"></div>
-                </form>-->
                 </div>
                 <div class="modal-footer">
+                  <button  (click)="prev()" type="button" class="btn btn-warning js-btn-step"
+                           [disabled]="panelNum==1"
+                           *ngIf="selectedOeuvre.length > 0"
+                           style="color: #fff;background: #00d6d4;border-color: #00d6d4"
+                           data-orientation="previous">
+                    Précédent
+                  </button>
+                  <button (click)="next()" type="button"
+                          class="btn btn-primary js-btn-step"
+                          *ngIf="panelNum==1 && selectedOeuvre.length > 0"
+                          data-orientation="next">
+                    Suivant
+                  </button>
+                  <button (click)="closeRequestModal()" type="button"
+                          class="btn btn-secondary"
+                          *ngIf="selectedOeuvre.length === 0">
+                    Annuler
+                  </button>
+
                   <button
-                    class="btn btn-out btn-primary btn-square btn-main"
+                    class="btn btn-out_ btn-primary btn-square btn-main"
                     data-abc="true"
                     type="submit"
+                    *ngIf="panelNum==2"
                     [disabled]="!requestForm.valid"
                   >
                     <i class="fas fa-cog fa-spin" [hidden]="!loadingCreatingRequest"></i>
-                    <!--(click)="modal.dismiss('Cross click')"-->
                     Valider
                   </button>
                 </div>
